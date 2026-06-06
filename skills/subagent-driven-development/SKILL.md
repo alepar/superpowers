@@ -13,6 +13,12 @@ Execute plan by dispatching fresh subagent per task, with two-stage review after
 
 **Continuous execution:** Do not pause to check in with your human partner between tasks. Execute all tasks from the plan without stopping. The only reasons to stop are: BLOCKED status you cannot resolve, ambiguity that genuinely prevents progress, or all tasks complete. "Should I continue?" prompts and progress summaries waste their time — they asked you to execute the plan, so execute it.
 
+## Always Use Subagents; Parallelize Where Feasible
+
+This is the default execution path for every plan — do not ask the user whether to use subagents or run inline. (`superpowers:executing-plans` exists only as an automatic fallback for platforms without subagent support; the choice is made on capability, never asked.)
+
+**Parallel execution by disjoint files.** Run task implementers in parallel when their file sets do not overlap; serialize tasks that touch the same files. Before dispatching a batch, determine each ready task's files (from the plan, or in beads mode from each task's stored plan) and group them so no two concurrent implementers write the same file. Cap concurrency at ~4. Each task's two-stage review runs after that task's implementer completes.
+
 ## When to Use
 
 ```dot
@@ -85,6 +91,18 @@ digraph process {
     "Dispatch final code reviewer subagent for entire implementation" -> "Use superpowers:finishing-a-development-branch";
 }
 ```
+
+## Beads Mode
+
+When the controller was handed a beads epic instead of a plan file (the `bd` CLI is available), execute the epic as a ready-driven loop instead of iterating a fixed task list:
+
+1. **Query ready work.** Run `bd ready` for the epic to get the blocker-aware set of currently-available tasks. Confirm scoping/flags with `bd ready --help`; `--json` gives machine-readable output.
+2. **Plan phase (parallel).** For each ready task, dispatch a planner subagent that invokes `superpowers:writing-plans` in beads per-task mode — it writes a focused plan into the task's beads issue, beginning with the files the task will touch. Planners only write to beads, so dispatch them all in parallel.
+3. **Implement phase (parallel where feasible).** Read each ready task's stored plan to get its file list. Group tasks by disjoint files and dispatch implementer subagents accordingly (parallel for non-overlapping, serial for overlapping). For each task: implementer (against its beads-issue plan) → spec-compliance review → code-quality review → fix loops until both pass → close the task with `bd close <id>` (confirm with `bd close --help`).
+4. **Refill.** Closing tasks unblocks dependents. Re-query `bd ready` and repeat from step 1.
+5. **Finish.** When the epic has no open tasks, proceed to `superpowers:finishing-a-development-branch`.
+
+The two-stage review (spec compliance, then code quality) and the implementer status handling (DONE / DONE_WITH_CONCERNS / NEEDS_CONTEXT / BLOCKED) are unchanged per task. The controller — not the implementer — closes beads issues, and only after both reviews pass.
 
 ## Model Selection
 
@@ -239,7 +257,7 @@ Done!
 - Start implementation on main/master branch without explicit user consent
 - Skip reviews (spec compliance OR code quality)
 - Proceed with unfixed issues
-- Dispatch multiple implementation subagents in parallel (conflicts)
+- Dispatch parallel implementers whose file sets overlap (conflicts) — parallelize only disjoint-file tasks
 - Make subagent read plan file (provide full text instead)
 - Skip scene-setting context (subagent needs to understand where task fits)
 - Ignore subagent questions (answer before letting them proceed)
