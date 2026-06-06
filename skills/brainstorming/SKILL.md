@@ -17,53 +17,69 @@ Do NOT invoke any implementation skill, write any code, scaffold any project, or
 
 Every project goes through this process. A todo list, a single-function utility, a config change — all of them. "Simple" projects are where unexamined assumptions cause the most wasted work. The design can be short (a few sentences for truly simple projects), but you MUST present it and get approval.
 
+## Design Modes
+
+Brainstorming runs in one of two modes. Choose the mode at the start, before asking anything.
+
+**Mode A — Collaborative (default).** Iterate through the design with the user, one question at a time. Scale the number of questions to the design's complexity: small designs need few questions; large or ambiguous designs warrant more. Explicitly cover every ambiguous or contentious part before presenting the design. Get per-section approval as you present. Once you have iterated through the whole design together, do **not** ask the user to review the written spec — proceed directly to the next step.
+
+**Mode B — One-shot (no questions).** Do not ask the user anything. Reason alone: identify every decision point, propose options for each, pick one, and write the entire spec in a single pass using the Mode B spec structure (see "After the Design"). After writing the spec, ask the user to review it before proceeding.
+
+**Mode selection.** Default to Mode A. Use Mode B when the design complexity is small, or the user explicitly asks for a "one shot design".
+
+The review gate is inverted between modes: Mode A has no final-spec review (you reviewed together as you went); Mode B requires one (the user saw nothing until the spec was written).
+
 ## Checklist
 
 You MUST create a task for each of these items and complete them in order:
 
 1. **Explore project context** — check files, docs, recent commits
-2. **Offer visual companion** (if topic will involve visual questions) — this is its own message, not combined with a clarifying question. See the Visual Companion section below.
-3. **Ask clarifying questions** — one at a time, understand purpose/constraints/success criteria
-4. **Propose 2-3 approaches** — with trade-offs and your recommendation
-5. **Present design** — in sections scaled to their complexity, get user approval after each section
-6. **Write design doc** — save to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` and commit
-7. **Spec self-review** — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
-8. **User reviews written spec** — ask user to review the spec file before proceeding
-9. **Transition to implementation** — invoke writing-plans skill to create implementation plan
+2. **Select design mode** — Mode A (collaborative, default) or Mode B (one-shot); see Design Modes above
+3. **Offer visual companion** (if topic will involve visual questions) — this is its own message, not combined with a clarifying question. See the Visual Companion section below.
+4. **Ask clarifying questions** *(Mode A only)* — one at a time, scaled to complexity, covering every ambiguous/contentious part
+5. **Propose 2-3 approaches** — with trade-offs and your recommendation *(Mode A presents these to the user; Mode B decides alone)*
+6. **Present design** *(Mode A only)* — in sections scaled to their complexity, get user approval after each section
+7. **Write design doc** — save to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` and commit (Mode B uses the one-shot spec structure)
+8. **Spec self-review** — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
+9. **User reviews written spec** *(Mode B only)* — ask the user to review the spec file before proceeding
+10. **Transition to implementation** — beads available → create epic + rough tasks, then subagent-driven-development (beads mode); otherwise → writing-plans
 
 ## Process Flow
 
 ```dot
 digraph brainstorming {
     "Explore project context" [shape=box];
-    "Visual questions ahead?" [shape=diamond];
-    "Offer Visual Companion\n(own message, no other content)" [shape=box];
-    "Ask clarifying questions" [shape=box];
-    "Propose 2-3 approaches" [shape=box];
+    "Select design mode" [shape=diamond];
+    "Mode A: iterate (questions scaled to complexity)" [shape=box];
+    "Mode B: reason alone, decide all points" [shape=box];
     "Present design sections" [shape=box];
-    "User approves design?" [shape=diamond];
+    "User approves section?" [shape=diamond];
     "Write design doc" [shape=box];
-    "Spec self-review\n(fix inline)" [shape=box];
-    "User reviews spec?" [shape=diamond];
+    "Spec self-review (fix inline)" [shape=box];
+    "Mode B: user reviews spec?" [shape=diamond];
+    "beads available?" [shape=diamond];
+    "Create epic + rough tasks, then subagent-driven-development (beads mode)" [shape=doublecircle];
     "Invoke writing-plans skill" [shape=doublecircle];
 
-    "Explore project context" -> "Visual questions ahead?";
-    "Visual questions ahead?" -> "Offer Visual Companion\n(own message, no other content)" [label="yes"];
-    "Visual questions ahead?" -> "Ask clarifying questions" [label="no"];
-    "Offer Visual Companion\n(own message, no other content)" -> "Ask clarifying questions";
-    "Ask clarifying questions" -> "Propose 2-3 approaches";
-    "Propose 2-3 approaches" -> "Present design sections";
-    "Present design sections" -> "User approves design?";
-    "User approves design?" -> "Present design sections" [label="no, revise"];
-    "User approves design?" -> "Write design doc" [label="yes"];
-    "Write design doc" -> "Spec self-review\n(fix inline)";
-    "Spec self-review\n(fix inline)" -> "User reviews spec?";
-    "User reviews spec?" -> "Write design doc" [label="changes requested"];
-    "User reviews spec?" -> "Invoke writing-plans skill" [label="approved"];
+    "Explore project context" -> "Select design mode";
+    "Select design mode" -> "Mode A: iterate (questions scaled to complexity)" [label="Mode A (default)"];
+    "Select design mode" -> "Mode B: reason alone, decide all points" [label="Mode B (small / one-shot)"];
+    "Mode A: iterate (questions scaled to complexity)" -> "Present design sections";
+    "Present design sections" -> "User approves section?";
+    "User approves section?" -> "Present design sections" [label="no, revise"];
+    "User approves section?" -> "Write design doc" [label="yes, all sections done"];
+    "Mode B: reason alone, decide all points" -> "Write design doc";
+    "Write design doc" -> "Spec self-review (fix inline)";
+    "Spec self-review (fix inline)" -> "Mode B: user reviews spec?" [label="Mode B"];
+    "Spec self-review (fix inline)" -> "beads available?" [label="Mode A (no review gate)"];
+    "Mode B: user reviews spec?" -> "Write design doc" [label="changes requested"];
+    "Mode B: user reviews spec?" -> "beads available?" [label="approved"];
+    "beads available?" -> "Create epic + rough tasks, then subagent-driven-development (beads mode)" [label="yes"];
+    "beads available?" -> "Invoke writing-plans skill" [label="no"];
 }
 ```
 
-**The terminal state is invoking writing-plans.** Do NOT invoke frontend-design, mcp-builder, or any other implementation skill. The ONLY skill you invoke after brainstorming is writing-plans.
+**The terminal state is either the beads execution flow or writing-plans** (depending on whether the `bd` CLI is available). Do NOT invoke frontend-design, mcp-builder, or any other implementation skill — only the two terminal states above.
 
 ## The Process
 
@@ -123,17 +139,37 @@ After writing the spec document, look at it with fresh eyes:
 
 Fix any issues inline. No need to re-review — just fix and move on.
 
-**User Review Gate:**
-After the spec review loop passes, ask the user to review the written spec before proceeding:
+**Mode B Spec Structure:**
+When writing the spec in Mode B, use this structure:
 
-> "Spec written and committed to `<path>`. Please review it and let me know if you want to make any changes before we start writing out the implementation plan."
+1. **Problem description** — one paragraph.
+2. **Main challenges** — one paragraph.
+3. **Key decisions made** — one paragraph.
+4. **Decision points, by section** — one paragraph per decision point, each stating the recommended approach (and why it was chosen) and the considered approaches (and why they were discarded).
+
+Mode A specs follow the normal section-by-section structure that emerged during the collaborative design.
+
+**User Review Gate (Mode B only):**
+In Mode B the user has not seen the design until now, so ask them to review the written spec before proceeding:
+
+> "Spec written and committed to `<path>`. Please review it and let me know if you want to make any changes before we start implementation."
 
 Wait for the user's response. If they request changes, make them and re-run the spec review loop. Only proceed once the user approves.
 
+In Mode A, skip this gate — you already reviewed the design with the user section by section. Proceed directly to implementation.
+
 **Implementation:**
 
-- Invoke the writing-plans skill to create a detailed implementation plan
-- Do NOT invoke any other skill. writing-plans is the next step.
+Branch on beads availability (the `bd` CLI on PATH):
+
+- **beads available:** Do NOT write a monolithic implementation plan.
+  1. Ensure a beads database exists: if the repo has no `.beads` directory, run `bd init`.
+  2. Create one epic issue for the whole spec. Capture its id. (Confirm the right issue type/flags for an epic with `bd create --help`.)
+  3. Split the spec into rough child tasks — title + short description + a files-touched hint each — and create them under the epic with blocking dependencies so `bd ready` reflects real ordering. Prefer building the whole graph atomically with `bd create --graph <plan.json>`; otherwise create each task nested under the epic (`--parent <epic-id>`) and wire dependencies with `bd dep`. Confirm exact flags with `bd create --help` and `bd dep --help`.
+  4. Invoke `superpowers:subagent-driven-development` in beads mode to execute the epic.
+- **beads unavailable:** Invoke the `writing-plans` skill to create a detailed implementation plan.
+
+Do NOT invoke any other skill.
 
 ## Key Principles
 
