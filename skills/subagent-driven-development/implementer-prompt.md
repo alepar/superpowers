@@ -16,6 +16,11 @@ Task tool (general-purpose):
 
     [Scene-setting: where this fits, dependencies, architectural context]
 
+    [Beads mode only: include the beads task id (e.g. bd-123). The full plan for
+    this task lives in that beads issue's design field — it is also pasted above.
+    Do NOT close the beads issue yourself; the controller closes it after the
+    spec-compliance and code-quality reviews both pass.]
+
     ## Before You Begin
 
     If you have questions about:
