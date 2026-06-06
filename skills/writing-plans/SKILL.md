@@ -18,6 +18,17 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 **Save plans to:** `docs/superpowers/plans/YYYY-MM-DD-<feature-name>.md`
 - (User preferences for plan location override this default)
 
+## Beads Per-Task Mode
+
+When invoked by `superpowers:subagent-driven-development` in beads mode, you are planning a **single beads task**, not a whole spec:
+
+- Write the plan for just that one task, scoped to the files that task touches.
+- Begin the plan with the concrete list of files the task will create or modify — the controller uses this file list to decide which tasks can run in parallel.
+- Store the plan **in the beads issue** (its design/notes field) rather than in `docs/superpowers/plans/`. Confirm the exact command for writing the design field with `bd update --help` (or `bd edit` / `bd note`) — do not guess the flag.
+- All other rules below (bite-sized steps, no placeholders, complete content, TDD) still apply.
+
+Otherwise (no beads), write a single plan file as described below.
+
 ## Scope Check
 
 If the spec covers multiple independent subsystems, it should have been broken into sub-project specs during brainstorming. If it wasn't, suggest breaking this into separate plans — one per subsystem. Each plan should produce working, testable software on its own.
@@ -133,20 +144,9 @@ If you find issues, fix them inline. No need to re-review — just fix and move 
 
 ## Execution Handoff
 
-After saving the plan, offer execution choice:
+Do not ask the user how to execute. Always hand off to subagent execution:
 
-**"Plan complete and saved to `docs/superpowers/plans/<filename>.md`. Two execution options:**
+**"Plan complete and saved to `docs/superpowers/plans/<filename>.md`. Executing with subagent-driven-development."**
 
-**1. Subagent-Driven (recommended)** - I dispatch a fresh subagent per task, review between tasks, fast iteration
-
-**2. Inline Execution** - Execute tasks in this session using executing-plans, batch execution with checkpoints
-
-**Which approach?"**
-
-**If Subagent-Driven chosen:**
-- **REQUIRED SUB-SKILL:** Use superpowers:subagent-driven-development
-- Fresh subagent per task + two-stage review
-
-**If Inline Execution chosen:**
-- **REQUIRED SUB-SKILL:** Use superpowers:executing-plans
-- Batch execution with checkpoints for review
+- **REQUIRED SUB-SKILL:** Use `superpowers:subagent-driven-development` — fresh subagent per task, two-stage review, parallel where feasible (disjoint-file tasks).
+- Only if subagents are unavailable on this platform, fall back to `superpowers:executing-plans`. This is an automatic platform-capability decision, not a question for the user.
