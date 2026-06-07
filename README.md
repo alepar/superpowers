@@ -32,72 +32,56 @@ Thanks!
 
 Installation differs by harness. If you use more than one, install Superpowers separately for each one.
 
+> **Note:** This is a personal fork ([alepar/superpowers](https://github.com/alepar/superpowers)), published as a Claude Code marketplace named `superpowers-alepar`. Harnesses that can install from a git URL (Claude Code, Gemini, Factory Droid, Copilot, OpenCode) can pull the fork directly. Harnesses that only install from a central marketplace (Codex CLI/App, Cursor) list **upstream** Superpowers, not this fork — use a local clone for those.
+
 ### Claude Code
 
-Superpowers is available via the [official Claude plugin marketplace](https://claude.com/plugins/superpowers)
-
-#### Official Marketplace
-
-- Install the plugin from Anthropic's official marketplace:
-
-  ```bash
-  /plugin install superpowers@claude-plugins-official
-  ```
-
-#### Superpowers Marketplace
-
-The Superpowers marketplace provides Superpowers and some other related plugins for Claude Code.
+This fork is published as its own marketplace — the repository itself is the marketplace.
 
 - Register the marketplace:
 
   ```bash
-  /plugin marketplace add obra/superpowers-marketplace
+  /plugin marketplace add alepar/superpowers
   ```
 
-- Install the plugin from this marketplace:
+- Install the plugin:
 
   ```bash
-  /plugin install superpowers@superpowers-marketplace
+  /plugin install superpowers@superpowers-alepar
+  ```
+
+- Update later (after pushing changes to the fork):
+
+  ```bash
+  /plugin marketplace update superpowers-alepar
   ```
 
 ### Codex CLI
 
-Superpowers is available via the [official Codex plugin marketplace](https://github.com/openai/plugins).
-
-- Open the plugin search interface:
+The official Codex plugin marketplace lists **upstream** Superpowers, not this fork. To use the fork, clone the repo (it ships a `.codex-plugin/` manifest) and load it as a local plugin per Codex's local-plugin instructions:
 
   ```bash
-  /plugins
+  git clone https://github.com/alepar/superpowers.git
   ```
 
-- Search for Superpowers:
-
-  ```bash
-  superpowers
-  ```
-
-- Select `Install Plugin`.
+(If you only want upstream Superpowers, run `/plugins`, search `superpowers`, and select `Install Plugin`.)
 
 ### Codex App
 
-Superpowers is available via the [official Codex plugin marketplace](https://github.com/openai/plugins).
-
-- In the Codex app, click on Plugins in the sidebar.
-- You should see `Superpowers` in the Coding section.
-- Click the `+` next to Superpowers and follow the prompts.
+The Codex app installs from the official Codex plugin marketplace, which lists **upstream** Superpowers, not this fork. There is no in-app way to install an arbitrary fork — use the Codex CLI from a local clone (above) if you need the fork.
 
 ### Factory Droid
 
 - Register the marketplace:
 
   ```bash
-  droid plugin marketplace add https://github.com/obra/superpowers
+  droid plugin marketplace add https://github.com/alepar/superpowers
   ```
 
 - Install the plugin:
 
   ```bash
-  droid plugin install superpowers@superpowers
+  droid plugin install superpowers@superpowers-alepar
   ```
 
 ### Gemini CLI
@@ -105,7 +89,7 @@ Superpowers is available via the [official Codex plugin marketplace](https://git
 - Install the extension:
 
   ```bash
-  gemini extensions install https://github.com/obra/superpowers
+  gemini extensions install https://github.com/alepar/superpowers
   ```
 
 - Update later:
@@ -122,33 +106,33 @@ already use it in another harness.
 - Tell OpenCode:
 
   ```
-  Fetch and follow instructions from https://raw.githubusercontent.com/obra/superpowers/refs/heads/main/.opencode/INSTALL.md
+  Fetch and follow instructions from https://raw.githubusercontent.com/alepar/superpowers/refs/heads/main/.opencode/INSTALL.md
   ```
 
 - Detailed docs: [docs/README.opencode.md](docs/README.opencode.md)
 
+  > Note: `.opencode/INSTALL.md` still references the upstream git URL, so following it installs **upstream** Superpowers. To pull this fork via OpenCode, edit that file's git URLs to `alepar/superpowers` first.
+
 ### Cursor
 
-- In Cursor Agent chat, install from marketplace:
+Cursor's `/add-plugin superpowers` installs **upstream** Superpowers from Cursor's marketplace, not this fork. The repo ships a `.cursor-plugin/` manifest; to use the fork, clone it and load it as a local plugin per Cursor's docs:
 
-  ```text
-  /add-plugin superpowers
+  ```bash
+  git clone https://github.com/alepar/superpowers.git
   ```
-
-- Or search for "superpowers" in the plugin marketplace.
 
 ### GitHub Copilot CLI
 
 - Register the marketplace:
 
   ```bash
-  copilot plugin marketplace add obra/superpowers-marketplace
+  copilot plugin marketplace add alepar/superpowers
   ```
 
 - Install the plugin:
 
   ```bash
-  copilot plugin install superpowers@superpowers-marketplace
+  copilot plugin install superpowers@superpowers-alepar
   ```
 
 ## The Basic Workflow
