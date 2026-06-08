@@ -111,8 +111,6 @@ already use it in another harness.
 
 - Detailed docs: [docs/README.opencode.md](docs/README.opencode.md)
 
-  > Note: `.opencode/INSTALL.md` still references the upstream git URL, so following it installs **upstream** Superpowers. To pull this fork via OpenCode, edit that file's git URLs to `alepar/superpowers` first.
-
 ### Cursor
 
 Cursor's `/add-plugin superpowers` installs **upstream** Superpowers from Cursor's marketplace, not this fork. The repo ships a `.cursor-plugin/` manifest; to use the fork, clone it and load it as a local plugin per Cursor's docs:
@@ -213,5 +211,5 @@ MIT License - see LICENSE file for details
 Superpowers is built by [Jesse Vincent](https://blog.fsck.com) and the rest of the folks at [Prime Radiant](https://primeradiant.com).
 
 - **Discord**: [Join us](https://discord.gg/35wsABTejz) for community support, questions, and sharing what you're building with Superpowers
-- **Issues**: https://github.com/obra/superpowers/issues
+- **Issues**: https://github.com/alepar/superpowers/issues
 - **Release announcements**: [Sign up](https://primeradiant.com/superpowers/) to get notified about new versions
