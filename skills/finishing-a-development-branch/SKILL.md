@@ -35,7 +35,17 @@ Cannot proceed with merge/PR until tests pass.
 
 Stop. Don't proceed to Step 2.
 
-**If tests pass:** Continue to Step 2.
+**If tests pass:** Continue to Step 1.5.
+
+### Step 1.5: Update the Design Record
+
+Locate the originating design spec via the plan header's `Spec:` line (or, in beads mode, the epic). If a spec exists:
+
+- If implementation involved fixes or adjustments that diverged from the design's assumptions, prepend a short dated **"Changes vs. original design"** summary at the top of the spec's `## Post-Implementation Notes` section (leave any running bullets below it intact).
+- Update the spec's row in `docs/superpowers/specs/INDEX.md`: set status to `implemented` (or `superseded-by: <file>` if this design replaced an earlier one).
+- Commit these doc edits on the feature branch **now**, so they are included in whatever integration option runs next.
+
+If no spec is found (ad-hoc work with no brainstorming), skip this step.
 
 ### Step 2: Detect Environment
 
@@ -135,13 +145,11 @@ EOF
 )"
 ```
 
-**Do NOT clean up worktree** — user needs it alive to iterate on PR feedback.
+After the PR is created the commits are preserved (pushed to the remote and on a branch in the shared repo), so **clean up the worktree** (Step 6). If PR feedback later requires changes, re-establish a workspace then.
 
 #### Option 3: Keep As-Is
 
-Report: "Keeping branch <name>. Worktree preserved at <path>."
-
-**Don't cleanup worktree.**
+The branch and its commits remain in the shared repo, so they are preserved. Report: "Keeping branch <name>." Then **clean up the worktree** (Step 6) — the branch persists without it; re-establish a workspace later if you resume work.
 
 #### Option 4: Discard
 
@@ -170,7 +178,7 @@ git branch -D <feature-branch>
 
 ### Step 6: Cleanup Workspace
 
-**Only runs for Options 1 and 4.** Options 2 and 3 always preserve the worktree.
+**Runs for every option (1–4).** The worktree is disposable scaffolding, and by this point the commits are always preserved (merged, pushed via PR, or kept on a branch in the shared repo) or intentionally discarded. Clean up the superpowers-created worktree in all cases.
 
 ```bash
 GIT_DIR=$(cd "$(git rev-parse --git-dir)" 2>/dev/null && pwd -P)
@@ -193,12 +201,12 @@ git worktree prune  # Self-healing: clean up any stale registrations
 
 ## Quick Reference
 
-| Option | Merge | Push | Keep Worktree | Cleanup Branch |
-|--------|-------|------|---------------|----------------|
-| 1. Merge locally | yes | - | - | yes |
+| Option | Merge | Push | Cleanup Worktree | Cleanup Branch |
+|--------|-------|------|------------------|----------------|
+| 1. Merge locally | yes | - | yes | yes |
 | 2. Create PR | - | yes | yes | - |
 | 3. Keep as-is | - | - | yes | - |
-| 4. Discard | - | - | - | yes (force) |
+| 4. Discard | - | - | yes | yes (force) |
 
 ## Common Mistakes
 
@@ -210,9 +218,9 @@ git worktree prune  # Self-healing: clean up any stale registrations
 - **Problem:** "What should I do next?" is ambiguous
 - **Fix:** Present exactly 4 structured options (or 3 for detached HEAD)
 
-**Cleaning up worktree for Option 2**
-- **Problem:** Remove worktree user needs for PR iteration
-- **Fix:** Only cleanup for Options 1 and 4
+**Preserving the worktree after the work is integrated**
+- **Problem:** Leaving disposable worktrees around after commits are safely preserved clutters the workspace
+- **Fix:** Clean up the superpowers-created worktree for every option once commits are preserved (or discarded)
 
 **Deleting branch before removing worktree**
 - **Problem:** `git branch -d` fails because worktree still references the branch
@@ -246,6 +254,6 @@ git worktree prune  # Self-healing: clean up any stale registrations
 - Detect environment before presenting menu
 - Present exactly 4 options (or 3 for detached HEAD)
 - Get typed confirmation for Option 4
-- Clean up worktree for Options 1 & 4 only
+- Clean up the superpowers-created worktree once commits are preserved (all options)
 - `cd` to main repo root before worktree removal
 - Run `git worktree prune` after removal
