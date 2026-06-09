@@ -89,4 +89,4 @@ For changes 2–3 to work, the implementation must be able to find its originati
 
 *As this design is implemented and iterated on — bug fixes, adjustments, anything that diverged from the assumptions above — append a dated note here, whether or not a formal debugging skill was used.*
 
-_(none yet)_
+**2026-06-09 — Implemented as designed.** All four changes landed via the plan with no divergences from this spec (subagent-driven execution: four disjoint-file edits + INDEX creation; consistency pass green). Caveat: this change was itself built on a feature branch off `main`, not a from-scratch isolated worktree — the worktree-from-start behavior it introduces was not yet installed when the work ran.
