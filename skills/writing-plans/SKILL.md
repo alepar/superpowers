@@ -68,6 +68,8 @@ This structure informs the task decomposition. Each task should produce self-con
 
 **Tech Stack:** [Key technologies/libraries]
 
+**Spec:** [path to the originating design spec under docs/superpowers/specs/, or "none" if ad-hoc] — finishing-a-development-branch uses this to append post-implementation notes back to the design.
+
 ---
 ```
 
