@@ -33,21 +33,23 @@ The review gate is inverted between modes: Mode A has no final-spec review (you 
 
 You MUST create a task for each of these items and complete them in order:
 
-1. **Explore project context** — check files, docs, recent commits
-2. **Select design mode** — Mode A (collaborative, default) or Mode B (one-shot); see Design Modes above
-3. **Offer visual companion** (if topic will involve visual questions) — this is its own message, not combined with a clarifying question. See the Visual Companion section below.
-4. **Ask clarifying questions** *(Mode A only)* — one at a time, scaled to complexity, covering every ambiguous/contentious part
-5. **Propose 2-3 approaches** — with trade-offs and your recommendation *(Mode A presents these to the user; Mode B decides alone)*
-6. **Present design** *(Mode A only)* — in sections scaled to their complexity, get user approval after each section
-7. **Write design doc** — save to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` and commit (Mode B uses the one-shot spec structure)
-8. **Spec self-review** — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
-9. **User reviews written spec** *(Mode B only)* — ask the user to review the spec file before proceeding
-10. **Transition to implementation** — beads available → create epic + rough tasks, then subagent-driven-development (beads mode); otherwise → writing-plans
+1. **Start an isolated worktree** — before writing the spec or any files, ensure an isolated worktree via `superpowers:using-git-worktrees`. The spec and all work live there.
+2. **Explore project context** — check files, docs, recent commits; read `docs/superpowers/specs/INDEX.md` and open the adjacent prior designs it points to (see "Understanding the idea")
+3. **Select design mode** — Mode A (collaborative, default) or Mode B (one-shot); see Design Modes above
+4. **Offer visual companion** (if topic will involve visual questions) — this is its own message, not combined with a clarifying question. See the Visual Companion section below.
+5. **Ask clarifying questions** *(Mode A only)* — one at a time, scaled to complexity, covering every ambiguous/contentious part
+6. **Propose 2-3 approaches** — with trade-offs and your recommendation *(Mode A presents these to the user; Mode B decides alone)*
+7. **Present design** *(Mode A only)* — in sections scaled to their complexity, get user approval after each section
+8. **Write design doc** — save to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` (ending with a `## Post-Implementation Notes` section), add an INDEX.md row, and commit (Mode B uses the one-shot spec structure)
+9. **Spec self-review** — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
+10. **User reviews written spec** *(Mode B only)* — ask the user to review the spec file before proceeding
+11. **Transition to implementation** — beads available → create epic + rough tasks, then subagent-driven-development (beads mode); otherwise → writing-plans
 
 ## Process Flow
 
 ```dot
 digraph brainstorming {
+    "Start isolated worktree (using-git-worktrees)" [shape=box];
     "Explore project context" [shape=box];
     "Select design mode" [shape=diamond];
     "Mode A: iterate (questions scaled to complexity)" [shape=box];
@@ -61,6 +63,7 @@ digraph brainstorming {
     "Create epic + rough tasks, then subagent-driven-development (beads mode)" [shape=doublecircle];
     "Invoke writing-plans skill" [shape=doublecircle];
 
+    "Start isolated worktree (using-git-worktrees)" -> "Explore project context";
     "Explore project context" -> "Select design mode";
     "Select design mode" -> "Mode A: iterate (questions scaled to complexity)" [label="Mode A (default)"];
     "Select design mode" -> "Mode B: reason alone, decide all points" [label="Mode B (small / one-shot)"];
@@ -85,7 +88,9 @@ digraph brainstorming {
 
 **Understanding the idea:**
 
+- **Start in an isolated worktree.** Before writing the spec or any files, ensure an isolated worktree exists via `superpowers:using-git-worktrees` — the spec and all subsequent work live there, keeping the original checkout clean. The skill is idempotent, so later skills just verify it.
 - Check out the current project state first (files, docs, recent commits)
+- Read `docs/superpowers/specs/INDEX.md`, then open the prior designs whose titles/summaries/tags look adjacent to this work — including their `## Post-Implementation Notes` — and surface relevant past decisions to the user. (If `INDEX.md` doesn't exist yet, scan `docs/superpowers/specs/` directly.)
 - Before asking detailed questions, assess scope: if the request describes multiple independent subsystems (e.g., "build a platform with chat, file storage, billing, and analytics"), flag this immediately. Don't spend questions refining details of a project that needs to be decomposed first.
 - If the project is too large for a single spec, help the user decompose into sub-projects: what are the independent pieces, how do they relate, what order should they be built? Then brainstorm the first sub-project through the normal design flow. Each sub-project gets its own spec → plan → implementation cycle.
 - For appropriately-scoped projects, ask questions one at a time to refine the idea
@@ -126,8 +131,11 @@ digraph brainstorming {
 
 - Write the validated design (spec) to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`
   - (User preferences for spec location override this default)
+- End every spec with a `## Post-Implementation Notes` section containing this standing instruction verbatim, so note-taking fires later even though brainstorming has handed off:
+  > *As this design is implemented and iterated on — bug fixes, adjustments, anything that diverged from the assumptions above — append a dated note here, whether or not a formal debugging skill was used.*
+- Add a row for the new spec to `docs/superpowers/specs/INDEX.md` with status `draft` (date · title · relative link · one-line summary · status · tags). If `INDEX.md` does not exist, create it from the format documented at the top of that file.
 - Use elements-of-style:writing-clearly-and-concisely skill if available
-- Commit the design document to git
+- Commit the design document and `INDEX.md` to git
 
 **Spec Self-Review:**
 After writing the spec document, look at it with fresh eyes:
