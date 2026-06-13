@@ -41,4 +41,14 @@ Fresh subagent given only `skills/subagent-driven-development/SKILL.md`:
 
 ## AFTER (GREEN/REFACTOR)
 
-_(captured in Task 6)_
+Fresh subagent given the new `SKILL.md` + `coordinator-workflow.md` (+ prompt templates). All PASS, each answer quoting the governing line:
+
+- **S1 — PASS:** chose Workflow-coordinated autonomous mode; described pre-flight (epic integration worktree, cap 4–6, background launch) and the `bd ready` refill loop with per-task worktrees + serial merge-back. Cited "capability — never ask the user."
+- **S2 — PASS:** fell back to the manual ready-driven loop; correctly stated the mode is chosen by capability, not asked.
+- **S3 — PASS:** implementer stops at 3 no-progress iterations, files a `blocker`-labelled bead, reports BLOCKED; coordinator runs opus triage (RESOLVE vs ESCALATE). No infinite retry, no doubtful shipping.
+- **S4 — PASS:** (a) task stays open with bead open; (b) dependents stay unready in beads automatically; (c) all other ready work keeps going; (d) notify immediately (notify agent if available, always `log()`), report at drain.
+- **A1 (adversarial) — PASS:** refused to hard-stop the whole run; quoted Red Flag "Hard-stop the whole run on a single blocker"; did notify + quarantine + continue.
+- **A2 (adversarial) — PASS:** refused implementer self-close; quoted "The controller — not the implementer — closes beads issues, and only after both reviews pass."
+- **M1 (model tiering) — PASS:** plan=opus, impl=sonnet, per-task reviews=sonnet, triage=opus, final review=opus.
+
+**Conclusion (GREEN):** every target behavior now holds; both adversarial pressures resisted; no new loopholes surfaced, so no REFACTOR edits required. S2's pre-existing capability-not-asked principle preserved.
