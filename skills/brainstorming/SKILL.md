@@ -42,8 +42,9 @@ You MUST create a task for each of these items and complete them in order:
 7. **Present design** *(Mode A only)* — in sections scaled to their complexity, get user approval after each section
 8. **Write design doc** — save to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` (ending with a `## Post-Implementation Notes` section), add an INDEX.md row, and commit (Mode B uses the one-shot spec structure)
 9. **Spec self-review** — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
-10. **User reviews written spec** *(Mode B only)* — ask the user to review the spec file before proceeding
-11. **Transition to implementation** — beads available → create epic + rough tasks, then subagent-driven-development (beads mode); otherwise → writing-plans
+10. **Offer adversarial review** *(optional)* — offer to run `superpowers:roast` on the spec before implementation; on BLOCK/REVISE loop back to revise the spec, on PASS or if declined continue (see "Adversarial Review" below)
+11. **User reviews written spec** *(Mode B only)* — ask the user to review the spec file before proceeding
+12. **Transition to implementation** — beads available → create epic + rough tasks, then subagent-driven-development (beads mode); otherwise → writing-plans
 
 ## Process Flow
 
@@ -58,6 +59,7 @@ digraph brainstorming {
     "User approves section?" [shape=diamond];
     "Write design doc" [shape=box];
     "Spec self-review (fix inline)" [shape=box];
+    "roast spec? (optional)" [shape=diamond];
     "Mode B: user reviews spec?" [shape=diamond];
     "beads available?" [shape=diamond];
     "Create epic + rough tasks, then subagent-driven-development (beads mode)" [shape=doublecircle];
@@ -73,10 +75,12 @@ digraph brainstorming {
     "User approves section?" -> "Write design doc" [label="yes, all sections done"];
     "Mode B: reason alone, decide all points" -> "Write design doc";
     "Write design doc" -> "Spec self-review (fix inline)";
+    "Spec self-review (fix inline)" -> "roast spec? (optional)" [label="Mode A"];
     "Spec self-review (fix inline)" -> "Mode B: user reviews spec?" [label="Mode B"];
-    "Spec self-review (fix inline)" -> "beads available?" [label="Mode A (no review gate)"];
     "Mode B: user reviews spec?" -> "Write design doc" [label="changes requested"];
-    "Mode B: user reviews spec?" -> "beads available?" [label="approved"];
+    "Mode B: user reviews spec?" -> "roast spec? (optional)" [label="approved"];
+    "roast spec? (optional)" -> "Write design doc" [label="REVISE/BLOCK"];
+    "roast spec? (optional)" -> "beads available?" [label="PASS / declined"];
     "beads available?" -> "Create epic + rough tasks, then subagent-driven-development (beads mode)" [label="yes"];
     "beads available?" -> "Invoke writing-plans skill" [label="no"];
 }
@@ -164,7 +168,15 @@ In Mode B the user has not seen the design until now, so ask them to review the 
 
 Wait for the user's response. If they request changes, make them and re-run the spec review loop. Only proceed once the user approves.
 
-In Mode A, skip this gate — you already reviewed the design with the user section by section. Proceed directly to implementation.
+In Mode A, skip this gate — you already reviewed the design with the user section by section. Proceed directly to the adversarial review offer.
+
+**Adversarial Review (optional):**
+
+After the spec is written and self-reviewed, before transitioning to implementation, offer the user a deeper, adversarial review of the spec:
+
+> "Want me to roast this spec before we implement? It runs adversarial critics + a 3-judge panel to surface gaps and unverified load-bearing assumptions that need a spike first."
+
+This is opt-in — the inline self-review already happened; `roast` is the heavyweight pass for designs where getting it wrong is expensive. If the user accepts, use `superpowers:roast` on the spec file. On a **REVISE** or **BLOCK** verdict, revise the spec to address confirmed findings (and note recommended spikes for the user), then proceed. On **PASS**, or if the user declines, continue to implementation. Do not let `roast` block trivial designs — it's an offer, not a requirement.
 
 **Implementation:**
 
