@@ -89,4 +89,6 @@ The coordinator targets the epic(s) created during the current brainstorming ses
 
 ## Post-Implementation Notes
 
-_(none yet — added by `finishing-a-development-branch` when this design is built.)_
+**2026-06-13 — Implemented as designed.** No divergence from the design. The implementation is skill-prose only, under `skills/`: a new `coordinator-workflow.md` reference, `planner-prompt.md` and `triage-prompt.md`, a worktree + 3-iteration blocker-bead protocol added to `implementer-prompt.md`, the capability-selected autonomous beads mode (+ worktree topology, model tiering, red flags) in `subagent-driven-development/SKILL.md`, and cross-references in `finishing-a-development-branch` and `dispatching-parallel-agents`.
+
+One accuracy constraint shaped the reference doc: a Workflow script has no shell/filesystem access (only its orchestration hooks), so all `bd`/git side-effects are performed inside dispatched agents and the script only sequences, caps concurrency, and serializes the merge gate. Verified by writing-skills pressure tests (`../plans/eval/2026-06-13-sdd-autonomous-eval.md`): all four behavior scenarios plus two adversarial prompts pass. Project integration tests under `tests/claude-code/` were not run — they exercise the installed plugin cache, not working-tree edits, so they cannot validate this change; the pressure-test eval is the applicable verification for behavior-shaping content.
