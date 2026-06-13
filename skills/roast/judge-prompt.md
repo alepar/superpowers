@@ -21,9 +21,14 @@ Task tool (general-purpose), model: opus:
     ## Grounding rule (MANDATORY)
     - If `external: true` (the claim depends on a fact about the outside world — a library/API
       capability, a scaling limit, a default behavior, a version-specific detail), you MUST
-      verify it with **actual research** (superpowers:deep-research or web search) and cite what
-      you found. Do NOT confirm or reject an external-fact claim from memory — those facts vary
-      by version/config and memory is exactly where reviews go confidently wrong.
+      verify it with **actual web research** (WebSearch / WebFetch — fetch the page, do not rely
+      on the deep-research skill, which you cannot spawn as a dispatched agent). Do NOT confirm or
+      reject an external-fact claim from memory — those facts vary by version/config and memory is
+      exactly where reviews go confidently wrong.
+      - **A CONFIRM of an external-fact finding REQUIRES a resolved citation** (a real URL you
+        fetched + the supporting quote). No citation = you may NOT CONFIRM it.
+      - If research finds nothing conclusive either way, return **UNVERIFIED** (see below) — do
+        not silently REJECT a possibly-real risk just because you couldn't source it.
     - If `external: false` (internal/structural), verify it against the **spec text** itself:
       is the gap genuinely unaddressed / the assumption genuinely unstated?
 
@@ -34,6 +39,9 @@ Task tool (general-purpose), model: opus:
     - **minor:** real but low-impact / cosmetic.
 
     ## Output contract (exact)
-    - `CONFIRM <blocker|major|minor>: <evidence — cite sources for external claims>`
+    - `CONFIRM <blocker|major|minor>: <evidence — REQUIRED URL+quote for external claims>`
     - `REJECT: <why the finding is not real or not material>`
+    - `UNVERIFIED: <what you could not confirm/refute, and the cheapest way a human could>` —
+      use ONLY for external-fact claims you could not ground either way. These are routed to the
+      human, not dropped. Never use UNVERIFIED to dodge an internal/structural finding.
 ```

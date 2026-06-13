@@ -59,3 +59,20 @@ Fresh subagent given only `skills/roast/` content + the fixture. All PASS, each 
 **REFACTOR:** S4 exposed a loose severity rule ("majority/median of confirming judges") when two confirmers disagree. Tightened to: **confirmed = ≥2/3; severity = highest among confirming judges (round up); an unconfirmed finding any judge called blocker/major → flag for human.** Applied to `roast-workflow.md` (Step D + skeleton) and `SKILL.md`. No other loopholes surfaced.
 
 **Conclusion (GREEN):** every target behavior holds; all adversarial pressures resisted; one ambiguity closed.
+
+## Self-roast (dogfood) — 2026-06-13
+
+Ran `roast` on its own design spec (6 fresh critics → dedup → 3 fresh judges, all per the skill). Verdict **REVISE**: 16/19 findings confirmed (12 major / 4 minor), 0 blockers, 3 rejected (F9 single-vs-pool misframed; F10 importance×uncertainty "decorative" false; F19 Workflow-opt-in speculative). The 3-judge panel was itself all-Claude — the very F1/F3 limitation it confirmed.
+
+**Adopted (all except F8, by user decision):**
+- **F6** critics/judges ground via WebSearch/WebFetch, not the `deep-research` skill (dispatched agents can't spawn its sub-agents — matches the autonomous-impl design's own nesting limit).
+- **F5** external-fact CONFIRM now requires a resolved citation; inconclusive → **UNVERIFIED** (escalated, not dropped). `evidence` + `severity` now required in the VERDICT schema (fixes **F18** fail-open-to-PASS + undefined helper).
+- **F7** added a dedup barrier (merge same-location/root-claim findings) before the judge panel.
+- **F14** verdict severity = **median** of confirming judges (max only shown as the most-severe opinion).
+- **F12** re-dispatch a failed judge once; never confirm on <3 valid verdicts → `incomplete panel` escalates.
+- **F4** coverage gate: a PASS from failed critics/judges or no-requirements baseline is `PASS (low coverage)`; judges also surface issues no critic raised (recall hedge).
+- **F1/F3** honesty: panel is same-family Claude → "panel agreement, not independent verification"; recommend a non-Claude judge seat; `independence` field in the report.
+- **F2** dropped "model tiers" from the judge-diversity claim. **F16** triage leans to recall; `none` → widen core lenses. **F11** input handling (huge/empty/no-requirements/re-roast cap). **F13** REVISE vs BLOCK meanings. **F15** Limitations section. **F17** skeleton uses per-agent `phase:` not a racing global `phase()`.
+- **F8** (unbounded cost cap) intentionally **skipped** per user.
+
+Re-verified after revision (fresh subagent, Q1–Q8): all adopted behaviors present and unambiguous.
