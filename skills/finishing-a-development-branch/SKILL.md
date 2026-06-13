@@ -73,6 +73,8 @@ git merge-base HEAD main 2>/dev/null || git merge-base HEAD master 2>/dev/null
 
 Or ask: "This branch split from main - is that correct?"
 
+**From subagent-driven-development autonomous mode:** the branch being finished is the **epic integration branch** (on its own worktree under `.worktrees/`), and the base is the user's original branch — so the integration branch is what merges/PRs, and the integration worktree is what Step 6 cleans up (its `.worktrees/` path matches the provenance check). The menu and cleanup logic below are unchanged; this only clarifies which branch and worktree are in play.
+
 ### Step 4: Present Options
 
 **Normal repo and named-branch worktree — present exactly these 4 options:**

@@ -43,6 +43,11 @@ Task tool (general-purpose):
 
     Work from: [directory]
 
+    **Autonomous beads mode — work from your isolated worktree:** If the controller gave
+    you a per-task worktree path (branched from the epic integration branch), do ALL your
+    work there. Do NOT touch the user's original worktree or the integration worktree
+    directly — the controller owns merging your branch back. Commit on your task branch.
+
     **While you work:** If you encounter something unexpected or unclear, **ask questions**.
     It's always OK to pause and clarify. Don't guess or make assumptions.
 
@@ -75,6 +80,15 @@ Task tool (general-purpose):
     specifically what you're stuck on, what you've tried, and what kind of help you need.
     The controller can provide more context, re-dispatch with a more capable model,
     or break the task into smaller pieces.
+
+    **Autonomous beads mode — the 3-iteration blocker-bead rule:** If you have gone
+    through 3 fix-loop iterations with no meaningful progress, STOP looping. Do not keep
+    retrying and do not silently ship doubtful work. Instead, file a blocker bead:
+    `bd create` a new issue with a `blocker` label (confirm flags with `bd create --help`)
+    whose body states the task id, what specifically failed, and what you tried. Then
+    report status BLOCKED referencing that bead id. The controller triages it (clarify and
+    re-dispatch, or raise with the user) — that is the right outcome, not a failure on your
+    part.
 
     ## Before Reporting Back: Self-Review
 
