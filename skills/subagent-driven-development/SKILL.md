@@ -94,15 +94,28 @@ digraph process {
 
 ## Beads Mode
 
-When the controller was handed a beads epic instead of a plan file (the `bd` CLI is available), execute the epic as a ready-driven loop instead of iterating a fixed task list:
+When the controller was handed a beads epic instead of a plan file (the `bd` CLI is available), execute the epic as a ready-driven loop instead of iterating a fixed task list. **Pick the execution path by capability — never ask the user:**
 
-1. **Query ready work.** Run `bd ready` for the epic to get the blocker-aware set of currently-available tasks. Confirm scoping/flags with `bd ready --help`; `--json` gives machine-readable output.
-2. **Plan phase (parallel).** For each ready task, dispatch a planner subagent that invokes `superpowers:writing-plans` in beads per-task mode — it writes a focused plan into the task's beads issue, beginning with the files the task will touch. Planners only write to beads, so dispatch them all in parallel.
-3. **Implement phase (parallel where feasible).** Read each ready task's stored plan to get its file list. Group tasks by disjoint files and dispatch implementer subagents accordingly (parallel for non-overlapping, serial for overlapping). For each task: implementer (against its beads-issue plan) → spec-compliance review → code-quality review → fix loops until both pass → close the task with `bd close <id>` (confirm with `bd close --help`).
-4. **Refill.** Closing tasks unblocks dependents. Re-query `bd ready` and repeat from step 1.
-5. **Finish.** When the epic has no open tasks, proceed to `superpowers:finishing-a-development-branch`.
+- **`Workflow` tool available → Workflow-coordinated autonomous mode (preferred).** Defer to **`./coordinator-workflow.md`**. In short: kick off a background Workflow as the coordinator; it runs a `bd ready` refill loop, dispatches a model-tiered per-task pipeline (plan → implement → spec review → code-quality review) in a **per-task worktree branched from an epic integration branch**, merges finished tasks back **serially**, and escalates via **blocker beads** (notify + quarantine + keep going — never freeze). It finishes via `superpowers:finishing-a-development-branch`. This keeps the main session free for long unattended runs and isolates churn from concurrent human sessions.
+- **No `Workflow` tool, subagents available → manual ready-driven loop (fallback).** Run the loop yourself:
+  1. **Query ready work.** Run `bd ready` for the epic to get the blocker-aware set of currently-available tasks. Confirm scoping/flags with `bd ready --help`; `--json` gives machine-readable output.
+  2. **Plan phase (parallel).** For each ready task, dispatch a planner subagent that invokes `superpowers:writing-plans` in beads per-task mode — it writes a focused plan into the task's beads issue, beginning with the files the task will touch. Planners only write to beads, so dispatch them all in parallel.
+  3. **Implement phase (parallel where feasible).** Read each ready task's stored plan to get its file list. Group tasks by disjoint files and dispatch implementer subagents accordingly (parallel for non-overlapping, serial for overlapping). For each task: implementer (against its beads-issue plan) → spec-compliance review → code-quality review → fix loops until both pass → close the task with `bd close <id>` (confirm with `bd close --help`).
+  4. **Refill.** Closing tasks unblocks dependents. Re-query `bd ready` and repeat from step 1.
+  5. **Finish.** When the epic has no open tasks, proceed to `superpowers:finishing-a-development-branch`.
+- **No subagents → `superpowers:executing-plans`** (inline, automatic fallback).
 
-The two-stage review (spec compliance, then code quality) and the implementer status handling (DONE / DONE_WITH_CONCERNS / NEEDS_CONTEXT / BLOCKED) are unchanged per task. The controller — not the implementer — closes beads issues, and only after both reviews pass.
+The two-stage review (spec compliance, then code quality) and the implementer status handling (DONE / DONE_WITH_CONCERNS / NEEDS_CONTEXT / BLOCKED) are unchanged per task, in **both** the autonomous and manual paths. The controller — not the implementer — closes beads issues, and only after both reviews pass.
+
+### Worktree topology (autonomous mode)
+
+Three layers keep the user's workspace and concurrent sessions safe:
+
+- **Original worktree** — the user's; untouched as long as possible.
+- **Epic integration worktree** — its own worktree on an epic integration branch; the coordinator's evolving base. All run churn happens here, not on the user's branch.
+- **Per-task worktrees** — each branched *from the integration branch*; on pass, rebased on it, tested, and merged back **serially**. New ready tasks branch from the updated integration branch, so dependents inherit prior work.
+
+At finish, `superpowers:finishing-a-development-branch` merges the integration branch into the user's base branch. Set worktrees up per `superpowers:using-git-worktrees`. Full procedure: `./coordinator-workflow.md`.
 
 ## Model Selection
 
@@ -118,6 +131,8 @@ Use the least powerful model that can handle each role to conserve cost and incr
 - Touches 1-2 files with a complete spec → cheap model
 - Touches multiple files with integration concerns → standard model
 - Requires design judgment or broad codebase understanding → most capable model
+
+**Autonomous mode tiering (an application of the above, not an exception):** use the most capable model (opus) for **planning**, **blocker triage**, and the **final whole-epic review** — the judgment-heavy roles — and a standard model (sonnet) for **implementation** and the **per-task spec/quality reviews**.
 
 ## Handling Implementer Status
 
@@ -142,6 +157,12 @@ Implementer subagents report one of four statuses. Handle each appropriately:
 - `./implementer-prompt.md` - Dispatch implementer subagent
 - `./spec-reviewer-prompt.md` - Dispatch spec compliance reviewer subagent
 - `./code-quality-reviewer-prompt.md` - Dispatch code quality reviewer subagent
+- `./planner-prompt.md` - Dispatch per-task planner subagent (autonomous mode)
+- `./triage-prompt.md` - Dispatch blocker triage subagent (autonomous mode)
+
+## Autonomous Coordinator
+
+- `./coordinator-workflow.md` - Full procedure for the Workflow-coordinated autonomous mode (coordinator loop, per-task pipeline, serial merge-back, blocker-bead triage, escalation, finish)
 
 ## Example Workflow
 
@@ -266,6 +287,13 @@ Done!
 - Let implementer self-review replace actual review (both are needed)
 - **Start code quality review before spec compliance is ✅** (wrong order)
 - Move to next task while either review has open issues
+
+**Autonomous mode — also never:**
+- Merge two tasks into the integration branch concurrently (merge-back is serial)
+- Hard-stop the whole run on a single blocker — notify + quarantine + keep driving other ready work
+- Pause for token budget (there is no budget-based pause)
+- Let an implementer close its own beads issue or self-resolve a blocker without triage
+- Let a task implementer touch the user's original worktree or the integration worktree directly (it works only in its own per-task worktree)
 
 **If subagent asks questions:**
 - Answer clearly and completely
