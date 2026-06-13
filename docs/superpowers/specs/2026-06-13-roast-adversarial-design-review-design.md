@@ -66,4 +66,4 @@ New `skills/roast/` containing `SKILL.md`, `critic-prompt.md`, `judge-prompt.md`
 
 ## Post-Implementation Notes
 
-_(none yet — added by `finishing-a-development-branch` when this design is built.)_
+**2026-06-13 — Implemented as designed.** Built skill-prose only under `skills/roast/` (`SKILL.md`, `roast-workflow.md`, `critic-prompt.md`, `judge-prompt.md`, `domain-triage-prompt.md`) plus an optional `roast` gate wired into `brainstorming` (checklist item, process-flow node, and an "Adversarial Review (optional)" subsection). One refinement during pressure-testing (`../plans/eval/2026-06-13-roast-eval.md`): the judge-aggregation severity rule was tightened from a loose "majority/median of confirming judges" to "**confirmed = ≥2/3; severity = highest among confirming judges (round up); an unconfirmed finding any judge called blocker/major → flag for human**." All five behavior scenarios and three adversarial pressures pass. As noted in the spec, `roast` could not be dogfooded on its own design (it didn't exist yet); this spec received the normal inline self-review.
