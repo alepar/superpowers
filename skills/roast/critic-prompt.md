@@ -29,9 +29,11 @@ Task tool (general-purpose), model: sonnet:
         spec against them.]
 
     ## Research
-    You MAY use superpowers:deep-research (or web search) to find typical gaps for this kind of
-    design and to check external feasibility claims. Prefer evidence over memory for any claim
-    about the outside world (library/API capabilities, scaling limits, default behaviors).
+    You MAY use web search (WebSearch / WebFetch) to find typical gaps for this kind of design
+    and to check external feasibility claims. Prefer evidence over memory for any claim about the
+    outside world (library/API capabilities, scaling limits, default behaviors). Do NOT rely on
+    the deep-research skill here — as a dispatched agent you cannot spawn its sub-agents; use
+    WebSearch/WebFetch directly. When a finding rests on an external fact, cite the URL.
 
     ## Required structured output (do NOT write a prose essay)
 

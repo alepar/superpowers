@@ -15,7 +15,9 @@ Task tool (general-purpose), model: sonnet:
     ## Your job
     - Output 1–3 domain labels, most relevant first (e.g., distributed-systems, auth,
       ml-pipeline, payments/billing, data-pipeline, realtime, browser-extension).
-    - Cap at 3. If the design is generic with no strong domain, output "none".
+    - Cap at 3. **Lean toward recall:** a missed domain means its typical traps are never
+      surfaced (a silent gap), whereas a wrong domain is cheaply rejected later. If a domain is
+      plausibly relevant, name it. Only output "none" when the design is genuinely generic.
     - One short line of rationale per label.
 
     Do NOT review the design or list flaws — only classify.
