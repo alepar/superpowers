@@ -25,7 +25,7 @@ Run via the `Workflow` tool when available (subagent fan-out otherwise; inline a
 1. **Domain triage** — name the spec's domain(s) to pick 1–3 domain-expert critics (`./domain-triage-prompt.md`).
 2. **Critique (parallel, sonnet)** — fixed core lenses (premortem, completeness/gap, YAGNI, failure-mode/ops, feasibility/assumptions, security/maintainer) + the domain experts. Each is adversarial, may use `superpowers:deep-research` to find typical gaps, and returns **structured** findings classified **GAP** or **UNVERIFIED-ASSUMPTION**, with a **recommended spike** for high-impact/low-evidence assumptions (`./critic-prompt.md`).
 3. **Verify (3-judge panel, opus)** — three independent judges confirm/reject each finding with a severity. **Grounding rule:** external-fact claims must be verified with research/citations, not memory; structural findings are checked against the spec (`./judge-prompt.md`).
-4. **Aggregate** — confirmed if **≥2 of 3** judges agree; verdict: any confirmed **blocker → BLOCK**, else any **major → REVISE**, else **PASS**; genuine splits on material findings are **flagged for human**.
+4. **Aggregate** — confirmed if **≥2 of 3** judges agree; severity = the **highest** among confirming judges (round up). Verdict: any confirmed **blocker → BLOCK**, else any **major → REVISE**, else **PASS**. An unconfirmed finding a judge called blocker/major is **flagged for human**, never silently dropped.
 5. **Report only** — emit verdict + confirmed findings + recommended spikes. Do not edit the spec or create tasks; the caller decides.
 
 ## Output Format

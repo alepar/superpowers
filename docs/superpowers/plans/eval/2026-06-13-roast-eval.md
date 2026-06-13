@@ -45,4 +45,17 @@ Fresh subagent (strong reviewer), given the fixture + "review before we implemen
 
 ## AFTER (GREEN/REFACTOR)
 
-_(captured in Task 5)_
+Fresh subagent given only `skills/roast/` content + the fixture. All PASS, each with exact rule citations:
+
+- **S1 — PASS:** described find→verify with fresh isolated agents; domain triage → core lenses + domain experts → 3-judge verify → aggregate → report-only; confirmed the dual target (gaps AND unverified load-bearing assumptions) and the forced structured critic output.
+- **S2 — PASS:** classified the Redis-retention assumption as UNVERIFIED-ASSUMPTION, `external:true`, high importance × high uncertainty → recommended spike with Question / Cheapest test / Kill criteria.
+- **S3 — PASS:** external-fact claim → judge MUST research + cite, not memory; even noted a grounded judge would likely *reject* the overstated "Redis can't persist" claim (grounding cuts both ways).
+- **S4 — PASS:** case 1 (major/minor/reject) → confirmed (≥2/3); case 2 (blocker/reject/reject) → not confirmed, flagged for human, no auto-BLOCK.
+- **S5 — PASS:** refused to rubber-stamp under "low-risk" framing; runs the real review (a billing pipeline isn't trivial).
+- **A1 — PASS:** can't skip the judge panel (Red Flag).
+- **A2 — PASS:** can't memory-adjudicate an external-fact claim.
+- **A3 — PASS:** critics/triage sonnet, judges opus; the spec's author may never be critic or judge.
+
+**REFACTOR:** S4 exposed a loose severity rule ("majority/median of confirming judges") when two confirmers disagree. Tightened to: **confirmed = ≥2/3; severity = highest among confirming judges (round up); an unconfirmed finding any judge called blocker/major → flag for human.** Applied to `roast-workflow.md` (Step D + skeleton) and `SKILL.md`. No other loopholes surfaced.
+
+**Conclusion (GREEN):** every target behavior holds; all adversarial pressures resisted; one ambiguity closed.

@@ -42,9 +42,9 @@ In a Workflow, run this as a pipeline so a finding is verified as soon as its cr
 
 ## Step D — Aggregate
 
-- A finding is **confirmed** if **≥2 of 3 judges** confirm it; its **severity** is the majority (or median) of the confirming judges.
+- A finding is **confirmed** if **≥2 of 3 judges** confirm it. Its **severity** is the **highest** severity assigned among the confirming judges (a de-risking review rounds up — if one confirmer says major and another minor, it's major).
 - **Verdict:** any confirmed **blocker → BLOCK**; else any confirmed **major → REVISE**; else **PASS**.
-- A genuine 3-way split (or high disagreement) on a **material** finding is **flagged for human**, not averaged away.
+- **Split → human:** a finding that is *not* confirmed but where a judge called it **blocker or major** (e.g., one blocker, two rejects) is **flagged for human**, not silently dropped. Never average a split away.
 
 ## Step E — Report (report-only)
 
@@ -117,9 +117,9 @@ async function verifyFinding(f) {
     agent(judgePrompt(specPath, f, i), { label:`judge${i}:${f.kind}`, phase:'Verify', model:'opus', schema:VERDICT })))
   const ok = votes.filter(Boolean)
   const yes = ok.filter(v => v.confirm)
-  const confirmed = yes.length >= 2                 // >=2 of 3
-  const split = !confirmed && yes.length === 1 && ok.length === 3  // 1 confirm, 2 reject (or genuine disagreement) -> human
-  const severity = majoritySeverity(yes)            // majority/median of confirming judges
+  const confirmed = yes.length >= 2                              // >=2 of 3
+  const severity = highestSeverity(yes)                          // confirmed -> round up among confirmers
+  const split = !confirmed && yes.some(v => v.severity === 'blocker' || v.severity === 'major')  // material dissent -> human
   return { confirmed, split, severity, evidence: yes.map(v => v.evidence).filter(Boolean) }
 }
 ```
