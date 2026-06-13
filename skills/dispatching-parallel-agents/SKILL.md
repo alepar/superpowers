@@ -129,6 +129,7 @@ Return: Summary of what you found and what you fixed.
 **Need full context:** Understanding requires seeing entire system
 **Exploratory debugging:** You don't know what's broken yet
 **Shared state:** Agents would interfere (editing same files, using same resources)
+**Executing a beads epic of implementation tasks:** use `superpowers:subagent-driven-development` (autonomous mode) instead — it provides the `bd ready` loop, per-task worktree isolation, two-stage review, and serial merge-back. This skill is for ad-hoc independent investigation/debugging fan-out, not structured implementation execution.
 
 ## Real Example from Session
 
