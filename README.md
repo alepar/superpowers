@@ -2,6 +2,39 @@
 
 Superpowers is a complete software development methodology for your coding agents, built on top of a set of composable skills and some initial instructions that make sure your agent uses them.
 
+## What this fork adds
+
+This is a personal fork ([alepar/superpowers](https://github.com/alepar/superpowers)) that extends upstream Superpowers with a handful of additions. Everything below is on top of the standard skills described later in this README.
+
+**New skill**
+
+- **`roast` — adversarial design review.** Runs parallel adversarial critics plus a 3-judge verification panel over a spec *before* you build it, surfacing gaps and unverified load-bearing assumptions (and the cheapest spike to de-risk each). Catch expensive design mistakes while they're still cheap to fix, instead of mid-implementation.
+
+**Autonomous beads-driven execution**
+
+- **Autonomous epic execution (SDD beads mode).** When the `bd` CLI and the `Workflow` tool are present, a whole epic runs unattended: a background coordinator drives a `bd ready` loop, isolates each task in its own worktree, runs the two-stage review, and merges finished tasks back serially. Hours of hands-off implementation from a single approved design.
+- **Blocker-bead escalation (never freeze).** A stuck task is quarantined as a blocker bead and the run keeps driving other ready work, rather than hard-stopping the entire epic on the first problem.
+- **End-to-end beads integration.** Brainstorming creates the epic + rough tasks, `writing-plans` plans each task into its own bead, and execution consumes `bd ready` with real dependency ordering. Your issue tracker *is* the plan.
+
+**Brainstorming & design flow**
+
+- **Two design modes.** Mode A (collaborative, default — iterate one question at a time) vs Mode B (one-shot — the agent decides every point alone and writes the whole spec for you to review). Match the ceremony to the stakes of the design.
+- **Optional `roast` gate.** After a spec is written, brainstorming offers to roast it before handing off to implementation — a heavyweight pass for designs where getting it wrong is costly.
+
+**Design continuity**
+
+- **Spec INDEX + Post-Implementation Notes.** Every spec is catalogued in `specs/INDEX.md` and ends with a standing notes section; brainstorming surfaces adjacent prior designs up front, and `finishing-a-development-branch` writes back what diverged from the original. Design decisions stay discoverable across sessions instead of rotting.
+
+**Worktree lifecycle**
+
+- **Worktree-at-start.** An isolated worktree is created at the very beginning of brainstorming, so the spec and all subsequent work stay off your main checkout from the first file written.
+- **Disposable-worktree cleanup.** `finishing-a-development-branch` now cleans up the worktree for *every* option once the commits are safely preserved (merged, pushed, or kept on a branch), instead of leaving stale worktrees behind.
+
+**Execution defaults**
+
+- **Always-subagent, no prompts.** `writing-plans` and SDD no longer ask "subagent or inline?" — subagent execution is the default and `executing-plans` is an automatic fallback only when subagents aren't available. One fewer decision per run.
+- **Parallel disjoint-file execution.** SDD dispatches implementers concurrently when their file sets don't overlap (serializing only tasks that touch shared files), instead of strictly one task at a time.
+
 ## Quickstart
 
 Give your agent Superpowers: [Claude Code](#claude-code), [Codex CLI](#codex-cli), [Codex App](#codex-app), [Factory Droid](#factory-droid), [Gemini CLI](#gemini-cli), [OpenCode](#opencode), [Cursor](#cursor), [GitHub Copilot CLI](#github-copilot-cli).
