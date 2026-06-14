@@ -32,7 +32,7 @@ Dispatch the domain-triage agent (sonnet) with the spec → 1–3 domain labels,
 
 ## Step B — Critic fan-out (parallel)
 
-Dispatch the critic pool, all **sonnet**, each in isolated context, each permitted to use **WebSearch/WebFetch**. Template: `./critic-prompt.md`.
+Dispatch the critic pool, all **opus**, each in isolated context, each permitted to use **WebSearch/WebFetch**. Template: `./critic-prompt.md`.
 
 - **Fixed core lenses (always run):** premortem ("assume it shipped and failed — why?"), completeness/gap (missing requirements, interfaces, NFRs, error/edge cases), simplicity/YAGNI (over-engineering), failure-mode/ops (assume each component fails — blast radius), feasibility/assumptions ("what must be true for this to work?"). Add security and future-maintainer lenses when the design warrants (always, if triage said `none`).
 - **Dynamic domain experts (1 per triaged domain, ≤3):** each researches that domain's typical failure modes and load-bearing assumptions, then tests the spec against them.
@@ -45,7 +45,7 @@ Overlapping lenses surface the same issue repeatedly (premortem ≈ failure-mode
 
 ## Step D — Verify (3-judge panel)
 
-For **each distinct finding**, dispatch **three independent judges** (opus; use a non-Claude judge for one seat if the harness offers it). Template: `./judge-prompt.md`. Each judge returns `CONFIRM <severity>` (with required evidence for external claims), `REJECT`, or `UNVERIFIED`.
+For **each distinct finding**, dispatch **three independent judges** (sonnet; use a non-Claude judge for one seat if the harness offers it). Template: `./judge-prompt.md`. Each judge returns `CONFIRM <severity>` (with required evidence for external claims), `REJECT`, or `UNVERIFIED`.
 
 **Grounding rule:** an **external-fact** finding ("library X can't do Y", "won't scale to N") must be verified with **WebSearch/WebFetch** and a CONFIRM **requires a resolved citation** (URL + supporting quote); if research is inconclusive the judge returns **UNVERIFIED** (routed to human, not dropped). **Internal/structural** findings are verified against the spec text.
 
@@ -88,7 +88,7 @@ Judge-raised (not from critics): …
 
 ## Annotated Workflow script skeleton
 
-Illustrative. `opts.model` is explicit per role: critics sonnet, judges opus. All I/O happens inside agents. Phases are conveyed via per-agent `phase:` opts (not a global `phase()` call inside concurrent code, which would race).
+Illustrative. `opts.model` is explicit per role: critics opus, judges sonnet, triage sonnet. All I/O happens inside agents. Phases are conveyed via per-agent `phase:` opts (not a global `phase()` call inside concurrent code, which would race).
 
 ```javascript
 export const meta = {
@@ -117,7 +117,7 @@ const lenses  = [...core.map(name => ({type:'lens', name})), ...domains.map(name
 
 // Critique: parallel. Barrier here (await all) so we can dedup before spending judges.
 const raw = (await parallel(lenses.map(lens => () =>
-  agent(criticPrompt(specPath, context, lens), { label:`critic:${lens.name}`, phase:'Critique', model:'sonnet', schema:FINDINGS }))))
+  agent(criticPrompt(specPath, context, lens), { label:`critic:${lens.name}`, phase:'Critique', model:'opus', schema:FINDINGS }))))
   .filter(Boolean).flatMap(r => r.findings ?? [])
 const findings = dedupe(raw)   // merge same location + same root claim; keep strongest evidence
 

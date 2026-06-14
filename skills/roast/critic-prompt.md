@@ -1,9 +1,9 @@
 # Critic Subagent Prompt Template
 
-Use this template when dispatching a `roast` critic. **Model: sonnet.** One critic per lens (core lens or named domain). The critic works in isolated context and must never have authored the spec.
+Use this template when dispatching a `roast` critic. **Model: opus.** One critic per lens (core lens or named domain). The critic works in isolated context and must never have authored the spec.
 
 ```
-Task tool (general-purpose), model: sonnet:
+Task tool (general-purpose), model: opus:
   description: "roast critic [lens]: [spec name]"
   prompt: |
     You are an adversarial design reviewer. Your stance: **assume this design is flawed and

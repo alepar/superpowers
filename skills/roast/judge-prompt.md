@@ -1,9 +1,9 @@
 # Judge Subagent Prompt Template
 
-Use this template when dispatching a `roast` verification judge. **Model: opus.** Dispatch **three** independent judges per finding; aggregate ≥2-of-3. Each judge is fresh and judges the FINDING, not the critic.
+Use this template when dispatching a `roast` verification judge. **Model: sonnet.** Dispatch **three** independent judges per finding; aggregate ≥2-of-3. Each judge is fresh and judges the FINDING, not the critic.
 
 ```
-Task tool (general-purpose), model: opus:
+Task tool (general-purpose), model: sonnet:
   description: "roast judge [n]: verify finding"
   prompt: |
     You independently verify ONE review finding about a design spec. Confirm it only if it is

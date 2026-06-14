@@ -25,9 +25,9 @@ Adversarially review a design spec **before implementation** to surface two thin
 Run via the `Workflow` tool when available (subagent fan-out otherwise; inline as last resort). Full procedure, schemas, and the script skeleton: **`./roast-workflow.md`**.
 
 1. **Domain triage** — name the spec's domain(s) to pick 1–3 domain-expert critics; lean toward recall, and if `none`, widen the core lenses (`./domain-triage-prompt.md`).
-2. **Critique (parallel, sonnet)** — fixed core lenses (premortem, completeness/gap, YAGNI, failure-mode/ops, feasibility/assumptions, security/maintainer) + the domain experts. Each is adversarial, may use **web search (WebSearch/WebFetch)** to find typical gaps, and returns **structured** findings classified **GAP** or **UNVERIFIED-ASSUMPTION**, with a **recommended spike** for high-impact/low-evidence assumptions (`./critic-prompt.md`).
+2. **Critique (parallel, opus)** — fixed core lenses (premortem, completeness/gap, YAGNI, failure-mode/ops, feasibility/assumptions, security/maintainer) + the domain experts. Each is adversarial, may use **web search (WebSearch/WebFetch)** to find typical gaps, and returns **structured** findings classified **GAP** or **UNVERIFIED-ASSUMPTION**, with a **recommended spike** for high-impact/low-evidence assumptions (`./critic-prompt.md`).
 3. **Dedup** — merge overlapping findings (same location + root claim) so each distinct issue is judged once, not once per lens.
-4. **Verify (3-judge panel, opus)** — three independent judges return CONFIRM (with a required citation for external claims) / REJECT / **UNVERIFIED** per finding. **Grounding rule:** external-fact claims must be verified with **WebSearch/WebFetch**, not memory; if research is inconclusive → UNVERIFIED (routed to human). Structural findings are checked against the spec. Re-dispatch a failed judge once; never confirm on fewer than 3 valid verdicts. Judges also surface any material issue no critic raised (recall hedge) (`./judge-prompt.md`).
+4. **Verify (3-judge panel, sonnet)** — three independent judges return CONFIRM (with a required citation for external claims) / REJECT / **UNVERIFIED** per finding. **Grounding rule:** external-fact claims must be verified with **WebSearch/WebFetch**, not memory; if research is inconclusive → UNVERIFIED (routed to human). Structural findings are checked against the spec. Re-dispatch a failed judge once; never confirm on fewer than 3 valid verdicts. Judges also surface any material issue no critic raised (recall hedge) (`./judge-prompt.md`).
 5. **Aggregate** — confirmed if **≥2 of 3** CONFIRM; verdict severity = the **median** of the confirming judges (not the max — one alarmist judge shouldn't drive the gate). Verdict: confirmed **blocker → BLOCK**, else confirmed **major → REVISE**, else **PASS**. **Coverage gate:** a PASS produced because critics/judges failed, or with no requirements baseline, is reported as **`PASS (low coverage)`**, not a clearance. UNVERIFIED findings, incomplete panels, and material dissent are **escalated to human**, never dropped.
 6. **Report only** — emit verdict + confirmed findings + recommended spikes + escalations. Do not edit the spec or create tasks; the caller decides.
 
@@ -48,7 +48,7 @@ Escalations (need human): <UNVERIFIED externals, incomplete panels, material dis
 
 ## Model Tiering
 
-Critics and domain-triage: **sonnet** (+ WebSearch/WebFetch). Judges: **opus** (judgment + grounded verification); use a non-Claude model for one judge seat if the harness offers it.
+Critics: **opus** (+ WebSearch/WebFetch) — finding non-obvious gaps is the divergent, high-reasoning step, and the critic pool is a small fixed set, so the quality gain is cheap. Domain-triage: **sonnet** (lightweight labeling, not critique). Judges: **sonnet** (+ WebSearch/WebFetch) — verification is rubric-bound (CONFIRM/REJECT/UNVERIFIED against evidence) with 3-way majority, and judges are the dominant cost (3 per distinct finding); their safe failure mode is UNVERIFIED→human, not a false confirm. Use a non-Claude model for one judge seat if the harness offers it.
 
 ## Red Flags
 
