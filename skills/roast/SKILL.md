@@ -26,21 +26,39 @@ Run via the `Workflow` tool when available (subagent fan-out otherwise; inline a
 
 1. **Domain triage** — name the spec's domain(s) to pick 1–3 domain-expert critics; lean toward recall, and if `none`, widen the core lenses (`./domain-triage-prompt.md`).
 2. **Critique (parallel, opus)** — fixed core lenses (premortem, completeness/gap, YAGNI, failure-mode/ops, feasibility/assumptions, security/maintainer) + the domain experts. Each is adversarial, may use **web search (WebSearch/WebFetch)** to find typical gaps, and returns **structured** findings classified **GAP** or **UNVERIFIED-ASSUMPTION**, with a **recommended spike** for high-impact/low-evidence assumptions (`./critic-prompt.md`).
-3. **Dedup** — merge overlapping findings (same location + root claim) so each distinct issue is judged once, not once per lens.
+3. **Dedup-and-rank (agent)** — one sonnet agent merges overlapping findings (same location + root claim), grades each a **blast-radius severity** (triage only — not the gate severity), and ranks them so the **depth** cap can pick the top-X to verify (`./dedup-rank-prompt.md`).
 4. **Verify (3-judge panel, sonnet)** — three independent judges return CONFIRM (with a required citation for external claims) / REJECT / **UNVERIFIED** per finding. **Grounding rule:** external-fact claims must be verified with **WebSearch/WebFetch**, not memory; if research is inconclusive → UNVERIFIED (routed to human). Structural findings are checked against the spec. Re-dispatch a failed judge once; never confirm on fewer than 3 valid verdicts. Judges also surface any material issue no critic raised (recall hedge) (`./judge-prompt.md`).
 5. **Aggregate** — confirmed if **≥2 of 3** CONFIRM; verdict severity = the **median** of the confirming judges (not the max — one alarmist judge shouldn't drive the gate). Verdict: confirmed **blocker → BLOCK**, else confirmed **major → REVISE**, else **PASS**. **Coverage gate:** a PASS produced because critics/judges failed, or with no requirements baseline, is reported as **`PASS (low coverage)`**, not a clearance. UNVERIFIED findings, incomplete panels, and material dissent are **escalated to human**, never dropped.
 6. **Report only** — emit verdict + confirmed findings + recommended spikes + escalations. Do not edit the spec or create tasks; the caller decides.
+
+## Depth
+
+`depth` caps how many distinct (post-dedup) findings reach the judges — the dominant cost.
+Detected from the invocation's natural language; default **medium**. Below-cap findings are
+**listed, not dropped**; a finding graded `blocker` is verified even past the cap.
+
+| Level | Cap | Phrasing |
+|---|---|---|
+| shallow | 5 | "quick / shallow roast" |
+| **medium** | **10** | plain "roast" (**default**, incl. the brainstorming gate) |
+| deep | 20 | "deep / thorough roast" |
+| unlimited | ∞ | "exhaustive / full roast" |
+
+Full mechanics in `./roast-workflow.md`.
 
 ## Output Format
 
 ```
 roast verdict: BLOCK | REVISE | PASS | PASS (low coverage)
+depth: <shallow|medium|deep|unlimited> (cap <N>)
 independence: cross-family | same-family (Claude) | none (inline)
-coverage: <lenses>, <domains>, <findings before→after dedup>, <judge completion %>
+coverage: <lenses>, <domains>, <before→after dedup → verified>, <judge completion %>
 Confirmed findings:
   - [GAP|UNVERIFIED-ASSUMPTION] (median sev / max sev) <spec location> — <claim> — <evidence/citation>
 Recommended spikes:
   - Question / Cheapest test / Kill criteria
+Not verified (below depth cap): <count> — re-run deeper to verify
+  - [GAP|UNVERIFIED-ASSUMPTION] (graded sev) <spec location> — <claim>
 Escalations (need human): <UNVERIFIED externals, incomplete panels, material dissent>
 ```
 
@@ -48,7 +66,7 @@ Escalations (need human): <UNVERIFIED externals, incomplete panels, material dis
 
 ## Model Tiering
 
-Critics: **opus** (+ WebSearch/WebFetch) — finding non-obvious gaps is the divergent, high-reasoning step, and the critic pool is a small fixed set, so the quality gain is cheap. Domain-triage: **sonnet** (lightweight labeling, not critique). Judges: **sonnet** (+ WebSearch/WebFetch) — verification is rubric-bound (CONFIRM/REJECT/UNVERIFIED against evidence) with 3-way majority, and judges are the dominant cost (3 per distinct finding); their safe failure mode is UNVERIFIED→human, not a false confirm. Use a non-Claude model for one judge seat if the harness offers it.
+Critics: **opus** (+ WebSearch/WebFetch) — finding non-obvious gaps is the divergent, high-reasoning step, and the critic pool is a small fixed set, so the quality gain is cheap. Domain-triage and dedup-and-rank: **sonnet** — both are bounded labeling passes (triage names domains; dedup-and-rank merges + grades a blast-radius triage severity), run once, and do not set the gate; keeping them off opus is part of the cost win that the depth cap targets. Judges: **sonnet** (+ WebSearch/WebFetch) — verification is rubric-bound (CONFIRM/REJECT/UNVERIFIED against evidence) with 3-way majority, and judges are the dominant cost (3 per distinct finding); their safe failure mode is UNVERIFIED→human, not a false confirm. Use a non-Claude model for one judge seat if the harness offers it.
 
 ## Red Flags
 
