@@ -16,6 +16,14 @@ A Workflow script can call only its hooks — `agent()`, `pipeline()`, `parallel
 
 The script's job is sequencing, fan-out, the concurrency cap, and the serial merge gate.
 
+## Authoring pitfalls (plumbing that crashes the coordinator before real work runs)
+
+These three are *control-plane* bugs, not task logic — each kills the run on round 0–1 with a misleading symptom. The skeleton below already guards against them; keep the guards when you adapt it.
+
+- **Validate `args` on the first line, fail loud.** `const { epicId } = args` silently yields `undefined` when args didn't arrive as an object (e.g. a stringified value, or a renamed field). It then crashes *late and cryptically* — often only when the first **non-empty** `.filter()` runs its callback (an empty ready set never invokes the callback, so an `undefined`-driven `ALLOWED.includes` looks fine for several rounds, then explodes). Add `if (!epicId) throw new Error('args: ' + JSON.stringify(args))` and `log()` the args up front so a mis-pass dies on line 1 with the actual value shown.
+- **Keep control-flow queries mechanical — never an agent judgment call.** The `bd ready` step *decides what runs*; it must be deterministic. An agent told to "return the ready ids" can return `{ids:[]}` **despite printing the matching tasks in the same turn**. Have it echo the verbatim output of a precise command and forbid reasoning: agents do the *work*, the script does the *sequencing*.
+- **Don't pipe a CLI's `--json` straight into a schema.** `bd ready --json` (and many `--json` flags) can emit the value plus trailing legend/warning text, so the agent's `JSON.parse` throws "Extra data". Prefer plain output + a `grep` for the handful of ids you actually need.
+
 ## Pre-flight (before launching the Workflow)
 
 Done by the main session, not the Workflow:
@@ -97,6 +105,9 @@ export const meta = {
 
 // args: { epicId, integrationBranch, integrationWorktree, cap }
 const { epicId, integrationBranch, integrationWorktree, cap } = args
+// Fail fast: undefined args crash late + cryptically (see "Authoring pitfalls"). Validate + log here.
+if (!epicId || !integrationBranch || !integrationWorktree) throw new Error('coordinator args missing: ' + JSON.stringify(args))
+log('coordinator: epic=' + epicId + ' branch=' + integrationBranch)
 const READY = { type: 'object', properties: { ids: { type: 'array', items: { type: 'string' } } }, required: ['ids'] }
 const RESULT = { type: 'object', properties: { id: {type:'string'}, status: {type:'string'}, branch: {type:'string'}, blockerBead: {type:'string'} }, required: ['id','status'] }
 const TRIAGE = { type: 'object', properties: { decision: {type:'string'}, detail: {type:'string'} }, required: ['decision','detail'] } // decision: RESOLVE | ESCALATE
@@ -108,7 +119,8 @@ const completed = []
 while (true) {
   phase('Ready')
   const ready = await agent(
-    `Run \`bd ready --json\` scoped to epic ${epicId} and return the ready task ids. Do not start any work.`,
+    // MECHANICAL: echo the command output verbatim — no judgment, no --json (see "Authoring pitfalls").
+    `Run exactly: \`bd ready 2>&1 | grep -oE '${epicId}[.0-9]*' | sort -u\` and return its output lines verbatim as ids. Do NOT use \`--json\`. Do NOT reason about or filter readiness — \`bd ready\` already excludes blocked/closed/in-progress tasks; just return what the command prints (empty output → {ids: []}). Do not start any work.`,
     { label: 'bd-ready', phase: 'Ready', schema: READY, model: 'sonnet' })
   const ids = (ready?.ids ?? []).filter(id => !escalated.includes(id))
   if (ids.length === 0) break
