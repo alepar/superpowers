@@ -26,6 +26,26 @@ Critics and judges ground claims with **`WebSearch`/`WebFetch`**, **not** the `d
 - Optional caller context: the originating requirements/epic, or what the design must satisfy.
 - **Degenerate inputs:** if the spec is empty/near-empty or states no requirements, the completeness lens has no baseline — say so in the report (`coverage: no-requirements-baseline`) rather than emitting a hollow PASS. For a spec larger than a critic's context, critics review by section and the report notes which sections were covered.
 
+## Depth (verification cap)
+
+`depth` caps how many **distinct (post-dedup) findings** are sent to the 3-judge panel —
+judges are the dominant cost, so this bounds it. Detected from the invocation's natural
+language; **no new syntax**.
+
+| Level | Cap | Trigger phrasing |
+|---|---|---|
+| shallow | 5 | "quick roast", "shallow roast" |
+| **medium** | **10** | plain "roast" (**default**) |
+| deep | 20 | "deep roast", "thorough roast" |
+| unlimited | ∞ | "exhaustive roast", "full roast" |
+
+- Ambiguous phrasing, and **every auto-invocation as the `brainstorming` gate**, resolve
+  to **medium**.
+- Findings ranked **below** the cap are **not dropped** — they are listed in the report as
+  un-verified (Step F), preserving the skill's no-silent-drop principle.
+- **Blocker bypass:** a finding the dedup-and-rank agent grades `blocker` is verified even
+  if it ranks past the cap, so the cheap path never leaves a potential blocker un-verified.
+
 ## Step A — Domain triage
 
 Dispatch the domain-triage agent (sonnet) with the spec → 1–3 domain labels, leaning toward recall (a missed domain is a silent gap). `none` only for a genuinely generic design. Template: `./domain-triage-prompt.md`. **If triage returns `none`, widen the core lenses** (add security + future-maintainer) rather than running fewer critics.
@@ -39,13 +59,28 @@ Dispatch the critic pool, all **opus**, each in isolated context, each permitted
 
 Each critic returns **structured findings**: the design's load-bearing assumptions, then findings each classified **GAP** or **UNVERIFIED-ASSUMPTION** with a spec location, `external` flag, and evidence; for unverified assumptions, an importance×uncertainty score and (high-importance/low-evidence) a **recommended spike** (question + cheapest test + kill criteria).
 
-## Step C — Dedup (barrier)
+## Step C — Dedup-and-rank (barrier, one agent)
 
-Overlapping lenses surface the same issue repeatedly (premortem ≈ failure-mode ≈ a domain expert). Before verifying, **collect all critic findings and merge near-duplicates** (same spec location + same root claim) into one finding, keeping the strongest evidence. This is a deliberate barrier — wait for all critics — so each distinct issue is judged once, not N times. Record the pre/post counts in the report.
+Overlapping lenses surface the same issue repeatedly (premortem ≈ failure-mode ≈ a domain
+expert). Collect all critic findings (deliberate barrier — wait for all critics), then
+dispatch a **single dedup-and-rank agent (sonnet)**. Template: `./dedup-rank-prompt.md`.
+It (1) merges near-duplicates (same location + root claim, keep strongest evidence),
+(2) grades each merged finding a **blast-radius severity** (blocker/major/minor — "if true,
+how bad?"), and (3) ranks them so the depth cap can select the top-X.
+
+This replaces the former plain-code merge. The graded severity is **triage only** — it is
+distinct from the gate severity, which is still the **median of the confirming judges**
+(Step E). Record pre-dedup and post-dedup counts in the report.
 
 ## Step D — Verify (3-judge panel)
 
-For **each distinct finding**, dispatch **three independent judges** (sonnet; use a non-Claude judge for one seat if the harness offers it). Template: `./judge-prompt.md`. Each judge returns `CONFIRM <severity>` (with required evidence for external claims), `REJECT`, or `UNVERIFIED`.
+Apply the depth cap to the ranked findings from Step C: the **top-X** (X = the depth level's
+cap) plus any finding graded `blocker` by the dedup-and-rank agent (blocker bypass) are the
+**verified set**; findings below the cap are the **un-verified set** (reported in Step F,
+never sent to judges, never dropped). For **each finding in the verified set**, dispatch
+**three independent judges** (sonnet; use a non-Claude judge for one seat if the harness
+offers it). Template: `./judge-prompt.md`. Each judge returns `CONFIRM <severity>` (with
+required evidence for external claims), `REJECT`, or `UNVERIFIED`.
 
 **Grounding rule:** an **external-fact** finding ("library X can't do Y", "won't scale to N") must be verified with **WebSearch/WebFetch** and a CONFIRM **requires a resolved citation** (URL + supporting quote); if research is inconclusive the judge returns **UNVERIFIED** (routed to human, not dropped). **Internal/structural** findings are verified against the spec text.
 
@@ -67,12 +102,15 @@ Emit a structured report and stop. `roast` does **not** edit the spec or create 
 
 ```
 roast verdict: BLOCK | REVISE | PASS | PASS (low coverage)
+depth: <shallow|medium|deep|unlimited> (cap <N>)
 independence: cross-family | same-family (Claude) | none (inline)
-coverage: <N lenses ran>, <M domains>, <findings before→after dedup>, <judge completion %>
+coverage: <N lenses ran>, <M domains>, <before-dedup → after-dedup → verified counts>, <judge completion %>
 Confirmed findings:
   - [GAP|UNVERIFIED-ASSUMPTION] (median severity / max severity) <location> — <claim> — <evidence/citation>
 Recommended spikes (unverified load-bearing assumptions):
   - Question: … | Cheapest test: … | Kill criteria: …
+Not verified (below depth=<level> cap): <count> — re-run at a deeper level to verify
+  - [GAP|UNVERIFIED-ASSUMPTION] (graded severity) <location> — <claim>
 Escalations (need human): <UNVERIFIED externals, incomplete panels, material dissent>
 Judge-raised (not from critics): …
 ```
@@ -98,7 +136,8 @@ export const meta = {
 }
 
 const SEV = { blocker: 3, major: 2, minor: 1 }
-const { specPath, context } = args
+const { specPath, context, depth = 'medium' } = args
+const CAP = { shallow: 5, medium: 10, deep: 20, unlimited: Infinity }[depth] ?? 10
 const DOMAINS  = { type:'object', properties:{ domains:{ type:'array', items:{ type:'string' } } }, required:['domains'] }
 const FINDINGS = { type:'object', properties:{ findings:{ type:'array', items:{ type:'object', properties:{
   kind:{enum:['GAP','UNVERIFIED-ASSUMPTION']}, claim:{type:'string'}, location:{type:'string'},
@@ -108,6 +147,10 @@ const FINDINGS = { type:'object', properties:{ findings:{ type:'array', items:{ 
 const VERDICT  = { type:'object', properties:{
   verdict:{enum:['CONFIRM','REJECT','UNVERIFIED']}, severity:{enum:['blocker','major','minor']}, evidence:{type:'string'}
   }, required:['verdict','severity','evidence'] }
+const RANKED = { type:'object', properties:{ findings:{ type:'array', items:{ type:'object', properties:{
+  rank:{type:'integer'}, kind:{enum:['GAP','UNVERIFIED-ASSUMPTION']}, claim:{type:'string'}, location:{type:'string'},
+  external:{type:'boolean'}, gradedSeverity:{enum:['blocker','major','minor']}, spike:{type:'string'}
+  }, required:['rank','kind','claim','location','external','gradedSeverity'] } } }, required:['findings'] }
 
 const triage  = await agent(domainTriagePrompt(specPath), { label:'triage', phase:'Triage', model:'sonnet', schema:DOMAINS })
 const domains = (triage?.domains ?? []).slice(0, 3)
@@ -119,10 +162,14 @@ const lenses  = [...core.map(name => ({type:'lens', name})), ...domains.map(name
 const raw = (await parallel(lenses.map(lens => () =>
   agent(criticPrompt(specPath, context, lens), { label:`critic:${lens.name}`, phase:'Critique', model:'opus', schema:FINDINGS }))))
   .filter(Boolean).flatMap(r => r.findings ?? [])
-const findings = dedupe(raw)   // merge same location + same root claim; keep strongest evidence
+// Dedup-and-rank is now an agent: merge near-dupes + grade blast radius + rank (./dedup-rank-prompt.md).
+const ranked = (await agent(dedupRankPrompt(raw), { label:'dedup-rank', phase:'Verify', model:'sonnet', schema:RANKED }))?.findings ?? []
+// Cap selects the verified set; blocker-graded findings bypass the cap; the rest are reported un-verified.
+const verifySet = ranked.filter((f, i) => i < CAP || f.gradedSeverity === 'blocker')
+const belowCap  = ranked.filter((f, i) => !(i < CAP || f.gradedSeverity === 'blocker'))
 
-// Verify: parallel per distinct finding; 3 judges each, re-dispatch a failed judge once.
-const judged = await parallel(findings.map(f => () => verifyFinding(f)))
+// Verify: parallel per finding in the verified set; 3 judges each, re-dispatch a failed judge once.
+const judged = await parallel(verifySet.map(f => () => verifyFinding(f)))
 
 const confirmed   = judged.filter(j => j.confirmed)
 const escalations = judged.filter(j => j.escalate)
@@ -130,8 +177,8 @@ const lowCoverage = raw.length === 0 || judged.some(j => j.incomplete) // critic
 const sev = confirmed.length ? Math.max(...confirmed.map(c => SEV[c.gateSeverity])) : 0
 let verdict = sev === 3 ? 'BLOCK' : sev === 2 ? 'REVISE' : 'PASS'
 if (verdict === 'PASS' && lowCoverage) verdict = 'PASS (low coverage)'
-return { verdict, independence: 'same-family (Claude)', confirmed, escalations,
-         coverage: { lenses: lenses.length, beforeDedup: raw.length, afterDedup: findings.length } }
+return { verdict, depth, cap: CAP, independence: 'same-family (Claude)', confirmed, escalations, belowCap,
+         coverage: { lenses: lenses.length, beforeDedup: raw.length, afterDedup: ranked.length, verified: verifySet.length } }
 
 async function verifyFinding(f) {
   let votes = await castPanel(f)
@@ -148,8 +195,10 @@ async function verifyFinding(f) {
   return { ...f, confirmed, escalate, incomplete: valid.length < 3, gateSeverity, maxSeverity,
            evidence: yes.map(v => v.evidence).filter(Boolean) }
 }
-// castPanel / redispatchFailures / dedupe / invSev: dispatch the 3 judges (one non-Claude if available),
-// retry a failed seat once, merge duplicate findings, and map the severity rank back to a label.
+// castPanel / redispatchFailures / invSev: dispatch the 3 judges (one non-Claude if available),
+// retry a failed seat once, and map the severity rank back to a label.
+// dedupRankPrompt: render the pooled critic findings into the dedup-and-rank agent prompt
+// (./dedup-rank-prompt.md) — merging + blast-radius grading + ranking now happen in that agent.
 ```
 
 > The Workflow tool's built-in `isolation:'worktree'` is irrelevant here — `roast` reads and reasons; it writes nothing to the repo. Keep it report-only.
