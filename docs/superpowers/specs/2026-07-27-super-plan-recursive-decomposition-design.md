@@ -61,7 +61,7 @@ Either triggers promotion. The main session sanity-checks the verdicts and may o
 
 ## Tripwire
 
-Before starting any nested brainstorm, super-plan derives the global tree state (beads: epic count and nesting depth from `bd` queries; no-beads: spec count). Crossing **depth 3 or 10 total subepics** pauses the recursion:
+Before starting any nested brainstorm, super-plan derives the global tree state (beads: epic count and nesting depth from `bd` queries; no-beads: spec count). **Depth** counts promotion edges from the root: direct subepics are depth 1, sub-subepics depth 2, and so on. The tripwire fires before brainstorming any subepic at **depth 3**, or when the total subepic count would exceed **10**:
 
 - The user is shown the epic tree — what is designed, what still wants promotion.
 - They choose **continue** (and set the next checkpoint; default: thresholds double), **stop** (remaining would-be promotions freeze into leaf tasks flagged "wanted promotion, stopped at tripwire"), or **prune** (drop or demote specific branches).
@@ -84,7 +84,7 @@ Each finding: type, description, evidence (which goal element / which specs were
 
 **Arbitration loop:** findings are presented to the user, who accepts or rejects each. Accepted small gaps become leaf tasks added to the right epic directly. Accepted big gaps enter the normal machinery: task created → promoted → nested brainstorm (inherited mode) → its own super-plan subtree. Then a **fresh** coverage reviewer re-runs. The loop ends when a round yields zero accepted findings — the user reviewing every round is the termination guard; no arbitrary cap.
 
-**Hand-off:** execution is always `subagent-driven-development`. With beads: beads mode on the root epic. Without: `writing-plans` produces one plan per leaf epic in dependency order, and subagent-driven-development executes those plan files.
+**Hand-off:** execution is always `subagent-driven-development`. With beads: beads mode on the root epic. Without: `writing-plans` produces one plan per epic covering that epic's leaf tasks (an epic with both leaf tasks and subepics still gets its own plan for the leaves), plans ordered by the dependency graph, and subagent-driven-development executes those plan files.
 
 ## Conventions
 
