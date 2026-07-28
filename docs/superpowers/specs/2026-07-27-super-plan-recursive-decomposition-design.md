@@ -215,3 +215,14 @@ Per roast policy (~2 iteration cap), no third roast — remaining confirmed-majo
 ## Post-Implementation Notes
 
 *As this design is implemented and iterated on — bug fixes, adjustments, anything that diverged from the assumptions above — append a dated note here, whether or not a formal debugging skill was used.*
+
+### Spike 0 (2026-07-28) — bd nested-epic semantics: PASS, kill criteria not triggered
+
+Verified against bd 1.0.5 (Homebrew) in a scratch `bd init` db (E→T→U→V, 3 promotion edges via `bd update -t epic`, plus a pre-existing blocking dep and an unrelated decoy tree). Full command/output evidence is in issue `super-plan-2c1.1`'s notes. bd represents and traverses ≥3-deep epic nesting correctly; no flatten/redesign of Durable State or the tripwire is required. Confirmed exactly as this spec assumed: dependency preservation on retype, `sp_depth`/`sp_order` underscore keys (hyphens rejected), default label inheritance + `--no-inherit-labels`, `bd ready` epic-inclusive by default + `--exclude-type=epic`/`--label` scoping, `bd epic close-eligible` closing one tree level per call (fixpoint loop needed), and silent epic-with-children demotion (no bd-side guard).
+
+Corrections/additions to carry into 2c1.5/2c1.7 implementation:
+
+- **`--no-inherit-labels` strips ALL parent labels, not just `sp:needs-design`.** Every child creation needs both flags together: `bd create ... --no-inherit-labels -l sp:<root-epic-id>` — relying on inheritance for the root label doesn't work once `--no-inherit-labels` is set.
+- **No `bd tree` command exists** in bd 1.0.5 (this spec's Validation section assumed one). `bd dep tree` walks blocking dependencies, not parent-child hierarchy — wrong tool. For a human-readable transitive subtree, use `bd list --parent <root> --pretty --status all` (confirmed transitive). Plain `bd list --parent <id>` / `bd children <id>` (JSON) are **one level only** — not transitive. Machine subtree traversal should go through label scoping (`bd list --label sp:<root-epic-id> --json --status all`), which is already the design's plan for the root-pass task-tree dump; there's no id-prefix filter to fall back on.
+- **`bd epic close-eligible --json` fixpoint stop condition**: output shape changes on "nothing closed" — a bare `[]`, not `{"closed":[],"count":0}`. The loop needs to check for that, not just `count`.
+- **No explicit Dolt commit step is needed.** Despite `--dolt-auto-commit` defaulting to `off`, writes survived a `kill -9` of the underlying dolt sql-server process (confirmed: bd auto-starts and reuses one long-lived server process across CLI invocations, not a fresh isolated process per call). Per-write durability is independent of Dolt's git-like "commit" concept. Do not configure `--dolt-auto-commit=batch` — that mode's pending writes survive only graceful `SIGTERM`/`SIGHUP`, not a hard kill.
