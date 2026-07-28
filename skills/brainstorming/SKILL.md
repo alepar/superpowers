@@ -29,6 +29,17 @@ Brainstorming runs in one of two modes. Choose the mode at the start, before ask
 
 The review gate is inverted between modes: Mode A has no final-spec review (you reviewed together as you went); Mode B requires one (the user saw nothing until the spec was written).
 
+## Nested Invocation
+
+`superpowers:super-plan` can invoke brainstorming on a promoted subepic instead of a user invoking it at the root. When invoked this way, the process above still applies, with these deltas:
+
+- **Inherit the session's design mode** (Mode A parent → Mode A subepic; Mode B → Mode B). The user may override per-subepic with an explicit request.
+- **Context is handed in by the invoking super-plan**: the parent spec, the chain of ancestor goals, and the specs of already-designed siblings. Open the new spec's `## Goal` with the subepic's local goal, seeded from super-plan's promotion rationale.
+- Do **not** re-offer the visual companion, and do **not** offer adversarial review — `roast` is offered once, at the root, after the coverage loop passes.
+- **Skip Mode B's user-review gate** (step 11 / "User Review Gate" below) — the Mode B human checkpoints for a tree live at the root spec review, the top-split gate, the tripwire, and coverage arbitration, all owned by super-plan.
+- Do **not** create a new worktree — `superpowers:using-git-worktrees` is idempotent and just verifies the one already in use.
+- End as always by invoking `superpowers:super-plan` on the spec just written.
+
 ## Checklist
 
 You MUST create a task for each of these items and complete them in order:
@@ -40,11 +51,11 @@ You MUST create a task for each of these items and complete them in order:
 5. **Ask clarifying questions** *(Mode A only)* — one at a time, scaled to complexity, covering every ambiguous/contentious part
 6. **Propose 2-3 approaches** — with trade-offs and your recommendation *(Mode A presents these to the user; Mode B decides alone)*
 7. **Present design** *(Mode A only)* — in sections scaled to their complexity, get user approval after each section
-8. **Write design doc** — save to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` (ending with a `## Post-Implementation Notes` section), add an INDEX.md row, and commit (Mode B uses the one-shot spec structure)
+8. **Write design doc** — save to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` (opening with a `## Goal` section, ending with a `## Post-Implementation Notes` section), add an INDEX.md row, and commit (Mode B uses the one-shot spec structure)
 9. **Spec self-review** — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
 10. **Offer adversarial review** *(optional)* — offer to run `superpowers:roast` on the spec before implementation; on BLOCK/REVISE loop back to revise the spec, on PASS or if declined continue (see "Adversarial Review" below)
 11. **User reviews written spec** *(Mode B only)* — ask the user to review the spec file before proceeding
-12. **Transition to implementation** — beads available → create epic + rough tasks, then subagent-driven-development (beads mode); otherwise → writing-plans
+12. **Transition to implementation** — invoke `superpowers:super-plan` on the written spec, always, both modes, with or without beads
 
 ## Process Flow
 
@@ -61,9 +72,7 @@ digraph brainstorming {
     "Spec self-review (fix inline)" [shape=box];
     "roast spec? (optional)" [shape=diamond];
     "Mode B: user reviews spec?" [shape=diamond];
-    "beads available?" [shape=diamond];
-    "Create epic + rough tasks, then subagent-driven-development (beads mode)" [shape=doublecircle];
-    "Invoke writing-plans skill" [shape=doublecircle];
+    "Invoke super-plan skill" [shape=doublecircle];
 
     "Start isolated worktree (using-git-worktrees)" -> "Explore project context";
     "Explore project context" -> "Select design mode";
@@ -80,13 +89,11 @@ digraph brainstorming {
     "Mode B: user reviews spec?" -> "Write design doc" [label="changes requested"];
     "Mode B: user reviews spec?" -> "roast spec? (optional)" [label="approved"];
     "roast spec? (optional)" -> "Write design doc" [label="REVISE/BLOCK"];
-    "roast spec? (optional)" -> "beads available?" [label="PASS / declined"];
-    "beads available?" -> "Create epic + rough tasks, then subagent-driven-development (beads mode)" [label="yes"];
-    "beads available?" -> "Invoke writing-plans skill" [label="no"];
+    "roast spec? (optional)" -> "Invoke super-plan skill" [label="PASS / declined"];
 }
 ```
 
-**The terminal state is either the beads execution flow or writing-plans** (depending on whether the `bd` CLI is available). Do NOT invoke frontend-design, mcp-builder, or any other implementation skill — only the two terminal states above.
+**The terminal state is always invoking `superpowers:super-plan`** on the written spec, both modes, with or without beads. Do NOT invoke frontend-design, mcp-builder, or any other implementation skill — only super-plan.
 
 ## The Process
 
@@ -135,6 +142,7 @@ digraph brainstorming {
 
 - Write the validated design (spec) to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`
   - (User preferences for spec location override this default)
+- Open every spec with a `## Goal` section: one or two sentences stating an observable outcome (e.g. "a playable game"). `super-plan`'s coverage pass consumes this verbatim.
 - End every spec with a `## Post-Implementation Notes` section containing this standing instruction verbatim, so note-taking fires later even though brainstorming has handed off:
   > *As this design is implemented and iterated on — bug fixes, adjustments, anything that diverged from the assumptions above — append a dated note here, whether or not a formal debugging skill was used.*
 - Add a row for the new spec to `docs/superpowers/specs/INDEX.md` with status `draft` (date · title · relative link · one-line summary · status · tags). If `INDEX.md` does not exist, create it from the format documented at the top of that file.
@@ -180,14 +188,7 @@ This is opt-in — the inline self-review already happened; `roast` is the heavy
 
 **Implementation:**
 
-Branch on beads availability (the `bd` CLI on PATH):
-
-- **beads available:** Do NOT write a monolithic implementation plan.
-  1. Ensure a beads database exists: if the repo has no `.beads` directory, run `bd init`.
-  2. Create one epic issue for the whole spec. Capture its id. (Confirm the right issue type/flags for an epic with `bd create --help`.)
-  3. Split the spec into rough child tasks — title + short description + a files-touched hint each — and create them under the epic with blocking dependencies so `bd ready` reflects real ordering. Prefer building the whole graph atomically with `bd create --graph <plan.json>`; otherwise create each task nested under the epic (`--parent <epic-id>`) and wire dependencies with `bd dep`. Confirm exact flags with `bd create --help` and `bd dep --help`.
-  4. Invoke `superpowers:subagent-driven-development` in beads mode to execute the epic.
-- **beads unavailable:** Invoke the `writing-plans` skill to create a detailed implementation plan.
+Invoke `superpowers:super-plan` on the written spec — always, both modes, with or without beads. super-plan owns decomposition into a task tree, promotion review, recursive nested design, goal-coverage checking, and hand-off to execution. Brainstorming's job ends at the spec.
 
 Do NOT invoke any other skill.
 
