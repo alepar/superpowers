@@ -216,6 +216,85 @@ Per roast policy (~2 iteration cap), no third roast — remaining confirmed-majo
 
 *As this design is implemented and iterated on — bug fixes, adjustments, anything that diverged from the assumptions above — append a dated note here, whether or not a formal debugging skill was used.*
 
+### 2026-07-28 — Coverage-recall spike (super-plan-2c1.4)
+
+Ran the spike specified above with the following scale, deliberately reduced from
+"~10 specs / ~60 leaf tasks" for tractability within one autonomous run (documented
+deviation, not a silent one): 3 synthetic domains (recipe-sharing app, kanban board,
+multiplayer trivia game), **10 / 12 / 17 specs** and **32–43 leaf tasks** each,
+complete + gapped forms, **6 seeded gaps** (3 subsystem, 3 connective), **5 iterations
+× 3 reviewers per variant per form = 90 headless `claude -p --model sonnet` calls**
+(root-pass shape only — single flat tree per the 2c1.3 template, not the hierarchical
+per-subepic passes). Variant C (17 specs) exercises the >~15-spec summarized-prose path.
+
+**Result: 30/30 seeded-gap detections = 100% recall**, all 6 gaps (A-G1/A-G2, B-G1/B-G2,
+C-G1/C-G2) caught by the 3-reviewer union in every one of their 5 iterations, zero
+degraded rounds (all 3 reviewers returned valid structured findings every time, 90/90).
+This clears the ~80% bar comfortably on the **first attempt**, on **sonnet** — the
+spike's deliberately conservative floor model (opus, the template's nominal model, is
+expected to clear it too). **No redesign attempt was needed; `coverage-reviewer-prompt.md`
+is unchanged from the 2c1.3 draft** — "no change needed" per the design's own allowance.
+
+**False-positive / arbitration load** (mean unioned findings per round, raw sum across
+the 3 reviewers, not semantically deduped — an upper bound):
+- Complete trees (FP measurement — every finding is a false positive by construction):
+  A-recipe 14.6, B-kanban 8.2, C-trivia 5.4 (overall mean 9.4/round, n=15 rounds).
+- Gapped trees (arbitration load including the seeded gaps): A-recipe 11.2, B-kanban
+  10.0, C-trivia 11.8 (overall mean 11.0/round, n=15 rounds).
+- A manual dedup pass on one sample round (B-kanban gapped iter4: raw 13 findings
+  across 3 reviewers) found **6 distinct issues** — the 3 reviewers converged heavily
+  on the same real gaps (both seeded gaps found by all 3; an unseeded "team switcher
+  missing" and "no bootstrap team-creation path" finding independently surfaced by
+  2–3 reviewers each). True post-dedup arbitration load is plausibly roughly half the
+  raw sum reported above, not the raw sum itself.
+- Manual spot-checks of several complete-tree runs confirmed the "false positives" are
+  not noise or hallucination — they are defensible design gaps in the hand-built
+  fixtures that a real user would in fact want to arbitrate (e.g., missing cascade-
+  delete cleanup, an unenforced "must have viewed recipe" precondition, a websocket
+  channel with no permission check). The FP number measures reviewer thoroughness
+  against an imperfect "complete" fixture, not false-alarm noise.
+
+**Fixture defect found and fixed mid-spike (not a prompt redesign attempt):** Variant
+A's original Goal sentence never actually stated the notification requirement (A-G1
+removed the `notif` subsystem, but nothing in the Goal text promised notifications), so
+the forward-trace check correctly had nothing to detect — round 1 showed A-G1 caught in
+only 1/5 iterations, a fixture bug, not a reviewer recall failure (confirmed by reading
+all 4 "miss" transcripts — none mentioned notifications at all, consistent with a
+goal element that was never actually stated). Fixed the Goal sentence to state the
+notification requirement explicitly and reran all 30 of Variant A's calls (both forms,
+all 5 iterations); corrected result is 5/5 for both A-G1 and A-G2, included in the
+30/30 total above. This was a test-fixture correction, not one of the two sanctioned
+redesign levers, and is tracked separately from the (unused) redesign budget.
+
+**Caveats for the real (non-spike) coverage loop:**
+- The 6 seeded gaps are "loud" (one whole missing subsystem or one clearly-named
+  missing connective task each, per the design's two gap kinds). The spike validates
+  recall for that class; it does not test subtler gaps (partial coverage, edge-case
+  omissions within an existing subsystem).
+- This spike tested the **root-pass shape only** (single flat tree, matching the
+  2c1.3 template's placeholders) — the per-subepic passes were not separately
+  exercised, since the design plan's Step 1 built trees "in the exact shape the
+  reviewer prompt consumes" as one flat structure per variant.
+- One of 90 raw reviewer outputs (A-recipe gapped iter1 reviewer1, pre-fix run)
+  referenced "the prior trivia-game review" — a genuine cross-call context leak,
+  most likely a project-level memory/observation tool auto-injecting prior-session
+  content into the headless `claude -p` process rather than true isolated fresh
+  context. Grep across all 90 outputs found no other genuine cross-variant reference
+  (a `grep -l 'trivia'` hit in another recipe-variant file was a false positive
+  matching "trivially"). Manual read confirmed this one leak did not drive the
+  finding — the cited evidence was self-contained and independently defensible — but
+  it is a real threat to the "fresh, isolated context" premise the design's coverage
+  reviewer relies on. Worth checking, before relying on this measurement for a large
+  real tree, whether the production dispatch path (Task tool subagent, not headless
+  CLI) is similarly exposed to memory-injection plugins, and disabling/excluding that
+  for coverage-reviewer dispatch if so.
+- Spike model was sonnet throughout (per the issue's mechanism note); numbers are a
+  floor, not a ceiling.
+
+Scratch corpus, driver scripts, and raw run logs (90 + 30 rerun `claude -p` outputs)
+live outside the repo; not committed. Numbers also recorded in the beads issue notes
+for super-plan-2c1.4.
+
 ### Spike 0 (2026-07-28) — bd nested-epic semantics: PASS, kill criteria not triggered
 
 Verified against bd 1.0.5 (Homebrew) in a scratch `bd init` db (E→T→U→V, 3 promotion edges via `bd update -t epic`, plus a pre-existing blocking dep and an unrelated decoy tree). Full command/output evidence is in issue `super-plan-2c1.1`'s notes. bd represents and traverses ≥3-deep epic nesting correctly; no flatten/redesign of Durable State or the tripwire is required. Confirmed exactly as this spec assumed: dependency preservation on retype, `sp_depth`/`sp_order` underscore keys (hyphens rejected), default label inheritance + `--no-inherit-labels`, `bd ready` epic-inclusive by default + `--exclude-type=epic`/`--label` scoping, `bd epic close-eligible` closing one tree level per call (fixpoint loop needed), and silent epic-with-children demotion (no bd-side guard).
