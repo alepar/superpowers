@@ -37,13 +37,14 @@ Done by the main session, not the Workflow:
 
 Round-based with refill (each `bd ready` batch is, by definition, mutually independent):
 
-1. **Query** — an agent runs `bd ready --json` (epic-scoped) and returns the ready task ids.
-2. **Terminate?** — if the ready set is empty, the loop ends.
+1. **Query** — an agent runs `bd ready --exclude-type=epic --label sp:<epicId>` (excludes epic-type containers, which `bd ready` includes by default, and scopes to this run's tree, since `bd ready` is otherwise repo-global) and returns the ready task ids.
+2. **Terminate?** — completion is **the root epic (`epicId`) closed**, not an empty ready set: run the epic-closure step (below) after each refill cycle and check whether the root closed. An empty ready set with the root still open means the remaining work is quarantined blockers (see Blocker-bead path) — that ends the loop too, but as a report, not a clean finish.
 3. **Pipeline the batch** — run the ready tasks through the per-task pipeline (below), up to the concurrency cap, with **no barrier between stages** (a fast task isn't held up by a slow sibling).
-4. **Serial merge gate** — completed tasks are merged back into the integration branch **one at a time** (never two concurrently). A successful merge does `bd close <id>`.
-5. **Refill** — closing tasks unblocks dependents, so loop back to step 1; the next `bd ready` surfaces them, and their worktrees are cut from the now-updated integration branch.
+4. **Serial merge gate** — completed tasks are merged back into the integration branch **one at a time** (never two concurrently). A successful merge does `bd close <id>` — a leaf-task close; epic closure is the separate step below.
+5. **Epic closure** — `bd epic close-eligible` closes only one tree level per call, so loop it to a fixpoint (repeat until a pass closes nothing; with `--json` the stop signal is output exactly `[]`, not a `count: 0` object) after each refill cycle, before re-querying ready work. Same contract as SKILL.md's manual mode — the coordinator changes *who runs it* (a dispatched agent), not the idiom.
+6. **Refill** — closing tasks unblocks dependents, so loop back to step 1; the next ready query surfaces them, and their worktrees are cut from the now-updated integration branch.
 
-Termination is by the ready set draining, **not** by token budget — there is no budget-based pause.
+Termination is by the root epic closing, **not** by token budget — there is no budget-based pause.
 
 ## Per-task pipeline (model-tiered)
 
@@ -59,7 +60,7 @@ In the integration worktree, for one task at a time:
 
 1. Update the integration branch; rebase the task branch onto it.
 2. Run the project test command.
-3. If clean → merge (`--no-ff`) into the integration branch, then `bd close <id>`.
+3. If clean → merge (`--no-ff`) into the integration branch, then `bd close <id>` (a leaf-task close; epic closure is the separate fixpoint step in "The coordinator loop").
 4. If the rebase conflicts **or** tests are red: make **one bounded auto-resolve attempt** (a fix agent). If that fails → the **blocker-bead path**.
 
 ## Blocker-bead path (the escalation currency)
@@ -95,6 +96,7 @@ export const meta = {
   name: 'beads-epic-coordinator',
   description: 'Autonomously drive a beads epic to completion via worktree-isolated, reviewed task pipelines',
   phases: [
+    { title: 'Close' },        // close-eligible fixpoint; root-closed check
     { title: 'Ready' },        // bd ready query
     { title: 'Implement' },    // plan -> impl -> review per task
     { title: 'Integrate' },    // serial merge-back
@@ -112,17 +114,30 @@ const READY = { type: 'object', properties: { ids: { type: 'array', items: { typ
 const RESULT = { type: 'object', properties: { id: {type:'string'}, status: {type:'string'}, branch: {type:'string'}, blockerBead: {type:'string'} }, required: ['id','status'] }
 const TRIAGE = { type: 'object', properties: { decision: {type:'string'}, detail: {type:'string'} }, required: ['decision','detail'] } // decision: RESOLVE | ESCALATE
 const MERGE = { type: 'object', properties: { id:{type:'string'}, merged:{type:'boolean'}, blockerBead:{type:'string'} }, required: ['id','merged'] }
+const CLOSE = { type: 'object', properties: { rootClosed: {type:'boolean'}, closedThisRun: { type: 'array', items: { type: 'string' } } }, required: ['rootClosed','closedThisRun'] }
 
 const escalated = []
 const completed = []
 
 while (true) {
+  // MECHANICAL: bd epic close-eligible closes only one tree level per call — loop it to a
+  // fixpoint (stop when a pass closes nothing) before checking whether the root closed.
+  // First iteration is harmless: nothing is eligible yet.
+  phase('Close')
+  const closed = await agent(closeEpicsPrompt(epicId),
+    { label: 'close-epics', phase: 'Close', schema: CLOSE, model: 'sonnet' })
+  if (closed.rootClosed) break
+
   phase('Ready')
   const ready = await agent(
     // MECHANICAL: echo the command output verbatim — no judgment, no --json (see "Authoring pitfalls").
-    `Run exactly: \`bd ready 2>&1 | grep -oE '${epicId}[.0-9]*' | sort -u\` and return its output lines verbatim as ids. Do NOT use \`--json\`. Do NOT reason about or filter readiness — \`bd ready\` already excludes blocked/closed/in-progress tasks; just return what the command prints (empty output → {ids: []}). Do not start any work.`,
+    // --exclude-type=epic and --label scope this to non-epic, in-tree, unblocked work; the agent
+    // does not reason about readiness or scoping — the flags do that.
+    `Run exactly: \`bd ready --exclude-type=epic --label sp:${epicId} 2>&1 | grep -oE '${epicId}[.0-9]*' | sort -u\` and return its output lines verbatim as ids. Do NOT use \`--json\`. Do NOT reason about or filter readiness or scope — the command's flags already exclude epics and out-of-tree issues; just return what the command prints (empty output → {ids: []}). Do not start any work.`,
     { label: 'bd-ready', phase: 'Ready', schema: READY, model: 'sonnet' })
   const ids = (ready?.ids ?? []).filter(id => !escalated.includes(id))
+  // Quarantine exit: the root isn't closed (checked above) but nothing is ready — remaining
+  // work is blocked/escalated. Not a clean finish; report below distinguishes the two cases.
   if (ids.length === 0) break
 
   // Per-task pipeline. NO barrier between stages: a fast task proceeds while a slow sibling lags.
@@ -137,7 +152,8 @@ while (true) {
   )
 
   // SERIAL merge gate — outside any parallel/pipeline stage so only one merge touches the
-  // integration branch at a time. Runs in the integration worktree.
+  // integration branch at a time. Runs in the integration worktree. Merges close leaf tasks
+  // only (bd close <id>); epic closure happens at the top of the next iteration.
   phase('Integrate')
   for (const r of results.filter(Boolean)) {
     if (r.status === 'BLOCKED') { await handleBlocker(r); continue }
@@ -157,6 +173,13 @@ const review = completed.length
 return { completed, escalated, review }
 
 // --- helpers ---
+function closeEpicsPrompt(epicId) {
+  // MECHANICAL: loop bd epic close-eligible to a fixpoint (stop when a pass closes nothing —
+  // with --json the stop signal is output exactly `[]`, not a `count: 0` object). No readiness
+  // judgment: the agent runs the command and reports what happened, it doesn't decide what's eligible.
+  return `Run \`bd epic close-eligible --json\` repeatedly, looping until a call's output is exactly \`[]\` (that's the fixpoint — it closes at most one tree level per call, so a single call is not enough). Collect every id closed across all calls into closedThisRun. Then run \`bd show ${epicId} --json\` and report rootClosed as true iff its status is closed.`
+}
+
 async function handleBlocker(r) {
   phase('Triage')
   const t = await agent(triagePrompt(r.id, r.blockerBead),
