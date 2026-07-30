@@ -117,15 +117,25 @@ severity-driven tiering replaces it.
 ### Report format
 
 ```
-super-roast verdict: <Blocking (N confirmed) | Should-fix (N confirmed) | clean | clean (low coverage)>
-mode: design | pr
-profile: <prototype | internal | production | regulated> (auto-detected)
+super-roast verdict: <Blocking (n confirmed) | Should-fix (n confirmed) | clean (n nits)> [low coverage] [panel-capped: N unverified]
+mode: design | PR        iteration: N of 3
+profile (assumed): <2–4 sentence inferred profile>
+inputs: <spec paths | branch@sha vs base@sha [+dirty] | PR#>
+coverage: <lanes ran> · <raw → deduped → panel/spot-checked counts> · <judge completion %>
 independence: same-family (Claude) — seat-differentiated panel
-coverage: <lenses/lanes>, <domains>, <raw → deduped → judged>, <judge completion %>
-Confirmed findings:
-  - [Blocking|Should-fix|Nit|FYI] <location> — <claim> — <evidence/citation>
-Below cap / not promoted: <count>, listed not dropped
-Escalations (need human): <UNVERIFIED externals, incomplete panels, material dissent>
+
+## Confirmed findings            ← consumed by super-plan, one task per finding
+- [SEV] <location> — <claim>
+  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)
+  evidence: <strongest seat evidence, file:line / URL+quote>
+  fix-shape hint: <one advisory line>
+
+## Not verified (beyond panel cap)   ← severe candidates the panel cap left unverified — listed, never dropped
+- [suggested SEV] <location> — <claim>
+
+## Rejected (with reason)        ← so re-roasts don't re-litigate
+## Unverified nits (spot-checked)
+## Escalations (need human)      ← UNVERIFIED externals, incomplete panels, material dissent
 ```
 
 Full template and field semantics: `./reporter-prompt.md`.
@@ -156,7 +166,7 @@ Full template and field semantics: `./reporter-prompt.md`.
   `super-plan`) decides what happens next.
 - Guess the mode on ambiguous input — ask.
 - Report a clean verdict when scouts or judges failed to complete — that's
-  `clean (low coverage)`, not a clearance.
+  `clean (n nits) [low coverage]`, not a clearance.
 - CONFIRM an external-fact claim without a resolved citation — if it can't be grounded via
   WebSearch/WebFetch, return UNVERIFIED, don't confirm from memory.
 - Drop UNVERIFIED findings, incomplete panels, or material dissent — escalate to human, never

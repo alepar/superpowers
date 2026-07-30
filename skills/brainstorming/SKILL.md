@@ -53,7 +53,7 @@ You MUST create a task for each of these items and complete them in order:
 7. **Present design** *(Mode A only)* — in sections scaled to their complexity, get user approval after each section
 8. **Write design doc** — save to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` (opening with a `## Goal` section, ending with a `## Post-Implementation Notes` section), add an INDEX.md row, and commit (Mode B uses the one-shot spec structure)
 9. **Spec self-review** — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
-10. **Offer adversarial review** *(optional)* — offer to run `superpowers:super-roast` on the spec before implementation; on a confirmed-findings verdict (Blocking/Should-fix) loop back to revise the spec, on clean or if declined continue (see "Adversarial Review" below)
+10. **Offer adversarial review** *(optional)* — offer to run `superpowers:super-roast` on the spec before implementation; on a confirmed-findings verdict (Blocking/Should-fix) loop back to revise the spec; on a **clean** verdict with no qualifier, or if declined, continue; on a **clean** verdict carrying `[low coverage]` or `[panel-capped: N unverified]`, surface the qualifier and let the user decide whether to proceed or dig further (see "Adversarial Review" below)
 11. **User reviews written spec** *(Mode B only)* — ask the user to review the spec file before proceeding
 12. **Transition to implementation** — invoke `superpowers:super-plan` on the written spec, always, both modes, with or without beads
 
@@ -71,6 +71,7 @@ digraph brainstorming {
     "Write design doc" [shape=box];
     "Spec self-review (fix inline)" [shape=box];
     "super-roast spec? (optional)" [shape=diamond];
+    "User reviews qualifier" [shape=diamond];
     "Mode B: user reviews spec?" [shape=diamond];
     "Invoke super-plan skill" [shape=doublecircle];
 
@@ -89,7 +90,10 @@ digraph brainstorming {
     "Mode B: user reviews spec?" -> "Write design doc" [label="changes requested"];
     "Mode B: user reviews spec?" -> "super-roast spec? (optional)" [label="approved"];
     "super-roast spec? (optional)" -> "Write design doc" [label="confirmed findings"];
-    "super-roast spec? (optional)" -> "Invoke super-plan skill" [label="clean / declined"];
+    "super-roast spec? (optional)" -> "User reviews qualifier" [label="clean [low coverage] / [panel-capped]"];
+    "super-roast spec? (optional)" -> "Invoke super-plan skill" [label="clean (no qualifier) / declined"];
+    "User reviews qualifier" -> "Invoke super-plan skill" [label="user: proceed anyway"];
+    "User reviews qualifier" -> "Write design doc" [label="user: dig further"];
 }
 ```
 
@@ -184,7 +188,7 @@ After the spec is written and self-reviewed, before transitioning to implementat
 
 > "Want me to run super-roast on this spec before we implement? It runs adversarial critics + a judge panel to surface gaps and unverified load-bearing assumptions that need a spike first."
 
-This is opt-in — the inline self-review already happened; `super-roast` is the heavyweight pass for designs where getting it wrong is expensive. If the user accepts, use `superpowers:super-roast` on the spec file. On a **Blocking** or **Should-fix** verdict (confirmed findings), revise the spec to address them (and note recommended spikes for the user), then proceed. On **clean**, or if the user declines, continue to implementation. Do not let `super-roast` block trivial designs — it's an offer, not a requirement.
+This is opt-in — the inline self-review already happened; `super-roast` is the heavyweight pass for designs where getting it wrong is expensive. If the user accepts, use `superpowers:super-roast` on the spec file. On a **Blocking** or **Should-fix** verdict (confirmed findings), revise the spec to address them — a finding's `fix-shape hint` may itself suggest a spike — then proceed. On a **clean** verdict with **no qualifier**, or if the user declines, continue to implementation. On a **clean** verdict carrying `[low coverage]` or `[panel-capped: N unverified]`, do **not** auto-proceed: the qualifier means the run itself was degraded (a dead scout, incomplete judging, or no findings on a non-trivial artifact) rather than that the spec was cleared. Surface the qualifier to the user verbatim and let them decide whether to proceed anyway or dig further (e.g. re-run, or accept the residual risk). Do not let `super-roast` block trivial designs — it's an offer, not a requirement.
 
 **Implementation:**
 
