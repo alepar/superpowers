@@ -25,7 +25,8 @@ Severity vocabulary throughout (the only one): **Blocking | Should-fix | Nit | F
 
 - **`Workflow` tool available → dynamic workflow (preferred).** Run the engine script below
   via the tool. Triage → scout fan-out → dedupe → tiered judge panels → reporter, each phase
-  model-tiered per role.
+  model-tiered per role. Label the report
+  `independence: same-family (Claude) — seat-differentiated panel`.
 - **Subagents but no Workflow → manual fan-out**, same stage order and same prompt files:
   1. Dispatch the triage subagent (sonnet); collect lanes/domains.
   2. Dispatch all scouts in parallel (opus) from the resulting roster; collect findings,
@@ -38,9 +39,16 @@ Severity vocabulary throughout (the only one): **Blocking | Should-fix | Nit | F
      is promoted — dispatch the full 3-seat panel for it.
   5. Dispatch one reporter subagent (fable) with all judged packets, the profile, and the
      prior report (if any).
+
+  Same label as the Workflow path: `independence: same-family (Claude) — seat-differentiated panel`.
 - **No subagents → inline degraded (last resort).** Walk the same steps in one context. This
   is self-review — label the report `independence: none (inline)` so the caller knows the
   verdict is weak.
+
+**Honest limit:** the three seats differ by *method* (reproduce / refute / ground), which
+reduces correlated error but does not deliver family-level independence — a same-family panel
+carries fewer effective votes than it has members. Use a non-Claude seat for one of the three
+where a harness offers one.
 
 ## Key constraints
 
