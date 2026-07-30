@@ -6,15 +6,10 @@ Superpowers is a complete software development methodology for your coding agent
 
 This is a personal fork ([alepar/superpowers](https://github.com/alepar/superpowers)) that extends upstream Superpowers with a handful of additions. Everything below is on top of the standard skills described later in this README.
 
-**New skill**
+**New skills**
 
 - **`super-roast` — dual-mode adversarial review.** Reviews either a **design doc** before you build it or a **PR/branch/diff** before you merge it. Parallel adversarial scouts hunt for gaps, unverified load-bearing assumptions, and defects; a **seat-differentiated judge panel** (three seats that verify by different *method* — reproduce, refute, ground — not three copies of one judge) verifies each candidate against evidence; and severity is **calibrated to the project's blast radius**, so a prototype and a payments service don't get the same bar. Catch expensive mistakes while they're still cheap to fix.
-
-**Autonomous beads-driven execution**
-
-- **Autonomous epic execution (SDD beads mode).** When the `bd` CLI and the `Workflow` tool are present, a whole epic runs unattended: a background coordinator drives a `bd ready` loop, isolates each task in its own worktree, runs the two-stage review, and merges finished tasks back serially. Hours of hands-off implementation from a single approved design.
-- **Blocker-bead escalation (never freeze).** A stuck task is quarantined as a blocker bead and the run keeps driving other ready work, rather than hard-stopping the entire epic on the first problem.
-- **End-to-end beads integration.** Brainstorming creates the epic + rough tasks, `writing-plans` plans each task into its own bead, and execution consumes `bd ready` with real dependency ordering. Your issue tracker *is* the plan.
+- **`super-plan` — recursive spec decomposition.** Sits between an approved spec and execution: decomposes it into a task tree, runs a promotion review on each candidate, recursively brainstorms the subepics that earn their own design, and goal-coverage-checks the finished tree before hand-off. All traversal state lives in the tracker (or in the spec's task tables when `bd` isn't available), so a run survives context compaction and session restart.
 
 **Brainstorming & design flow**
 
@@ -32,12 +27,11 @@ This is a personal fork ([alepar/superpowers](https://github.com/alepar/superpow
 
 **Execution defaults**
 
-- **Always-subagent, no prompts.** `writing-plans` and SDD no longer ask "subagent or inline?" — subagent execution is the default and `executing-plans` is an automatic fallback only when subagents aren't available. One fewer decision per run.
-- **Parallel disjoint-file execution.** SDD dispatches implementers concurrently when their file sets don't overlap (serializing only tasks that touch shared files), instead of strictly one task at a time.
+- **Always-subagent, no prompts.** `writing-plans` no longer asks "subagent or inline?" — subagent-driven execution is the default and `executing-plans` is an automatic fallback used only when the platform has no subagents. One fewer decision per run.
 
 ## Quickstart
 
-Give your agent Superpowers: [Claude Code](#claude-code), [Codex CLI](#codex-cli), [Codex App](#codex-app), [Factory Droid](#factory-droid), [Gemini CLI](#gemini-cli), [OpenCode](#opencode), [Cursor](#cursor), [GitHub Copilot CLI](#github-copilot-cli).
+Give your agent Superpowers: [Claude Code](#claude-code), [Antigravity](#antigravity), [Codex App](#codex-app), [Codex CLI](#codex-cli), [Cursor](#cursor), [Factory Droid](#factory-droid), [Gemini CLI](#gemini-cli), [GitHub Copilot CLI](#github-copilot-cli), [Kimi Code](#kimi-code), [OpenCode](#opencode), [Pi](#pi).
 
 ## How it works
 
@@ -47,19 +41,13 @@ Once it's teased a spec out of the conversation, it shows it to you in chunks sh
 
 After you've signed off on the design, your agent puts together an implementation plan that's clear enough for an enthusiastic junior engineer with poor taste, no judgement, no project context, and an aversion to testing to follow. It emphasizes true red/green TDD, YAGNI (You Aren't Gonna Need It), and DRY. 
 
-Next up, once you say "go", it launches a *subagent-driven-development* process, having agents work through each engineering task, inspecting and reviewing their work, and continuing forward. It's not uncommon for Claude to be able to work autonomously for a couple hours at a time without deviating from the plan you put together.
+Next up, once you say "go", it launches a *subagent-driven-development* process, having agents work through each engineering task, inspecting and reviewing their work, and continuing forward. It's not uncommon for your agent to work autonomously for a couple hours at a time without deviating from the plan you put together.
 
 There's a bunch more to it, but that's the core of the system. And because the skills trigger automatically, you don't need to do anything special. Your coding agent just has Superpowers.
 
+## Commercial Services
 
-## Sponsorship
-
-If Superpowers has helped you do stuff that makes money and you are so inclined, I'd greatly appreciate it if you'd consider [sponsoring my opensource work](https://github.com/sponsors/obra).
-
-Thanks! 
-
-- Jesse
-
+If you're using Superpowers in enterprise and could benefit from commercial support, additional tooling, or managed spending, please don't hesitate to drop us a line at sales@primeradiant.com.
 
 ## Installation
 
@@ -89,6 +77,27 @@ This fork is published as its own marketplace — the repository itself is the m
   /plugin marketplace update superpowers-alepar
   ```
 
+### Antigravity
+
+Install Superpowers as a plugin from this repository:
+
+```bash
+agy plugin install https://github.com/obra/superpowers
+```
+
+Antigravity runs the plugin's session-start hook, so Superpowers is active from
+the first message. Reinstall with the same command to update.
+
+### Codex App
+
+Superpowers is available via the [official Codex plugin marketplace](https://github.com/openai/plugins).
+
+- In the Codex app, click on Plugins in the sidebar.
+- You should see `Superpowers` in the Coding section.
+- Click the `+` next to Superpowers and follow the prompts.
+
+That marketplace lists **upstream** Superpowers, not this fork, and there is no in-app way to install an arbitrary fork — use the Codex CLI from a local clone (below) if you need the fork.
+
 ### Codex CLI
 
 The official Codex plugin marketplace lists **upstream** Superpowers, not this fork. To use the fork, clone the repo (it ships a `.codex-plugin/` manifest) and load it as a local plugin per Codex's local-plugin instructions:
@@ -99,9 +108,13 @@ The official Codex plugin marketplace lists **upstream** Superpowers, not this f
 
 (If you only want upstream Superpowers, run `/plugins`, search `superpowers`, and select `Install Plugin`.)
 
-### Codex App
+### Cursor
 
-The Codex app installs from the official Codex plugin marketplace, which lists **upstream** Superpowers, not this fork. There is no in-app way to install an arbitrary fork — use the Codex CLI from a local clone (above) if you need the fork.
+Cursor's `/add-plugin superpowers` installs **upstream** Superpowers from Cursor's marketplace, not this fork. The repo ships a `.cursor-plugin/` manifest; to use the fork, clone it and load it as a local plugin per Cursor's docs:
+
+  ```bash
+  git clone https://github.com/alepar/superpowers.git
+  ```
 
 ### Factory Droid
 
@@ -131,27 +144,6 @@ The Codex app installs from the official Codex plugin marketplace, which lists *
   gemini extensions update superpowers
   ```
 
-### OpenCode
-
-OpenCode uses its own plugin install; install Superpowers separately even if you
-already use it in another harness.
-
-- Tell OpenCode:
-
-  ```
-  Fetch and follow instructions from https://raw.githubusercontent.com/alepar/superpowers/refs/heads/main/.opencode/INSTALL.md
-  ```
-
-- Detailed docs: [docs/README.opencode.md](docs/README.opencode.md)
-
-### Cursor
-
-Cursor's `/add-plugin superpowers` installs **upstream** Superpowers from Cursor's marketplace, not this fork. The repo ships a `.cursor-plugin/` manifest; to use the fork, clone it and load it as a local plugin per Cursor's docs:
-
-  ```bash
-  git clone https://github.com/alepar/superpowers.git
-  ```
-
 ### GitHub Copilot CLI
 
 - Register the marketplace:
@@ -165,6 +157,55 @@ Cursor's `/add-plugin superpowers` installs **upstream** Superpowers from Cursor
   ```bash
   copilot plugin install superpowers@superpowers-alepar
   ```
+
+### Kimi Code
+
+Superpowers is available in Kimi Code's plugin marketplace.
+
+- Open Kimi Code's plugin manager:
+
+  ```text
+  /plugins
+  ```
+
+- Go to `Marketplace` > `Superpowers` and install it.
+
+- Or install directly from this repository:
+
+  ```text
+  /plugins install https://github.com/obra/superpowers
+  ```
+
+- Detailed docs: [docs/README.kimi.md](docs/README.kimi.md)
+
+### OpenCode
+
+OpenCode uses its own plugin install; install Superpowers separately even if you
+already use it in another harness.
+
+- Tell OpenCode:
+
+  ```
+  Fetch and follow instructions from https://raw.githubusercontent.com/alepar/superpowers/refs/heads/main/.opencode/INSTALL.md
+  ```
+
+- Detailed docs: [docs/README.opencode.md](docs/README.opencode.md)
+
+### Pi
+
+Install Superpowers as a Pi package from this repository:
+
+```bash
+pi install git:github.com/obra/superpowers
+```
+
+For local development, run Pi with this checkout loaded as a temporary package:
+
+```bash
+pi -e /path/to/superpowers
+```
+
+The Pi package loads the Superpowers skills and a small extension that injects the `using-superpowers` bootstrap at session startup and again after compaction. Pi has native skills, so no compatibility `Skill` tool is required. Subagent and task-list tools remain optional Pi companion packages.
 
 ## The Basic Workflow
 
@@ -229,6 +270,8 @@ The general contribution process for Superpowers is below. Keep in mind that we 
 4. Follow the `writing-skills` skill for creating and testing new and modified skills
 5. Submit a PR, being sure to fill in the pull request template.
 
+Skill-behavior tests use the drill eval harness from [superpowers-evals](https://github.com/prime-radiant-inc/superpowers-evals/), cloned into `evals/` — see `evals/README.md` for setup. Plugin-infrastructure tests live at `tests/` and run via the relevant `run-*.sh` or `npm test`.
+
 See `skills/writing-skills/SKILL.md` for the complete guide.
 
 ## Updating
@@ -238,6 +281,10 @@ Superpowers updates are somewhat coding-agent dependent, but are often automatic
 ## License
 
 MIT License - see LICENSE file for details
+
+## Visual companion telemetry
+
+Because skills and plugins don't provide any feedback to creators, we have no idea how many of you are using Superpowers. By default, the Prime Radiant logo on brainstorming's optional visual companion feature is loaded from our website. It includes the version of Superpowers in use. It does not include any details about your project, prompt, or coding agent. We don't see your clicks or anything about what you're building. This helps us have a rough idea of how many folks are using Superpowers and which version of Superpowers they're using. It's 100% optional. To disable this, set the environment variable `SUPERPOWERS_DISABLE_TELEMETRY` to any true value. Superpowers also honors Claude Code's `DISABLE_TELEMETRY` and `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC` opt-outs.
 
 ## Community
 

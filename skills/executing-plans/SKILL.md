@@ -11,15 +11,16 @@ Load plan, review critically, execute all tasks, report when complete.
 
 **Announce at start:** "I'm using the executing-plans skill to implement this plan."
 
-**Note:** This skill is the automatic fallback for platforms **without** subagent support. When subagents are available — as on Claude Code or Codex — always use `superpowers:subagent-driven-development` instead. Choose based on subagent availability; do not ask the user which to use.
+**Note:** This skill is the automatic fallback for platforms **without** subagent support. When subagents are available — Claude Code, Codex CLI, Codex App, Copilot CLI, and Gemini CLI all qualify; see the per-platform tool refs in `../using-superpowers/references/` — always use `superpowers:subagent-driven-development` instead. Choose based on subagent availability; do not ask your human partner which to use.
 
 ## The Process
 
 ### Step 1: Load and Review Plan
-1. Read plan file
-2. Review critically - identify any questions or concerns about the plan
-3. If concerns: Raise them with your human partner before starting
-4. If no concerns: Create TodoWrite and proceed
+1. Ensure an isolated workspace: use superpowers:using-git-worktrees to create one or verify the existing one
+2. Read plan file
+3. Review critically - identify any questions or concerns about the plan
+4. If concerns: Raise them with your human partner before starting
+5. If no concerns: Create todos for the plan items and proceed
 
 ### Step 2: Execute Tasks
 
@@ -61,10 +62,3 @@ After all tasks complete and verified:
 - Reference skills when plan says to
 - Stop when blocked, don't guess
 - Never start implementation on main/master branch without explicit user consent
-
-## Integration
-
-**Required workflow skills:**
-- **superpowers:using-git-worktrees** - Ensures isolated workspace (creates one or verifies existing)
-- **superpowers:writing-plans** - Creates the plan this skill executes
-- **superpowers:finishing-a-development-branch** - Complete development after all tasks

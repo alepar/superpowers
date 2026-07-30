@@ -3,23 +3,21 @@
 Use this template when dispatching an implementer subagent.
 
 ```
-Task tool (general-purpose):
+Subagent (general-purpose):
   description: "Implement Task N: [task name]"
+  model: [MODEL — REQUIRED: choose per SKILL.md Model Selection; an omitted
+         model silently inherits the session's most expensive one]
   prompt: |
     You are implementing Task N: [task name]
 
     ## Task Description
 
-    [FULL TEXT of task from plan - paste it here, don't make subagent read file]
+    Read your task brief first: [BRIEF_FILE]
+    It contains the full task text from the plan.
 
     ## Context
 
     [Scene-setting: where this fits, dependencies, architectural context]
-
-    [Beads mode only: include the beads task id (e.g. bd-123). The full plan for
-    this task lives in that beads issue's design field — it is also pasted above.
-    Do NOT close the beads issue yourself; the controller closes it after the
-    spec-compliance and code-quality reviews both pass.]
 
     ## Before You Begin
 
@@ -43,13 +41,11 @@ Task tool (general-purpose):
 
     Work from: [directory]
 
-    **Autonomous beads mode — work from your isolated worktree:** If the controller gave
-    you a per-task worktree path (branched from the epic integration branch), do ALL your
-    work there. Do NOT touch the user's original worktree or the integration worktree
-    directly — the controller owns merging your branch back. Commit on your task branch.
-
     **While you work:** If you encounter something unexpected or unclear, **ask questions**.
     It's always OK to pause and clarify. Don't guess or make assumptions.
+
+    While iterating, run the focused test for what you're changing; run the
+    full suite once before committing, not after every edit.
 
     ## Code Organization
 
@@ -81,15 +77,6 @@ Task tool (general-purpose):
     The controller can provide more context, re-dispatch with a more capable model,
     or break the task into smaller pieces.
 
-    **Autonomous beads mode — the 3-iteration blocker-bead rule:** If you have gone
-    through 3 fix-loop iterations with no meaningful progress, STOP looping. Do not keep
-    retrying and do not silently ship doubtful work. Instead, file a blocker bead:
-    `bd create` a new issue with a `blocker` label (confirm flags with `bd create --help`)
-    whose body states the task id, what specifically failed, and what you tried. Then
-    report status BLOCKED referencing that bead id. The controller triages it (clarify and
-    re-dispatch, or raise with the user) — that is the right outcome, not a failure on your
-    part.
-
     ## Before Reporting Back: Self-Review
 
     Review your work with fresh eyes. Ask yourself:
@@ -113,18 +100,41 @@ Task tool (general-purpose):
     - Do tests actually verify behavior (not just mock behavior)?
     - Did I follow TDD if required?
     - Are tests comprehensive?
+    - Is the test output pristine (no stray warnings or noise)?
 
     If you find issues during self-review, fix them now before reporting.
 
+    ## After Review Findings
+
+    If the task review finds issues, you will be resumed with the findings.
+    Fix them, re-run the tests that cover the amended code, and append a fix
+    report to your report file: what you changed, the covering tests you
+    ran, the command, and the output. Reviewers will not re-run tests for
+    you — your report is the test evidence. Then reply with the same short
+    status contract as your first report.
+
     ## Report Format
 
-    When done, report:
-    - **Status:** DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT
+    Write your full report to [REPORT_FILE]:
     - What you implemented (or what you attempted, if blocked)
     - What you tested and test results
+    - **TDD Evidence** (if TDD was required for this task):
+      - RED: command run, relevant failing output before implementation, and why the failure was expected
+      - GREEN: command run and relevant passing output after implementation
     - Files changed
     - Self-review findings (if any)
     - Any issues or concerns
+
+    Then report back with ONLY (under 15 lines — the detail lives in the
+    report file):
+    - **Status:** DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT
+    - Commits created (short SHA + subject)
+    - One-line test summary (e.g. "14/14 passing, output pristine")
+    - Your concerns, if any
+    - The report file path
+
+    If BLOCKED or NEEDS_CONTEXT, put the specifics in the final message
+    itself — the controller acts on it directly.
 
     Use DONE_WITH_CONCERNS if you completed the work but have doubts about correctness.
     Use BLOCKED if you cannot complete the task. Use NEEDS_CONTEXT if you need
