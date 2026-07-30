@@ -58,6 +58,25 @@ Severity vocabulary throughout (the only one): **Blocking | Should-fix | Nit | F
   direct repo read access (to check pre-existing-vs-introduced, hot-path claims, etc.) — that
   read access is a tool grant on the dispatched agent, not something the script performs.
 
+## Prompt contract: `args` is pure JSON
+
+The Workflow tool's `args` must be plain JSON — **every prompt is a STRING, never a
+function.** Prompts that need runtime data (the raw findings, a single finding, the judged
+packets, the profile, the prior report) carry placeholder tokens instead, which the script
+substitutes with a small `fill(template, vars)` helper (plain string replacement, no regex):
+
+| Prompt | Token(s) |
+|---|---|
+| `prompts.dedupe` | `{{FINDINGS_JSON}}` |
+| `prompts.seats.reproduce` / `.refute` / `.ground` | `{{FINDING_JSON}}` |
+| `prompts.reporter` | `{{PACKETS_JSON}}`, `{{PROFILE}}`, `{{PRIOR_REPORT}}` |
+
+`prompts.triage` and each `prompts.scouts.<name>` carry no tokens — they need no runtime
+substitution and are used as plain strings. This is the contract Task 7's SKILL.md and the
+orchestrator build `args.prompts` against; a function anywhere in `args` makes the script
+unrunnable (an earlier draft of this doc had `dedupe`/`seats.*`/`reporter` as functions —
+that draft never crossed the Workflow `args` boundary and was corrected before any real run).
+
 ## Engine script
 
 The canonical script. Validated once via `dryRun` at implementation (topology only, see
@@ -92,6 +111,7 @@ const REPORT = { type:'object', properties:{ verdict:{type:'string'}, reportMark
 const { mode, profile, priorReport = '', dryRun = false, prompts, config } = args
 const model = role => dryRun ? 'haiku' : config.models[role]
 const pick = (real, stubKey) => dryRun ? prompts.stubs[stubKey] : real
+const fill = (template, vars) => Object.entries(vars).reduce((s, [token, value]) => s.replaceAll(token, value), template)
 
 // Triage — design: domains for expert critics; PR: conditional-lane activation (recall-leaning).
 const triage = await agent(pick(prompts.triage, 'triage'), { label:'triage', phase:'Triage', model:model('triage'), schema:LANES })
@@ -106,21 +126,27 @@ const scoutsDead = scoutResults.filter(r => !r).length
 const raw = scoutResults.filter(Boolean).flatMap(r => r.findings ?? [])
 
 // Dedupe — merge + suggested severity; keeps ALL severe, caps remainder (agent applies config.remainderCap from its prompt).
-const dd = await agent(pick(prompts.dedupe(JSON.stringify(raw)), 'dedupe'), { label:'dedupe', phase:'Dedupe', model:model('dedupe'), schema:DEDUPED })
+const dedupePrompt = fill(prompts.dedupe, { '{{FINDINGS_JSON}}': JSON.stringify(raw) })
+const dd = await agent(pick(dedupePrompt, 'dedupe'), { label:'dedupe', phase:'Dedupe', model:model('dedupe'), schema:DEDUPED })
 const deduped = dd?.findings ?? []
 const severe = deduped.filter(f => SEVERE.includes(f.suggestedSeverity))
 const rest = deduped.filter(f => !SEVERE.includes(f.suggestedSeverity))
 
-async function seat(f, name) {
-  const one = () => agent(pick(prompts.seats[name](JSON.stringify(f)), `seat:${name}`), { label:`judge:${name}`, phase:'Judge', model:model('judge'), schema:VERDICT })
+// site: 'panel' | 'spot' — stub keys are call-site qualified (seat:<name>:<site>) so a single
+// canned value per key stays deterministic; a per-seat-name-only key would have to answer
+// both a panel vote and a spot check with the same fixed value, which no stub can satisfy.
+async function seat(f, name, site) {
+  const stubKey = `seat:${name}:${site}`
+  const seatPrompt = fill(prompts.seats[name], { '{{FINDING_JSON}}': JSON.stringify(f) })
+  const one = () => agent(pick(seatPrompt, stubKey), { label:`judge:${name}`, phase:'Judge', model:model('judge'), schema:VERDICT })
   return (await one()) ?? (await one())   // re-dispatch a failed seat exactly once
 }
 async function panel(f, promoted = false) {
-  const votes = await parallel(['reproduce','refute','ground'].map(n => () => seat(f, n)))
+  const votes = await parallel(['reproduce','refute','ground'].map(n => () => seat(f, n, 'panel')))
   return { f, votes, tier: promoted ? 'promoted' : 'panel' }
 }
 async function spotCheck(f) {
-  const v = await seat(f, 'refute')
+  const v = await seat(f, 'refute', 'spot')
   if (v?.verdict === 'CONFIRM' && SEVERE.includes(v.severity)) return panel(f, true)  // under-graded nit → full panel
   return { f, votes: [v], tier: 'spot' }
 }
@@ -130,7 +156,8 @@ const judged = (await parallel([...severe.map(f => () => panel(f)), ...rest.map(
 const packets = judged.map(j => ({ ...j, valid: j.votes.filter(Boolean).length }))
 const totalSeats = judged.reduce((a, j) => a + j.votes.length, 0)
 const validSeats = judged.reduce((a, j) => a + j.votes.filter(Boolean).length, 0)
-const rep = await agent(pick(prompts.reporter(JSON.stringify(packets), profile, priorReport), 'reporter'), { label:'reporter', phase:'Report', model:model('reporter'), schema:REPORT })
+const reporterPrompt = fill(prompts.reporter, { '{{PACKETS_JSON}}': JSON.stringify(packets), '{{PROFILE}}': profile, '{{PRIOR_REPORT}}': priorReport })
+const rep = await agent(pick(reporterPrompt, 'reporter'), { label:'reporter', phase:'Report', model:model('reporter'), schema:REPORT })
 
 return {
   verdict: rep?.verdict ?? 'clean (low coverage — reporter failed)',
@@ -176,32 +203,28 @@ routing, and spot-check promotion.
 | `scout:<core-3>` | `{findings: []}` — a second empty-scout path alongside the activated lane (added so the 3-core-configured topology in Step 3 below has a stub for every dispatched core scout; the brief's table names only two core examples) |
 | `scout:data-migrations` | `{findings: []}` — empty-scout path (the triage-activated lane) |
 | `dedupe` | 1 Blocking + 1 Should-fix + 3 Nit/FYI findings, `beyondCapCount: 2` (run with `config.remainderCap: 3` in dryRun args to exercise the cap) |
-| `seat:reproduce` / `seat:ground` | `CONFIRM Blocking` |
-| `seat:refute` | `REJECT` for panel findings; **one spot-checked nit gets `CONFIRM Should-fix`** → exercises promotion |
+| `seat:reproduce:panel` / `seat:ground:panel` / `seat:reproduce:spot` / `seat:ground:spot` | `CONFIRM Blocking` |
+| `seat:refute:panel` | `REJECT` — panel findings survive on 2-of-3 |
+| `seat:refute:spot` | `CONFIRM Should-fix` → every spot check promotes (deterministic) |
 | `reporter` | fixed `{verdict:"Blocking (1 confirmed)", reportMarkdown:"# stub report", confirmedCount:1, escalations:[]}` |
 
-**Known keying caveat (read before running):** `seat:refute`'s stub key is per **seat name**,
-not per finding or call site — the same canned JSON is returned to *every* call to
-`seat(f, 'refute')`, whether it's a vote inside a severe panel, the initial spot check on a
-Nit/FYI finding, or the follow-up panel a promoted spot check triggers. That's intentional for
-the promoted-panel case (its refute vote reusing the spot check's stub is harmless — the
-assertion below is call *topology*, not verdict semantics). It is a real risk for the three
-independent spot checks: with one invariant stub, a strictly deterministic stub agent would
-give all three (not just one) the same `CONFIRM Should-fix` and promote all three. Treat
-`promotedCount === 1` as the expected-and-asserted outcome; if an actual run instead promotes
-0 or 3, that is a defect to fix **in the pick/seat keying** (e.g., a call-site-qualified stub
-key), not a script rewrite — record whichever happens in the report before touching the
-script.
+**Stub keys are call-site qualified** (`seat:<name>:panel` vs `seat:<name>:spot`) so a single
+canned value per key stays deterministic. A per-seat-name-only key (an earlier draft of this
+doc used `seat:refute` for both) would have to answer both a panel vote and a spot check with
+one fixed value — no stub can satisfy `REJECT` and `CONFIRM Should-fix` simultaneously, so that
+draft made `promotedCount === 1` unreachable (it would land on 0 or 3 depending on which value
+was picked). Qualifying by site removes the ambiguity: every spot check now deterministically
+promotes.
 
 ## Assertions for the canonical dryRun (mode `pr`, `config.remainderCap: 3`)
 
 - triage: 1 call.
 - scouts: 4 calls (3 core-configured + 1 triage-activated `data-migrations`).
 - dedupe: 1 call.
-- judges: 2 severe panels × 3 seats (6 calls) + 3 spot checks (3 calls) + 1 promotion panel ×
-  3 seats (3 calls) = **12 seat calls**.
+- judges: 2 severe panels × 3 seats (6 calls) + 3 spot checks (3 calls) + 3 promotion panels ×
+  3 seats (9 calls, since every spot check promotes deterministically) = **18 seat calls**.
 - reporter: 1 call.
-- Return value: `coverage.beyondCap === 2`, `coverage.promotedCount === 1`,
+- Return value: `coverage.beyondCap === 2`, `coverage.promotedCount === 3`,
   `coverage.judgeCompletionPct === 100`, `verdict` non-empty.
 
 If any assertion fails, fix the script **in this doc** (this doc's script is canonical) and
