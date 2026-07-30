@@ -123,6 +123,11 @@ fully-internal trusted data it's Should-fix.
 
 ## Lane: premortem
 
+> Framing for this lane is sourced from the user's stated review priorities (premortem /
+> potential incident blast radius / pragmatic derisking) — the vendored taxonomy references
+> this category by name but does not contain it; the hunt list below is drawn from taxonomy
+> §D (Reliability & Resilience) and §M (Resource Management) instead.
+
 ```
 **Scope:** Assume this PR shipped and something broke badly in production a month later —
 trace how dependencies fail, resources exhaust, and blast radius spreads under real runtime
@@ -154,93 +159,148 @@ invocation rate.
 
 ## Lane: simplicity-design
 
+> Framing for this lane is sourced from the user's stated review priorities (simplicity;
+> clean OOP design — pragmatic testability, single responsibility, BDD-named tests,
+> implementation/exposure at the right abstraction level) — the vendored taxonomy references
+> these categories by name but does not contain them; only the module-boundary items below
+> (shallow modules, information leakage, pass-through, duplicated interfaces) are drawn from
+> taxonomy §J's Ousterhout red-flag bullet.
+
 ```
-**Scope:** Is the change as simple as the problem allows, and does it respect module
-boundaries — deep modules with narrow interfaces, no leaked implementation details — per
-Ousterhout's design philosophy?
+**Scope:** Is the change as simple as the problem justifies, cleanly factored by
+responsibility, structurally testable, and does it respect abstraction boundaries — no module
+exposing more complexity than it needs to, no logic living at the wrong abstraction level?
 
 **Hunt list:**
-1. Over-engineering: speculative generality, configurability for a use case that doesn't
-   exist yet, unjustified abstraction layers.
-2. Shallow modules: the interface is as complex as the functionality it provides — the
+1. Complex code without a matching requirement: a conditional/algorithm/data structure more
+   elaborate than the problem calls for, when a simpler form is available and wasn't chosen.
+2. Single-responsibility violation: a class/function serving two distinct reasons to change
+   (e.g. it both computes a result and decides how to persist/render it).
+3. Structural testability: hidden construction (`new`d-up dependencies instead of injected
+   ones), static/global coupling, or side effects tangled with logic — the smell is a test
+   needing heavy mocking just to reach the logic under test.
+4. Test names that don't fully describe the behavior under test (BDD-style naming): a name
+   like `testFoo2` or `handles_input` fails; a name stating the behavior and its condition
+   (e.g. `returns_empty_list_when_cache_is_cold`) passes.
+5. Implementation/exposure at the wrong abstraction level: logic about a domain concept living
+   outside that concept's own abstraction (e.g. card-suit-comparison logic living outside the
+   card abstraction), or a public method exposing state that properly belongs to a different
+   object (e.g. game-state details exposed by something other than the game object).
+6. Shallow modules: the interface is as complex as the functionality it provides — the
    wrapper isn't saving the caller anything.
-3. Information leakage: the same design decision baked into multiple modules; a change here
+7. Information leakage: the same design decision baked into multiple modules; a change here
    forces a change there.
-4. Pass-through variables/methods that just forward a parameter through several layers with
-   no logic of their own.
-5. Encapsulation breaks: internal state or an implementation type (e.g. an ORM entity)
-   exposed instead of a narrow domain interface.
-6. Duplicated interfaces repeated across adjacent layers that could collapse into one.
-7. Premature abstraction: a single call site wrapped "for future reuse" that adds indirection
-   without payoff.
-8. Special-casing that could be unified with the general case instead of branching.
-9. A simpler, already-available primitive (stdlib, existing in-repo helper) reimplemented
-   from scratch.
+8. Pass-through variables/methods that just forward a parameter through several layers with
+   no logic of their own; duplicated interfaces repeated across adjacent layers that could
+   collapse into one.
+9. Over-engineering: speculative generality, configurability for a use case that doesn't
+   exist yet, unjustified abstraction layers, or a single call site wrapped "for future
+   reuse" that adds indirection without payoff.
+10. A simpler, already-available primitive (stdlib, existing in-repo helper) reimplemented
+    from scratch.
 
-**Pragmatism filter:** flag shallow modules and leaked implementation details on public or
-shared interfaces — cheap to fix now, expensive after adoption. Don't demand an abstraction
-for a single call site, and don't block on subjective architectural taste when the "simpler"
+**Pragmatism filter:** any complex code should be justified by the actual requirement — if a
+simpler form was available and skipped, that's Should-fix. Single-responsibility violations
+and structural-testability smells matter most on logic that's actually risky or already
+under test; on a trivial, stable helper they're Nit. BDD-naming gaps are Nit unless the test
+names are unreadable enough to erode the suite's value as documentation. Flag shallow modules,
+leaked implementation details, and wrong-abstraction-level placement on public/shared
+interfaces — cheap to fix now, expensive after adoption. Don't demand an abstraction for a
+single call site, and don't block on subjective architectural taste when the "simpler"
 alternative isn't clearly better.
 ```
 
 ## Lane: hot-path-perf
+
+> Framing for this lane's allocation/GC side is sourced from the user's stated review
+> priorities (pragmatically minimize GC churn: prefer stack allocation, don't let
+> stack-allocated objects escape, preallocate to known max usage, use object pools where
+> appropriate, but don't overengineer marginal wins off the hot path) — the vendored taxonomy
+> references this category by name but does not contain it. The I/O-side items are drawn from
+> taxonomy §E (Performance & Scalability Beyond GC).
 
 ```
 **Scope:** Does the change add allocation/GC pressure, or I/O and algorithmic cost, on a path
 that runs often enough for it to matter?
 
 **Hunt list:**
-1. Allocation inside a hot loop: boxing, unnecessary object/slice/string creation, repeated
-   small allocations that could be reused or pooled.
-2. N+1 queries: a query inside a loop over rows; ORM lazy-loading in a render loop; missing
+1. Allocation inside a hot loop: boxing, unnecessary object/slice/string creation; a value
+   that should stay stack-allocated instead escaping to the heap via a returned pointer,
+   closure capture, or interface boxing.
+2. Missing preallocation to a known max/typical size (slices/arrays/buffers/maps) where the
+   bound is knowable ahead of time, forcing repeated grow-and-copy.
+3. A churn-heavy allocate-and-discard pattern on a hot path that could use an object/buffer
+   pool instead, when reuse across calls is safe.
+4. N+1 queries: a query inside a loop over rows; ORM lazy-loading in a render loop; missing
    `JOIN`/`IN`/batch fetch.
-3. Accidental O(n²): nested loops over the same collection; `list.contains` in a loop instead
+5. Accidental O(n²): nested loops over the same collection; `list.contains` in a loop instead
    of a set/map; repeated linear scans.
-4. Chatty I/O/RPC-in-loop; missing batching; per-item round-trips.
-5. Missing pagination on a list endpoint; unbounded `SELECT *`; loading a whole table into
+6. Chatty I/O/RPC-in-loop; missing batching; per-item round-trips.
+7. Missing pagination on a list endpoint; unbounded `SELECT *`; loading a whole table into
    memory.
-6. Cache correctness: no invalidation on write (stale reads); missing single-flight/
+8. Cache correctness: no invalidation on write (stale reads); missing single-flight/
    coalescing — cache stampede; unbounded cache growth; per-user data under a shared key.
-7. Large payloads: over-fetching fields, deep object graphs serialized, no compression.
-8. Sync/blocking call on a latency-critical path that should stream or be async.
-9. Redundant recomputation: re-deriving the same value in a loop/render cycle instead of
-   computing it once.
-10. GC-triggering patterns: excessive short-lived allocation on a path that runs at high QPS.
+9. Large payloads: over-fetching fields, deep object graphs serialized, no compression.
+10. Sync/blocking call on a latency-critical path that should stream or be async.
+11. Redundant recomputation: re-deriving the same value in a loop/render cycle instead of
+    computing it once.
 
-**Pragmatism filter:** only flag algorithmic/allocation cost when `n` can realistically grow,
-or the path runs at meaningful QPS — O(n²) on a fixed small collection is fine. N+1 or cache-
-invalidation bugs on a user-scaling path are Should-fix→Blocking (they produce wrong answers,
-not just slow ones); the same pattern on a rarely-called admin page is Nit.
+**Pragmatism filter:** judge every allocation/perf finding by whether the path is actually
+hot — research what "hot path" means in this codebase (invocations per process per second)
+rather than assuming. Preallocation and pooling are worth flagging only where the path is hot
+*and* the max/typical size is knowable; don't chase marginal allocation wins on a path that
+isn't hot — writing allocation-perfect code there is overengineering, not diligence. N+1 or
+cache-invalidation bugs on a user-scaling path are Should-fix→Blocking (they produce wrong
+answers, not just slow ones); the same pattern on a rarely-called admin page is Nit.
 ```
 
 ## Lane: concurrency-async
 
+> Framing for this lane's lock-discipline side is sourced from the user's stated review
+> priorities (concurrency: balanced pragmatism and performance — minimize nested locks in
+> likely call stacks, prefer safe publication over synchronizing on every access, atomics/
+> CAS or rwlocks on read-heavy paths where feasible, full mutexes only when contention is
+> low) — the vendored taxonomy references this category by name but does not contain it. The
+> async-runtime items are drawn from taxonomy §N (Async/Cancellation/Ordering).
+
 ```
 **Scope:** Does the change introduce a race, deadlock, or async-runtime failure mode —
-unsynchronized shared state, inconsistent lock ordering, or dropped cancellation/backpressure?
+unsynchronized shared state, undisciplined locking, or dropped cancellation/backpressure?
 
 **Hunt list:**
 1. Shared mutable state read/written without a lock, atomic, or channel — a classic data race.
-2. Lock ordering inconsistent across call sites — deadlock risk.
-3. Lock held across an I/O call or a callback into unknown code.
-4. Sync-over-async: `.Result`/`.Wait()` (C#), `block_on` in an async context (Rust), a
+2. Nested locks acquired in a likely call stack, or lock acquisition order inconsistent across
+   call paths — deadlock risk.
+3. Synchronizing on every access to shared state where safe publication (immutable handoff,
+   publish-once, effectively-final references) would suffice instead.
+4. A read-heavy path guarded by a full mutex where an atomic/CAS or an rwlock would fit
+   better and reduce contention.
+5. A full mutex/lock protecting a path under real contention where a finer-grained or
+   lock-free approach would reduce blocking (a full mutex is fine only where contention is
+   actually low).
+6. Lock held across an I/O call or a callback into unknown code.
+7. Sync-over-async: `.Result`/`.Wait()` (C#), `block_on` in an async context (Rust), a
    blocking call inside an event loop (Node/Python asyncio) — thread-pool/event-loop
    starvation.
-5. Cancellation/deadline (`CancellationToken`/`context.Context`/`AbortSignal`) not propagated
+8. Cancellation/deadline (`CancellationToken`/`context.Context`/`AbortSignal`) not propagated
    to the deepest I/O call — orphaned work.
-6. `async void` / unawaited promises / fire-and-forget without error capture — swallowed
+9. `async void` / unawaited promises / fire-and-forget without error capture — swallowed
    exceptions.
-7. Unbounded parallelism (`Promise.all` over thousands, unbounded `Parallel.ForEach`) —
-   resource storm.
-8. Missing deadline/timeout propagation across service hops.
-9. Assumed ordering on concurrent operations/channels that isn't actually guaranteed.
-10. Goroutine/thread leaks on a cancelled context; timers/listeners never cleaned up.
-11. `ConfigureAwait(false)` missing in library code (C#).
+10. Unbounded parallelism (`Promise.all` over thousands, unbounded `Parallel.ForEach`) —
+    resource storm.
+11. Missing deadline/timeout propagation across service hops.
+12. Assumed ordering on concurrent operations/channels that isn't actually guaranteed.
+13. Goroutine/thread leaks on a cancelled context; timers/listeners never cleaned up.
+14. `ConfigureAwait(false)` missing in library code (C#).
 
 **Pragmatism filter:** sync-over-async or a real data race in a server request path is
 Blocking — starvation and races have distinctive, hard-to-reproduce production signatures. A
-dropped cancellation token or an unguaranteed ordering assumption is Should-fix. In single-
-threaded/non-async code, route by language/runtime — don't invent a race that can't occur.
+dropped cancellation token or an unguaranteed ordering assumption is Should-fix. Lock-
+discipline findings (nested locks, over-synchronization where safe publication would do, a
+full mutex on a contended path) are Should-fix when they sit on a hot or genuinely contended
+path — the goal is balanced pragmatism and performance, not blanket lock elimination; a full
+mutex on a rarely-contended path is fine as-is. In single-threaded/non-async code, route by
+language/runtime — don't invent a race that can't occur.
 ```
 
 ## Lane: data-migrations
