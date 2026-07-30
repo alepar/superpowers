@@ -23,7 +23,8 @@ Root vs. nested is **derived, not remembered**: nested iff a parent spec was han
 4. **Top-split gate** (root only, both modes) — before any descent, the user approves the top-level split (child list + promotion verdicts). One gate, at the most expensive level.
 5. For each promoted child, **in dependency order, depth-first** (a child's entire subtree completes before the next sibling starts, so later siblings can read earlier siblings' finished specs): check the tripwire (§Tripwire), then run its nested brainstorm — §Nested Brainstorms. The nested brainstorm ends by invoking `superpowers:super-plan` again on the spec it wrote; that is the recursion.
 6. **Root only**, once the tree has settled (every subepic designed, every leaf decomposed, no pending promotions): run the coverage loop — §Coverage.
-7. **Root only:** hand off to execution — §Hand-off.
+7. **Root only, optional:** offer `superpowers:super-roast` on the settled tree; on a confirmed-findings verdict, run the fix + auto-re-roast loop — §Adversarial Review Loop.
+8. **Root only:** hand off to execution — §Hand-off.
 
 ## Decomposition
 
@@ -51,7 +52,7 @@ Run in the main session (interactive Mode A can't run in a subagent). Context ha
 
 - Inherits the session's design mode; the user can override per-subepic with an explicit request.
 - Opens with its own local `## Goal`, seeded from the promotion rationale.
-- Does not re-offer the visual companion or roast (roast is offered once, at the root, after coverage passes) and skips Mode B's per-spec review gate — a Mode B tree's checkpoints are the root spec review, the top-split gate, the tripwire, and coverage arbitration.
+- Does not re-offer the visual companion or super-roast (super-roast is offered once, at the root, after coverage passes) and skips Mode B's per-spec review gate — a Mode B tree's checkpoints are the root spec review, the top-split gate, the tripwire, and coverage arbitration.
 - Does not create a new worktree; `using-git-worktrees` idempotently verifies the existing one.
 - Ends, as always, by invoking `superpowers:super-plan` on the spec it wrote.
 
@@ -98,6 +99,30 @@ Runs once the tree has settled (§The Process, step 6).
 
 **Recall floor & fallback net:** if a pass stays degraded or a round otherwise can't be trusted, downgrade coverage to **advisory** and make the gate a **mandatory human read-through of the goal against the full task tree** — disclose this in the round summary, never silently.
 
+## Adversarial Review Loop (root only)
+
+Runs once the coverage loop passes (§Coverage), before hand-off. Offered once, at the root, the
+same offer brainstorming makes on a single un-decomposed spec — a decomposed tree gets it here
+instead, after the tree has settled, since that's the first point a full design exists to review.
+Opt-in; declining goes straight to hand-off.
+
+On accept, invoke `superpowers:super-roast` (design mode) on the settled tree. Its report's
+`## Confirmed findings` section is the only cross-iteration state:
+
+1. **Create one task per confirmed finding.**
+2. **Fix per the normal ladder** — inline for small fixes, interactive design work for large ones
+   (may itself promote/nest), subagent-driven implementation for delegable work.
+3. **Auto-decide re-roast by fix scope:**
+   - Mechanical, single-file fixes with no design change → done, no re-roast.
+   - Fixes that changed a design decision, changed data handling, or resolved multiple Blocking
+     findings → re-invoke `superpowers:super-roast`, passing the prior report so it can skip
+     re-litigating what it already cleared.
+4. **Cap at 3 iterations.** Also stop early if an iteration resolves nothing — the confirmed-Blocking
+   count did not shrink from the prior report — that's thrash, not progress.
+
+Both exits — cap-out and clean — **pause and summarize for the human**; this loop never declares
+itself finished, mirroring `super-roast`'s own handoff contract.
+
 ## Hand-off (root only)
 
 Always `superpowers:subagent-driven-development`.
@@ -130,4 +155,5 @@ Same decomposition/promotion/coverage, on paper. Each task-table row needs: a st
 
 - Invoked by `superpowers:brainstorming` at the end of every spec, root and nested.
 - Dispatches `./promotion-reviewer-prompt.md` and `./coverage-reviewer-prompt.md`.
+- Offers `superpowers:super-roast` (root only, optional) once the coverage loop passes; consumes its report to drive the fix + auto-re-roast loop — §Adversarial Review Loop.
 - Hands off to `superpowers:subagent-driven-development` (beads mode, or plan-file mode once per epic in no-beads mode); no-beads mode also uses `superpowers:writing-plans`.
