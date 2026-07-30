@@ -158,7 +158,7 @@ both panel votes and spot checks, which no fixed value can satisfy.
 - Produces: `prompts.seats.reproduce/refute/ground` content used by the engine (Task 1 contract) and the fan-out fallback; the eval fixture used by Step 3 and future regressions.
 
 - [ ] **Step 1: Vendor the artifacts.** Copy the fixture and eval record to the paths above.
-- [ ] **Step 2: Write `judge-seat-prompts.md`** from `~/Documents/Super-Roast_Design_Research_20260728/judge-seat-prompts-validated.md` — keep the shared core (including the tested materiality definition verbatim: *"Material means material against the spec's stated requirements, contract, and scope — not an imagined stricter system"*) and the three seat blocks unchanged, then add the PR-mode block:
+- [ ] **Step 2: Write `judge-seat-prompts.md`** from `~/Documents/Super-Roast_Design_Research_20260728/judge-seat-prompts-validated.md` — keep the shared core (including the tested materiality definition verbatim: *"Material means material against the spec's stated requirements, contract, and scope — not against an imagined stricter system"* — copy it from the source file, not from this quote) and the three seat blocks unchanged, then add the PR-mode block:
 
 ```markdown
 ## PR mode adjustments (append to the shared core when mode = pr)
