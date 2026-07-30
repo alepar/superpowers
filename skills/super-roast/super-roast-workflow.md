@@ -529,8 +529,10 @@ recorded above:
   `widenLenses` correctly suppressed, `domain:queueing`'s prompt rendered as `You are a queueing
   expert. Prior: <prior report>`, and `{{MODE}}`/`{{ITERATION}}`/`{{INPUTS}}` present in the
   reporter prompt as `design` / `2 of 3` / `spec.md`. Re-run with `scoutDomainTemplate` **absent**:
-  **5 dispatched, `scoutsDead: 2`, no exception** — the guard degrades to coverage loss as
-  intended. A prior report containing `$&` and `$'` survived substitution byte-intact, confirming
+  **`scoutsDispatched: 7`, `scoutsDead: 2`, no exception** — `scoutsDispatched` counts scout
+  *names*, not survivors, so the two unresolvable domain scouts appear in both figures; the
+  guard degrades to coverage loss as intended, and `scoutsDead > 0` feeds the `[low coverage]`
+  qualifier. A prior report containing `$&` and `$'` survived substitution byte-intact, confirming
   the function-form `fill()`.
 
 ## Accepted / deferred findings from this branch's own live runs
