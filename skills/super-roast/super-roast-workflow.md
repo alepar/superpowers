@@ -279,7 +279,30 @@ the PR-mode baseline above).
   (5 `config.coreLenses` + 2 `config.widenLenses`), **no** `domain:` scouts,
   `coverage.scoutsDispatched === 7`.
 
-**Status: pending execution** — not run in this session (no `Workflow` tool available to this
-agent). Ready-to-run `args` for both cases (pure JSON, all stub prompts written out as strings)
-are recorded in `task-7-report.md`. Run both before relying on this structural change; if either
-assertion fails, fix the script in this doc and re-run before the fix is considered done.
+### Passing baseline (recorded, not illustrative)
+
+**(a) domains present, no widening.** Run `wf_2fab6c5d-dc9`, 2026-07-30, triage stub
+`{"lanes":[],"domains":["queueing"]}`: **12 agents dispatched, 0 errors** (1 triage + 6 scouts +
+1 dedupe + 3 seats + 1 reporter). The 6 scouts were the 5 core lenses plus `domain:queueing`;
+no widen lenses dispatched. 5 of 6 scouts returned empty findings (harness reported
+`agents_empty_result: 5`), exercising the empty-scout path.
+
+Returned `coverage`: `scoutsDispatched: 6, scoutsDead: 0, rawFindings: 1, dedupedFindings: 1,
+beyondCap: 0, panelCount: 1, spotCount: 0, promotedCount: 0 (n/a — no Nit/FYI candidates),
+judgeCompletionPct: 100`. Verdict: `"Blocking (1 confirmed)"`. Matches the case-(a) assertions
+above — `scoutNames.length === 6`, no `security`/`maintainer` dispatched.
+
+**(b) no domains, widening fires.** Run `wf_f1f77176-482`, 2026-07-30, triage stub
+`{"lanes":[],"domains":[]}`: **13 agents dispatched, 0 errors** (1 triage + 7 scouts + 1 dedupe
++ 3 seats + 1 reporter). The 7 scouts were the 5 core lenses plus `security` and `maintainer`
+from `config.widenLenses`; **no `domain:` scouts dispatched**, confirming the
+widen-only-when-empty condition. 6 of 7 scouts returned empty findings.
+
+Returned `coverage`: `scoutsDispatched: 7, scoutsDead: 0, rawFindings: 1, dedupedFindings: 1,
+beyondCap: 0, panelCount: 1, spotCount: 0, promotedCount: 0, judgeCompletionPct: 100`. Verdict:
+`"Blocking (1 confirmed)"`. Matches the case-(b) assertions above — `scoutNames.length === 7`,
+no `domain:` entries.
+
+**All three `scoutNames` paths are now covered by at least one recorded run:** PR-mode lanes by
+the canonical baseline above (`wf_cbe52959-ff0`), design-mode with domains by `wf_2fab6c5d-dc9`,
+and design-mode widened by `wf_f1f77176-482`. This design-mode dryRun is validated.
