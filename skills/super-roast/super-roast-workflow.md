@@ -134,8 +134,9 @@ const fill = (template, vars) => Object.entries(vars).reduce((s, [token, value])
 
 // Triage — design: domains for expert critics; PR: conditional-lane activation (recall-leaning).
 const triage = await agent(pick(prompts.triage, 'triage'), { label:'triage', phase:'Triage', model:model('triage'), schema:LANES })
+const domains = (triage?.domains ?? []).filter(d => d && d !== 'none').slice(0, 3)
 const scoutNames = mode === 'design'
-  ? [...config.coreLenses, ...(triage?.domains ?? []).slice(0, 3).map(d => `domain:${d}`)]
+  ? [...config.coreLenses, ...(domains.length ? [] : (config.widenLenses ?? [])), ...domains.map(d => `domain:${d}`)]
   : [...new Set([...config.coreLanes, ...(triage?.lanes ?? [])])]
 
 // Scouts — parallel, high-recall. Nulls are counted (coverage), then filtered.
@@ -263,3 +264,22 @@ spot checks + 3 promoted panels × 3), reporter 1. The 2 empty-findings scouts (
 Returned `coverage`: `scoutsDispatched: 4, scoutsDead: 0, rawFindings: 4, dedupedFindings: 5,
 beyondCap: 2, panelCount: 2, spotCount: 0, promotedCount: 3, judgeCompletionPct: 100`. Verdict:
 `"Blocking (1 confirmed)"`. All figures match the assertions above — this dryRun is validated.
+
+## Assertions for the design-mode lens-widening dryRun (mode `design`)
+
+Added when the design branch of `scoutNames` changed to use `config.coreLenses` /
+`config.widenLenses` (see the engine script above). Exercises the widening logic specifically,
+with a minimal one-Blocking-finding dedupe stub (everything past scouts is already covered by
+the PR-mode baseline above).
+
+- **(a) domains present** — triage stub `{"lanes":[],"domains":["queueing"]}`:
+  `scoutNames.length === 6` (5 `config.coreLenses` + 1 `domain:queueing`), `config.widenLenses`
+  **not** added, `coverage.scoutsDispatched === 6`.
+- **(b) domains empty** — triage stub `{"lanes":[],"domains":[]}`: `scoutNames.length === 7`
+  (5 `config.coreLenses` + 2 `config.widenLenses`), **no** `domain:` scouts,
+  `coverage.scoutsDispatched === 7`.
+
+**Status: pending execution** — not run in this session (no `Workflow` tool available to this
+agent). Ready-to-run `args` for both cases (pure JSON, all stub prompts written out as strings)
+are recorded in `task-7-report.md`. Run both before relying on this structural change; if either
+assertion fails, fix the script in this doc and re-run before the fix is considered done.
