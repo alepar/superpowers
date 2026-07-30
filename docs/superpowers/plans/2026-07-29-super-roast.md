@@ -29,8 +29,12 @@
 - Create: `skills/super-roast/super-roast-workflow.md`
 
 **Interfaces:**
-- Produces: the engine script contract consumed by SKILL.md (Task 7):
-  `args = { mode: 'design'|'pr', inputsDescription: string, profile: string, priorReport: string ('' on iteration 1), dryRun: boolean, prompts: {triage: string, scouts: {<name>: string}, dedupe: (rawFindingsJSON) => string, seats: {reproduce, refute, ground}: (findingJSON) => string, reporter: (packetsJSON, profile, priorReport) => string, stubs: {<key>: string}}, config: {remainderCap: 50, models: {triage:'sonnet', scout:'opus', dedupe:'fable', judge:'sonnet', reporter:'fable'}, coreLanes: [...], coreLenses: [...]} }`
+- Produces: the engine script contract consumed by SKILL.md (Task 7). **`args` must be pure
+  JSON — every prompt is a STRING, never a function** (the Workflow tool rejects non-JSON
+  args). Prompts that need runtime data carry placeholder tokens the script substitutes:
+  `{{FINDINGS_JSON}}` (dedupe), `{{FINDING_JSON}}` (seats), `{{PACKETS_JSON}}`, `{{PROFILE}}`,
+  `{{PRIOR_REPORT}}` (reporter).
+  `args = { mode: 'design'|'pr', inputsDescription: string, profile: string, priorReport: string ('' on iteration 1), dryRun: boolean, prompts: {triage: string, scouts: {<name>: string}, dedupe: string, seats: {reproduce: string, refute: string, ground: string}, reporter: string, stubs: {<key>: string}}, config: {remainderCap: 50, models: {triage:'sonnet', scout:'opus', dedupe:'fable', judge:'sonnet', reporter:'fable'}, coreLanes: [...], coreLenses: [...]} }`
 - Produces: return shape `{ verdict, reportMarkdown, coverage: {scoutsDispatched, scoutsDead, rawFindings, dedupedFindings, beyondCap, panelCount, spotCount, promotedCount, judgeCompletionPct} }`. The orchestrator writes `reportMarkdown` to the report path and invokes super-plan.
 
 - [ ] **Step 1: Write the doc.** Sections: (1) pipeline reference (compressed restatement of spec §Pipeline — link the spec, don't duplicate rationale); (2) capability ladder (Workflow → subagent fan-out sequence → inline degraded with `independence: none (inline)` label); (3) key constraints (script does no I/O; prompts rendered by orchestrator; agents can't nest deep-research); (4) **engine script** (below); (5) dryRun policy (below); (6) stub table.
@@ -129,12 +133,17 @@ Stub table to embed (each stub prompt is literally `You are a stub. Call no tool
 | `scout:<core-2>` | 2 findings: the duplicate + one nit |
 | `scout:data-migrations` | `{findings: []}` — empty-scout path |
 | `dedupe` | 1 Blocking + 1 Should-fix + 3 Nit/FYI findings, `beyondCapCount: 2` (run with `config.remainderCap: 3` in dryRun args to exercise the cap) |
-| `seat:reproduce` / `seat:ground` | `CONFIRM Blocking` |
-| `seat:refute` | `REJECT` for panel findings; **one spot-checked nit gets `CONFIRM Should-fix`** → exercises promotion |
+| `seat:reproduce:panel` / `seat:ground:panel` / `seat:reproduce:spot` / `seat:ground:spot` | `CONFIRM Blocking` |
+| `seat:refute:panel` | `REJECT` — panel findings survive on 2-of-3 |
+| `seat:refute:spot` | `CONFIRM Should-fix` → every spot check promotes (deterministic) |
+
+**Stub keys are call-site qualified** (`seat:<name>:panel` vs `seat:<name>:spot`) so a single
+canned value per key stays deterministic — a per-seat-name key would make the same stub answer
+both panel votes and spot checks, which no fixed value can satisfy.
 | `reporter` | fixed `{verdict:"Blocking (1 confirmed)", reportMarkdown:"# stub report", confirmedCount:1, escalations:[]}` |
 
-- [ ] **Step 2: Run the dryRun.** Invoke the Workflow tool with the script and dryRun args (mode `pr`, `remainderCap: 3`, stub prompts as above). Because refute stubs are keyed per seat name (not per finding), the promoted panel re-uses the same stubs — that's fine; the assertion is call topology, not verdict semantics.
-- [ ] **Step 3: Assert against the journal/result:** triage=1 call; scouts=4 (3 core-configured + 1 activated); dedupe=1; judges: 2 severe panels (6 seat calls) + 3 spot checks + 1 promotion panel (3 more) = 12 seat calls; reporter=1. Return value: `coverage.beyondCap === 2`, `promotedCount === 1`, `judgeCompletionPct === 100`, `verdict` non-empty. If any assertion fails, fix the script **in the doc** and re-run — the doc's script is canonical.
+- [ ] **Step 2: Run the dryRun.** Invoke the Workflow tool with the script and dryRun args (mode `pr`, `remainderCap: 3`, 3 core lanes + 1 triage-activated lane, stub prompts as above — all strings, pure JSON). The assertion is call topology, not verdict semantics.
+- [ ] **Step 3: Assert against the journal/result:** triage=1 call; scouts=4 (3 core-configured + 1 activated); dedupe=1; judges: 2 severe panels (6 seat calls) + 3 spot checks + 3 promotion panels (9 more) = **18 seat calls**; reporter=1. Return value: `coverage.beyondCap === 2`, `promotedCount === 3`, `judgeCompletionPct === 100`, `verdict` non-empty. If any assertion fails, fix the script **in the doc** and re-run — the doc's script is canonical.
 - [ ] **Step 4: Commit** — `git commit -m "feat(super-roast): workflow engine doc with dryRun-validated script"`
 
 ### Task 2: Judge seat prompts + eval regression
