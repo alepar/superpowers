@@ -252,6 +252,16 @@ The orchestrator should pass `args` as an actual JSON value wherever the harness
 the string-tolerance in the engine script exists as a defensive fallback for harness paths that
 stringify `args` before invoking the script, not as license to always stringify by default.
 
+**Stub phrasing is exact, not a paraphrase.** Every stub prompt MUST use the literal wording
+`You are a stub. Call no tools. Return exactly this JSON as your structured output: <json>`
+(see the Stub table below). A shortened variant — e.g. "Return this JSON exactly, nothing
+else:" — was tried during Step 1c and cost two wasted runs: haiku answered in prose instead of
+invoking the structured-output tool, every stubbed agent call returned nothing, and the dryRun
+silently tested the dead-agent/coverage-loss path instead of the intended topology. A malformed
+stub doesn't error — it quietly converts any dryRun into an accidental failure-path test, which
+can look like a passing run (dead-agent handling *is* exercised) while asserting nothing about
+what you actually meant to validate. Use the exact phrasing above, every time.
+
 ## Stub table
 
 Each stub prompt is literally `You are a stub. Call no tools. Return exactly this JSON as
@@ -295,8 +305,8 @@ promotes.
   `coverage.dedupeDead === false` (dedupe returned findings normally) and
   `coverage.beyondPanelCap === 0` (nothing exceeds the cap). Exercising the panel-cap-firing
   and dedupe-dead paths themselves is a separate dryRun (small `panelCap`, a dedupe stub
-  returning nothing), not this canonical topology run — see the task tracking doc for those
-  runs and their recorded results.
+  returning nothing), not this canonical topology run — see "Additional passing baselines —
+  panel cap + dead dedupe" below for those runs and their recorded results.
 
 If any assertion fails, fix the script **in this doc** (this doc's script is canonical) and
 re-run before committing the fix.
@@ -388,6 +398,47 @@ gone, or to check a doc edit didn't silently change behavior): re-run the dryRun
 `task-7-report.md`) and compare the returned `coverage` object and agent count against the
 figures recorded here — the script and stubs are the reproducible source of truth, the journal
 is a point-in-time receipt.
+
+## Additional passing baselines — panel cap + dead dedupe (recorded 2026-07-30)
+
+Recorded alongside (not replacing) the three baselines above. These target the two structural
+additions from Step 1b (item 1's dedupe retry/liveness flag, item 3's panel cap) that the
+canonical and design-mode baselines above don't exercise, since both used dedupe stubs with
+severe-finding counts far under the default `config.panelCap: 12` and a dedupe stub that
+returns normally.
+
+**Panel cap fires.** Run `wf_603bf9de-184`, PR mode, `config.panelCap: 1`, dedupe stub
+returning 2 Blocking + 0 Nit/FYI findings: **8 agents dispatched, 0 errors** (1 triage + 2
+scouts + 1 dedupe + 3 seats + 1 reporter — only 3 seat calls total, confirming a single panel
+was dispatched, not two).
+
+Returned `coverage`: `scoutsDispatched: 2, scoutsDead: 0, rawFindings: 1, dedupedFindings: 2,
+beyondCap: 0, beyondPanelCap: 1, dedupeDead: false, panelCount: 1, spotCount: 0,
+promotedCount: 0, judgeCompletionPct: 100`. Confirms: with 2 severe candidates and
+`panelCap: 1`, exactly one full 3-seat panel is dispatched and the second severe candidate
+flows through as a beyond-cap packet — `beyondPanelCap === 1` — rather than being dropped.
+
+**Dead dedupe detected.** Runs `wf_26f91db9-a6c` and `wf_810e2d78-f6a` both hit the
+dedupe-failure path for real: the dedupe agent failed schema validation on both the initial
+call and the retry (a genuine agent failure, not a stub deliberately returning `{findings: []}`
+to simulate one). Both runs returned `dedupedFindings: 0, dedupeDead: true, panelCount: 0,
+spotCount: 0, judgeCompletionPct: 0`, with `rawFindings > 0` in both — exactly the
+`raw.length > 0 && deduped.length === 0` condition item 1's fix targets. This validates the
+retry-and-flag behavior against a genuine failure rather than a synthetic one: the retry fired
+(both calls failed schema validation, matching `(await one()) ?? (await one())`'s two-attempt
+shape), and `dedupeDead` correctly came back `true` — the "never a silent clean" behavior the
+fix exists to provide — instead of the pipeline reporting `clean (0 nits)`.
+
+**`{{COVERAGE_JSON}}` — inspection-verified, not execution-verified.** A dryRun structurally
+cannot exercise this token: `pick()` swaps the reporter's real, filled `reporterPrompt` for a
+fixed canned stub *before* the call, so the filled prompt — the only place `{{COVERAGE_JSON}}`
+is substituted — is built but then discarded rather than dispatched; no dryRun assertion can
+observe whether the substitution happened correctly. This was verified by reading the engine
+instead: the `coverage` object is built strictly before the `agent(...)` dispatch for the
+reporter, and the `fill(prompts.reporter, {...})` call includes
+`'{{COVERAGE_JSON}}': JSON.stringify(coverage)` alongside the other three tokens. It is
+confirmed correct **by code inspection**, and will be exercised for real — with a live fable
+reporter actually reading and rendering it — by the PR-mode live run (Step 2).
 
 ## Step 2 trigger micro-test (frontmatter description, SKILL.md)
 
