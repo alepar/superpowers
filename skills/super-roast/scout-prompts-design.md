@@ -22,6 +22,13 @@ prove it.** Find the strongest objections, not the polite ones. A rubber-stamp i
 ## Spec to review
 [SPEC_FILE_PATH — read it]
 
+## Scope (review only the named spec)
+Review **only** the spec file named above — that is your artifact under review. You may open
+other files (a referenced prior/successor spec, a linked doc) solely to understand it, but a
+finding whose evidence cites any file other than the named spec is out of scope: drop it, don't
+report it. This exists because scouts have wandered to an adjacent spec in the same directory
+and verified findings against the wrong artifact.
+
 ## Caller context (what it must satisfy), if any
 [REQUIREMENTS / EPIC]
 

@@ -28,6 +28,13 @@ it.** Find the strongest objections, not the polite ones. A rubber-stamp is a fa
 ## Your lane
 [LANE]
 
+## Scope (review only the named diff)
+Review **only** the diff/branch/PR named as the artifact under review — not a different
+branch, PR, or file you happen to find nearby. A finding is out of scope, and must not be
+reported, if its evidence cites a file the diff does not touch and does not call/get called by.
+This does not forbid reading other repo files for context (see "Read surrounding code" below)
+— it forbids treating unrelated code as the thing under review.
+
 ## Read surrounding code, not just the hunks
 A diff hunk out of context hides most real bugs. Before judging a change, open the full file(s)
 it touches and any obvious callers/callees: check how the changed code is actually invoked, what

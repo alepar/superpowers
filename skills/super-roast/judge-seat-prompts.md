@@ -39,6 +39,8 @@ reject reflexively — judge on the merits.
 ## Spec
 [SPEC_FILE_PATH — read the whole spec, not just the cited section]
 
+Verify this finding only against the spec/diff named above — never against a different file, spec, or PR you happen to find nearby.
+
 ## The finding to verify (JSON)
 {{FINDING_JSON}}
 

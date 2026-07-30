@@ -77,7 +77,14 @@ substitutes with a small `fill(template, vars)` helper (plain string replacement
 |---|---|
 | `prompts.dedupe` | `{{FINDINGS_JSON}}` |
 | `prompts.seats.reproduce` / `.refute` / `.ground` | `{{FINDING_JSON}}` |
-| `prompts.reporter` | `{{PACKETS_JSON}}`, `{{PROFILE}}`, `{{PRIOR_REPORT}}` |
+| `prompts.reporter` | `{{PACKETS_JSON}}`, `{{PROFILE}}`, `{{PRIOR_REPORT}}`, `{{COVERAGE_JSON}}` |
+
+`{{COVERAGE_JSON}}` carries the coverage object the script can compute **before** the reporter
+call — scout dispatch/dead counts, the raw→deduped funnel, `beyondCap`, `beyondPanelCap`,
+`dedupeDead`, and panel/spot/promoted counts. It exists because the reporter is required to
+emit the coverage line and the `[low coverage]`/`[panel-capped]` qualifiers, but had no way to
+see any of that until this token was added — see the engine script's coverage-building
+comment below for exactly what is (and isn't) in it.
 
 `prompts.triage` and each `prompts.scouts.<name>` carry no tokens — they need no runtime
 substitution and are used as plain strings. This is the contract Task 7's SKILL.md and the
@@ -146,10 +153,25 @@ const scoutsDead = scoutResults.filter(r => !r).length
 const raw = scoutResults.filter(Boolean).flatMap(r => r.findings ?? [])
 
 // Dedupe — merge + suggested severity; keeps ALL severe, caps remainder (agent applies config.remainderCap from its prompt).
+// Re-dispatched once on a dead/truncated response (same shape as seat()'s retry below) — dedupe
+// is the one stage the prompt file calls silent-and-unrecoverable: a dead dedupe with no retry
+// yields zero packets downstream, which reads as a false "clean" verdict rather than a failure.
 const dedupePrompt = fill(prompts.dedupe, { '{{FINDINGS_JSON}}': JSON.stringify(raw) })
-const dd = await agent(pick(dedupePrompt, 'dedupe'), { label:'dedupe', phase:'Dedupe', model:model('dedupe'), schema:DEDUPED })
+const dedupeOnce = () => agent(pick(dedupePrompt, 'dedupe'), { label:'dedupe', phase:'Dedupe', model:model('dedupe'), schema:DEDUPED })
+const dd = (await dedupeOnce()) ?? (await dedupeOnce())
 const deduped = dd?.findings ?? []
-const severe = deduped.filter(f => SEVERE.includes(f.suggestedSeverity))
+// Forced low-coverage signal: non-empty scout input collapsing to zero deduped findings means
+// dedupe died/truncated on both tries, not that the artifact is actually clean.
+const dedupeDead = raw.length > 0 && deduped.length === 0
+
+// Panel cap — bounds cost: only the top config.panelCap (default 12) severe candidates, in the
+// deduper's own rank order, get a full 3-seat panel. Excess is never silently dropped — it
+// carries through to the reporter as 'beyond-cap' packets (suggested severity, no votes) for
+// the "## Not verified (beyond panel cap)" section.
+const panelCap = config.panelCap ?? 12
+const severeAll = deduped.filter(f => SEVERE.includes(f.suggestedSeverity))
+const severe = severeAll.slice(0, panelCap)
+const beyondPanelCap = severeAll.slice(panelCap)
 const rest = deduped.filter(f => !SEVERE.includes(f.suggestedSeverity))
 
 // site: 'panel' | 'spot' — stub keys are call-site qualified (seat:<name>:<site>) so a single
@@ -172,24 +194,42 @@ async function spotCheck(f) {
 }
 const judged = (await parallel([...severe.map(f => () => panel(f)), ...rest.map(f => () => spotCheck(f))])).filter(Boolean)
 
-// Reporter — final verdicts + env-aware severity; aggregation arithmetic is IN the packets, the reporter may overrule with cited reasoning.
-const packets = judged.map(j => ({ ...j, valid: j.votes.filter(Boolean).length }))
+// Coverage — built BEFORE the reporter call (not after, as an earlier draft had it) so its
+// facts can be surfaced INTO the reporter's own prompt via {{COVERAGE_JSON}}, not just exist in
+// the value the script returns once the reporter has already run and can no longer see it.
+// Nothing here depends on the reporter's own output — every field is known from scouts/dedupe/
+// judges — so the full object is built here and reused unchanged for the final return.
 const totalSeats = judged.reduce((a, j) => a + j.votes.length, 0)
 const validSeats = judged.reduce((a, j) => a + j.votes.filter(Boolean).length, 0)
-const reporterPrompt = fill(prompts.reporter, { '{{PACKETS_JSON}}': JSON.stringify(packets), '{{PROFILE}}': profile, '{{PRIOR_REPORT}}': priorReport })
+const coverage = {
+  scoutsDispatched: scoutNames.length, scoutsDead,
+  rawFindings: raw.length, dedupedFindings: deduped.length, beyondCap: dd?.beyondCapCount ?? 0,
+  beyondPanelCap: beyondPanelCap.length, dedupeDead,
+  panelCount: judged.filter(j => j.tier === 'panel').length,
+  spotCount: judged.filter(j => j.tier === 'spot').length,
+  promotedCount: judged.filter(j => j.tier === 'promoted').length,
+  judgeCompletionPct: totalSeats ? Math.round(100 * validSeats / totalSeats) : 0,
+}
+
+// Reporter — final verdicts + env-aware severity; aggregation arithmetic is IN the packets, the reporter may overrule with cited reasoning.
+// beyond-cap packets carry no votes (never dispatched to a judge) — the reporter lists them
+// under their own section by suggestedSeverity; it must not verify or count them as judged.
+const packets = [
+  ...judged.map(j => ({ ...j, valid: j.votes.filter(Boolean).length })),
+  ...beyondPanelCap.map(f => ({ f, votes: [], tier: 'beyond-cap', valid: 0 })),
+]
+const reporterPrompt = fill(prompts.reporter, {
+  '{{PACKETS_JSON}}': JSON.stringify(packets),
+  '{{PROFILE}}': profile,
+  '{{PRIOR_REPORT}}': priorReport,
+  '{{COVERAGE_JSON}}': JSON.stringify(coverage),
+})
 const rep = await agent(pick(reporterPrompt, 'reporter'), { label:'reporter', phase:'Report', model:model('reporter'), schema:REPORT })
 
 return {
   verdict: rep?.verdict ?? 'clean (low coverage — reporter failed)',
   reportMarkdown: rep?.reportMarkdown ?? '',
-  coverage: {
-    scoutsDispatched: scoutNames.length, scoutsDead,
-    rawFindings: raw.length, dedupedFindings: deduped.length, beyondCap: dd?.beyondCapCount ?? 0,
-    panelCount: judged.filter(j => j.tier === 'panel').length,
-    spotCount: judged.filter(j => j.tier === 'spot').length,
-    promotedCount: judged.filter(j => j.tier === 'promoted').length,
-    judgeCompletionPct: totalSeats ? Math.round(100 * validSeats / totalSeats) : 0,
-  },
+  coverage,
 }
 ```
 
@@ -250,6 +290,13 @@ promotes.
 - reporter: 1 call.
 - Return value: `coverage.beyondCap === 2`, `coverage.promotedCount === 3`,
   `coverage.judgeCompletionPct === 100`, `verdict` non-empty.
+- Since this stub table's dedupe returns only 2 severe findings (1 Blocking + 1 Should-fix),
+  well under the default `config.panelCap: 12`, both new coverage fields are non-firing here:
+  `coverage.dedupeDead === false` (dedupe returned findings normally) and
+  `coverage.beyondPanelCap === 0` (nothing exceeds the cap). Exercising the panel-cap-firing
+  and dedupe-dead paths themselves is a separate dryRun (small `panelCap`, a dedupe stub
+  returning nothing), not this canonical topology run — see the task tracking doc for those
+  runs and their recorded results.
 
 If any assertion fails, fix the script **in this doc** (this doc's script is canonical) and
 re-run before committing the fix.
@@ -278,6 +325,9 @@ the PR-mode baseline above).
 - **(b) domains empty** — triage stub `{"lanes":[],"domains":[]}`: `scoutNames.length === 7`
   (5 `config.coreLenses` + 2 `config.widenLenses`), **no** `domain:` scouts,
   `coverage.scoutsDispatched === 7`.
+- Both cases use a single-Blocking-finding dedupe stub, so — same as the canonical PR-mode
+  dryRun — neither new coverage field fires here: `coverage.dedupeDead === false`,
+  `coverage.beyondPanelCap === 0` (1 severe finding, default `config.panelCap: 12`).
 
 ### Passing baseline (recorded, not illustrative)
 

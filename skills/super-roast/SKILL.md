@@ -54,9 +54,12 @@ engine script: **`./super-roast-workflow.md`**.
    WebSearch/WebFetch, return structured findings. See `./scout-prompts-design.md` /
    `./scout-prompts-pr.md`.
 4. **Dedupe-and-rank (fable, 1)** — merges overlapping findings (same location + root claim),
-   suggests a severity, and applies the remainder cap (all severe findings survive uncapped;
-   the rest are capped and the overflow count reported, never silently dropped). See
-   `./dedupe-prompt.md`.
+   suggests a severity, and applies the remainder cap (`config.remainderCap`): all severe
+   findings survive uncapped; the rest are capped and the overflow count reported, never
+   silently dropped. See `./dedupe-prompt.md`. A second cap, `config.panelCap` (default 12),
+   applies at the next stage: it bounds how many of the surviving severe findings actually get
+   a full judge panel — the rest are listed under "## Not verified (beyond panel cap)" with
+   their suggested severity, never dropped.
 5. **Judges (sonnet, tiered)** — see "Tiered verification" below. See `./judge-seat-prompts.md`.
 6. **Reporter (fable, 1)** — issues final verdicts, applies the environment-aware severity
    floors, and writes the report. See `./reporter-prompt.md` and Output below.

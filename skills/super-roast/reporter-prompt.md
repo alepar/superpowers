@@ -10,10 +10,16 @@ the human reading the report) cannot see around. The reporter does not re-derive
 from scratch; it reasons over the seat evidence already gathered.
 
 The string below is `args.prompts.reporter` verbatim: a plain string dispatchable through
-the Task tool with no engine-specific syntax. It contains exactly three engine-substituted
+the Task tool with no engine-specific syntax. It contains exactly four engine-substituted
 tokens: `{{PACKETS_JSON}}` (the judged findings array), `{{PROFILE}}` (the inferred
-environment profile prose), and `{{PRIOR_REPORT}}` (the previous iteration's full report
-markdown, or empty on iteration 1).
+environment profile prose), `{{PRIOR_REPORT}}` (the previous iteration's full report
+markdown, or empty on iteration 1), and `{{COVERAGE_JSON}}` (the coverage object the engine
+already computed before this call — scout dispatch/dead counts, the raw→deduped funnel,
+`beyondCap`, `beyondPanelCap`, `dedupeDead`, and panel/spot/promoted counts). Use
+`{{COVERAGE_JSON}}`'s fields directly for the `coverage:` line and the `[low coverage]` /
+`[panel-capped]` verdict qualifiers — it exists precisely because those facts (a dead scout,
+a dead dedupe, how many severe findings the panel cap left unverified) are not otherwise
+derivable from `{{PACKETS_JSON}}` alone.
 
 ```
 You are the final gate of an adversarial review pipeline. You receive findings that have
@@ -32,19 +38,31 @@ suggestedSeverity`, optionally `kind`/`spike`), plus:
 - `votes`: an array of seat verdicts, each `{verdict: "CONFIRM"|"REJECT"|"UNVERIFIED",
   severity, evidence}`. A seat that failed to return appears as `null` in this array.
 - `tier`: `"panel"` (3 seats, for a Blocking/Should-fix candidate), `"spot"` (1 refute-seat
-  check of a Nit/FYI candidate), or `"promoted"` (a spot-checked finding whose spot-check
-  escalated it to a full panel).
+  check of a Nit/FYI candidate), `"promoted"` (a spot-checked finding whose spot-check
+  escalated it to a full panel), or `"beyond-cap"` (a severe candidate the panel cap left
+  unverified — `votes` is always `[]` and `valid` is always `0`; it was never dispatched to a
+  judge at all).
 - `valid`: count of non-null votes.
 
 ## Environment profile
 {{PROFILE}}
+
+## Coverage (engine-computed, before this call)
+{{COVERAGE_JSON}}
 
 ## Prior report (previous iteration, may be empty)
 {{PRIOR_REPORT}}
 
 ## Step 1 — Per-finding verdict
 
-**Order of application (apply in this order, every time — never infer an order yourself):**
+**Packets with `tier: "beyond-cap"` are exempt from this entire step.** They were never
+dispatched to a judge — there is no verdict to assign and no arithmetic to apply. List each
+one directly under "## Not verified (beyond panel cap)" in Step 5, by its `suggestedSeverity`
+and `claim`/`location` — do not attempt to verify it, do not move it to Confirmed or
+Escalations, and do not drop it.
+
+**Order of application (apply in this order, every time — never infer an order yourself)
+— for every other tier:**
 1. **Escalation conditions** (below) — checked first, against every finding regardless of
    tier.
 2. **Tier routing** (`panel`/`promoted` vs. `spot`) — checked second, for whatever the
@@ -124,18 +142,27 @@ resolved/regressed/still-open tracking to do.
 
 ## Step 4 — Verdict line
 `<highest confirmed severity> (<n> confirmed)` if any finding confirmed, else
-`clean (<n> nits)` where n counts the Unverified-nits entries.
-Append ` [low coverage]` when scouts/judges substantially failed: any dead scout, any
-judge completion below 100% (i.e. any `valid` < the tier's full seat count anywhere in the
-packets), or zero raw findings on a non-trivial artifact. Low coverage is a fact about the
-run, independent of whether anything confirmed — append it even to a `clean` verdict.
+`clean (<n> nits)` where n counts the Unverified-nits entries. **The word `confirmed` MUST
+appear literally in the parenthetical whenever anything confirmed** — `"Blocking (3)"` is
+wrong, `"Blocking (3 confirmed)"` is right. This is not cosmetic: a caller (e.g. super-plan)
+may parse this line, and `clean (<n> nits)` deliberately does NOT carry the word `confirmed`
+since nothing did.
+Append ` [low coverage]` when scouts/judges substantially failed: any dead scout,
+`{{COVERAGE_JSON}}`'s `dedupeDead` is `true` (dedupe returned nothing on both tries despite
+non-empty scout input — this is a failed dedupe, not a clean result), any judge completion
+below 100% (i.e. any `valid` < the tier's full seat count anywhere in the packets), or zero
+raw findings on a non-trivial artifact. Low coverage is a fact about the run, independent of
+whether anything confirmed — append it even to a `clean` verdict.
+Append ` [panel-capped: N unverified]` when `{{COVERAGE_JSON}}`'s `beyondPanelCap` is
+non-zero, with N equal to that count. This is independent of `[low coverage]` — both
+qualifiers can appear together, and either can appear alone.
 
 ## Step 5 — Assemble the report
 Render the full report using this template verbatim (fill the bracketed parts; keep every
 heading exactly as written):
 
 ---
-super-roast verdict: <Blocking (n) | Should-fix (n) | clean (n nits)> [low coverage]
+super-roast verdict: <Blocking (n confirmed) | Should-fix (n confirmed) | clean (n nits)> [low coverage] [panel-capped: N unverified]
 mode: design | PR        iteration: N of 3
 profile (assumed): <2–4 sentence inferred profile>
 inputs: <spec paths | branch@sha vs base@sha [+dirty] | PR#>
@@ -148,6 +175,9 @@ independence: same-family (Claude) — seat-differentiated panel
   evidence: <strongest seat evidence, file:line / URL+quote>
   fix-shape hint: <one advisory line>
 
+## Not verified (beyond panel cap)   ← severe candidates the panel cap left unverified — listed, never dropped
+- [suggested SEV] <location> — <claim>
+
 ## Rejected (with reason)        ← so re-roasts don't re-litigate
 ## Unverified nits (spot-checked)
 ## Escalations (need human)      ← UNVERIFIED externals, incomplete panels, material dissent
@@ -159,8 +189,13 @@ Notes on filling it in:
   determination plainly rather than inventing specifics.
 - `profile (assumed)` is `{{PROFILE}}`, rendered as the 2-4 sentence prose.
 - `coverage` reports the pipeline funnel (raw → deduped → panel/spot-checked) and judge
-  completion percentage, computed from the packets you were given (e.g. total non-null
-  votes ÷ total expected votes across all packets).
+  completion percentage — read these directly off `{{COVERAGE_JSON}}`, don't re-derive them
+  from the packets (packets alone can't tell you about a dead scout or a dead dedupe, and
+  `beyondPanelCap` findings carry no votes to count).
+- Every packet with `tier: "beyond-cap"` goes under "## Not verified (beyond panel cap)",
+  rendered as `- [suggested SEV] <location> — <claim>` using its `suggestedSeverity` — labelled
+  "suggested" because it was never verified, not as a confirmed severity. List every one; this
+  section exists so the panel cap never silently drops a severe candidate.
 - Each "Confirmed findings" entry's `verdict:` line records which seats landed where —
   `reproduce ✓` if that seat's vote was CONFIRM, `refute ✗-survived` if the refute seat's
   REJECT attempt failed to kill the finding (i.e. refute seat CONFIRMed or the finding
@@ -179,7 +214,8 @@ Notes on filling it in:
 `{"verdict": <string>, "reportMarkdown": <string>, "confirmedCount": <integer>, "escalations": [<string>, ...]}`
 
 - `verdict`: the verdict line from Step 4, exactly as it appears in the report header
-  (e.g. `"Blocking (2)"`, `"clean (3 nits)"`, `"Should-fix (1) [low coverage]"`).
+  (e.g. `"Blocking (2 confirmed)"`, `"clean (3 nits)"`, `"Should-fix (1 confirmed) [low
+  coverage]"`, `"Blocking (2 confirmed) [panel-capped: 3 unverified]"`).
 - `reportMarkdown`: the entire rendered report from Step 5, as one markdown string.
 - `confirmedCount`: integer count of entries under "## Confirmed findings".
 - `escalations`: array of one-line strings, one per entry under "## Escalations (need
