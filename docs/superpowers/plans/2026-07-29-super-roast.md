@@ -310,7 +310,19 @@ adversarial inputs the type system already excludes.
   - Red Flags (port roast's, then update): never dispatch three identical judge prompts — one judge per seat; never let the profile demote a floors-class finding; never re-litigate a prior report's Rejected section; never edit the artifact or create tasks (report-only); never guess the mode on ambiguous input; never report a clean verdict when scouts/judges failed — `[low coverage]`; never CONFIRM an external claim without a resolved citation; UNVERIFIED/incomplete panels escalate, never drop.
   - Honest limits: same-family caveat; recall bounded by scouts; web-only grounding for externals; profile inference can be wrong (that's why the header states it).
 - [ ] **Step 2: Trigger micro-test.** Dispatch 3 fresh haiku subagents, each given ONLY the frontmatter description plus one scenario, asked "would you invoke this skill? yes/no": (a) "I finished writing a design doc for a new sync service, look it over before I build it" → expect yes; (b) "review my branch before I open the PR" → expect yes; (c) "can you explain what this function does?" → expect no. Any miss → tighten the description wording and re-run all three.
-- [ ] **Step 3: Commit** — `git commit -m "feat(super-roast): SKILL.md"`
+- [ ] **Step 3: Implement design-mode lens widening in the engine.** Both roast and `triage-prompt.md` promise that a design-mode triage returning no domains widens the core lens set (adding security + future-maintainer) so the scout pool does not shrink — but the engine applies `config.coreLenses` unconditionally, and the orchestrator cannot decide it because triage runs inside the workflow. Give the config explicit semantics: **`config.coreLenses`** = lenses that always run; **`config.widenLenses`** = added only when design mode triages to no domains. In `skills/super-roast/super-roast-workflow.md`, change the design branch of `scoutNames` to:
+
+```javascript
+const domains = (triage?.domains ?? []).filter(d => d && d !== 'none').slice(0, 3)
+const scoutNames = mode === 'design'
+  ? [...config.coreLenses, ...(domains.length ? [] : (config.widenLenses ?? [])), ...domains.map(d => `domain:${d}`)]
+  : [...new Set([...config.coreLanes, ...(triage?.lanes ?? [])])]
+```
+
+SKILL.md documents both config keys, with design defaults `coreLenses: ['premortem','completeness','yagni','failure-mode','feasibility']` and `widenLenses: ['security','maintainer']`.
+
+- [ ] **Step 4: dryRun the design-mode branch** (this is a structural engine change, and the Task 1 dryRun only exercised PR mode). Run twice with `mode: 'design'`, stubs keyed to the design lens names: (a) triage stub returns `{"lanes":[],"domains":["queueing"]}` → assert 6 scouts dispatched (5 core + 1 domain), no widen lenses; (b) triage stub returns `{"lanes":[],"domains":[]}` → assert 7 scouts (5 core + 2 widen), no `domain:` scouts. Everything downstream of scouts is already covered by the Task 1 baseline, so a minimal dedupe stub returning one Blocking finding is enough. Record both results in the workflow doc's assertion section.
+- [ ] **Step 5: Commit** — `git commit -m "feat(super-roast): SKILL.md + design-mode lens widening"`
 
 ### Task 8: Live validation (both modes, before roast is deleted)
 
