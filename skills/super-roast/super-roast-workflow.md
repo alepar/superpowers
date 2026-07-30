@@ -306,3 +306,53 @@ no `domain:` entries.
 **All three `scoutNames` paths are now covered by at least one recorded run:** PR-mode lanes by
 the canonical baseline above (`wf_cbe52959-ff0`), design-mode with domains by `wf_2fab6c5d-dc9`,
 and design-mode widened by `wf_f1f77176-482`. This design-mode dryRun is validated.
+
+### Journal evidence for the three recorded runs (session-local — see caveat)
+
+Each `Workflow` run writes a per-agent journal at
+`<transcript-root>/<run-id>/journal.jsonl`, one line per agent lifecycle event
+(`started`/`result`/etc.); the count of `type:"result"` lines is the durable agent-dispatch
+count quoted above. For the session that produced these three runs, `<transcript-root>` was:
+
+```
+/Users/alepar/.claude/projects/-Users-alepar-AleCode-superpowers--claude-worktrees-super-roast/47038c17-f0dd-47c6-8516-79df0589c386/subagents/workflows/
+```
+
+giving:
+
+| Run | Journal path | `result` lines |
+|---|---|---|
+| `wf_cbe52959-ff0` (PR-mode baseline) | `<transcript-root>/wf_cbe52959-ff0/journal.jsonl` | 25 |
+| `wf_2fab6c5d-dc9` (design, case a) | `<transcript-root>/wf_2fab6c5d-dc9/journal.jsonl` | 12 |
+| `wf_f1f77176-482` (design, case b) | `<transcript-root>/wf_f1f77176-482/journal.jsonl` | 13 |
+
+**Caveat — this is session-local evidence, not durable evidence.** `<transcript-root>` lives
+under the harness's per-session project directory (keyed by machine path + session ID); it is
+not part of the repo, will not exist for someone who clones it, and may be pruned by the harness
+over time. The recorded run IDs and figures in this doc are the durable record; the journal
+path pattern above is provided so that *while the session that produced a run is still on
+disk*, its evidence is locatable and mechanically checkable (`grep -c '"type":"result"'
+<path>`), not just asserted in prose. **To re-verify from scratch** (e.g. after the journal is
+gone, or to check a doc edit didn't silently change behavior): re-run the dryRun with the exact
+`args` recorded for that case (canonical script + stub table above; design-mode args are in
+`task-7-report.md`) and compare the returned `coverage` object and agent count against the
+figures recorded here — the script and stubs are the reproducible source of truth, the journal
+is a point-in-time receipt.
+
+## Step 2 trigger micro-test (frontmatter description, SKILL.md)
+
+Recorded here (rather than only in the implementation report) so a maintainer who edits
+`SKILL.md`'s frontmatter `description` knows what to re-check and against which cases. Given
+**only** the verbatim frontmatter description string, three fresh haiku probes were asked
+"would you invoke this skill? yes/no":
+
+| Scenario | Expected | Result |
+|---|---|---|
+| "I finished writing a design doc for a new sync service, look it over before I build it" | yes | **yes** |
+| "review my branch before I open the PR" | yes | **yes** |
+| "can you explain what this function does?" | no | **no** |
+
+**3/3 on the current wording**, reproduced twice independently (once during implementation,
+once by the coordinator on a fresh set of probes) — both runs agreed 3/3. If the description is
+reworded, re-run these same three probes (or equivalents covering: design-mode trigger, PR-mode
+trigger, a negative "explain code" case) before trusting the new wording to trigger correctly.
