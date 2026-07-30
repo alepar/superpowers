@@ -115,11 +115,14 @@ Reasons over the seat evidence packets and issues per finding: **confirmed | rej
 (may overrule the panel arithmetic with cited reasoning) and **final severity**,
 environment-conditioned. Only the reporter sees the profile — scouts and judges stay
 profile-blind so recall and verification are never silently narrowed. Severity floors are
-profile-proof: confirmed injection/authZ-bypass/secrets that is potentially exploitable for
-privilege escalation or unauthorized data access (any network-exposed surface qualifies),
-data-loss or irreversible-migration risk on real data, and violations of the artifact's own
-stated core purpose are Blocking under any profile. The profile moves the Should-fix↔Nit
-boundary and down-weights resilience/observability/cost lanes for low-blast-radius projects.
+profile-proof: confirmed injection/authZ-bypass/secrets that is potentially exploitable to
+escalate privilege or reach data the invoker could not already reach — any network-exposed
+surface qualifies, **and so does local tooling running with privileges its caller lacks**;
+**a flaw whose only "attacker" is the invoker feeding their own inputs, gaining nothing they
+did not already hold, is judged on its merits rather than floored** — plus data-loss or
+irreversible-migration risk on real data, and violations of the artifact's own stated core
+purpose, are Blocking under any profile. The profile moves the Should-fix↔Nit boundary and
+down-weights resilience/observability/cost lanes for low-blast-radius projects.
 
 **Severity vocabulary (the only one, all stages): Blocking / Should-fix / Nit / FYI.**
 Overall verdict = highest confirmed severity + coverage qualifier. blocker/major/minor and
@@ -129,12 +132,15 @@ BLOCK/REVISE/PASS are retired, including in docs that reference them.
 
 Written to `docs/superpowers/reviews/YYYY-MM-DD-<topic>-roast-N.md` (N = iteration):
 
+The authoritative template is `skills/super-roast/reporter-prompt.md` — if this block and that
+one ever disagree, the prompt file wins and this one is stale.
+
 ```
-super-roast verdict: <Blocking (n) | Should-fix (n) | clean (n nits)> [low coverage]
+super-roast verdict: <Blocking (n confirmed) | Should-fix (n confirmed) | clean (n nits)> [low coverage] [panel-capped: N unverified]
 mode: design | PR        iteration: N of 3
 profile (assumed): <2–4 sentence inferred profile>
 inputs: <spec paths | branch@sha vs base@sha [+dirty] | PR#>
-coverage: <lanes ran> · <raw → deduped → panel/spot-checked counts> · <judge completion %>
+coverage: <lanes ran> · <raw → deduped → panel/spot-checked counts> · <judge completion %> · remainder-capped: N
 independence: same-family (Claude) — seat-differentiated panel
 
 ## Confirmed findings            ← consumed by super-plan, one task per finding
@@ -143,15 +149,28 @@ independence: same-family (Claude) — seat-differentiated panel
   evidence: <strongest seat evidence, file:line / URL+quote>
   fix-shape hint: <one advisory line>
 
+## Not verified (beyond panel cap)   ← severe candidates the panel cap left unverified — listed, never dropped
+- [suggested SEV] <location> — <claim>
+
+## Beyond remainder cap (count only)   ← low-severity candidates the dedupe remainder cap dropped; the count survives, the claims do not
+- <N> candidates dropped by the remainder cap — raise config.remainderCap and re-run to see them
+
 ## Rejected (with reason)        ← so re-roasts don't re-litigate
 ## Unverified nits (spot-checked)
 ## Escalations (need human)      ← UNVERIFIED externals, incomplete panels, material dissent
 ```
 
+The literal word `confirmed` in the verdict parenthetical is load-bearing: a caller may parse
+that line, and `clean (n nits)` deliberately omits it since nothing was confirmed.
+
 ### 7. Handoff & loop
 
-super-roast is **report-only** in both modes. It ends by invoking `superpowers:super-plan`
-with the report path (or returning the path to a non-interactive caller). super-plan fixes
+super-roast is **report-only** in both modes, and it does **not** invoke anything: it returns
+the report (and its path) to whoever called it and stops there. **`super-plan` owns the loop
+and calls super-roast, not the reverse** — `super-plan`'s §Adversarial Review Loop offers the
+review once the task tree has settled, and re-invokes super-roast for iteration N+1. (An
+earlier draft of this spec had super-roast end by invoking super-plan, which contradicted that
+skill's own contract and would have made the two mutually invoking.) super-plan fixes
 per its normal ladder (inline if small; interactive design work if large; subagent-driven
 implementation), then **auto-decides re-roast by fix scope**: mechanical single-file fixes
 with no design change → done; fixes that changed design decisions, data handling, or
@@ -166,10 +185,13 @@ marks resolved vs. regressed. The prior report file is the only cross-iteration 
 
 The Workflow script is a **stable engine**; everything that changes often is **data**.
 
-- **Engine (tested, changes rarely):** stage order, parallelism, tiered judge routing,
-  ≥2-of-3 aggregation with re-dispatch, caps application, `.filter(Boolean)` + coverage
-  gating (dead agents ⇒ `low coverage`, never a silent clean), required-field schemas
-  (verdict/severity/evidence — a missing field cannot slide to clean), report assembly.
+- **Engine (tested, changes rarely):** stage order, parallelism, tiered judge routing with
+  per-seat re-dispatch, the spot-check promotion rule, caps application, `.filter(Boolean)` +
+  coverage construction (dead agents ⇒ `low coverage`, never a silent clean), required-field
+  schemas (verdict/severity/evidence — a missing field cannot slide to clean), prompt-token
+  substitution. The **≥2-of-3 confirm arithmetic is not in the engine** — the script hands the
+  reporter raw per-seat votes plus a `valid` count, and the reporter applies (and may overrule)
+  the arithmetic; see `reporter-prompt.md` Step 1. A `dryRun` therefore cannot validate it.
 - **Data (flows through args + prompt files, trivially editable):** lane rosters and lane
   prompts, seat definitions, model tier per role, caps (50-remainder, iteration cap),
   severity floors list, profile-detection signal list.

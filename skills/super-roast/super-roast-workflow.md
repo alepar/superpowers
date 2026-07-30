@@ -75,9 +75,26 @@ substitutes with a small `fill(template, vars)` helper (plain string replacement
 
 | Prompt | Token(s) |
 |---|---|
+| `prompts.scouts.<name>` | `{{PRIOR_REPORT}}` |
+| `prompts.scoutDomainTemplate` | `{{DOMAIN}}`, `{{PRIOR_REPORT}}` |
 | `prompts.dedupe` | `{{FINDINGS_JSON}}` |
 | `prompts.seats.reproduce` / `.refute` / `.ground` | `{{FINDING_JSON}}` |
-| `prompts.reporter` | `{{PACKETS_JSON}}`, `{{PROFILE}}`, `{{PRIOR_REPORT}}`, `{{COVERAGE_JSON}}` |
+| `prompts.reporter` | `{{PACKETS_JSON}}`, `{{PROFILE}}`, `{{PRIOR_REPORT}}`, `{{COVERAGE_JSON}}`, `{{MODE}}`, `{{ITERATION}}`, `{{INPUTS}}` |
+
+**`prompts.scoutDomainTemplate` is why design-mode domain scouts work at all.** Domain names are
+open-ended free text produced by triage **at runtime**, but `args.prompts` is assembled by the
+orchestrator **before** the script runs — so `prompts.scouts['domain:queueing']` can never be
+pre-populated for a domain nobody knew about yet. The orchestrator therefore supplies **one**
+`scoutDomainTemplate` string (the `Lens: domain:<name>` assembly from
+`./scout-prompts-design.md`, carrying a literal `{{DOMAIN}}` token), and the script `fill()`s it
+per triaged domain exactly as it fills seat and dedupe prompts. Without this, naming domains
+would both suppress `config.widenLenses` **and** yield undispatchable scouts — making a triage
+that found domains strictly weaker than one that found none.
+
+**`{{MODE}}` / `{{ITERATION}}` / `{{INPUTS}}`** carry the three report-header facts the reporter
+cannot derive from packets: `args.mode`, `args.iteration` rendered as `N of <cap>`, and
+`args.inputs` (the spec paths, or `branch@sha vs base@sha [+dirty]`, or `PR#` string the
+pre-flight step recorded).
 
 `{{COVERAGE_JSON}}` carries the coverage object the script can compute **before** the reporter
 call — scout dispatch/dead counts, the raw→deduped funnel, `beyondCap`, `beyondPanelCap`,
@@ -86,8 +103,8 @@ emit the coverage line and the `[low coverage]`/`[panel-capped]` qualifiers, but
 see any of that until this token was added — see the engine script's coverage-building
 comment below for exactly what is (and isn't) in it.
 
-`prompts.triage` and each `prompts.scouts.<name>` carry no tokens — they need no runtime
-substitution and are used as plain strings. This is the contract Task 7's SKILL.md and the
+`prompts.triage` carries no tokens — it needs no runtime substitution and is used as a plain
+string. This is the contract Task 7's SKILL.md and the
 orchestrator build `args.prompts` against; a function anywhere in `args` makes the script
 unrunnable (an earlier draft of this doc had `dedupe`/`seats.*`/`reporter` as functions —
 that draft never crossed the Workflow `args` boundary and was corrected before any real run).
@@ -134,21 +151,47 @@ const REPORT = { type:'object', properties:{ verdict:{type:'string'}, reportMark
 // both, and fail loudly (not with a cryptic destructure error) if the required shape is missing.
 const A = typeof args === 'string' ? JSON.parse(args) : args
 if (!A || !A.prompts || !A.config) throw new Error('super-roast: args must carry {mode, prompts, config} — got ' + JSON.stringify(A).slice(0, 200))
-const { mode, profile, priorReport = '', dryRun = false, prompts, config } = A
+const { mode, profile, priorReport = '', inputs = '', iteration = 1, dryRun = false, prompts, config } = A
 const model = role => dryRun ? 'haiku' : config.models[role]
 const pick = (real, stubKey) => dryRun ? prompts.stubs[stubKey] : real
-const fill = (template, vars) => Object.entries(vars).reduce((s, [token, value]) => s.replaceAll(token, value), template)
+// The replacement is a FUNCTION, not a string: a bare string replacement would let `$&`/`$'`/`$1`
+// inside a substituted value (prior-report markdown and JSON blobs are arbitrary text) be
+// re-interpreted by replaceAll as capture-group syntax and silently corrupt the prompt.
+const fill = (template, vars) => Object.entries(vars).reduce((s, [token, value]) => s.replaceAll(token, () => String(value ?? '')), template)
 
 // Triage — design: domains for expert critics; PR: conditional-lane activation (recall-leaning).
+// A dead triage is NOT a clean triage: in PR mode `triage?.lanes ?? []` silently collapses the
+// roster to core lanes, which is indistinguishable from "triage activated nothing" unless we
+// record it. triageDead feeds coverage and the reporter's [low coverage] qualifier.
 const triage = await agent(pick(prompts.triage, 'triage'), { label:'triage', phase:'Triage', model:model('triage'), schema:LANES })
+const triageDead = !triage
 const domains = (triage?.domains ?? []).filter(d => d && d !== 'none').slice(0, 3)
 const scoutNames = mode === 'design'
   ? [...config.coreLenses, ...(domains.length ? [] : (config.widenLenses ?? [])), ...domains.map(d => `domain:${d}`)]
   : [...new Set([...config.coreLanes, ...(triage?.lanes ?? [])])]
 
+// Domain scouts are named at RUNTIME from open-ended triage output, so `prompts.scouts[name]`
+// can never hold them (args.prompts is assembled before this script runs). Resolve them from the
+// single `prompts.scoutDomainTemplate` string instead, filling {{DOMAIN}} the same way seats fill
+// {{FINDING_JSON}}. Every scout prompt also gets {{PRIOR_REPORT}} so re-roasts don't re-surface
+// findings the prior report already rejected. An unresolvable name yields null → counted as a
+// dead scout below (coverage loss, visible), never an exception mid-run.
+const scoutPrompt = name => {
+  const base = prompts.scouts?.[name]
+    ?? (name.startsWith('domain:') && prompts.scoutDomainTemplate
+        ? fill(prompts.scoutDomainTemplate, { '{{DOMAIN}}': name.slice('domain:'.length) })
+        : null)
+  return base ? fill(base, { '{{PRIOR_REPORT}}': priorReport }) : null
+}
+
 // Scouts — parallel, high-recall. Nulls are counted (coverage), then filtered.
-const scoutResults = await parallel(scoutNames.map(name => () =>
-  agent(pick(prompts.scouts[name], `scout:${name}`), { label:`scout:${name}`, phase:'Scout', model:model('scout'), schema:FINDINGS })))
+// pick() runs BEFORE the guard so dryRun keeps dispatching from the stub table exactly as the
+// recorded baselines below did; the guard only ever fires on a real run with an unresolvable name.
+const scoutResults = await parallel(scoutNames.map(name => async () => {
+  const p = pick(scoutPrompt(name), `scout:${name}`)
+  if (!p) return null   // unresolvable prompt ⇒ dead scout, not a crash
+  return agent(p, { label:`scout:${name}`, phase:'Scout', model:model('scout'), schema:FINDINGS })
+}))
 const scoutsDead = scoutResults.filter(r => !r).length
 const raw = scoutResults.filter(Boolean).flatMap(r => r.findings ?? [])
 
@@ -202,6 +245,7 @@ const judged = (await parallel([...severe.map(f => () => panel(f)), ...rest.map(
 const totalSeats = judged.reduce((a, j) => a + j.votes.length, 0)
 const validSeats = judged.reduce((a, j) => a + j.votes.filter(Boolean).length, 0)
 const coverage = {
+  triageDead,
   scoutsDispatched: scoutNames.length, scoutsDead,
   rawFindings: raw.length, dedupedFindings: deduped.length, beyondCap: dd?.beyondCapCount ?? 0,
   beyondPanelCap: beyondPanelCap.length, dedupeDead,
@@ -211,7 +255,9 @@ const coverage = {
   judgeCompletionPct: totalSeats ? Math.round(100 * validSeats / totalSeats) : 0,
 }
 
-// Reporter — final verdicts + env-aware severity; aggregation arithmetic is IN the packets, the reporter may overrule with cited reasoning.
+// Reporter — final verdicts + env-aware severity. The script does NOT aggregate: it hands over
+// the raw per-seat votes plus a `valid` count, and the reporter applies the ≥2-of-3 arithmetic
+// (and may overrule it with cited seat evidence). See reporter-prompt.md Step 1.
 // beyond-cap packets carry no votes (never dispatched to a judge) — the reporter lists them
 // under their own section by suggestedSeverity; it must not verify or count them as judged.
 const packets = [
@@ -223,6 +269,10 @@ const reporterPrompt = fill(prompts.reporter, {
   '{{PROFILE}}': profile,
   '{{PRIOR_REPORT}}': priorReport,
   '{{COVERAGE_JSON}}': JSON.stringify(coverage),
+  // Report-header facts the reporter cannot derive from packets — supplied, not guessed.
+  '{{MODE}}': mode,
+  '{{ITERATION}}': `${iteration} of ${config.iterationCap ?? 3}`,
+  '{{INPUTS}}': inputs,
 })
 const rep = await agent(pick(reporterPrompt, 'reporter'), { label:'reporter', phase:'Report', model:model('reporter'), schema:REPORT })
 
@@ -240,13 +290,21 @@ return {
 ## dryRun policy
 
 `dryRun: true` swaps every agent call for a haiku stub returning canned JSON, validating the
-**engine topology** — call counts, routing, aggregation arithmetic, coverage gating — for
+**engine topology** — call counts, routing, cap application, coverage-object construction — for
 pennies, without touching a real spec/diff or spending opus/sonnet/fable budget.
 
+**What a dryRun can and cannot prove.** It proves what the *script* owns: stage order, which
+findings go to a panel vs. a spot check, the spot-check **promotion** rule, the panel/remainder
+caps, schemas, and the `coverage` fields. It proves nothing about the **≥2-of-3 confirm
+arithmetic** — that lives in the reporter prompt (`./reporter-prompt.md` Step 1), and `pick()`
+replaces the reporter with a fixed canned stub on every dryRun, so no dryRun assertion can ever
+reach it. The recorded baselines below are evidence of topology, not of verdict correctness; the
+reporter's arithmetic is exercised only by a live run.
+
 Required **once at implementation** and **after any structural engine edit**: stage order,
-routing (which findings go to a panel vs. a spot check), aggregation (the ≥2-of-3 / promotion
-logic), schemas, or coverage gating. **Data edits skip it** — lane rosters, prompt wording,
-caps, model tiers are trivial by construction and can't silently break topology.
+routing, the promotion rule, cap application, schemas, or coverage construction. **Data edits
+skip it** — lane rosters, prompt wording, caps, model tiers are trivial by construction and
+can't silently break topology.
 
 The orchestrator should pass `args` as an actual JSON value wherever the harness supports it —
 the string-tolerance in the engine script exists as a defensive fallback for harness paths that
@@ -440,6 +498,61 @@ reporter, and the `fill(prompts.reporter, {...})` call includes
 confirmed correct **by code inspection**, and will be exercised for real — with a live fable
 reporter actually reading and rendering it — by the PR-mode live run (Step 2).
 
+## Post-review fix wave (2026-07-30) — what the recorded baselines do and don't still cover
+
+The final whole-branch review changed the engine in four places. What that means for everything
+recorded above:
+
+- **Token substitution is structurally un-dryRunnable, same as `{{COVERAGE_JSON}}`.** `pick()`
+  swaps every real, filled prompt for a canned stub *before* dispatch, so the new
+  `prompts.scoutDomainTemplate` → `{{DOMAIN}}` resolution, the scouts' `{{PRIOR_REPORT}}` fill,
+  and the reporter's `{{MODE}}`/`{{ITERATION}}`/`{{INPUTS}}` fills are all built-then-discarded
+  under `dryRun`. They are **inspection-verified** (the `fill()` calls are in the script above,
+  and `scoutPrompt()` returns `null` only when neither a named prompt nor a template exists) and
+  are exercised for real only by a live run. This is also precisely why the recorded design-mode
+  case (a) passed while real design-mode domain scouts could not be dispatched at all: its
+  `domain:queueing` scout resolved through `prompts.stubs['scout:domain:queueing']`, never
+  through `prompts.scouts`.
+- **Scout-dispatch counts are unchanged.** The new guard sits *after* `pick()`, so under `dryRun`
+  every name in the stub table still dispatches — `scoutsDispatched`/`scoutsDead` in all four
+  recorded runs stand as written.
+- **`coverage.triageDead` is a new field, non-firing in every recorded run** (each used a triage
+  stub that returned normally), exactly like `dedupeDead` and `beyondPanelCap` were when first
+  added. A firing case needs a triage stub that returns nothing.
+- **Not re-dryRun in this wave.** The routing, cap and coverage-construction logic the baselines
+  assert on is byte-unchanged; the edits are prompt-resolution and one added coverage field. A
+  fresh topology dryRun is still owed before the next structural edit builds on top of these.
+- **What was checked instead: a local mock harness** (the script body extracted from this doc and
+  run under Node with stub `agent()`/`parallel()` — cheaper than a dryRun and, unlike a dryRun,
+  able to see the *filled* prompts because it doesn't call `pick()`'s stub path). Design mode,
+  triage returning `['queueing','sharding']`: **7 scouts dispatched** (5 core + both domains),
+  `widenLenses` correctly suppressed, `domain:queueing`'s prompt rendered as `You are a queueing
+  expert. Prior: <prior report>`, and `{{MODE}}`/`{{ITERATION}}`/`{{INPUTS}}` present in the
+  reporter prompt as `design` / `2 of 3` / `spec.md`. Re-run with `scoutDomainTemplate` **absent**:
+  **5 dispatched, `scoutsDead: 2`, no exception** — the guard degrades to coverage loss as
+  intended. A prior report containing `$&` and `$'` survived substitution byte-intact, confirming
+  the function-form `fill()`.
+
+## Accepted / deferred findings from this branch's own live runs
+
+Recorded so the gaps below read as deliberate choices rather than oversights. super-roast's own
+design was reviewed by super-roast (`docs/superpowers/reviews/2026-07-30-depth-cap-spec-roast-1.md`,
+findings tagged `[super-roast spec]`). Most of its confirmed findings were fixed on this branch —
+the dedupe-liveness Blocking, the `{{COVERAGE_JSON}}` Blocking, unbounded judge fan-out
+(`config.panelCap`), the beyond-remainder-cap reporting gap, the dead-triage signal, and the
+super-plan integration direction. These confirmed findings are **knowingly not fixed**:
+
+| Confirmed finding (design run) | Status | Why |
+|---|---|---|
+| §6 — floor 3 ("violation of the artifact's own stated core purpose") can't be applied: the reporter never receives the artifact or its stated purpose | **Deferred** | Fixing it means handing the full artifact to the reporter, changing what the gate stage reads and its cost profile. Needs its own design pass, not a patch in a consistency wave. |
+| §3 — design-mode `spike` recommendations survive dedupe and the schema, then have no report section | **Deferred** | The data path exists end-to-end (`FINDINGS`/`DEDUPED` both carry `spike`); only the report template lacks a slot. Adding a section is cheap but changes the byte-identical template shared with SKILL.md, so it is queued as its own change. |
+| §5 — an under-graded severe finding is spot-checked only by the refute seat, whose job is to kill findings | **Accepted** | The promotion rule (a spot check returning CONFIRM at Blocking/Should-fix escalates to a full panel) is the deliberate mitigation. It is one-sided by construction, and that residual is the price of the tiering. |
+| §7 — the 3-iteration cap depends on the caller handing back the prior report; nothing discovers existing `-roast-N.md` files | **Accepted** | `super-plan` owns the loop and its iteration state (see `skills/super-plan/SKILL.md` §Adversarial Review Loop). super-roast stays report-only; `args.iteration` is caller-supplied by contract. |
+| §1 — in PR mode the report is written into the working tree, which PR-mode inputs include, so a re-roast can review its own prior report | **Deferred** | Real, but only bites from iteration 2 onward and is avoided in practice by committing the report before re-roasting. A proper fix (excluding `docs/superpowers/reviews/` from PR inputs) belongs with the pre-flight input spec. |
+| §1 + §6 — profile inference runs inline in the main session, which on the brainstorming path authored the spec | **Accepted** | Deliberate: the profile is stated in the report header (`profile (assumed):`) precisely so a wrong or biased inference is visible and correctable by re-running, rather than silently applied. |
+
+Any future confirmed finding this branch chooses not to fix belongs in this table, with a reason.
+
 ## Step 2 trigger micro-test (frontmatter description, SKILL.md)
 
 Recorded here (rather than only in the implementation report) so a maintainer who edits
@@ -453,7 +566,16 @@ Recorded here (rather than only in the implementation report) so a maintainer wh
 | "review my branch before I open the PR" | yes | **yes** |
 | "can you explain what this function does?" | no | **no** |
 
-**3/3 on the current wording**, reproduced twice independently (once during implementation,
-once by the coordinator on a fresh set of probes) — both runs agreed 3/3. If the description is
-reworded, re-run these same three probes (or equivalents covering: design-mode trigger, PR-mode
-trigger, a negative "explain code" case) before trusting the new wording to trigger correctly.
+**3/3 on the current wording.** If the description is reworded, re-run these same three probes
+(or equivalents covering: design-mode trigger, PR-mode trigger, a negative "explain code" case)
+before trusting the new wording to trigger correctly.
+
+**Wording history.** The original description appended a workflow summary — "surfaces gaps,
+unverified assumptions, and defects, **verifies them with a judge panel**, and reports severity
+calibrated to the project's blast radius". That scored 3/3 twice (once during implementation,
+once on a fresh coordinator re-run), but `skills/writing-skills/SKILL.md` is explicit that a
+description must state **triggering conditions only**, with a documented eval showing agents
+follow a description that summarizes workflow *instead of* reading the skill body. The
+description was trimmed to triggers alone on 2026-07-30 and the three probes were re-run on
+three fresh haiku subagents given only the new string plus one scenario each: **3/3 again**
+(yes / yes / no), so the trim cost no discoverability in either mode.

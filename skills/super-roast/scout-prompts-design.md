@@ -54,26 +54,36 @@ Report every defensible finding with location and evidence, including ones you a
 about — do not filter by severity or confidence; downstream stages do that. You do not assign
 severity at all; leave it out entirely.
 
+## Prior report
+If a prior review report appears below, do not re-surface any finding it lists as Rejected —
+that ground is already covered; spend your budget on what it missed.
+
+{{PRIOR_REPORT}}
+
 ## Required structured output (do NOT write a prose essay)
 
-1. **Load-bearing assumptions** — bullet list of what the design silently takes for granted.
-2. **Findings** — each finding as:
-   - **claim:** the specific problem, one sentence, scoped to exactly what your evidence
-     supports (required)
-   - **location:** where in the spec (section/quote) — or "absent" for a gap (required)
-   - **category:** the lens name for this dispatch — same value used to fill `[LENS]` above
-     (required)
-   - **external:** true if the claim depends on an external fact (so a judge must research
-     it), false if it's verifiable from the spec text alone (required)
-   - **evidence:** the spec quote, the cited URL + quote, or the reasoning chain that backs
-     the claim (required)
-   - **kind:** `GAP` (unaddressed by the spec) or `UNVERIFIED-ASSUMPTION` (the design leans on
-     something unverified) — optional; set it whenever the finding is one of these two.
-     (`ISSUE` is a third kind value used elsewhere in this scout schema; design-mode scouts
-     only ever use `GAP` or `UNVERIFIED-ASSUMPTION`.)
-   - **spike:** Question / Cheapest test / Kill criteria — optional; add it only for an
-     UNVERIFIED-ASSUMPTION that is both high-importance (load-bearing) and high-uncertainty
-     (little evidence either way)
+Findings, and nothing else — there is no free-text section, so anything you write outside a
+finding is discarded. In particular, a load-bearing assumption the design silently takes for
+granted is not a preamble: it is a finding of kind `UNVERIFIED-ASSUMPTION`, whose `evidence`
+names the spec text that leans on it and says what would have to be true.
+
+**Findings** — each finding as:
+- **claim:** the specific problem, one sentence, scoped to exactly what your evidence
+  supports (required)
+- **location:** where in the spec (section/quote) — or "absent" for a gap (required)
+- **category:** the lens name for this dispatch — same value used to fill `[LENS]` above
+  (required)
+- **external:** true if the claim depends on an external fact (so a judge must research
+  it), false if it's verifiable from the spec text alone (required)
+- **evidence:** the spec quote, the cited URL + quote, or the reasoning chain that backs
+  the claim (required)
+- **kind:** `GAP` (unaddressed by the spec) or `UNVERIFIED-ASSUMPTION` (the design leans on
+  something unverified) — optional; set it whenever the finding is one of these two.
+  (`ISSUE` is a third kind value used elsewhere in this scout schema; design-mode scouts
+  only ever use `GAP` or `UNVERIFIED-ASSUMPTION`.)
+- **spike:** Question / Cheapest test / Kill criteria — optional; add it only for an
+  UNVERIFIED-ASSUMPTION that is both high-importance (load-bearing) and high-uncertainty
+  (little evidence either way)
 
 Report only real, defensible findings. Quality over quantity — but do not soften.
 ```
@@ -116,9 +126,18 @@ As warranted for a security or maintainability review of this spec. These two le
 the core set when triage returns no domains (`domains: [none]`).
 ```
 
-## Lens: domain:\<name\>
+## Lens: domain:\<name\> — the `scoutDomainTemplate`
 
 ```
-You are a <name> expert. FIRST use web search to pull the typical failure modes and
-load-bearing assumptions for <name> designs, THEN test this spec against them.
+You are a {{DOMAIN}} expert. FIRST use web search to pull the typical failure modes and
+load-bearing assumptions for {{DOMAIN}} designs, THEN test this spec against them.
 ```
+
+Unlike every other lens, this one is **not** pre-assembled into `args.prompts.scouts`. Domain
+names come from triage at runtime and are open-ended free text, while `args.prompts` is built
+before the engine runs — so no orchestrator can pre-populate `prompts.scouts['domain:queueing']`
+for a domain it has not seen yet. Instead, the orchestrator assembles the shared core with this
+block substituted for `[LENS]`, leaves the `{{DOMAIN}}` tokens **unsubstituted**, and passes the
+result as the single string **`args.prompts.scoutDomainTemplate`**. The engine fills `{{DOMAIN}}`
+(and `{{PRIOR_REPORT}}`) once per triaged domain — see `./super-roast-workflow.md`'s prompt
+contract. Fill `category` with the full `domain:<name>` label for these scouts.

@@ -10,16 +10,20 @@ the human reading the report) cannot see around. The reporter does not re-derive
 from scratch; it reasons over the seat evidence already gathered.
 
 The string below is `args.prompts.reporter` verbatim: a plain string dispatchable through
-the Task tool with no engine-specific syntax. It contains exactly four engine-substituted
+the Task tool with no engine-specific syntax. It contains exactly seven engine-substituted
 tokens: `{{PACKETS_JSON}}` (the judged findings array), `{{PROFILE}}` (the inferred
 environment profile prose), `{{PRIOR_REPORT}}` (the previous iteration's full report
-markdown, or empty on iteration 1), and `{{COVERAGE_JSON}}` (the coverage object the engine
-already computed before this call — scout dispatch/dead counts, the raw→deduped funnel,
-`beyondCap`, `beyondPanelCap`, `dedupeDead`, and panel/spot/promoted counts). Use
-`{{COVERAGE_JSON}}`'s fields directly for the `coverage:` line and the `[low coverage]` /
-`[panel-capped]` verdict qualifiers — it exists precisely because those facts (a dead scout,
-a dead dedupe, how many severe findings the panel cap left unverified) are not otherwise
-derivable from `{{PACKETS_JSON}}` alone.
+markdown, or empty on iteration 1), `{{COVERAGE_JSON}}` (the coverage object the engine
+already computed before this call — `triageDead`, scout dispatch/dead counts, the
+raw→deduped funnel, `beyondCap`, `beyondPanelCap`, `dedupeDead`, and panel/spot/promoted
+counts), and the three report-header facts `{{MODE}}`, `{{ITERATION}}` (already rendered as
+`N of <cap>`), and `{{INPUTS}}`. Use `{{COVERAGE_JSON}}`'s fields directly for the
+`coverage:` line and the `[low coverage]` / `[panel-capped]` verdict qualifiers — it exists
+precisely because those facts (a dead triage, a dead scout, a dead dedupe, how many severe
+findings the panel cap left unverified) are not otherwise derivable from `{{PACKETS_JSON}}`
+alone. The `{{MODE}}`/`{{ITERATION}}`/`{{INPUTS}}` tokens exist for the same reason: the
+header's first four lines are run facts, not packet facts, and without them the reporter had
+no choice but to guess.
 
 ```
 You are the final gate of an adversarial review pipeline. You receive findings that have
@@ -46,6 +50,11 @@ suggestedSeverity`, optionally `kind`/`spike`), plus:
 
 ## Environment profile
 {{PROFILE}}
+
+## Run context (use verbatim in the report header — do not re-derive or invent these)
+mode: {{MODE}}
+iteration: {{ITERATION}}
+inputs: {{INPUTS}}
 
 ## Coverage (engine-computed, before this call)
 {{COVERAGE_JSON}}
@@ -149,11 +158,13 @@ appear literally in the parenthetical whenever anything confirmed** — `"Blocki
 wrong, `"Blocking (3 confirmed)"` is right. This is not cosmetic: a caller (e.g. super-plan)
 may parse this line, and `clean (<n> nits)` deliberately does NOT carry the word `confirmed`
 since nothing did.
-Append ` [low coverage]` when scouts/judges substantially failed: any dead scout,
-`{{COVERAGE_JSON}}`'s `dedupeDead` is `true` (dedupe returned nothing on both tries despite
-non-empty scout input — this is a failed dedupe, not a clean result), any judge completion
-below 100% (i.e. any `valid` < the tier's full seat count anywhere in the packets), or zero
-raw findings on a non-trivial artifact. Low coverage is a fact about the run, independent of
+Append ` [low coverage]` when any stage substantially failed: `{{COVERAGE_JSON}}`'s
+`triageDead` is `true` (triage returned nothing, so every conditional PR lane and every
+domain scout was silently skipped — the roster you see is the fallback, not a triage
+decision), any dead scout, `{{COVERAGE_JSON}}`'s `dedupeDead` is `true` (dedupe returned
+nothing on both tries despite non-empty scout input — this is a failed dedupe, not a clean
+result), any judge completion below 100% (i.e. any `valid` < the tier's full seat count
+anywhere in the packets), or zero raw findings on a non-trivial artifact. Low coverage is a fact about the run, independent of
 whether anything confirmed — append it even to a `clean` verdict.
 Append ` [panel-capped: N unverified]` when `{{COVERAGE_JSON}}`'s `beyondPanelCap` is
 non-zero, with N equal to that count. This is independent of `[low coverage]` — both
@@ -168,7 +179,7 @@ super-roast verdict: <Blocking (n confirmed) | Should-fix (n confirmed) | clean 
 mode: design | PR        iteration: N of 3
 profile (assumed): <2–4 sentence inferred profile>
 inputs: <spec paths | branch@sha vs base@sha [+dirty] | PR#>
-coverage: <lanes ran> · <raw → deduped → panel/spot-checked counts> · <judge completion %>
+coverage: <lanes ran> · <raw → deduped → panel/spot-checked counts> · <judge completion %> · remainder-capped: N
 independence: same-family (Claude) — seat-differentiated panel
 
 ## Confirmed findings            ← consumed by super-plan, one task per finding
@@ -180,20 +191,33 @@ independence: same-family (Claude) — seat-differentiated panel
 ## Not verified (beyond panel cap)   ← severe candidates the panel cap left unverified — listed, never dropped
 - [suggested SEV] <location> — <claim>
 
+## Beyond remainder cap (count only)   ← low-severity candidates the dedupe remainder cap dropped; the count survives, the claims do not
+- <N> candidates dropped by the remainder cap — raise config.remainderCap and re-run to see them
+
 ## Rejected (with reason)        ← so re-roasts don't re-litigate
 ## Unverified nits (spot-checked)
 ## Escalations (need human)      ← UNVERIFIED externals, incomplete panels, material dissent
 ---
 
 Notes on filling it in:
-- `mode`, `iteration`, `inputs` come from run context available to you; if any is not
-  derivable from the packets/profile/prior report you were given, state your best
-  determination plainly rather than inventing specifics.
+- `mode`, `iteration`, `inputs` come from the "## Run context" section above — use `{{MODE}}`,
+  `{{ITERATION}}`, and `{{INPUTS}}` verbatim. Do not re-derive them from the packets and do not
+  invent specifics; if a token arrives empty, write `not supplied` rather than a guess.
 - `profile (assumed)` is `{{PROFILE}}`, rendered as the 2-4 sentence prose.
 - `coverage` reports the pipeline funnel (raw → deduped → panel/spot-checked) and judge
   completion percentage — read these directly off `{{COVERAGE_JSON}}`, don't re-derive them
-  from the packets (packets alone can't tell you about a dead scout or a dead dedupe, and
-  `beyondPanelCap` findings carry no votes to count).
+  from the packets (packets alone can't tell you about a dead triage, a dead scout or a dead
+  dedupe, and `beyondPanelCap` findings carry no votes to count). The trailing
+  `remainder-capped: N` term is `{{COVERAGE_JSON}}`'s `beyondCap` — print it every run, `0`
+  included.
+- **`beyondCap` and `beyondPanelCap` are two different losses — never merge them.**
+  `beyondPanelCap` findings survived dedupe with a severe suggested severity and arrive as
+  `tier: "beyond-cap"` packets, so they are listed individually under "## Not verified (beyond
+  panel cap)". `beyondCap` findings were cut by the **deduper's** remainder cap before this
+  stage: only their count reaches you, so "## Beyond remainder cap (count only)" carries the
+  number and nothing more. When `beyondCap` is `0`, write `- none` under that heading; when it
+  is non-zero, state the count. Either way the heading stays — a silently omitted section is
+  how a dropped finding becomes invisible.
 - Every packet with `tier: "beyond-cap"` goes under "## Not verified (beyond panel cap)",
   rendered as `- [suggested SEV] <location> — <claim>` using its `suggestedSeverity` — labelled
   "suggested" because it was never verified, not as a confirmed severity. List every one; this

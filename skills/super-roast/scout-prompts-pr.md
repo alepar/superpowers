@@ -53,9 +53,19 @@ Report every defensible finding with location and evidence, including ones you a
 about — do not filter by severity or confidence; downstream stages do that. You do not assign
 severity at all; leave it out entirely.
 
+Your lane ends with a **pragmatism filter**. It tells you what is worth a finding in this lane
+and what is noise — it is a recall guide, not a grading rubric. Never translate it into a
+severity label, and never write the words `Blocking`, `Should-fix`, `Nit`, or `FYI` anywhere in
+your output: those belong to stages after you, and a scout-assigned severity anchors them. When
+the filter says something "matters most" or "is rarely worth reporting", express that by
+**reporting it or not**, and by putting the deciding fact (this path is hot / this process is
+short-lived / this input is trusted) into the finding's `evidence` where a judge can check it.
+
 ## Prior report
-If a prior review report is supplied, do not re-surface any finding it lists as Rejected — that
-ground is already covered; spend your budget on what it missed.
+If a prior review report appears below, do not re-surface any finding it lists as Rejected —
+that ground is already covered; spend your budget on what it missed.
+
+{{PRIOR_REPORT}}
 
 ## Required structured output (do NOT write a prose essay)
 
@@ -123,9 +133,11 @@ authN/authZ, secrets, or crypto — per OWASP's secure-code-review lens?
 9. Path traversal: user input in file paths without canonicalization.
 10. Sensitive-data-in-error: stack traces/internal detail returned to clients.
 
-**Pragmatism filter:** any injection, missing authZ on a sensitive resource, or a committed
-secret is Blocking, no exceptions. Crypto/deserialization on untrusted input is Blocking; on
-fully-internal trusted data it's Should-fix.
+**Pragmatism filter:** always report any injection, any missing authZ on a sensitive resource,
+and any committed secret — no exceptions, and never suppress one because the surface looks
+internal. Always report crypto/deserialization problems on untrusted input; report them on
+fully-internal trusted data too, but say in `evidence` that the input is trusted and why, so a
+judge can weigh it rather than guess.
 ```
 
 ## Lane: premortem
@@ -157,11 +169,11 @@ conditions (timeouts, retries, resource growth), not just under the happy path t
 11. Thread-pool/connection-pool exhaustion under load; rate-limit/quota/disk/FD exhaustion
     not considered.
 
-**Pragmatism filter:** missing timeout on an external call in a request path, or unbounded
-growth on a long-running service, is Blocking — both are classic incident causes. Retry-
-without-jitter on a high-fanout path is Should-fix/Blocking. On a one-off internal batch script
-or short-lived CLI, resilience/resource polish is Nit — judge by process lifetime and
-invocation rate.
+**Pragmatism filter:** always report a missing timeout on an external call in a request path,
+unbounded growth on a long-running service, and retry-without-jitter on a high-fanout path —
+all three are classic incident causes. On a one-off internal batch script or short-lived CLI,
+resilience/resource polish is usually not worth a finding; judge by process lifetime and
+invocation rate, and when you do report it there, state the lifetime in `evidence`.
 ```
 
 ## Lane: simplicity-design
@@ -207,10 +219,11 @@ exposing more complexity than it needs to, no logic living at the wrong abstract
     from scratch.
 
 **Pragmatism filter:** any complex code should be justified by the actual requirement — if a
-simpler form was available and skipped, that's Should-fix. Single-responsibility violations
-and structural-testability smells matter most on logic that's actually risky or already
-under test; on a trivial, stable helper they're Nit. BDD-naming gaps are Nit unless the test
-names are unreadable enough to erode the suite's value as documentation. Flag shallow modules,
+simpler form was available and skipped, that is worth reporting. Single-responsibility
+violations and structural-testability smells matter most on logic that's actually risky or
+already under test; on a trivial, stable helper they are rarely worth a finding. BDD-naming
+gaps are usually not worth reporting unless the test names are unreadable enough to erode the
+suite's value as documentation. Flag shallow modules,
 leaked implementation details, and wrong-abstraction-level placement on public/shared
 interfaces — cheap to fix now, expensive after adoption. Don't demand an abstraction for a
 single call site, and don't block on subjective architectural taste when the "simpler"
@@ -256,9 +269,10 @@ that runs often enough for it to matter?
 hot — research what "hot path" means in this codebase (invocations per process per second)
 rather than assuming. Preallocation and pooling are worth flagging only where the path is hot
 *and* the max/typical size is knowable; don't chase marginal allocation wins on a path that
-isn't hot — writing allocation-perfect code there is overengineering, not diligence. N+1 or
-cache-invalidation bugs on a user-scaling path are Should-fix→Blocking (they produce wrong
-answers, not just slow ones); the same pattern on a rarely-called admin page is Nit.
+isn't hot — writing allocation-perfect code there is overengineering, not diligence. Always
+report N+1 or cache-invalidation bugs on a user-scaling path (they produce wrong answers, not
+just slow ones); the same pattern on a rarely-called admin page is rarely worth a finding — and
+if you report it anyway, name the call frequency in `evidence`.
 ```
 
 ## Lane: concurrency-async
@@ -300,14 +314,14 @@ unsynchronized shared state, undisciplined locking, or dropped cancellation/back
 13. Goroutine/thread leaks on a cancelled context; timers/listeners never cleaned up.
 14. `ConfigureAwait(false)` missing in library code (C#).
 
-**Pragmatism filter:** sync-over-async or a real data race in a server request path is
-Blocking — starvation and races have distinctive, hard-to-reproduce production signatures. A
-dropped cancellation token or an unguaranteed ordering assumption is Should-fix. Lock-
-discipline findings (nested locks, over-synchronization where safe publication would do, a
-full mutex on a contended path) are Should-fix when they sit on a hot or genuinely contended
-path — the goal is balanced pragmatism and performance, not blanket lock elimination; a full
-mutex on a rarely-contended path is fine as-is. In single-threaded/non-async code, route by
-language/runtime — don't invent a race that can't occur.
+**Pragmatism filter:** always report sync-over-async or a real data race in a server request
+path — starvation and races have distinctive, hard-to-reproduce production signatures. A
+dropped cancellation token or an unguaranteed ordering assumption is likewise worth reporting.
+Report lock-discipline findings (nested locks, over-synchronization where safe publication
+would do, a full mutex on a contended path) when they sit on a hot or genuinely contended path
+— the goal is balanced pragmatism and performance, not blanket lock elimination; a full mutex
+on a rarely-contended path is fine as-is and not a finding. In single-threaded/non-async code,
+route by language/runtime — don't invent a race that can't occur.
 ```
 
 ## Lane: data-migrations
@@ -331,9 +345,10 @@ integrity, and recoverability across the deploy?
    tag.
 9. Migration-vs-deploy ordering: new code reads a column the migration hasn't added yet.
 
-**Pragmatism filter:** anything that can lose data or lock a production table is Blocking. Any
-schema change that isn't backward-compatible for at least one deploy is Blocking. A migration
-on a tiny lookup table is low-risk — right-size the scrutiny.
+**Pragmatism filter:** always report anything that can lose data or lock a production table,
+and any schema change that isn't backward-compatible for at least one deploy. A migration on a
+tiny lookup table is low-risk — right-size the scrutiny, and note the table's size in
+`evidence` when you report one anyway.
 ```
 
 ## Lane: deploy-safety
@@ -352,9 +367,10 @@ flag gating, version-skew tolerance, config/infra readiness?
 5. Cross-service deploy ordering dependency not documented.
 6. No stated way to disable the change if it misbehaves in production.
 
-**Pragmatism filter:** any change that can't be rolled back safely, or that breaks under
-version skew during a rolling deploy, is Blocking. A purely additive, flag-gated change is
-low-risk. An internal single-instance tool doesn't need skew tolerance.
+**Pragmatism filter:** always report a change that can't be rolled back safely, or that breaks
+under version skew during a rolling deploy. A purely additive, flag-gated change is low-risk
+and rarely worth a finding. An internal single-instance tool doesn't need skew tolerance —
+don't report its absence there.
 ```
 
 ## Lane: api-contract
@@ -377,10 +393,10 @@ versioning — respecting Hyrum's Law that all observable behavior gets depended
    schema/codes.
 7. Over-broad public surface — exposing more than the team will commit to maintaining.
 
-**Pragmatism filter:** breaking a published contract without a migration path is Blocking.
-Ergonomics/naming on a brand-new internal API is Should-fix/Nit — cheaper to fix now than
-after adoption. Prefer a minimal exposed surface that expands over one exposed broadly that
-later has to shrink.
+**Pragmatism filter:** always report breaking a published contract without a migration path.
+Ergonomics/naming on a brand-new internal API is worth reporting too — cheaper to fix now than
+after adoption — but say in `evidence` that the surface is new and internal. Prefer a minimal
+exposed surface that expands over one exposed broadly that later has to shrink.
 ```
 
 ## Lane: observability
@@ -400,9 +416,9 @@ tracing, and alerting on the new or changed paths?
 6. Unstructured free-text logging where the codebase uses structured logs.
 7. New critical path with no alert/SLO hook.
 
-**Pragmatism filter:** PII-in-logs is Blocking (compliance blast radius). Silent failure on a
-critical path is Should-fix. A high-cardinality label is Should-fix — it can take down
-monitoring for everyone. Don't demand a dashboard for a trivial internal change.
+**Pragmatism filter:** always report PII-in-logs (compliance blast radius), silent failure on a
+critical path, and high-cardinality metric labels — the last can take down monitoring for
+everyone. Don't demand a dashboard for a trivial internal change.
 ```
 
 ## Lane: testing
@@ -425,10 +441,10 @@ branches, determinism — rather than naming or line-count theater?
 8. Copy-pasted setup that should be a fixture; near-duplicate cases that should be
    parameterized.
 
-**Pragmatism filter:** missing tests on a risky path is Should-fix→Blocking. Flakiness risk is
-Should-fix — it erodes the signal of the whole suite. Coverage on low-risk code has
-diminishing returns — don't demand it. Tests are code too; don't accept complexity in them you
-wouldn't accept elsewhere.
+**Pragmatism filter:** always report missing tests on a risky path, and report flakiness risk —
+it erodes the signal of the whole suite. Coverage on low-risk code has diminishing returns —
+don't demand it, and don't report its absence. Tests are code too; don't accept complexity in
+them you wouldn't accept elsewhere.
 ```
 
 ## Lane: dependency
@@ -446,8 +462,8 @@ licensed, and pinned?
    notable bundle-size impact.
 6. Unpinned/floating version; missing lockfile update; a typosquat-looking package name.
 
-**Pragmatism filter:** a new dependency with a CVE or an incompatible license is Blocking. An
-unjustified dependency duplicating existing capability is Should-fix. A well-maintained,
+**Pragmatism filter:** always report a new dependency carrying a CVE or an incompatible
+license, and report one that duplicates capability the repo already has. A well-maintained,
 widely-used, permissively-licensed library is fine — don't reflexively reject it. Check the
 existing dependency set before claiming "we already have this."
 ```
@@ -477,9 +493,10 @@ a11y/i18n current for what it touches?
 12. (i18n, user-facing frontend only) Hardcoded user-facing strings, concatenated
     translations, non-localized dates/numbers/currency.
 
-**Pragmatism filter:** a giant mixed PR is Should-fix (ask to split) before deep review —
-cheaper than reviewing it badly. Docs/ADR findings are Should-fix only for a public API or a
-load-bearing decision, otherwise Nit. Privacy findings (unretained PII, missing audit log) are
-Blocking; routine cost findings are FYI unless the change plausibly multiplies a bill line.
-a11y/i18n findings apply only to user-facing frontend files — route by file type.
+**Pragmatism filter:** report a giant mixed PR (ask to split) before deep review — cheaper than
+reviewing it badly. Report docs/ADR gaps for a public API or a load-bearing decision; elsewhere
+they are rarely worth a finding. Always report privacy problems (unretained PII, missing audit
+log on sensitive access). Routine cost observations aren't worth reporting unless the change
+plausibly multiplies a bill line. a11y/i18n findings apply only to user-facing frontend files —
+route by file type.
 ```

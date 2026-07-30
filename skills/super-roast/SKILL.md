@@ -1,6 +1,6 @@
 ---
 name: super-roast
-description: Use when adversarially reviewing either a design doc/spec/RFC before implementation or a PR/branch/diff before merge — surfaces gaps, unverified assumptions, and defects, verifies them with a judge panel, and reports severity calibrated to the project's blast radius. Not for reviewing prose style or answering questions about code.
+description: Use when adversarially reviewing a design doc, spec, or RFC before implementation, or a PR, branch, or diff before merge. Not for reviewing prose style, and not for answering questions about what code does.
 ---
 
 # super-roast
@@ -82,6 +82,15 @@ config keys:
 Non-empty domains never trigger widening — the domain scouts themselves cover that ground.
 PR mode has no equivalent: `config.coreLanes` always runs, and triage only ever adds lanes.
 
+**Domain scouts come from a template, not from `prompts.scouts`.** Domains are open-ended free
+text that triage produces *at runtime*, while `args.prompts` is assembled *before* the engine
+runs — so a per-domain entry under `prompts.scouts` can never exist. The orchestrator instead
+supplies one **`prompts.scoutDomainTemplate`** string (the `Lens: domain:<name>` assembly in
+`./scout-prompts-design.md`) carrying a literal `{{DOMAIN}}` token, and the engine fills it once
+per triaged domain. Skip this and naming domains is strictly worse than naming none: widening is
+suppressed *and* the domain scouts are undispatchable. A scout name that resolves to no prompt
+is counted as a dead scout (coverage loss, visible in the verdict), never a crashed run.
+
 ### Severity vocabulary (the only one)
 
 **Blocking | Should-fix | Nit | FYI.** `blocker/major/minor` and `BLOCK/REVISE/PASS` do not
@@ -121,7 +130,7 @@ super-roast verdict: <Blocking (n confirmed) | Should-fix (n confirmed) | clean 
 mode: design | PR        iteration: N of 3
 profile (assumed): <2–4 sentence inferred profile>
 inputs: <spec paths | branch@sha vs base@sha [+dirty] | PR#>
-coverage: <lanes ran> · <raw → deduped → panel/spot-checked counts> · <judge completion %>
+coverage: <lanes ran> · <raw → deduped → panel/spot-checked counts> · <judge completion %> · remainder-capped: N
 independence: same-family (Claude) — seat-differentiated panel
 
 ## Confirmed findings            ← consumed by super-plan, one task per finding
@@ -133,10 +142,24 @@ independence: same-family (Claude) — seat-differentiated panel
 ## Not verified (beyond panel cap)   ← severe candidates the panel cap left unverified — listed, never dropped
 - [suggested SEV] <location> — <claim>
 
+## Beyond remainder cap (count only)   ← low-severity candidates the dedupe remainder cap dropped; the count survives, the claims do not
+- <N> candidates dropped by the remainder cap — raise config.remainderCap and re-run to see them
+
 ## Rejected (with reason)        ← so re-roasts don't re-litigate
 ## Unverified nits (spot-checked)
 ## Escalations (need human)      ← UNVERIFIED externals, incomplete panels, material dissent
 ```
+
+The report is written to `docs/superpowers/reviews/YYYY-MM-DD-<topic>-roast-N.md` (N = iteration)
+by the orchestrator, after the engine returns `reportMarkdown` — the pipeline itself writes
+nothing to the repo.
+
+**The two caps lose findings differently, and the report says so differently.** `beyondPanelCap`
+(severe candidates the judge panel never reached) are listed individually under "## Not verified
+(beyond panel cap)". `beyondCap` (the deduper's remainder overflow) survives only as a count —
+the deduper returns `beyondCapCount`, not the claims — so it gets the "## Beyond remainder cap"
+count line and the `remainder-capped: N` term on the coverage line. Neither is ever silently
+dropped; they are just recoverable to different depths.
 
 Full template and field semantics: `./reporter-prompt.md`.
 

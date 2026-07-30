@@ -8,7 +8,7 @@ This is a personal fork ([alepar/superpowers](https://github.com/alepar/superpow
 
 **New skill**
 
-- **`roast` — adversarial design review.** Runs parallel adversarial critics plus a 3-judge verification panel over a spec *before* you build it, surfacing gaps and unverified load-bearing assumptions (and the cheapest spike to de-risk each). Catch expensive design mistakes while they're still cheap to fix, instead of mid-implementation.
+- **`super-roast` — dual-mode adversarial review.** Reviews either a **design doc** before you build it or a **PR/branch/diff** before you merge it. Parallel adversarial scouts hunt for gaps, unverified load-bearing assumptions, and defects; a **seat-differentiated judge panel** (three seats that verify by different *method* — reproduce, refute, ground — not three copies of one judge) verifies each candidate against evidence; and severity is **calibrated to the project's blast radius**, so a prototype and a payments service don't get the same bar. Catch expensive mistakes while they're still cheap to fix.
 
 **Autonomous beads-driven execution**
 
@@ -19,7 +19,7 @@ This is a personal fork ([alepar/superpowers](https://github.com/alepar/superpow
 **Brainstorming & design flow**
 
 - **Two design modes.** Mode A (collaborative, default — iterate one question at a time) vs Mode B (one-shot — the agent decides every point alone and writes the whole spec for you to review). Match the ceremony to the stakes of the design.
-- **Optional `roast` gate.** After a spec is written, brainstorming offers to roast it before handing off to implementation — a heavyweight pass for designs where getting it wrong is costly.
+- **Optional `super-roast` gate.** After a spec is written, brainstorming offers to run `super-roast` on it before handing off to implementation — a heavyweight pass for designs where getting it wrong is costly. `super-plan` makes the same offer once a decomposed task tree has settled, and drives the fix + re-roast loop from the report.
 
 **Design continuity**
 

@@ -106,8 +106,15 @@ same offer brainstorming makes on a single un-decomposed spec — a decomposed t
 instead, after the tree has settled, since that's the first point a full design exists to review.
 Opt-in; declining goes straight to hand-off.
 
-On accept, invoke `superpowers:super-roast` (design mode) on the settled tree. Its report's
-`## Confirmed findings` section is the only cross-iteration state:
+On accept, invoke `superpowers:super-roast` (design mode) on the settled tree. The report file is
+the only cross-iteration state. **Three of its sections drive this loop — reading only
+`## Confirmed findings` silently discards the two that most need a human:**
+
+| Report section | What this loop does with it |
+|---|---|
+| `## Confirmed findings` | One task per finding — the fix queue (steps 1–4 below). |
+| `## Escalations (need human)` | **Surface every entry to the human before starting fix work.** These are findings with a dead panel seat, an unresolved external premise, or material dissent between seats — in the recorded PR run, findings with **zero** valid judge votes landed here. They need a human by definition: no verdict was reached, so there is nothing to auto-fix and nothing to auto-dismiss. Never fold them into the fix queue, and never let a `clean` verdict elsewhere in the report imply they were resolved. |
+| `## Not verified (beyond panel cap)` | Severe candidates the panel cap left unjudged. Present them next to the escalations and ask whether to re-roast with a raised `config.panelCap` before fixing anything — an unverified Blocking candidate is not a cleared one. |
 
 1. **Create one task per confirmed finding.**
 2. **Fix per the normal ladder** — inline for small fixes, interactive design work for large ones
@@ -120,8 +127,21 @@ On accept, invoke `superpowers:super-roast` (design mode) on the settled tree. I
 4. **Cap at 3 iterations.** Also stop early if an iteration resolves nothing — the confirmed-Blocking
    count did not shrink from the prior report — that's thrash, not progress.
 
-Both exits — cap-out and clean — **pause and summarize for the human**; this loop never declares
-itself finished, mirroring `super-roast`'s own handoff contract.
+**Verdict qualifiers gate the exits** — the same rule `brainstorming` applies at its own gate:
+
+- `clean` with **no qualifier** → the loop is done; proceed to hand-off.
+- `clean [low coverage]` or `clean [panel-capped: N unverified]` → **not a clearance.** The
+  qualifier says the run itself was degraded (dead triage, dead scout, dead dedupe, incomplete
+  judging, or zero findings on a non-trivial artifact) or that N severe candidates were never
+  judged. Do not auto-proceed: surface the qualifier verbatim and let the user choose to proceed
+  anyway, re-roast, or dig in.
+- A confirmed-findings verdict carrying either qualifier → fix as normal, but carry the qualifier
+  into the exit summary: a shrinking Blocking count under low coverage is weaker evidence of
+  progress than it looks, and the early-stop test above can be fooled by it.
+
+Both exits — cap-out and clean — **pause and summarize for the human**, restating any open
+escalations, any beyond-panel-cap candidates, and any qualifier still on the verdict; this loop
+never declares itself finished, mirroring `super-roast`'s own handoff contract.
 
 ## Hand-off (root only)
 
@@ -148,6 +168,10 @@ Same decomposition/promotion/coverage, on paper. Each task-table row needs: a st
 - Query `bd ready` without `--exclude-type=epic --label sp:<root-epic-id>` — bare `bd ready` is repo-global and epic-inclusive.
 - Demote an epic to a task without first confirming `bd children <id> --json` is empty.
 - Treat an empty ready set as run completion — completion is the root epic closed.
+- Read only `## Confirmed findings` out of a super-roast report — `## Escalations (need human)`
+  and `## Not verified (beyond panel cap)` must reach the human too.
+- Treat a `clean` verdict carrying `[low coverage]` or `[panel-capped: N unverified]` as a
+  clearance — that's a degraded run, and the user decides whether to proceed.
 - Summarize the task tree for the root coverage pass — only spec prose may be summarized.
 - Overrule a `PROMOTE` verdict without recording `sp:demoted-by-session` and the reason.
 
