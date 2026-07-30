@@ -77,6 +77,13 @@ orchestrator build `args.prompts` against; a function anywhere in `args` makes t
 unrunnable (an earlier draft of this doc had `dedupe`/`seats.*`/`reporter` as functions —
 that draft never crossed the Workflow `args` boundary and was corrected before any real run).
 
+**`args` may arrive as an object or as a JSON string.** Some harness paths stringify `args`
+before invoking the script; the engine tolerates both — `JSON.parse`s it if it's a string —
+and validates that `{prompts, config}` are present before destructuring, throwing a loud,
+specific error instead of letting a bare property-access-on-undefined surface mid-run (this
+was discovered by an actual failed run, not by inspection — see the engine script's first
+lines).
+
 ## Engine script
 
 The canonical script. Validated once via `dryRun` at implementation (topology only, see
@@ -108,7 +115,11 @@ const DEDUPED = { type:'object', properties:{ findings:{ type:'array', items:{ t
 const VERDICT = { type:'object', properties:{ verdict:{enum:['CONFIRM','REJECT','UNVERIFIED']}, severity:{enum:SEV}, evidence:{type:'string'} }, required:['verdict','severity','evidence'] }
 const REPORT = { type:'object', properties:{ verdict:{type:'string'}, reportMarkdown:{type:'string'}, confirmedCount:{type:'integer'}, escalations:{type:'array', items:{type:'string'}} }, required:['verdict','reportMarkdown','confirmedCount','escalations'] }
 
-const { mode, profile, priorReport = '', dryRun = false, prompts, config } = args
+// The harness delivers args as an object on most paths but as a JSON string on some — tolerate
+// both, and fail loudly (not with a cryptic destructure error) if the required shape is missing.
+const A = typeof args === 'string' ? JSON.parse(args) : args
+if (!A || !A.prompts || !A.config) throw new Error('super-roast: args must carry {mode, prompts, config} — got ' + JSON.stringify(A).slice(0, 200))
+const { mode, profile, priorReport = '', dryRun = false, prompts, config } = A
 const model = role => dryRun ? 'haiku' : config.models[role]
 const pick = (real, stubKey) => dryRun ? prompts.stubs[stubKey] : real
 const fill = (template, vars) => Object.entries(vars).reduce((s, [token, value]) => s.replaceAll(token, value), template)
@@ -188,6 +199,10 @@ routing (which findings go to a panel vs. a spot check), aggregation (the ≥2-o
 logic), schemas, or coverage gating. **Data edits skip it** — lane rosters, prompt wording,
 caps, model tiers are trivial by construction and can't silently break topology.
 
+The orchestrator should pass `args` as an actual JSON value wherever the harness supports it —
+the string-tolerance in the engine script exists as a defensive fallback for harness paths that
+stringify `args` before invoking the script, not as license to always stringify by default.
+
 ## Stub table
 
 Each stub prompt is literally `You are a stub. Call no tools. Return exactly this JSON as
@@ -229,3 +244,14 @@ promotes.
 
 If any assertion fails, fix the script **in this doc** (this doc's script is canonical) and
 re-run before committing the fix.
+
+### Passing baseline (recorded, not illustrative)
+
+Run `wf_cbe52959-ff0`, 2026-07-29, against the args above: **25 agents dispatched, 0 errors**
+— triage 1, scouts 4 (3 core + 1 triage-activated), dedupe 1, seat calls 18 (2 panels × 3 + 3
+spot checks + 3 promoted panels × 3), reporter 1. The 2 empty-findings scouts (`premortem`,
+`data-migrations`) exercised the empty-result path (harness reported `agents_empty_result: 2`).
+
+Returned `coverage`: `scoutsDispatched: 4, scoutsDead: 0, rawFindings: 4, dedupedFindings: 5,
+beyondCap: 2, panelCount: 2, spotCount: 0, promotedCount: 3, judgeCompletionPct: 100`. Verdict:
+`"Blocking (1 confirmed)"`. All figures match the assertions above — this dryRun is validated.
