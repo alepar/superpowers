@@ -43,24 +43,46 @@ suggestedSeverity`, optionally `kind`/`spike`), plus:
 {{PRIOR_REPORT}}
 
 ## Step 1 — Per-finding verdict
-Default rule: **panel arithmetic** — a `panel` or `promoted` finding with `valid` = 3 and
-at least 2 CONFIRM votes is **confirmed**; otherwise it is a candidate for **rejected**.
-A `spot` finding's single refute-seat vote decides it, but a `spot` finding is never
-reported as confirmed (see Step 4 — it goes to "Unverified nits" regardless of its vote).
+
+**Order of application (apply in this order, every time — never infer an order yourself):**
+1. **Escalation conditions** (below) — checked first, against every finding regardless of
+   tier.
+2. **Tier routing** (`panel`/`promoted` vs. `spot`) — checked second, for whatever the
+   escalation check didn't already claim.
+3. **Panel arithmetic** — applied last, only to what's left.
+
+**The escalation bullets override everything below them.** If a finding matches an
+escalation condition, it goes to Escalations — full stop — even when the arithmetic alone
+would say confirmed, even when the tier alone would say Unverified nits. Escalation is
+never something the arithmetic or tier routing can override; it only ever runs the other
+way.
+
+Never silently drop a finding and never silently confirm one out of uncertainty. A finding
+escalates if **any** of these hold:
+- Any `panel` or `promoted` finding with `valid` < 3 (a dead seat) → **Escalations**, not
+  confirmed, not rejected, not dropped.
+- Any finding — any tier, including `spot` — where `external` is true and any vote is
+  `UNVERIFIED` → **Escalations**. This includes a `spot` finding that is external with an
+  UNVERIFIED vote: it does NOT go to "Unverified nits" just because it's spot-tier —
+  Escalations wins, because an unresolved external premise needs a human either way,
+  regardless of how much verification depth the finding was routed to receive.
+  Concretely: reproduce and ground CONFIRM a Blocking finding while refute returns
+  UNVERIFIED on an external premise. Arithmetic alone reads `valid=3`, 2 CONFIRMs →
+  "confirmed" — but the escalation rule fires first because the finding is external with
+  an UNVERIFIED vote, so the correct outcome is Escalations, not confirmed.
+
+Only once no escalation condition applies do tier and arithmetic decide the finding:
+- A `spot` finding that was not promoted and does not escalate → **Unverified nits**, never
+  "confirmed" (a single refute-seat pass is not panel-strength verification).
+- A `panel` or `promoted` finding that does not escalate → **panel arithmetic**: `valid` = 3
+  and at least 2 CONFIRM votes is **confirmed**; otherwise **rejected**.
 
 You MAY overrule the arithmetic default, but ONLY with reasoning that cites specific seat
 evidence — for example, two CONFIRM votes whose shared premise the refute seat's evidence
 factually disproved, or a CONFIRM that itself concedes the refute seat's point. Never
 overrule on vibes, on your own re-reading of the spec, or on a preference for a different
-outcome — cite the seat evidence or don't overrule.
-
-Never silently drop a finding and never silently confirm one out of uncertainty:
-- Any `panel` or `promoted` finding with `valid` < 3 (a dead seat) → **Escalations**, not
-  confirmed, not rejected, not dropped.
-- Any finding — any tier — where `external` is true and any vote is `UNVERIFIED` →
-  **Escalations**.
-- A `spot` finding that was not promoted → **Unverified nits**, never "confirmed" (a single
-  refute-seat pass is not panel-strength verification).
+outcome — cite the seat evidence or don't overrule. An overrule only ever operates within
+step 3 (arithmetic); it cannot suppress an escalation condition from step 1.
 
 ## Step 2 — Final severity
 Start from the seat severities on the confirming votes (not `suggestedSeverity`, which was
@@ -87,9 +109,16 @@ If `{{PRIOR_REPORT}}` is non-empty:
   this report as **resolved** (no longer present / fixed), **regressed** (present again
   or fixed incompletely), or **still-open** (unchanged), based on the current packets.
 - Do NOT re-litigate any finding the prior report placed under "Rejected (with reason)" —
-  if scouts re-surfaced it anyway, note it was previously rejected and why, and do not
-  re-run Step 1/2 judgment on it unless the current evidence is materially different from
-  what the prior report cited.
+  if scouts re-surfaced it anyway, note it was previously rejected and why, and leave the
+  rejection standing.
+  **Narrow exception (evidence-disciplined, mirrors the panel-overrule discipline in
+  Step 1):** a previously-rejected finding may be reconsidered ONLY when the current
+  iteration's evidence differs materially from what the prior report cited — typically
+  because the fixes changed the very code or spec text the rejection rested on — and your
+  reconsideration MUST cite that specific new evidence. Absent such a citation, the prior
+  rejection stands; do not reopen it. This exception exists because a fix can legitimately
+  turn a previously-immaterial claim into a real one — it is NOT a licence to re-argue
+  rejections you simply disagree with.
 If `{{PRIOR_REPORT}}` is empty, this is iteration 1 — skip this step; there is no
 resolved/regressed/still-open tracking to do.
 
