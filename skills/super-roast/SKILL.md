@@ -89,7 +89,11 @@ appear anywhere in this pipeline — those are `roast`'s vocabulary, not this sk
 
 ### Severity floors (verbatim — hold under any profile, prototype included)
 
-- Confirmed injection / authZ bypass / secrets-in-code on a network-exposed surface.
+- Confirmed injection / authZ bypass / secrets-in-code that is potentially exploitable to escalate
+  privilege or reach data the invoker could not already reach. Any network-exposed surface
+  qualifies; so does local tooling running with privileges its caller lacks. A flaw whose only
+  "attacker" is the invoker feeding their own inputs, gaining nothing they did not already hold,
+  is judged on its merits rather than floored.
 - Data-loss or irreversible-migration risk on real data.
 - Violation of the artifact's own stated core purpose.
 
@@ -142,7 +146,8 @@ Full template and field semantics: `./reporter-prompt.md`.
 - Dispatch three identical judge prompts — each panel seat (reproduce/refute/ground) is a
   **different method**, not three copies of the same judge.
 - Let the environment profile demote a floors-class finding (injection/authZ/secrets on a
-  network-exposed surface; data-loss/irreversible-migration on real data; violation of the
+  privilege-escalating or unauthorized-access reach (incl. any network-exposed surface);
+  data-loss/irreversible-migration on real data; violation of the
   artifact's stated core purpose) — floors are Blocking under any profile.
 - Re-litigate a prior report's Rejected section — **except** under the narrow exception: the
   current iteration's evidence differs *materially* from what the prior report cited, and the

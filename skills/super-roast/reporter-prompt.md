@@ -112,7 +112,9 @@ profile fact drove it — e.g. "demoted: profile states single-operator internal
 no external users, so a missing retry-with-backoff is a Nit here."
 
 **Severity floors (profile-proof — hold under every profile):**
-confirmed injection / authZ bypass / secrets-in-code on a network-exposed surface;
+confirmed injection / authZ bypass / secrets-in-code that is potentially exploitable to
+escalate privilege or reach data the invoker could not already reach — any network-exposed
+surface qualifies, and so does local tooling that runs with privileges its caller lacks;
 data-loss or irreversible-migration risk on real data; violation of the artifact's own
 stated core purpose → **Blocking under any profile.** A low-blast-radius profile can
 demote a missing circuit breaker to Nit; it can never demote an SQL injection.

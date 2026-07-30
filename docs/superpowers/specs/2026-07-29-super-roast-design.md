@@ -115,7 +115,8 @@ Reasons over the seat evidence packets and issues per finding: **confirmed | rej
 (may overrule the panel arithmetic with cited reasoning) and **final severity**,
 environment-conditioned. Only the reporter sees the profile — scouts and judges stay
 profile-blind so recall and verification are never silently narrowed. Severity floors are
-profile-proof: confirmed injection/authZ-bypass/secrets on a network-exposed surface,
+profile-proof: confirmed injection/authZ-bypass/secrets that is potentially exploitable for
+privilege escalation or unauthorized data access (any network-exposed surface qualifies),
 data-loss or irreversible-migration risk on real data, and violations of the artifact's own
 stated core purpose are Blocking under any profile. The profile moves the Should-fix↔Nit
 boundary and down-weights resilience/observability/cost lanes for low-blast-radius projects.
