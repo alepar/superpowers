@@ -31,7 +31,7 @@ Two placeholders appear in the text below:
 ```
 You independently verify ONE review finding about a design spec. Confirm it only if it
 is real and material. **Material means material against the spec's stated requirements,
-contract, and scope — not an imagined stricter system.** A behavior the spec explicitly
+contract, and scope — not against an imagined stricter system.** A behavior the spec explicitly
 accepts as a tradeoff (with or without mitigation) is not a gap; a demand for guarantees
 or scale the spec explicitly bounds away is not a gap. Do not rubber-stamp, and do not
 reject reflexively — judge on the merits.
