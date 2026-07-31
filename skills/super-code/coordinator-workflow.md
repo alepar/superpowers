@@ -1856,14 +1856,19 @@ confirming the guard fix changed only the predicate's correctness, not the scrip
 topology, exactly as expected for a one-`if`-condition fix.
 
 **The final fix round (Fixes 1–3: idempotent `taskBriefPrompt`, merge-base-derived `base` on a
-re-entered worktree, and `mergeBase`-derived ledger ranges) is itself another structural edit, and
-per this section's own rule it makes all three baselines below stale again** — the same state this
-doc carried explicitly once already, after fix-round-1, before fix-round-2's re-runs restored
-"confirmed" status. This time, no re-run accompanies the fix: the reasoning above ("A recorded
-baseline is evidence only for the exact script revision it ran against") is stated but not
-discharged by a new run in this pass. See "STALE as of the final fix round" further below (after
-the PARK scenario) for exactly which run-ids are now stale and why a new run's figures are not
-predicted here.
+re-entered worktree, and `mergeBase`-derived ledger ranges) is itself another structural edit — the
+coordinator re-ran all three scenarios against the fixed script, and every one landed at the exact
+same count and shape as its pre-fix predecessor** (canonical `wf_ea0a2284-96b` 31/0, cap-tripping
+`wf_3c881af8-70b` 24/0, PARK `wf_ac3e6fae-171` 23/0 — see each scenario's own "Confirmed against the
+final-fix-round script" writeup below for the full figures). **Read that identical result correctly:
+it is not evidence the three fixes work.** Fixes 1–3 live entirely in `taskBriefPrompt`'s and
+`mergePrompt`'s dispatch TEXT and in real git semantics (whether `git worktree add` fails on an
+existing path/branch, whether a post-rebase `git merge-base` actually lands where this doc claims) —
+`pick()` never builds either function's real dispatch text under `dryRun: true`, so an unchanged
+count confirms only that the fixes did not perturb dispatch topology, the identical narrow claim
+fix-round-2's unchanged counts made for its own one-`if`-condition fix. See "Confirmed against the
+final-fix-round script — and why that is not validation" further below (after the PARK scenario) for
+the full accounting, including what a live-run validation of each fix would actually require.
 
 **What this guard, and these re-runs, do NOT prove.** The predicate accepts a well-formed,
 worktree-prefixed planner path — that is a fact about the `if` statement, checked directly (see
@@ -2245,6 +2250,36 @@ earlier in this section). This run also does not prove the ledger line format, r
 resumed-run reconstruction from real content, for the same reasons as every prior run in this
 section — every `read-ledger`/`ledger-append` here was still a canned stub.
 
+**Confirmed against the final-fix-round script — and why that is not validation.** Run
+`wf_ea0a2284-96b`: **31 agents dispatched, 0 errors** — the SAME count and terminal-outcome shape
+(`{completed:["bd-101","bd-102"], escalated:["bd-103"], pendingRetry:["bd-104"], parked:[],
+stalled:false}`) as the now-superseded `wf_fc56493c-a69` above. This is the last recording on this
+scenario; the fix cycle that produced it is closed by decision, so this figure is what the branch
+ships with. **State this precisely, right next to the figure, so it is never read out of context:**
+this identical count is **not** evidence that Fixes 1–3 (idempotent `taskBriefPrompt`, the
+merge-base-derived `base` on a re-entered worktree, the `mergeBase`-derived ledger range) work. All
+three live in `taskBriefPrompt`'s and `mergePrompt`'s dispatch TEXT and in real git semantics —
+`pick()` never builds either function's real prompt under `dryRun: true` (every `brief:<id>`/
+`merge:<id>` call in this scenario is answered by a canned stub, exactly as before this round's
+edits), so this run could not have distinguished the fixed script from a version where
+`taskBriefPrompt` still unconditionally tried to create an already-existing worktree, or where
+`mergePrompt` never captured `mergeBase` at all. An unchanged count confirms only what fix-round-2's
+own unchanged counts confirmed for its one-`if`-condition change: the edit did not perturb dispatch
+topology (call sites, ordering, schema-level field additions) — nothing more. **What would actually
+validate Fixes 1–3, and why no dryRun scenario in this file can do it:** each fix's defect only
+exists on the SECOND time a specific piece of git state is touched, which a canned stub can't
+model. Fix 1 needs a real restart where `.worktrees/<integrationBranch>--task-<id>` and its branch
+already exist on disk before the brief dispatch runs, so `git worktree add` would have failed
+without the reuse check. Fix 2 needs that same re-entered branch to already carry a prior attempt's
+real commits, so `HEAD` is demonstrably not a pre-implementer commit and `git merge-base` must be
+computed to recover the true divergence point. Fix 3 needs a live rebase where at least one OTHER
+task has genuinely merged into the integration branch between this worktree's cut and this task's
+own merge, so `r.base..head` would provably include that other task's commits and `mergeBase..head`
+provably would not. None of these is a scenario `pick()`'s stub mechanism can be extended to cover
+— they are properties of a real git history over multiple real dispatches, not of a single canned
+JSON response. The next step for anyone who wants Fixes 1–3 actually corroborated is a live epic run
+through a genuine restart, not another dryRun scenario added to this file.
+
 **`wf_171ab5c1-339` is kept only as superseded history, not current evidence.** It executed against
 commit `9576d7f` — the state of this script **before** the `4a3e3bc` and `9855503` commits
 restructured `reviewAndFix`, `handleBlocker`, and the return value (the C-1/C-2/C-3/I-9/I-7 fixes
@@ -2378,14 +2413,19 @@ script and this `args` block:
 If a future structural edit changes this script, re-run with these args, confirm the same shape (or
 update it deliberately alongside the edit that changed it), and replace the figures above — same
 discipline as `super-roast`'s "Passing baseline (recorded, not illustrative)" sections. Fix-round-1
-(Resume phase, the Plan-phase divergence check, `MERGE`'s `head`, the ledger-line shape) and
-fix-round-2 (the divergence guard's corrected predicate) were both exactly such structural edits,
-each re-run in turn: **`wf_b337b535-bd4`'s 31/0 is superseded history** (see "Confirmed against the
-post-Task-5, pre-fix-round-1 script" above), and the CURRENT confirmed shape is **31 agent calls, 0
-errors** (run `wf_fc56493c-a69`, see "Confirmed against the current (post-fix-round-2) script"
-above) — the intervening `wf_79a00109-4ff` run is kept as history of the fix-round-2 defect itself,
-not as a baseline (it died before completing). The 26/0 figures in the two writeups above
-`wf_b337b535-bd4` remain pre-Task-5 history, unaffected by this restatement.
+(Resume phase, the Plan-phase divergence check, `MERGE`'s `head`, the ledger-line shape),
+fix-round-2 (the divergence guard's corrected predicate), and the final fix round (Fixes 1–3 —
+idempotent `taskBriefPrompt`, merge-base-derived `base`, `mergeBase`-derived ledger range) were all
+exactly such structural edits, each re-run in turn: **`wf_b337b535-bd4`'s 31/0 is superseded
+history** (see "Confirmed against the post-Task-5, pre-fix-round-1 script" above),
+**`wf_fc56493c-a69`'s 31/0 is likewise superseded** (see "Confirmed against the current
+(post-fix-round-2) script" above), and the CURRENT, final confirmed shape is **31 agent calls, 0
+errors** (run `wf_ea0a2284-96b`, see "Confirmed against the final-fix-round script — and why that is
+not validation" above — read that writeup's own caveat before citing this number for anything beyond
+dispatch-count/topology) — the intervening `wf_79a00109-4ff` run is kept as history of the
+fix-round-2 defect itself, not as a baseline (it died before completing). The 26/0 figures in the
+two writeups above `wf_b337b535-bd4` remain pre-Task-5 history, unaffected by this restatement. This
+is the last recording on this scenario — the fix cycle is closed by decision.
 
 ## Cap-tripping dryRun scenario (separate baseline)
 
@@ -2504,6 +2544,21 @@ this doc, always returns a well-formed path), so — same caveat as the canonica
 itself; it establishes only that the round-cap/breaker/blocker-path assertions above still hold
 against the current script.
 
+**Confirmed against the final-fix-round script — and why that is not validation.** Run
+`wf_3c881af8-70b`: **24 agents dispatched, 0 errors** — the SAME count and terminal-outcome shape
+(`{completed:[], escalated:["bd-201"], pendingRetry:[], parked:[], stalled:false}`, review "no work
+landed") as the now-superseded `wf_18710e4f-50a` above. This is the last recording on this scenario;
+the fix cycle is closed by decision. Same caveat as the canonical scenario's own
+"Confirmed against the final-fix-round script — and why that is not validation" writeup, stated here
+too rather than only cross-referenced, since this is exactly where a reader could otherwise take
+"all pass, unchanged" as corroboration: this identical count is **not** evidence that Fixes 1–3 work
+— this scenario's single task (`bd-201`) never merges at all (it's BLOCKED at the breaker cap), so
+neither `taskBriefPrompt`'s reuse branch nor `mergePrompt`'s `mergeBase` capture is ever even
+dispatched here, stubbed or otherwise. An unchanged count confirms only that adding Fixes 1–3 didn't
+add, remove, or reorder any dispatch this scenario exercises. Validating the fixes themselves needs
+a live restart with pre-existing git state (see the canonical scenario's writeup for exactly what
+each fix needs), which no stub scenario — this one included — can provide.
+
 ```json
 {
   "epicId": "bd-200",
@@ -2550,11 +2605,14 @@ against the current script.
 
 If a future structural edit changes this script, re-run with these args, confirm the same shape (or
 update it deliberately alongside the edit that changed it), and replace the figures above — same
-discipline as the canonical scenario's own baseline. Fix-round-1 and fix-round-2 were both such
-edits: **`wf_453a6604-52e`'s 24/0 is superseded history** (see "Confirmed against the post-Task-5,
-pre-fix-round-1 script" above), and the CURRENT confirmed shape is **24 agent calls, 0 errors**
-(run `wf_18710e4f-50a`, see "Confirmed against the current (post-fix-round-2) script" above). The
-22/0 figure above `wf_453a6604-52e` remains pre-Task-5 history, unaffected by this restatement.
+discipline as the canonical scenario's own baseline. Fix-round-1, fix-round-2, and the final fix
+round were all such edits: **`wf_453a6604-52e`'s 24/0 is superseded history** (see "Confirmed
+against the post-Task-5, pre-fix-round-1 script" above), **`wf_18710e4f-50a`'s 24/0 is likewise
+superseded** (see "Confirmed against the current (post-fix-round-2) script" above), and the CURRENT,
+final confirmed shape is **24 agent calls, 0 errors** (run `wf_3c881af8-70b`, see "Confirmed against
+the final-fix-round script — and why that is not validation" above). The 22/0 figure above
+`wf_453a6604-52e` remains pre-Task-5 history, unaffected by this restatement. This is the last
+recording on this scenario — the fix cycle is closed by decision.
 
 ## PARK dryRun scenario (separate baseline)
 
@@ -2662,35 +2720,60 @@ run, this scenario's `plan` stub always returns a well-formed path, so this run 
 divergence guard's ACCEPT path only trivially (by never reaching its reject branch) and adds no new
 evidence about the guard beyond what the canonical scenario's `wf_fc56493c-a69` already establishes.
 
-**All three baselines are now confirmed against the current (post-fix-round-2) script** — the
-canonical scenario (`wf_fc56493c-a69`, 31 agents, 0 errors), the cap-tripping scenario
-(`wf_18710e4f-50a`, 24 agents, 0 errors), and this PARK scenario (`wf_1e32bcd1-71f`, 23 agents, 0
-errors) — each hitting exactly the same count as its now-superseded post-Task-5/pre-fix-round-1
-predecessor (`wf_b337b535-bd4` 31, `wf_453a6604-52e` 24, `wf_941e256b-10b` 23), confirming
-fix-round-2's guard-predicate fix changed the guard's correctness, not the script's dispatch
-topology. `wf_79a00109-4ff` — the canonical scenario run against fix-round-1's still-broken
-predicate, which died on the first Plan dispatch before any task was briefed — is kept as history
-of that specific defect (see "the canonical dryRun run immediately after fix-round-1" above), not
-as a baseline for anything. The full superseded-history chain for each scenario (pre-Task-5 →
-post-Task-5/pre-fix-round-1 → current) remains recorded above each scenario's own current-script
-writeup, same discipline this doc has applied since `wf_171ab5c1-339`.
+**Confirmed against the final-fix-round script — and why that is not validation.** Run
+`wf_ac3e6fae-171`: **23 agents dispatched, 0 errors** — the SAME count and terminal-outcome shape
+(`{completed:["bd-301"], escalated:[], pendingRetry:[], parked:["bd-301"], stalled:false}`) as the
+now-superseded `wf_1e32bcd1-71f` above. This is the last recording on this scenario; the fix cycle
+is closed by decision. Same caveat as the canonical scenario's own writeup of the same name, stated
+here as well: this identical count is **not** evidence that Fixes 1–3 work. `mergePrompt`'s stub for
+`merge:bd-301` in this scenario's own args (below) was updated in this fix round to include a
+`mergeBase` value alongside `head` — the fact that adding an optional field to an already-passing
+stub changes nothing about the dispatch count or shape is expected and unremarkable, not a
+confirmation that a *real* merge agent computes `mergeBase` correctly, since `pick()` never builds
+`mergePrompt`'s real dispatch text under `dryRun: true` regardless of what the stub table says.
+Validating Fix 3 specifically, for this scenario's shape, would need a live epic where `bd-301`'s
+task branch is rebased after at least one *other* task has already merged into the integration
+branch — exactly the case this scenario's single-task setup cannot represent no matter how its stub
+is edited.
 
-**STALE as of the final fix round — none of the three "confirmed against the current
-(post-fix-round-2) script" runs above (`wf_fc56493c-a69`, `wf_18710e4f-50a`, `wf_1e32bcd1-71f`)
-covers the script as it now stands.** This round changed `taskBriefPrompt` (idempotent
-worktree/branch reuse, Fix 1), `mergePrompt` (the new `git merge-base` capture, Fix 3), the `MERGE`
-schema (`mergeBase` added), and the merge-gate's ledger-append call site (`m.mergeBase` replacing
-`r.base` in the commit range) — per this doc's own rule ("A recorded baseline is evidence only for
-the exact script revision it ran against"), that makes all three baselines stale, the same way
-fix-round-1 and fix-round-2 each did before them. **Deliberately not predicting new figures here** —
-the dispatch topology (call sites, ordering, count) looks unchanged by inspection, since Fix 1/2/3
-only alter prompt TEXT and add an already-optional schema field, but this document has been wrong
-about that kind of "should be a no-op" claim before (see fix-round-2's `wf_79a00109-4ff`, which died
-on exactly the kind of change that looked safe by inspection) and is not going to assert a number it
-did not observe. A future maintainer re-establishes the current baseline by re-running all three
-scenarios' `args` blocks below (updated in this round to include `mergeBase` in every successful
-`merge:<id>` stub) against the script as it now stands, and replacing the run-ids/counts above with
-what actually comes back — not by assuming the old 31/24/23 figures still hold.
+**All three baselines are now confirmed against the final-fix-round script — this is the last
+recording; the fix cycle is closed by decision.** The canonical scenario (`wf_ea0a2284-96b`, 31
+agents, 0 errors), the cap-tripping scenario (`wf_3c881af8-70b`, 24 agents, 0 errors), and this PARK
+scenario (`wf_ac3e6fae-171`, 23 agents, 0 errors) each hit exactly the same count and
+terminal-outcome shape as their now-superseded post-fix-round-2 predecessor (`wf_fc56493c-a69` 31,
+`wf_18710e4f-50a` 24, `wf_1e32bcd1-71f` 23) — which themselves matched their post-Task-5/
+pre-fix-round-1 predecessor before that (`wf_b337b535-bd4` 31, `wf_453a6604-52e` 24,
+`wf_941e256b-10b` 23). `wf_79a00109-4ff` — the canonical scenario run against fix-round-1's
+still-broken predicate, which died on the first Plan dispatch before any task was briefed — remains
+kept as history of that specific defect (see "the canonical dryRun run immediately after
+fix-round-1" above), not as a baseline for anything. The full superseded-history chain for each
+scenario (pre-Task-5 → post-Task-5/pre-fix-round-1 → post-fix-round-2 → final) remains recorded
+above each scenario's own writeup, same discipline this doc has applied since `wf_171ab5c1-339`.
+
+**State this precisely, here where the final figures are recorded, not only inside each scenario's
+own writeup: these three unchanged counts are not evidence that Fixes 1–3 work.** Fixes 1–3
+(idempotent `taskBriefPrompt`, merge-base-derived `base` on a re-entered worktree, `mergeBase`-derived
+ledger ranges) live entirely in `taskBriefPrompt`'s and `mergePrompt`'s dispatch TEXT and in real git
+semantics — `pick()` never builds either function's real prompt under `dryRun: true`, so all three
+re-runs could not have told the fixed script apart from a version where `taskBriefPrompt` still
+unconditionally attempted a fresh `git worktree add` or `mergePrompt` never captured `mergeBase` at
+all. What an unchanged count across all three scenarios *does* confirm — the same narrow claim
+fix-round-2's own unchanged counts made for its one-`if`-condition fix — is that Fixes 1–3 did not
+perturb dispatch topology: no call site was added, removed, or reordered, and the one schema change
+(`mergeBase` on `MERGE`) is additive and optional. Nothing more.
+
+**What would actually validate Fixes 1–3, stated once here plainly, since it cannot be a dryRun
+scenario in this file:** each defect these fixes address only manifests on the SECOND touch of a
+specific piece of real git state, which a canned `pick()` stub cannot model. Fix 1 needs a genuine
+restart where the task's worktree path and branch already exist on disk when the brief dispatch
+runs. Fix 2 needs that same re-entered branch to already carry a prior attempt's real commits, so
+`HEAD` is demonstrably not a pre-implementer commit. Fix 3 needs a live rebase where at least one
+OTHER task has actually merged into the integration branch between this worktree's cut and this
+task's own merge, so the old `r.base..head` range would provably span that other task's commits and
+`mergeBase..head` provably would not. None of these can be added to this file as a new stub
+scenario — they are properties of a real, multi-dispatch git history, not of one canned JSON
+response. The next step for corroborating Fixes 1–3 is a live epic run through an actual restart,
+not another entry in the stub table below.
 
 **What these three runs collectively prove, and what they still don't.** Together they confirm
 terminal-outcome routing (a task reaches exactly one of: merged clean, quarantined BLOCKED,
