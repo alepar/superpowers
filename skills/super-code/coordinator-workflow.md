@@ -154,13 +154,16 @@ Round-based with refill (each `bd ready` batch is, by definition, mutually indep
    *single* stuck id eventually terminates, but this guard is the belt-and-suspenders backstop for
    the general case (any future loop-control edge this doc hasn't anticipated). Stop and report
    rather than spin (see the script skeleton's no-progress guard, right after the Integrate phase).
-3. **Group for parallelism, then pipeline the batch** — group the round's ready ids by the files
-   each declares it touches (recorded on the bead body / brief, not derived by the script).
-   Dispatch disjoint-file groups concurrently, up to the concurrency cap (default 4); any two
-   ready ids that share a file **serialize** within the round — never siblings in the same
-   `pipeline()`/`parallel()` call, since concurrent implementers on the same file race each
-   other's worktree and merge. Within a group, run the per-task pipeline (below) with **no
-   barrier between stages** (a fast task isn't held up by a slow sibling).
+3. **Group for parallelism, then pipeline the batch** — bucket the round's ready ids so no two
+   ids in the same bucket share a declared file (recorded on the bead body / brief, not derived
+   by the script). **Buckets serialize relative to each other** (never dispatched concurrently
+   with one another); **within a bucket**, ids run as concurrent siblings, chunked to the
+   concurrency cap (default 4) — this is where the concurrency actually lives, never across
+   buckets. Two ready ids that share a file are never siblings in the same `pipeline()`/
+   `parallel()` call — put in different buckets and so **serialized** relative to each other —
+   since concurrent implementers on the same file race each other's worktree and merge. Within a
+   bucket, run the per-task pipeline (below) with **no barrier between stages** (a fast task isn't
+   held up by a slow sibling).
 4. **Serial merge gate** — completed tasks are merged back into the integration branch **one at
    a time** (never two concurrently), in dependency order. A successful merge does
    `bd close <id>` — a leaf-task close; epic closure is the separate step below.
@@ -584,10 +587,12 @@ at the parked-ruling lines only, not at deferred-minor notes that do not exist y
 
 This is the final, bounded fix round on this document. Fixes 1–3 above (idempotent
 `taskBriefPrompt`, merge-base-derived `base` on a re-entered worktree, and `mergeBase`-derived
-ledger ranges) close the three defects that would otherwise break restart/resume outright. The
-items below are known, real gaps that are being **shipped as documented limitations, by decision**
-— not fixed in this round. A future maintainer should read this section before assuming any of
-these already work.
+ledger ranges) close the three defects that would otherwise break restart/resume outright. Most of
+the items below are known, real gaps that are being **shipped as documented limitations, by
+decision** — not fixed in this round; two of them (10 and 11) record a prose-only contradiction
+that this same fix round *did* correct in place, kept here because the underlying risk — a future
+maintainer reimplementing from a stale reading of the prose — outlives the correction. A future
+maintainer should read this section before assuming any of these already work.
 
 **All three fixes above are unverifiable by any dryRun.** They live in prompt text
 (`taskBriefPrompt`'s reuse-vs-create branching, `mergePrompt`'s `git merge-base` capture) and in
@@ -615,7 +620,13 @@ functions' definitions directly, or by a live run against a real restart.
    already got a full triage verdict before. The real cost of resuming a still-genuinely-blocked id
    is therefore **up to two** full pipeline passes (one consuming the fresh RESOLVE slot, a second
    before the bounced-RESOLVE rule quarantines it for good), plus a duplicate blocker bead and a
-   duplicate notification for each pass that reaches ESCALATE.
+   duplicate notification for each pass that reaches ESCALATE. This is compounded further by the
+   `ledger-append` fire-and-forget limitation documented under "Resume behavior" above (see
+   "Workspace and ledger," `:345-363`): `ledger-append` is the *only* mechanism by which a restart
+   recovers `parked`/`pendingRetry` at all, and its schema-less, fire-and-forget dispatch is never
+   inspected for success — so a silently-lost `pending retry` line does not just cost this item's
+   "up to two passes," it can reset `pendingRetry` for that id entirely and let a bad clarification
+   spin for more than one extra round after a restart.
 2. **This document previously contradicted itself on what resume is for**, resolved in this fix
    round (see "Workspace and ledger" and the Resume-phase code comments above — no separate action
    needed here beyond noting it was fixed by clarifying the prose, not the code): stated plainly,
@@ -661,6 +672,57 @@ functions' definitions directly, or by a live run against a real restart.
    non-compliant merge dispatch degrades the ledger's commit-range invariant instead of failing
    loud. Hardening this (e.g. asserting both fields are present before building the ledger line, or
    escalating instead of degrading) is future work.
+7. **The `sp:` labelling precondition is stated nowhere.** The Query step (`:143`) and the
+   dispatched prompt at `:1064` require `bd ready --exclude-type=epic --label sp:${epicId}` —
+   SKILL.md's Red Flags table makes bare `bd ready` a Never — but nothing in either document says
+   that label only exists on trees `super-plan` created. A hand-made epic, or a **sub-epic** handed
+   to super-code directly (whose members carry the *root* epic's `sp:` label, not their own id's),
+   yields an empty round 1: `ids.length === 0` → the empty-ready-set quarantine exit ("The
+   coordinator loop," step 2, above) → `break` → Finish reports `completed: 0`, `review: 'no work
+   landed'`. The run exits in seconds via the exact same path as a legitimate quarantine-drain
+   finish, having done nothing, and nothing distinguishes the two outcomes in the report. **This is
+   the highest-consequence item in this section** — it is a silent no-op on a plausible, easy-to-hit
+   invocation, not a degraded feature. Confirmed independently during the fix cycle that produced
+   this document: this repo's own real epic carries no `sp:` labels.
+8. **"Newly-created beads (blocker beads included)" never actually re-enters the loop.** `:417` and
+   `planPrompt` (`:1369`) promise the planner re-plans "newly-ready or newly-created beads (blocker
+   beads included)" on refill. But every `bd create` in this document (`missingBlockerBeadPrompt`
+   `:1534`, `unplannedBlockerPrompt` `:1547`, `breakerBlockerPrompt` `:1577`, and the blocker-bead
+   shape described at `:537`) files a bead with only a `blocker` label — no `--parent`, no
+   `-l sp:<epicId>`. Such a bead matches neither the `bd ready --label sp:` filter nor the
+   `grep -oE '${epicId}[.0-9]*'` postprocessing at `:1064`, so it can never surface in a future `bd
+   ready` batch and never re-enters the planner's or the coordinator's view. The prose promises a
+   recovery path the code, as written, cannot execute.
+9. **The shipped canonical args are inconsistent with the ready-query regex.** The canonical
+   scenario's `args` block uses `epicId: "bd-100"` with children `bd-101`…`bd-104` (`:2444` and
+   surrounding), but the dispatched grep at `:1064` is `grep -oE 'bd-100[.0-9]*'` — a pattern that
+   cannot match `bd-101` through `bd-104` (no shared prefix beyond `bd-10`, and the trailing digit
+   isn't a `.`-delimited suffix of `bd-100`). The dryRun never runs this grep (`bd-ready` is stubbed
+   in every scenario in this doc), so the mismatch passes silently forever — while a maintainer who
+   uses these recorded args as their mental model for a real epic would get a scoping scheme that
+   yields zero ids against a real `bd ready`. Real `bd` ids are hierarchical (e.g.
+   `super-plan-2c1.8`), not flat siblings sharing a numeric prefix the way this scenario's stub ids
+   do; the args are illustrative shorthand for the dryRun's JSON shapes, not a template for a real
+   epic's id scheme. Left unchanged per this round's instructions (recorded baselines are final) —
+   flagged here so a future reader doesn't copy the id scheme as-is.
+10. **The parallelism prose used to claim the opposite of what the code does.** Fixed in this round
+    (see "The coordinator loop," step 3, above) — it previously said "dispatch disjoint-file groups
+    concurrently," which reads as *buckets* running concurrently with each other. The code actually
+    serializes *across* buckets (the `for (const group of groups)` loop, `:1188`) and only chunks to
+    the concurrency cap *within* one bucket (`:1193`); SKILL.md's Parallelism section (`:52`) had it
+    right all along, this document did not. Noted here, not just fixed in place, because getting
+    this backwards is a genuine write-collision risk for anyone reimplementing the loop from this
+    document's prose alone — which the "Annotated script skeleton" section (`:743`) explicitly
+    invites a future maintainer to do.
+11. **"Illustrative" vs. "canonical" was self-contradictory.** Fixed in this round: the script
+    skeleton's own header, in the "Annotated script skeleton" section (`:743`), used to open with
+    "Illustrative — adapt names/prompts to the epic," while the dryRun policy section (`:2202`, "If
+    any assertion fails, fix the script in this doc") called the same script "canonical." Resolved in
+    favor of canonical — it is the only executable artifact in this document, every recorded baseline
+    was run against it verbatim, and "adapt names/prompts to the epic" was never actually license to
+    restructure it. A maintainer who took the old "illustrative" framing at face value and rewrote
+    the script's structure while adapting it to a real epic would silently invalidate every baseline
+    recorded in this document without any signal that they had done so.
 
 ## What autonomous mode changes (summary)
 
@@ -680,8 +742,12 @@ skill's predecessor:
 
 ## Annotated script skeleton
 
-Illustrative — adapt names/prompts to the epic. Every `agent()` call carries the real I/O; the
-script only sequences. `opts.model` is set explicitly per role, pulled from `config.models`.
+**Canonical, not illustrative** — this is the actual executable script every dryRun baseline in
+this document was recorded against (see "Known limitations" below on why the reverse claim used to
+appear elsewhere in this doc, and why canonical wins: it is the only executable artifact here and
+it carries the baselines). Adapt names/prompts to the epic; the structure itself is not a sketch.
+Every `agent()` call carries the real I/O; the script only sequences. `opts.model` is set
+explicitly per role, pulled from `config.models`.
 
 ```javascript
 export const meta = {
@@ -1102,7 +1168,7 @@ while (true) {
     for (const id of unplannedIds) {
       const bead = await agent(pick(() => unplannedBlockerPrompt(id, epicId), `unplanned-blocker:${id}`),
         { label: `unplanned-blocker:${id}`, phase: 'Plan', model: model('mechanical'), schema: RESULT })
-      await handleBlocker({ id, blockerBead: bead.blockerBead })
+      await handleBlocker({ id, blockerBead: bead.blockerBead }, planned.planPath)
     }
   }
 
@@ -1173,7 +1239,7 @@ while (true) {
   // close leaf tasks only (bd close <id>); epic closure happens at the top of the next iteration.
   phase('Integrate')
   for (const r of results.filter(Boolean)) {
-    if (r.status === 'BLOCKED') { await handleBlocker(r); continue }
+    if (r.status === 'BLOCKED') { await handleBlocker(r, planned.planPath); continue }
     const m = await agent(pick(() => mergePrompt(r, integrationBranch, integrationWorktree), `merge:${r.id}`),
       { label: `merge:${r.id}`, phase: 'Integrate', model: model('reviewer'), schema: MERGE })
     if (m.merged) {
@@ -1217,7 +1283,7 @@ while (true) {
     // `n: r.n` carried forward here so a failed-merge blocker's eventual ledger line (in
     // handleBlocker) can still cite the plan ordinal — `r` already carries it (stamped by
     // reviewAndFix/the pipeline call site); the bare object built here previously dropped it.
-    else await handleBlocker({ id: r.id, n: r.n, blockerBead: m.blockerBead })
+    else await handleBlocker({ id: r.id, n: r.n, blockerBead: m.blockerBead }, planned.planPath)
   }
 
   // I6/C-2: no-progress guard. A round that made no forward progress at all — no task merged, no
@@ -1518,7 +1584,7 @@ function breakerBlockerPrompt(rv, planPath, ruling) {
   return `File a blocker bead for task ${rv.id} (n ${rv.n}): run \`bd create\` with a \`blocker\` label (confirm flags with \`bd create --help\`) and a body stating: the task id; the review finding that survived all 5 fix/re-review rounds — ${rv.finding}; the adjudicator's ruling that it's load-bearing — ${ruling}; the "## Task ${rv.n}" section of ${planPath} it collides with (paste it); and the fix history from the task's report file. Report id ${rv.id}, status BLOCKED, and blockerBead as the newly created bead's id.`
 }
 
-function triagePrompt(id, blockerBead) {
+function triagePrompt(id, blockerBead, planPath) {
   // One of two genuine judgment calls in this script's blocker handling (opus) — RESOLVE vs
   // ESCALATE, once a blocker bead already exists (the other is adjudicatePrompt's PARK vs BLOCKED
   // call, which decides whether one gets filed in the first place at the fix-loop cap) — see "The
@@ -1528,7 +1594,12 @@ function triagePrompt(id, blockerBead) {
   // string equality against the TRIAGE schema's `decision` field — so the bare-token requirement
   // is restated here as a safeguard, not left to the template alone (same lesson as C5/I2: a
   // template-compliant-but-wrong report silently degrades a RESOLVE into a quarantine).
-  return `Follow ./triage-prompt.md for the blocker bead ${blockerBead} filed against task ${id}. Run \`bd show ${blockerBead} --json\` for that template's "Blocker bead" section. Look up task ${id}'s ordinal via the plan.md mapping table and paste its "## Task <N>" section for "Originating task plan". Include the relevant spec excerpt. Report per that template's Output Contract: \`decision\` must be the BARE TOKEN "RESOLVE" or "ESCALATE" ONLY — no colon, no clarification text in that field, since the coordinator branches on exact string equality against it — with the clarification (RESOLVE) or summary + decision needed (ESCALATE) in \`detail\`.`
+  // Final fix round: `planPath` is now threaded in from `handleBlocker`'s caller (`planned.planPath`
+  // — see the three call sites in the coordinator loop) instead of this prompt telling the agent to
+  // look up "the plan.md mapping table" — I7 renamed the plan file per epic (`<epicId>-plan.md`),
+  // so a literal `plan.md` reference here would send a real triage agent looking for a file that
+  // does not exist.
+  return `Follow ./triage-prompt.md for the blocker bead ${blockerBead} filed against task ${id}. Run \`bd show ${blockerBead} --json\` for that template's "Blocker bead" section. Look up task ${id}'s ordinal via ${planPath}'s mapping table and paste its "## Task <N>" section for "Originating task plan". Include the relevant spec excerpt. Report per that template's Output Contract: \`decision\` must be the BARE TOKEN "RESOLVE" or "ESCALATE" ONLY — no colon, no clarification text in that field, since the coordinator branches on exact string equality against it — with the clarification (RESOLVE) or summary + decision needed (ESCALATE) in \`detail\`.`
 }
 
 function recordClarificationPrompt(id, detail) {
@@ -1722,7 +1793,7 @@ async function reviewAndFix(im, planPath) {
   return { ...rv, status: 'BLOCKED', blockerBead: bead.blockerBead }
 }
 
-async function handleBlocker(r) {
+async function handleBlocker(r, planPath) {
   phase('Triage')
   // I-7 (review round 3): every blocker-path entry converges here — the implementer/brief-BLOCKED
   // case (via the Integrate loop's `if (r.status === 'BLOCKED')` branch), the breaker cap's
@@ -1732,6 +1803,10 @@ async function handleBlocker(r) {
   // missing bead would reach `triagePrompt(r.id, r.blockerBead)` below as "the blocker bead
   // undefined". Ensuring it here, once, covers all four call sites instead of duplicating the
   // fallback at each one (the prior revision only guarded the implementer/brief hop).
+  // Final fix round: `planPath` is now a required second argument, threaded from `planned.planPath`
+  // at all three call sites in the coordinator loop below (`planned` is scoped to the round loop,
+  // not visible to this top-level function, so it must be passed in) — see `triagePrompt`'s own
+  // comment for why the prior "plan.md" literal was wrong after I7's per-epic rename.
   if (!r.blockerBead) {
     const bead = await agent(pick(() => missingBlockerBeadPrompt(r), `missing-blocker:${r.id}`),
       { label: `missing-blocker:${r.id}`, phase: 'Triage', model: model('mechanical'), schema: RESULT })
@@ -1741,7 +1816,7 @@ async function handleBlocker(r) {
   // legitimately spend `triage` (opus) — the other is reviewAndFix's cap adjudication
   // (adjudicatePrompt, PARK vs BLOCKED) — see "Coordinator contract" on why `triage` and
   // `mechanical` (and `fixEscalation`) are not interchangeable.
-  const t = await agent(pick(() => triagePrompt(r.id, r.blockerBead), `triage:${r.id}`),
+  const t = await agent(pick(() => triagePrompt(r.id, r.blockerBead, planPath), `triage:${r.id}`),
     { label: `triage:${r.id}`, phase: 'Triage', model: model('triage'), schema: TRIAGE })
   // C-2: bound RESOLVE to exactly one retry per id. A first-time RESOLVE gets a real re-attempt
   // next round (pendingRetry.add, below) — that's the whole point of RESOLVE. But if the SAME id
@@ -2133,9 +2208,12 @@ Run `wf_b1958510-6bf`, 2026-07-30, against an earlier revision of the args below
 predates the `base`-carrying fix for C2/C6 (Task 3): that revision's `brief:*` stubs had no `base`
 field, `RESULT` had no `base` property, and `reviewAndFix` had no `carried()` re-stamp. **22 agents
 dispatched, 0 errors**. Returned `{completed: ["bd-101","bd-102"], escalated: ["bd-103"]}` with the
-final review's verdict `conditional-pass`. This confirms every assertion above **except scoping and
-finding-rendering** (see "What this dryRun proves and does not prove" below), in the dispatch order
-the journal recorded:
+final review's verdict `conditional-pass`. **Superseded, kept as history — read the rest of this
+run's writeup with that in mind, not as the current baseline** (see "Superseded by Task 4" below:
+this run predates the five-round breaker, the C4 guard, and `bd-104`, and is confirmed only against
+the revision it actually ran against). At that revision, it confirmed every assertion above **except
+scoping and finding-rendering** (see "What this dryRun proves and does not prove" below), in the
+dispatch order the journal recorded:
 
 1. `close-epics` → `{rootClosed:false, closedThisRun:[]}`
 2. `bd-ready` → 3 ids — real evidence the loop got its batch, but **not** evidence of scoping: a
@@ -2356,8 +2434,10 @@ record; journals themselves are not guaranteed to remain inspectable. A future m
 re-verifies the current baseline by re-running the Workflow tool with the `args` below and
 recording the new run's figures here — not by going looking for any prior run's journal.
 
-To reproduce or establish the (currently unverified) baseline, run the Workflow tool with this
-script and this `args` block:
+The current baseline (`wf_ea0a2284-96b`, 31 agents, 0 errors — see "Confirmed against the
+final-fix-round script — and why that is not validation" above) is already verified against the
+final-fix-round script; the fix cycle is closed by decision. To reproduce it, or to re-verify after
+any future structural edit, run the Workflow tool with this script and this `args` block:
 
 ```json
 {
@@ -2853,8 +2933,12 @@ question, same structural limit as the other four claims above.
 
 If a future structural edit changes this script, re-run with these args, confirm the same shape (or
 update it deliberately alongside the edit that changed it), and replace the figures above — same
-discipline as the other two scenarios' baselines. Fix-round-1 and fix-round-2 were both such edits:
-**`wf_941e256b-10b`'s 23/0 is superseded history** (see "Confirmed against the post-Task-5,
-pre-fix-round-1 script" above), and the CURRENT confirmed shape is **23 agent calls, 0 errors** (run
-`wf_1e32bcd1-71f`, see "Confirmed against the current (post-fix-round-2) script" above). The 21/0
+discipline as the other two scenarios' baselines. Fix-round-1, fix-round-2, and the final fix round
+were all such edits (the final round's own edit here was data-only — adding `mergeBase` to the
+`merge:bd-301` stub — but the round is still listed for the same reason "recorded, not illustrative"
+demands it): **`wf_941e256b-10b`'s 23/0 and `wf_1e32bcd1-71f`'s 23/0 are both superseded history**
+(see "Confirmed against the post-Task-5, pre-fix-round-1 script" and "Confirmed against the current
+(post-fix-round-2) script" above), and the CURRENT confirmed shape — the last recording on this
+scenario, the fix cycle closed by decision — is **23 agent calls, 0 errors** (run `wf_ac3e6fae-171`,
+see "Confirmed against the final-fix-round script — and why that is not validation" above). The 21/0
 figure above `wf_941e256b-10b` remains pre-Task-5 history, unaffected by this restatement.
