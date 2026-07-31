@@ -6,11 +6,12 @@ artifacts. It is written for one reader: a human who did not watch the run and i
 now deciding what to do with it — merge, dig further, or intervene. That reader has
 no context except this file, `run.md`, and the diff.
 
-An autonomous run can finish having merged code with known Blocking findings —
-that is an accepted, documented risk of the design, not a bug. This file's whole
-job is to make sure that outcome is never mistaken for "everything's fine." A
-report that reads clean when a Blocking finding was parked is the exact failure
-this contract exists to prevent.
+An autonomous run can finish having merged code with known Blocking findings, or
+with an escalation that never reached a verdict — both are accepted, documented
+risks of the design, not bugs. This file's whole job is to make sure that outcome
+is never mistaken for "everything's fine." A report that reads clean when a
+Blocking finding was parked, or an escalation left unresolved, is the exact
+failure this contract exists to prevent.
 
 ## The status line
 
@@ -18,16 +19,22 @@ this contract exists to prevent.
 
 ```
 status: clean
-status: completed with <N> unresolved Blocking
+status: completed with <N> unresolved Blocking, <M> escalations
 status: stalled at phase <phase>
 ```
 
+An escalation is a distinct outcome class from a Blocking finding: it is a case
+that reached no verdict at all, not a case that reached a Blocking verdict. Both
+counts are tracked because either one alone can make "clean" a lie: **an
+unresolved escalation forces a non-clean status even at zero Blocking findings**,
+and `clean` requires both `<N>` and `<M>` to be zero.
+
 The prohibition: never a bare "done." "Done" says nothing about which of the three
-states above actually happened, and a run that parked Blocking findings and
-reports "done" is indistinguishable, at a glance, from a run that has none. If the
-run stalled, name the phase it stalled at (e.g. `stalled at phase roast-code`) —
-that phase name comes straight from `run.md`'s `phase` field, not from memory of
-how the run went.
+states above actually happened, and a run that parked Blocking findings, or left
+an escalation unresolved, and reports "done" is indistinguishable, at a glance,
+from a run that has neither. If the run stalled, name the phase it stalled at
+(e.g. `stalled at phase roast-code`) — that phase name comes straight from
+`run.md`'s `phase` field, not from memory of how the run went.
 
 ## The five sections, and where each one comes from
 
@@ -35,6 +42,12 @@ The report has exactly five sections. Every one names, in its own text, the
 durable artifact it was built from — not because it reads better, but because that
 naming is what lets a reader check the report against the artifact instead of
 taking it on faith.
+
+This is only possible because `report.md` is written **before** the integration
+worktree is torn down: the ledger and implementer reports these sources cite live
+git-ignored inside that worktree, and are gone once it's removed — so a future
+edit that lets `super-code` run its own Finish (worktree removal included) before
+`report` runs would silently cut off two of the five sources below.
 
 | Section | Content | Sourced from |
 |---|---|---|
