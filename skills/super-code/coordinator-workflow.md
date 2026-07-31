@@ -697,10 +697,19 @@ const TRIAGE  = { type: 'object', properties: { decision: {type:'string'}, detai
 // `head` (fix-round-1, review): the pre-merge tip commit of the task branch, captured by the merge
 // agent (`git rev-parse <branch>`, same "the coordinator has no shell/git access of its own" reason
 // `base` is captured by the brief stage rather than derived here — see the `base` comment above).
-// NOT required — a failed merge (`merged: false`) has no head worth recording — but the merge agent
-// is asked to report it whenever `merged` is true, since the ledger's completion line now names the
-// commit range (`commits <base7>..<head7>`, upstream SKILL.md's own shape) instead of the bare word
-// "merged" (see the merge-gate ledger-append call site and "Workspace and ledger" above).
+// NOT required, on schema, exactly like `base` on `RESULT` above — a failed merge (`merged: false`)
+// has no head worth recording, so it can't be a blanket requirement — but the merge agent IS asked
+// (in `mergePrompt`'s dispatch text) to report it whenever `merged` is true, since the ledger's
+// completion line now names the commit range (`commits <base7>..<head7>`, upstream SKILL.md's own
+// shape) instead of the bare word "merged" (see the merge-gate ledger-append call site and
+// "Workspace and ledger" above). Concern, stated here rather than only in a task report: unlike
+// `base` (whose absence would already have failed the review/fix-loop stages that depend on it
+// before ever reaching `mergePrompt`), a merge agent that reports `merged: true` without `head`
+// is schema-valid and passes silently — `short(undefined)` (see `short()` in the helpers section)
+// degrades to `""`, so the ledger line would read `commits <base7>..` with an empty second half
+// instead of failing loud. This is not exercised by any dryRun (every `merge:<id>` stub in this
+// doc's scenarios includes `head`) and is a real, if narrow, gap: a non-compliant merge dispatch
+// degrades the ledger's commit-range invariant instead of erroring.
 const MERGE   = { type: 'object', properties: { id:{type:'string'}, merged:{type:'boolean'}, blockerBead:{type:'string'}, head:{type:'string'} }, required: ['id','merged'] }
 const CLOSE   = { type: 'object', properties: { rootClosed: {type:'boolean'}, closedThisRun: { type: 'array', items: { type: 'string' } } }, required: ['rootClosed','closedThisRun'] }
 // I-9: the fix-loop breaker's cap adjudication (PARK vs BLOCKED) — a dispatched INVOCATION of
@@ -884,10 +893,36 @@ while (true) {
   // Checked on every Plan dispatch, not just the epic's first: a refill-round planner answering
   // from a different workspace would be just as broken. Fail loud rather than let the two paths
   // silently split — same "validate and fail fast" discipline as the `epicId`/`integrationBranch`/
-  // `config` check on line 1 (see "Authoring pitfalls").
-  const plannedDir = planned.planPath.replace(/\/[^/]*$/, '')
-  if (plannedDir !== workspace) {
-    throw new Error(`workspace divergence: planner reported planPath "${planned.planPath}" (directory "${plannedDir}"), but this coordinator derives workspace "${workspace}" from epicId "${epicId}" independently. Refusing to continue — the plan file and the ledger would silently split across two directories. Check that planner-prompt.md's plan-file-name parameter was actually honored by this dispatch.`)
+  // `config` check on line 1 (see "Authoring pitfalls"). This is deliberately a hard `throw`, not a
+  // blocker-bead escalation: a workspace divergence is a whole-epic misconfiguration (every task's
+  // brief/report path is affected, not one task's), so there is no per-task recovery to route it
+  // through — do not "fix" this into `handleBlocker` later; that would quarantine one task while
+  // every other task keeps writing into a split workspace.
+  //
+  // Fix-round-1-followup (review, caught by an actual dryRun run): the FIRST version of this check
+  // compared `plannedDir` against `workspace` for EXACT STRING EQUALITY — and fired on every
+  // correct run, including the canonical dryRun, never once catching a real divergence. `workspace`
+  // is a repo-root-relative constant, but `planPrompt` (below) explicitly dispatches the planner
+  // to work "in the integration worktree" (see "Workspace and ledger"), and `scripts/sdd-workspace`
+  // resolves its canonicalized path against `git rev-parse --show-toplevel` of the INVOKING cwd —
+  // which, inside a worktree, is that worktree's own root, never the main repo's. A CORRECT planner
+  // therefore legitimately reports a path prefixed by the integration worktree (e.g.
+  // `.worktrees/<integrationBranch>/.superpowers/sdd/<epicId>-plan/<epicId>-plan.md`, or an
+  // absolute path with the same shape in a real run), which can never be byte-identical to the bare
+  // `workspace` string. The check now asserts what actually matters — that `plannedDir` RESOLVES TO
+  // this epic's workspace — not that the two strings match exactly: `plannedDir` must equal
+  // `workspace` outright (the unusual case of a planner already running from the repo root) OR end
+  // with `/${workspace}` (the integration-worktree-prefixed case `planPrompt` actually produces).
+  // Anchored on that leading `/`: the matched suffix is the FULL `.superpowers/sdd/<epicId>-plan`
+  // segment, not a bare substring of `epicId`, so a different epic id that happens to share this
+  // one's tail as raw text (e.g. epicId `100` vs `bd-100`) can't accidentally satisfy it — the
+  // character immediately before the matched segment must be a path separator, which only a
+  // genuine `.superpowers/sdd/` directory boundary provides. Trailing slashes are stripped from
+  // `plannedDir` before comparing, since a planner could report either form.
+  const plannedDir = planned.planPath.replace(/\/[^/]*$/, '').replace(/\/+$/, '')
+  const workspaceSuffix = `/${workspace}`
+  if (plannedDir !== workspace && !plannedDir.endsWith(workspaceSuffix)) {
+    throw new Error(`workspace divergence: planner reported planPath "${planned.planPath}" (directory "${plannedDir}"), which does not resolve to this coordinator's workspace "${workspace}" (expected it to equal that path, or end with "${workspaceSuffix}"). Refusing to continue — the plan file and the ledger would silently split across two directories. Check that planner-prompt.md's plan-file-name parameter was actually honored by this dispatch.`)
   }
   const ordinalFor = id => planned.mapping.find(m => m.id === id)?.n
 
