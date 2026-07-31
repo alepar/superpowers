@@ -26,25 +26,37 @@ args = {
   dryRun,
   config: {
     concurrency: 4,
-    models: { planner: 'opus', implementer: 'sonnet', reviewer: 'sonnet', mechanical: 'sonnet', triage: 'opus', finalReview: 'opus' },
+    models: { planner: 'opus', implementer: 'sonnet', reviewer: 'sonnet', mechanical: 'sonnet', triage: 'opus', finalReview: 'opus', fixEscalation: 'opus' },
   },
   prompts: { ... },
 }
 ```
 
+`fixEscalation` is **optional** — additive, non-breaking, unlike every other key above (see "a
+differently-spelled key breaks every later task silently" just above: that warning is about
+*respelling* an existing key, not about adding a new optional one). It names the model rounds 4-5
+of the fix loop escalate to (see "The breaker, autonomous variant" and `reviewAndFix` below); if
+omitted, the script falls back to `triage`'s tier. It is *not* `triage` itself: escalating a stuck
+implementer to a more capable model is a capability bump, not the RESOLVE/ESCALATE judgment call
+`triage` names (see immediately below) — conflating the two would make three separate statements
+in this doc false at once (this paragraph, `handleBlocker`'s comment, and SKILL.md's tiering
+table), which is exactly the trap a prior round of review caught here.
+
 `mechanical` and `triage` are deliberately separate roles even though both may resolve to cheap
-tiers: `triage` names *only* the opus blocker-resolution judgment call (see "The blocker-bead
-path") — it never means "the cheap one." `mechanical` is for dispatches with a fully-specified,
-no-improvisation procedure — no branching left to the dispatched agent's judgment, whether that
-procedure is a literal CLI echo (`bd ready`, `scripts/task-brief` dispatch, notifications,
-recording a clarification) or a short fixed algorithm spelled out with worked examples, such as
-the epic-closure fixpoint (`bd epic close-eligible`'s dry-run/filter/close loop — see
-`closeEpicsPrompt` below; it outgrew a bare echo once it had to be scoped to this run's tree, but
-every branch in it is still a deterministic rule, not a judgment call). Spending opus on any of
-these wastes budget against `subagent-driven-development`'s Model Selection guidance and, worse,
-blurs "triage" into meaning two different things in the same doc. Keep every dispatch whose every
-branch is pre-decided on `mechanical`; keep every dispatch that decides RESOLVE vs ESCALATE on
-`triage`.
+tiers: `triage` names the opus **judgment calls** in the blocker path — deciding RESOLVE vs
+ESCALATE on a blocker bead (see "The blocker-bead path"), and deciding PARK vs BLOCKED when the
+fix-loop breaker trips (see "The breaker, autonomous variant") — it never means "the cheap one,"
+and it never means "the fix-loop escalation tier" either (that's `fixEscalation`, above).
+`mechanical` is for dispatches with a fully-specified, no-improvisation procedure — no branching
+left to the dispatched agent's judgment, whether that procedure is a literal CLI echo (`bd ready`,
+`scripts/task-brief` dispatch, notifications, recording a clarification) or a short fixed algorithm
+spelled out with worked examples, such as the epic-closure fixpoint (`bd epic close-eligible`'s
+dry-run/filter/close loop — see `closeEpicsPrompt` below; it outgrew a bare echo once it had to be
+scoped to this run's tree, but every branch in it is still a deterministic rule, not a judgment
+call). Spending opus on any of these wastes budget against `subagent-driven-development`'s Model
+Selection guidance and, worse, blurs "triage" into meaning more than one thing in the same doc.
+Keep every dispatch whose every branch is pre-decided on `mechanical`; keep every dispatch that
+decides RESOLVE vs ESCALATE, or PARK vs BLOCKED, on `triage`.
 
 `dryRun: true` swaps every dispatched agent for a canned stub, for the same reason as
 `super-roast`'s dryRun policy (see `skills/super-roast/super-roast-workflow.md`): validate the
@@ -61,9 +73,11 @@ task-brief → implementer → review-package → task-reviewer → (fix rounds 
 
 This is `subagent-driven-development`'s current Task Loop (SKILL.md, "The Task Loop" /
 "Final Review"), unmodified in substance. Autonomous mode changes *who* drives it (a dispatched
-agent per stage instead of the interactive controller) and *what happens when a load-bearing
-finding survives the fix-loop cap* (files a blocker bead instead of stopping the session — see
-"The breaker, autonomous variant" below). It does not change the review discipline itself.
+agent per stage instead of the interactive controller) and *what happens at the fix-loop cap*: a
+dispatched adjudicator, following SDD's own breaker rubric, still decides PARK-with-a-ruling
+(merge — the finding wasn't load-bearing) vs BLOCKED (file a blocker bead instead of stopping the
+session — see "The breaker, autonomous variant" below). It does not change the review discipline
+itself, and it does not reimplement the adjudication rubric — it invokes it.
 
 ## Key constraint: the script does no I/O
 
@@ -133,11 +147,12 @@ Round-based with refill (each `bd ready` batch is, by definition, mutually indep
    run the epic-closure step (below) after each refill cycle and check whether the root closed.
    An empty ready set with the root still open means the remaining work is quarantined blockers
    (see "The blocker-bead path") — that ends the loop too, but as a report, not a clean finish. A
-   **third** exit, independent of both: a round that merges no task, closes no epic, and
-   quarantines no id at all made no forward progress whatsoever and never will on its own — a
-   `RESOLVE` triage verdict that never actually resolves the underlying blocker is deliberately
-   *not* quarantined (it gets a real re-attempt next round instead — see "The blocker-bead path"),
-   so without this guard such a round repeats forever on `triage`'s opus tier. Stop and report
+   **third** exit, independent of both: a round that merges no task, closes no epic, gains no
+   RESOLVE-pending id, and quarantines no id at all made no forward progress whatsoever and never
+   will on its own. A `RESOLVE` triage verdict gets exactly one real re-attempt next round before
+   it's bounded into an `ESCALATE` (see "The blocker-bead path") — that bound alone guarantees any
+   *single* stuck id eventually terminates, but this guard is the belt-and-suspenders backstop for
+   the general case (any future loop-control edge this doc hasn't anticipated). Stop and report
    rather than spin (see the script skeleton's no-progress guard, right after the Integrate phase).
 3. **Group for parallelism, then pipeline the batch** — group the round's ready ids by the files
    each declares it touches (recorded on the bead body / brief, not derived by the script).
@@ -298,33 +313,49 @@ itself is unmodified:
 
 Rounds 1–5, the resume-then-escalate-model structure, and the ADDRESSED/NOT-ADDRESSED scoped
 re-review are exactly SKILL.md's fix loop (rounds 1–3 resume the original implementer; rounds 4–5
-dispatch a fresh implementer on a more capable model; minors go to the ledger as deferred and
-never enter the loop; plan-mandated conflicts are a human decision, same as any plan
-contradiction). Read SKILL.md's "The fix loop" for that full mechanics — it applies unchanged.
+dispatch a fresh implementer on `fixEscalation`'s tier — a capability bump, not a judgment call,
+so it is *not* `triage`, see "Coordinator contract"; minors go to the ledger as deferred and never
+enter the loop; plan-mandated conflicts are a human decision, same as any plan contradiction).
+Read SKILL.md's "The fix loop" for that full mechanics — it applies unchanged.
 
-**What autonomous mode changes is only the terminal action at the cap.** SKILL.md's breaker, on
-a real, load-bearing finding at round 5, says: `STOP: report BLOCKED to human partner`. A
-Workflow run has no synchronous human partner to stop for — halting the whole script would freeze
-every *other*, unrelated ready task behind one stuck bead, which defeats the reason to run
-autonomously at all. So here, the same load-bearing verdict instead:
+**What autonomous mode changes is the terminal action at the cap, and who performs the
+adjudication.** Spec §3.2 requires adopting *both* of SKILL.md's outcomes at round 5 — park with a
+ruling, or stop on a load-bearing finding — not cap-always-blocks; a cap that always blocks
+quarantines correct work (and every dependent) whenever the reviewer was wrong or the finding
+doesn't matter downstream, which is exactly the case most likely to survive five rounds unchanged
+(a real defect usually gets fixed; a contestable one doesn't). SKILL.md's breaker adjudicates this
+itself, inline, because there's a human controller present to read the plan and the finding and
+decide. A Workflow run has no synchronous human partner to do that reading — so `reviewAndFix`
+dispatches a fresh agent (`adjudicatePrompt`) that follows SKILL.md's "The breaker" section
+verbatim to make the *same* call: is this finding load-bearing, or contestable/non-load-bearing?
+This is a dispatched **invocation** of SDD's rubric, not a coordinator-side reimplementation of
+it — the governing rule forbids the latter, not the former (see "Boundary" in SKILL.md).
 
-1. Appends `Task <N> (<bead id>): BLOCKED — <reason>` to the ledger — SKILL.md's line shape, with
-   the ordinal/bead-id pairing described in "Workspace and ledger" above. *(The ledger itself isn't
-   wired up in the script yet — see I1 in the coordinator-fixes plan, Task 5's scope — so this line
-   is currently aspirational; `reviewAndFix`'s breaker cap implements points 2 and 3 below today.)*
-2. **Files a blocker bead** instead of stopping the session — same shape as any other blocker
-   bead (see "The blocker-bead path"): the task id, the load-bearing finding, the plan text (from
-   `plan.md`) it collides with, and the fix history from the report file. `reviewAndFix`'s
-   `breakerBlockerPrompt` does this.
-3. Quarantines the task (leaves its branch and worktree in place, does not merge it) and lets the
-   coordinator loop continue with every other ready task. `reviewAndFix` returns `status: 'BLOCKED'`
-   for this, which routes through the same `handleBlocker`/triage path as every other blocker
-   trigger (see the pipeline call site and "The blocker-bead path" below) rather than `mergePrompt`.
+- **PARK** (contestable or non-load-bearing): `reviewAndFix` returns the task as `CLEAN` with the
+  adjudicator's `ruling` attached — it proceeds to `mergePrompt` exactly like any other clean
+  review. *(The ruling belongs in the ledger's parked-with-a-ruling note per SKILL.md's line
+  shape; the ledger itself isn't wired up in the script yet — see I1 in the coordinator-fixes plan,
+  Task 5's scope.)*
+- **BLOCKED** (load-bearing): the same load-bearing verdict SKILL.md's breaker reaches, but
+  Workflow has no synchronous human partner to stop the whole run for — halting would freeze every
+  *other*, unrelated ready task behind one stuck bead, which defeats the reason to run
+  autonomously at all. So instead:
+  1. Appends `Task <N> (<bead id>): BLOCKED — <reason>` to the ledger — SKILL.md's line shape, with
+     the ordinal/bead-id pairing described in "Workspace and ledger" above. *(Same ledger caveat as
+     PARK above — aspirational until Task 5.)*
+  2. **Files a blocker bead** instead of stopping the session — same shape as any other blocker
+     bead (see "The blocker-bead path"): the task id, the load-bearing finding, the adjudicator's
+     ruling, the plan text (from `plan.md`) it collides with, and the fix history from the report
+     file. `reviewAndFix`'s `breakerBlockerPrompt` does this.
+  3. Quarantines the task (leaves its branch and worktree in place, does not merge it) and lets the
+     coordinator loop continue with every other ready task. `reviewAndFix` returns `status:
+     'BLOCKED'` for this, which routes through the same `handleBlocker`/triage path as every other
+     blocker trigger (see the pipeline call site and "The blocker-bead path" below) rather than
+     `mergePrompt`.
 
-Contestable-or-non-load-bearing findings at the cap are parked with a ruling exactly as SKILL.md
-describes — parking is not autonomous-mode-specific and needs no change. Only the load-bearing
-exit differs, and only in *where the stop lands*: a blocker bead the triage agent will pick up,
-not a frozen run.
+Only the load-bearing exit's *destination* is autonomous-mode-specific — a blocker bead the triage
+agent will pick up, not a frozen run. The adjudication call itself (PARK vs BLOCKED) is SDD's own
+rubric, dispatched rather than performed inline, in both modes.
 
 ## Serial merge-back
 
@@ -355,7 +386,13 @@ Anything that cannot proceed becomes a beads issue, never a silent retry and nev
   of:
   - `RESOLVE: <clarification>` → the coordinator re-dispatches the task with that clarification
     added to its context (next round). Use only when the answer is genuinely derivable from the
-    existing plan/beads.
+    existing plan/beads. **Bounded to one retry per id** (`pendingRetry`, tracked in
+    `handleBlocker`): if the *same* id triggers the blocker-bead path again after a RESOLVE — the
+    clarification didn't fix it — the second occurrence is treated as `ESCALATE` regardless of
+    what this round's triage verdict says, so a bad clarification can spin at most one extra round
+    before it quarantines, never indefinitely. This also closes I6: an id parked in `escalated`
+    permanently is filtered out of every future `bd ready` batch and guarantees the round-based
+    no-progress guard sees real termination, where an unbounded RESOLVE would not.
   - `ESCALATE: <summary + decision needed>` → escalation (below).
 
 ## Escalation = notify + quarantine + continue
@@ -369,9 +406,10 @@ On `ESCALATE`, the run **does not freeze**:
    remain unready in beads automatically, so they are skipped without extra bookkeeping.
 3. **Continue** — keep driving every other ready task to completion.
 
-When the ready set finally drains, the run ends and reports: tasks completed, open `blocker`
-beads, and quarantined subtrees. The user resolves the blockers and **re-invokes the
-coordinator**, which picks up the now-ready work.
+When the ready set finally drains, the run ends and reports: tasks completed, quarantined
+subtrees (`escalated`), and tasks mid-retry (`pendingRetry` — RESOLVEd once, not yet re-completed
+or re-blocked; see the bounded-retry note above). The user resolves the blockers and **re-invokes
+the coordinator**, which picks up the now-ready work.
 
 ## Finish
 
@@ -429,6 +467,11 @@ const { epicId, integrationBranch, config, dryRun = false, prompts } = A || {}
 if (!epicId || !integrationBranch || !config) throw new Error('coordinator args missing: ' + JSON.stringify(A))
 log('coordinator: epic=' + epicId + ' branch=' + integrationBranch + ' dryRun=' + !!dryRun)
 const model = role => dryRun ? 'haiku' : config.models[role]
+// I-5: fix-loop escalation (rounds 4-5, see reviewAndFix/fixPrompt) is a distinct role from
+// `triage` — a capability bump for a stuck implementer, not the RESOLVE/ESCALATE or PARK/BLOCKED
+// judgment call `triage` names (see "Coordinator contract"). `fixEscalation` is optional/additive
+// to the contract, so this falls back to `triage`'s tier when a caller's config predates the key.
+const fixEscalationModel = () => dryRun ? 'haiku' : (config.models.fixEscalation ?? config.models.triage)
 // dryRun swaps every dispatched prompt for a canned stub from prompts.stubs (see "dryRun policy"
 // below) — same swap as super-roast's `pick()`, with two differences, both hard-won:
 // 1. `pick` takes a THUNK (`() => real`), not the built prompt itself, and calls it only on the
@@ -487,9 +530,20 @@ const RESULT  = { type: 'object', properties: { id: {type:'string'}, n: {type:'i
 const TRIAGE  = { type: 'object', properties: { decision: {type:'string'}, detail: {type:'string'} }, required: ['decision','detail'] } // decision: RESOLVE | ESCALATE
 const MERGE   = { type: 'object', properties: { id:{type:'string'}, merged:{type:'boolean'}, blockerBead:{type:'string'} }, required: ['id','merged'] }
 const CLOSE   = { type: 'object', properties: { rootClosed: {type:'boolean'}, closedThisRun: { type: 'array', items: { type: 'string' } } }, required: ['rootClosed','closedThisRun'] }
+// I-9: the fix-loop breaker's cap adjudication (PARK vs BLOCKED) — a dispatched INVOCATION of
+// SDD's own breaker rubric (see adjudicatePrompt/"The breaker, autonomous variant"), not a
+// coordinator-side reimplementation of it. `ruling` carries the adjudicator's reasoning either way
+// (ledger note on PARK, blocker-bead body on BLOCKED).
+const ADJUDICATE = { type: 'object', properties: { id: {type:'string'}, decision: {type:'string'}, ruling: {type:'string'} }, required: ['id','decision','ruling'] } // decision: PARK | BLOCKED
 
 const escalated = []
 const completed = []
+// C-2/I6: ids RESOLVEd once by triage, awaiting their one bounded re-attempt (see handleBlocker
+// and "The blocker-bead path"). Membership here is what lets the no-progress guard tell a
+// legitimate first-time RESOLVE (real, if temporary, progress) apart from a round that truly did
+// nothing — and what bounds a RESOLVE that never actually fixes anything to exactly one extra
+// round before `handleBlocker` forces it into `escalated` instead.
+const pendingRetry = new Set()
 let stalled = false  // I6: set true if a round makes no progress at all — see the guard below
 
 while (true) {
@@ -518,12 +572,14 @@ while (true) {
   // Quarantine exit: the root isn't closed (checked above) but nothing is ready — remaining
   // work is blocked/escalated. Not a clean finish; report below distinguishes the two cases.
   if (ids.length === 0) break
-  // I6: snapshot before this round's Plan/Implement/Integrate work so the no-progress guard below
-  // (after Integrate) can tell whether THIS round moved anything forward. Captured here, before
-  // the unplannedIds quarantine below can touch `escalated`, so that quarantine counts as progress
-  // too — not just a later Integrate-phase escalation.
+  // I6/C-2: snapshot before this round's Plan/Implement/Integrate work so the no-progress guard
+  // below (after Integrate) can tell whether THIS round moved anything forward. Captured here,
+  // before the unplannedIds quarantine below can touch `escalated`/`pendingRetry`, so that
+  // quarantine (or a first-time RESOLVE) counts as progress too — not just a later
+  // Integrate-phase escalation.
   const completedBefore = completed.length
   const escalatedBefore = escalated.length
+  const pendingRetryBefore = pendingRetry.size
 
   // Plan materialization — once per epic, append-only on refill (see "Plan materialization").
   // scripts/sdd-workspace and scripts/task-brief need PLAN_FILE with ## Task <N> headings keyed
@@ -584,7 +640,15 @@ while (true) {
       // verify it (see "Key constraint: the script does no I/O") — so `base` is the one field where
       // round-tripping through the brief agent's report is deliberate, not an oversight. Only
       // `status`/`files` are genuinely the implementer's own report.
+      // I-8: symmetric guard at the brief hop. A brief that reports BLOCKED (task-brief's "task
+      // not found" failure) must not be handed to the implementer — dispatching against a brief
+      // that was never produced is nonsensical, and it's exactly the path C4's "no path reaches
+      // mergePrompt with a status other than a clean review result" assertion didn't cover. Pass
+      // the BLOCKED brief straight through with `n`/`branch` stamped, same as every other hop; the
+      // next stage's guard (and its I-7 fallback below) files a blocker bead for it automatically,
+      // since a brief failure never self-files one the way implementPrompt's BLOCKED case does.
       async br => {
+        if (br.status === 'BLOCKED') return { ...br, n: ordinalFor(br.id), branch: taskWorktree(br.id) }
         const im = await agent(pick(() => implementPrompt(br, integrationBranch), `implement:${br.id}`), { label: `impl:${br.id}`, phase: 'Implement', model: model('implementer'), schema: RESULT })
         return { ...im, n: ordinalFor(br.id), branch: taskWorktree(br.id), base: br.base }
       },
@@ -592,11 +656,20 @@ while (true) {
       // BLOCKED (self-filed bead, see implementPrompt) gets handed to reviewAndFix anyway, whose
       // CLEAN/NEEDS_FIX verdict overwrites `status` and erases BLOCKED before the Integrate stage's
       // `if (r.status === 'BLOCKED')` check ever sees it — routing blocked work to `mergePrompt`.
-      // Skip review entirely and pass the implementer's result straight through unchanged; `im`
-      // already carries `blockerBead` (from implementPrompt's report contract), which is what lets
-      // the Integrate stage's `handleBlocker(r)` dispatch `triagePrompt(r.id, r.blockerBead)`
-      // correctly instead of with an undefined bead id.
-      im  => im.status === 'BLOCKED' ? im : reviewAndFix(im, planned.planPath),
+      // Skip review entirely and pass the implementer's result straight through unchanged.
+      // I-7 fallback: `im` is SUPPOSED to already carry `blockerBead` (implementPrompt's report
+      // contract asks a self-filing implementer for it) — but RESULT doesn't REQUIRE it, and a
+      // BLOCKED brief (I-8, above) never had a chance to self-file one at all. Without a bead id,
+      // `handleBlocker(r)` would dispatch `triagePrompt(r.id, r.blockerBead)` with an undefined
+      // bead — "Follow ./triage-prompt.md for the blocker bead undefined". File one coordinator
+      // side in that case, same mechanical shape as `unplannedBlockerPrompt`.
+      async im => {
+        if (im.status !== 'BLOCKED') return reviewAndFix(im, planned.planPath)
+        if (im.blockerBead) return im
+        const bead = await agent(pick(() => missingBlockerBeadPrompt(im), `missing-blocker:${im.id}`),
+          { label: `missing-blocker:${im.id}`, phase: 'Implement', model: model('mechanical'), schema: RESULT })
+        return { ...im, blockerBead: bead.blockerBead }
+      },
     )
     results.push(...groupResults)
   }
@@ -609,39 +682,41 @@ while (true) {
     if (r.status === 'BLOCKED') { await handleBlocker(r); continue }
     const m = await agent(pick(() => mergePrompt(r, integrationBranch, integrationWorktree), `merge:${r.id}`),
       { label: `merge:${r.id}`, phase: 'Integrate', model: model('reviewer'), schema: MERGE })
-    if (m.merged) completed.push(r.id)
+    if (m.merged) { completed.push(r.id); pendingRetry.delete(r.id) }  // a RESOLVEd id that then succeeds clears its retry-pending mark (C-2)
     else await handleBlocker({ id: r.id, blockerBead: m.blockerBead })
   }
 
-  // I6: no-progress guard. A `RESOLVE` triage verdict that never actually resolves the underlying
-  // blocker is, by design, NOT pushed onto `escalated` (see handleBlocker) — the whole point is to
-  // give the task a real re-attempt next round. But if that re-attempt also RESOLVEs without
-  // fixing anything, the same id reappears in `bd ready` forever and spins the loop on `triage`'s
-  // opus tier indefinitely. Detect a round that made no forward progress at all and stop rather
-  // than spin: no task merged, no epic closed, and the quarantine list didn't grow either (a grown
-  // quarantine — ESCALATE, an unmapped-id blocker bead, a breaker-cap blocker bead — already
-  // guarantees eventual termination on its own via the `escalated` filter on `ids` above, so it
-  // counts as progress here too, not just merges/closures).
+  // I6/C-2: no-progress guard. A round that made no forward progress at all — no task merged, no
+  // epic closed, no id newly quarantined, AND no id newly RESOLVEd-pending-retry — stops rather
+  // than spins. `pendingRetry` growing counts as progress in its own right (C-2): `handleBlocker`
+  // deliberately does NOT push a first-time RESOLVE onto `escalated`, since the whole point is to
+  // give the task one real re-attempt next round — without counting that as progress here, this
+  // guard would trip after round 1 of a legitimate RESOLVE and never let the re-attempt happen at
+  // all. A grown `escalated` (ESCALATE, an unmapped-id blocker bead, a breaker-cap BLOCKED, or a
+  // SECOND RESOLVE for an id already in `pendingRetry` — see handleBlocker's one-retry bound)
+  // already guarantees eventual termination on its own via the `escalated` filter on `ids` above,
+  // so it counts as progress here too, not just merges/closures.
   // `closed.closedThisRun` is this iteration's Close pass, computed at the TOP of this same
   // iteration — it reflects the PRIOR round's merges (Close runs before Ready/Implement/Integrate
-  // every iteration), one round lagged from `completed`/`escalated`'s own before/after snapshot.
+  // every iteration), one round lagged from the other three signals' own before/after snapshot.
   // That lag doesn't weaken the guard: a run making genuine progress always has at least one of
-  // the three signals non-empty in any given round once work starts landing; a run making none of
-  // the three, in any round, has nothing left that will change next round's outcome either.
-  if (completed.length === completedBefore && closed.closedThisRun.length === 0 && escalated.length === escalatedBefore) {
+  // the four signals non-empty in any given round once work starts landing; a run making none of
+  // the four, in any round, has nothing left that will change next round's outcome either.
+  if (completed.length === completedBefore && closed.closedThisRun.length === 0 &&
+      escalated.length === escalatedBefore && pendingRetry.size === pendingRetryBefore) {
     stalled = true
-    log(`STALLED: round completed 0 tasks, closed 0 epics, and quarantined 0 new ids — stopping to avoid an infinite loop. Still-ready ids this round: ${JSON.stringify(ids)}`)
+    log(`STALLED: round completed 0 tasks, closed 0 epics, quarantined 0 new ids, and RESOLVEd 0 new ids — stopping to avoid an infinite loop. Still-ready ids this round: ${JSON.stringify(ids)}`)
     break
   }
 }
 
 phase('Finish')
-log(`Completed: ${completed.length}. Escalated: ${escalated.length}.${stalled ? ' Stalled: true — see the STALLED log line above.' : ''}`)
+log(`Completed: ${completed.length}. Escalated: ${escalated.length}. Pending retry: ${pendingRetry.size}.${stalled ? ' Stalled: true — see the STALLED log line above.' : ''}`)
 const review = completed.length
   ? await agent(pick(() => `Final whole-epic review of integration branch ${integrationBranch} for epic ${epicId}.`, 'final-review'),
       { label: 'final-review', phase: 'Finish', model: model('finalReview') })
   : 'no work landed'
-return { completed, escalated, stalled, review }
+return { completed, escalated, pendingRetry: [...pendingRetry], stalled, review }
 
 // --- helpers ---
 function closeEpicsPrompt(epicId) {
@@ -761,9 +836,9 @@ function taskReviewPrompt(im, planPath) {
 function fixPrompt(rv, round) {
   // The fix loop (C3, SKILL.md's "The fix loop"): rounds 1-3 resume the original implementer —
   // its context is intact, it knows the task, the code, and its own choices. Rounds 4-5 dispatch a
-  // FRESH implementer on a more capable model (reviewAndFix passes the escalated model via
-  // opts.model — this text only needs to say so) with SKILL.md's own framing: a prior implementer
-  // attempted the task and didn't resolve it; fresh eyes own it now.
+  // FRESH implementer on `fixEscalationModel()`'s tier (reviewAndFix passes it via opts.model —
+  // this text only needs to say so) with SKILL.md's own framing: a prior implementer attempted the
+  // task and didn't resolve it; fresh eyes own it now.
   // The finding text (rv.finding), not the whole RESULT object, is the substance of this prompt —
   // stringifying rv wholesale would hand the implementer {id,n,status,files,branch,base} and no
   // finding to actually fix, since none of RESULT's other fields carry the reviewer's finding text.
@@ -781,14 +856,38 @@ function reReviewPrompt(fixed) {
   // re-review of the whole task. `fixed` is `carried()`-stamped by reviewAndFix before reaching
   // here, so `fixed.branch` is real (previously this interpolated a plain fixPrompt-agent echo
   // that fixPrompt's own report contract never asked for — the same C2 gap, one hop earlier).
-  // Report contract: id and status only, same reasoning as taskReviewPrompt above.
-  return `Follow subagent-driven-development/re-review-prompt.md, scoped to the fix diff for task ${fixed.id} (n ${fixed.n}) in ${fixed.branch}. Report id and status CLEAN (finding ADDRESSED) or NEEDS_FIX (still open).`
+  // C-3 fix: upstream's actual template vocabulary (subagent-driven-development/re-review-prompt.md)
+  // is PER-FINDING "ADDRESSED"/"NOT ADDRESSED" with a round verdict, not the bare round-level
+  // CLEAN/NEEDS_FIX token this coordinator branches on — a re-reviewer that follows the template
+  // literally could report something this coordinator's `rv.status === 'NEEDS_FIX'` check (the
+  // pre-fix code) would read as false, exiting the loop with the finding still open and merging it.
+  // This file already learned this exact lesson once for `triagePrompt` ("since the coordinator
+  // branches on exact string equality against it"); state the same mapping and bare-token
+  // requirement explicitly here, and reviewAndFix's loop now also fails CLOSED (loops on anything
+  // that isn't literally "CLEAN", rather than looping only on literally "NEEDS_FIX") as a second
+  // line of defense against a template-compliant-but-differently-worded report.
+  // C-1 fix: also ask for `finding` on NEEDS_FIX. Previously this contract asked for "id and status
+  // only" — so from round 2 on, `carried()` had nothing but a stale-or-undefined finding to hand
+  // `fixPrompt`/`breakerBlockerPrompt`/`adjudicatePrompt`, and every later round told an
+  // implementer to "address this review finding: undefined". reviewAndFix's `carried()` now also
+  // keeps the LAST non-empty finding sticky across rounds (`result.finding ?? lastFinding`) as a
+  // second line of defense if a re-reviewer ever omits it on a genuine NEEDS_FIX.
+  return `Follow subagent-driven-development/re-review-prompt.md, scoped to the fix diff for task ${fixed.id} (n ${fixed.n}) in ${fixed.branch}. That template's own vocabulary is per-finding "ADDRESSED"/"NOT ADDRESSED" with a round verdict — map it to a single BARE TOKEN this round's overall \`status\`: "CLEAN" if every finding is ADDRESSED, "NEEDS_FIX" if any finding remains open — no other value, no colon, no extra text in that field, since the coordinator branches on exact string equality against it and fails CLOSED (treats anything that isn't literally "CLEAN" as still open) on anything else. Report id, that status token, and — whenever status is NEEDS_FIX — finding with the still-open finding text verbatim (fixPrompt and, at the cap, breakerBlockerPrompt/adjudicatePrompt build their dispatch from this field directly; omit or leave it blank only when status is CLEAN).`
 }
 
 function mergePrompt(r, integrationBranch, integrationWorktree) {
   // "Serial merge-back": rebase onto the integration branch, run the test command, merge --no-ff
   // and bd close on success; one bounded auto-resolve attempt on conflict/red, else the blocker path.
   return `In ${integrationWorktree}, update ${integrationBranch} and rebase task ${r.id}'s branch ${r.branch} onto it. Run the project test command. If clean, merge --no-ff into ${integrationBranch}, run \`bd close ${r.id}\`, and report merged true. If the rebase conflicts or tests are red, make one bounded auto-resolve attempt; if that also fails, file a blocker bead (see "The blocker-bead path") and report merged false with its id as blockerBead.`
+}
+
+function missingBlockerBeadPrompt(im) {
+  // I-7 fallback: implementPrompt asks a BLOCKED implementer to self-file its own blocker bead and
+  // report `blockerBead`, but RESULT doesn't REQUIRE that field — and a BLOCKED brief (I-8) never
+  // had anything to self-file in the first place. Either way, `handleBlocker(r)` needs a real bead
+  // id or its `triagePrompt(r.id, r.blockerBead)` dispatch reads "the blocker bead undefined".
+  // File one coordinator-side, same mechanical shape as `unplannedBlockerPrompt`.
+  return `Task ${im.id} (n ${im.n}) was reported BLOCKED, but no blocker bead id was reported (either the implementer omitted it, or this is a brief-stage failure that never self-files one — see task-brief's "task not found" case). File one now: run \`bd create\` with a \`blocker\` label (confirm flags with \`bd create --help\`) and a body stating the task id, that it was reported BLOCKED without a bead, and — if the task's report file exists — what was tried. Report id ${im.id}, status BLOCKED, and blockerBead as the newly created bead's id.`
 }
 
 function unplannedBlockerPrompt(id, epicId) {
@@ -801,19 +900,33 @@ function unplannedBlockerPrompt(id, epicId) {
   return `File a blocker bead for task ${id} under epic ${epicId}: run \`bd create\` with a \`blocker\` label (confirm flags with \`bd create --help\`) and a body stating the task id and that the planner left it unmapped this round (BLOCKED — no "## Task <N>" section was written to plan.md for it). Report id ${id}, status BLOCKED, and blockerBead as the newly created bead's id.`
 }
 
-function breakerBlockerPrompt(rv, planPath) {
-  // "The breaker, autonomous variant": round 5's re-review still leaves the finding open — file a
-  // blocker bead with the same shape as any other blocker bead (see "The blocker-bead path"): the
-  // task id, the load-bearing finding, the plan text it collides with, and the fix history.
-  // MECHANICAL: `bd create` with a fixed, fully-specified shape — the judgment call (adjudicating
-  // this finding, RESOLVE vs ESCALATE) is `handleBlocker`'s triage dispatch, downstream of this;
-  // this builder only files the bead, it does not adjudicate.
-  return `File a blocker bead for task ${rv.id} (n ${rv.n}): run \`bd create\` with a \`blocker\` label (confirm flags with \`bd create --help\`) and a body stating: the task id; the review finding that survived all 5 fix/re-review rounds — ${rv.finding}; the "## Task ${rv.n}" section of ${planPath} it collides with (paste it); and the fix history from the task's report file. Report id ${rv.id}, status BLOCKED, and blockerBead as the newly created bead's id.`
+function adjudicatePrompt(rv, planPath) {
+  // I-9: the governing rule forbids REIMPLEMENTING SDD's rubric, not INVOKING it (see "The
+  // breaker, autonomous variant" and SKILL.md's Boundary) — so the cap's park-vs-stop call is a
+  // DISPATCHED agent following subagent-driven-development/SKILL.md's "The breaker" section
+  // verbatim, not a coordinator-side heuristic. Spec §3.2: "adopt upstream's five-round breaker
+  // and its adjudication rules (park with a ruling, or stop on a load-bearing finding)" — both
+  // outcomes, not cap-always-blocks (a cap that always blocks quarantines correct work — and every
+  // dependent — whenever the reviewer was wrong or the finding doesn't matter downstream, which is
+  // exactly the profile of a finding that survives five rounds unaddressed).
+  return `Follow subagent-driven-development/SKILL.md's "The breaker" section (inside "The fix loop") to adjudicate task ${rv.id} (n ${rv.n})'s open finding, which survived all 5 fix/re-review rounds: ${rv.finding}. You hold the plan and cross-task context the reviewer lacks — read the "## Task ${rv.n}" section of ${planPath} and the task's report/fix history for that context, exactly as SKILL.md's breaker instructs. Decide: is this finding load-bearing (a real defect that would bite downstream), or contestable/non-load-bearing (the reviewer is arguably wrong, or it's real but nothing downstream depends on it)? Report id ${rv.id}, decision as the BARE TOKEN "PARK" (contestable or non-load-bearing — safe to merge, record a ruling) or "BLOCKED" (load-bearing — do not merge) — no other value, since the coordinator branches on exact string equality against it — and ruling with your reasoning either way (this becomes the ledger's parked-with-a-ruling note on PARK, or the blocker bead's body on BLOCKED).`
+}
+
+function breakerBlockerPrompt(rv, planPath, ruling) {
+  // "The breaker, autonomous variant": the cap adjudicator (adjudicatePrompt, above) ruled BLOCKED
+  // — file a blocker bead with the same shape as any other blocker bead (see "The blocker-bead
+  // path"): the task id, the load-bearing finding, the adjudicator's ruling, the plan text it
+  // collides with, and the fix history. MECHANICAL: `bd create` with a fixed, fully-specified
+  // shape — the judgment call (load-bearing or not) already happened in `adjudicatePrompt`; this
+  // builder only files the bead it decided on.
+  return `File a blocker bead for task ${rv.id} (n ${rv.n}): run \`bd create\` with a \`blocker\` label (confirm flags with \`bd create --help\`) and a body stating: the task id; the review finding that survived all 5 fix/re-review rounds — ${rv.finding}; the adjudicator's ruling that it's load-bearing — ${ruling}; the "## Task ${rv.n}" section of ${planPath} it collides with (paste it); and the fix history from the task's report file. Report id ${rv.id}, status BLOCKED, and blockerBead as the newly created bead's id.`
 }
 
 function triagePrompt(id, blockerBead) {
-  // The one genuine judgment call in this script's blocker handling (opus) — RESOLVE vs
-  // ESCALATE — see "The blocker-bead path". Follows ./triage-prompt.md verbatim; this builder
+  // One of two genuine judgment calls in this script's blocker handling (opus) — RESOLVE vs
+  // ESCALATE, once a blocker bead already exists (the other is adjudicatePrompt's PARK vs BLOCKED
+  // call, which decides whether one gets filed in the first place at the fix-loop cap) — see "The
+  // blocker-bead path". Follows ./triage-prompt.md verbatim; this builder
   // only supplies the per-dispatch variables that template's "Blocker bead" / "Originating task
   // plan" sections need. `handleBlocker` below branches on `t.decision === 'RESOLVE'` — exact
   // string equality against the TRIAGE schema's `decision` field — so the bare-token requirement
@@ -858,16 +971,15 @@ function groupByDisjointFiles(ids, planned) {
   return buckets
 }
 
-// The five-round fix-loop breaker (C3). Loops fix -> scoped re-review while the verdict is
-// NEEDS_FIX, up to 5 rounds total — exactly "The breaker, autonomous variant" above and SDD's
-// SKILL.md "The fix loop": rounds 1-3 resume the original implementer, rounds 4-5 dispatch a fresh
-// implementer on a more capable model (fixPrompt/the `fixModel` selection below), minors never
-// extend the loop (the reviewer/re-reviewer defer them to the ledger themselves — see
-// taskReviewPrompt/reReviewPrompt — so a NEEDS_FIX that survives to here is never a bare minor).
-// At the cap, a still-open NEEDS_FIX is the load-bearing case SKILL.md's breaker adjudicates by
-// hand; this coordinator has no synchronous human partner to adjudicate for, so it takes the
-// documented terminal action directly, no separate in-script adjudication step to reinvent: file a
-// blocker bead and quarantine — NEVER merge.
+// The five-round fix-loop breaker (C3/C-1/C-3/I-9). Loops fix -> scoped re-review while the
+// verdict is anything but CLEAN, up to 5 rounds total — exactly "The breaker, autonomous variant"
+// above and SDD's SKILL.md "The fix loop": rounds 1-3 resume the original implementer, rounds 4-5
+// dispatch a fresh implementer on `fixEscalationModel()`'s tier, minors never extend the loop (the
+// reviewer/re-reviewer defer them to the ledger themselves — see taskReviewPrompt/reReviewPrompt —
+// so a non-CLEAN verdict that survives to here is never a bare minor). At the cap, a dispatched
+// adjudicator — following SDD's own breaker rubric, not a coordinator-side reimplementation of it
+// — decides PARK (merge, with a ruling) or BLOCKED (file a blocker bead and quarantine — NEVER
+// merge).
 async function reviewAndFix(im, planPath) {
   // C2's fix: none of taskReviewPrompt's/fixPrompt's/reReviewPrompt's report contracts ask for
   // `branch` (taskReviewPrompt's asks for "id, n, files, and status"; reReviewPrompt's asks for
@@ -877,47 +989,89 @@ async function reviewAndFix(im, planPath) {
   // call site) after every hop in this loop, rather than trusting a reviewer/fixer echo. This is
   // also what makes `mergePrompt`'s `r.branch` non-undefined: everything reviewAndFix returns has
   // passed through this re-stamp.
-  const carried = result => ({ ...result, n: im.n, files: im.files, branch: im.branch, base: im.base })
+  // C-1 fix: `finding` was NOT among the re-stamped fields, and reReviewPrompt's OLD contract never
+  // asked for it either — so from round 2 on, `rv.finding` silently went `undefined`, and every
+  // later round's `fixPrompt`/`breakerBlockerPrompt` interpolated "address this review finding:
+  // undefined" into a real dispatch. `lastFinding` keeps the most recent non-empty finding sticky
+  // across every hop, as a second line of defense on top of reReviewPrompt's now-explicit "report
+  // finding on NEEDS_FIX" contract (the two together mean a single omitted report can't lose it).
+  let lastFinding
+  const carried = result => {
+    lastFinding = result.finding ?? lastFinding
+    return { ...result, n: im.n, files: im.files, branch: im.branch, base: im.base, finding: lastFinding }
+  }
   let rv = carried(await agent(pick(() => taskReviewPrompt(im, planPath), `review:${im.id}`),
     { label: `review:${im.id}`, phase: 'Implement', model: model('reviewer'), schema: RESULT }))
-  for (let round = 1; round <= 5 && rv.status === 'NEEDS_FIX'; round++) {
+  // C-3 fix: fail CLOSED. The pre-fix loop condition was `rv.status === 'NEEDS_FIX'` — so ANY
+  // status that isn't the exact literal "NEEDS_FIX" (including upstream re-review-prompt.md's own
+  // native vocabulary, "NOT ADDRESSED" — see reReviewPrompt) exits the loop as if the review were
+  // clean. Loop on the negative instead: only a literal "CLEAN" exits early; anything else,
+  // recognized or not, keeps looping until the round cap forces adjudication.
+  for (let round = 1; round <= 5 && rv.status !== 'CLEAN'; round++) {
     // Fix-loop escalation (SDD's Model Selection: "rounds 4-5... a model at least one tier above
-    // the implementer that got stuck"). `config.models` has no dedicated escalation role — adding
-    // one is a contract-shape change out of this task's scope (see "Coordinator contract", which
-    // calls a differently-spelled key load-bearing for every later task) — so rounds 4-5 borrow
-    // `triage`, the only other opus-tier judgment role already in the contract.
-    const fixModel = round <= 3 ? model('implementer') : model('triage')
+    // the implementer that got stuck") is `fixEscalationModel()` — a capability bump, not the
+    // RESOLVE/ESCALATE-or-PARK/BLOCKED judgment call `triage` names (see "Coordinator contract";
+    // this used to borrow `model('triage')` directly, which was reverted because it falsified that
+    // section, `handleBlocker`'s own comment, and SKILL.md's tiering table all at once — see I-5).
+    const fixModel = round <= 3 ? model('implementer') : fixEscalationModel()
     const fixed = carried(await agent(pick(() => fixPrompt(rv, round), `fix:${rv.id}:${round}`),
       { label: `fix:${rv.id}:${round}`, phase: 'Implement', model: fixModel, schema: RESULT }))
     rv = carried(await agent(pick(() => reReviewPrompt(fixed), `re-review:${fixed.id}:${round}`),
       { label: `re-review:${fixed.id}:${round}`, phase: 'Implement', model: model('reviewer'), schema: RESULT }))
   }
-  if (rv.status !== 'NEEDS_FIX') return rv
-  // Breaker tripped: round 5's re-review still leaves the finding open. Terminal action per "The
-  // breaker, autonomous variant" — file a blocker bead and quarantine, never merge. Returning
-  // `status: 'BLOCKED'` here is what the Integrate stage's `if (r.status === 'BLOCKED')` check
-  // routes to `handleBlocker` instead of `mergePrompt` (see the pipeline call site).
-  const bead = await agent(pick(() => breakerBlockerPrompt(rv, planPath), `breaker-blocker:${rv.id}`),
+  if (rv.status === 'CLEAN') return rv
+  // Breaker tripped: round 5's re-review still leaves the finding open (or returned something this
+  // coordinator doesn't recognize — C-3 routes that here too, not to merge). I-9: adjudicate via a
+  // DISPATCHED agent invoking SDD's own breaker rubric (adjudicatePrompt) — PARK (merge, with a
+  // ruling) or BLOCKED (file a blocker bead and quarantine, never merge). This is the ONE place a
+  // NEEDS_FIX-at-the-cap can still legitimately reach `mergePrompt`: via a PARK ruling, not by
+  // silently falling through.
+  const adj = await agent(pick(() => adjudicatePrompt(rv, planPath), `adjudicate:${rv.id}`),
+    { label: `adjudicate:${rv.id}`, phase: 'Implement', model: model('triage'), schema: ADJUDICATE })
+  if (adj.decision === 'PARK') {
+    // Contestable or non-load-bearing: safe to merge like any other clean review. The ruling is
+    // the ledger's parked-with-a-ruling note (once Task 5 wires the ledger up); `finding` is
+    // cleared since it's no longer an open blocker for anything downstream.
+    return { ...rv, status: 'CLEAN', finding: undefined, parkRuling: adj.ruling }
+  }
+  // Load-bearing: file a blocker bead and quarantine. Returning `status: 'BLOCKED'` here is what
+  // the Integrate stage's `if (r.status === 'BLOCKED')` check routes to `handleBlocker` instead of
+  // `mergePrompt` (see the pipeline call site).
+  const bead = await agent(pick(() => breakerBlockerPrompt(rv, planPath, adj.ruling), `breaker-blocker:${rv.id}`),
     { label: `breaker-blocker:${rv.id}`, phase: 'Implement', model: model('mechanical'), schema: RESULT })
   return { ...rv, status: 'BLOCKED', blockerBead: bead.blockerBead }
 }
 
 async function handleBlocker(r) {
   phase('Triage')
-  // Genuine judgment call: RESOLVE vs ESCALATE. This is the one dispatch in this script that
-  // legitimately spends `triage` (opus) — see "Coordinator contract" on why `triage` and
-  // `mechanical` are not interchangeable.
+  // Genuine judgment call: RESOLVE vs ESCALATE. This is one of two dispatches in this script that
+  // legitimately spend `triage` (opus) — the other is reviewAndFix's cap adjudication
+  // (adjudicatePrompt, PARK vs BLOCKED) — see "Coordinator contract" on why `triage` and
+  // `mechanical` (and `fixEscalation`) are not interchangeable.
   const t = await agent(pick(() => triagePrompt(r.id, r.blockerBead), `triage:${r.id}`),
     { label: `triage:${r.id}`, phase: 'Triage', model: model('triage'), schema: TRIAGE })
-  if (t.decision === 'RESOLVE') {
+  // C-2: bound RESOLVE to exactly one retry per id. A first-time RESOLVE gets a real re-attempt
+  // next round (pendingRetry.add, below) — that's the whole point of RESOLVE. But if the SAME id
+  // lands back in handleBlocker after that (pendingRetry already has it), the clarification didn't
+  // fix it; a second RESOLVE is treated as ESCALATE regardless of what this round's triage verdict
+  // says, so a bad clarification can spin at most one extra round before it quarantines — never
+  // indefinitely. This is also what makes the outer no-progress guard's `pendingRetry.size` signal
+  // meaningful: without a bound, RESOLVE growth could recur forever without ever converging.
+  if (t.decision === 'RESOLVE' && !pendingRetry.has(r.id)) {
+    pendingRetry.add(r.id)
     // re-dispatch next round with clarification recorded on the bead; do NOT mark escalated.
     // Recording a clarification is a mechanical write, not a judgment call.
     await agent(pick(() => recordClarificationPrompt(r.id, t.detail), `clarify:${r.id}`), { label: `clarify:${r.id}`, phase: 'Triage', model: model('mechanical') })
   } else {
+    const bounced = t.decision === 'RESOLVE'  // second RESOLVE for this id — bounced into ESCALATE
+    pendingRetry.delete(r.id)
     escalated.push(r.id)                       // quarantine: dependents stay unready in beads
+    const detail = bounced
+      ? `Second RESOLVE for ${r.id} without resolving — escalating per the one-retry bound (C-2). Latest triage detail: ${t.detail}`
+      : t.detail
     // Sending a fixed notification is mechanical, same reasoning as the clarification write above.
-    await agent(pick(() => notifyPrompt(r.id, t.detail), `notify:${r.id}`), { label: `notify:${r.id}`, phase: 'Triage', model: model('mechanical') }) // push if available
-    log(`ESCALATED ${r.id}: ${t.detail}`)      // always surfaces in /workflows + completion
+    await agent(pick(() => notifyPrompt(r.id, detail), `notify:${r.id}`), { label: `notify:${r.id}`, phase: 'Triage', model: model('mechanical') }) // push if available
+    log(`ESCALATED ${r.id}: ${detail}`)      // always surfaces in /workflows + completion
   }
 }
 ```
@@ -1012,9 +1166,19 @@ merge fails its one auto-resolve attempt, exercising the blocker-bead path end t
 incoming status and skips entirely — there is no `review:bd-104` stub, because that dispatch must
 never happen — and `bd-104` routes straight to `handleBlocker`, whose triage call returns
 `RESOLVE` this time: `clarify:bd-104` is dispatched instead of `notify:bd-104`, and `bd-104` is
-**not** pushed onto `escalated` (RESOLVE never quarantines). This closes the two gaps the prior
-three-task scenario could not catch by construction: no stub ever returned `BLOCKED` at implement,
-and the `RESOLVE` branch of `handleBlocker` was never exercised.
+**not** pushed onto `escalated` — instead it's added to `pendingRetry` (C-2's one-bounded-retry
+tracking; see `handleBlocker`), which the no-progress guard also reads as real progress. This
+closes the two gaps the prior three-task scenario could not catch by construction: no stub ever
+returned `BLOCKED` at implement, and the `RESOLVE` branch of `handleBlocker` was never exercised.
+**What this scenario still can't prove**, because `pick()` never calls a real prompt builder under
+`dryRun: true` (see "dryRun policy" above): whether a real re-reviewer's finding survives to round
+5 (`carried()`'s sticky `lastFinding`, C-1) and whether an unrecognized re-review verdict correctly
+fails closed instead of falling through to merge (C-3) — this scenario's lone fix round returns the
+literal token `CLEAN` on round 1, so the loop never runs a second round at all. Both remain
+inspection-only, verified by reading `reviewAndFix`'s definition directly, in every scenario. The
+cap adjudicator (PARK vs BLOCKED, I-9) is exercised by a dedicated second scenario instead — see
+"Cap-tripping dryRun scenario" below — since tripping it here would mean `bd-101` never resolves in
+round 1, changing every downstream assertion this scenario makes about bucketing and merge order.
 
 | Stub key | Canned output (`<json>` content) | Exercises |
 |---|---|---|
@@ -1027,13 +1191,13 @@ and the `RESOLVE` branch of `handleBlocker` was never exercised.
 | `review:bd-101` | `{id:"bd-101",n:1,status:"NEEDS_FIX",files:["src/a.js"],finding:"missing null check on parsed input in src/a.js:42"}` | the one task whose review returns a finding — `finding` is what `fixPrompt` builds the fix dispatch from, not the rest of the result. No `branch`/`base` here by design: `reviewAndFix`'s `carried()` re-stamps both from `im` regardless of what this report contains, which is the C2 fix |
 | `review:bd-102` / `review:bd-103` | `{id:"bd-1XX",n:<n>,status:"CLEAN",files:[...]}` | clean reviews — no fix loop for these two. **No `review:bd-104` key exists** — that dispatch must never fire (see C4 above); its absence from this table is itself part of the test: a regression that dropped the pipeline's status guard would throw `dryRun: no stub for key review:bd-104` |
 | `fix:bd-101:1` | `{id:"bd-101",n:1,status:"FIXED",files:["src/a.js"]}` | round 1 of the fix loop, dispatched only for the flagged task; no `branch` here either, by the same design as `review:bd-101` above. Round-suffixed (`:1`) because `reviewAndFix`'s loop can now run up to 5 rounds and each round is its own stub key |
-| `re-review:bd-101:1` | `{id:"bd-101",n:1,status:"CLEAN"}` | finding `ADDRESSED` on round 1 — the loop exits immediately since `rv.status !== 'NEEDS_FIX'`, so no `fix:bd-101:2`/`re-review:bd-101:2` stub is needed or dispatched; `reviewAndFix` re-stamps `branch`/`base`/`n`/`files` from `im` onto this before it becomes the task's final result, which is what reaches `mergePrompt`'s `r.branch` |
+| `re-review:bd-101:1` | `{id:"bd-101",n:1,status:"CLEAN"}` | finding `ADDRESSED` on round 1 — the loop exits immediately since `rv.status === 'CLEAN'` (C-3's fail-closed condition; this is the ONE way out of the loop besides the round cap), so no `fix:bd-101:2`/`re-review:bd-101:2` stub is needed or dispatched; `reviewAndFix` re-stamps `branch`/`base`/`n`/`files` from `im` onto this before it becomes the task's final result, which is what reaches `mergePrompt`'s `r.branch` |
 | `merge:bd-101` / `merge:bd-102` | `{id:"bd-1XX",merged:true}` | successful serial merges |
 | `merge:bd-103` | `{id:"bd-103",merged:false,blockerBead:"bd-108"}` | merge fails its bounded auto-resolve attempt → blocker path. **No `merge:bd-104` key exists** — `bd-104` never reaches `mergePrompt` at all, since its BLOCKED status routes it to `handleBlocker` directly at the top of the Integrate loop (see the `if (r.status === 'BLOCKED')` check); its absence is part of the test, same reasoning as `review:bd-104`'s absence above |
 | `triage:bd-103` | `{decision:"ESCALATE",detail:"rebase conflict on src/a.js survived one auto-resolve attempt"}` | the judgment dispatch in `handleBlocker`, ESCALATE branch — notify + quarantine |
-| `triage:bd-104` | `{decision:"RESOLVE",detail:"implementer needs the missing config constant named explicitly; re-plan and re-attempt"}` | the judgment dispatch in `handleBlocker`, **RESOLVE branch** — the one branch the prior three-task scenario never exercised |
+| `triage:bd-104` | `{decision:"RESOLVE",detail:"implementer needs the missing config constant named explicitly; re-plan and re-attempt"}` | the judgment dispatch in `handleBlocker`, **RESOLVE branch** — the one branch the prior three-task scenario never exercised. This is `bd-104`'s FIRST time through `handleBlocker`, so `pendingRetry` doesn't have it yet and C-2's one-retry bound doesn't fire (that requires a SECOND blocker-path visit for the same id, which this scenario doesn't stage — see the round-2 `bd-ready` note above) |
 | `notify:bd-103` | `{sent:true}` | fixed-notification mechanical dispatch on the ESCALATE branch |
-| `clarify:bd-104` | `{recorded:true}` | fixed-clarification-recording mechanical dispatch on the RESOLVE branch (schema-less, like `notify` — see "Schema-less dispatches" below) |
+| `clarify:bd-104` | `{recorded:true}` | fixed-clarification-recording mechanical dispatch on the RESOLVE branch (schema-less, like `notify` — see "Schema-less dispatches" below); this is also what makes `pendingRetry` grow, which the no-progress guard reads as this round's progress signal (C-2) |
 | `final-review` | `{summary:"stub: 2/4 tasks merged; bd-103 quarantined, bd-104 resolved pending re-attempt",verdict:"conditional-pass"}` | whole-epic review dispatched once at least one task landed |
 
 **Stub keys are call-site qualified** (`brief:<id>`, `review:<id>`, `merge:<id>`, `triage:<id>`,
@@ -1042,11 +1206,13 @@ qualified by `seat:<name>:<site>`: a single unqualified key can't return four di
 ids/branches, or a `CLEAN` for two tasks and a `NEEDS_FIX` for the third, with one fixed value —
 and, now that the fix loop can run multiple rounds, can't distinguish round 1's verdict from round
 2's either. Qualifying by call site (and, for the fix loop, by round) removes the ambiguity — each
-task gets its own deterministic path through the pipeline. The breaker cap itself (a `NEEDS_FIX`
-surviving all 5 rounds, `breaker-blocker:<id>`) and the unmapped-planner-id path
-(`unplanned-blocker:<id>`) are **not** exercised by this scenario — both are separate dryRuns, the
-same way `super-roast` runs its panel-cap and dead-dedupe scenarios as additional baselines rather
-than folding them into the canonical one.
+task gets its own deterministic path through the pipeline. The breaker cap itself (a non-`CLEAN`
+verdict surviving all 5 rounds, the `adjudicate:<id>`/`breaker-blocker:<id>` dispatches) is **not**
+exercised by this scenario — see "Cap-tripping dryRun scenario" below, a separate dryRun, the same
+way `super-roast` runs its panel-cap and dead-dedupe scenarios as additional baselines rather than
+folding them into the canonical one. The unmapped-planner-id path (`unplanned-blocker:<id>`) and
+the missing-`blockerBead`/brief-stage-BLOCKED fallback (`missing-blocker:<id>`, I-7/I-8) remain
+untested by any scenario in this doc — inspection-only, same as C-1/C-3 above.
 
 ## Assertions for the canonical dryRun
 
@@ -1072,15 +1238,18 @@ than folding them into the canonical one.
   pushed onto `escalated` (quarantined, not closed) — and the run **continues**: `bd-101`/`bd-102`
   still merge and close.
 - The blocker path also fires on `bd-104`'s implement-stage BLOCKED: `handleBlocker` dispatches
-  `triage:bd-104` → `RESOLVE` → `clarify:bd-104` (not `notify:bd-104`) — and `bd-104` is **not**
-  pushed onto `escalated`, per `handleBlocker`'s RESOLVE branch. The run proceeds to round 2
-  instead of halting either way.
+  `triage:bd-104` → `RESOLVE` (first time for this id, so C-2's one-retry bound doesn't fire) →
+  `clarify:bd-104` (not `notify:bd-104`) — and `bd-104` is **not** pushed onto `escalated`, but IS
+  added to `pendingRetry`, per `handleBlocker`'s RESOLVE branch. The run proceeds to round 2
+  instead of halting either way; the no-progress guard doesn't fire this round regardless, since
+  `bd-101`/`bd-102` also merge (real progress on the `completed` signal alone).
 - No path reaches `mergePrompt` with a status other than a clean (`CLEAN`, after however many fix
-  rounds) review result: `bd-101`/`bd-102`/`bd-103` are the only three `merge:<id>` dispatches, and
-  each is reached only after `reviewAndFix` returned a non-`NEEDS_FIX`, non-`BLOCKED` result (this
-  is Step 4's verification target — confirmed by inspection of the pipeline call site and
-  `reviewAndFix`'s two return paths, not by this scenario alone, since `bd-104` is the only stubbed
-  BLOCKED case and this scenario's fix loop never reaches the round-5 cap).
+  rounds, or a PARK ruling — see "Cap-tripping dryRun scenario" below for that path) review result:
+  `bd-101`/`bd-102`/`bd-103` are the only three `merge:<id>` dispatches, and each is reached only
+  after `reviewAndFix` returned a `CLEAN` result (this is Step 4's verification target — confirmed
+  by inspection of the pipeline call site and `reviewAndFix`'s return paths, not by this scenario
+  alone, since `bd-104` is the only stubbed BLOCKED case here and this scenario's fix loop never
+  reaches the round-5 cap or the adjudicator).
 - Expected dispatch count: `close-epics` 2 + `bd-ready` 2 + `plan` 1 + `brief` 4 + `implement` 4 +
   `review` 3 + `fix` 1 + `re-review` 1 + `merge` 3 + `triage` 2 + `notify` 1 + `clarify` 1 +
   `final-review` 1 = **26 agent calls, 0 errors** (`final-review` dispatches because
@@ -1200,7 +1369,16 @@ a real run exercises the actual branch (this scenario's `bd-104` genuinely never
 all**, since `bd-101`/`bd-102` merge in round 1 (real progress), so `completed.length` grows and
 the guard's condition is never true. Proving the no-progress guard actually stops a spinning run
 requires a *separate* scenario — an all-RESOLVE-no-merge round — which this canonical scenario
-deliberately does not attempt to also be.
+deliberately does not attempt to also be. **The same caveat applies a fifth time, to C-1's sticky
+`lastFinding` and C-3's fail-closed loop condition**: the `carried()` closure and the `for` loop's
+`rv.status !== 'CLEAN'` test are plain JS, not behind `pick()`, so this run genuinely exercises
+them — `bd-101`'s single round assigns `lastFinding` and the loop condition genuinely evaluates the
+literal `"CLEAN"` token from `re-review:bd-101:1` to exit early — but neither proves what a *real*
+re-reviewer would actually return, or that `rv.finding` survives to round 5 unmangled, since the
+real `fixPrompt`/`reReviewPrompt`/`breakerBlockerPrompt`/`adjudicatePrompt` template literals are
+never built under `dryRun: true`. See "Cap-tripping dryRun scenario" below for the scenario that at
+least exercises the round-5 boundary itself (still not the finding/vocabulary caveats — those stay
+inspection-only in every scenario, per that section's own note).
 
 **Prior run, kept as history.** Run `wf_d65bc00e-990`, 2026-07-30 (recorded before fix round 2 —
 `review:bd-101`'s stub then had no `finding` field), also passed: 22 agents, 0 errors, identical
@@ -1267,3 +1445,126 @@ If a future structural edit changes this script, re-run with these args, confirm
 shape (or update it deliberately alongside the edit that changed it), and replace the figures
 above — same discipline as `super-roast`'s "Passing baseline (recorded, not illustrative)"
 sections.
+
+## Cap-tripping dryRun scenario (separate baseline)
+
+The canonical scenario above never runs the fix loop past round 1 (`bd-101` resolves immediately),
+so it cannot exercise the round cap, the adjudicator (`adjudicatePrompt`, I-9's PARK-vs-BLOCKED
+call), or `breakerBlockerPrompt` receiving a ruling. Folding a cap-trip into the canonical scenario
+would mean `bd-101` never merges in round 1, which changes every downstream assertion the canonical
+scenario makes about bucketing and merge order — so, same reasoning as keeping the RESOLVE-vs-
+ESCALATE and panel-cap-style scenarios separate elsewhere in this doc, this is its own minimal
+dryRun: **one** epic, **one** ready task, five NEEDS_FIX fix/re-review rounds, ending in a BLOCKED
+adjudication.
+
+**What this scenario proves, on top of the canonical one:** the round counter actually stops at 5
+(not before, not after), `reviewAndFix` dispatches the adjudicator exactly once at the cap (not
+per-round), a BLOCKED adjudication reaches `breakerBlockerPrompt` and then `handleBlocker`/`triage`
+— never `mergePrompt` — and the `completed.length ? ... : 'no work landed'` branch this doc's other
+recorded runs have never exercised (this scenario merges nothing, so `final-review` is **not**
+dispatched at all).
+
+**What it still cannot prove**, for the same `pick()`-laziness reason stated throughout this doc:
+whether `rv.finding` genuinely survives all 5 rounds unmangled into `breakerBlockerPrompt`'s and
+`adjudicatePrompt`'s dispatch text (C-1), and whether a re-reviewer that returns something other
+than the literal tokens `CLEAN`/`NEEDS_FIX` (e.g. upstream's native `NOT ADDRESSED`) is correctly
+treated as still-open by the fail-closed loop condition (C-3) rather than falling through. Every
+`re-review:bd-201:*` stub below returns the literal `NEEDS_FIX` — a real run following the
+template's native vocabulary is the only way to exercise C-3's fail-closed branch for real, and
+reading `reviewAndFix`'s definition directly (the loop condition is `rv.status !== 'CLEAN'`, never
+`rv.status === 'NEEDS_FIX'`) is the only way to verify it today. Both remain inspection-only.
+
+| Stub key | Canned output (`<json>` content) | Exercises |
+|---|---|---|
+| `close-epics` (array, 2 entries) | `{rootClosed:false,closedThisRun:[]}` twice | root never closes — `bd-201` never merges in this scenario |
+| `bd-ready` (array, 2 entries) | `{ids:["bd-201"]}` then `{ids:[]}` | round 1 supplies the one task; round 2's empty set drains the loop (`bd-201` is excluded from round 2 anyway, via the `escalated` filter, once triage ESCALATEs it below) |
+| `plan` | `{planPath:"...", mapping:[{n:1,id:"bd-201",files:["src/x.js"]}]}` | single-task, single-bucket mapping |
+| `brief:bd-201` | `{id:"bd-201",n:1,status:"BRIEFED",files:["src/x.js"],branch:".worktrees/epic-bd-200-integration--task-bd-201",base:"<40-char-sha>"}` | brief stage, unblocked |
+| `implement:bd-201` | `{id:"bd-201",n:1,status:"IMPLEMENTED",files:["src/x.js"],branch:"..."}` | implement stage, unblocked (contrast with the canonical scenario's `bd-104`, which tests the BLOCKED path instead) |
+| `review:bd-201` | `{id:"bd-201",n:1,status:"NEEDS_FIX",files:["src/x.js"],finding:"race condition writing the shared cache in src/x.js:17"}` | the initial review that starts the fix loop |
+| `fix:bd-201:1` … `fix:bd-201:5` | `{id:"bd-201",n:1,status:"FIXED",files:["src/x.js"]}` (all 5 identical in shape) | all 5 rounds of the fix loop dispatch — rounds 1-3 on `implementer`'s tier, rounds 4-5 on `fixEscalationModel()`'s tier (a property of the dispatched prompt/`opts.model`, not of this canned return — verified by reading `reviewAndFix`, same caveat as scoping elsewhere in this doc) |
+| `re-review:bd-201:1` … `re-review:bd-201:5` | `{id:"bd-201",n:1,status:"NEEDS_FIX",finding:"race condition writing the shared cache in src/x.js:17"}` (all 5) | the verdict that keeps the loop going every round — never `CLEAN`, so the loop runs the full 5 rounds and never exits early |
+| `adjudicate:bd-201` | `{id:"bd-201",decision:"BLOCKED",ruling:"real race condition with no test coverage for the interleaving; must not merge"}` | the cap adjudicator (I-9) — dispatched exactly once, after round 5, never once per round |
+| `breaker-blocker:bd-201` | `{id:"bd-201",status:"BLOCKED",blockerBead:"bd-210"}` | the blocker bead filed on a BLOCKED ruling — `breakerBlockerPrompt` now takes the adjudicator's `ruling` as a third argument (verified by reading the definition, not this canned return) |
+| `triage:bd-201` | `{decision:"ESCALATE",detail:"race condition confirmed load-bearing by the breaker adjudicator; needs a human decision on the caching strategy"}` | `handleBlocker`'s normal triage dispatch, reached via the Integrate loop's `if (r.status === 'BLOCKED')` branch — same path any other BLOCKED result takes, confirming the breaker's BLOCKED exit isn't a special case downstream |
+| `notify:bd-201` | `{sent:true}` | fixed-notification mechanical dispatch on the ESCALATE branch |
+
+**No `merge:bd-201` and no `final-review` key exist in this scenario's args** — both are part of
+the test. `bd-201` never reaches `mergePrompt` (it's BLOCKED, never CLEAN); `completed.length` stays
+`0` for the whole run, so the `? ... : 'no work landed'` ternary in the Finish phase takes its
+`false` branch and `final-review` is never dispatched. If either key is ever requested under this
+scenario, something regressed: `merge:bd-201` would mean a BLOCKED task reached the merge gate;
+`final-review` would mean `completed.length` was nonzero despite nothing merging.
+
+**Assertions:**
+- Exactly 5 `fix:bd-201:<round>` / `re-review:bd-201:<round>` pairs dispatch, rounds 1 through 5 —
+  not 4, not 6. `reviewAndFix`'s `for` loop is bounded `round <= 5`.
+- `adjudicate:bd-201` dispatches exactly **once**, strictly after `re-review:bd-201:5` and strictly
+  before `breaker-blocker:bd-201` — never mid-loop, never more than once.
+- `breaker-blocker:bd-201` dispatches only because `adjudicate:bd-201` returned `BLOCKED` — a `PARK`
+  return (not exercised by this scenario's stubs, but confirmed by reading the code) would instead
+  return `{...rv, status:'CLEAN', ...}` from `reviewAndFix` and skip `breaker-blocker:bd-201`
+  entirely, reaching `mergePrompt` instead.
+- The task's final status reaching the Integrate loop is `BLOCKED` with `blockerBead: "bd-210"` —
+  routed to `handleBlocker`, never to `mergePrompt`.
+- `completed` is `[]`, `escalated` is `["bd-201"]`, `pendingRetry` is `[]` (triage ESCALATEd, not
+  RESOLVEd, so `handleBlocker`'s `pendingRetry.add` branch never fires), `stalled` is `false` (the
+  round that quarantines `bd-201` grows `escalated`, which the no-progress guard reads as progress).
+- Expected dispatch count: `close-epics` 2 + `bd-ready` 2 + `plan` 1 + `brief` 1 + `implement` 1 +
+  `review` 1 + `fix` 5 + `re-review` 5 + `adjudicate` 1 + `breaker-blocker` 1 + `triage` 1 +
+  `notify` 1 = **22 agent calls, 0 errors** — and, distinctly from every other scenario in this
+  doc, **no `final-review` dispatch**, since `completed.length` is `0`.
+
+**Not yet executed.** This scenario was authored, not run — the coordinator asked for the args
+block to be handed back rather than run from this environment. `node --check` on the extracted
+script passes (it's the same script as the canonical scenario, unchanged in structure by adding
+this args block), and the stub JSON below parses and every prefix matches the exact required
+wording, but neither of those is a runnability proof (see "A parse check is not a runnability
+check" above). Run it and record the real dispatch trace before treating the assertions above as
+confirmed rather than predicted.
+
+```json
+{
+  "epicId": "bd-200",
+  "integrationBranch": "epic-bd-200-integration",
+  "dryRun": true,
+  "config": {
+    "concurrency": 4,
+    "models": { "planner": "opus", "implementer": "sonnet", "reviewer": "sonnet", "mechanical": "sonnet", "triage": "opus", "finalReview": "opus", "fixEscalation": "opus" }
+  },
+  "prompts": {
+    "stubs": {
+      "close-epics": [
+        "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"rootClosed\":false,\"closedThisRun\":[]}",
+        "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"rootClosed\":false,\"closedThisRun\":[]}"
+      ],
+      "bd-ready": [
+        "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[\"bd-201\"]}",
+        "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[]}"
+      ],
+      "plan": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"planPath\":\".worktrees/epic-bd-200-integration/.sdd/bd-200/plan.md\",\"mapping\":[{\"n\":1,\"id\":\"bd-201\",\"files\":[\"src/x.js\"]}]}",
+      "brief:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"BRIEFED\",\"files\":[\"src/x.js\"],\"branch\":\".worktrees/epic-bd-200-integration--task-bd-201\",\"base\":\"eeeeeee5555555555555555555555555555555\"}",
+      "implement:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"IMPLEMENTED\",\"files\":[\"src/x.js\"],\"branch\":\".worktrees/epic-bd-200-integration--task-bd-201\"}",
+      "review:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"NEEDS_FIX\",\"files\":[\"src/x.js\"],\"finding\":\"race condition writing the shared cache in src/x.js:17\"}",
+      "fix:bd-201:1": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/x.js\"]}",
+      "re-review:bd-201:1": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"NEEDS_FIX\",\"finding\":\"race condition writing the shared cache in src/x.js:17\"}",
+      "fix:bd-201:2": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/x.js\"]}",
+      "re-review:bd-201:2": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"NEEDS_FIX\",\"finding\":\"race condition writing the shared cache in src/x.js:17\"}",
+      "fix:bd-201:3": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/x.js\"]}",
+      "re-review:bd-201:3": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"NEEDS_FIX\",\"finding\":\"race condition writing the shared cache in src/x.js:17\"}",
+      "fix:bd-201:4": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/x.js\"]}",
+      "re-review:bd-201:4": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"NEEDS_FIX\",\"finding\":\"race condition writing the shared cache in src/x.js:17\"}",
+      "fix:bd-201:5": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/x.js\"]}",
+      "re-review:bd-201:5": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"NEEDS_FIX\",\"finding\":\"race condition writing the shared cache in src/x.js:17\"}",
+      "adjudicate:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"decision\":\"BLOCKED\",\"ruling\":\"real race condition with no test coverage for the interleaving; must not merge\"}",
+      "breaker-blocker:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"status\":\"BLOCKED\",\"blockerBead\":\"bd-210\"}",
+      "triage:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"decision\":\"ESCALATE\",\"detail\":\"race condition confirmed load-bearing by the breaker adjudicator; needs a human decision on the caching strategy\"}",
+      "notify:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"sent\":true}"
+    }
+  }
+}
+```
+
+Run this and record the real dispatch trace (order, count, `completed`/`escalated`/`pendingRetry`)
+here, replacing "Not yet executed" above, before treating the round-cap and adjudication paths as
+confirmed rather than predicted.
