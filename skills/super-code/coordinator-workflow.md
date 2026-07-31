@@ -430,7 +430,11 @@ const READY   = { type: 'object', properties: { ids: { type: 'array', items: { t
 // mapping: ordinal (N, as scripts/task-brief needs it) <-> bead id (as bd needs it) <-> declared
 // touched files (as groupByDisjointFiles needs it) — see "Plan materialization".
 const PLANNED = { type: 'object', properties: { planPath: {type:'string'}, mapping: { type:'array', items: { type:'object', properties: { n:{type:'integer'}, id:{type:'string'}, files:{type:'array', items:{type:'string'}} }, required:['n','id','files'] } } }, required: ['planPath','mapping'] }
-const RESULT  = { type: 'object', properties: { id: {type:'string'}, n: {type:'integer'}, status: {type:'string'}, files: { type: 'array', items: {type:'string'} }, branch: {type:'string'}, blockerBead: {type:'string'} }, required: ['id','status'] }
+// `finding` is NOT required: a CLEAN result (or any non-review stage) has none. It exists so a
+// NEEDS_FIX result carries the actual review finding text across the schema boundary — without it,
+// taskReviewPrompt's "attach the finding when NEEDS_FIX" instruction has nowhere to land, and
+// fixPrompt has nothing but {id,n,status,files,branch} to build a fix dispatch from.
+const RESULT  = { type: 'object', properties: { id: {type:'string'}, n: {type:'integer'}, status: {type:'string'}, files: { type: 'array', items: {type:'string'} }, branch: {type:'string'}, blockerBead: {type:'string'}, finding: {type:'string'} }, required: ['id','status'] }
 const TRIAGE  = { type: 'object', properties: { decision: {type:'string'}, detail: {type:'string'} }, required: ['decision','detail'] } // decision: RESOLVE | ESCALATE
 const MERGE   = { type: 'object', properties: { id:{type:'string'}, merged:{type:'boolean'}, blockerBead:{type:'string'} }, required: ['id','merged'] }
 const CLOSE   = { type: 'object', properties: { rootClosed: {type:'boolean'}, closedThisRun: { type: 'array', items: { type: 'string' } } }, required: ['rootClosed','closedThisRun'] }
@@ -549,13 +553,16 @@ function taskReviewPrompt(im) {
   // scripts/review-package BASE HEAD -> subagent-driven-development/task-reviewer-prompt.md
   // (single reviewer, spec-compliance + quality in one dispatch — the retired two-stage split
   // never applies here).
-  return `Run \`scripts/review-package\` for task ${im.id} (n ${im.n}) in ${im.branch} and follow subagent-driven-development/task-reviewer-prompt.md over the resulting package. Report id, n, files, and status CLEAN or NEEDS_FIX (attach the finding when NEEDS_FIX).`
+  return `Run \`scripts/review-package\` for task ${im.id} (n ${im.n}) in ${im.branch} and follow subagent-driven-development/task-reviewer-prompt.md over the resulting package. Report id, n, files, and status CLEAN or NEEDS_FIX — on NEEDS_FIX, put the finding text in the \`finding\` field (fixPrompt builds the fix dispatch from it directly, not from the rest of this result).`
 }
 
 function fixPrompt(rv) {
   // Round 1 of the fix loop — resumes the original implementer on the reviewer's finding. Rounds
   // 2-5 and the terminal action at the cap are exactly "The breaker, autonomous variant" above.
-  return `Resume the original implementer in the worktree for task ${rv.id} (n ${rv.n}) and address this review finding: ${JSON.stringify(rv)}. Report id, n, status FIXED, and files touched.`
+  // The finding text (rv.finding), not the whole RESULT object, is the substance of this prompt —
+  // stringifying rv wholesale would hand the implementer {id,n,status,files,branch} and no finding
+  // to actually fix, since none of RESULT's other fields carry the reviewer's finding text.
+  return `Resume the original implementer in the worktree for task ${rv.id} (n ${rv.n}) and address this review finding: ${rv.finding}. Report id, n, status FIXED, and files touched.`
 }
 
 function reReviewPrompt(fixed) {
@@ -739,7 +746,7 @@ attempt, exercising the blocker-bead path end to end: triage `ESCALATE`, notify,
 | `plan` | `{planPath:"...", mapping:[{n:1,id:"bd-101",files:["src/a.js"]},{n:2,id:"bd-102",files:["src/b.js"]},{n:3,id:"bd-103",files:["src/a.js"]}]}` | ordinal↔bead-id↔files mapping that `groupByDisjointFiles` and every `ordinalFor` lookup consumes |
 | `brief:bd-101` / `brief:bd-102` / `brief:bd-103` | `{id:"bd-1XX",n:<n>,status:"BRIEFED",files:[...],branch:".worktrees/<integrationBranch>--task-bd-1XX"}` | call-site-qualified per id (a single unqualified `brief` key can't return three different ids/branches) |
 | `implement:bd-101` / `implement:bd-102` / `implement:bd-103` | `{id:"bd-1XX",n:<n>,status:"IMPLEMENTED",files:[...],branch:"..."}` | same per-id qualification |
-| `review:bd-101` | `{id:"bd-101",n:1,status:"NEEDS_FIX",files:["src/a.js"]}` | the one task whose review returns a finding |
+| `review:bd-101` | `{id:"bd-101",n:1,status:"NEEDS_FIX",files:["src/a.js"],finding:"missing null check on parsed input in src/a.js:42"}` | the one task whose review returns a finding — `finding` is what `fixPrompt` builds the fix dispatch from, not the rest of the result |
 | `review:bd-102` / `review:bd-103` | `{id:"bd-1XX",n:<n>,status:"CLEAN",files:[...]}` | clean reviews — no fix loop for these two |
 | `fix:bd-101` | `{id:"bd-101",n:1,status:"FIXED",files:["src/a.js"]}` | fix round dispatched only for the flagged task |
 | `re-review:bd-101` | `{id:"bd-101",n:1,status:"CLEAN"}` | finding `ADDRESSED` — scoped re-review over the fix diff |
@@ -784,15 +791,29 @@ folding them into the canonical one.
 If any assertion fails, fix the script **in this doc** (this doc's script is canonical) and
 re-run before committing the fix.
 
-### Passing baseline (recorded, not illustrative)
+### Passing baseline — STALE, pending re-run (recorded 2026-07-30)
 
-Run `wf_d65bc00e-990`, 2026-07-30, against the args below: **22 agents dispatched, 0 errors**.
-Returned `{completed: ["bd-101","bd-102"], escalated: ["bd-103"]}` with the final review's
-verdict `conditional-pass`. This confirms every assertion above, in the dispatch order the
-journal recorded:
+**Stale as of the fix-round-2 edit below.** `RESULT` gained a `finding` field and `fixPrompt`
+changed from stringifying the whole result to reading `rv.finding` directly — a schema field and a
+prompt-shape change, both structural (see "dryRun policy": required after any structural
+coordinator edit). The `review:bd-101` stub was updated to carry a `finding` string so the fix
+dispatch is no longer built from an object with nowhere for the finding to live, but that stub
+change has **not yet been re-run**. The trace and figures below are the *prior* run, kept as the
+historical record of what was validated before this edit — they are not being edited to predict
+what the next run will show. Do not treat this baseline as current until it is re-recorded.
+
+Run `wf_d65bc00e-990`, 2026-07-30, against the (now-superseded) args below: **22 agents
+dispatched, 0 errors**. Returned `{completed: ["bd-101","bd-102"], escalated: ["bd-103"]}` with the
+final review's verdict `conditional-pass`. This confirmed every assertion above **except scoping**
+(see below), in the dispatch order the journal recorded:
 
 1. `close-epics` → `rootClosed:false, closedThisRun:[]`
-2. `bd-ready` → 3 ids (the epic-scoped query — confirms the scoping assertion)
+2. `bd-ready` → 3 ids — real evidence the loop got its batch, but **not** evidence of scoping: a
+   stub returns its canned ids regardless of what flags the prompt baked in, so this step would
+   look identical even if `--exclude-type=epic --label sp:${epicId}` had been deleted from the
+   dispatched prompt. The scoping assertion is, and remains, established only by reading that
+   prompt's construction at line 454 — confirmed present there — never by this or any dryRun's
+   output (see the `bd-ready` stub table entry and "What this dryRun proves" below).
 3. `plan` → mapping with `filesTouched`
 4–5. `brief:bd-101`, `brief:bd-102` — **concurrent** (`src/a.js` and `src/b.js` are disjoint)
 6–7. `implement:bd-101`, `implement:bd-102`
@@ -814,7 +835,12 @@ serial merge gate, blocker-bead routing, and loop termination, all of which the 
 confirms directly. It proves **nothing** about the real prompts' content, since every agent in
 this run was a canned stub, and **nothing** about actual git/`bd` behavior, since `dryRun: true`
 means no I/O occurred — a real implementer's fix, a real triage RESOLVE/ESCALATE judgment, and a
-real merge's auto-resolve attempt are exercised only by a live run.
+real merge's auto-resolve attempt are exercised only by a live run. It also proves **nothing**
+about `bd ready` **scoping** specifically, for the same reason: `bd-ready`'s stub returns its
+canned ids unconditionally, so a dryRun cannot distinguish a correctly-scoped prompt from one with
+the scoping flags silently deleted — that assertion is, and can only ever be, verified by reading
+the dispatched prompt's construction at line 454, not by running this or any dryRun (see step 2
+above).
 
 **Journals are session-local.** The run id and the figures above are the durable record; the
 journal `wf_d65bc00e-990` itself is not guaranteed to remain inspectable. A future maintainer
@@ -850,7 +876,7 @@ scenario this baseline used):
       "implement:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"IMPLEMENTED\",\"files\":[\"src/a.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-101\"}",
       "implement:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-102\",\"n\":2,\"status\":\"IMPLEMENTED\",\"files\":[\"src/b.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-102\"}",
       "implement:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-103\",\"n\":3,\"status\":\"IMPLEMENTED\",\"files\":[\"src/a.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-103\"}",
-      "review:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"NEEDS_FIX\",\"files\":[\"src/a.js\"]}",
+      "review:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"NEEDS_FIX\",\"files\":[\"src/a.js\"],\"finding\":\"missing null check on parsed input in src/a.js:42\"}",
       "review:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-102\",\"n\":2,\"status\":\"CLEAN\",\"files\":[\"src/b.js\"]}",
       "review:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-103\",\"n\":3,\"status\":\"CLEAN\",\"files\":[\"src/a.js\"]}",
       "fix:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/a.js\"]}",
