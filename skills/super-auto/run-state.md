@@ -1,9 +1,11 @@
 # run.md — the run-state contract
 
-`super-auto` orchestrates `brainstorming` → `super-plan` → `super-roast` (design) →
-`super-code` → `super-roast` (PR) as one run. A run spans hours and crosses context
+A `super-auto` run crosses multiple skill hand-offs, and spans hours, context
 compaction, session restarts, and machine restarts. `run.md` is the single committed
 file that lets a resumed run pick up exactly where it left off instead of guessing.
+(The phase sequence itself — which skill runs at which phase — is `SKILL.md`'s
+contract, not this file's; this file only says what state must persist and how
+re-entry uses it.)
 
 It lives at `docs/superpowers/runs/<slug>/run.md` and is committed alongside the
 other artifacts of the run (spec, plan, roast reports). It is not scratch state —
@@ -28,6 +30,13 @@ a resume can silently redo work or violate a decision that was already made.
    paths. Pointers only, never inline content. `run.md` says *where* the spec,
    plan, and reports live; it never restates their contents. Content lives in its
    own file and can grow or be re-read independently of the state file.
+
+   All path-valued pointers are given **relative to the run directory**
+   (`docs/superpowers/runs/<slug>/`) — never bare filenames, never full
+   repo-relative paths. A `spec:` of `design.md` and a `roast-design:` of
+   `roast-design-1.md` both resolve against the same run directory; there is no
+   second convention to pick between. This is the one rule that keeps two
+   implementations of this contract from producing incompatible files.
 
 4. **Parked items** — escalations and beyond-panel-cap findings accumulated so far,
    each with its source report. These are decisions already surfaced during design
@@ -61,8 +70,8 @@ code roast.
 flags: planOneShot=false skipPlanRoast=false skipCodeRoast=false autonomous=true
 phase: roast-code
 
-spec: docs/superpowers/runs/2026-07-31-rate-limiter/design.md
-plan: docs/superpowers/runs/2026-07-31-rate-limiter/plan.md
+spec: design.md
+plan: plan.md
 epic: bd-412
 branch: epic-bd-412-integration
 roast-design: roast-design-1.md, roast-design-2.md
@@ -78,9 +87,12 @@ parked:
 
 Every field above is one of the five required contents: `flags` and `phase` are
 items 1 and 2; `spec`/`plan`/`epic`/`branch`/`roast-design`/`roast-code` are the
-pointers of item 3 (each one names a path or id, never inline content);
-`roastDesignRound`/`roastCodeRound` are item 5; `parked` is item 4, with each
-entry naming its source report.
+pointers of item 3 (each one names a path or id, never inline content) —
+`spec`, `plan`, `roast-design`, and `roast-code` are paths, given relative to the
+run directory as stated above; `epic` and `branch` are identifiers, not paths,
+so the relative-path rule doesn't apply to them — `roastDesignRound`/
+`roastCodeRound` are item 5; `parked` is item 4, with each entry naming its
+source report.
 
 ## The resume rule
 
