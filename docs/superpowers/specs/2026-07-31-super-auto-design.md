@@ -66,6 +66,19 @@ execution on its own — that would strand the flags and surrender control of th
 | 4 | `super-code` | Autonomous or interactive per flag |
 | 5 | `super-roast` (PR mode) | Against the epic integration branch |
 | 6 | fix loop | Confirmed findings → beads under the epic → re-enter `super-code` |
+| 7 | `finishing-a-development-branch` | Merge the integration branch and clean up — **once, at the end** |
+
+**`super-code` is told not to run its own Finish hand-off.** Left to itself, `super-code`'s Finish
+merges the integration branch and hands to `finishing-a-development-branch`, whose cleanup runs
+"for every option" and removes the integration worktree. That would destroy the git-ignored
+`.superpowers/sdd/` scratch inside it — including the ledger, which is the *only* place a PARK
+ruling's reasoning is recorded — and would leave phase 5 roasting already-merged code and phase 6
+filing beads against a closed epic.
+
+So `super-auto` owns the finish exactly as it owns the hand-off out of `super-plan` (§3 above):
+`super-code` stops when its loop drains, phases 5–6 run against a **live** integration worktree,
+and only when the code roast is clean does `super-auto` hand to `finishing-a-development-branch`.
+This is what keeps §7's cited sources reachable at report time.
 
 **Step 6 mirrors `super-plan`'s loop deliberately:** cap 3, and stop early if an iteration does not
 shrink the confirmed-Blocking count — that is thrash, not progress. Findings become beads rather
@@ -164,8 +177,13 @@ efficient: where to start, and what to distrust. **Every section is sourced from
 artifact, never from the writing agent's recollection** — a report that narrates from memory is how
 a run with parked Blocking findings ends up reading as "done."
 
-It leads with status on one line: `clean` / `completed with N unresolved Blocking` /
+It leads with status on one line: `clean` / `completed with N unresolved Blocking, M escalations` /
 `stalled at phase X`. Never a bare "done."
+
+**An unresolved escalation forces a non-clean status, even with zero Blocking findings.** An
+escalation reached no verdict by construction (§4), so a run carrying one has not been cleared;
+reporting `clean` would claim a resolution that never happened — the precise failure this contract
+exists to prevent. `clean` requires **both** counts at zero.
 
 | Section | Content | Sourced from |
 |---|---|---|
