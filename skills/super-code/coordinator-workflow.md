@@ -544,8 +544,12 @@ const completed = []
 // `mergePrompt` (interpolates only `id`/`branch`), not the script's own return value, not `log()`
 // — so a PARKed merge was indistinguishable in every report from a task that came back clean on
 // the first pass, exactly the "silent discard" `subagent-driven-development/SKILL.md:377` forbids.
-// `parked` (pushed + logged at the PARK return site in `reviewAndFix`) and the ledger note it maps
-// to (once Task 5 wires the ledger up) are what make an overruled finding visible instead.
+// `parked` and the ledger note it maps to (once Task 5 wires the ledger up) are what make an
+// overruled finding visible instead. Pushed at the MERGE GATE (the Integrate loop's
+// `if (m.merged)` branch), not back in `reviewAndFix` at adjudication time — a PARK ruling only
+// carries INTENT (`r.parkRuling`) until the merge that follows it actually succeeds; gating the
+// push on `m.merged` is what keeps a task whose merge later fails from ending up in `parked` and
+// `escalated`/`pendingRetry` at once (review round 4).
 const parked = []
 // C-2/I6: ids RESOLVEd once by triage, awaiting their one bounded re-attempt (see handleBlocker
 // and "The blocker-bead path"). Membership here is what lets the no-progress guard tell a
@@ -686,7 +690,18 @@ while (true) {
     if (r.status === 'BLOCKED') { await handleBlocker(r); continue }
     const m = await agent(pick(() => mergePrompt(r, integrationBranch, integrationWorktree), `merge:${r.id}`),
       { label: `merge:${r.id}`, phase: 'Integrate', model: model('reviewer'), schema: MERGE })
-    if (m.merged) { completed.push(r.id); pendingRetry.delete(r.id) }  // a RESOLVEd id that then succeeds clears its retry-pending mark (C-2)
+    if (m.merged) {
+      completed.push(r.id)
+      pendingRetry.delete(r.id)  // a RESOLVEd id that then succeeds clears its retry-pending mark (C-2)
+      // Review round 4 (Important): `parked` is recorded HERE, alongside `completed.push`, not back
+      // in `reviewAndFix` at adjudication time — `r.parkRuling` (set by the PARK branch there) is
+      // only a carried-forward INTENT until the merge that just succeeded confirms it. Had this
+      // pushed unconditionally at adjudication time instead, a PARKed task whose merge later failed
+      // its bounded auto-resolve would end up in `parked` AND `escalated`/`pendingRetry`
+      // simultaneously, absent from `completed` — contradicting "a parked task IS a completed one"
+      // below. Gating on `m.merged` makes that invariant hold by construction.
+      if (r.parkRuling) { parked.push(r.id); log(`PARKED ${r.id}: ${r.parkRuling} (open finding, merged anyway: ${r.finding})`) }
+    }
     else await handleBlocker({ id: r.id, blockerBead: m.blockerBead })
   }
 
@@ -1067,12 +1082,19 @@ async function reviewAndFix(im, planPath) {
     // evidence that a review finding was overruled rather than genuinely resolved. The result: a
     // task merges with a KNOWN open finding and the run reports it identically to a task that was
     // clean on the first pass — the exact "silent discard" subagent-driven-development/SKILL.md:377
-    // forbids ("Every adjudication is a ledger entry"). `parked.push` + `log()` here mirror the
-    // ESCALATE branch's own `escalated.push` + `log()` in handleBlocker, and `finding` is
-    // deliberately left INTACT (not cleared) so the merged result still carries what was overruled;
-    // `parked` (not "finding is non-empty") is what a future ledger writer should key off of.
-    parked.push(rv.id)
-    log(`PARKED ${rv.id}: ${adj.ruling} (open finding, merged anyway: ${rv.finding})`)
+    // forbids ("Every adjudication is a ledger entry"). `finding` is deliberately left INTACT (not
+    // cleared) so the merged result still carries what was overruled.
+    // Review round 4 (Important): the FIRST fix pushed to `parked` right here, at adjudication
+    // time — but this function returns `status: 'CLEAN'` and hands off to the SEPARATE, LATER merge
+    // gate (the Integrate loop below); `mergePrompt` can still fail its rebase or tests after its
+    // one bounded auto-resolve attempt, in which case `completed.push` never runs and the id goes
+    // to `handleBlocker` instead — `escalated` or `pendingRetry`. Pushing here unconditionally would
+    // leave that id in `parked` FOREVER even though it never merged, contradicting "a parked task IS
+    // a completed one" below by construction. `parked` is populated ONLY at the merge gate now,
+    // alongside `completed.push` (see the Integrate loop's `if (m.merged)` branch) — "this task
+    // merged" and "it merged with an overruled finding" are both established at that one point, so
+    // recording them together there makes the invariant hold by construction, not convention.
+    log(`PARK ruling for ${rv.id}: ${adj.ruling} — proceeding to the merge gate with the open finding intact: ${rv.finding}`)
     return { ...rv, status: 'CLEAN', parkRuling: adj.ruling }
   }
   // Load-bearing: file a blocker bead and quarantine. Returning `status: 'BLOCKED'` here is what
@@ -1173,6 +1195,19 @@ Required **once at implementation** and **after any structural coordinator edit*
 the Close/Ready round shape, disjoint-file batching, merge-back sequencing, or blocker routing.
 **Data edits skip it** — roster/prompt/tier edits (which model a role uses, prompt wording, the
 concurrency cap's numeric value) are trivial by construction and can't silently break topology.
+
+**A recorded baseline is evidence only for the exact script revision it ran against.** Every
+"Confirmed" run-id/agent-count/return-value writeup in this doc is tied to the script as it existed
+at the commit that run executed against — not to "the coordinator script" in the abstract, and not
+to any later revision, however small the diff looks. Citing a prior run as if it covers a
+subsequently-restructured engine is an overclaim **even when the figures themselves are real and
+unaltered** — the run genuinely happened, genuinely passed, and is still not evidence about code it
+never executed. This document has produced this exact overclaim more than once (most recently: a
+canonical-scenario baseline cited across the commits that added the `pendingRetry`/`parked` return
+keys, when the cited run predated both and could never have contained them). The fix is procedural,
+not a one-time cleanup: after any structural edit, either re-run every baseline this doc cites and
+replace its figures, or mark it explicitly superseded/historical and stop citing it as current —
+never carry a stale run-id forward as if the intervening diff didn't happen.
 
 The orchestrator should pass `args` as an actual JSON value wherever the harness supports it —
 the string-tolerance in the script (`typeof args === 'string' ? JSON.parse(args) : args`) exists
@@ -1324,7 +1359,7 @@ untested by any scenario in this doc — inspection-only, same as C-1/C-3 above.
 If any assertion fails, fix the script **in this doc** (this doc's script is canonical) and
 re-run before committing the fix.
 
-### Passing baseline (recorded, not illustrative) — superseded, prior three-task scenario
+### Baselines for the canonical scenario (recorded, not illustrative)
 
 Run `wf_b1958510-6bf`, 2026-07-30, against an earlier revision of the args below — one that
 predates the `base`-carrying fix for C2/C6 (Task 3): that revision's `brief:*` stubs had no `base`
@@ -1372,13 +1407,27 @@ round-suffixed `fix`/`re-review` keys), the review-stage status guard (C4, `bd-1
 implement path), and the no-progress guard (I6). It provably could not have caught any of those
 three defects — no stub ever returned `BLOCKED` at implement, and the fix loop never had more than
 one round to loop. It's kept here as history of the *prior* scenario, not as evidence for the
-current script. **The updated four-task args block below (with `bd-104`) has not yet been
-executed against this revision of the script — no Workflow-dispatch tool was available in the
-environment this task was implemented in**, the same limitation Task 3 recorded. `node --check`
-plus a manual grep of every call site (defined-vs-called identifiers, per "dryRun policy" above)
-were run and passed (see the commit), but that is a parse-and-reference check, not a runnability
-proof. Re-run the args below and replace this whole section with the fresh 26/0 figures before the
-next structural edit lands.
+current script.
+
+**Confirmed against the current script.** Run `wf_ddba38c0-72d`: **26 agents dispatched, 0
+errors** — matching the four-task scenario's expected count exactly. Returned
+`{completed:["bd-101","bd-102"], escalated:["bd-103"], pendingRetry:["bd-104"], parked:[]}`.
+Compare this to the intermediate run `wf_171ab5c1-339` (also 26/0, cited in earlier revisions of
+this section) — **`bd-104` now appears in `pendingRetry`**, where under the engine
+`wf_171ab5c1-339` ran against it vanished from every bucket entirely (neither `completed`,
+`escalated`, nor anything else — the reporting hole review round 2 found). This run is what proves
+that fix end to end, against the actual current script; `wf_171ab5c1-339` cannot, because it never
+ran against a script that had a `pendingRetry`/`parked` return shape at all.
+
+**`wf_171ab5c1-339` is kept only as superseded history, not current evidence.** It executed against
+commit `9576d7f` — the state of this script **before** the `4a3e3bc` and `9855503` commits
+restructured `reviewAndFix`, `handleBlocker`, and the return value (the C-1/C-2/C-3/I-9/I-7 fixes
+and the `parked` array). Its returned object predates `parked` entirely and couldn't have contained
+the key even by coincidence. A prior revision of this doc cited `wf_171ab5c1-339` as if it covered
+the post-restructure engine — that was citing a run of *different code*, the exact overclaim shape
+"dryRun policy" above now names generally ("A recorded baseline is evidence only for the exact
+script revision it ran against"): a baseline is not evidence about code it never executed, even
+when its own figures are real and unaltered.
 
 **Schema-less dispatches — the harness's "N empty results" is expected, not a defect.** Three of
 the 26 calls in the current scenario carry no `schema:` and so return free text rather than
@@ -1562,8 +1611,10 @@ scenario, something regressed: `merge:bd-201` would mean a BLOCKED task reached 
 - The task's final status reaching the Integrate loop is `BLOCKED` with `blockerBead: "bd-210"` —
   routed to `handleBlocker`, never to `mergePrompt`.
 - `completed` is `[]`, `escalated` is `["bd-201"]`, `pendingRetry` is `[]` (triage ESCALATEd, not
-  RESOLVEd, so `handleBlocker`'s `pendingRetry.add` branch never fires), `stalled` is `false` (the
-  round that quarantines `bd-201` grows `escalated`, which the no-progress guard reads as progress).
+  RESOLVEd, so `handleBlocker`'s `pendingRetry.add` branch never fires), `parked` is `[]` (the task
+  never merges, so the Integrate loop's `if (r.parkRuling)` push never runs — not that `adj.decision`
+  was ever `PARK` here in the first place), `stalled` is `false` (the round that quarantines
+  `bd-201` grows `escalated`, which the no-progress guard reads as progress).
 - Expected dispatch count: `close-epics` 2 + `bd-ready` 2 + `plan` 1 + `brief` 1 + `implement` 1 +
   `review` 1 + `fix` 5 + `re-review` 5 + `adjudicate` 1 + `breaker-blocker` 1 + `triage` 1 +
   `notify` 1 = **22 agent calls, 0 errors** — and, distinctly from every other scenario in this
@@ -1573,7 +1624,8 @@ scenario, something regressed: `merge:bd-201` would mean a BLOCKED task reached 
 count above exactly, including the absent `merge:bd-201`/`final-review` dispatches (neither was
 ever requested). 5 fix rounds, 5 still-open re-reviews, 1 adjudicator call, 1 blocker bead filed, 1
 triage call (`ESCALATE`), 0 merge dispatches. Returned `{completed:[], escalated:["bd-201"],
-pendingRetry:[], stalled:false}` — exactly as predicted. This confirms the round-cap boundary (5,
+pendingRetry:[], parked:[], stalled:false}` — exactly as predicted (`parked` stays empty: this
+scenario's task never merges). This confirms the round-cap boundary (5,
 not 4 or 6), the adjudicator dispatching exactly once at the cap rather than per-round, and the
 BLOCKED path never touching `mergePrompt`. **It does not confirm the PARK arm** — this scenario's
 `adjudicate:bd-201` stub only ever returns `BLOCKED`; see "PARK dryRun scenario" below, which is
@@ -1699,11 +1751,14 @@ the distinction the Critical fix exists to make: a task that merged with an adju
 finding is now visibly different from one that reviewed clean on the first pass, where before it
 was indistinguishable. This branch had never executed before this run.
 
-**All three terminal outcomes are now covered by an executed run:** the canonical scenario
-(`wf_171ab5c1-339`, 26 agents, 0 errors — normal completion, disjoint-file batching, a BLOCKED
-implementer quarantined via a RESOLVE triage), the cap-tripping scenario (`wf_e189dd5a-a5f`, 22
-agents, 0 errors — breaker → BLOCKED: exactly 5 fix rounds, 1 adjudicator, 1 blocker bead, **0**
-merge dispatches), and this PARK scenario (`wf_058c4b83-631`, 21 agents, 0 errors — breaker → PARK:
+**All three terminal outcomes are now covered by an executed run against the current script:** the
+canonical scenario (`wf_ddba38c0-72d`, 26 agents, 0 errors — normal completion, disjoint-file
+batching, a BLOCKED implementer quarantined, a RESOLVE triage now correctly landing in
+`pendingRetry`; `wf_171ab5c1-339` is superseded history only — it ran two commits earlier, against
+a pre-`parked`/`pendingRetry` return shape, and is not evidence about the current engine, see
+"Baselines for the canonical scenario" above), the cap-tripping scenario (`wf_e189dd5a-a5f`, 22 agents, 0
+errors — breaker → BLOCKED: exactly 5 fix rounds, 1 adjudicator, 1 blocker bead, **0** merge
+dispatches), and this PARK scenario (`wf_058c4b83-631`, 21 agents, 0 errors — breaker → PARK:
 merged *and* recorded).
 
 **What these three runs collectively prove, and what they still don't.** Together they confirm
