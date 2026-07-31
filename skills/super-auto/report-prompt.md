@@ -19,6 +19,7 @@ failure this contract exists to prevent.
 
 ```
 status: clean
+status: clean [degraded: <qualifier>, ...]
 status: completed with <N> unresolved Blocking, <M> escalations
 status: stalled at phase <phase>
 ```
@@ -27,9 +28,20 @@ An escalation is a distinct outcome class from a Blocking finding: it is a case
 that reached no verdict at all, not a case that reached a Blocking verdict. Both
 counts are tracked because either one alone can make "clean" a lie: **an
 unresolved escalation forces a non-clean status even at zero Blocking findings**,
-and `clean` requires both `<N>` and `<M>` to be zero.
+and bare `clean` requires `<N>` and `<M>` both zero **and** zero parked
+`degraded-verdict` records (`run-state.md` item 4).
 
-The prohibition: never a bare "done." "Done" says nothing about which of the three
+**`clean [degraded: ...]` is the fourth status, not a variant of `clean`.**
+Autonomous mode answers a sibling's own gate on the human's behalf — declining a
+raised-`config.panelCap` re-roast, or proceeding past a `clean [low coverage]` /
+`clean [panel-capped: N unverified]` verdict — and parks the road not taken
+(`run-state.md`'s `degraded-verdict` kind) rather than asking. Zero Blocking and
+zero escalations no longer means nothing was left for a human: it can mean a
+human's call was made *for* them. Reporting bare `clean` when a degraded-verdict
+record exists is the same lie as reporting `clean` over an unresolved escalation
+— list every qualifier that was parked, e.g. `clean [degraded: low coverage]`.
+
+The prohibition: never a bare "done." "Done" says nothing about which of the four
 states above actually happened, and a run that parked Blocking findings, or left
 an escalation unresolved, and reports "done" is indistinguishable, at a glance,
 from a run that has neither. If the run stalled, name the phase it stalled at
@@ -55,7 +67,7 @@ edit that lets `super-code` run its own Finish (worktree removal included) befor
 | Remaining | What did not land, and why each didn't | `super-code`'s `escalated` and `pendingRetry` buckets; parked escalations carried in `run.md`; unresolved Blocking findings still open at panel cap-out |
 | Gotchas & surprises | Where reality diverged from the design | roast findings that changed a design decision; blocker beads that were triaged; plan-defect findings; anything that forced a nested brainstorm |
 | Entrypoints | Where to start reading, in order | the task tree's dependency order: root-most module first, then its public interface, then the primary caller |
-| Smells | Code the run is uneasy about, each with a one-line "the smell" | parked findings; `DONE_WITH_CONCERNS` implementer reports; tasks that needed 4-5 fix rounds; tasks that tripped the fix-loop breaker |
+| Smells | Code the run is uneasy about, each with a one-line "the smell" | parked findings; parked `degraded-verdict` records (a road not taken because autonomous mode answered a sibling's gate itself); `DONE_WITH_CONCERNS` implementer reports; tasks that needed 4-5 fix rounds; tasks that tripped the fix-loop breaker |
 
 ## Smells: the section that surfaces what passed
 

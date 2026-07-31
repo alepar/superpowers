@@ -22,9 +22,16 @@ a resume can silently redo work or violate a decision that was already made.
    decision the run is already partway through acting on.
 
 2. **Current phase** — one of `brainstorm | plan | roast-design | code | roast-code
-   | report | done`. This is the resume pointer: it says which stage of the
-   pipeline was in flight when the run last stopped, so re-entry knows what to do
-   next instead of what to do first.
+   | fix-loop | report | finish | done`. This is the resume pointer: it says which
+   stage of the pipeline was in flight when the run last stopped, so re-entry knows
+   what to do next instead of what to do first. The set names exactly `SKILL.md`'s
+   eight phases (`brainstorm`=1 … `finish`=8), plus `done`: `finish` means phase 8
+   (merge + cleanup) started but hasn't been confirmed complete — a resume reading
+   `finish` must resume or verify the merge, not treat the run as over; `done` means
+   phase 8 actually completed. Reading `done` when phase 8 never ran (skipping
+   straight from `report` to `done`) is exactly the failure this enumeration exists
+   to rule out — it would resume as "nothing left to do" while the integration
+   branch sits unmerged.
 
 3. **Pointers** — spec path, plan path, epic id, integration branch, roast report
    paths. Pointers only, never inline content. `run.md` says *where* the spec,
@@ -38,11 +45,21 @@ a resume can silently redo work or violate a decision that was already made.
    second convention to pick between. This is the one rule that keeps two
    implementations of this contract from producing incompatible files.
 
-4. **Parked items** — escalations and beyond-panel-cap findings accumulated so far,
-   each with its source report. These are decisions already surfaced during design
-   or code roast that a human (or a later phase) still needs to see. If they're
-   not carried in `run.md`, a resume loses track of open concerns that were raised
-   in a roast round the current session never saw.
+4. **Parked items** — three kinds, each with its source report:
+   - **escalations** — a roast finding that reached no verdict at all;
+   - **beyond-cap** — a severe finding the panel cap left unjudged;
+   - **degraded-verdict** — a sibling's own mandated pause that autonomous mode
+     answered on the human's behalf instead of asking: a declined
+     re-roast-at-raised-`config.panelCap` offer, or a `clean [low coverage]` /
+     `clean [panel-capped: N unverified]` verdict autonomous mode proceeded past.
+     Recorded with which branch was taken, e.g. `"clean [low coverage] — proceeded"`.
+
+   These are decisions already surfaced during design or code roast — or, for
+   degraded-verdict entries, decisions a sibling skill would have put to a human
+   and autonomous mode made instead — that a human (or a later phase) still needs
+   to see. If they're not carried in `run.md`, a resume loses track of open
+   concerns or self-made calls that a roast round or fix loop the current session
+   never saw raised or made.
 
 5. **Roast iteration counts, per loop** — `roastDesignRound`, `roastCodeRound`.
    Both roast fix loops (design and code) are capped at 3 iterations. That cap is
@@ -82,6 +99,7 @@ roastCodeRound: 1
 
 parked:
 - roast-design-2.md · escalation · "cache invalidation premise unverified — no valid judge votes"
+- roast-design-2.md · degraded-verdict · "clean [low coverage] — proceeded, not re-roasted"
 - roast-code-1.md · beyond-cap · "Blocking candidate left unjudged at panel cap"
 ```
 
@@ -92,7 +110,7 @@ pointers of item 3 (each one names a path or id, never inline content) —
 run directory as stated above; `epic` and `branch` are identifiers, not paths,
 so the relative-path rule doesn't apply to them — `roastDesignRound`/
 `roastCodeRound` are item 5; `parked` is item 4, with each entry naming its
-source report.
+source report and its kind (`escalation` / `beyond-cap` / `degraded-verdict`).
 
 ## The resume rule
 
