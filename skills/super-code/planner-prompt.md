@@ -37,18 +37,28 @@ Task tool (general-purpose), model: opus:
 
     ## Your Job
 
-    1. If `plan.md` does not exist yet, create it yourself with an empty ordinal-to-bead-id
-       mapping table (header row only, no data rows), then run `scripts/sdd-workspace plan.md`
-       to canonicalize the path and git-ignore it before continuing.
+    1. `scripts/sdd-workspace` errors if `plan.md` does not already exist — it does not create
+       it for you. So if `plan.md` does not exist yet: `mkdir -p` the workspace directory
+       yourself and write an initial `plan.md` there (mapping table header only, no data rows
+       yet), *then* run `scripts/sdd-workspace plan.md` to canonicalize the path and git-ignore
+       it, before continuing to step 2.
     2. For each bead listed in "Beads to plan this round" that does not already have a mapping
        row:
-       - Assign it the next unused sequential integer ordinal, continuing the existing sequence
-         (start at 1 on a fresh plan.md). Never reuse or reassign an ordinal already bound to a
-         different bead.
-       - Append one row to the mapping table: ordinal, bead id, task name.
+       - Assign it the next ordinal **in dependency order**, continuing the existing sequence
+         (starting at 1 on a fresh plan.md). Never reuse or reassign an ordinal already bound to
+         a different bead.
+       - Determine this task's **`filesTouched: string[]`** — the concrete list of every file it
+         will create or modify. This is your best declaration from the bead and the repo, and it
+         is required, not a hint: the coordinator uses it to decide which tasks may run
+         concurrently (same-file tasks must never run as siblings), so an incomplete list
+         degrades parallel safety. When you are uncertain whether a file belongs, over-declare
+         rather than under-declare — over-declaring only costs serialization; under-declaring
+         costs a write collision.
+       - Append one row to the mapping table: ordinal, bead id, task name, `filesTouched`.
        - Append a `## Task <N>` section, headed by the **ordinal** (never the bead id), containing:
-         - The concrete list of files this task will create or modify, stated first — the
-           coordinator uses this list to reason about worktree isolation between tasks.
+         - The `filesTouched` list, stated first, in the section body itself (not only in the
+           mapping table) — `scripts/task-brief` extracts only this section, so the implementer
+           never sees the mapping table and needs the list here too.
          - The bead's acceptance criteria and any epic-level Global Constraints, carried verbatim.
          - Bite-sized, TDD-structured implementation steps with complete content — no placeholders.
          - An independently testable deliverable. This plan is consumed directly by
@@ -71,6 +81,9 @@ Task tool (general-purpose), model: opus:
     ## Report Format
 
     - **Status:** DONE | PARTIAL | BLOCKED
-    - The `plan.md` path, and the ordinals added this round with each one's bead id
+    - `planPath`: the `plan.md` path
+    - `mapping`: one entry per bead planned this round — `{n: <ordinal>, id: <bead id>,
+      files: <filesTouched list>}`. `files` is required on every entry; it is how the
+      coordinator's disjoint-file grouping stays safe.
     - Any beads left unplanned as BLOCKED, and exactly what decision is missing for each
 ```

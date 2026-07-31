@@ -213,8 +213,9 @@ The bridge: once per epic, a **planner (opus)** agent reads the epic's beads tre
 the epic and its ready/blocked descendants) and writes `<workspace>/plan.md` with:
 
 1. An **ordinal ↔ bead-id mapping table** at the top — one row per task, `N` assigned in
-   dependency order starting at 1 — the durable translation every downstream consumer of this
-   file reads from.
+   dependency order starting at 1, plus each task's declared `filesTouched` — the durable
+   translation every downstream consumer of this file reads from, including the disjoint-file
+   grouping described below.
 2. One `## Task <N>` section per row, headed by the **ordinal**, carrying the bead's acceptance
    criteria and any Global Constraints from the epic body verbatim — the same content discipline
    SKILL.md expects of a hand-written plan.
@@ -400,8 +401,9 @@ const integrationWorktree = `.worktrees/${integrationBranch}`
 const taskWorktree = id => `.worktrees/${integrationBranch}--task-${id}`
 
 const READY   = { type: 'object', properties: { ids: { type: 'array', items: { type: 'string' } } }, required: ['ids'] }
-// mapping: ordinal (N, as scripts/task-brief needs it) <-> bead id (as bd needs it) — see "Plan materialization".
-const PLANNED = { type: 'object', properties: { planPath: {type:'string'}, mapping: { type:'array', items: { type:'object', properties: { n:{type:'integer'}, id:{type:'string'} }, required:['n','id'] } } }, required: ['planPath','mapping'] }
+// mapping: ordinal (N, as scripts/task-brief needs it) <-> bead id (as bd needs it) <-> declared
+// touched files (as groupByDisjointFiles needs it) — see "Plan materialization".
+const PLANNED = { type: 'object', properties: { planPath: {type:'string'}, mapping: { type:'array', items: { type:'object', properties: { n:{type:'integer'}, id:{type:'string'}, files:{type:'array', items:{type:'string'}} }, required:['n','id','files'] } } }, required: ['planPath','mapping'] }
 const RESULT  = { type: 'object', properties: { id: {type:'string'}, n: {type:'integer'}, status: {type:'string'}, files: { type: 'array', items: {type:'string'} }, branch: {type:'string'}, blockerBead: {type:'string'} }, required: ['id','status'] }
 const TRIAGE  = { type: 'object', properties: { decision: {type:'string'}, detail: {type:'string'} }, required: ['decision','detail'] } // decision: RESOLVE | ESCALATE
 const MERGE   = { type: 'object', properties: { id:{type:'string'}, merged:{type:'boolean'}, blockerBead:{type:'string'} }, required: ['id','merged'] }
@@ -441,7 +443,7 @@ while (true) {
   const ordinalFor = id => planned.mapping.find(m => m.id === id)?.n
 
   // Group by declared touched-files (from plan.md) so same-file tasks never run as siblings.
-  const groups = groupByDisjointFiles(ids, planned)  // pure JS, no I/O — files are already in `planned`
+  const groups = groupByDisjointFiles(ids, planned)  // pure JS, no I/O — reads planned.mapping[].files; solo-buckets anything undeclared (fail safe)
 
   // Per-task pipeline. NO barrier between stages: a fast task proceeds while a slow sibling lags.
   // Each agent works in its own worktree cut from the integration branch (taskWorktree(id)) and
@@ -491,10 +493,29 @@ function closeEpicsPrompt(epicId) {
 }
 
 function groupByDisjointFiles(ids, planned) {
-  // Pure computation over data already returned by the planner agent — no I/O. Illustrative:
-  // real implementation buckets ids so no two ids in the same bucket share a declared file,
-  // capped at config.concurrency buckets running concurrently.
-  return [ids]  // placeholder: replace with the real disjoint-set grouping
+  // Pure computation over data already returned by the planner agent (planned.mapping[].files) —
+  // no I/O. Buckets ids so no two ids in the same bucket share a declared file; ids within a
+  // bucket run as concurrent siblings via pipeline() below, with config.concurrency (~4) bounding
+  // how many run at once — buckets themselves still serialize relative to each other (see the
+  // `for (const group of groups)` loop above). FAIL SAFE, per Global Constraints ("dispatch
+  // concurrently only when file sets are disjoint"): an id with no declared files, or any id
+  // whose disjointness can't be established, must run alone in its own singleton bucket rather
+  // than default into a parallel batch — an incomplete files declaration must cost
+  // serialization, never risk a write collision. Illustrative pairwise grouping, not a tuned
+  // disjoint-set implementation:
+  const filesFor = id => planned.mapping.find(m => m.id === id)?.files
+  const buckets = []
+  for (const id of ids) {
+    const files = filesFor(id)
+    if (!files || !files.length) { buckets.push([id]); continue }  // fail safe: undeclared -> solo bucket
+    const bucket = buckets.find(b => b.every(other => {
+      const otherFiles = filesFor(other)
+      return otherFiles && otherFiles.length && !otherFiles.some(f => files.includes(f))
+    }))
+    if (bucket) bucket.push(id)
+    else buckets.push([id])
+  }
+  return buckets
 }
 
 async function handleBlocker(r) {
