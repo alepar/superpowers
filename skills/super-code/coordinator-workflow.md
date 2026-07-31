@@ -132,7 +132,13 @@ Round-based with refill (each `bd ready` batch is, by definition, mutually indep
 2. **Terminate?** — completion is **the root epic (`epicId`) closed**, not an empty ready set:
    run the epic-closure step (below) after each refill cycle and check whether the root closed.
    An empty ready set with the root still open means the remaining work is quarantined blockers
-   (see "The blocker-bead path") — that ends the loop too, but as a report, not a clean finish.
+   (see "The blocker-bead path") — that ends the loop too, but as a report, not a clean finish. A
+   **third** exit, independent of both: a round that merges no task, closes no epic, and
+   quarantines no id at all made no forward progress whatsoever and never will on its own — a
+   `RESOLVE` triage verdict that never actually resolves the underlying blocker is deliberately
+   *not* quarantined (it gets a real re-attempt next round instead — see "The blocker-bead path"),
+   so without this guard such a round repeats forever on `triage`'s opus tier. Stop and report
+   rather than spin (see the script skeleton's no-progress guard, right after the Integrate phase).
 3. **Group for parallelism, then pipeline the batch** — group the round's ready ids by the files
    each declares it touches (recorded on the bead body / brief, not derived by the script).
    Dispatch disjoint-file groups concurrently, up to the concurrency cap (default 4); any two
@@ -167,8 +173,8 @@ Round-based with refill (each `bd ready` batch is, by definition, mutually indep
 6. **Refill** — closing tasks unblocks dependents, so loop back to step 1; the next ready query
    surfaces them, and their worktrees are cut from the now-updated integration branch.
 
-Termination is by the root epic closing, **not** by token budget — there is no budget-based
-pause.
+Termination is by the root epic closing, a quarantine drain, or the no-progress guard tripping —
+**not** by token budget: there is no budget-based pause.
 
 ## Workspace and ledger
 
@@ -303,12 +309,17 @@ every *other*, unrelated ready task behind one stuck bead, which defeats the rea
 autonomously at all. So here, the same load-bearing verdict instead:
 
 1. Appends `Task <N> (<bead id>): BLOCKED — <reason>` to the ledger — SKILL.md's line shape, with
-   the ordinal/bead-id pairing described in "Workspace and ledger" above.
+   the ordinal/bead-id pairing described in "Workspace and ledger" above. *(The ledger itself isn't
+   wired up in the script yet — see I1 in the coordinator-fixes plan, Task 5's scope — so this line
+   is currently aspirational; `reviewAndFix`'s breaker cap implements points 2 and 3 below today.)*
 2. **Files a blocker bead** instead of stopping the session — same shape as any other blocker
    bead (see "The blocker-bead path"): the task id, the load-bearing finding, the plan text (from
-   `plan.md`) it collides with, and the fix history from the report file.
+   `plan.md`) it collides with, and the fix history from the report file. `reviewAndFix`'s
+   `breakerBlockerPrompt` does this.
 3. Quarantines the task (leaves its branch and worktree in place, does not merge it) and lets the
-   coordinator loop continue with every other ready task.
+   coordinator loop continue with every other ready task. `reviewAndFix` returns `status: 'BLOCKED'`
+   for this, which routes through the same `handleBlocker`/triage path as every other blocker
+   trigger (see the pipeline call site and "The blocker-bead path" below) rather than `mergePrompt`.
 
 Contestable-or-non-load-bearing findings at the cap are parked with a ruling exactly as SKILL.md
 describes — parking is not autonomous-mode-specific and needs no change. Only the load-bearing
@@ -331,10 +342,12 @@ In the integration worktree, for one task at a time, in dependency order:
 Anything that cannot proceed becomes a beads issue, never a silent retry and never a hard stop:
 
 - **Triggers:** an implementer reporting BLOCKED after 3 no-progress fix-loops (files the bead
-  itself), a merge that fails its one auto-resolve attempt (the merge agent files the bead), or a
+  itself), a merge that fails its one auto-resolve attempt (the merge agent files the bead), a
   fix-loop breaker tripping on a load-bearing finding at round 5 (see "The breaker, autonomous
   variant" — the coordinator files the bead in this case, since the finding surfaced at
-  adjudication, not inside the implementer or merge agent).
+  adjudication, not inside the implementer or merge agent), or the planner leaving a ready id
+  unmapped this round (`unplannedBlockerPrompt` — the coordinator files the bead, closing the
+  quarantine-only TODO seam Task 2 left in "Plan materialization").
 - **Bead shape:** a `bd create` with a `blocker` label, body stating the task id, what failed,
   and what was tried. Confirm flags with `bd create --help`.
 - **Triage (opus):** the coordinator dispatches the triage agent (`./triage-prompt.md`) with the
@@ -477,6 +490,7 @@ const CLOSE   = { type: 'object', properties: { rootClosed: {type:'boolean'}, cl
 
 const escalated = []
 const completed = []
+let stalled = false  // I6: set true if a round makes no progress at all — see the guard below
 
 while (true) {
   // MECHANICAL: bd epic close-eligible is repo-global (no --label/--parent/--mol — see
@@ -504,6 +518,12 @@ while (true) {
   // Quarantine exit: the root isn't closed (checked above) but nothing is ready — remaining
   // work is blocked/escalated. Not a clean finish; report below distinguishes the two cases.
   if (ids.length === 0) break
+  // I6: snapshot before this round's Plan/Implement/Integrate work so the no-progress guard below
+  // (after Integrate) can tell whether THIS round moved anything forward. Captured here, before
+  // the unplannedIds quarantine below can touch `escalated`, so that quarantine counts as progress
+  // too — not just a later Integrate-phase escalation.
+  const completedBefore = completed.length
+  const escalatedBefore = escalated.length
 
   // Plan materialization — once per epic, append-only on refill (see "Plan materialization").
   // scripts/sdd-workspace and scripts/task-brief need PLAN_FILE with ## Task <N> headings keyed
@@ -522,13 +542,19 @@ while (true) {
   // through a different door. Filter to ids the planner actually mapped before grouping/dispatch;
   // quarantine the rest explicitly (same `escalated` list "Escalation = notify + quarantine +
   // continue" uses) rather than letting them fail silently downstream.
-  // TODO(later task): route unmapped ids through full blocked-task/triage handling instead of a
-  // bare quarantine — this only stops the crash and surfaces the gap via log().
+  // Closes the TODO seam Task 2 left here: route each unmapped id through the SAME blocker-bead +
+  // triage flow as every other blocker trigger (see "The blocker-bead path"), instead of a bare
+  // quarantine — a `RESOLVE` verdict (e.g. "re-plan with this clarification") gets a real chance
+  // next round; only an `ESCALATE` actually quarantines (handleBlocker's own logic, unchanged).
   const plannedIds = ids.filter(id => ordinalFor(id) !== undefined)
   const unplannedIds = ids.filter(id => ordinalFor(id) === undefined)
   if (unplannedIds.length) {
-    log('plan: ' + unplannedIds.length + ' id(s) left unmapped this round by the planner (BLOCKED, no plan.md section) — quarantining, not dispatching: ' + JSON.stringify(unplannedIds))
-    escalated.push(...unplannedIds)
+    log('plan: ' + unplannedIds.length + ' id(s) left unmapped this round by the planner (BLOCKED, no plan.md section) — routing through the blocker-bead path: ' + JSON.stringify(unplannedIds))
+    for (const id of unplannedIds) {
+      const bead = await agent(pick(() => unplannedBlockerPrompt(id, epicId), `unplanned-blocker:${id}`),
+        { label: `unplanned-blocker:${id}`, phase: 'Plan', model: model('mechanical'), schema: RESULT })
+      await handleBlocker({ id, blockerBead: bead.blockerBead })
+    }
   }
 
   // Group by declared touched-files (from plan.md) so same-file tasks never run as siblings.
@@ -562,7 +588,15 @@ while (true) {
         const im = await agent(pick(() => implementPrompt(br, integrationBranch), `implement:${br.id}`), { label: `impl:${br.id}`, phase: 'Implement', model: model('implementer'), schema: RESULT })
         return { ...im, n: ordinalFor(br.id), branch: taskWorktree(br.id), base: br.base }
       },
-      im  => reviewAndFix(im, planned.planPath),
+      // C4: guard the review stage on the incoming status. Without this, an implementer's own
+      // BLOCKED (self-filed bead, see implementPrompt) gets handed to reviewAndFix anyway, whose
+      // CLEAN/NEEDS_FIX verdict overwrites `status` and erases BLOCKED before the Integrate stage's
+      // `if (r.status === 'BLOCKED')` check ever sees it — routing blocked work to `mergePrompt`.
+      // Skip review entirely and pass the implementer's result straight through unchanged; `im`
+      // already carries `blockerBead` (from implementPrompt's report contract), which is what lets
+      // the Integrate stage's `handleBlocker(r)` dispatch `triagePrompt(r.id, r.blockerBead)`
+      // correctly instead of with an undefined bead id.
+      im  => im.status === 'BLOCKED' ? im : reviewAndFix(im, planned.planPath),
     )
     results.push(...groupResults)
   }
@@ -578,15 +612,36 @@ while (true) {
     if (m.merged) completed.push(r.id)
     else await handleBlocker({ id: r.id, blockerBead: m.blockerBead })
   }
+
+  // I6: no-progress guard. A `RESOLVE` triage verdict that never actually resolves the underlying
+  // blocker is, by design, NOT pushed onto `escalated` (see handleBlocker) — the whole point is to
+  // give the task a real re-attempt next round. But if that re-attempt also RESOLVEs without
+  // fixing anything, the same id reappears in `bd ready` forever and spins the loop on `triage`'s
+  // opus tier indefinitely. Detect a round that made no forward progress at all and stop rather
+  // than spin: no task merged, no epic closed, and the quarantine list didn't grow either (a grown
+  // quarantine — ESCALATE, an unmapped-id blocker bead, a breaker-cap blocker bead — already
+  // guarantees eventual termination on its own via the `escalated` filter on `ids` above, so it
+  // counts as progress here too, not just merges/closures).
+  // `closed.closedThisRun` is this iteration's Close pass, computed at the TOP of this same
+  // iteration — it reflects the PRIOR round's merges (Close runs before Ready/Implement/Integrate
+  // every iteration), one round lagged from `completed`/`escalated`'s own before/after snapshot.
+  // That lag doesn't weaken the guard: a run making genuine progress always has at least one of
+  // the three signals non-empty in any given round once work starts landing; a run making none of
+  // the three, in any round, has nothing left that will change next round's outcome either.
+  if (completed.length === completedBefore && closed.closedThisRun.length === 0 && escalated.length === escalatedBefore) {
+    stalled = true
+    log(`STALLED: round completed 0 tasks, closed 0 epics, and quarantined 0 new ids — stopping to avoid an infinite loop. Still-ready ids this round: ${JSON.stringify(ids)}`)
+    break
+  }
 }
 
 phase('Finish')
-log(`Completed: ${completed.length}. Escalated: ${escalated.length}.`)
+log(`Completed: ${completed.length}. Escalated: ${escalated.length}.${stalled ? ' Stalled: true — see the STALLED log line above.' : ''}`)
 const review = completed.length
   ? await agent(pick(() => `Final whole-epic review of integration branch ${integrationBranch} for epic ${epicId}.`, 'final-review'),
       { label: 'final-review', phase: 'Finish', model: model('finalReview') })
   : 'no work landed'
-return { completed, escalated, review }
+return { completed, escalated, stalled, review }
 
 // --- helpers ---
 function closeEpicsPrompt(epicId) {
@@ -683,7 +738,7 @@ function implementPrompt(br, integrationBranch) {
   // are already coordinator-known (from `br`) and are re-stamped onto this call's result in the
   // pipeline call site regardless of what's reported — asking for them here would just invite a
   // second, ignorable source of truth (see the pipeline call site and RESULT's `base` comment).
-  return `Follow subagent-driven-development/implementer-prompt.md against the brief for task ${br.id} (n ${br.n}), working in ${br.branch}, branched from integration branch ${integrationBranch}. If BLOCKED after 3 no-progress fix-loops, file the blocker bead yourself (see "The blocker-bead path") — there is no human partner to escalate to mid-task. Report id, status (IMPLEMENTED or BLOCKED), and files touched.`
+  return `Follow subagent-driven-development/implementer-prompt.md against the brief for task ${br.id} (n ${br.n}), working in ${br.branch}, branched from integration branch ${integrationBranch}. If BLOCKED after 3 no-progress fix-loops, file the blocker bead yourself (see "The blocker-bead path") — there is no human partner to escalate to mid-task. Report id, status (IMPLEMENTED or BLOCKED), files touched, and — only on BLOCKED — blockerBead with the id of the bead you just filed (handleBlocker's triage dispatch needs it; see the pipeline call site's status guard).`
 }
 
 function taskReviewPrompt(im, planPath) {
@@ -703,9 +758,12 @@ function taskReviewPrompt(im, planPath) {
   return `In ${im.branch}, run \`scripts/review-package ${planPath} ${im.base} HEAD\` for task ${im.id} (n ${im.n}) and follow subagent-driven-development/task-reviewer-prompt.md over the resulting package. Report id and status CLEAN or NEEDS_FIX — on NEEDS_FIX, put the finding text in the \`finding\` field (fixPrompt builds the fix dispatch from it directly, not from the rest of this result).`
 }
 
-function fixPrompt(rv) {
-  // Round 1 of the fix loop — resumes the original implementer on the reviewer's finding. Rounds
-  // 2-5 and the terminal action at the cap are exactly "The breaker, autonomous variant" above.
+function fixPrompt(rv, round) {
+  // The fix loop (C3, SKILL.md's "The fix loop"): rounds 1-3 resume the original implementer —
+  // its context is intact, it knows the task, the code, and its own choices. Rounds 4-5 dispatch a
+  // FRESH implementer on a more capable model (reviewAndFix passes the escalated model via
+  // opts.model — this text only needs to say so) with SKILL.md's own framing: a prior implementer
+  // attempted the task and didn't resolve it; fresh eyes own it now.
   // The finding text (rv.finding), not the whole RESULT object, is the substance of this prompt —
   // stringifying rv wholesale would hand the implementer {id,n,status,files,branch,base} and no
   // finding to actually fix, since none of RESULT's other fields carry the reviewer's finding text.
@@ -713,7 +771,9 @@ function fixPrompt(rv) {
   // worktree for task X") is real, not an echo this function has to trust the reviewer for.
   // Report contract: id and status only — n/files/branch/base are re-stamped by `carried()` again
   // after this call, same reasoning as taskReviewPrompt above.
-  return `Resume the original implementer in the worktree ${rv.branch} for task ${rv.id} (n ${rv.n}) and address this review finding: ${rv.finding}. Report id and status FIXED.`
+  return round <= 3
+    ? `Resume the original implementer in the worktree ${rv.branch} for task ${rv.id} (n ${rv.n}), fix round ${round}/5, and address this review finding: ${rv.finding}. Report id and status FIXED.`
+    : `A prior implementer attempted task ${rv.id} (n ${rv.n}) ${round - 1} time(s) without resolving the open finding. Dispatch a FRESH implementer in the worktree ${rv.branch} — it owns the task now; read the report file for what was tried, then address this review finding (fix round ${round}/5): ${rv.finding}. Report id and status FIXED.`
 }
 
 function reReviewPrompt(fixed) {
@@ -729,6 +789,26 @@ function mergePrompt(r, integrationBranch, integrationWorktree) {
   // "Serial merge-back": rebase onto the integration branch, run the test command, merge --no-ff
   // and bd close on success; one bounded auto-resolve attempt on conflict/red, else the blocker path.
   return `In ${integrationWorktree}, update ${integrationBranch} and rebase task ${r.id}'s branch ${r.branch} onto it. Run the project test command. If clean, merge --no-ff into ${integrationBranch}, run \`bd close ${r.id}\`, and report merged true. If the rebase conflicts or tests are red, make one bounded auto-resolve attempt; if that also fails, file a blocker bead (see "The blocker-bead path") and report merged false with its id as blockerBead.`
+}
+
+function unplannedBlockerPrompt(id, epicId) {
+  // Closes the plan-materialization TODO seam Task 2 left behind (see the `unplannedIds` loop
+  // above): an id the planner left unmapped this round (planner-prompt.md's "Your Job" step 4 —
+  // BLOCKED, no plan.md section) now files a real blocker bead — same shape as every other
+  // trigger in "The blocker-bead path" — instead of going straight into `escalated` with no chance
+  // at triage's RESOLVE path. MECHANICAL: `bd create` with a fixed shape, not a judgment call —
+  // the judgment (RESOLVE vs ESCALATE) is `handleBlocker`'s triage dispatch, downstream of this.
+  return `File a blocker bead for task ${id} under epic ${epicId}: run \`bd create\` with a \`blocker\` label (confirm flags with \`bd create --help\`) and a body stating the task id and that the planner left it unmapped this round (BLOCKED — no "## Task <N>" section was written to plan.md for it). Report id ${id}, status BLOCKED, and blockerBead as the newly created bead's id.`
+}
+
+function breakerBlockerPrompt(rv, planPath) {
+  // "The breaker, autonomous variant": round 5's re-review still leaves the finding open — file a
+  // blocker bead with the same shape as any other blocker bead (see "The blocker-bead path"): the
+  // task id, the load-bearing finding, the plan text it collides with, and the fix history.
+  // MECHANICAL: `bd create` with a fixed, fully-specified shape — the judgment call (adjudicating
+  // this finding, RESOLVE vs ESCALATE) is `handleBlocker`'s triage dispatch, downstream of this;
+  // this builder only files the bead, it does not adjudicate.
+  return `File a blocker bead for task ${rv.id} (n ${rv.n}): run \`bd create\` with a \`blocker\` label (confirm flags with \`bd create --help\`) and a body stating: the task id; the review finding that survived all 5 fix/re-review rounds — ${rv.finding}; the "## Task ${rv.n}" section of ${planPath} it collides with (paste it); and the fix history from the task's report file. Report id ${rv.id}, status BLOCKED, and blockerBead as the newly created bead's id.`
 }
 
 function triagePrompt(id, blockerBead) {
@@ -778,14 +858,17 @@ function groupByDisjointFiles(ids, planned) {
   return buckets
 }
 
-// Round 1 of the fix loop, made concrete (the illustrative skeleton previously left this as a
-// comment — "fix rounds live inside taskReviewPrompt's resolution loop"). Rounds 2-5 and the
-// breaker's terminal action at the cap are exactly "The breaker, autonomous variant" above,
-// unmodified in substance; this function only shows the shape of round 1 so a dryRun stub can
-// exercise "one fix round + re-review" concretely (see the Stub table / Assertions below).
+// The five-round fix-loop breaker (C3). Loops fix -> scoped re-review while the verdict is
+// NEEDS_FIX, up to 5 rounds total — exactly "The breaker, autonomous variant" above and SDD's
+// SKILL.md "The fix loop": rounds 1-3 resume the original implementer, rounds 4-5 dispatch a fresh
+// implementer on a more capable model (fixPrompt/the `fixModel` selection below), minors never
+// extend the loop (the reviewer/re-reviewer defer them to the ledger themselves — see
+// taskReviewPrompt/reReviewPrompt — so a NEEDS_FIX that survives to here is never a bare minor).
+// At the cap, a still-open NEEDS_FIX is the load-bearing case SKILL.md's breaker adjudicates by
+// hand; this coordinator has no synchronous human partner to adjudicate for, so it takes the
+// documented terminal action directly, no separate in-script adjudication step to reinvent: file a
+// blocker bead and quarantine — NEVER merge.
 async function reviewAndFix(im, planPath) {
-  const rv = await agent(pick(() => taskReviewPrompt(im, planPath), `review:${im.id}`),
-    { label: `review:${im.id}`, phase: 'Implement', model: model('reviewer'), schema: RESULT })
   // C2's fix: none of taskReviewPrompt's/fixPrompt's/reReviewPrompt's report contracts ask for
   // `branch` (taskReviewPrompt's asks for "id, n, files, and status"; reReviewPrompt's asks for
   // "id, n, and status") — so `rv`/`fixed` never reliably carry it, and reReviewPrompt below
@@ -795,12 +878,28 @@ async function reviewAndFix(im, planPath) {
   // also what makes `mergePrompt`'s `r.branch` non-undefined: everything reviewAndFix returns has
   // passed through this re-stamp.
   const carried = result => ({ ...result, n: im.n, files: im.files, branch: im.branch, base: im.base })
-  if (rv.status !== 'NEEDS_FIX') return carried(rv)
-  const fixed = await agent(pick(() => fixPrompt(carried(rv)), `fix:${rv.id}`),
-    { label: `fix:${rv.id}`, phase: 'Implement', model: model('implementer'), schema: RESULT })
-  const rr = await agent(pick(() => reReviewPrompt(carried(fixed)), `re-review:${fixed.id}`),
-    { label: `re-review:${fixed.id}`, phase: 'Implement', model: model('reviewer'), schema: RESULT })
-  return carried(rr)
+  let rv = carried(await agent(pick(() => taskReviewPrompt(im, planPath), `review:${im.id}`),
+    { label: `review:${im.id}`, phase: 'Implement', model: model('reviewer'), schema: RESULT }))
+  for (let round = 1; round <= 5 && rv.status === 'NEEDS_FIX'; round++) {
+    // Fix-loop escalation (SDD's Model Selection: "rounds 4-5... a model at least one tier above
+    // the implementer that got stuck"). `config.models` has no dedicated escalation role — adding
+    // one is a contract-shape change out of this task's scope (see "Coordinator contract", which
+    // calls a differently-spelled key load-bearing for every later task) — so rounds 4-5 borrow
+    // `triage`, the only other opus-tier judgment role already in the contract.
+    const fixModel = round <= 3 ? model('implementer') : model('triage')
+    const fixed = carried(await agent(pick(() => fixPrompt(rv, round), `fix:${rv.id}:${round}`),
+      { label: `fix:${rv.id}:${round}`, phase: 'Implement', model: fixModel, schema: RESULT }))
+    rv = carried(await agent(pick(() => reReviewPrompt(fixed), `re-review:${fixed.id}:${round}`),
+      { label: `re-review:${fixed.id}:${round}`, phase: 'Implement', model: model('reviewer'), schema: RESULT }))
+  }
+  if (rv.status !== 'NEEDS_FIX') return rv
+  // Breaker tripped: round 5's re-review still leaves the finding open. Terminal action per "The
+  // breaker, autonomous variant" — file a blocker bead and quarantine, never merge. Returning
+  // `status: 'BLOCKED'` here is what the Integrate stage's `if (r.status === 'BLOCKED')` check
+  // routes to `handleBlocker` instead of `mergePrompt` (see the pipeline call site).
+  const bead = await agent(pick(() => breakerBlockerPrompt(rv, planPath), `breaker-blocker:${rv.id}`),
+    { label: `breaker-blocker:${rv.id}`, phase: 'Implement', model: model('mechanical'), schema: RESULT })
+  return { ...rv, status: 'BLOCKED', blockerBead: bead.blockerBead }
 }
 
 async function handleBlocker(r) {
@@ -901,61 +1000,91 @@ Close/Ready calls report nothing left to do.
 
 Each stub prompt is `You are a stub. Call no tools. Return exactly this JSON as your structured
 output: <json>` (exact phrasing — see "dryRun policy" above). The set below is the one used for
-the canonical topology scenario: three ready tasks under one epic — `bd-101` and `bd-102` touch
-disjoint files (`src/a.js`, `src/b.js`) and dispatch **concurrently**; `bd-103` also touches
-`src/a.js`, so it **serializes** after that group. `bd-101`'s review returns a finding and goes
-through one fix round + re-review (`ADDRESSED`). `bd-103`'s merge fails its one auto-resolve
-attempt, exercising the blocker-bead path end to end: triage `ESCALATE`, notify, quarantine,
-**continue** (`bd-101`/`bd-102` still complete).
+the canonical topology scenario: **four** ready tasks under one epic — `bd-101`, `bd-102`, and
+`bd-104` touch disjoint files (`src/a.js`, `src/b.js`, `src/c.js`) and dispatch **concurrently**;
+`bd-103` also touches `src/a.js`, so it **serializes** after that group. `bd-101`'s review returns
+a finding and goes through one fix round + re-review (`ADDRESSED`) — fix-loop stub keys are now
+**round-suffixed** (`fix:<id>:<round>`, `re-review:<id>:<round>`), since `reviewAndFix` can now run
+up to 5 rounds and the same unqualified key would otherwise be ambiguous across rounds. `bd-103`'s
+merge fails its one auto-resolve attempt, exercising the blocker-bead path end to end: triage
+`ESCALATE`, notify, quarantine, **continue** (`bd-101`/`bd-102` still merge). `bd-104`'s
+**implementer self-reports `BLOCKED`** (C4's fix): the pipeline's review stage is guarded on that
+incoming status and skips entirely — there is no `review:bd-104` stub, because that dispatch must
+never happen — and `bd-104` routes straight to `handleBlocker`, whose triage call returns
+`RESOLVE` this time: `clarify:bd-104` is dispatched instead of `notify:bd-104`, and `bd-104` is
+**not** pushed onto `escalated` (RESOLVE never quarantines). This closes the two gaps the prior
+three-task scenario could not catch by construction: no stub ever returned `BLOCKED` at implement,
+and the `RESOLVE` branch of `handleBlocker` was never exercised.
 
 | Stub key | Canned output (`<json>` content) | Exercises |
 |---|---|---|
-| `close-epics` (array, 2 entries) | `{rootClosed:false,closedThisRun:[]}` then `{rootClosed:false,closedThisRun:["bd-101","bd-102"]}` | root stays open both rounds (quarantined `bd-103` blocks closure) — round 1 doesn't exit early, round 2 doesn't loop forever |
-| `bd-ready` (array, 2 entries) | `{ids:["bd-101","bd-102","bd-103"]}` then `{ids:[]}` | round 1 supplies the batch; round 2's empty set drains the loop. The **scoping** assertion (`--exclude-type=epic --label sp:<epicId>`) is a property of the dispatched prompt text itself, not of this canned return — verified by reading the prompt, same as `super-roast`'s reporter-arithmetic caveat above |
-| `plan` | `{planPath:"...", mapping:[{n:1,id:"bd-101",files:["src/a.js"]},{n:2,id:"bd-102",files:["src/b.js"]},{n:3,id:"bd-103",files:["src/a.js"]}]}` | ordinal↔bead-id↔files mapping that `groupByDisjointFiles` and every `ordinalFor` lookup consumes |
-| `brief:bd-101` / `brief:bd-102` / `brief:bd-103` | `{id:"bd-1XX",n:<n>,status:"BRIEFED",files:[...],branch:".worktrees/<integrationBranch>--task-bd-1XX",base:"<40-char-sha>"}` | call-site-qualified per id (a single unqualified `brief` key can't return three different ids/branches); `base` here is the pre-implementer commit taskBriefPrompt now captures — this is where `n`/`branch`/`base` originate for the rest of the pipeline |
+| `close-epics` (array, 2 entries) | `{rootClosed:false,closedThisRun:[]}` then `{rootClosed:false,closedThisRun:["bd-101","bd-102"]}` | root stays open both rounds (quarantined `bd-103` and unresolved `bd-104` block closure) — round 1 doesn't exit early, round 2 doesn't loop forever |
+| `bd-ready` (array, 2 entries) | `{ids:["bd-101","bd-102","bd-103","bd-104"]}` then `{ids:[]}` | round 1 supplies the batch; round 2's empty set drains the loop (a canned value, not real `bd` continuity — see "What this dryRun proves and does not prove" below on why a RESOLVE'd `bd-104` not reappearing in round 2 is not itself an assertion). The **scoping** assertion (`--exclude-type=epic --label sp:<epicId>`) is a property of the dispatched prompt text itself, not of this canned return — verified by reading the prompt, same as `super-roast`'s reporter-arithmetic caveat above |
+| `plan` | `{planPath:"...", mapping:[{n:1,id:"bd-101",files:["src/a.js"]},{n:2,id:"bd-102",files:["src/b.js"]},{n:3,id:"bd-103",files:["src/a.js"]},{n:4,id:"bd-104",files:["src/c.js"]}]}` | ordinal↔bead-id↔files mapping that `groupByDisjointFiles` and every `ordinalFor` lookup consumes |
+| `brief:bd-101` / `brief:bd-102` / `brief:bd-103` / `brief:bd-104` | `{id:"bd-1XX",n:<n>,status:"BRIEFED",files:[...],branch:".worktrees/<integrationBranch>--task-bd-1XX",base:"<40-char-sha>"}` | call-site-qualified per id (a single unqualified `brief` key can't return four different ids/branches); `base` here is the pre-implementer commit taskBriefPrompt now captures — this is where `n`/`branch`/`base` originate for the rest of the pipeline |
 | `implement:bd-101` / `implement:bd-102` / `implement:bd-103` | `{id:"bd-1XX",n:<n>,status:"IMPLEMENTED",files:[...],branch:"..."}` | same per-id qualification. This stub's `n`/`branch` are cosmetic only — the pipeline's implement stage re-stamps `n` from `ordinalFor(br.id)` and `branch` from `taskWorktree(br.id)` directly (never trusting the implementer's own echo, nor even the brief agent's — see the pipeline call site); only `base` is carried from the brief result (`br.base`), since that one genuinely can't be recomputed |
+| `implement:bd-104` | `{id:"bd-104",n:4,status:"BLOCKED",files:["src/c.js"],branch:".worktrees/epic-bd-100-integration--task-bd-104",blockerBead:"bd-109"}` | **C4**: the implementer itself reports BLOCKED and has already self-filed the bead (`blockerBead`), per implementPrompt's report contract — `n`/`branch` are re-stamped by the pipeline as usual, but `status`/`blockerBead` are this stub's own and must survive the pipeline call site's guard unmodified |
 | `review:bd-101` | `{id:"bd-101",n:1,status:"NEEDS_FIX",files:["src/a.js"],finding:"missing null check on parsed input in src/a.js:42"}` | the one task whose review returns a finding — `finding` is what `fixPrompt` builds the fix dispatch from, not the rest of the result. No `branch`/`base` here by design: `reviewAndFix`'s `carried()` re-stamps both from `im` regardless of what this report contains, which is the C2 fix |
-| `review:bd-102` / `review:bd-103` | `{id:"bd-1XX",n:<n>,status:"CLEAN",files:[...]}` | clean reviews — no fix loop for these two |
-| `fix:bd-101` | `{id:"bd-101",n:1,status:"FIXED",files:["src/a.js"]}` | fix round dispatched only for the flagged task; no `branch` here either, by the same design as `review:bd-101` above |
-| `re-review:bd-101` | `{id:"bd-101",n:1,status:"CLEAN"}` | finding `ADDRESSED` — scoped re-review over the fix diff; `reviewAndFix` re-stamps `branch`/`base`/`n`/`files` from `im` onto this before it becomes the task's final result, which is what reaches `mergePrompt`'s `r.branch` |
+| `review:bd-102` / `review:bd-103` | `{id:"bd-1XX",n:<n>,status:"CLEAN",files:[...]}` | clean reviews — no fix loop for these two. **No `review:bd-104` key exists** — that dispatch must never fire (see C4 above); its absence from this table is itself part of the test: a regression that dropped the pipeline's status guard would throw `dryRun: no stub for key review:bd-104` |
+| `fix:bd-101:1` | `{id:"bd-101",n:1,status:"FIXED",files:["src/a.js"]}` | round 1 of the fix loop, dispatched only for the flagged task; no `branch` here either, by the same design as `review:bd-101` above. Round-suffixed (`:1`) because `reviewAndFix`'s loop can now run up to 5 rounds and each round is its own stub key |
+| `re-review:bd-101:1` | `{id:"bd-101",n:1,status:"CLEAN"}` | finding `ADDRESSED` on round 1 — the loop exits immediately since `rv.status !== 'NEEDS_FIX'`, so no `fix:bd-101:2`/`re-review:bd-101:2` stub is needed or dispatched; `reviewAndFix` re-stamps `branch`/`base`/`n`/`files` from `im` onto this before it becomes the task's final result, which is what reaches `mergePrompt`'s `r.branch` |
 | `merge:bd-101` / `merge:bd-102` | `{id:"bd-1XX",merged:true}` | successful serial merges |
-| `merge:bd-103` | `{id:"bd-103",merged:false,blockerBead:"bd-104"}` | merge fails its bounded auto-resolve attempt → blocker path |
-| `triage:bd-103` | `{decision:"ESCALATE",detail:"rebase conflict on src/a.js survived one auto-resolve attempt"}` | the judgment dispatch in `handleBlocker` |
+| `merge:bd-103` | `{id:"bd-103",merged:false,blockerBead:"bd-108"}` | merge fails its bounded auto-resolve attempt → blocker path. **No `merge:bd-104` key exists** — `bd-104` never reaches `mergePrompt` at all, since its BLOCKED status routes it to `handleBlocker` directly at the top of the Integrate loop (see the `if (r.status === 'BLOCKED')` check); its absence is part of the test, same reasoning as `review:bd-104`'s absence above |
+| `triage:bd-103` | `{decision:"ESCALATE",detail:"rebase conflict on src/a.js survived one auto-resolve attempt"}` | the judgment dispatch in `handleBlocker`, ESCALATE branch — notify + quarantine |
+| `triage:bd-104` | `{decision:"RESOLVE",detail:"implementer needs the missing config constant named explicitly; re-plan and re-attempt"}` | the judgment dispatch in `handleBlocker`, **RESOLVE branch** — the one branch the prior three-task scenario never exercised |
 | `notify:bd-103` | `{sent:true}` | fixed-notification mechanical dispatch on the ESCALATE branch |
-| `final-review` | `{summary:"stub: 2/3 tasks merged; bd-103 quarantined",verdict:"conditional-pass"}` | whole-epic review dispatched once at least one task landed |
+| `clarify:bd-104` | `{recorded:true}` | fixed-clarification-recording mechanical dispatch on the RESOLVE branch (schema-less, like `notify` — see "Schema-less dispatches" below) |
+| `final-review` | `{summary:"stub: 2/4 tasks merged; bd-103 quarantined, bd-104 resolved pending re-attempt",verdict:"conditional-pass"}` | whole-epic review dispatched once at least one task landed |
 
 **Stub keys are call-site qualified** (`brief:<id>`, `review:<id>`, `merge:<id>`, `triage:<id>`,
-...) for the same reason `super-roast`'s are qualified by `seat:<name>:<site>`: a single
-unqualified key can't return three different task ids/branches, or a `CLEAN` for two tasks and a
-`NEEDS_FIX` for the third, with one fixed value. Qualifying by call site removes the ambiguity —
-each of the three tasks gets its own deterministic path through the pipeline. The `RESOLVE` branch
-of `handleBlocker` (and its `clarify:<id>` stub) is **not** exercised by this scenario, since
-`bd-103`'s triage returns `ESCALATE`; a `RESOLVE`-path scenario is a separate dryRun, the same way
-`super-roast` runs its panel-cap and dead-dedupe scenarios as additional baselines rather than
-folding them into the canonical one.
+`fix:<id>:<round>`, `re-review:<id>:<round>`, ...) for the same reason `super-roast`'s are
+qualified by `seat:<name>:<site>`: a single unqualified key can't return four different task
+ids/branches, or a `CLEAN` for two tasks and a `NEEDS_FIX` for the third, with one fixed value —
+and, now that the fix loop can run multiple rounds, can't distinguish round 1's verdict from round
+2's either. Qualifying by call site (and, for the fix loop, by round) removes the ambiguity — each
+task gets its own deterministic path through the pipeline. The breaker cap itself (a `NEEDS_FIX`
+surviving all 5 rounds, `breaker-blocker:<id>`) and the unmapped-planner-id path
+(`unplanned-blocker:<id>`) are **not** exercised by this scenario — both are separate dryRuns, the
+same way `super-roast` runs its panel-cap and dead-dedupe scenarios as additional baselines rather
+than folding them into the canonical one.
 
 ## Assertions for the canonical dryRun
 
 - `bd ready` is scoped to the epic tree (`--exclude-type=epic --label sp:<epicId>`), not the whole
   repo — verified by inspecting the dispatched `bd-ready` prompt text (see the stub table note
   above; the stub's *return value* can't prove this, only the prompt construction can).
-- The two disjoint-file tasks (`bd-101`, `bd-102`) dispatch as one `pipeline()` group —
+- The three disjoint-file tasks (`bd-101`, `bd-102`, `bd-104`) dispatch as one `pipeline()` group —
   **concurrently**; `bd-103` (shares `src/a.js` with `bd-101`) is bucketed alone by
   `groupByDisjointFiles` and its group runs strictly after the first group's `pipeline()` call
   resolves — **serialized**, never a sibling in the same call.
-- Each task runs the full pipeline in order — brief → implementer → review-package (task-reviewer)
-  — and `bd-101` additionally runs one fix round + a scoped re-review that reports the finding
-  `ADDRESSED` (see `reviewAndFix` in the script above).
-- Merge-back is **serial**: three `merge:<id>` calls, one at a time, in the order
-  `bd-101, bd-102, bd-103` (dependency/ready order), never two concurrently.
+- `bd-101`/`bd-102`/`bd-103` run the full pipeline in order — brief → implementer →
+  review-package (task-reviewer) — and `bd-101` additionally runs one fix round + a scoped
+  re-review that reports the finding `ADDRESSED` (see `reviewAndFix` in the script above).
+- **`bd-104` never reaches `review:bd-104`, `fix:bd-104:*`, `re-review:bd-104:*`, or
+  `merge:bd-104`** (C4): its implementer reports BLOCKED, the pipeline's status guard passes that
+  result straight through unmodified, and it lands directly in the Integrate loop's
+  `if (r.status === 'BLOCKED')` branch. If this dryRun ever dispatches any of those four keys for
+  `bd-104`, the guard has regressed — that is the failure mode this scenario exists to catch.
+- Merge-back is **serial**: three `merge:<id>` calls (`bd-101`, `bd-102`, `bd-103` — never
+  `bd-104`), one at a time, in dependency/ready order, never two concurrently.
 - The blocker path fires on `bd-103`'s failed merge: a blocker bead reference (`blockerBead`) is
   returned, `handleBlocker` dispatches `triage:bd-103` → `ESCALATE` → `notify:bd-103`, `bd-103` is
   pushed onto `escalated` (quarantined, not closed) — and the run **continues**: `bd-101`/`bd-102`
-  still merge and close, and the loop proceeds to round 2 instead of halting.
-- Expected dispatch count: `close-epics` 2 + `bd-ready` 2 + `plan` 1 + `brief` 3 + `implement` 3 +
-  `review` 3 + `fix` 1 + `re-review` 1 + `merge` 3 + `triage` 1 + `notify` 1 + `final-review` 1 =
-  **22 agent calls, 0 errors** (`final-review` dispatches because `completed.length` is 2, not 0).
+  still merge and close.
+- The blocker path also fires on `bd-104`'s implement-stage BLOCKED: `handleBlocker` dispatches
+  `triage:bd-104` → `RESOLVE` → `clarify:bd-104` (not `notify:bd-104`) — and `bd-104` is **not**
+  pushed onto `escalated`, per `handleBlocker`'s RESOLVE branch. The run proceeds to round 2
+  instead of halting either way.
+- No path reaches `mergePrompt` with a status other than a clean (`CLEAN`, after however many fix
+  rounds) review result: `bd-101`/`bd-102`/`bd-103` are the only three `merge:<id>` dispatches, and
+  each is reached only after `reviewAndFix` returned a non-`NEEDS_FIX`, non-`BLOCKED` result (this
+  is Step 4's verification target — confirmed by inspection of the pipeline call site and
+  `reviewAndFix`'s two return paths, not by this scenario alone, since `bd-104` is the only stubbed
+  BLOCKED case and this scenario's fix loop never reaches the round-5 cap).
+- Expected dispatch count: `close-epics` 2 + `bd-ready` 2 + `plan` 1 + `brief` 4 + `implement` 4 +
+  `review` 3 + `fix` 1 + `re-review` 1 + `merge` 3 + `triage` 2 + `notify` 1 + `clarify` 1 +
+  `final-review` 1 = **26 agent calls, 0 errors** (`final-review` dispatches because
+  `completed.length` is 2, not 0).
 - `r.branch` reaching `mergePrompt`'s dispatch text and `im.base` reaching `taskReviewPrompt`'s
   (C2/C6) is verified only by reading `mergePrompt`'s and `taskReviewPrompt`'s definitions — never
   by this or any dryRun's output, for the identical reason the scoping and finding-rendering
@@ -963,7 +1092,7 @@ folding them into the canonical one.
   under `dryRun: true` neither builder is ever called and neither one's template literal ever
   interpolates anything — the text actually sent to the stubbed agent is the literal stub string,
   full stop. A regression that deleted `carried()`, or the brief→implement `taskWorktree`/
-  `ordinalFor` re-stamp, would **not** fail this dryRun: agent count stays 22, errors stay 0, and
+  `ordinalFor` re-stamp, would **not** fail this dryRun: agent count stays 26, errors stay 0, and
   neither `completed`/`escalated` nor any schema the loop branches on carries branch/base
   information. What the dryRun *does* exercise, because these are plain JS and not behind `pick()`,
   is the carry-forward assignments themselves running without throwing on every stubbed `im`/`br` —
@@ -972,7 +1101,7 @@ folding them into the canonical one.
 If any assertion fails, fix the script **in this doc** (this doc's script is canonical) and
 re-run before committing the fix.
 
-### Passing baseline (recorded, not illustrative)
+### Passing baseline (recorded, not illustrative) — superseded, prior three-task scenario
 
 Run `wf_b1958510-6bf`, 2026-07-30, against an earlier revision of the args below — one that
 predates the `base`-carrying fix for C2/C6 (Task 3): that revision's `brief:*` stubs had no `base`
@@ -987,8 +1116,8 @@ the journal recorded:
    stub returns its canned ids regardless of what flags the prompt baked in, so this step would
    look identical even if `--exclude-type=epic --label sp:${epicId}` had been deleted from the
    dispatched prompt. The scoping assertion is, and remains, established only by reading that
-   prompt's construction at line 458 — confirmed present there — never by this or any dryRun's
-   output (see the `bd-ready` stub table entry and "What this dryRun proves" below).
+   prompt's construction, confirmed present there — never by this or any dryRun's output (see the
+   `bd-ready` stub table entry and "What this dryRun proves" below).
 3. `plan` → mapping with `filesTouched`
 4–5. `brief:bd-102`, `brief:bd-101` — same bucket, **concurrent**. **Only bucket membership is
    meaningful here, not the order within it**: this run dispatched 102 before 101; the prior run
@@ -1003,7 +1132,7 @@ the journal recorded:
 6–7. `implement:bd-102`, `implement:bd-101`
 8–9. `review:bd-102` → `CLEAN`; `review:bd-101` → `NEEDS_FIX` (+ `finding`)
 10–11. `fix:bd-101` → `re-review:bd-101` → `CLEAN` — fix round dispatched **only** for the task
-   whose review returned a finding
+   whose review returned a finding (unqualified-by-round keys — predates the round-suffix change)
 12–14. `brief`/`implement`/`review` for `bd-103` — **serialized into a later bucket**, because it
    declares `src/a.js`, colliding with `bd-101`
 15–17. `merge:bd-101` OK → `merge:bd-102` OK → `merge:bd-103` FAILED (blocker bead `bd-104`) —
@@ -1015,69 +1144,78 @@ the journal recorded:
 21. `bd-ready` → `{ids:[]}` — the loop terminates
 22. `final-review`
 
-**Not yet re-verified against the current args block below.** Task 3 added `base` to `RESULT`, to
-the `brief:*` stubs, and to the args JSON below, plus the `carried()` re-stamp inside
-`reviewAndFix` and the brief→implement re-stamp at the pipeline call site. Per "dryRun policy"
-above's own data-edit/structural-edit distinction, this is a data-carrying change, not a topology
-change — no `agent()` call was added, removed, or reordered, so the dispatch order/count above are
-expected to still hold unchanged. That expectation was checked by `node --check` plus a manual
-grep of every call site (see the commit), but **not** by an actual re-run: no Workflow-dispatch
-tool was available in the environment this task was implemented in. Re-run against the args below
-before the next structural edit lands, and replace this recorded run with the fresh one.
+**Superseded by Task 4.** This 22-agent, three-task run predates: the five-round breaker loop (C3,
+round-suffixed `fix`/`re-review` keys), the review-stage status guard (C4, `bd-104`'s BLOCKED
+implement path), and the no-progress guard (I6). It provably could not have caught any of those
+three defects — no stub ever returned `BLOCKED` at implement, and the fix loop never had more than
+one round to loop. It's kept here as history of the *prior* scenario, not as evidence for the
+current script. **The updated four-task args block below (with `bd-104`) has not yet been
+executed against this revision of the script — no Workflow-dispatch tool was available in the
+environment this task was implemented in**, the same limitation Task 3 recorded. `node --check`
+plus a manual grep of every call site (defined-vs-called identifiers, per "dryRun policy" above)
+were run and passed (see the commit), but that is a parse-and-reference check, not a runnability
+proof. Re-run the args below and replace this whole section with the fresh 26/0 figures before the
+next structural edit lands.
 
-**Schema-less dispatches — the harness's "1 empty result" is expected, not a defect.** Two of the
-22 calls carry no `schema:` and so return free text rather than structured output: `notify` (line
-651) is fire-and-forget — the coordinator never reads its return, so free text (this run's came
-back as fenced markdown) is fine and is simply ignored. `final-review` (line 510) is also
-schema-less by design — its raw string is returned verbatim as this script's `review` result field,
-not parsed. Neither is a bug; a future run reporting one or two empty/unstructured results among
-the 22 is exactly this, not a regression, and should not be "fixed" by adding schemas that would
-force those two dispatches into a shape they don't need.
+**Schema-less dispatches — the harness's "N empty results" is expected, not a defect.** Three of
+the 26 calls in the current scenario carry no `schema:` and so return free text rather than
+structured output: `notify` and `clarify` are fire-and-forget — the coordinator never reads their
+return, so free text is fine and is simply ignored. `final-review` is also schema-less by design —
+its raw string is returned verbatim as this script's `review` result field, not parsed. None of the
+three is a bug; a future run reporting empty/unstructured results among the 26 for exactly these
+three is expected, not a regression, and should not be "fixed" by adding schemas that would force
+them into a shape they don't need.
 
 **What this dryRun proves and does not prove** (same caveat `super-roast`'s doc states for its own
 baselines): it proves **coordinator topology** — dispatch order, the disjoint-file batching (at
 the bucket-membership level — see the correction on intra-bucket order above), the serial merge
-gate, blocker-bead routing, and loop termination, all of which the sequence above confirms
-directly. It proves **nothing** about the real prompts' content, since every agent in this run was
-a canned stub, and **nothing** about actual git/`bd` behavior, since `dryRun: true` means no I/O
-occurred — a real implementer's fix, a real triage RESOLVE/ESCALATE judgment, and a real merge's
+gate, blocker-bead routing (both ESCALATE and RESOLVE), the review-stage BLOCKED guard, and loop
+termination. It proves **nothing** about the real prompts' content, since every agent in this run
+is a canned stub, and **nothing** about actual git/`bd` behavior, since `dryRun: true` means no I/O
+occurs — a real implementer's fix, a real triage RESOLVE/ESCALATE judgment, and a real merge's
 auto-resolve attempt are exercised only by a live run. It also proves **nothing** about `bd ready`
 **scoping** specifically, for the same reason: `bd-ready`'s stub returns its canned ids
-unconditionally, so a dryRun cannot distinguish a correctly-scoped prompt from one with the
-scoping flags silently deleted — that assertion is, and can only ever be, verified by reading the
-dispatched prompt's construction at line 458, not by running this or any dryRun (see step 2
-above). The identical caveat applies to **finding-rendering**: `pick()` is lazy (fix round 1), so
-under `dryRun: true` the real `fixPrompt` is never called, and this run cannot demonstrate that
-`rv.finding` actually reaches the fix dispatch text. What it *does* prove is narrower: `RESULT`
-carries `finding` across the schema boundary intact — the `review:bd-101` stub returned it and it
-survived into `rv` unchanged (step 8–9 above). The rendering itself — that `fixPrompt` interpolates
-`rv.finding` into the dispatch string — is verified only by reading line 565, the same way scoping
-is verified only by reading line 458. The identical caveat applies a third time, to `branch`/`base`
-**carry-forward** (C2/C6): `mergePrompt` and `taskReviewPrompt` are exactly as lazy as `fixPrompt`
-under `pick()`, so this run never calls either and never interpolates `r.branch`/`im.base` into any
-dispatch text — a regression that deleted the `carried()` re-stamp or the brief→implement
-`taskWorktree`/`ordinalFor` re-stamp would still show 22 agents, 0 errors, and identical
-`completed`/`escalated`. What *is* narrower and true: the re-stamp assignments are plain JS, not
-gated by `pick()`, so they run on every stubbed `im`/`br` in this trace without throwing — but that
-only proves the code path executes, not that its output reaches a prompt. Whether `r.branch`
-actually reaches `mergePrompt`'s text and `im.base` actually reaches `taskReviewPrompt`'s is, and
-can only be, verified by reading those two functions' definitions directly.
+unconditionally, so a dryRun cannot distinguish a correctly-scoped prompt from one with the scoping
+flags silently deleted — that assertion is, and can only ever be, verified by reading the
+dispatched prompt's construction, not by running this or any dryRun. The identical caveat applies
+to **finding-rendering**: `pick()` is lazy, so under `dryRun: true` the real `fixPrompt` is never
+called, and this run cannot demonstrate that `rv.finding` actually reaches the fix dispatch text.
+What it *does* prove is narrower: `RESULT` carries `finding` across the schema boundary intact —
+the `review:bd-101` stub returned it and it survived into `rv` unchanged. The rendering itself —
+that `fixPrompt` interpolates `rv.finding` into the dispatch string — is verified only by reading
+`fixPrompt`'s definition, the same way scoping is verified only by reading the `bd-ready` dispatch.
+The identical caveat applies again to `branch`/`base` **carry-forward** (C2/C6): `mergePrompt` and
+`taskReviewPrompt` are exactly as lazy as `fixPrompt` under `pick()`, so this run never calls
+either and never interpolates `r.branch`/`im.base` into any dispatch text — a regression that
+deleted the `carried()` re-stamp or the brief→implement `taskWorktree`/`ordinalFor` re-stamp would
+still show the same agent count, 0 errors, and identical `completed`/`escalated`. What *is*
+narrower and true: the re-stamp assignments are plain JS, not gated by `pick()`, so they run on
+every stubbed `im`/`br` in this trace without throwing — but that only proves the code path
+executes, not that its output reaches a prompt. Whether `r.branch` actually reaches `mergePrompt`'s
+text and `im.base` actually reaches `taskReviewPrompt`'s is, and can only be, verified by reading
+those two functions' definitions directly. **The same caveat applies a fourth time, to the C4
+status guard and the I6 no-progress guard**: both are plain JS `if` checks, not behind `pick()`, so
+a real run exercises the actual branch (this scenario's `bd-104` genuinely never reaches
+`review:bd-104`) — but the no-progress guard specifically is **not exercised by this scenario at
+all**, since `bd-101`/`bd-102` merge in round 1 (real progress), so `completed.length` grows and
+the guard's condition is never true. Proving the no-progress guard actually stops a spinning run
+requires a *separate* scenario — an all-RESOLVE-no-merge round — which this canonical scenario
+deliberately does not attempt to also be.
 
 **Prior run, kept as history.** Run `wf_d65bc00e-990`, 2026-07-30 (recorded before fix round 2 —
 `review:bd-101`'s stub then had no `finding` field), also passed: 22 agents, 0 errors, identical
-`completed`/`escalated`/verdict. The only observed difference from the current baseline is
+`completed`/`escalated`/verdict. The only observed difference from the (then-current) baseline was
 intra-bucket dispatch order (`brief:bd-101` before `brief:bd-102`, vs. `102` before `101` above) —
 per the correction above, that is not a regression and the two runs are not "identical," just
 both-passing on the dimensions that are actually assertions.
 
-**Journals are session-local.** The run id and the figures above are the durable record; the
-journal `wf_b1958510-6bf` itself is not guaranteed to remain inspectable. A future maintainer
-re-verifies this baseline by re-running the Workflow tool with the `args` below and comparing the
-new run's figures against the ones recorded here (allowing for intra-bucket reordering, per the
-correction above) — not by going looking for this run's journal.
+**Journals are session-local.** Run ids and the figures recorded against them are the durable
+record; journals themselves are not guaranteed to remain inspectable. A future maintainer
+re-verifies the current baseline by re-running the Workflow tool with the `args` below and
+recording the new run's figures here — not by going looking for any prior run's journal.
 
-To reproduce or re-verify, run the Workflow tool with this script and `args` (unchanged from the
-scenario this baseline used):
+To reproduce or establish the (currently unverified) baseline, run the Workflow tool with this
+script and this `args` block:
 
 ```json
 {
@@ -1095,33 +1233,37 @@ scenario this baseline used):
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"rootClosed\":false,\"closedThisRun\":[\"bd-101\",\"bd-102\"]}"
       ],
       "bd-ready": [
-        "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[\"bd-101\",\"bd-102\",\"bd-103\"]}",
+        "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[\"bd-101\",\"bd-102\",\"bd-103\",\"bd-104\"]}",
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[]}"
       ],
-      "plan": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"planPath\":\".worktrees/epic-bd-100-integration/.sdd/bd-100/plan.md\",\"mapping\":[{\"n\":1,\"id\":\"bd-101\",\"files\":[\"src/a.js\"]},{\"n\":2,\"id\":\"bd-102\",\"files\":[\"src/b.js\"]},{\"n\":3,\"id\":\"bd-103\",\"files\":[\"src/a.js\"]}]}",
+      "plan": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"planPath\":\".worktrees/epic-bd-100-integration/.sdd/bd-100/plan.md\",\"mapping\":[{\"n\":1,\"id\":\"bd-101\",\"files\":[\"src/a.js\"]},{\"n\":2,\"id\":\"bd-102\",\"files\":[\"src/b.js\"]},{\"n\":3,\"id\":\"bd-103\",\"files\":[\"src/a.js\"]},{\"n\":4,\"id\":\"bd-104\",\"files\":[\"src/c.js\"]}]}",
       "brief:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"BRIEFED\",\"files\":[\"src/a.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-101\",\"base\":\"aaaaaaa1111111111111111111111111111111\"}",
       "brief:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-102\",\"n\":2,\"status\":\"BRIEFED\",\"files\":[\"src/b.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-102\",\"base\":\"bbbbbbb2222222222222222222222222222222\"}",
       "brief:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-103\",\"n\":3,\"status\":\"BRIEFED\",\"files\":[\"src/a.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-103\",\"base\":\"ccccccc3333333333333333333333333333333\"}",
+      "brief:bd-104": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-104\",\"n\":4,\"status\":\"BRIEFED\",\"files\":[\"src/c.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-104\",\"base\":\"ddddddd4444444444444444444444444444444\"}",
       "implement:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"IMPLEMENTED\",\"files\":[\"src/a.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-101\"}",
       "implement:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-102\",\"n\":2,\"status\":\"IMPLEMENTED\",\"files\":[\"src/b.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-102\"}",
       "implement:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-103\",\"n\":3,\"status\":\"IMPLEMENTED\",\"files\":[\"src/a.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-103\"}",
+      "implement:bd-104": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-104\",\"n\":4,\"status\":\"BLOCKED\",\"files\":[\"src/c.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-104\",\"blockerBead\":\"bd-109\"}",
       "review:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"NEEDS_FIX\",\"files\":[\"src/a.js\"],\"finding\":\"missing null check on parsed input in src/a.js:42\"}",
       "review:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-102\",\"n\":2,\"status\":\"CLEAN\",\"files\":[\"src/b.js\"]}",
       "review:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-103\",\"n\":3,\"status\":\"CLEAN\",\"files\":[\"src/a.js\"]}",
-      "fix:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/a.js\"]}",
-      "re-review:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"CLEAN\"}",
+      "fix:bd-101:1": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/a.js\"]}",
+      "re-review:bd-101:1": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"CLEAN\"}",
       "merge:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"merged\":true}",
       "merge:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-102\",\"merged\":true}",
-      "merge:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-103\",\"merged\":false,\"blockerBead\":\"bd-104\"}",
+      "merge:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-103\",\"merged\":false,\"blockerBead\":\"bd-108\"}",
       "triage:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"decision\":\"ESCALATE\",\"detail\":\"rebase conflict on src/a.js survived one auto-resolve attempt\"}",
+      "triage:bd-104": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"decision\":\"RESOLVE\",\"detail\":\"implementer needs the missing config constant named explicitly; re-plan and re-attempt\"}",
       "notify:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"sent\":true}",
-      "final-review": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"summary\":\"stub: 2/3 tasks merged; bd-103 quarantined\",\"verdict\":\"conditional-pass\"}"
+      "clarify:bd-104": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"recorded\":true}",
+      "final-review": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"summary\":\"stub: 2/4 tasks merged; bd-103 quarantined, bd-104 resolved pending re-attempt\",\"verdict\":\"conditional-pass\"}"
     }
   }
 }
 ```
 
-If a future structural edit changes this script, re-run with these args, confirm the same 22/0
+If a future structural edit changes this script, re-run with these args, confirm the same 26/0
 shape (or update it deliberately alongside the edit that changed it), and replace the figures
 above — same discipline as `super-roast`'s "Passing baseline (recorded, not illustrative)"
 sections.
