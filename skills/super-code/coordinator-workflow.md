@@ -504,8 +504,27 @@ while (true) {
     { label: 'plan', phase: 'Plan', model: model('planner'), schema: PLANNED })
   const ordinalFor = id => planned.mapping.find(m => m.id === id)?.n
 
+  // planner-prompt.md permits leaving a genuinely unplannable bead unmapped (its "Your Job" step
+  // 4: BLOCKED, no mapping row, no ## Task <N> section). If such an id is in this round's `ids`
+  // and reaches groupByDisjointFiles/taskBriefPrompt anyway, ordinalFor(id) is undefined and
+  // `scripts/task-brief <plan> undefined` fails the whole round — the same crash C5 fixed,
+  // through a different door. Filter to ids the planner actually mapped before grouping/dispatch;
+  // quarantine the rest explicitly (same `escalated` list "Escalation = notify + quarantine +
+  // continue" uses) rather than letting them fail silently downstream.
+  // TODO(later task): route unmapped ids through full blocked-task/triage handling instead of a
+  // bare quarantine — this only stops the crash and surfaces the gap via log().
+  const plannedIds = ids.filter(id => ordinalFor(id) !== undefined)
+  const unplannedIds = ids.filter(id => ordinalFor(id) === undefined)
+  if (unplannedIds.length) {
+    log('plan: ' + unplannedIds.length + ' id(s) left unmapped this round by the planner (BLOCKED, no plan.md section) — quarantining, not dispatching: ' + JSON.stringify(unplannedIds))
+    escalated.push(...unplannedIds)
+  }
+
   // Group by declared touched-files (from plan.md) so same-file tasks never run as siblings.
-  const groups = groupByDisjointFiles(ids, planned)  // pure JS, no I/O — reads planned.mapping[].files; solo-buckets anything undeclared (fail safe)
+  // Only ids with a mapping row reach here (see the filter above) — the "undeclared -> solo
+  // bucket" fail-safe below is about a MAPPED id with an empty/missing `files` list, not about an
+  // unmapped id (those never reach this call at all).
+  const groups = groupByDisjointFiles(plannedIds, planned)  // pure JS, no I/O — reads planned.mapping[].files; solo-buckets anything with undeclared files (fail safe)
 
   // Per-task pipeline. NO barrier between stages: a fast task proceeds while a slow sibling lags.
   // Each agent works in its own worktree cut from the integration branch (taskWorktree(id)) and
@@ -598,7 +617,13 @@ function planPrompt(epicId, ids) {
   // filesTouched-in-section-body requirement and the over-declare-when-uncertain policy that
   // makes groupByDisjointFiles' fail-safe bucketing correct); this builder only supplies the
   // per-dispatch variables that template's "Epic" / "Beads to plan this round" sections need.
-  return `Follow ./planner-prompt.md for epic ${epicId}. This round's ready/blocked descendant ids to plan (beads without a plan.md section yet): ${JSON.stringify(ids)}. Run \`bd show ${epicId} --json\` for the "Epic" section and \`bd show <id> --json\` for each id above for "Beads to plan this round", exactly as that template specifies. Report per that template's Report Format: planPath, and mapping as the FULL CUMULATIVE table (every row assigned so far in plan.md, including earlier rounds' rows — never only this round's new ones).`
+  // `ids` is THIS ROUND'S CONFIRMED-READY set (from `bd ready`, filtered — see the `ids` binding
+  // above) — it is NOT the planner's full planning scope: `bd ready` structurally never returns a
+  // blocked bead, but planner-prompt.md's "Beads to plan this round" requires every ready AND
+  // blocked descendant on the first planning round. Passing only `ids` here would silently narrow
+  // round-1 planning to ready beads and make that documented behaviour unreachable, so the planner
+  // is told explicitly to enumerate the wider set itself on round 1 rather than being handed it.
+  return `Follow ./planner-prompt.md for epic ${epicId}. On the FIRST planning round (plan.md has no mapping rows yet), independently enumerate every READY AND BLOCKED descendant bead of ${epicId} — via \`bd show ${epicId} --json\` and its dependency tree — and plan all of them; do not limit round-1 planning to ready ids only, since \`bd ready\` structurally excludes blocked beads. On a REFILL round, plan only beads that don't already have a mapping row (newly-ready or newly-created, blocker beads included). This round's confirmed-ready ids (a subset of the planning scope above, not the full scope): ${JSON.stringify(ids)}. Run \`bd show <id> --json\` for every bead you plan this round, for "Beads to plan this round". Report per that template's Report Format: planPath, and mapping as the FULL CUMULATIVE table (every row assigned so far in plan.md, including earlier rounds' rows — never only this round's new ones).`
 }
 
 function taskBriefPrompt(planPath, n, id, worktree) {
@@ -647,8 +672,11 @@ function triagePrompt(id, blockerBead) {
   // The one genuine judgment call in this script's blocker handling (opus) — RESOLVE vs
   // ESCALATE — see "The blocker-bead path". Follows ./triage-prompt.md verbatim; this builder
   // only supplies the per-dispatch variables that template's "Blocker bead" / "Originating task
-  // plan" sections need.
-  return `Follow ./triage-prompt.md for the blocker bead ${blockerBead} filed against task ${id}. Run \`bd show ${blockerBead} --json\` for that template's "Blocker bead" section. Look up task ${id}'s ordinal via the plan.md mapping table and paste its "## Task <N>" section for "Originating task plan". Include the relevant spec excerpt. Report decision and detail exactly per that template's Output Contract (RESOLVE: <clarification> or ESCALATE: <summary + decision needed>).`
+  // plan" sections need. `handleBlocker` below branches on `t.decision === 'RESOLVE'` — exact
+  // string equality against the TRIAGE schema's `decision` field — so the bare-token requirement
+  // is restated here as a safeguard, not left to the template alone (same lesson as C5/I2: a
+  // template-compliant-but-wrong report silently degrades a RESOLVE into a quarantine).
+  return `Follow ./triage-prompt.md for the blocker bead ${blockerBead} filed against task ${id}. Run \`bd show ${blockerBead} --json\` for that template's "Blocker bead" section. Look up task ${id}'s ordinal via the plan.md mapping table and paste its "## Task <N>" section for "Originating task plan". Include the relevant spec excerpt. Report per that template's Output Contract: \`decision\` must be the BARE TOKEN "RESOLVE" or "ESCALATE" ONLY — no colon, no clarification text in that field, since the coordinator branches on exact string equality against it — with the clarification (RESOLVE) or summary + decision needed (ESCALATE) in \`detail\`.`
 }
 
 function recordClarificationPrompt(id, detail) {

@@ -58,8 +58,15 @@ Task tool (general-purpose), model: opus:
 
     ## Output Contract (exact)
 
-    Return one line, starting with the decision token:
+    Return structured output with exactly two fields, `decision` and `detail`:
 
-    - `RESOLVE: <clarification text to add to the task's context on re-dispatch>`
-    - `ESCALATE: <one-paragraph summary for the user + the specific decision needed>`
+    - `decision`: the **bare token** `RESOLVE` or `ESCALATE` and nothing else — no colon, no
+      appended text. The coordinator branches on exact string equality against this field; any
+      other content (e.g. `"RESOLVE: the flag was ambiguous"`) fails that comparison and is
+      silently treated as an ESCALATE.
+    - `detail`:
+      - when `decision` is `RESOLVE`: the clarification text to add to the task's context on
+        re-dispatch.
+      - when `decision` is `ESCALATE`: a one-paragraph summary for the user + the specific
+        decision needed.
 ```
