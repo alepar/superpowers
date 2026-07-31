@@ -18,17 +18,6 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 **Save plans to:** `docs/superpowers/plans/YYYY-MM-DD-<feature-name>.md`
 - (User preferences for plan location override this default)
 
-## Beads Per-Task Mode
-
-When invoked by `superpowers:subagent-driven-development` in beads mode, you are planning a **single beads task**, not a whole spec:
-
-- Write the plan for just that one task, scoped to the files that task touches.
-- Begin the plan with the concrete list of files the task will create or modify — the controller uses this file list to decide which tasks can run in parallel.
-- Store the plan **in the beads issue** (its design/notes field) rather than in `docs/superpowers/plans/`. Confirm the exact command for writing the design field with `bd update --help` (or `bd edit` / `bd note`) — do not guess the flag.
-- All other rules below (bite-sized steps, no placeholders, complete content, TDD) still apply.
-
-Otherwise (no beads), write a single plan file as described below.
-
 ## Scope Check
 
 If the spec covers multiple independent subsystems, it should have been broken into sub-project specs during brainstorming. If it wasn't, suggest breaking this into separate plans — one per subsystem. Each plan should produce working, testable software on its own.
