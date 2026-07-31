@@ -538,6 +538,15 @@ const ADJUDICATE = { type: 'object', properties: { id: {type:'string'}, decision
 
 const escalated = []
 const completed = []
+// I-9 (review round 3, Critical): tasks the cap adjudicator PARKed — merged despite a known open
+// finding the adjudicator ruled non-load-bearing. Before this, `adjudicatePrompt`'s `ruling` was
+// written to a `parkRuling` field on the return value that nothing else in the script read: not
+// `mergePrompt` (interpolates only `id`/`branch`), not the script's own return value, not `log()`
+// — so a PARKed merge was indistinguishable in every report from a task that came back clean on
+// the first pass, exactly the "silent discard" `subagent-driven-development/SKILL.md:377` forbids.
+// `parked` (pushed + logged at the PARK return site in `reviewAndFix`) and the ledger note it maps
+// to (once Task 5 wires the ledger up) are what make an overruled finding visible instead.
+const parked = []
 // C-2/I6: ids RESOLVEd once by triage, awaiting their one bounded re-attempt (see handleBlocker
 // and "The blocker-bead path"). Membership here is what lets the no-progress guard tell a
 // legitimate first-time RESOLVE (real, if temporary, progress) apart from a round that truly did
@@ -644,9 +653,9 @@ while (true) {
       // not found" failure) must not be handed to the implementer — dispatching against a brief
       // that was never produced is nonsensical, and it's exactly the path C4's "no path reaches
       // mergePrompt with a status other than a clean review result" assertion didn't cover. Pass
-      // the BLOCKED brief straight through with `n`/`branch` stamped, same as every other hop; the
-      // next stage's guard (and its I-7 fallback below) files a blocker bead for it automatically,
-      // since a brief failure never self-files one the way implementPrompt's BLOCKED case does.
+      // the BLOCKED brief straight through with `n`/`branch` stamped, same as every other hop; a
+      // brief failure never self-files a blocker bead the way implementPrompt's BLOCKED case does,
+      // but it doesn't need to — see the I-7 note on `handleBlocker` below.
       async br => {
         if (br.status === 'BLOCKED') return { ...br, n: ordinalFor(br.id), branch: taskWorktree(br.id) }
         const im = await agent(pick(() => implementPrompt(br, integrationBranch), `implement:${br.id}`), { label: `impl:${br.id}`, phase: 'Implement', model: model('implementer'), schema: RESULT })
@@ -656,20 +665,15 @@ while (true) {
       // BLOCKED (self-filed bead, see implementPrompt) gets handed to reviewAndFix anyway, whose
       // CLEAN/NEEDS_FIX verdict overwrites `status` and erases BLOCKED before the Integrate stage's
       // `if (r.status === 'BLOCKED')` check ever sees it — routing blocked work to `mergePrompt`.
-      // Skip review entirely and pass the implementer's result straight through unchanged.
-      // I-7 fallback: `im` is SUPPOSED to already carry `blockerBead` (implementPrompt's report
-      // contract asks a self-filing implementer for it) — but RESULT doesn't REQUIRE it, and a
-      // BLOCKED brief (I-8, above) never had a chance to self-file one at all. Without a bead id,
-      // `handleBlocker(r)` would dispatch `triagePrompt(r.id, r.blockerBead)` with an undefined
-      // bead — "Follow ./triage-prompt.md for the blocker bead undefined". File one coordinator
-      // side in that case, same mechanical shape as `unplannedBlockerPrompt`.
-      async im => {
-        if (im.status !== 'BLOCKED') return reviewAndFix(im, planned.planPath)
-        if (im.blockerBead) return im
-        const bead = await agent(pick(() => missingBlockerBeadPrompt(im), `missing-blocker:${im.id}`),
-          { label: `missing-blocker:${im.id}`, phase: 'Implement', model: model('mechanical'), schema: RESULT })
-        return { ...im, blockerBead: bead.blockerBead }
-      },
+      // Skip review entirely and pass the implementer's result straight through unchanged. Review
+      // round 3 (Important, I-7): this used to also fall back to `missingBlockerBeadPrompt` right
+      // here when `im.blockerBead` was missing — but that only covered THIS one hop of blocker
+      // entry. `handleBlocker` (below) is the single place all blocker-path entries converge — the
+      // implementer/brief-BLOCKED case via the Integrate loop's `if (r.status === 'BLOCKED')`
+      // branch, the breaker cap's adjudicated BLOCKED, a failed merge, AND an unmapped planner id —
+      // so the fallback is hoisted there instead, covering all of them with one check instead of
+      // duplicating it at every call site (see `handleBlocker`'s first lines).
+      im => im.status === 'BLOCKED' ? im : reviewAndFix(im, planned.planPath),
     )
     results.push(...groupResults)
   }
@@ -711,12 +715,12 @@ while (true) {
 }
 
 phase('Finish')
-log(`Completed: ${completed.length}. Escalated: ${escalated.length}. Pending retry: ${pendingRetry.size}.${stalled ? ' Stalled: true — see the STALLED log line above.' : ''}`)
+log(`Completed: ${completed.length}. Escalated: ${escalated.length}. Pending retry: ${pendingRetry.size}. Parked (merged with an overruled finding): ${parked.length}.${stalled ? ' Stalled: true — see the STALLED log line above.' : ''}`)
 const review = completed.length
   ? await agent(pick(() => `Final whole-epic review of integration branch ${integrationBranch} for epic ${epicId}.`, 'final-review'),
       { label: 'final-review', phase: 'Finish', model: model('finalReview') })
   : 'no work landed'
-return { completed, escalated, pendingRetry: [...pendingRetry], stalled, review }
+return { completed, escalated, pendingRetry: [...pendingRetry], parked, stalled, review }
 
 // --- helpers ---
 function closeEpicsPrompt(epicId) {
@@ -870,8 +874,12 @@ function reReviewPrompt(fixed) {
   // only" — so from round 2 on, `carried()` had nothing but a stale-or-undefined finding to hand
   // `fixPrompt`/`breakerBlockerPrompt`/`adjudicatePrompt`, and every later round told an
   // implementer to "address this review finding: undefined". reviewAndFix's `carried()` now also
-  // keeps the LAST non-empty finding sticky across rounds (`result.finding ?? lastFinding`) as a
-  // second line of defense if a re-reviewer ever omits it on a genuine NEEDS_FIX.
+  // keeps the LAST non-empty finding sticky across rounds (`result.finding || lastFinding` — `||`,
+  // not `??`: this contract's own "omit or leave it blank" instruction below means a re-reviewer
+  // that thinks it's clean but emits a non-"CLEAN" token — the exact case C-3's fail-closed loop
+  // exists for — can legitimately report `finding: ""`, and `??` only falls back on null/undefined,
+  // not on that empty string) as a second line of defense if a re-reviewer ever omits it, or blanks
+  // it, on a genuine NEEDS_FIX-equivalent.
   return `Follow subagent-driven-development/re-review-prompt.md, scoped to the fix diff for task ${fixed.id} (n ${fixed.n}) in ${fixed.branch}. That template's own vocabulary is per-finding "ADDRESSED"/"NOT ADDRESSED" with a round verdict — map it to a single BARE TOKEN this round's overall \`status\`: "CLEAN" if every finding is ADDRESSED, "NEEDS_FIX" if any finding remains open — no other value, no colon, no extra text in that field, since the coordinator branches on exact string equality against it and fails CLOSED (treats anything that isn't literally "CLEAN" as still open) on anything else. Report id, that status token, and — whenever status is NEEDS_FIX — finding with the still-open finding text verbatim (fixPrompt and, at the cap, breakerBlockerPrompt/adjudicatePrompt build their dispatch from this field directly; omit or leave it blank only when status is CLEAN).`
 }
 
@@ -881,13 +889,17 @@ function mergePrompt(r, integrationBranch, integrationWorktree) {
   return `In ${integrationWorktree}, update ${integrationBranch} and rebase task ${r.id}'s branch ${r.branch} onto it. Run the project test command. If clean, merge --no-ff into ${integrationBranch}, run \`bd close ${r.id}\`, and report merged true. If the rebase conflicts or tests are red, make one bounded auto-resolve attempt; if that also fails, file a blocker bead (see "The blocker-bead path") and report merged false with its id as blockerBead.`
 }
 
-function missingBlockerBeadPrompt(im) {
-  // I-7 fallback: implementPrompt asks a BLOCKED implementer to self-file its own blocker bead and
-  // report `blockerBead`, but RESULT doesn't REQUIRE that field — and a BLOCKED brief (I-8) never
-  // had anything to self-file in the first place. Either way, `handleBlocker(r)` needs a real bead
-  // id or its `triagePrompt(r.id, r.blockerBead)` dispatch reads "the blocker bead undefined".
-  // File one coordinator-side, same mechanical shape as `unplannedBlockerPrompt`.
-  return `Task ${im.id} (n ${im.n}) was reported BLOCKED, but no blocker bead id was reported (either the implementer omitted it, or this is a brief-stage failure that never self-files one — see task-brief's "task not found" case). File one now: run \`bd create\` with a \`blocker\` label (confirm flags with \`bd create --help\`) and a body stating the task id, that it was reported BLOCKED without a bead, and — if the task's report file exists — what was tried. Report id ${im.id}, status BLOCKED, and blockerBead as the newly created bead's id.`
+function missingBlockerBeadPrompt(r) {
+  // I-7 fallback, hoisted into `handleBlocker`'s first lines (review round 3) so it covers ALL
+  // FOUR ways a blocker-path entry can arrive without a bead, not just the implementer/brief hop:
+  // implementPrompt asks a self-filing implementer for `blockerBead`, but RESULT doesn't REQUIRE
+  // it; a BLOCKED brief (I-8) never had anything to self-file; `MERGE` requires only
+  // `['id','merged']`, so a merge agent reporting `{id, merged:false}` with no bead is schema-valid;
+  // and `unplannedBlockerPrompt`'s own report could in principle omit it too. Any of these would
+  // otherwise reach `triagePrompt(r.id, r.blockerBead)` reading "the blocker bead undefined". File
+  // one coordinator-side here instead. `r` may or may not carry `n` (some call sites build a bare
+  // `{id, blockerBead}` object) — the dispatch text below tolerates either.
+  return `Task ${r.id}${r.n !== undefined ? ` (n ${r.n})` : ''} was reported BLOCKED, but no blocker bead id is available. File one now: run \`bd create\` with a \`blocker\` label (confirm flags with \`bd create --help\`) and a body stating the task id, that it was reported BLOCKED without a bead, and — if the task's report file exists — what was tried. Report id ${r.id}, status BLOCKED, and blockerBead as the newly created bead's id.`
 }
 
 function unplannedBlockerPrompt(id, epicId) {
@@ -906,10 +918,18 @@ function adjudicatePrompt(rv, planPath) {
   // DISPATCHED agent following subagent-driven-development/SKILL.md's "The breaker" section
   // verbatim, not a coordinator-side heuristic. Spec §3.2: "adopt upstream's five-round breaker
   // and its adjudication rules (park with a ruling, or stop on a load-bearing finding)" — both
-  // outcomes, not cap-always-blocks (a cap that always blocks quarantines correct work — and every
-  // dependent — whenever the reviewer was wrong or the finding doesn't matter downstream, which is
-  // exactly the profile of a finding that survives five rounds unaddressed).
-  return `Follow subagent-driven-development/SKILL.md's "The breaker" section (inside "The fix loop") to adjudicate task ${rv.id} (n ${rv.n})'s open finding, which survived all 5 fix/re-review rounds: ${rv.finding}. You hold the plan and cross-task context the reviewer lacks — read the "## Task ${rv.n}" section of ${planPath} and the task's report/fix history for that context, exactly as SKILL.md's breaker instructs. Decide: is this finding load-bearing (a real defect that would bite downstream), or contestable/non-load-bearing (the reviewer is arguably wrong, or it's real but nothing downstream depends on it)? Report id ${rv.id}, decision as the BARE TOKEN "PARK" (contestable or non-load-bearing — safe to merge, record a ruling) or "BLOCKED" (load-bearing — do not merge) — no other value, since the coordinator branches on exact string equality against it — and ruling with your reasoning either way (this becomes the ledger's parked-with-a-ruling note on PARK, or the blocker bead's body on BLOCKED).`
+  // outcomes, not cap-always-blocks.
+  // Review round 3 (Important): this prompt used to GLOSS the load-bearing test — "a real defect
+  // that would bite downstream" vs "contestable... or nothing downstream depends on it" — and that
+  // gloss silently dropped SKILL.md's actual criterion (a later task depends on it, OR it reveals a
+  // plan defect). A finding that reveals a plan defect with no CURRENT dependent mapped to PARK
+  // under the old gloss and to STOP under the section this prompt claims to follow — the exact
+  // reimplementation-not-invocation failure this function exists to avoid. Deleted the gloss
+  // entirely; the dispatched agent reads SKILL.md's own wording, not a paraphrase of it. Also added
+  // the any-finding-is-load-bearing rule below: `rv.finding` may bundle more than one open item
+  // (SDD's re-reviewer adjudicates findings individually; this coordinator's schema carries only
+  // one string), and a bundle must not round down to PARK just because some items in it are minor.
+  return `Follow subagent-driven-development/SKILL.md's "The breaker" section (inside "The fix loop") to adjudicate task ${rv.id} (n ${rv.n})'s open finding, which survived all 5 fix/re-review rounds: ${rv.finding}. You hold the plan and cross-task context the reviewer lacks — read the "## Task ${rv.n}" section of ${planPath} and the task's report/fix history for that context, and apply SKILL.md's breaker section exactly as written there — do not use any other criterion for load-bearing than the one it states. If the finding text above bundles more than one open item, decide BLOCKED if ANY one of them is load-bearing by that test — never round a mixed bundle down to PARK. Report id ${rv.id}, decision as the BARE TOKEN "PARK" (safe to merge, record a ruling) or "BLOCKED" (do not merge) — no other value, since the coordinator branches on exact string equality against it — and ruling with your reasoning either way (this becomes the ledger's parked-with-a-ruling note on PARK, or the blocker bead's body on BLOCKED).`
 }
 
 function breakerBlockerPrompt(rv, planPath, ruling) {
@@ -997,8 +1017,20 @@ async function reviewAndFix(im, planPath) {
   // finding on NEEDS_FIX" contract (the two together mean a single omitted report can't lose it).
   let lastFinding
   const carried = result => {
-    lastFinding = result.finding ?? lastFinding
-    return { ...result, n: im.n, files: im.files, branch: im.branch, base: im.base, finding: lastFinding }
+    // `||`, not `??`: `??` only falls back on null/undefined, so an EMPTY-STRING finding (which
+    // reReviewPrompt's own contract explicitly permits on a clean verdict — "omit or leave it
+    // blank") would overwrite a real `lastFinding` with `""` if a re-reviewer ever reports a
+    // non-"CLEAN" status with a blanked finding (the exact malformed-report shape C-3's fail-closed
+    // loop was added to tolerate). `||` treats that empty string as "no finding reported" instead.
+    lastFinding = result.finding || lastFinding
+    // A CLEAN result never carries a finding forward, even if `lastFinding` is non-empty from an
+    // earlier round — this is a GENUINE resolution (a real re-review returned CLEAN), not the
+    // PARK-with-a-ruling case below, which builds its own return value and deliberately keeps
+    // `rv.finding` intact as evidence of what was overruled. Without this, a stale finding would
+    // survive on every clean-after-fix task, which nothing currently reads but would silently
+    // corrupt Task 5's ledger writer if it ever keys "parked" off "finding is non-empty" instead of
+    // the explicit `parked` list.
+    return { ...result, n: im.n, files: im.files, branch: im.branch, base: im.base, finding: result.status === 'CLEAN' ? undefined : lastFinding }
   }
   let rv = carried(await agent(pick(() => taskReviewPrompt(im, planPath), `review:${im.id}`),
     { label: `review:${im.id}`, phase: 'Implement', model: model('reviewer'), schema: RESULT }))
@@ -1029,10 +1061,19 @@ async function reviewAndFix(im, planPath) {
   const adj = await agent(pick(() => adjudicatePrompt(rv, planPath), `adjudicate:${rv.id}`),
     { label: `adjudicate:${rv.id}`, phase: 'Implement', model: model('triage'), schema: ADJUDICATE })
   if (adj.decision === 'PARK') {
-    // Contestable or non-load-bearing: safe to merge like any other clean review. The ruling is
-    // the ledger's parked-with-a-ruling note (once Task 5 wires the ledger up); `finding` is
-    // cleared since it's no longer an open blocker for anything downstream.
-    return { ...rv, status: 'CLEAN', finding: undefined, parkRuling: adj.ruling }
+    // Review round 3 (Critical): PARK used to write `parkRuling` to the return value and clear
+    // `finding` — but nothing else in the script ever read `parkRuling` (not `mergePrompt`, not the
+    // script's own return value, not any `log()`), and clearing `finding` erased the one piece of
+    // evidence that a review finding was overruled rather than genuinely resolved. The result: a
+    // task merges with a KNOWN open finding and the run reports it identically to a task that was
+    // clean on the first pass — the exact "silent discard" subagent-driven-development/SKILL.md:377
+    // forbids ("Every adjudication is a ledger entry"). `parked.push` + `log()` here mirror the
+    // ESCALATE branch's own `escalated.push` + `log()` in handleBlocker, and `finding` is
+    // deliberately left INTACT (not cleared) so the merged result still carries what was overruled;
+    // `parked` (not "finding is non-empty") is what a future ledger writer should key off of.
+    parked.push(rv.id)
+    log(`PARKED ${rv.id}: ${adj.ruling} (open finding, merged anyway: ${rv.finding})`)
+    return { ...rv, status: 'CLEAN', parkRuling: adj.ruling }
   }
   // Load-bearing: file a blocker bead and quarantine. Returning `status: 'BLOCKED'` here is what
   // the Integrate stage's `if (r.status === 'BLOCKED')` check routes to `handleBlocker` instead of
@@ -1044,6 +1085,19 @@ async function reviewAndFix(im, planPath) {
 
 async function handleBlocker(r) {
   phase('Triage')
+  // I-7 (review round 3): every blocker-path entry converges here — the implementer/brief-BLOCKED
+  // case (via the Integrate loop's `if (r.status === 'BLOCKED')` branch), the breaker cap's
+  // adjudicated BLOCKED (reviewAndFix), a merge that failed its auto-resolve attempt, and an
+  // unmapped planner id (the `unplannedIds` loop) — FOUR call sites, THREE of which were passing a
+  // `blockerBead` no schema actually requires (`RESULT` and `MERGE` both leave it optional). A
+  // missing bead would reach `triagePrompt(r.id, r.blockerBead)` below as "the blocker bead
+  // undefined". Ensuring it here, once, covers all four call sites instead of duplicating the
+  // fallback at each one (the prior revision only guarded the implementer/brief hop).
+  if (!r.blockerBead) {
+    const bead = await agent(pick(() => missingBlockerBeadPrompt(r), `missing-blocker:${r.id}`),
+      { label: `missing-blocker:${r.id}`, phase: 'Triage', model: model('mechanical'), schema: RESULT })
+    r = { ...r, blockerBead: bead.blockerBead }
+  }
   // Genuine judgment call: RESOLVE vs ESCALATE. This is one of two dispatches in this script that
   // legitimately spend `triage` (opus) — the other is reviewAndFix's cap adjudication
   // (adjudicatePrompt, PARK vs BLOCKED) — see "Coordinator contract" on why `triage` and
@@ -1515,13 +1569,18 @@ scenario, something regressed: `merge:bd-201` would mean a BLOCKED task reached 
   `notify` 1 = **22 agent calls, 0 errors** — and, distinctly from every other scenario in this
   doc, **no `final-review` dispatch**, since `completed.length` is `0`.
 
-**Not yet executed.** This scenario was authored, not run — the coordinator asked for the args
-block to be handed back rather than run from this environment. `node --check` on the extracted
-script passes (it's the same script as the canonical scenario, unchanged in structure by adding
-this args block), and the stub JSON below parses and every prefix matches the exact required
-wording, but neither of those is a runnability proof (see "A parse check is not a runnability
-check" above). Run it and record the real dispatch trace before treating the assertions above as
-confirmed rather than predicted.
+**Confirmed.** Run `wf_e189dd5a-a5f`: **22 agents dispatched, 0 errors** — matching the expected
+count above exactly, including the absent `merge:bd-201`/`final-review` dispatches (neither was
+ever requested). 5 fix rounds, 5 still-open re-reviews, 1 adjudicator call, 1 blocker bead filed, 1
+triage call (`ESCALATE`), 0 merge dispatches. Returned `{completed:[], escalated:["bd-201"],
+pendingRetry:[], stalled:false}` — exactly as predicted. This confirms the round-cap boundary (5,
+not 4 or 6), the adjudicator dispatching exactly once at the cap rather than per-round, and the
+BLOCKED path never touching `mergePrompt`. **It does not confirm the PARK arm** — this scenario's
+`adjudicate:bd-201` stub only ever returns `BLOCKED`; see "PARK dryRun scenario" below, which is
+authored but **not yet executed** (the coordinator asked for it to be handed back rather than run
+from this environment — same as this scenario originally was). It also still does not confirm
+C-1/C-3 (see "What it still cannot prove" above) — those remain inspection-only regardless of how
+many scenarios pass, since `pick()` never builds a real prompt under `dryRun: true`.
 
 ```json
 {
@@ -1565,6 +1624,111 @@ confirmed rather than predicted.
 }
 ```
 
-Run this and record the real dispatch trace (order, count, `completed`/`escalated`/`pendingRetry`)
-here, replacing "Not yet executed" above, before treating the round-cap and adjudication paths as
-confirmed rather than predicted.
+If a future structural edit changes this script, re-run with these args, confirm the same 22/0
+shape (or update it deliberately alongside the edit that changed it), and replace the figures
+above — same discipline as the canonical scenario's own baseline.
+
+## PARK dryRun scenario (separate baseline, not yet executed)
+
+Review round 3's Critical finding: no run has ever executed the PARK branch (`:1044-1057` in
+`reviewAndFix` as of this revision) — both prior scenarios stub the adjudicator as `BLOCKED`. This
+is the third, minimal scenario dedicated to it: same one-epic, one-task, five-round shape as the
+cap-tripping scenario above, but the adjudicator rules `PARK` instead of `BLOCKED`.
+
+**What this scenario is for:** confirming that a PARK ruling actually reaches `mergePrompt` (the
+ONE place a task with a known-open finding legitimately merges), that `parked`/`log()` fire instead
+of `breaker-blocker`/`handleBlocker`/`triage`/`notify`, and that the Finish-phase return value and
+log line surface the parked id — the exact gap review round 3 found (a `parkRuling` field nothing
+read, and a cleared `finding` erasing the evidence). It reuses `bd-301` under a fresh epic
+(`bd-300`) rather than reusing `bd-201`, so this scenario's args are fully independent of the
+cap-tripping scenario's and can be run on its own.
+
+**What it still cannot prove:** the same C-1/C-3 inspection-only caveat as every other scenario in
+this doc (`pick()` never builds `adjudicatePrompt`'s or `mergePrompt`'s real dispatch text under
+`dryRun: true`) — plus, specifically, whether a *real* adjudicator dispatch actually renders the
+new "apply SKILL.md's breaker section exactly as written, do not use any other criterion" and
+"BLOCKED if ANY open finding is load-bearing" instructions into its prompt text; that is verified
+only by reading `adjudicatePrompt`'s definition directly, same as `fixPrompt`'s finding-rendering
+caveat above.
+
+| Stub key | Canned output (`<json>` content) | Exercises |
+|---|---|---|
+| `close-epics` (array, 2 entries) | `{rootClosed:false,closedThisRun:[]}` twice | root stays open (this scenario's canned world doesn't bother modeling epic closure after the one child merges — same simplification the other two scenarios make) |
+| `bd-ready` (array, 2 entries) | `{ids:["bd-301"]}` then `{ids:[]}` | round 1 supplies the one task; round 2's empty set drains the loop |
+| `plan` | `{planPath:"...", mapping:[{n:1,id:"bd-301",files:["src/y.js"]}]}` | single-task, single-bucket mapping |
+| `brief:bd-301` | `{id:"bd-301",n:1,status:"BRIEFED",files:["src/y.js"],branch:".worktrees/epic-bd-300-integration--task-bd-301",base:"<40-char-sha>"}` | brief stage, unblocked |
+| `implement:bd-301` | `{id:"bd-301",n:1,status:"IMPLEMENTED",files:["src/y.js"],branch:"..."}` | implement stage, unblocked |
+| `review:bd-301` | `{id:"bd-301",n:1,status:"NEEDS_FIX",files:["src/y.js"],finding:"the retry backoff constant is a magic number instead of a named config value"}` | the initial review — a deliberately contestable, non-load-bearing-flavored finding (unlike the cap scenario's race condition), motivating the PARK outcome below |
+| `fix:bd-301:1` … `fix:bd-301:5` | `{id:"bd-301",n:1,status:"FIXED",files:["src/y.js"]}` (all 5 identical in shape) | all 5 rounds dispatch, same as the cap scenario |
+| `re-review:bd-301:1` … `re-review:bd-301:5` | `{id:"bd-301",n:1,status:"NEEDS_FIX",finding:"the retry backoff constant is a magic number instead of a named config value"}` (all 5) | never `CLEAN`, so the loop runs the full 5 rounds |
+| `adjudicate:bd-301` | `{id:"bd-301",decision:"PARK",ruling:"style-only finding, not load-bearing and doesn't reveal a plan defect; safe to merge as-is"}` | **the PARK arm** — the one branch neither other scenario exercises |
+| `merge:bd-301` | `{id:"bd-301",merged:true}` | the PARK ruling reaches `mergePrompt` — a task with a known-open finding merging, the ONE legitimate path for that in this script |
+| `final-review` | `{summary:"stub: 1/1 task merged; bd-301 parked with a ruling",verdict:"conditional-pass"}` | dispatched because `completed.length` is 1, not 0 |
+
+**No `breaker-blocker:bd-301`, `triage:bd-301`, or `notify:bd-301` key exists in this scenario's
+args** — all three are part of the test. A PARK ruling never reaches `handleBlocker` at all (it
+returns `{...rv, status:'CLEAN', ...}` directly from `reviewAndFix`, the same shape a genuinely
+clean review returns), so none of the blocker-path dispatches should ever fire. If any of the three
+is ever requested under this scenario, something regressed: the adjudicator's PARK decision failed
+to short-circuit the blocker path.
+
+**Assertions:**
+- `adjudicate:bd-301` dispatches exactly once, after `re-review:bd-301:5`.
+- `merge:bd-301` dispatches — this is the assertion that distinguishes this scenario from the cap
+  scenario: a PARK ruling reaches `mergePrompt`, a BLOCKED one never does.
+- `completed` is `["bd-301"]`, `parked` is `["bd-301"]` (both — a parked task IS a completed one;
+  `parked` marks WHICH completed tasks merged despite a known-open finding, it isn't a separate
+  quarantine list the way `escalated` is), `escalated` is `[]`, `pendingRetry` is `[]`.
+- The Finish-phase log line reads `... Parked (merged with an overruled finding): 1.` and a
+  `PARKED bd-301: ...` line was logged earlier, from inside `reviewAndFix`, distinct from and
+  earlier than the Finish-phase summary line.
+- Expected dispatch count: `close-epics` 2 + `bd-ready` 2 + `plan` 1 + `brief` 1 + `implement` 1 +
+  `review` 1 + `fix` 5 + `re-review` 5 + `adjudicate` 1 + `merge` 1 + `final-review` 1 = **21 agent
+  calls, 0 errors**.
+
+**Not yet executed.** Authored per the coordinator's request ("hand the PARK scenario back to me to
+run"), not run from this environment.
+
+```json
+{
+  "epicId": "bd-300",
+  "integrationBranch": "epic-bd-300-integration",
+  "dryRun": true,
+  "config": {
+    "concurrency": 4,
+    "models": { "planner": "opus", "implementer": "sonnet", "reviewer": "sonnet", "mechanical": "sonnet", "triage": "opus", "finalReview": "opus", "fixEscalation": "opus" }
+  },
+  "prompts": {
+    "stubs": {
+      "close-epics": [
+        "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"rootClosed\":false,\"closedThisRun\":[]}",
+        "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"rootClosed\":false,\"closedThisRun\":[]}"
+      ],
+      "bd-ready": [
+        "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[\"bd-301\"]}",
+        "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[]}"
+      ],
+      "plan": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"planPath\":\".worktrees/epic-bd-300-integration/.sdd/bd-300/plan.md\",\"mapping\":[{\"n\":1,\"id\":\"bd-301\",\"files\":[\"src/y.js\"]}]}",
+      "brief:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"BRIEFED\",\"files\":[\"src/y.js\"],\"branch\":\".worktrees/epic-bd-300-integration--task-bd-301\",\"base\":\"fffffff6666666666666666666666666666666\"}",
+      "implement:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"IMPLEMENTED\",\"files\":[\"src/y.js\"],\"branch\":\".worktrees/epic-bd-300-integration--task-bd-301\"}",
+      "review:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"NEEDS_FIX\",\"files\":[\"src/y.js\"],\"finding\":\"the retry backoff constant is a magic number instead of a named config value\"}",
+      "fix:bd-301:1": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/y.js\"]}",
+      "re-review:bd-301:1": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"NEEDS_FIX\",\"finding\":\"the retry backoff constant is a magic number instead of a named config value\"}",
+      "fix:bd-301:2": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/y.js\"]}",
+      "re-review:bd-301:2": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"NEEDS_FIX\",\"finding\":\"the retry backoff constant is a magic number instead of a named config value\"}",
+      "fix:bd-301:3": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/y.js\"]}",
+      "re-review:bd-301:3": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"NEEDS_FIX\",\"finding\":\"the retry backoff constant is a magic number instead of a named config value\"}",
+      "fix:bd-301:4": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/y.js\"]}",
+      "re-review:bd-301:4": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"NEEDS_FIX\",\"finding\":\"the retry backoff constant is a magic number instead of a named config value\"}",
+      "fix:bd-301:5": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/y.js\"]}",
+      "re-review:bd-301:5": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"NEEDS_FIX\",\"finding\":\"the retry backoff constant is a magic number instead of a named config value\"}",
+      "adjudicate:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"decision\":\"PARK\",\"ruling\":\"style-only finding, not load-bearing and doesn't reveal a plan defect; safe to merge as-is\"}",
+      "merge:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"merged\":true}",
+      "final-review": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"summary\":\"stub: 1/1 task merged; bd-301 parked with a ruling\",\"verdict\":\"conditional-pass\"}"
+    }
+  }
+}
+```
+
+Run this and record the real dispatch trace (order, count,
+`completed`/`parked`/`escalated`/`pendingRetry`) here, replacing "Not yet executed" above.
