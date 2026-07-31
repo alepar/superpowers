@@ -82,8 +82,12 @@ Task tool (general-purpose), model: opus:
 
     - **Status:** DONE | PARTIAL | BLOCKED
     - `planPath`: the `plan.md` path
-    - `mapping`: one entry per bead planned this round — `{n: <ordinal>, id: <bead id>,
-      files: <filesTouched list>}`. `files` is required on every entry; it is how the
-      coordinator's disjoint-file grouping stays safe.
+    - `mapping`: the **full, cumulative mapping table** — every row assigned so far in `plan.md`,
+      including rows from earlier rounds, not only the rows this round added — `{n: <ordinal>,
+      id: <bead id>, files: <filesTouched list>}` per row. Return the complete table every round:
+      the coordinator replaces its working copy with whatever you return, so a round-scoped
+      subset would make every previously-assigned id's ordinal lookup fail on the very next round.
+      `files` is required on every entry; it is how the coordinator's disjoint-file grouping stays
+      safe.
     - Any beads left unplanned as BLOCKED, and exactly what decision is missing for each
 ```

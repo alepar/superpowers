@@ -449,7 +449,11 @@ const taskWorktree = id => `.worktrees/${integrationBranch}--task-${id}`
 
 const READY   = { type: 'object', properties: { ids: { type: 'array', items: { type: 'string' } } }, required: ['ids'] }
 // mapping: ordinal (N, as scripts/task-brief needs it) <-> bead id (as bd needs it) <-> declared
-// touched files (as groupByDisjointFiles needs it) — see "Plan materialization".
+// touched files (as groupByDisjointFiles needs it) — see "Plan materialization". This is the
+// FULL CUMULATIVE table, every round, not just this round's new rows: the coordinator replaces
+// `planned` wholesale each round (it does not merge across rounds), so a round-scoped return
+// would drop every earlier id and make ordinalFor(id) resolve to undefined for them — see
+// planPrompt below and planner-prompt.md's Report Format.
 const PLANNED = { type: 'object', properties: { planPath: {type:'string'}, mapping: { type:'array', items: { type:'object', properties: { n:{type:'integer'}, id:{type:'string'}, files:{type:'array', items:{type:'string'}} }, required:['n','id','files'] } } }, required: ['planPath','mapping'] }
 // `finding` is NOT required: a CLEAN result (or any non-review stage) has none. It exists so a
 // NEEDS_FIX result carries the actual review finding text across the schema boundary — without it,
@@ -589,10 +593,12 @@ When the loop stops, run \`bd show ${epicId} --json\` and report rootClosed as t
 // for why a `node --check` pass didn't catch that.)
 
 function planPrompt(epicId, ids) {
-  // planner (opus), once per epic then append-only — see "Plan materialization". Reads the
-  // epic's beads tree and (re)writes <workspace>/plan.md with the ordinal<->bead-id<->files
-  // mapping every downstream call in this script keys off of.
-  return `You are the planner for epic ${epicId}. This round's ready ids: ${JSON.stringify(ids)}. Run \`bd show ${epicId} --json\` and \`bd show <id> --json\` for each ready/blocked descendant. Use scripts/sdd-workspace to resolve <workspace>/plan.md (mkdir -p and write an initial file first if it doesn't exist). For any id not already mapped, append a mapping row {n, id, files} — n continues the existing sequence, never renumber an existing row — plus a "## Task <n>" section carrying that bead's acceptance criteria and any epic-level Global Constraints verbatim. Return planPath and the full mapping array.`
+  // planner (opus), once per epic then append-only — see "Plan materialization". Follows
+  // ./planner-prompt.md verbatim (do not paraphrase it here — that template is what carries the
+  // filesTouched-in-section-body requirement and the over-declare-when-uncertain policy that
+  // makes groupByDisjointFiles' fail-safe bucketing correct); this builder only supplies the
+  // per-dispatch variables that template's "Epic" / "Beads to plan this round" sections need.
+  return `Follow ./planner-prompt.md for epic ${epicId}. This round's ready/blocked descendant ids to plan (beads without a plan.md section yet): ${JSON.stringify(ids)}. Run \`bd show ${epicId} --json\` for the "Epic" section and \`bd show <id> --json\` for each id above for "Beads to plan this round", exactly as that template specifies. Report per that template's Report Format: planPath, and mapping as the FULL CUMULATIVE table (every row assigned so far in plan.md, including earlier rounds' rows — never only this round's new ones).`
 }
 
 function taskBriefPrompt(planPath, n, id, worktree) {
@@ -639,8 +645,10 @@ function mergePrompt(r, integrationBranch, integrationWorktree) {
 
 function triagePrompt(id, blockerBead) {
   // The one genuine judgment call in this script's blocker handling (opus) — RESOLVE vs
-  // ESCALATE — see "The blocker-bead path".
-  return `Run \`bd show ${blockerBead} --json\` for the blocker bead filed against task ${id}, plus that task's plan.md section and the relevant spec excerpt. Decide RESOLVE (only when the answer is genuinely derivable from the existing plan/beads — give the clarification) or ESCALATE (give a summary and the decision needed). Report decision and detail.`
+  // ESCALATE — see "The blocker-bead path". Follows ./triage-prompt.md verbatim; this builder
+  // only supplies the per-dispatch variables that template's "Blocker bead" / "Originating task
+  // plan" sections need.
+  return `Follow ./triage-prompt.md for the blocker bead ${blockerBead} filed against task ${id}. Run \`bd show ${blockerBead} --json\` for that template's "Blocker bead" section. Look up task ${id}'s ordinal via the plan.md mapping table and paste its "## Task <N>" section for "Originating task plan". Include the relevant spec excerpt. Report decision and detail exactly per that template's Output Contract (RESOLVE: <clarification> or ESCALATE: <summary + decision needed>).`
 }
 
 function recordClarificationPrompt(id, detail) {
