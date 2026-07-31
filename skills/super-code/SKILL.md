@@ -55,6 +55,7 @@ Concurrent dispatch only when declared file sets are disjoint (`filesTouched`, f
 - Edit `skills/subagent-driven-development/` — it must stay byte-identical to upstream.
 - Copy SDD's reviewer prompts into this skill, or reinvent per-task review mechanics here.
 - Query `bd ready` without `--exclude-type=epic --label sp:<epicId>` — bare `bd ready` is repo-global and epic-inclusive.
+- Treat an empty ready set as run completion — completion is the root epic (`epicId`) closed; an empty set with the root still open means the remaining work is quarantined blockers, not done.
 - Silently drop a blocked task — file a blocker bead (notify + quarantine + continue; the run never hard-stops on one stuck task).
 - Let a fix loop run past SDD's five-round breaker — at the cap, file a blocker bead instead of retrying.
 - Dispatch parallel implementers whose declared file sets overlap.

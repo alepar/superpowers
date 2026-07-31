@@ -164,7 +164,6 @@ Same decomposition/promotion/coverage, on paper. Each task-table row needs: a st
 - Run the coverage loop or hand-off from a nested (non-root) invocation.
 - Create a child without both `--no-inherit-labels` and an explicit `-l sp:<root-epic-id>` on the same `bd create` call.
 - Demote an epic to a task without first confirming `bd children <id> --json` is empty.
-- Treat an empty ready set as run completion — completion is the root epic closed.
 - Read only `## Confirmed findings` out of a super-roast report — `## Escalations (need human)`
   and `## Not verified (beyond panel cap)` must reach the human too.
 - Treat a `clean` verdict carrying `[low coverage]` or `[panel-capped: N unverified]` as a
