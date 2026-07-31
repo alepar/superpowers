@@ -791,61 +791,85 @@ folding them into the canonical one.
 If any assertion fails, fix the script **in this doc** (this doc's script is canonical) and
 re-run before committing the fix.
 
-### Passing baseline — STALE, pending re-run (recorded 2026-07-30)
+### Passing baseline (recorded, not illustrative)
 
-**Stale as of the fix-round-2 edit below.** `RESULT` gained a `finding` field and `fixPrompt`
-changed from stringifying the whole result to reading `rv.finding` directly — a schema field and a
-prompt-shape change, both structural (see "dryRun policy": required after any structural
-coordinator edit). The `review:bd-101` stub was updated to carry a `finding` string so the fix
-dispatch is no longer built from an object with nowhere for the finding to live, but that stub
-change has **not yet been re-run**. The trace and figures below are the *prior* run, kept as the
-historical record of what was validated before this edit — they are not being edited to predict
-what the next run will show. Do not treat this baseline as current until it is re-recorded.
+Run `wf_b1958510-6bf`, 2026-07-30, against the args below (unchanged since the `finding`-carrying
+`review:bd-101` stub was added in fix round 2): **22 agents dispatched, 0 errors**. Returned
+`{completed: ["bd-101","bd-102"], escalated: ["bd-103"]}` with the final review's verdict
+`conditional-pass`. This confirms every assertion above **except scoping and finding-rendering**
+(see "What this dryRun proves and does not prove" below), in the dispatch order the journal
+recorded:
 
-Run `wf_d65bc00e-990`, 2026-07-30, against the (now-superseded) args below: **22 agents
-dispatched, 0 errors**. Returned `{completed: ["bd-101","bd-102"], escalated: ["bd-103"]}` with the
-final review's verdict `conditional-pass`. This confirmed every assertion above **except scoping**
-(see below), in the dispatch order the journal recorded:
-
-1. `close-epics` → `rootClosed:false, closedThisRun:[]`
+1. `close-epics` → `{rootClosed:false, closedThisRun:[]}`
 2. `bd-ready` → 3 ids — real evidence the loop got its batch, but **not** evidence of scoping: a
    stub returns its canned ids regardless of what flags the prompt baked in, so this step would
    look identical even if `--exclude-type=epic --label sp:${epicId}` had been deleted from the
    dispatched prompt. The scoping assertion is, and remains, established only by reading that
-   prompt's construction at line 454 — confirmed present there — never by this or any dryRun's
+   prompt's construction at line 458 — confirmed present there — never by this or any dryRun's
    output (see the `bd-ready` stub table entry and "What this dryRun proves" below).
 3. `plan` → mapping with `filesTouched`
-4–5. `brief:bd-101`, `brief:bd-102` — **concurrent** (`src/a.js` and `src/b.js` are disjoint)
-6–7. `implement:bd-101`, `implement:bd-102`
-8–9. `review:bd-101` → `NEEDS_FIX`; `review:bd-102` → `CLEAN`
+4–5. `brief:bd-102`, `brief:bd-101` — same bucket, **concurrent**. **Only bucket membership is
+   meaningful here, not the order within it**: this run dispatched 102 before 101; the prior run
+   (below) dispatched 101 before 102 — same code, same args, no regression. `{bd-101, bd-102}`
+   sharing a bucket (disjoint files, `src/a.js`/`src/b.js`), and `bd-103` landing in a *later*
+   bucket, are the assertions; completion order among concurrent siblings within one bucket
+   carries no information and must never be read as an expected fixed sequence.
+6–7. `implement:bd-102`, `implement:bd-101`
+8–9. `review:bd-102` → `CLEAN`; `review:bd-101` → `NEEDS_FIX` (+ `finding`)
 10–11. `fix:bd-101` → `re-review:bd-101` → `CLEAN` — fix round dispatched **only** for the task
    whose review returned a finding
 12–14. `brief`/`implement`/`review` for `bd-103` — **serialized into a later bucket**, because it
    declares `src/a.js`, colliding with `bd-101`
 15–17. `merge:bd-101` OK → `merge:bd-102` OK → `merge:bd-103` FAILED (blocker bead `bd-104`) —
-   **serial**, one at a time, in dependency/ready order
+   **serial**, one at a time, in dependency/ready order (this cross-bucket/merge order, unlike
+   intra-bucket order above, *is* an assertion and *is* meaningful)
 18. `triage:bd-103` → `ESCALATE`
 19. `notify:bd-103` — the run **continues** rather than halting
-20–21. `close-epics` (still open) → `bd-ready` (empty) — the loop terminates
+20. `close-epics` → `{rootClosed:false, closedThisRun:["bd-101","bd-102"]}`
+21. `bd-ready` → `{ids:[]}` — the loop terminates
 22. `final-review`
 
+**Schema-less dispatches — the harness's "1 empty result" is expected, not a defect.** Two of the
+22 calls carry no `schema:` and so return free text rather than structured output: `notify` (line
+651) is fire-and-forget — the coordinator never reads its return, so free text (this run's came
+back as fenced markdown) is fine and is simply ignored. `final-review` (line 510) is also
+schema-less by design — its raw string is returned verbatim as this script's `review` result field,
+not parsed. Neither is a bug; a future run reporting one or two empty/unstructured results among
+the 22 is exactly this, not a regression, and should not be "fixed" by adding schemas that would
+force those two dispatches into a shape they don't need.
+
 **What this dryRun proves and does not prove** (same caveat `super-roast`'s doc states for its own
-baselines): it proves **coordinator topology** — dispatch order, the disjoint-file batching, the
-serial merge gate, blocker-bead routing, and loop termination, all of which the sequence above
-confirms directly. It proves **nothing** about the real prompts' content, since every agent in
-this run was a canned stub, and **nothing** about actual git/`bd` behavior, since `dryRun: true`
-means no I/O occurred — a real implementer's fix, a real triage RESOLVE/ESCALATE judgment, and a
-real merge's auto-resolve attempt are exercised only by a live run. It also proves **nothing**
-about `bd ready` **scoping** specifically, for the same reason: `bd-ready`'s stub returns its
-canned ids unconditionally, so a dryRun cannot distinguish a correctly-scoped prompt from one with
-the scoping flags silently deleted — that assertion is, and can only ever be, verified by reading
-the dispatched prompt's construction at line 454, not by running this or any dryRun (see step 2
-above).
+baselines): it proves **coordinator topology** — dispatch order, the disjoint-file batching (at
+the bucket-membership level — see the correction on intra-bucket order above), the serial merge
+gate, blocker-bead routing, and loop termination, all of which the sequence above confirms
+directly. It proves **nothing** about the real prompts' content, since every agent in this run was
+a canned stub, and **nothing** about actual git/`bd` behavior, since `dryRun: true` means no I/O
+occurred — a real implementer's fix, a real triage RESOLVE/ESCALATE judgment, and a real merge's
+auto-resolve attempt are exercised only by a live run. It also proves **nothing** about `bd ready`
+**scoping** specifically, for the same reason: `bd-ready`'s stub returns its canned ids
+unconditionally, so a dryRun cannot distinguish a correctly-scoped prompt from one with the
+scoping flags silently deleted — that assertion is, and can only ever be, verified by reading the
+dispatched prompt's construction at line 458, not by running this or any dryRun (see step 2
+above). The identical caveat applies to **finding-rendering**: `pick()` is lazy (fix round 1), so
+under `dryRun: true` the real `fixPrompt` is never called, and this run cannot demonstrate that
+`rv.finding` actually reaches the fix dispatch text. What it *does* prove is narrower: `RESULT`
+carries `finding` across the schema boundary intact — the `review:bd-101` stub returned it and it
+survived into `rv` unchanged (step 8–9 above). The rendering itself — that `fixPrompt` interpolates
+`rv.finding` into the dispatch string — is verified only by reading line 565, the same way scoping
+is verified only by reading line 458.
+
+**Prior run, kept as history.** Run `wf_d65bc00e-990`, 2026-07-30 (recorded before fix round 2 —
+`review:bd-101`'s stub then had no `finding` field), also passed: 22 agents, 0 errors, identical
+`completed`/`escalated`/verdict. The only observed difference from the current baseline is
+intra-bucket dispatch order (`brief:bd-101` before `brief:bd-102`, vs. `102` before `101` above) —
+per the correction above, that is not a regression and the two runs are not "identical," just
+both-passing on the dimensions that are actually assertions.
 
 **Journals are session-local.** The run id and the figures above are the durable record; the
-journal `wf_d65bc00e-990` itself is not guaranteed to remain inspectable. A future maintainer
+journal `wf_b1958510-6bf` itself is not guaranteed to remain inspectable. A future maintainer
 re-verifies this baseline by re-running the Workflow tool with the `args` below and comparing the
-new run's figures against the ones recorded here — not by going looking for this run's journal.
+new run's figures against the ones recorded here (allowing for intra-bucket reordering, per the
+correction above) — not by going looking for this run's journal.
 
 To reproduce or re-verify, run the Workflow tool with this script and `args` (unchanged from the
 scenario this baseline used):
