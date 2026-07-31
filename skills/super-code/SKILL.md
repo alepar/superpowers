@@ -49,7 +49,7 @@ Every role below is set explicitly in `config.models` — except `fixEscalation`
 
 ## Parallelism
 
-Concurrent dispatch only when declared file sets are disjoint (`filesTouched`, from the planner's per-task mapping). Two ready tasks that share a file serialize — never siblings in the same dispatch. A task with no declared files runs alone (fail safe: an incomplete declaration costs serialization, never a write collision). Buckets of disjoint-file tasks serialize relative to each other; concurrency within a bucket is capped at ~4.
+Concurrent dispatch only when declared file sets are disjoint (`filesTouched`, from the planner's per-task mapping). Two ready tasks that share a file serialize — never siblings in the same dispatch. A task with no declared files runs alone (fail safe: an incomplete declaration costs serialization, never a write collision). Buckets of disjoint-file tasks serialize relative to each other; concurrency within a bucket is capped at `config.concurrency` (default 4) — a bucket larger than the cap runs as sequential sub-batches, not one unbounded dispatch.
 
 ## Red Flags
 

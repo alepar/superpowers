@@ -197,28 +197,82 @@ This skill's `scripts/sdd-workspace` and the durable ledger it anchors exist to 
 property: **an interrupted epic resumes from the ledger, not from coordinator memory.** A
 Workflow run can be killed, restarted, or simply lose its place across a long epic; the ledger is
 what lets the *next* invocation pick up exactly where the last one left off instead of
-re-querying beads state and guessing.
+re-querying beads state and guessing. (I1: until this fix, no dispatch in the script skeleton ever
+wrote or read this file — everything below described intent, not behavior. `readLedgerPrompt` /
+`ledgerAppendPrompt` and the Resume-phase block in the script skeleton below are what make it real.)
 
-- **Workspace:** one per epic, resolved via `scripts/sdd-workspace <workspace>/plan.md` (see
-  "Plan materialization" below for how `plan.md` is populated) — home to `plan.md`, every task's
+- **Workspace, one per epic:** I7 fix — every epic's plan file used to be named literally
+  `plan.md`, so `scripts/sdd-workspace`'s basename-derived directory
+  (`.superpowers/sdd/plan/`) was the *same path for every epic in the repo*: every epic's ledger
+  collided on `.superpowers/sdd/plan/progress.md`, which defeats the plan-scoping that script
+  exists to provide and would make a resumed run's ledger-skip rule (below) skip a *different*
+  epic's tasks entirely. The plan file is now named per epic — `<epicId>-plan.md` — giving
+  `sdd-workspace`'s own basename-slug rule a distinct workspace per epic,
+  `.superpowers/sdd/<epicId>-plan/`, home to that epic's `plan.md`, every task's
   brief/report/review-package files, and the ledger.
+- **Which worktree owns the ledger:** the **integration worktree** (`.worktrees/<integrationBranch>`),
+  never a per-task worktree. Per-task worktrees (`.worktrees/<integrationBranch>--task-<bead id>`)
+  are where implementer/reviewer/merge agents do one task's own git/bd work and can be quarantined
+  or torn down independently of every other task; the integration worktree is the one long-lived,
+  single-writer location the whole epic's outcomes converge on — the serial merge gate and the
+  blocker-bead path already run there (see "Serial merge-back" and "The blocker-bead path"). A
+  git-ignored scratch directory like `.superpowers/sdd/` is a plain path on disk, not shared across
+  worktrees the way tracked, committed files are — a task agent reading or writing the ledger from
+  its own worktree would see, or produce, a second, divergent copy nothing else in the run ever
+  reads. Every ledger read/append dispatch is scoped `In <integration worktree>` for exactly this
+  reason.
 - **Ledger:** `<workspace>/progress.md`, first line `# SDD ledger — plan: <plan file path>`,
-  exactly SKILL.md's Setup contract. Every ledger line names **both** the plan ordinal and the
-  bead id — `Task <N> (<bead id>): complete (...)`, `Task <N> (<bead id>): fix round <R>/5 (...)`,
-  `Task <N> (<bead id>): BLOCKED — <reason>` — because the ordinal is what SDD's scripts key on
-  (see "Plan materialization") but the bead id is what `bd` operations and a human resuming the
-  run actually need to recognize.
-- **Resume behavior**, on any restart: read `<workspace>/progress.md` before re-querying `bd
-  ready`. A bead whose ordinal has a `complete` line is done — skip it, never re-dispatch it. A
-  bead whose last line is a `fix round <R>/5` entry is mid-loop — resume the fix loop at round
-  `R+1`, not from round 1 (re-dispatching from scratch after a partial fix loop is the single
-  most expensive failure mode SKILL.md's Setup section warns about, and it applies here
-  unchanged). A bead with no ledger line at all is simply not started — indistinguishable from
-  "never queried," since the next `bd ready` will surface it again regardless. This is a
-  different case from "Escalation = notify + quarantine + continue" below: that section's
-  re-invoke covers a *clean drain* where the ready set emptied because of quarantined blockers;
-  this section covers resuming a run that stopped mid-flight for any reason (crash, restart,
-  manual interruption) while ready work still remained.
+  exactly SKILL.md's Setup contract (the coordinator's `ledgerAppendPrompt` creates this header
+  on the first append to a fresh epic's ledger, since there is no separate "create the ledger"
+  dispatch). Every ledger line names **both** the plan ordinal and the bead id (an unmapped id —
+  see "Plan materialization" — has no ordinal and is logged as `Task ? (<bead id>): ...` instead):
+  - `Task <N> (<bead id>): complete (merged, review clean)` — a normal clean merge.
+  - `Task <N> (<bead id>): complete (merged, 1 parked — ruling: <ruling>)` — SKILL.md's `<K>
+    parked` completion-line variant: the breaker capped at round 5, the dispatched adjudicator
+    ruled PARK, and the task merged anyway with the overruled finding on record (`K` is always 1
+    here: this coordinator's schema carries the survived finding as one bundled string, never a
+    per-finding list — see `RESULT`'s `finding` comment in the script skeleton). A parked task IS
+    a completed one, in the ledger as much as in the return value — there is no separate "parked"
+    ledger line.
+  - `Task <N> (<bead id>): pending retry — RESOLVE: <detail>` — a blocker bead got a first-time
+    RESOLVE verdict; the task is due exactly one bounded re-attempt next round (see "The
+    blocker-bead path"), not yet complete and not quarantined.
+  - `Task <N> (<bead id>): BLOCKED — <reason>` — the task is quarantined: triage ESCALATEd (or a
+    second RESOLVE for the same id bounced into an ESCALATE), regardless of which of the four
+    blocker-path triggers produced it (self-filed by an implementer, a failed merge, the breaker
+    cap's adjudicated BLOCKED, or an unmapped planner id) — `handleBlocker` is the single place
+    every trigger converges on (see its opening comment) and writes this line once, for all of
+    them, rather than duplicating the write at each trigger site.
+  - `Task <N> (<bead id>): fix round <R>/5 (...)` — SKILL.md's own mid-loop bookkeeping line.
+    **Not currently written by this coordinator's script skeleton** (only the four terminal lines
+    above are); see "Resume behavior" below for what that means for a restart mid-fix-loop.
+- **Resume behavior**, on any restart: the script's Resume phase reads `<workspace>/progress.md`
+  once, before the round loop starts (see the script skeleton), and reconstructs — not only
+  `completed`, but `escalated`, `parked`, and `pendingRetry` too — from the **last** ledger line
+  recorded for each bead id (a bead can accumulate more than one line over a run's history, e.g. a
+  `pending retry` line followed later by `complete` or `BLOCKED`). A `complete` line (with or
+  without `parked`) means done — never re-dispatch it, and the Ready-phase `ids` filter drops it as
+  defense-in-depth even though a merged task's `bd close` should already keep it out of `bd ready`'s
+  output. A `BLOCKED` line means quarantined — folded into `escalated` so the existing
+  `!escalated.includes(id)` filter keeps skipping it, exactly as it does for one already
+  quarantined earlier in the *same* run; without this, a restart would re-surface a previously
+  quarantined id via `bd ready` (its task bead itself typically has no unmet *dependency*, only an
+  associated blocker bead, so `bd ready` does not structurally exclude it the way it excludes a
+  bead with unmet dependencies) and re-dispatch already-quarantined work. A `pending retry` line
+  seeds `pendingRetry` so C-2's one-bounded-retry check still holds after a restart — the id is
+  **not** filtered out of `ids`, since it is due its re-attempt, but a second RESOLVE for it is
+  correctly bounced into ESCALATE rather than granted an unbounded second chance. A bead with no
+  ledger line at all — including one whose *only* line is a `fix round <R>/5` entry — is simply
+  not started from this coordinator's perspective: unlike SKILL.md's own interactive resume, which
+  can resume a fix loop at round `R+1` because a human controller re-reads its own plan/todo state,
+  this script has no dispatch that resumes a fix loop mid-round after a restart (there is no live
+  implementer context to hand back into) — the next `bd ready` simply surfaces the id again and it
+  re-enters the pipeline from the brief stage, re-running any fix loop from round 1. This is a
+  known, coarser-grained resume than SKILL.md's own, and is the current, honest behavior — not an
+  aspiration. This is a different case from "Escalation = notify + quarantine + continue" below:
+  that section's re-invoke covers a *clean drain* where the ready set emptied because of
+  quarantined blockers; this section covers resuming a run that stopped mid-flight for any reason
+  (crash, restart, manual interruption) while ready work still remained.
 
 ## Per-task pipeline
 
@@ -251,8 +305,10 @@ use **sequential integer ordinals**, not bead ids. Do not "clean up" the ordinal
 back to bead ids; they exist because of this exact regex, not by preference, and this was
 verified directly against the script, not assumed.
 
-The bridge: once per epic, a **planner (opus)** agent reads the epic's beads tree (`bd show` on
-the epic and its ready/blocked descendants) and writes `<workspace>/plan.md` with:
+The bridge: once per epic, a **planner (opus)** agent, running **in the integration worktree**
+(see "Workspace and ledger" above — the same worktree that owns the ledger), reads the epic's
+beads tree (`bd show` on the epic and its ready/blocked descendants) and writes
+`<workspace>/<epicId>-plan.md` with:
 
 1. An **ordinal ↔ bead-id mapping table** at the top — one row per task, `N` assigned in
    dependency order starting at 1, plus each task's declared `filesTouched` — the durable
@@ -262,16 +318,19 @@ the epic and its ready/blocked descendants) and writes `<workspace>/plan.md` wit
    criteria and any Global Constraints from the epic body verbatim — the same content discipline
    SKILL.md expects of a hand-written plan.
 
-`<workspace>` is this skill's `scripts/sdd-workspace plan.md`; because that script requires the
-file to already exist, the planner's first action on a fresh epic is to `mkdir -p` the directory
-and write an initial `plan.md` (mapping table header, no rows yet) itself before calling
-`sdd-workspace` to canonicalize the path and git-ignore it. On refill, the planner agent re-runs
-to append new mapping rows and `## Task <N>` sections for newly-ready or newly-created beads
-(blocker beads included) — new ordinals continue the existing sequence; an already-assigned
-ordinal or section is never renumbered or rewritten, since a fix round may still be pointing at
-it.
+`<workspace>` is this skill's `scripts/sdd-workspace <epicId>-plan.md`; because that script
+requires the file to already exist, the planner's first action on a fresh epic is to `mkdir -p`
+the directory and write an initial `<epicId>-plan.md` (mapping table header, no rows yet) itself
+before calling `sdd-workspace` to canonicalize the path and git-ignore it. The plan file is named
+**per epic**, not literally `plan.md` — I7: every epic used to name it `plan.md`, so
+`sdd-workspace`'s basename-derived workspace directory was the *same path for every epic in the
+repo*, colliding every epic's ledger on one file (see "Workspace and ledger" above for the full
+consequence). On refill, the planner agent re-runs to append new mapping rows and `## Task <N>`
+sections for newly-ready or newly-created beads (blocker beads included) — new ordinals continue
+the existing sequence; an already-assigned ordinal or section is never renumbered or rewritten,
+since a fix round may still be pointing at it.
 
-**Every downstream call uses the ordinal**: `scripts/task-brief plan.md <N>`, and the
+**Every downstream call uses the ordinal**: `scripts/task-brief <epicId>-plan.md <N>`, and the
 brief/report/review-package filenames that follow from it. **The bead id remains the durable
 identity for every `bd` command** (`bd show`, `bd close`, `bd create`) — the coordinator never
 substitutes an ordinal into a `bd` call, and the ledger records both (see "Workspace and ledger"
@@ -333,25 +392,31 @@ it — the governing rule forbids the latter, not the former (see "Boundary" in 
 
 - **PARK** (contestable or non-load-bearing): `reviewAndFix` returns the task as `CLEAN` with the
   adjudicator's `ruling` attached — it proceeds to `mergePrompt` exactly like any other clean
-  review. *(The ruling belongs in the ledger's parked-with-a-ruling note per SKILL.md's line
-  shape; the ledger itself isn't wired up in the script yet — see I1 in the coordinator-fixes plan,
-  Task 5's scope.)*
+  review. The ruling reaches the ledger's parked-with-a-ruling note per SKILL.md's line shape
+  (`Task <N> (<bead id>): complete (merged, 1 parked — ruling: ...)`) — written at the **merge
+  gate** (the Integrate loop's `if (m.merged)` branch), not here inside `reviewAndFix`: a PARK
+  ruling only carries *intent* until the merge that follows it actually succeeds (see the merge
+  gate's own comment — a PARKed task whose merge later fails must not end up recorded as both
+  `parked` and `escalated`/`pendingRetry`).
 - **BLOCKED** (load-bearing): the same load-bearing verdict SKILL.md's breaker reaches, but
   Workflow has no synchronous human partner to stop the whole run for — halting would freeze every
   *other*, unrelated ready task behind one stuck bead, which defeats the reason to run
   autonomously at all. So instead:
-  1. Appends `Task <N> (<bead id>): BLOCKED — <reason>` to the ledger — SKILL.md's line shape, with
-     the ordinal/bead-id pairing described in "Workspace and ledger" above. *(Same ledger caveat as
-     PARK above — aspirational until Task 5.)*
-  2. **Files a blocker bead** instead of stopping the session — same shape as any other blocker
+  1. **Files a blocker bead** instead of stopping the session — same shape as any other blocker
      bead (see "The blocker-bead path"): the task id, the load-bearing finding, the adjudicator's
      ruling, the plan text (from `plan.md`) it collides with, and the fix history from the report
-     file. `reviewAndFix`'s `breakerBlockerPrompt` does this.
-  3. Quarantines the task (leaves its branch and worktree in place, does not merge it) and lets the
-     coordinator loop continue with every other ready task. `reviewAndFix` returns `status:
-     'BLOCKED'` for this, which routes through the same `handleBlocker`/triage path as every other
-     blocker trigger (see the pipeline call site and "The blocker-bead path" below) rather than
-     `mergePrompt`.
+     file. `reviewAndFix`'s `breakerBlockerPrompt` does this and returns `status: 'BLOCKED'`.
+  2. **Routes through the same `handleBlocker`/triage path as every other blocker trigger** (see
+     the pipeline call site and "The blocker-bead path" below) rather than `mergePrompt` — even a
+     breaker-cap BLOCKED gets one triage RESOLVE-vs-ESCALATE pass, the same as a self-filed or
+     merge-failure blocker; a RESOLVE here is a real (if less likely) escape from the cap.
+  3. **Appends the ledger line and quarantines only once `handleBlocker` reaches an ESCALATE
+     verdict** (first-time or bounced-second-RESOLVE) — `Task <N> (<bead id>): BLOCKED — <reason>`,
+     SKILL.md's line shape, with the ordinal/bead-id pairing "Workspace and ledger" describes. A
+     RESOLVE verdict instead appends a `pending retry` line and leaves the task off `escalated`
+     for one bounded re-attempt (see "The blocker-bead path"). Either way the task's branch and
+     worktree are left in place, never merged, while the coordinator loop continues with every
+     other ready task.
 
 Only the load-bearing exit's *destination* is autonomous-mode-specific — a blocker bead the triage
 agent will pick up, not a frozen run. The adjudication call itself (PARK vs BLOCKED) is SDD's own
@@ -446,6 +511,7 @@ export const meta = {
   name: 'beads-epic-coordinator',
   description: 'Autonomously drive a beads epic to completion via worktree-isolated, reviewed task pipelines',
   phases: [
+    { title: 'Resume' },       // I1: one-time ledger read, before the round loop starts
     { title: 'Close' },        // close-eligible fixpoint; root-closed check
     { title: 'Ready' },        // bd ready query
     { title: 'Plan' },         // plan.md materialization (once per epic, then append-only)
@@ -502,6 +568,35 @@ function pick(buildReal, stubKey) {
 // integration worktree at, and the per-task convention "Dispatching the implementer" describes.
 const integrationWorktree = `.worktrees/${integrationBranch}`
 const taskWorktree = id => `.worktrees/${integrationBranch}--task-${id}`
+// I7: per-epic plan filename + workspace pinned to the INTEGRATION worktree. Every epic used to
+// name its plan file literally "plan.md", so scripts/sdd-workspace's basename-derived directory
+// (".superpowers/sdd/plan/") was the SAME path for every epic in the repo — every epic's ledger
+// collided on ".superpowers/sdd/plan/progress.md", defeating the plan-scoping that script exists
+// to provide and making the resume rule below (I1) skip a DIFFERENT epic's tasks. Naming the plan
+// file per-epic (`${epicId}-plan.md`) gives sdd-workspace's own basename-slug rule a distinct
+// directory per epic (".superpowers/sdd/<epicId>-plan/") for free — this is pure string derivation
+// replicating that rule, not a second, independent naming scheme; planPrompt tells the planner to
+// name and locate plan.md exactly this way so the two can never drift apart.
+// The ledger lives inside that per-epic workspace, anchored to the INTEGRATION worktree — never a
+// per-task worktree. taskWorktree(id) above is where an implementer/reviewer/merge agent does its
+// own git/bd work for ONE task and may be quarantined or torn down independently; integrationWorktree
+// is the one long-lived, single-writer location every task's outcome converges on (the serial merge
+// gate and handleBlocker both already run there — see "Serial merge-back"). Every ledger read/append
+// dispatch below explicitly runs `In ${integrationWorktree}`, never in a taskWorktree(id): a
+// git-ignored scratch directory like `.superpowers/sdd/` is a plain path on disk, not shared across
+// worktrees the way tracked, committed files are, so writing it from a task's own worktree would
+// produce a second, divergent copy no other stage ever reads.
+const planFileName = `${epicId}-plan.md`
+const workspace = `.superpowers/sdd/${epicId}-plan`
+const ledgerPath = `${workspace}/progress.md`
+// I3: config.concurrency bounds per-bucket fan-out. It's read from `args`, documented in the
+// contract, SKILL.md, and spec §1 as the thing that stops a bucket of N disjoint-file tasks from
+// dispatching N concurrent implementers and N worktrees — but until this fix nothing in the script
+// ever read the key, so a 12-task disjoint bucket dispatched all 12 concurrently regardless of its
+// value. Applied in the Implement phase's group loop (below): each disjoint-file bucket is chunked
+// into sub-batches of at most `cap` ids before being handed to pipeline() — sub-batches serialize
+// relative to each other, the same way buckets already did; only a bucket's dispatch SIZE changes.
+const cap = Math.max(1, Number(config.concurrency) || 4)
 
 const READY   = { type: 'object', properties: { ids: { type: 'array', items: { type: 'string' } } }, required: ['ids'] }
 // mapping: ordinal (N, as scripts/task-brief needs it) <-> bead id (as bd needs it) <-> declared
@@ -535,6 +630,15 @@ const CLOSE   = { type: 'object', properties: { rootClosed: {type:'boolean'}, cl
 // coordinator-side reimplementation of it. `ruling` carries the adjudicator's reasoning either way
 // (ledger note on PARK, blocker-bead body on BLOCKED).
 const ADJUDICATE = { type: 'object', properties: { id: {type:'string'}, decision: {type:'string'}, ruling: {type:'string'} }, required: ['id','decision','ruling'] } // decision: PARK | BLOCKED
+// I1: the mechanical ledger read/append contract. `read-ledger` returns raw file text (empty
+// string if the ledger doesn't exist yet — a fresh epic, or one whose first task hasn't merged or
+// blocked yet) so parsing stays pure JS in this script (see the Resume-phase block below) rather
+// than asking an agent to interpret ledger semantics — the same "mechanical extraction, judgment
+// stays in the script" split groupByDisjointFiles already uses for the planner's file mapping.
+// `ledger-append` is schema-less and fire-and-forget, same tier as `notify`/`clarify` (see
+// "Schema-less dispatches" in the dryRun policy section below) — the coordinator never reads its
+// return value, only whether the call errored.
+const LEDGER_TEXT = { type: 'object', properties: { text: { type: 'string' } }, required: ['text'] }
 
 const escalated = []
 const completed = []
@@ -544,8 +648,8 @@ const completed = []
 // `mergePrompt` (interpolates only `id`/`branch`), not the script's own return value, not `log()`
 // — so a PARKed merge was indistinguishable in every report from a task that came back clean on
 // the first pass, exactly the "silent discard" `subagent-driven-development/SKILL.md:377` forbids.
-// `parked` and the ledger note it maps to (once Task 5 wires the ledger up) are what make an
-// overruled finding visible instead. Pushed at the MERGE GATE (the Integrate loop's
+// `parked` and the ledger note it maps to (I1: the merge gate's `ledger-append` dispatch, below)
+// are what make an overruled finding visible instead. Pushed at the MERGE GATE (the Integrate loop's
 // `if (m.merged)` branch), not back in `reviewAndFix` at adjudication time — a PARK ruling only
 // carries INTENT (`r.parkRuling`) until the merge that follows it actually succeeds; gating the
 // push on `m.merged` is what keeps a task whose merge later fails from ending up in `parked` and
@@ -558,6 +662,47 @@ const parked = []
 // round before `handleBlocker` forces it into `escalated` instead.
 const pendingRetry = new Set()
 let stalled = false  // I6: set true if a round makes no progress at all — see the guard below
+
+// I1: resume-from-ledger — the skill's stated Core principle (SKILL.md:10) — until this fix, no
+// dispatch ever wrote or read this file (see "Workspace and ledger" above): a restarted run had no
+// way to tell a completed task from an untouched one, or a quarantined/pending-retry id from a
+// fresh one, other than re-querying `bd ready` and guessing (upstream calls a controller losing its
+// place this way "the single most expensive failure observed"). Read exactly ONCE, before the round
+// loop starts, not per round: the ledger only changes when THIS run appends to it, and every append
+// from that point on is already reflected in this process's own in-memory `completed`/`escalated`/
+// `parked`/`pendingRetry`. Runs `In ${integrationWorktree}` — the one worktree that owns the ledger
+// (see the `ledgerPath` comment above).
+phase('Resume')
+const ledger = await agent(pick(() => readLedgerPrompt(integrationWorktree, ledgerPath), 'read-ledger'),
+  { label: 'read-ledger', phase: 'Resume', schema: LEDGER_TEXT, model: model('mechanical') })
+// Pure JS parse — no judgment, no further I/O (the text is already fetched above). Ledger lines are
+// append-only, so a bead id can have MORE THAN ONE line over a run's history (e.g. a "pending retry"
+// line followed later by a "complete" or "BLOCKED" one) — keep only the LAST line per id, the same
+// "last line governs" rule SKILL.md's own resume section states for `fix round` lines ("A bead whose
+// last line is a fix round entry is mid-loop... resume the fix loop at round R+1").
+const resumed = new Map()  // id -> kind: 'complete' | 'parked' | 'pendingRetry' | 'escalated'
+for (const raw of (ledger.text || '').split('\n')) {
+  const line = raw.trim()
+  const m = /^Task\s+(\S+)\s+\(([^)]+)\):\s*(.*)$/.exec(line)
+  if (!m) continue  // the identity header line, a blank line, or noise
+  const [, , id, rest] = m
+  if (rest.startsWith('complete')) resumed.set(id, rest.includes('parked') ? 'parked' : 'complete')
+  else if (rest.startsWith('pending retry')) resumed.set(id, 'pendingRetry')
+  else if (rest.startsWith('BLOCKED')) resumed.set(id, 'escalated')
+  // else: a `fix round <R>/5` line (mid-loop) — not a terminal state this coordinator's resume
+  // reconstructs into a top-level list; the id simply isn't marked done/quarantined/pending here,
+  // so the next `bd ready` surfaces it again and it re-enters the pipeline (re-running the fix loop
+  // from round 1 rather than resuming mid-round — a known, coarser-grained resume than SKILL.md's
+  // own round-R+1 resume, and out of scope for this fix: no dispatch here can resume a fix loop
+  // whose original implementer's live context is already gone).
+}
+for (const [id, kind] of resumed) {
+  if (kind === 'complete') completed.push(id)
+  else if (kind === 'parked') { completed.push(id); parked.push(id) }
+  else if (kind === 'escalated') escalated.push(id)
+  else if (kind === 'pendingRetry') pendingRetry.add(id)
+}
+if (resumed.size) log(`resume: reconstructed from ${ledgerPath} — ${completed.length} complete (${parked.length} parked), ${escalated.length} escalated, ${pendingRetry.size} pending retry`)
 
 while (true) {
   // MECHANICAL: bd epic close-eligible is repo-global (no --label/--parent/--mol — see
@@ -581,7 +726,14 @@ while (true) {
     // MECHANICAL: echo the command output verbatim — no judgment, no --json (see "Authoring pitfalls").
     pick(() => `Run exactly: \`bd ready --exclude-type=epic --label sp:${epicId} 2>&1 | grep -oE '${epicId}[.0-9]*' | sort -u\` and return its output lines verbatim as ids. Do NOT use \`--json\`. Do NOT reason about or filter readiness or scope — the command's flags already exclude epics and out-of-tree issues; just return what the command prints (empty output → {ids: []}). Do not start any work.`, 'bd-ready'),
     { label: 'bd-ready', phase: 'Ready', schema: READY, model: model('mechanical') })
-  const ids = (ready?.ids ?? []).filter(id => !escalated.includes(id))
+  // I1: `!completed.includes(id)` is defense-in-depth for the resume path specifically. In the live
+  // case a merged task's `bd close` already removes it from `bd ready`'s output, so this filter is
+  // normally a no-op; but a resumed run reconstructs `completed` from the ledger BEFORE ever
+  // re-querying `bd` (see the Resume-phase block above), so this guards against a ready id that was
+  // recorded complete but never actually got `bd close`d (e.g. the run crashed between merge and
+  // close). `pendingRetry` ids are deliberately NOT filtered here — they're due their one bounded
+  // re-attempt (see "The blocker-bead path"), which is the entire point of a RESOLVE verdict.
+  const ids = (ready?.ids ?? []).filter(id => !escalated.includes(id) && !completed.includes(id))
   // Quarantine exit: the root isn't closed (checked above) but nothing is ready — remaining
   // work is blocked/escalated. Not a clean finish; report below distinguishes the two cases.
   if (ids.length === 0) break
@@ -600,7 +752,7 @@ while (true) {
   // "bd-20" never matches); beads has no such file, so the planner (opus) is the bridge and
   // returns the ordinal<->bead-id mapping alongside the plan path.
   phase('Plan')
-  const planned = await agent(pick(() => planPrompt(epicId, ids), 'plan'),
+  const planned = await agent(pick(() => planPrompt(epicId, ids, planFileName), 'plan'),
     { label: 'plan', phase: 'Plan', model: model('planner'), schema: PLANNED })
   const ordinalFor = id => planned.mapping.find(m => m.id === id)?.n
 
@@ -640,7 +792,12 @@ while (true) {
   phase('Implement')
   const results = []
   for (const group of groups) {  // disjoint-file groups serialize relative to each other; tasks within a group don't share files
-    const groupResults = await pipeline(group,
+   // I3: chunk each bucket to `cap` before dispatch — see the `cap` comment above. A bucket larger
+   // than `cap` (e.g. 12 mutually disjoint-file ids under a concurrency cap of 4) still runs to
+   // completion, just as 3 sequential sub-batches of ≤4 concurrent siblings each, instead of 12
+   // concurrent implementers/worktrees at once. `chunk(group, cap)` is pure JS, no I/O.
+   for (const sub of chunk(group, cap)) {
+    const groupResults = await pipeline(sub,
       id  => agent(pick(() => taskBriefPrompt(planned.planPath, ordinalFor(id), id, taskWorktree(id)), `brief:${id}`), { label: `brief:${id}`,   phase: 'Implement', model: model('mechanical'), schema: RESULT }),
       // `n`/`branch` are sourced from `ordinalFor(br.id)`/`taskWorktree(br.id)` DIRECTLY — the same
       // pure closures used to build the brief dispatch above — never from `br.n`/`br.branch` (the
@@ -680,6 +837,7 @@ while (true) {
       im => im.status === 'BLOCKED' ? im : reviewAndFix(im, planned.planPath),
     )
     results.push(...groupResults)
+   }
   }
 
   // SERIAL merge gate — outside any parallel/pipeline stage so only one merge touches the
@@ -701,8 +859,23 @@ while (true) {
       // simultaneously, absent from `completed` — contradicting "a parked task IS a completed one"
       // below. Gating on `m.merged` makes that invariant hold by construction.
       if (r.parkRuling) { parked.push(r.id); log(`PARKED ${r.id}: ${r.parkRuling} (open finding, merged anyway: ${r.finding})`) }
+      // I1: mechanical dispatch appends the completion line — SKILL.md's own line shape
+      // (`Task <N>: complete (...)`), with the ordinal/bead-id pairing "Workspace and ledger"
+      // specifies. A PARK ruling gets upstream's `<K> parked` variant of that same line (K is
+      // always 1 here: this coordinator's schema carries the survived finding as one bundled
+      // string, never a per-finding list — see `RESULT`'s `finding` comment) instead of a second,
+      // separate ledger entry — "a parked task IS a completed one" holds in the ledger too, not
+      // only in the return value.
+      await agent(pick(() => ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName,
+          r.parkRuling
+            ? `Task ${r.n ?? '?'} (${r.id}): complete (merged, 1 parked — ruling: ${r.parkRuling})`
+            : `Task ${r.n ?? '?'} (${r.id}): complete (merged, review clean)`),
+        `ledger-append:${r.id}`), { label: `ledger-append:${r.id}`, phase: 'Integrate', model: model('mechanical') })
     }
-    else await handleBlocker({ id: r.id, blockerBead: m.blockerBead })
+    // `n: r.n` carried forward here so a failed-merge blocker's eventual ledger line (in
+    // handleBlocker) can still cite the plan ordinal — `r` already carries it (stamped by
+    // reviewAndFix/the pipeline call site); the bare object built here previously dropped it.
+    else await handleBlocker({ id: r.id, n: r.n, blockerBead: m.blockerBead })
   }
 
   // I6/C-2: no-progress guard. A round that made no forward progress at all — no task merged, no
@@ -785,7 +958,7 @@ When the loop stops, run \`bd show ${epicId} --json\` and report rootClosed as t
 // library. (Every one of these was previously called-but-undefined — see "dryRun policy" below
 // for why a `node --check` pass didn't catch that.)
 
-function planPrompt(epicId, ids) {
+function planPrompt(epicId, ids, planFileName) {
   // planner (opus), once per epic then append-only — see "Plan materialization". Follows
   // ./planner-prompt.md verbatim (do not paraphrase it here — that template is what carries the
   // filesTouched-in-section-body requirement and the over-declare-when-uncertain policy that
@@ -807,7 +980,7 @@ function planPrompt(epicId, ids) {
   // so a genuine descendant walk must recurse: children of the epic, then children of any of
   // those that is itself epic-typed (`issue_type: "epic"`), repeating until no unexpanded
   // epic-typed child remains.
-  return `Follow ./planner-prompt.md for epic ${epicId}. On the FIRST planning round (plan.md has no mapping rows yet), independently enumerate every READY AND BLOCKED descendant bead of ${epicId} and plan all of them: run \`bd children ${epicId} --json\` for its direct children, then run \`bd children <id> --json\` on every one of those children whose \`issue_type\` is "epic" to get its children in turn, repeating until no unexpanded epic-typed child remains (\`bd children\` returns direct children of one level only — do NOT use \`bd show ${epicId} --json\`, which reports only dependent/dependency counts, no child ids, since parent-child edges point upward and it cannot read the downward direction). Do not limit round-1 planning to ready ids only, since \`bd ready\` structurally excludes blocked beads. On a REFILL round, plan only beads that don't already have a mapping row (newly-ready or newly-created, blocker beads included). This round's confirmed-ready ids (a subset of the planning scope above, not the full scope): ${JSON.stringify(ids)}. Run \`bd show <id> --json\` for every bead you plan this round, for "Beads to plan this round". Report per that template's Report Format: planPath, and mapping as the FULL CUMULATIVE table (every row assigned so far in plan.md, including earlier rounds' rows — never only this round's new ones).`
+  return `Working directory: the integration worktree (see "Workspace and ledger" — the same worktree that owns the ledger; do not plan from a task's own worktree). Follow ./planner-prompt.md for epic ${epicId}, with one naming fix on top of that template (I7): name your plan file \`${planFileName}\`, NOT the literal \`plan.md\` the template may otherwise suggest — every epic must use its own plan filename so \`scripts/sdd-workspace ${planFileName}\` resolves to a workspace directory distinct from every other epic's (a shared \`plan.md\` name collides every epic's workspace, including its ledger, on one path). On the FIRST planning round (${planFileName} has no mapping rows yet), independently enumerate every READY AND BLOCKED descendant bead of ${epicId} and plan all of them: run \`bd children ${epicId} --json\` for its direct children, then run \`bd children <id> --json\` on every one of those children whose \`issue_type\` is "epic" to get its children in turn, repeating until no unexpanded epic-typed child remains (\`bd children\` returns direct children of one level only — do NOT use \`bd show ${epicId} --json\`, which reports only dependent/dependency counts, no child ids, since parent-child edges point upward and it cannot read the downward direction). Do not limit round-1 planning to ready ids only, since \`bd ready\` structurally excludes blocked beads. On a REFILL round, plan only beads that don't already have a mapping row (newly-ready or newly-created, blocker beads included). This round's confirmed-ready ids (a subset of the planning scope above, not the full scope): ${JSON.stringify(ids)}. Run \`bd show <id> --json\` for every bead you plan this round, for "Beads to plan this round". Report per that template's Report Format: planPath, and mapping as the FULL CUMULATIVE table (every row assigned so far in ${planFileName}, including earlier rounds' rows — never only this round's new ones).`
 }
 
 function taskBriefPrompt(planPath, n, id, worktree) {
@@ -980,12 +1153,38 @@ function notifyPrompt(id, detail) {
   return `Send a notification (PushNotification or the configured messaging tool, if available) that task ${id} is ESCALATED: ${detail}. Report sent true/false.`
 }
 
+function readLedgerPrompt(integrationWorktree, ledgerPath) {
+  // I1, MECHANICAL: a verbatim read, no interpretation — parsing happens in this script as plain JS
+  // (see the Resume-phase block near the top), the same "mechanical extraction, judgment stays in
+  // the script" split `bd ready`'s own prompt forbids reasoning about readiness for.
+  return `Working directory: ${integrationWorktree} — the integration worktree owns the ledger (see "Workspace and ledger"). Run \`cat ${ledgerPath} 2>/dev/null || true\` and report its exact, complete contents verbatim as \`text\` (empty string if the file does not exist yet — do NOT create it, do NOT reason about or summarize its contents).`
+}
+
+function ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName, line) {
+  // I1, MECHANICAL: appending one exact line is a fixed, no-judgment write — same tier as
+  // `recordClarificationPrompt`/`notifyPrompt` above. Ensures the ledger's identity header exists
+  // first (SKILL.md's Setup contract: `# SDD ledger — plan: <plan file path>`, exactly) so the
+  // FIRST append to a fresh epic's ledger also creates it correctly, without a separate "create the
+  // ledger" dispatch this script would otherwise need at Plan-materialization time. Idempotent on
+  // every later call: the header is written only if the file doesn't already exist.
+  return `Working directory: ${integrationWorktree} — the integration worktree owns the ledger (see "Workspace and ledger"); never write it from a task's own worktree. If ${ledgerPath} does not exist yet, create its parent directory and the file with this exact first line: "# SDD ledger — plan: ${planFileName}". Then append exactly this line to it, verbatim, as its own new line: ${line}\nReport nothing beyond confirming the append succeeded — this dispatch is fire-and-forget, same as notifyPrompt/recordClarificationPrompt above.`
+}
+
+function chunk(arr, size) {
+  // I3, pure JS, no I/O: splits an array into consecutive sub-arrays of at most `size` — used to
+  // bound a disjoint-file bucket's fan-out to `config.concurrency` before it's handed to pipeline()
+  // (see the `cap` comment near `integrationWorktree`/`taskWorktree` and the Implement-phase loop).
+  const out = []
+  for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size))
+  return out
+}
+
 function groupByDisjointFiles(ids, planned) {
   // Pure computation over data already returned by the planner agent (planned.mapping[].files) —
   // no I/O. Buckets ids so no two ids in the same bucket share a declared file; ids within a
-  // bucket run as concurrent siblings via pipeline() below, with config.concurrency (~4) bounding
-  // how many run at once — buckets themselves still serialize relative to each other (see the
-  // `for (const group of groups)` loop above). FAIL SAFE, per Global Constraints ("dispatch
+  // bucket run as concurrent siblings via pipeline() below, with `chunk(group, cap)` (I3, see that
+  // helper above) bounding how many run at once to `config.concurrency` — buckets themselves still
+  // serialize relative to each other (see the `for (const group of groups)` loop above). FAIL SAFE, per Global Constraints ("dispatch
   // concurrently only when file sets are disjoint"): an id with no declared files, or any id
   // whose disjointness can't be established, must run alone in its own singleton bucket rather
   // than default into a parallel batch — an incomplete files declaration must cost
@@ -1043,8 +1242,8 @@ async function reviewAndFix(im, planPath) {
     // PARK-with-a-ruling case below, which builds its own return value and deliberately keeps
     // `rv.finding` intact as evidence of what was overruled. Without this, a stale finding would
     // survive on every clean-after-fix task, which nothing currently reads but would silently
-    // corrupt Task 5's ledger writer if it ever keys "parked" off "finding is non-empty" instead of
-    // the explicit `parked` list.
+    // corrupt the ledger writer (below) if it ever keyed "parked" off "finding is non-empty"
+    // instead of the explicit `parked` list.
     return { ...result, n: im.n, files: im.files, branch: im.branch, base: im.base, finding: result.status === 'CLEAN' ? undefined : lastFinding }
   }
   let rv = carried(await agent(pick(() => taskReviewPrompt(im, planPath), `review:${im.id}`),
@@ -1138,6 +1337,12 @@ async function handleBlocker(r) {
     // re-dispatch next round with clarification recorded on the bead; do NOT mark escalated.
     // Recording a clarification is a mechanical write, not a judgment call.
     await agent(pick(() => recordClarificationPrompt(r.id, t.detail), `clarify:${r.id}`), { label: `clarify:${r.id}`, phase: 'Triage', model: model('mechanical') })
+    // I1: ledger records the RESOLVE-pending state so a resumed run reconstructs `pendingRetry`
+    // (and therefore C-2's one-bounded-retry check above) instead of treating this id as untouched
+    // — without this, a restart would let a bad clarification get a second, unbounded RESOLVE.
+    await agent(pick(() => ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName,
+        `Task ${r.n ?? '?'} (${r.id}): pending retry — RESOLVE: ${t.detail}`),
+      `ledger-append:${r.id}`), { label: `ledger-append:${r.id}`, phase: 'Triage', model: model('mechanical') })
   } else {
     const bounced = t.decision === 'RESOLVE'  // second RESOLVE for this id — bounced into ESCALATE
     pendingRetry.delete(r.id)
@@ -1148,6 +1353,17 @@ async function handleBlocker(r) {
     // Sending a fixed notification is mechanical, same reasoning as the clarification write above.
     await agent(pick(() => notifyPrompt(r.id, detail), `notify:${r.id}`), { label: `notify:${r.id}`, phase: 'Triage', model: model('mechanical') }) // push if available
     log(`ESCALATED ${r.id}: ${detail}`)      // always surfaces in /workflows + completion
+    // I1: ledger records the terminal quarantine — SKILL.md's `BLOCKED` line shape — so a resumed
+    // run reconstructs `escalated` and the `ids` filter (see the Ready-phase block) skips this id
+    // instead of re-dispatching quarantined work. Written here, once, for EVERY blocker-path
+    // trigger that ends in ESCALATE (self-filed blocker, failed merge, breaker-cap BLOCKED, an
+    // unmapped planner id, or a bounced second RESOLVE) — not only the breaker-cap case "The
+    // breaker, autonomous variant" describes, since `handleBlocker` is the single point every
+    // trigger converges on (see the I-7-review-round-3 comment above this function) and writing it
+    // anywhere else would duplicate the call at every trigger site.
+    await agent(pick(() => ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName,
+        `Task ${r.n ?? '?'} (${r.id}): BLOCKED — ${detail}`),
+      `ledger-append:${r.id}`), { label: `ledger-append:${r.id}`, phase: 'Triage', model: model('mechanical') })
   }
 }
 ```
@@ -1165,6 +1381,21 @@ serial merge gate, the blocker-triage routing, schemas — for pennies, without 
 planner/implementer/reviewer/triage budget and without touching git or `bd` (see the `pick()`
 helper and the `model()` dryRun branch in the script above; same mechanism as `super-roast`'s
 `pick()`, see `skills/super-roast/super-roast-workflow.md`).
+
+**Task 5 (I1/I3/I7 — the ledger, `config.concurrency`, and the per-epic workspace) is a structural
+edit to this script**, per the rule further below ("A recorded baseline is evidence only for the
+exact script revision it ran against"): it adds a one-time `read-ledger` dispatch before the round
+loop, a `ledger-append:<id>` dispatch at every merge/pending-retry/BLOCKED outcome, and chunks each
+disjoint-file bucket to `config.concurrency` before dispatch. **Every "Confirmed" run-id and agent
+count recorded below (`wf_ddba38c0-72d`, `wf_e189dd5a-a5f`, `wf_058c4b83-631`) predates this edit**
+— none of those runs' dispatch counts include a `read-ledger` or `ledger-append:*` call, because the
+script they ran against had neither. They remain genuine evidence for the revision they executed
+against (this is not a retraction of those figures), but they are not current evidence and must not
+be cited as proof of today's script. The stub tables and JSON `args` blocks below have been updated
+with the new stub keys and updated *expected* dispatch counts (arithmetic, not measurements) so the
+scenarios remain runnable against the current script, but none has actually been re-run — a future
+maintainer re-establishes the current baseline by running the Workflow tool against these args and
+recording the new run's real figures, not by trusting the updated arithmetic alone.
 
 **What a dryRun can and cannot prove.** It proves what the *script* owns: round order, the Close
 fixpoint check, the `bd ready` scoping flags baked into the dispatched prompt text, disjoint-file
@@ -1271,6 +1502,7 @@ round 1, changing every downstream assertion this scenario makes about bucketing
 
 | Stub key | Canned output (`<json>` content) | Exercises |
 |---|---|---|
+| `read-ledger` | `{text:""}` | I1: the one-time Resume-phase read, before the round loop starts — empty text means a fresh epic with no prior ledger, so nothing is reconstructed into `completed`/`escalated`/`parked`/`pendingRetry` (a resumed-run scenario, with non-empty ledger text, is not covered by this scenario — see "What this dryRun still can't prove" additions below) |
 | `close-epics` (array, 2 entries) | `{rootClosed:false,closedThisRun:[]}` then `{rootClosed:false,closedThisRun:["bd-101","bd-102"]}` | root stays open both rounds (quarantined `bd-103` and unresolved `bd-104` block closure) — round 1 doesn't exit early, round 2 doesn't loop forever |
 | `bd-ready` (array, 2 entries) | `{ids:["bd-101","bd-102","bd-103","bd-104"]}` then `{ids:[]}` | round 1 supplies the batch; round 2's empty set drains the loop (a canned value, not real `bd` continuity — see "What this dryRun proves and does not prove" below on why a RESOLVE'd `bd-104` not reappearing in round 2 is not itself an assertion). The **scoping** assertion (`--exclude-type=epic --label sp:<epicId>`) is a property of the dispatched prompt text itself, not of this canned return — verified by reading the prompt, same as `super-roast`'s reporter-arithmetic caveat above |
 | `plan` | `{planPath:"...", mapping:[{n:1,id:"bd-101",files:["src/a.js"]},{n:2,id:"bd-102",files:["src/b.js"]},{n:3,id:"bd-103",files:["src/a.js"]},{n:4,id:"bd-104",files:["src/c.js"]}]}` | ordinal↔bead-id↔files mapping that `groupByDisjointFiles` and every `ordinalFor` lookup consumes |
@@ -1282,11 +1514,14 @@ round 1, changing every downstream assertion this scenario makes about bucketing
 | `fix:bd-101:1` | `{id:"bd-101",n:1,status:"FIXED",files:["src/a.js"]}` | round 1 of the fix loop, dispatched only for the flagged task; no `branch` here either, by the same design as `review:bd-101` above. Round-suffixed (`:1`) because `reviewAndFix`'s loop can now run up to 5 rounds and each round is its own stub key |
 | `re-review:bd-101:1` | `{id:"bd-101",n:1,status:"CLEAN"}` | finding `ADDRESSED` on round 1 — the loop exits immediately since `rv.status === 'CLEAN'` (C-3's fail-closed condition; this is the ONE way out of the loop besides the round cap), so no `fix:bd-101:2`/`re-review:bd-101:2` stub is needed or dispatched; `reviewAndFix` re-stamps `branch`/`base`/`n`/`files` from `im` onto this before it becomes the task's final result, which is what reaches `mergePrompt`'s `r.branch` |
 | `merge:bd-101` / `merge:bd-102` | `{id:"bd-1XX",merged:true}` | successful serial merges |
+| `ledger-append:bd-101` / `ledger-append:bd-102` | `{appended:true}` | I1: the merge-gate `ledger-append` dispatch — `Task <n> (bd-1XX): complete (merged, review clean)` (schema-less, like `notify`/`clarify` — the coordinator never reads this return) |
 | `merge:bd-103` | `{id:"bd-103",merged:false,blockerBead:"bd-108"}` | merge fails its bounded auto-resolve attempt → blocker path. **No `merge:bd-104` key exists** — `bd-104` never reaches `mergePrompt` at all, since its BLOCKED status routes it to `handleBlocker` directly at the top of the Integrate loop (see the `if (r.status === 'BLOCKED')` check); its absence is part of the test, same reasoning as `review:bd-104`'s absence above |
 | `triage:bd-103` | `{decision:"ESCALATE",detail:"rebase conflict on src/a.js survived one auto-resolve attempt"}` | the judgment dispatch in `handleBlocker`, ESCALATE branch — notify + quarantine |
 | `triage:bd-104` | `{decision:"RESOLVE",detail:"implementer needs the missing config constant named explicitly; re-plan and re-attempt"}` | the judgment dispatch in `handleBlocker`, **RESOLVE branch** — the one branch the prior three-task scenario never exercised. This is `bd-104`'s FIRST time through `handleBlocker`, so `pendingRetry` doesn't have it yet and C-2's one-retry bound doesn't fire (that requires a SECOND blocker-path visit for the same id, which this scenario doesn't stage — see the round-2 `bd-ready` note above) |
 | `notify:bd-103` | `{sent:true}` | fixed-notification mechanical dispatch on the ESCALATE branch |
+| `ledger-append:bd-103` | `{appended:true}` | I1: `handleBlocker`'s ESCALATE branch appends `Task 3 (bd-103): BLOCKED — <detail>` so a resumed run reconstructs `escalated` for this id |
 | `clarify:bd-104` | `{recorded:true}` | fixed-clarification-recording mechanical dispatch on the RESOLVE branch (schema-less, like `notify` — see "Schema-less dispatches" below); this is also what makes `pendingRetry` grow, which the no-progress guard reads as this round's progress signal (C-2) |
+| `ledger-append:bd-104` | `{appended:true}` | I1: `handleBlocker`'s RESOLVE branch appends `Task 4 (bd-104): pending retry — RESOLVE: <detail>` so a resumed run reconstructs `pendingRetry` (and C-2's one-retry bound) for this id |
 | `final-review` | `{summary:"stub: 2/4 tasks merged; bd-103 quarantined, bd-104 resolved pending re-attempt",verdict:"conditional-pass"}` | whole-epic review dispatched once at least one task landed |
 
 **Stub keys are call-site qualified** (`brief:<id>`, `review:<id>`, `merge:<id>`, `triage:<id>`,
@@ -1339,10 +1574,14 @@ untested by any scenario in this doc — inspection-only, same as C-1/C-3 above.
   by inspection of the pipeline call site and `reviewAndFix`'s return paths, not by this scenario
   alone, since `bd-104` is the only stubbed BLOCKED case here and this scenario's fix loop never
   reaches the round-5 cap or the adjudicator).
-- Expected dispatch count: `close-epics` 2 + `bd-ready` 2 + `plan` 1 + `brief` 4 + `implement` 4 +
-  `review` 3 + `fix` 1 + `re-review` 1 + `merge` 3 + `triage` 2 + `notify` 1 + `clarify` 1 +
-  `final-review` 1 = **26 agent calls, 0 errors** (`final-review` dispatches because
-  `completed.length` is 2, not 0).
+- Expected dispatch count (I1: updated arithmetic, not a measured run — see "dryRun policy"'s Task
+  5 staleness note above): `read-ledger` 1 + `close-epics` 2 + `bd-ready` 2 + `plan` 1 + `brief` 4 +
+  `implement` 4 + `review` 3 + `fix` 1 + `re-review` 1 + `merge` 3 + `ledger-append` 4 (`bd-101`,
+  `bd-102`, `bd-103`, `bd-104` — one per terminal outcome) + `triage` 2 + `notify` 1 + `clarify` 1 +
+  `final-review` 1 = **31 agent calls, 0 errors** (`final-review` dispatches because
+  `completed.length` is 2, not 0). The pre-Task-5 script's confirmed count was 26 (see the
+  superseded baseline below) — the +5 is exactly the new `read-ledger` (1) and `ledger-append` (4)
+  dispatches; nothing else in this scenario's topology changed.
 - `r.branch` reaching `mergePrompt`'s dispatch text and `im.base` reaching `taskReviewPrompt`'s
   (C2/C6) is verified only by reading `mergePrompt`'s and `taskReviewPrompt`'s definitions — never
   by this or any dryRun's output, for the identical reason the scoping and finding-rendering
@@ -1409,15 +1648,19 @@ three defects — no stub ever returned `BLOCKED` at implement, and the fix loop
 one round to loop. It's kept here as history of the *prior* scenario, not as evidence for the
 current script.
 
-**Confirmed against the current script.** Run `wf_ddba38c0-72d`: **26 agents dispatched, 0
-errors** — matching the four-task scenario's expected count exactly. Returned
-`{completed:["bd-101","bd-102"], escalated:["bd-103"], pendingRetry:["bd-104"], parked:[]}`.
-Compare this to the intermediate run `wf_171ab5c1-339` (also 26/0, cited in earlier revisions of
-this section) — **`bd-104` now appears in `pendingRetry`**, where under the engine
+**Confirmed against the script as it stood through Task 4 — stale as of Task 5.** Run
+`wf_ddba38c0-72d`: **26 agents dispatched, 0 errors** — matching that revision's expected count
+exactly. Returned `{completed:["bd-101","bd-102"], escalated:["bd-103"], pendingRetry:["bd-104"],
+parked:[]}`. Compare this to the intermediate run `wf_171ab5c1-339` (also 26/0, cited in earlier
+revisions of this section) — **`bd-104` now appears in `pendingRetry`**, where under the engine
 `wf_171ab5c1-339` ran against it vanished from every bucket entirely (neither `completed`,
-`escalated`, nor anything else — the reporting hole review round 2 found). This run is what proves
-that fix end to end, against the actual current script; `wf_171ab5c1-339` cannot, because it never
-ran against a script that had a `pendingRetry`/`parked` return shape at all.
+`escalated`, nor anything else — the reporting hole review round 2 found). `wf_ddba38c0-72d` is
+what proved that fix end to end, against the script current *at that time*; `wf_171ab5c1-339`
+cannot, because it never ran against a script that had a `pendingRetry`/`parked` return shape at
+all. **Neither run's agent count is current now**: Task 5 (I1/I3/I7) added the `read-ledger` and
+`ledger-append:*` dispatches (see the Task 5 staleness note under "dryRun policy" and the updated
+31-call arithmetic under "Assertions for the canonical dryRun" above) — a fresh run against the
+current script is required before this section can cite a real, current agent count again.
 
 **`wf_171ab5c1-339` is kept only as superseded history, not current evidence.** It executed against
 commit `9576d7f` — the state of this script **before** the `4a3e3bc` and `9855503` commits
@@ -1509,6 +1752,7 @@ script and this `args` block:
   },
   "prompts": {
     "stubs": {
+      "read-ledger": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"text\":\"\"}",
       "close-epics": [
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"rootClosed\":false,\"closedThisRun\":[]}",
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"rootClosed\":false,\"closedThisRun\":[\"bd-101\",\"bd-102\"]}"
@@ -1517,7 +1761,7 @@ script and this `args` block:
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[\"bd-101\",\"bd-102\",\"bd-103\",\"bd-104\"]}",
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[]}"
       ],
-      "plan": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"planPath\":\".worktrees/epic-bd-100-integration/.sdd/bd-100/plan.md\",\"mapping\":[{\"n\":1,\"id\":\"bd-101\",\"files\":[\"src/a.js\"]},{\"n\":2,\"id\":\"bd-102\",\"files\":[\"src/b.js\"]},{\"n\":3,\"id\":\"bd-103\",\"files\":[\"src/a.js\"]},{\"n\":4,\"id\":\"bd-104\",\"files\":[\"src/c.js\"]}]}",
+      "plan": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"planPath\":\".worktrees/epic-bd-100-integration/.superpowers/sdd/bd-100-plan/bd-100-plan.md\",\"mapping\":[{\"n\":1,\"id\":\"bd-101\",\"files\":[\"src/a.js\"]},{\"n\":2,\"id\":\"bd-102\",\"files\":[\"src/b.js\"]},{\"n\":3,\"id\":\"bd-103\",\"files\":[\"src/a.js\"]},{\"n\":4,\"id\":\"bd-104\",\"files\":[\"src/c.js\"]}]}",
       "brief:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"BRIEFED\",\"files\":[\"src/a.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-101\",\"base\":\"aaaaaaa1111111111111111111111111111111\"}",
       "brief:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-102\",\"n\":2,\"status\":\"BRIEFED\",\"files\":[\"src/b.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-102\",\"base\":\"bbbbbbb2222222222222222222222222222222\"}",
       "brief:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-103\",\"n\":3,\"status\":\"BRIEFED\",\"files\":[\"src/a.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-103\",\"base\":\"ccccccc3333333333333333333333333333333\"}",
@@ -1532,22 +1776,28 @@ script and this `args` block:
       "fix:bd-101:1": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/a.js\"]}",
       "re-review:bd-101:1": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"CLEAN\"}",
       "merge:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"merged\":true}",
+      "ledger-append:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "merge:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-102\",\"merged\":true}",
+      "ledger-append:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "merge:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-103\",\"merged\":false,\"blockerBead\":\"bd-108\"}",
       "triage:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"decision\":\"ESCALATE\",\"detail\":\"rebase conflict on src/a.js survived one auto-resolve attempt\"}",
       "triage:bd-104": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"decision\":\"RESOLVE\",\"detail\":\"implementer needs the missing config constant named explicitly; re-plan and re-attempt\"}",
       "notify:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"sent\":true}",
+      "ledger-append:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "clarify:bd-104": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"recorded\":true}",
+      "ledger-append:bd-104": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "final-review": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"summary\":\"stub: 2/4 tasks merged; bd-103 quarantined, bd-104 resolved pending re-attempt\",\"verdict\":\"conditional-pass\"}"
     }
   }
 }
 ```
 
-If a future structural edit changes this script, re-run with these args, confirm the same 26/0
-shape (or update it deliberately alongside the edit that changed it), and replace the figures
-above — same discipline as `super-roast`'s "Passing baseline (recorded, not illustrative)"
-sections.
+If a future structural edit changes this script, re-run with these args, confirm the same shape (or
+update it deliberately alongside the edit that changed it), and replace the figures above — same
+discipline as `super-roast`'s "Passing baseline (recorded, not illustrative)" sections. As of Task
+5, the expected shape is **31 agent calls, 0 errors** (see "Assertions for the canonical dryRun"
+above) — **unverified, arithmetic only**; the 26/0 figure in every "Confirmed"/"Superseded" writeup
+above predates this edit.
 
 ## Cap-tripping dryRun scenario (separate baseline)
 
@@ -1579,6 +1829,7 @@ reading `reviewAndFix`'s definition directly (the loop condition is `rv.status !
 
 | Stub key | Canned output (`<json>` content) | Exercises |
 |---|---|---|
+| `read-ledger` | `{text:""}` | I1: the one-time Resume-phase read — fresh epic, nothing reconstructed |
 | `close-epics` (array, 2 entries) | `{rootClosed:false,closedThisRun:[]}` twice | root never closes — `bd-201` never merges in this scenario |
 | `bd-ready` (array, 2 entries) | `{ids:["bd-201"]}` then `{ids:[]}` | round 1 supplies the one task; round 2's empty set drains the loop (`bd-201` is excluded from round 2 anyway, via the `escalated` filter, once triage ESCALATEs it below) |
 | `plan` | `{planPath:"...", mapping:[{n:1,id:"bd-201",files:["src/x.js"]}]}` | single-task, single-bucket mapping |
@@ -1591,6 +1842,7 @@ reading `reviewAndFix`'s definition directly (the loop condition is `rv.status !
 | `breaker-blocker:bd-201` | `{id:"bd-201",status:"BLOCKED",blockerBead:"bd-210"}` | the blocker bead filed on a BLOCKED ruling — `breakerBlockerPrompt` now takes the adjudicator's `ruling` as a third argument (verified by reading the definition, not this canned return) |
 | `triage:bd-201` | `{decision:"ESCALATE",detail:"race condition confirmed load-bearing by the breaker adjudicator; needs a human decision on the caching strategy"}` | `handleBlocker`'s normal triage dispatch, reached via the Integrate loop's `if (r.status === 'BLOCKED')` branch — same path any other BLOCKED result takes, confirming the breaker's BLOCKED exit isn't a special case downstream |
 | `notify:bd-201` | `{sent:true}` | fixed-notification mechanical dispatch on the ESCALATE branch |
+| `ledger-append:bd-201` | `{appended:true}` | I1: `handleBlocker`'s ESCALATE branch appends `Task 1 (bd-201): BLOCKED — <detail>` — the breaker-cap BLOCKED case reaches the ledger through the SAME `handleBlocker` write every other blocker trigger uses, not a special-cased write inside `reviewAndFix` |
 
 **No `merge:bd-201` and no `final-review` key exist in this scenario's args** — both are part of
 the test. `bd-201` never reaches `mergePrompt` (it's BLOCKED, never CLEAN); `completed.length` stays
@@ -1615,14 +1867,18 @@ scenario, something regressed: `merge:bd-201` would mean a BLOCKED task reached 
   never merges, so the Integrate loop's `if (r.parkRuling)` push never runs — not that `adj.decision`
   was ever `PARK` here in the first place), `stalled` is `false` (the round that quarantines
   `bd-201` grows `escalated`, which the no-progress guard reads as progress).
-- Expected dispatch count: `close-epics` 2 + `bd-ready` 2 + `plan` 1 + `brief` 1 + `implement` 1 +
-  `review` 1 + `fix` 5 + `re-review` 5 + `adjudicate` 1 + `breaker-blocker` 1 + `triage` 1 +
-  `notify` 1 = **22 agent calls, 0 errors** — and, distinctly from every other scenario in this
-  doc, **no `final-review` dispatch**, since `completed.length` is `0`.
+- Expected dispatch count (I1: updated arithmetic, not a measured run — see the Task 5 staleness
+  note under "dryRun policy"): `read-ledger` 1 + `close-epics` 2 + `bd-ready` 2 + `plan` 1 +
+  `brief` 1 + `implement` 1 + `review` 1 + `fix` 5 + `re-review` 5 + `adjudicate` 1 +
+  `breaker-blocker` 1 + `triage` 1 + `notify` 1 + `ledger-append` 1 (`bd-201`) = **24 agent calls,
+  0 errors** — and, distinctly from every other scenario in this doc, **no `final-review`
+  dispatch**, since `completed.length` is `0`. The pre-Task-5 confirmed count was 22 (below); the
+  +2 is exactly `read-ledger` and `ledger-append:bd-201`.
 
-**Confirmed.** Run `wf_e189dd5a-a5f`: **22 agents dispatched, 0 errors** — matching the expected
-count above exactly, including the absent `merge:bd-201`/`final-review` dispatches (neither was
-ever requested). 5 fix rounds, 5 still-open re-reviews, 1 adjudicator call, 1 blocker bead filed, 1
+**Confirmed against the script as it stood through Task 4 — stale as of Task 5.** Run
+`wf_e189dd5a-a5f`: **22 agents dispatched, 0 errors** — matching that revision's expected count
+exactly, including the absent `merge:bd-201`/`final-review` dispatches (neither was ever
+requested). 5 fix rounds, 5 still-open re-reviews, 1 adjudicator call, 1 blocker bead filed, 1
 triage call (`ESCALATE`), 0 merge dispatches. Returned `{completed:[], escalated:["bd-201"],
 pendingRetry:[], parked:[], stalled:false}` — exactly as predicted (`parked` stays empty: this
 scenario's task never merges). This confirms the round-cap boundary (5,
@@ -1645,6 +1901,7 @@ collectively prove, and what they still don't" at the end of the PARK scenario b
   },
   "prompts": {
     "stubs": {
+      "read-ledger": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"text\":\"\"}",
       "close-epics": [
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"rootClosed\":false,\"closedThisRun\":[]}",
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"rootClosed\":false,\"closedThisRun\":[]}"
@@ -1653,7 +1910,7 @@ collectively prove, and what they still don't" at the end of the PARK scenario b
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[\"bd-201\"]}",
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[]}"
       ],
-      "plan": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"planPath\":\".worktrees/epic-bd-200-integration/.sdd/bd-200/plan.md\",\"mapping\":[{\"n\":1,\"id\":\"bd-201\",\"files\":[\"src/x.js\"]}]}",
+      "plan": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"planPath\":\".worktrees/epic-bd-200-integration/.superpowers/sdd/bd-200-plan/bd-200-plan.md\",\"mapping\":[{\"n\":1,\"id\":\"bd-201\",\"files\":[\"src/x.js\"]}]}",
       "brief:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"BRIEFED\",\"files\":[\"src/x.js\"],\"branch\":\".worktrees/epic-bd-200-integration--task-bd-201\",\"base\":\"eeeeeee5555555555555555555555555555555\"}",
       "implement:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"IMPLEMENTED\",\"files\":[\"src/x.js\"],\"branch\":\".worktrees/epic-bd-200-integration--task-bd-201\"}",
       "review:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"NEEDS_FIX\",\"files\":[\"src/x.js\"],\"finding\":\"race condition writing the shared cache in src/x.js:17\"}",
@@ -1670,15 +1927,18 @@ collectively prove, and what they still don't" at the end of the PARK scenario b
       "adjudicate:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"decision\":\"BLOCKED\",\"ruling\":\"real race condition with no test coverage for the interleaving; must not merge\"}",
       "breaker-blocker:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"status\":\"BLOCKED\",\"blockerBead\":\"bd-210\"}",
       "triage:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"decision\":\"ESCALATE\",\"detail\":\"race condition confirmed load-bearing by the breaker adjudicator; needs a human decision on the caching strategy\"}",
-      "notify:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"sent\":true}"
+      "notify:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"sent\":true}",
+      "ledger-append:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}"
     }
   }
 }
 ```
 
-If a future structural edit changes this script, re-run with these args, confirm the same 22/0
-shape (or update it deliberately alongside the edit that changed it), and replace the figures
-above — same discipline as the canonical scenario's own baseline.
+If a future structural edit changes this script, re-run with these args, confirm the same shape (or
+update it deliberately alongside the edit that changed it), and replace the figures above — same
+discipline as the canonical scenario's own baseline. As of Task 5, the expected shape is **24 agent
+calls, 0 errors** (see the updated arithmetic above) — **unverified, arithmetic only**; the 22/0
+figure above predates this edit.
 
 ## PARK dryRun scenario (separate baseline)
 
@@ -1711,6 +1971,7 @@ that; it is, and remains, verified only by reading the `if` statement itself.
 
 | Stub key | Canned output (`<json>` content) | Exercises |
 |---|---|---|
+| `read-ledger` | `{text:""}` | I1: the one-time Resume-phase read — fresh epic, nothing reconstructed |
 | `close-epics` (array, 2 entries) | `{rootClosed:false,closedThisRun:[]}` twice | root stays open (this scenario's canned world doesn't bother modeling epic closure after the one child merges — same simplification the other two scenarios make) |
 | `bd-ready` (array, 2 entries) | `{ids:["bd-301"]}` then `{ids:[]}` | round 1 supplies the one task; round 2's empty set drains the loop |
 | `plan` | `{planPath:"...", mapping:[{n:1,id:"bd-301",files:["src/y.js"]}]}` | single-task, single-bucket mapping |
@@ -1721,6 +1982,7 @@ that; it is, and remains, verified only by reading the `if` statement itself.
 | `re-review:bd-301:1` … `re-review:bd-301:5` | `{id:"bd-301",n:1,status:"NEEDS_FIX",finding:"the retry backoff constant is a magic number instead of a named config value"}` (all 5) | never `CLEAN`, so the loop runs the full 5 rounds |
 | `adjudicate:bd-301` | `{id:"bd-301",decision:"PARK",ruling:"style-only finding, not load-bearing and doesn't reveal a plan defect; safe to merge as-is"}` | **the PARK arm** — the one branch neither other scenario exercises |
 | `merge:bd-301` | `{id:"bd-301",merged:true}` | the PARK ruling reaches `mergePrompt` — a task with a known-open finding merging, the ONE legitimate path for that in this script |
+| `ledger-append:bd-301` | `{appended:true}` | I1: the merge-gate `ledger-append` dispatch — `Task 1 (bd-301): complete (merged, 1 parked — ruling: ...)`, SKILL.md's `<K> parked` completion-line variant |
 | `final-review` | `{summary:"stub: 1/1 task merged; bd-301 parked with a ruling",verdict:"conditional-pass"}` | dispatched because `completed.length` is 1, not 0 |
 
 **No `breaker-blocker:bd-301`, `triage:bd-301`, or `notify:bd-301` key exists in this scenario's
@@ -1740,26 +2002,33 @@ to short-circuit the blocker path.
 - The Finish-phase log line reads `... Parked (merged with an overruled finding): 1.` and a
   `PARKED bd-301: ...` line was logged earlier, from inside `reviewAndFix`, distinct from and
   earlier than the Finish-phase summary line.
-- Expected dispatch count: `close-epics` 2 + `bd-ready` 2 + `plan` 1 + `brief` 1 + `implement` 1 +
-  `review` 1 + `fix` 5 + `re-review` 5 + `adjudicate` 1 + `merge` 1 + `final-review` 1 = **21 agent
-  calls, 0 errors**.
+- Expected dispatch count (I1: updated arithmetic, not a measured run — see the Task 5 staleness
+  note under "dryRun policy"): `read-ledger` 1 + `close-epics` 2 + `bd-ready` 2 + `plan` 1 +
+  `brief` 1 + `implement` 1 + `review` 1 + `fix` 5 + `re-review` 5 + `adjudicate` 1 + `merge` 1 +
+  `ledger-append` 1 (`bd-301`) + `final-review` 1 = **23 agent calls, 0 errors**. The pre-Task-5
+  confirmed count was 21 (below); the +2 is exactly `read-ledger` and `ledger-append:bd-301`.
 
-**Confirmed.** Run `wf_058c4b83-631`: **21 agents dispatched, 0 errors** — matching the expected
-count above exactly. Returned `{completed:["bd-301"], escalated:[], pendingRetry:[],
+**Confirmed against the script as it stood through Task 4 — stale as of Task 5.** Run
+`wf_058c4b83-631`: **21 agents dispatched, 0 errors** — matching that revision's expected count
+exactly. Returned `{completed:["bd-301"], escalated:[], pendingRetry:[],
 parked:["bd-301"], stalled:false}` — `bd-301` appears in **both** `completed` and `parked`, exactly
 the distinction the Critical fix exists to make: a task that merged with an adjudicator-overruled
 finding is now visibly different from one that reviewed clean on the first pass, where before it
-was indistinguishable. This branch had never executed before this run.
+was indistinguishable. This branch had never executed before that run.
 
-**All three terminal outcomes are now covered by an executed run against the current script:** the
-canonical scenario (`wf_ddba38c0-72d`, 26 agents, 0 errors — normal completion, disjoint-file
-batching, a BLOCKED implementer quarantined, a RESOLVE triage now correctly landing in
-`pendingRetry`; `wf_171ab5c1-339` is superseded history only — it ran two commits earlier, against
-a pre-`parked`/`pendingRetry` return shape, and is not evidence about the current engine, see
-"Baselines for the canonical scenario" above), the cap-tripping scenario (`wf_e189dd5a-a5f`, 22 agents, 0
-errors — breaker → BLOCKED: exactly 5 fix rounds, 1 adjudicator, 1 blocker bead, **0** merge
-dispatches), and this PARK scenario (`wf_058c4b83-631`, 21 agents, 0 errors — breaker → PARK:
-merged *and* recorded).
+**All three terminal outcomes were covered by an executed run against the script as it stood
+through Task 4 — every run cited below predates Task 5's ledger/concurrency/workspace edit and
+none of their agent counts are current (see the Task 5 staleness note under "dryRun policy" and
+each scenario's own updated arithmetic above):** the canonical scenario (`wf_ddba38c0-72d`, 26
+agents, 0 errors — normal completion, disjoint-file batching, a BLOCKED implementer quarantined, a
+RESOLVE triage now correctly landing in `pendingRetry`; `wf_171ab5c1-339` is superseded history
+only — it ran two commits earlier, against a pre-`parked`/`pendingRetry` return shape, and is not
+evidence about the current engine, see "Baselines for the canonical scenario" above), the
+cap-tripping scenario (`wf_e189dd5a-a5f`, 22 agents, 0 errors — breaker → BLOCKED: exactly 5 fix
+rounds, 1 adjudicator, 1 blocker bead, **0** merge dispatches), and this PARK scenario
+(`wf_058c4b83-631`, 21 agents, 0 errors — breaker → PARK: merged *and* recorded). All three remain
+genuine evidence for the terminal-outcome routing they exercised; none is current evidence for
+today's agent counts until re-run.
 
 **What these three runs collectively prove, and what they still don't.** Together they confirm
 terminal-outcome routing (a task reaches exactly one of: merged clean, quarantined BLOCKED,
@@ -1789,6 +2058,7 @@ directly, or by a live run.
   },
   "prompts": {
     "stubs": {
+      "read-ledger": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"text\":\"\"}",
       "close-epics": [
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"rootClosed\":false,\"closedThisRun\":[]}",
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"rootClosed\":false,\"closedThisRun\":[]}"
@@ -1797,7 +2067,7 @@ directly, or by a live run.
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[\"bd-301\"]}",
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[]}"
       ],
-      "plan": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"planPath\":\".worktrees/epic-bd-300-integration/.sdd/bd-300/plan.md\",\"mapping\":[{\"n\":1,\"id\":\"bd-301\",\"files\":[\"src/y.js\"]}]}",
+      "plan": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"planPath\":\".worktrees/epic-bd-300-integration/.superpowers/sdd/bd-300-plan/bd-300-plan.md\",\"mapping\":[{\"n\":1,\"id\":\"bd-301\",\"files\":[\"src/y.js\"]}]}",
       "brief:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"BRIEFED\",\"files\":[\"src/y.js\"],\"branch\":\".worktrees/epic-bd-300-integration--task-bd-301\",\"base\":\"fffffff6666666666666666666666666666666\"}",
       "implement:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"IMPLEMENTED\",\"files\":[\"src/y.js\"],\"branch\":\".worktrees/epic-bd-300-integration--task-bd-301\"}",
       "review:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"NEEDS_FIX\",\"files\":[\"src/y.js\"],\"finding\":\"the retry backoff constant is a magic number instead of a named config value\"}",
@@ -1813,12 +2083,15 @@ directly, or by a live run.
       "re-review:bd-301:5": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"NEEDS_FIX\",\"finding\":\"the retry backoff constant is a magic number instead of a named config value\"}",
       "adjudicate:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"decision\":\"PARK\",\"ruling\":\"style-only finding, not load-bearing and doesn't reveal a plan defect; safe to merge as-is\"}",
       "merge:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"merged\":true}",
+      "ledger-append:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "final-review": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"summary\":\"stub: 1/1 task merged; bd-301 parked with a ruling\",\"verdict\":\"conditional-pass\"}"
     }
   }
 }
 ```
 
-If a future structural edit changes this script, re-run with these args, confirm the same 21/0
-shape (or update it deliberately alongside the edit that changed it), and replace the figures
-above — same discipline as the other two scenarios' baselines.
+If a future structural edit changes this script, re-run with these args, confirm the same shape (or
+update it deliberately alongside the edit that changed it), and replace the figures above — same
+discipline as the other two scenarios' baselines. As of Task 5, the expected shape is **23 agent
+calls, 0 errors** (see the updated arithmetic above) — **unverified, arithmetic only**; the 21/0
+figure above predates this edit.
