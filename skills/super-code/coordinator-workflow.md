@@ -461,12 +461,15 @@ const PLANNED = { type: 'object', properties: { planPath: {type:'string'}, mappi
 // fixPrompt has nothing but {id,n,status,files,branch} to build a fix dispatch from.
 // `base` is the pre-implementer commit — captured once, by the brief stage, right after the task
 // worktree is cut and before the implementer makes any commit (see taskBriefPrompt). It is NOT
-// required (only the brief stage's dispatch actually determines it), but every downstream RESULT
-// on this task's pipeline carries it forward via plain JS assignment rather than asking a
-// subagent to echo it back — same reasoning as `branch`/`n`/`files` below (see the implement
-// pipeline stage and reviewAndFix). Never derive review-package's BASE arg as `HEAD~1` instead —
-// that silently drops all but the last commit of a multi-commit task
-// (subagent-driven-development/SKILL.md:238).
+// required (only the brief stage's dispatch actually determines it). Unlike `branch`/`n` (which
+// the coordinator can derive itself from `taskWorktree(id)`/`ordinalFor(id)` and never needs to
+// ask any subagent for — see the implement pipeline stage), `base` is a git commit SHA the
+// coordinator has no way to compute or verify on its own (no shell/git access — see "Key
+// constraint: the script does no I/O"), so the brief agent's report is its one legitimate source.
+// Every stage downstream of the brief then carries it forward via plain JS assignment rather than
+// re-asking a later subagent to echo it back (see the implement pipeline stage and reviewAndFix).
+// Never derive review-package's BASE arg as `HEAD~1` instead — that silently drops all but the
+// last commit of a multi-commit task (subagent-driven-development/SKILL.md:238).
 const RESULT  = { type: 'object', properties: { id: {type:'string'}, n: {type:'integer'}, status: {type:'string'}, files: { type: 'array', items: {type:'string'} }, branch: {type:'string'}, base: {type:'string'}, blockerBead: {type:'string'}, finding: {type:'string'} }, required: ['id','status'] }
 const TRIAGE  = { type: 'object', properties: { decision: {type:'string'}, detail: {type:'string'} }, required: ['decision','detail'] } // decision: RESOLVE | ESCALATE
 const MERGE   = { type: 'object', properties: { id:{type:'string'}, merged:{type:'boolean'}, blockerBead:{type:'string'} }, required: ['id','merged'] }
@@ -544,15 +547,20 @@ while (true) {
   for (const group of groups) {  // disjoint-file groups serialize relative to each other; tasks within a group don't share files
     const groupResults = await pipeline(group,
       id  => agent(pick(() => taskBriefPrompt(planned.planPath, ordinalFor(id), id, taskWorktree(id)), `brief:${id}`), { label: `brief:${id}`,   phase: 'Implement', model: model('mechanical'), schema: RESULT }),
-      // `n`/`branch`/`base` are the coordinator's own data — assigned by `taskWorktree(id)` and
-      // `ordinalFor(id)` (n/branch) or captured once at brief time (base) — not the implementer's
-      // to invent. Carry them forward here in plain JS rather than asking implementPrompt's report
-      // contract to echo them: the implementer has no reason to preserve a value it never needed
-      // (same reasoning "Coordinator contract" applies to `branch` reaching mergePrompt below via
-      // reviewAndFix). Only `status`/`files` are genuinely the implementer's own report.
+      // `n`/`branch` are sourced from `ordinalFor(br.id)`/`taskWorktree(br.id)` DIRECTLY — the same
+      // pure closures used to build the brief dispatch above — never from `br.n`/`br.branch` (the
+      // brief agent's own echo of them). `RESULT` doesn't require either field, so trusting the
+      // echo would reproduce C2's "branch: undefined" failure one hop earlier, in a spot the
+      // coordinator can make unconditionally correct for free since it already knows both values
+      // before it ever dispatches the brief. `base`, by contrast, genuinely cannot be sourced this
+      // way: it's a commit SHA captured via `git rev-parse HEAD` inside the task's own worktree
+      // (see taskBriefPrompt), and the coordinator has no shell/git access of its own to compute or
+      // verify it (see "Key constraint: the script does no I/O") — so `base` is the one field where
+      // round-tripping through the brief agent's report is deliberate, not an oversight. Only
+      // `status`/`files` are genuinely the implementer's own report.
       async br => {
         const im = await agent(pick(() => implementPrompt(br, integrationBranch), `implement:${br.id}`), { label: `impl:${br.id}`, phase: 'Implement', model: model('implementer'), schema: RESULT })
-        return { ...im, n: br.n, branch: br.branch, base: br.base }
+        return { ...im, n: ordinalFor(br.id), branch: taskWorktree(br.id), base: br.base }
       },
       im  => reviewAndFix(im, planned.planPath),
     )
@@ -906,7 +914,7 @@ attempt, exercising the blocker-bead path end to end: triage `ESCALATE`, notify,
 | `bd-ready` (array, 2 entries) | `{ids:["bd-101","bd-102","bd-103"]}` then `{ids:[]}` | round 1 supplies the batch; round 2's empty set drains the loop. The **scoping** assertion (`--exclude-type=epic --label sp:<epicId>`) is a property of the dispatched prompt text itself, not of this canned return — verified by reading the prompt, same as `super-roast`'s reporter-arithmetic caveat above |
 | `plan` | `{planPath:"...", mapping:[{n:1,id:"bd-101",files:["src/a.js"]},{n:2,id:"bd-102",files:["src/b.js"]},{n:3,id:"bd-103",files:["src/a.js"]}]}` | ordinal↔bead-id↔files mapping that `groupByDisjointFiles` and every `ordinalFor` lookup consumes |
 | `brief:bd-101` / `brief:bd-102` / `brief:bd-103` | `{id:"bd-1XX",n:<n>,status:"BRIEFED",files:[...],branch:".worktrees/<integrationBranch>--task-bd-1XX",base:"<40-char-sha>"}` | call-site-qualified per id (a single unqualified `brief` key can't return three different ids/branches); `base` here is the pre-implementer commit taskBriefPrompt now captures — this is where `n`/`branch`/`base` originate for the rest of the pipeline |
-| `implement:bd-101` / `implement:bd-102` / `implement:bd-103` | `{id:"bd-1XX",n:<n>,status:"IMPLEMENTED",files:[...],branch:"..."}` | same per-id qualification. This stub's `n`/`branch` are cosmetic only — the pipeline's implement stage re-stamps `n`/`branch`/`base` from the brief result (`br`) onto whatever this call returns, never trusting the implementer's own echo (see the pipeline call site) |
+| `implement:bd-101` / `implement:bd-102` / `implement:bd-103` | `{id:"bd-1XX",n:<n>,status:"IMPLEMENTED",files:[...],branch:"..."}` | same per-id qualification. This stub's `n`/`branch` are cosmetic only — the pipeline's implement stage re-stamps `n` from `ordinalFor(br.id)` and `branch` from `taskWorktree(br.id)` directly (never trusting the implementer's own echo, nor even the brief agent's — see the pipeline call site); only `base` is carried from the brief result (`br.base`), since that one genuinely can't be recomputed |
 | `review:bd-101` | `{id:"bd-101",n:1,status:"NEEDS_FIX",files:["src/a.js"],finding:"missing null check on parsed input in src/a.js:42"}` | the one task whose review returns a finding — `finding` is what `fixPrompt` builds the fix dispatch from, not the rest of the result. No `branch`/`base` here by design: `reviewAndFix`'s `carried()` re-stamps both from `im` regardless of what this report contains, which is the C2 fix |
 | `review:bd-102` / `review:bd-103` | `{id:"bd-1XX",n:<n>,status:"CLEAN",files:[...]}` | clean reviews — no fix loop for these two |
 | `fix:bd-101` | `{id:"bd-101",n:1,status:"FIXED",files:["src/a.js"]}` | fix round dispatched only for the flagged task; no `branch` here either, by the same design as `review:bd-101` above |
@@ -948,14 +956,18 @@ folding them into the canonical one.
 - Expected dispatch count: `close-epics` 2 + `bd-ready` 2 + `plan` 1 + `brief` 3 + `implement` 3 +
   `review` 3 + `fix` 1 + `re-review` 1 + `merge` 3 + `triage` 1 + `notify` 1 + `final-review` 1 =
   **22 agent calls, 0 errors** (`final-review` dispatches because `completed.length` is 2, not 0).
-- `r.branch` is never `undefined` at any `merge:<id>` call, and `r.base` is never `undefined` at
-  any `review:<id>` call (C2/C6) — provable structurally under `dryRun`, since none of
-  `review:bd-101`/`review:bd-102`/`review:bd-103`/`fix:bd-101`/`re-review:bd-101`'s stub JSON
-  includes `branch` or `base` at all (see the stub table): if either value reached `mergePrompt` or
-  `taskReviewPrompt`'s dispatch text, it could only have come from the `carried()` re-stamp in
-  `reviewAndFix` or the brief→implement re-stamp in the pipeline call site — not from a reviewer's
-  echo. This is a stronger check than reading the return value: the *stub* deliberately omits the
-  field so the only way it can show up downstream is via the coordinator's own carry-forward code.
+- `r.branch` reaching `mergePrompt`'s dispatch text and `im.base` reaching `taskReviewPrompt`'s
+  (C2/C6) is verified only by reading `mergePrompt`'s and `taskReviewPrompt`'s definitions — never
+  by this or any dryRun's output, for the identical reason the scoping and finding-rendering
+  caveats above are (see "What this dryRun proves and does not prove" below): `pick()` is lazy, so
+  under `dryRun: true` neither builder is ever called and neither one's template literal ever
+  interpolates anything — the text actually sent to the stubbed agent is the literal stub string,
+  full stop. A regression that deleted `carried()`, or the brief→implement `taskWorktree`/
+  `ordinalFor` re-stamp, would **not** fail this dryRun: agent count stays 22, errors stay 0, and
+  neither `completed`/`escalated` nor any schema the loop branches on carries branch/base
+  information. What the dryRun *does* exercise, because these are plain JS and not behind `pick()`,
+  is the carry-forward assignments themselves running without throwing on every stubbed `im`/`br` —
+  that only proves the code path executes, not that its result reaches a dispatch string.
 
 If any assertion fails, fix the script **in this doc** (this doc's script is canonical) and
 re-run before committing the fix.
@@ -1040,7 +1052,16 @@ under `dryRun: true` the real `fixPrompt` is never called, and this run cannot d
 carries `finding` across the schema boundary intact — the `review:bd-101` stub returned it and it
 survived into `rv` unchanged (step 8–9 above). The rendering itself — that `fixPrompt` interpolates
 `rv.finding` into the dispatch string — is verified only by reading line 565, the same way scoping
-is verified only by reading line 458.
+is verified only by reading line 458. The identical caveat applies a third time, to `branch`/`base`
+**carry-forward** (C2/C6): `mergePrompt` and `taskReviewPrompt` are exactly as lazy as `fixPrompt`
+under `pick()`, so this run never calls either and never interpolates `r.branch`/`im.base` into any
+dispatch text — a regression that deleted the `carried()` re-stamp or the brief→implement
+`taskWorktree`/`ordinalFor` re-stamp would still show 22 agents, 0 errors, and identical
+`completed`/`escalated`. What *is* narrower and true: the re-stamp assignments are plain JS, not
+gated by `pick()`, so they run on every stubbed `im`/`br` in this trace without throwing — but that
+only proves the code path executes, not that its output reaches a prompt. Whether `r.branch`
+actually reaches `mergePrompt`'s text and `im.base` actually reaches `taskReviewPrompt`'s is, and
+can only be, verified by reading those two functions' definitions directly.
 
 **Prior run, kept as history.** Run `wf_d65bc00e-990`, 2026-07-30 (recorded before fix round 2 —
 `review:bd-101`'s stub then had no `finding` field), also passed: 22 agents, 0 errors, identical
