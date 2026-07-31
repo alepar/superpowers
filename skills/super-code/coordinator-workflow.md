@@ -34,12 +34,17 @@ args = {
 
 `mechanical` and `triage` are deliberately separate roles even though both may resolve to cheap
 tiers: `triage` names *only* the opus blocker-resolution judgment call (see "The blocker-bead
-path") — it never means "the cheap one." `mechanical` is for the deterministic CLI-echo steps
-(`bd ready`, `bd epic close-eligible`, `scripts/task-brief` dispatch, notifications, recording a
-clarification) that carry no judgment at all; spending opus on them wastes budget against
-`subagent-driven-development`'s Model Selection guidance and, worse, blurs "triage" into meaning
-two different things in the same doc. Keep every dispatch that only echoes a command or a fixed
-message on `mechanical`; keep every dispatch that decides RESOLVE vs ESCALATE on `triage`.
+path") — it never means "the cheap one." `mechanical` is for dispatches with a fully-specified,
+no-improvisation procedure — no branching left to the dispatched agent's judgment, whether that
+procedure is a literal CLI echo (`bd ready`, `scripts/task-brief` dispatch, notifications,
+recording a clarification) or a short fixed algorithm spelled out with worked examples, such as
+the epic-closure fixpoint (`bd epic close-eligible`'s dry-run/filter/close loop — see
+`closeEpicsPrompt` below; it outgrew a bare echo once it had to be scoped to this run's tree, but
+every branch in it is still a deterministic rule, not a judgment call). Spending opus on any of
+these wastes budget against `subagent-driven-development`'s Model Selection guidance and, worse,
+blurs "triage" into meaning two different things in the same doc. Keep every dispatch whose every
+branch is pre-decided on `mechanical`; keep every dispatch that decides RESOLVE vs ESCALATE on
+`triage`.
 
 `dryRun: true` swaps every dispatched agent for a canned stub, for the same reason as
 `super-roast`'s dryRun policy (see `skills/super-roast/super-roast-workflow.md`): validate the
@@ -143,13 +148,19 @@ Round-based with refill (each `bd ready` batch is, by definition, mutually indep
    unfiltered — in a repo holding more than one live epic it would close epics belonging to
    unrelated work. Every pass previews with `bd epic close-eligible --dry-run --json`, filters
    the returned ids to this run's tree (membership test below), then closes only the in-tree ids
-   individually via `bd close <id>`. Loop to a fixpoint (repeat until a preview pass returns
-   exactly `[]`, not a `count: 0` object) after each refill cycle, before re-querying ready work.
-   **Tree-membership test:** structural parentage — `bd show <id> --json`'s `dependencies` entry
-   with `dependency_type: "parent-child"`, followed transitively up to `epicId` — is authoritative;
-   the id-prefix convention (`id === epicId` or `id` starts with `epicId.`) is a fast sanity check
-   only and is overridden by parentage when the two disagree, since a hand-created bead can violate
-   the naming convention but can't fake the recorded parent-child link. Same contract as SKILL.md's
+   individually via `bd close <id>`. **Stop condition: a pass that closes zero in-tree ids** — not
+   "the preview is `[]`". Those differ whenever an out-of-tree epic is permanently close-eligible
+   (e.g. `super-plan-2c1` sitting in this repo alongside whatever epic this run drives): the
+   preview then never empties, since `--dry-run` is stateless and step 3 deliberately leaves
+   out-of-tree ids untouched, so "stop on `[]`" would spin forever while "stop on zero closed"
+   still reaches the fixpoint, since each pass that closes something can unlock the next level up.
+   **Tree-membership test:** `<id> === epicId` is IN-TREE trivially (the root has no parent to
+   walk to — checked first, so it can never fall through to the "no parent link found" case below).
+   Otherwise, structural parentage — `bd show <id> --json`'s `dependencies` entry with
+   `dependency_type: "parent-child"`, followed transitively up to `epicId` — is authoritative; the
+   id-prefix convention (`id === epicId` or `id` starts with `epicId.`) is a fast sanity check only
+   and is overridden by parentage when the two disagree, since a hand-created bead can violate the
+   naming convention but can't fake the recorded parent-child link. Same contract as SKILL.md's
    manual mode — the coordinator changes *who runs it* (a dispatched agent) and adds the scoping
    filter that a human operator applies implicitly by only ever running the command against their
    own tree.
@@ -455,10 +466,15 @@ const completed = []
 while (true) {
   // MECHANICAL: bd epic close-eligible is repo-global (no --label/--parent/--mol — see
   // closeEpicsPrompt) and closes only one tree level per call — loop dry-run-preview, filter to
-  // this run's tree, close the filtered ids, to a fixpoint (stop when a preview pass returns
-  // `[]`) before checking whether the root closed. First iteration is harmless: nothing is
-  // eligible yet. `mechanical`, not `triage` — the filter is a fixed, deterministic rule, not a
-  // judgment call (see "Coordinator contract").
+  // this run's tree, close the filtered ids, to a fixpoint. Stop condition is "a pass closes zero
+  // in-tree ids", NOT "the preview is []" — a permanently-eligible out-of-tree epic (this repo's
+  // own super-plan-2c1 is the live example) keeps returning in every preview forever, since
+  // --dry-run is stateless and out-of-tree ids are deliberately left untouched; "stop on []" would
+  // spin the dispatched agent forever, "stop on zero closed" still reaches the fixpoint. Root is
+  // its own tree-membership base case (`id === epicId`, no parent to walk to) — checked before the
+  // parent-chain walk, so root is never misclassified OUT-OF-TREE and rootClosed can go true.
+  // First iteration is harmless: nothing is eligible yet. `mechanical`, not `triage` — every
+  // branch here is a fixed, pre-decided rule, not a judgment call (see "Coordinator contract").
   phase('Close')
   const closed = await agent(pick(() => closeEpicsPrompt(epicId), 'close-epics'),
     { label: 'close-epics', phase: 'Close', schema: CLOSE, model: model('mechanical') })
@@ -534,14 +550,34 @@ function closeEpicsPrompt(epicId) {
   // pass previews with --dry-run --json, filters to this run's tree, then closes only the
   // filtered ids explicitly via `bd close <id>`. Do not "simplify" this back to the unfiltered
   // mutating form — that is the exact bug this filter exists to prevent.
-  return `Loop the following until a preview pass returns exactly \`[]\` (fixpoint — bd epic close-eligible closes at most one tree level per call, so a single pass is not enough):
-1. Run \`bd epic close-eligible --dry-run --json\` and parse the returned array of candidate epic ids.
-2. For each candidate id, apply this tree-membership test, in priority order:
-   a. AUTHORITATIVE: run \`bd show <id> --json\` and read its \`dependencies\` array for an entry with \`dependency_type: "parent-child"\` — that entry's id is <id>'s parent. Follow that link transitively (parent, grandparent, ...) until you either reach ${epicId} (IN-TREE) or run out of parent-child links without reaching it (OUT-OF-TREE).
-   b. SANITY CHECK ONLY: the id-prefix convention (<id> === "${epicId}" or <id> starts with "${epicId}.") should agree with (a). If it ever disagrees — e.g. a hand-created bead was given a lookalike id, or a bead outside the naming convention was parented under this epic — trust the parent-child chain from (a), not the prefix.
-3. Close only the IN-TREE ids from this pass, individually: run \`bd close <id>\` once per id (never the bare, unfiltered \`bd epic close-eligible\` mutating form). Append each closed id to closedThisRun. Leave OUT-OF-TREE ids untouched — they belong to unrelated work sharing this repo.
-4. Repeat from step 1.
-When the loop ends, run \`bd show ${epicId} --json\` and report rootClosed as true iff its status is closed, plus closedThisRun listing only the ids this run actually closed via \`bd close\`.`
+  //
+  // Two edge cases the stop condition and membership test MUST cover (both caught in review, kept
+  // here so a future edit can't drop them silently):
+  // - The root epic itself has zero `parent-child` dependency entries (verified live: `bd show
+  //   <root> --json` on this repo's own root shows `dependencies` count 0 — roots don't have
+  //   parents). Without an identity base case, the walk would run out of links on the root and
+  //   misclassify it OUT-OF-TREE, so `bd close ${epicId}` would never be issued and rootClosed
+  //   would stay false forever. Identity is checked FIRST, before the walk, so it can't fall
+  //   through to "no parent link found".
+  // - `--dry-run` is stateless and out-of-tree ids are deliberately left untouched, so if any
+  //   unrelated epic in the repo is permanently close-eligible (super-plan-2c1 again is the live
+  //   example), every preview keeps returning it forever. "Stop when the preview is []" is then
+  //   unsatisfiable and the dispatched agent spins with no outer guard to break it. The stop
+  //   condition is instead "a pass closes zero in-tree ids" — immune to a permanently-eligible
+  //   out-of-tree candidate, and still correct: each pass that closes something can unlock the
+  //   next tree level up, so the loop still reaches a real fixpoint.
+  return `Loop the following. STOP CONDITION: stop when a pass closes zero in-tree ids — do NOT stop merely because a preview call returns \`[]\`; those are different, see step 4.
+1. Run \`bd epic close-eligible --dry-run --json\` and parse the returned array of candidate epic ids. (bd epic close-eligible closes at most one tree level per call, so this loop runs multiple passes even in the simplest case.)
+2. For each candidate id, classify it IN-TREE or OUT-OF-TREE using this test, in priority order — do not skip step (a) even when (b) seems obvious:
+   a. AUTHORITATIVE, checked in this order:
+      - IDENTITY: if id === "${epicId}", it is IN-TREE. Stop here — do not attempt a parent walk on the root; the root has no parent-child dependency entry to find (verified: \`bd show ${epicId} --json\` shows an empty or root-parentless \`dependencies\` array for the root itself), so a walk would wrongly conclude OUT-OF-TREE.
+      - PARENT-CHILD WALK (only for id !== "${epicId}"): run \`bd show <id> --json\` and read its \`dependencies\` array for an entry with \`dependency_type: "parent-child"\` — that entry's id is <id>'s parent. If found, repeat the same test (identity check, then walk) on that parent id. If no such entry exists and id !== "${epicId}", it is OUT-OF-TREE (you have reached a different tree's root, or an unparented bead, without ever passing through ${epicId}).
+      - Worked examples (epicId = "super-plan-2c1"): id "super-plan-2c1" -> identity match -> IN-TREE, no walk. id "super-plan-2c1.8" -> not identity -> bd show shows parent-child entry to "super-plan-2c1" -> that IS epicId -> IN-TREE, one hop. id "super-plan-2c1.3.1" (nested subepic) -> not identity -> parent-child entry to "super-plan-2c1.3" -> not identity, not epicId itself -> recurse: bd show super-plan-2c1.3 --json has a parent-child entry to "super-plan-2c1" -> that IS epicId -> IN-TREE, two hops. id "acme-9" (an unrelated epic's own root) -> not identity -> bd show acme-9 --json has no parent-child entry at all -> OUT-OF-TREE.
+      - Bound the walk to a handful of hops (beads trees are shallow); if you somehow exceed ~10 hops without resolving, treat as OUT-OF-TREE and do not close it — err toward leaving an ambiguous id alone.
+   b. SANITY CHECK ONLY, never authoritative: the id-prefix convention (<id> === "${epicId}" or <id> starts with "${epicId}.") should agree with (a). If it ever disagrees — e.g. a hand-created bead was given a lookalike id, or a bead outside the naming convention was parented under this epic — trust (a), not the prefix.
+3. Close only the IN-TREE ids from this pass, individually: run \`bd close <id>\` once per id (never the bare, unfiltered \`bd epic close-eligible\` mutating form). Append each closed id to closedThisRun. Leave OUT-OF-TREE ids untouched — they belong to unrelated work sharing this repo, and will keep reappearing in future previews; that is expected, not a bug.
+4. If step 3 closed zero ids this pass (whether because the preview was \`[]\`, or because the preview was non-empty but every candidate was OUT-OF-TREE), STOP — the fixpoint is reached. Otherwise, repeat from step 1.
+When the loop stops, run \`bd show ${epicId} --json\` and report rootClosed as true iff its status is closed, plus closedThisRun listing only the ids this run actually closed via \`bd close\` across all passes.`
 }
 
 // The remaining prompt builders are deliberately minimal — the real prompt content lives in

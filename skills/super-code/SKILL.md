@@ -41,9 +41,9 @@ Every role below is set explicitly in `config.models` (the table is the source o
 | `finalReview` | opus | Whole-epic review against the integration branch before hand-off |
 | `implementer` | sonnet | Per-task implementation |
 | `reviewer` | sonnet | Per-task spec-compliance + quality review, and the merge agent |
-| `mechanical` | sonnet | Deterministic CLI-echo dispatches that carry no judgment: `bd epic close-eligible`, `bd ready` queries, `task-brief` extraction, notifications, recording a clarification |
+| `mechanical` | sonnet | Deterministic, no-improvisation dispatches that carry no judgment: `bd ready` queries, `task-brief` extraction, notifications, recording a clarification, and the epic-closure fixpoint (a stated filter + a fixed stop rule, not a bare CLI echo — see `./coordinator-workflow.md`'s `closeEpicsPrompt`) |
 
-`mechanical` and `triage` are deliberately separate: `triage` names only the opus RESOLVE/ESCALATE call; `mechanical` is everything that just echoes a command or a fixed message. Full rationale: `./coordinator-workflow.md` ("Coordinator contract").
+`mechanical` and `triage` are deliberately separate: `triage` names only the opus RESOLVE/ESCALATE call; `mechanical` is everything with a fully-specified, no-branching-on-judgment procedure — whether that's a literal command echo or a short fixed algorithm with worked examples removing all ambiguity. Full rationale: `./coordinator-workflow.md` ("Coordinator contract").
 
 ## Parallelism
 
