@@ -155,5 +155,5 @@ Do not ask the user how to execute. Always hand off to subagent execution:
 
 **"Plan complete and saved to `docs/superpowers/plans/<filename>.md`. Executing with subagent-driven-development."**
 
-- **REQUIRED SUB-SKILL:** Use `superpowers:subagent-driven-development` — fresh subagent per task, two-stage review, parallel where feasible (disjoint-file tasks).
+- **REQUIRED SUB-SKILL:** Use `superpowers:subagent-driven-development` — fresh subagent per task, task review (spec + quality) plus a broad final review, parallel where feasible (disjoint-file tasks).
 - Only if subagents are unavailable on this platform, fall back to `superpowers:executing-plans`. This is an automatic platform-capability decision, not a question for the user.
