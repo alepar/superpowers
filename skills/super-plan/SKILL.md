@@ -145,10 +145,8 @@ never declares itself finished, mirroring `super-roast`'s own handoff contract.
 
 ## Hand-off (root only)
 
-Always `superpowers:subagent-driven-development`.
-
-- **Beads:** hand off the root epic. SDD scopes ready work to `bd ready --exclude-type=epic --label sp:<root-epic-id>` and loops `bd epic close-eligible` to fixpoint. Run completion = the root epic is closed.
-- **No beads:** run `superpowers:writing-plans` once per epic (a mixed epic still gets a plan for its own leaf tasks); invoke SDD's plan-file mode once per plan, serially, in dependency order.
+- **Beads:** hand off the root epic to `superpowers:super-code`, which owns the epic-scoped `bd ready` loop and the `bd epic close-eligible` fixpoint. Run completion = the root epic is closed.
+- **No beads:** run `superpowers:writing-plans` once per epic (a mixed epic still gets a plan for its own leaf tasks); invoke `superpowers:subagent-driven-development`'s plan-file mode once per plan, serially, in dependency order.
 
 ## No-Beads Mode
 
@@ -180,4 +178,4 @@ Same decomposition/promotion/coverage, on paper. Each task-table row needs: a st
 - Invoked by `superpowers:brainstorming` at the end of every spec, root and nested.
 - Dispatches `./promotion-reviewer-prompt.md` and `./coverage-reviewer-prompt.md`.
 - Offers `superpowers:super-roast` (root only, optional) once the coverage loop passes; consumes its report to drive the fix + auto-re-roast loop — §Adversarial Review Loop.
-- Hands off to `superpowers:subagent-driven-development` (beads mode, or plan-file mode once per epic in no-beads mode); no-beads mode also uses `superpowers:writing-plans`.
+- Hands off to `superpowers:super-code` (beads mode) or `superpowers:subagent-driven-development` (plan-file mode once per epic in no-beads mode); no-beads mode also uses `superpowers:writing-plans`.
