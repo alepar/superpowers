@@ -390,11 +390,29 @@ export const meta = {
 // following the stated contract to the letter would omit it and crash on line 1. It is derived
 // below, by convention, from `integrationBranch` alone.
 const A = typeof args === 'string' ? JSON.parse(args) : args
-const { epicId, integrationBranch, config } = A || {}
+const { epicId, integrationBranch, config, dryRun = false, prompts } = A || {}
 // Fail fast: undefined args crash late + cryptically (see "Authoring pitfalls"). Validate + log here.
 if (!epicId || !integrationBranch || !config) throw new Error('coordinator args missing: ' + JSON.stringify(A))
-log('coordinator: epic=' + epicId + ' branch=' + integrationBranch)
-const model = role => config.models[role]
+log('coordinator: epic=' + epicId + ' branch=' + integrationBranch + ' dryRun=' + !!dryRun)
+const model = role => dryRun ? 'haiku' : config.models[role]
+// dryRun swaps every dispatched prompt for a canned stub from prompts.stubs (see "dryRun policy"
+// below) — same swap as super-roast's `pick()`, plus one addition this coordinator needs and
+// super-roast doesn't: a stub value may be an ARRAY, consumed one entry per call to that key and
+// clamped to the last entry once exhausted. Reason: this script has a `while(true)` round loop
+// (super-roast's pipeline is linear) whose Close/Ready checks call the SAME stub key every round
+// — a single canned value would either break out on round 1 (never exercising the per-task
+// pipeline) or never empty the ready set (infinite loop). The array form is how the recorded
+// baseline below drains in exactly two rounds.
+const stubCallCounts = {}
+function pick(real, stubKey) {
+  if (!dryRun) return real
+  const raw = prompts?.stubs?.[stubKey]
+  if (raw === undefined) throw new Error('dryRun: no stub for key ' + stubKey)
+  if (!Array.isArray(raw)) return raw
+  const i = stubCallCounts[stubKey] ?? 0
+  stubCallCounts[stubKey] = i + 1
+  return raw[Math.min(i, raw.length - 1)]
+}
 // Pure string derivation, no I/O — matches the fixed path Pre-flight step 2 creates the
 // integration worktree at, and the per-task convention "Dispatching the implementer" describes.
 const integrationWorktree = `.worktrees/${integrationBranch}`
@@ -418,14 +436,14 @@ while (true) {
   // First iteration is harmless: nothing is eligible yet. `mechanical`, not `triage` — this is a
   // deterministic CLI-echo, not a judgment call (see "Coordinator contract").
   phase('Close')
-  const closed = await agent(closeEpicsPrompt(epicId),
+  const closed = await agent(pick(closeEpicsPrompt(epicId), 'close-epics'),
     { label: 'close-epics', phase: 'Close', schema: CLOSE, model: model('mechanical') })
   if (closed.rootClosed) break
 
   phase('Ready')
   const ready = await agent(
     // MECHANICAL: echo the command output verbatim — no judgment, no --json (see "Authoring pitfalls").
-    `Run exactly: \`bd ready --exclude-type=epic --label sp:${epicId} 2>&1 | grep -oE '${epicId}[.0-9]*' | sort -u\` and return its output lines verbatim as ids. Do NOT use \`--json\`. Do NOT reason about or filter readiness or scope — the command's flags already exclude epics and out-of-tree issues; just return what the command prints (empty output → {ids: []}). Do not start any work.`,
+    pick(`Run exactly: \`bd ready --exclude-type=epic --label sp:${epicId} 2>&1 | grep -oE '${epicId}[.0-9]*' | sort -u\` and return its output lines verbatim as ids. Do NOT use \`--json\`. Do NOT reason about or filter readiness or scope — the command's flags already exclude epics and out-of-tree issues; just return what the command prints (empty output → {ids: []}). Do not start any work.`, 'bd-ready'),
     { label: 'bd-ready', phase: 'Ready', schema: READY, model: model('mechanical') })
   const ids = (ready?.ids ?? []).filter(id => !escalated.includes(id))
   // Quarantine exit: the root isn't closed (checked above) but nothing is ready — remaining
@@ -438,7 +456,7 @@ while (true) {
   // "bd-20" never matches); beads has no such file, so the planner (opus) is the bridge and
   // returns the ordinal<->bead-id mapping alongside the plan path.
   phase('Plan')
-  const planned = await agent(planPrompt(epicId, ids),
+  const planned = await agent(pick(planPrompt(epicId, ids), 'plan'),
     { label: 'plan', phase: 'Plan', model: model('planner'), schema: PLANNED })
   const ordinalFor = id => planned.mapping.find(m => m.id === id)?.n
 
@@ -454,11 +472,9 @@ while (true) {
   const results = []
   for (const group of groups) {  // disjoint-file groups serialize relative to each other; tasks within a group don't share files
     const groupResults = await pipeline(group,
-      id  => agent(taskBriefPrompt(planned.planPath, ordinalFor(id), id, taskWorktree(id)), { label: `brief:${id}`,   phase: 'Implement', model: model('mechanical'), schema: RESULT }),
-      br  => agent(implementPrompt(br, integrationBranch),                                  { label: `impl:${br.id}`, phase: 'Implement', model: model('implementer'), schema: RESULT }),
-      im  => agent(taskReviewPrompt(im),                                                    { label: `review:${im.id}`, phase: 'Implement', model: model('reviewer'), schema: RESULT }),
-      // fix rounds (<=5) + scoped re-review live inside taskReviewPrompt's resolution loop —
-      // see "The breaker, autonomous variant" for the terminal action at the cap.
+      id  => agent(pick(taskBriefPrompt(planned.planPath, ordinalFor(id), id, taskWorktree(id)), `brief:${id}`), { label: `brief:${id}`,   phase: 'Implement', model: model('mechanical'), schema: RESULT }),
+      br  => agent(pick(implementPrompt(br, integrationBranch), `implement:${br.id}`),                          { label: `impl:${br.id}`, phase: 'Implement', model: model('implementer'), schema: RESULT }),
+      im  => reviewAndFix(im),
     )
     results.push(...groupResults)
   }
@@ -469,7 +485,7 @@ while (true) {
   phase('Integrate')
   for (const r of results.filter(Boolean)) {
     if (r.status === 'BLOCKED') { await handleBlocker(r); continue }
-    const m = await agent(mergePrompt(r, integrationBranch, integrationWorktree),
+    const m = await agent(pick(mergePrompt(r, integrationBranch, integrationWorktree), `merge:${r.id}`),
       { label: `merge:${r.id}`, phase: 'Integrate', model: model('reviewer'), schema: MERGE })
     if (m.merged) completed.push(r.id)
     else await handleBlocker({ id: r.id, blockerBead: m.blockerBead })
@@ -479,7 +495,7 @@ while (true) {
 phase('Finish')
 log(`Completed: ${completed.length}. Escalated: ${escalated.length}.`)
 const review = completed.length
-  ? await agent(`Final whole-epic review of integration branch ${integrationBranch} for epic ${epicId}.`,
+  ? await agent(pick(`Final whole-epic review of integration branch ${integrationBranch} for epic ${epicId}.`, 'final-review'),
       { label: 'final-review', phase: 'Finish', model: model('finalReview') })
   : 'no work landed'
 return { completed, escalated, review }
@@ -518,21 +534,36 @@ function groupByDisjointFiles(ids, planned) {
   return buckets
 }
 
+// Round 1 of the fix loop, made concrete (the illustrative skeleton previously left this as a
+// comment — "fix rounds live inside taskReviewPrompt's resolution loop"). Rounds 2-5 and the
+// breaker's terminal action at the cap are exactly "The breaker, autonomous variant" above,
+// unmodified in substance; this function only shows the shape of round 1 so a dryRun stub can
+// exercise "one fix round + re-review" concretely (see the Stub table / Assertions below).
+async function reviewAndFix(im) {
+  const rv = await agent(pick(taskReviewPrompt(im), `review:${im.id}`),
+    { label: `review:${im.id}`, phase: 'Implement', model: model('reviewer'), schema: RESULT })
+  if (rv.status !== 'NEEDS_FIX') return rv
+  const fixed = await agent(pick(fixPrompt(rv), `fix:${rv.id}`),
+    { label: `fix:${rv.id}`, phase: 'Implement', model: model('implementer'), schema: RESULT })
+  return agent(pick(reReviewPrompt(fixed), `re-review:${fixed.id}`),
+    { label: `re-review:${fixed.id}`, phase: 'Implement', model: model('reviewer'), schema: RESULT })
+}
+
 async function handleBlocker(r) {
   phase('Triage')
   // Genuine judgment call: RESOLVE vs ESCALATE. This is the one dispatch in this script that
   // legitimately spends `triage` (opus) — see "Coordinator contract" on why `triage` and
   // `mechanical` are not interchangeable.
-  const t = await agent(triagePrompt(r.id, r.blockerBead),
+  const t = await agent(pick(triagePrompt(r.id, r.blockerBead), `triage:${r.id}`),
     { label: `triage:${r.id}`, phase: 'Triage', model: model('triage'), schema: TRIAGE })
   if (t.decision === 'RESOLVE') {
     // re-dispatch next round with clarification recorded on the bead; do NOT mark escalated.
     // Recording a clarification is a mechanical write, not a judgment call.
-    await agent(recordClarificationPrompt(r.id, t.detail), { label: `clarify:${r.id}`, phase: 'Triage', model: model('mechanical') })
+    await agent(pick(recordClarificationPrompt(r.id, t.detail), `clarify:${r.id}`), { label: `clarify:${r.id}`, phase: 'Triage', model: model('mechanical') })
   } else {
     escalated.push(r.id)                       // quarantine: dependents stay unready in beads
     // Sending a fixed notification is mechanical, same reasoning as the clarification write above.
-    await agent(notifyPrompt(r.id, t.detail), { label: `notify:${r.id}`, phase: 'Triage', model: model('mechanical') }) // push if available
+    await agent(pick(notifyPrompt(r.id, t.detail), `notify:${r.id}`), { label: `notify:${r.id}`, phase: 'Triage', model: model('mechanical') }) // push if available
     log(`ESCALATED ${r.id}: ${t.detail}`)      // always surfaces in /workflows + completion
   }
 }
@@ -542,3 +573,173 @@ async function handleBlocker(r) {
 > repo's current HEAD (not our integration branch) and auto-removes worktrees that end up
 > unchanged. We need worktrees cut from the integration branch with controlled merge-back, so the
 > agents create and merge worktrees explicitly (per `superpowers:using-git-worktrees`).
+
+## dryRun policy
+
+`dryRun: true` swaps every dispatched agent for a haiku stub returning canned JSON, validating
+the **script's topology** — round sequencing, the disjoint-file grouping/concurrency cap, the
+serial merge gate, the blocker-triage routing, schemas — for pennies, without spending real
+planner/implementer/reviewer/triage budget and without touching git or `bd` (see the `pick()`
+helper and the `model()` dryRun branch in the script above; same mechanism as `super-roast`'s
+`pick()`, see `skills/super-roast/super-roast-workflow.md`).
+
+**What a dryRun can and cannot prove.** It proves what the *script* owns: round order, the Close
+fixpoint check, the `bd ready` scoping flags baked into the dispatched prompt text, disjoint-file
+bucketing, the pipeline/merge/triage sequencing, and every schema. It proves nothing about the
+judgment calls made *inside* a dispatched agent — whether an implementer's fix actually addresses
+a finding, whether a triage verdict is the *correct* RESOLVE/ESCALATE call, whether a merge's
+auto-resolve attempt would really succeed. Those are exercised only by a live run; the canned
+stubs return a fixed verdict regardless of what a real agent would have concluded.
+
+Required **once at implementation** and **after any structural coordinator edit**: loop order,
+the Close/Ready round shape, disjoint-file batching, merge-back sequencing, or blocker routing.
+**Data edits skip it** — roster/prompt/tier edits (which model a role uses, prompt wording, the
+concurrency cap's numeric value) are trivial by construction and can't silently break topology.
+
+The orchestrator should pass `args` as an actual JSON value wherever the harness supports it —
+the string-tolerance in the script (`typeof args === 'string' ? JSON.parse(args) : args`) exists
+as a defensive fallback for harness paths that stringify `args`, not as license to always
+stringify by default.
+
+**Stub phrasing is exact, not a paraphrase.** Every stub prompt MUST use the literal wording
+
+```
+You are a stub. Call no tools. Return exactly this JSON as your structured output: <json>
+```
+
+A shortened variant — e.g. "Return this JSON exactly, nothing else:" — cost `super-roast`'s build
+two wasted runs: haiku answered in prose instead of invoking the structured-output tool, every
+stubbed agent call returned nothing, and the dryRun silently tested the dead-agent path instead of
+the intended topology. A malformed stub doesn't error — it quietly converts the run into an
+accidental failure-path test, which can *look* like a passing run (dead-agent/`BLOCKED` handling
+*is* exercised) while asserting nothing about what you actually meant to validate. Use the exact
+phrasing above, every time, for every stub in the table below.
+
+**One addition this coordinator needs that `super-roast` doesn't: array-valued stubs.**
+`super-roast`'s engine is a linear pipeline — each stub key is called at most once per stage, so a
+single canned value per key is enough. This coordinator has a `while(true)` round loop, and the
+Close/Ready checks at the top of every round call the *same* stub key on every iteration. A single
+canned value for `close-epics` or `bd-ready` would either report the root closed on round 1 (the
+loop exits before the per-task pipeline ever runs) or report the same non-empty ready set forever
+(the loop never drains). `pick()` resolves this by letting a stub value be an **array**: each call
+to that key consumes the next entry, clamped to the last entry once exhausted. The recorded
+scenario below uses this to drain in exactly two rounds — round 1 does the real work, round 2's
+Close/Ready calls report nothing left to do.
+
+## Stub table
+
+Each stub prompt is `You are a stub. Call no tools. Return exactly this JSON as your structured
+output: <json>` (exact phrasing — see "dryRun policy" above). The set below is the one used for
+the canonical topology scenario: three ready tasks under one epic — `bd-101` and `bd-102` touch
+disjoint files (`src/a.js`, `src/b.js`) and dispatch **concurrently**; `bd-103` also touches
+`src/a.js`, so it **serializes** after that group. `bd-101`'s review returns a finding and goes
+through one fix round + re-review (`ADDRESSED`). `bd-103`'s merge fails its one auto-resolve
+attempt, exercising the blocker-bead path end to end: triage `ESCALATE`, notify, quarantine,
+**continue** (`bd-101`/`bd-102` still complete).
+
+| Stub key | Canned output (`<json>` content) | Exercises |
+|---|---|---|
+| `close-epics` (array, 2 entries) | `{rootClosed:false,closedThisRun:[]}` then `{rootClosed:false,closedThisRun:["bd-101","bd-102"]}` | root stays open both rounds (quarantined `bd-103` blocks closure) — round 1 doesn't exit early, round 2 doesn't loop forever |
+| `bd-ready` (array, 2 entries) | `{ids:["bd-101","bd-102","bd-103"]}` then `{ids:[]}` | round 1 supplies the batch; round 2's empty set drains the loop. The **scoping** assertion (`--exclude-type=epic --label sp:<epicId>`) is a property of the dispatched prompt text itself, not of this canned return — verified by reading the prompt, same as `super-roast`'s reporter-arithmetic caveat above |
+| `plan` | `{planPath:"...", mapping:[{n:1,id:"bd-101",files:["src/a.js"]},{n:2,id:"bd-102",files:["src/b.js"]},{n:3,id:"bd-103",files:["src/a.js"]}]}` | ordinal↔bead-id↔files mapping that `groupByDisjointFiles` and every `ordinalFor` lookup consumes |
+| `brief:bd-101` / `brief:bd-102` / `brief:bd-103` | `{id:"bd-1XX",n:<n>,status:"BRIEFED",files:[...],branch:".worktrees/<integrationBranch>--task-bd-1XX"}` | call-site-qualified per id (a single unqualified `brief` key can't return three different ids/branches) |
+| `implement:bd-101` / `implement:bd-102` / `implement:bd-103` | `{id:"bd-1XX",n:<n>,status:"IMPLEMENTED",files:[...],branch:"..."}` | same per-id qualification |
+| `review:bd-101` | `{id:"bd-101",n:1,status:"NEEDS_FIX",files:["src/a.js"]}` | the one task whose review returns a finding |
+| `review:bd-102` / `review:bd-103` | `{id:"bd-1XX",n:<n>,status:"CLEAN",files:[...]}` | clean reviews — no fix loop for these two |
+| `fix:bd-101` | `{id:"bd-101",n:1,status:"FIXED",files:["src/a.js"]}` | fix round dispatched only for the flagged task |
+| `re-review:bd-101` | `{id:"bd-101",n:1,status:"CLEAN"}` | finding `ADDRESSED` — scoped re-review over the fix diff |
+| `merge:bd-101` / `merge:bd-102` | `{id:"bd-1XX",merged:true}` | successful serial merges |
+| `merge:bd-103` | `{id:"bd-103",merged:false,blockerBead:"bd-104"}` | merge fails its bounded auto-resolve attempt → blocker path |
+| `triage:bd-103` | `{decision:"ESCALATE",detail:"rebase conflict on src/a.js survived one auto-resolve attempt"}` | the judgment dispatch in `handleBlocker` |
+| `notify:bd-103` | `{sent:true}` | fixed-notification mechanical dispatch on the ESCALATE branch |
+| `final-review` | `{summary:"stub: 2/3 tasks merged; bd-103 quarantined",verdict:"conditional-pass"}` | whole-epic review dispatched once at least one task landed |
+
+**Stub keys are call-site qualified** (`brief:<id>`, `review:<id>`, `merge:<id>`, `triage:<id>`,
+...) for the same reason `super-roast`'s are qualified by `seat:<name>:<site>`: a single
+unqualified key can't return three different task ids/branches, or a `CLEAN` for two tasks and a
+`NEEDS_FIX` for the third, with one fixed value. Qualifying by call site removes the ambiguity —
+each of the three tasks gets its own deterministic path through the pipeline. The `RESOLVE` branch
+of `handleBlocker` (and its `clarify:<id>` stub) is **not** exercised by this scenario, since
+`bd-103`'s triage returns `ESCALATE`; a `RESOLVE`-path scenario is a separate dryRun, the same way
+`super-roast` runs its panel-cap and dead-dedupe scenarios as additional baselines rather than
+folding them into the canonical one.
+
+## Assertions for the canonical dryRun
+
+- `bd ready` is scoped to the epic tree (`--exclude-type=epic --label sp:<epicId>`), not the whole
+  repo — verified by inspecting the dispatched `bd-ready` prompt text (see the stub table note
+  above; the stub's *return value* can't prove this, only the prompt construction can).
+- The two disjoint-file tasks (`bd-101`, `bd-102`) dispatch as one `pipeline()` group —
+  **concurrently**; `bd-103` (shares `src/a.js` with `bd-101`) is bucketed alone by
+  `groupByDisjointFiles` and its group runs strictly after the first group's `pipeline()` call
+  resolves — **serialized**, never a sibling in the same call.
+- Each task runs the full pipeline in order — brief → implementer → review-package (task-reviewer)
+  — and `bd-101` additionally runs one fix round + a scoped re-review that reports the finding
+  `ADDRESSED` (see `reviewAndFix` in the script above).
+- Merge-back is **serial**: three `merge:<id>` calls, one at a time, in the order
+  `bd-101, bd-102, bd-103` (dependency/ready order), never two concurrently.
+- The blocker path fires on `bd-103`'s failed merge: a blocker bead reference (`blockerBead`) is
+  returned, `handleBlocker` dispatches `triage:bd-103` → `ESCALATE` → `notify:bd-103`, `bd-103` is
+  pushed onto `escalated` (quarantined, not closed) — and the run **continues**: `bd-101`/`bd-102`
+  still merge and close, and the loop proceeds to round 2 instead of halting.
+- Expected dispatch count: `close-epics` 2 + `bd-ready` 2 + `plan` 1 + `brief` 3 + `implement` 3 +
+  `review` 3 + `fix` 1 + `re-review` 1 + `merge` 3 + `triage` 1 + `notify` 1 + `final-review` 1 =
+  **22 agent calls, 0 errors** (`final-review` dispatches because `completed.length` is 2, not 0).
+
+If any assertion fails, fix the script **in this doc** (this doc's script is canonical) and
+re-run before committing the fix.
+
+### Passing baseline — PENDING EXECUTION
+
+Not yet recorded: the Workflow tool was not available in the session that authored this section
+(task 4 of the `super-code` build). Do not treat the assertions above as validated until a run has
+actually been executed and its figures recorded here — per this doc's own ledger philosophy,
+figures are the durable record, not the fact that a scenario was designed on paper.
+
+To record the baseline, run the Workflow tool with this script and `args`:
+
+```json
+{
+  "epicId": "bd-100",
+  "integrationBranch": "epic-bd-100-integration",
+  "dryRun": true,
+  "config": {
+    "concurrency": 4,
+    "models": { "planner": "opus", "implementer": "sonnet", "reviewer": "sonnet", "mechanical": "sonnet", "triage": "opus", "finalReview": "opus" }
+  },
+  "prompts": {
+    "stubs": {
+      "close-epics": [
+        "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"rootClosed\":false,\"closedThisRun\":[]}",
+        "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"rootClosed\":false,\"closedThisRun\":[\"bd-101\",\"bd-102\"]}"
+      ],
+      "bd-ready": [
+        "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[\"bd-101\",\"bd-102\",\"bd-103\"]}",
+        "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[]}"
+      ],
+      "plan": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"planPath\":\".worktrees/epic-bd-100-integration/.sdd/bd-100/plan.md\",\"mapping\":[{\"n\":1,\"id\":\"bd-101\",\"files\":[\"src/a.js\"]},{\"n\":2,\"id\":\"bd-102\",\"files\":[\"src/b.js\"]},{\"n\":3,\"id\":\"bd-103\",\"files\":[\"src/a.js\"]}]}",
+      "brief:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"BRIEFED\",\"files\":[\"src/a.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-101\"}",
+      "brief:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-102\",\"n\":2,\"status\":\"BRIEFED\",\"files\":[\"src/b.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-102\"}",
+      "brief:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-103\",\"n\":3,\"status\":\"BRIEFED\",\"files\":[\"src/a.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-103\"}",
+      "implement:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"IMPLEMENTED\",\"files\":[\"src/a.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-101\"}",
+      "implement:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-102\",\"n\":2,\"status\":\"IMPLEMENTED\",\"files\":[\"src/b.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-102\"}",
+      "implement:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-103\",\"n\":3,\"status\":\"IMPLEMENTED\",\"files\":[\"src/a.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-103\"}",
+      "review:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"NEEDS_FIX\",\"files\":[\"src/a.js\"]}",
+      "review:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-102\",\"n\":2,\"status\":\"CLEAN\",\"files\":[\"src/b.js\"]}",
+      "review:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-103\",\"n\":3,\"status\":\"CLEAN\",\"files\":[\"src/a.js\"]}",
+      "fix:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/a.js\"]}",
+      "re-review:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"CLEAN\"}",
+      "merge:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"merged\":true}",
+      "merge:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-102\",\"merged\":true}",
+      "merge:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-103\",\"merged\":false,\"blockerBead\":\"bd-104\"}",
+      "triage:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"decision\":\"ESCALATE\",\"detail\":\"rebase conflict on src/a.js survived one auto-resolve attempt\"}",
+      "notify:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"sent\":true}",
+      "final-review": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"summary\":\"stub: 2/3 tasks merged; bd-103 quarantined\",\"verdict\":\"conditional-pass\"}"
+    }
+  }
+}
+```
+
+Once run, replace this subsection with the recorded run ID, actual agent/error counts, and
+confirmation of each assertion above — same discipline as `super-roast`'s "Passing baseline
+(recorded, not illustrative)" sections.
