@@ -153,6 +153,7 @@ independence: same-family (Claude) — seat-differentiated panel
 The report is written to `docs/superpowers/reviews/YYYY-MM-DD-<topic>-roast-N.md` (N = iteration)
 by the orchestrator, after the engine returns `reportMarkdown` — the pipeline itself writes
 nothing to the repo.
+- (User preferences for report location override this default — `super-auto` supplies its run directory.)
 
 **The two caps lose findings differently, and the report says so differently.** `beyondPanelCap`
 (severe candidates the judge panel never reached) are listed individually under "## Not verified
