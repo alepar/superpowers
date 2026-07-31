@@ -784,14 +784,45 @@ folding them into the canonical one.
 If any assertion fails, fix the script **in this doc** (this doc's script is canonical) and
 re-run before committing the fix.
 
-### Passing baseline — PENDING EXECUTION
+### Passing baseline (recorded, not illustrative)
 
-Not yet recorded: the Workflow tool was not available in the session that authored this section
-(task 4 of the `super-code` build). Do not treat the assertions above as validated until a run has
-actually been executed and its figures recorded here — per this doc's own ledger philosophy,
-figures are the durable record, not the fact that a scenario was designed on paper.
+Run `wf_d65bc00e-990`, 2026-07-30, against the args below: **22 agents dispatched, 0 errors**.
+Returned `{completed: ["bd-101","bd-102"], escalated: ["bd-103"]}` with the final review's
+verdict `conditional-pass`. This confirms every assertion above, in the dispatch order the
+journal recorded:
 
-To record the baseline, run the Workflow tool with this script and `args`:
+1. `close-epics` → `rootClosed:false, closedThisRun:[]`
+2. `bd-ready` → 3 ids (the epic-scoped query — confirms the scoping assertion)
+3. `plan` → mapping with `filesTouched`
+4–5. `brief:bd-101`, `brief:bd-102` — **concurrent** (`src/a.js` and `src/b.js` are disjoint)
+6–7. `implement:bd-101`, `implement:bd-102`
+8–9. `review:bd-101` → `NEEDS_FIX`; `review:bd-102` → `CLEAN`
+10–11. `fix:bd-101` → `re-review:bd-101` → `CLEAN` — fix round dispatched **only** for the task
+   whose review returned a finding
+12–14. `brief`/`implement`/`review` for `bd-103` — **serialized into a later bucket**, because it
+   declares `src/a.js`, colliding with `bd-101`
+15–17. `merge:bd-101` OK → `merge:bd-102` OK → `merge:bd-103` FAILED (blocker bead `bd-104`) —
+   **serial**, one at a time, in dependency/ready order
+18. `triage:bd-103` → `ESCALATE`
+19. `notify:bd-103` — the run **continues** rather than halting
+20–21. `close-epics` (still open) → `bd-ready` (empty) — the loop terminates
+22. `final-review`
+
+**What this dryRun proves and does not prove** (same caveat `super-roast`'s doc states for its own
+baselines): it proves **coordinator topology** — dispatch order, the disjoint-file batching, the
+serial merge gate, blocker-bead routing, and loop termination, all of which the sequence above
+confirms directly. It proves **nothing** about the real prompts' content, since every agent in
+this run was a canned stub, and **nothing** about actual git/`bd` behavior, since `dryRun: true`
+means no I/O occurred — a real implementer's fix, a real triage RESOLVE/ESCALATE judgment, and a
+real merge's auto-resolve attempt are exercised only by a live run.
+
+**Journals are session-local.** The run id and the figures above are the durable record; the
+journal `wf_d65bc00e-990` itself is not guaranteed to remain inspectable. A future maintainer
+re-verifies this baseline by re-running the Workflow tool with the `args` below and comparing the
+new run's figures against the ones recorded here — not by going looking for this run's journal.
+
+To reproduce or re-verify, run the Workflow tool with this script and `args` (unchanged from the
+scenario this baseline used):
 
 ```json
 {
@@ -835,6 +866,7 @@ To record the baseline, run the Workflow tool with this script and `args`:
 }
 ```
 
-Once run, replace this subsection with the recorded run ID, actual agent/error counts, and
-confirmation of each assertion above — same discipline as `super-roast`'s "Passing baseline
-(recorded, not illustrative)" sections.
+If a future structural edit changes this script, re-run with these args, confirm the same 22/0
+shape (or update it deliberately alongside the edit that changed it), and replace the figures
+above — same discipline as `super-roast`'s "Passing baseline (recorded, not illustrative)"
+sections.
