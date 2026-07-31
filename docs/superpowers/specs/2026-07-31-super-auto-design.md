@@ -103,13 +103,24 @@ everything continues to coordinate through beads rather than session memory.
 
 ## §4 Autonomous mode
 
-**Autonomy begins once the task tree has settled — i.e. the moment phase 2 completes.** Everything
-up to and including the settled task tree is interactive; from there on, no queries.
+**Autonomy begins the moment `super-plan`'s coverage loop passes.** Everything up to and including
+that point is interactive; from there on, no queries.
+
+The anchor is the coverage loop, not "the settled tree" — `super-plan` uses *settled* to mean the
+state **before** its coverage loop runs, so borrowing the word would put the coverage loop's own
+human arbitration (accepting GAPs, deciding ORPHANs, the recall-floor read-through) inside the
+autonomous zone, where parking cannot serve it: an accepted GAP that is merely parked never becomes
+a task.
+
+**Phase 3 is inside the autonomous zone.** `super-plan`'s adversarial-review offer and its fix loop
+execute within the `super-plan` invocation, after the coverage loop — so in autonomous mode
+`super-auto` accepts the offer without asking and the loop's pauses are parked, which is what the
+request ("performs all roast fixes without asking") specifies.
 
 An earlier draft anchored this to "the first roast report exists." That anchor breaks whenever a
-roast is skipped: with both `skipPlanRoast` and `skipCodeRoast` set — the exact configuration §8
-names for the cheap end-to-end validation run — no roast report is ever produced, so autonomy would
-never begin and the flag would be inert for the whole run. The settled task tree is the boundary the
+roast is skipped: with both `skipPlanRoast` and `skipCodeRoast` set and `autonomous` on, no roast
+report is ever produced, so autonomy would never begin and the flag would be inert for the whole
+run. The settled task tree is the boundary the
 user actually specified ("everything after the original design plan"), and it is well-defined in
 every flag combination.
 
@@ -248,6 +259,9 @@ dependency order the task tree already encodes.
   code" (expect fire), "review this PR" (expect no fire — `super-roast`), "execute this epic"
   (expect no fire — `super-code`).
 - **One cheap end-to-end run:** a trivial feature with both roasts skipped and autonomous off.
+  Note this configuration deliberately does **not** exercise autonomous mode — with autonomy off the
+  boundary anchor is inert, so this run proves the phases chain and nothing about §4. A second run
+  with `autonomous` on is what would test the boundary; it is not part of this plan's validation.
   Exercises the whole sequence, every hand-off, and the run directory, without paying for two
   roasts. It is the only test that proves the phases actually chain.
 - **A resume test:** interrupt after phase 2, re-invoke, confirm re-entry at phase 3 with flags and
