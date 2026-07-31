@@ -6,7 +6,18 @@ not a per-ready-task dispatch inside the main coordinator loop. See `coordinator
 "Plan materialization" for why the planner sits in `config.models` even though it isn't one of
 the arrows in the per-task pipeline.
 
-The planner writes the plan into `<workspace>/plan.md` (see "Plan file" below) and writes no code.
+The planner writes the plan into `<workspace>/[plan file name]` (see "Plan file name" and "Plan
+file" below) and writes no code.
+
+**Plan file name (fix-round-1, review):** every reference to a plan file below is written as
+`[plan file name]`, a parameter the dispatching coordinator supplies per epic (e.g.
+`coordinator-workflow.md`'s `planPrompt` passes `<epicId>-plan.md`) — **never** the literal string
+`plan.md`. This applies everywhere below, including inside the literal shell-command examples in
+"Your Job" step 1: every epic must use its own plan filename so `scripts/sdd-workspace [plan file
+name]` resolves to a workspace directory distinct from every other epic's — a shared literal
+`plan.md` name collides every epic's workspace, including its ledger, on one path. If this template
+is ever dispatched without that parameter filled in, do not default to the literal `plan.md`; ask
+for the plan file name explicitly instead of guessing.
 
 ```
 Task tool (general-purpose), model: opus:
@@ -24,29 +35,33 @@ Task tool (general-purpose), model: opus:
     [epic id] — [epic name]. [FULL TEXT of `bd show` on the epic: description and any
     Global Constraints in the epic body — paste it; do not make the subagent guess]
 
+    ## Plan file name
+
+    [plan file name] — use this exact name everywhere below; never the literal `plan.md`.
+
     ## Beads to plan this round
 
     [FULL TEXT of `bd show` for every ready/blocked descendant bead that does not yet have a
-    plan.md section — title, description, acceptance criteria, any files-touched hint, paste
-    each in full. On the epic's first planning round this is every ready/blocked descendant;
+    [plan file name] section — title, description, acceptance criteria, any files-touched hint,
+    paste each in full. On the epic's first planning round this is every ready/blocked descendant;
     on a refill round it is only the newly-ready or newly-created beads (blocker beads included)]
 
     ## Plan file
 
-    [path to <workspace>/plan.md, e.g. the output of `scripts/sdd-workspace plan.md`]
+    [path to <workspace>/[plan file name], e.g. the output of `scripts/sdd-workspace [plan file name]`]
 
     ## Your Job
 
-    1. `scripts/sdd-workspace` errors if `plan.md` does not already exist — it does not create
-       it for you. So if `plan.md` does not exist yet: `mkdir -p` the workspace directory
-       yourself and write an initial `plan.md` there (mapping table header only, no data rows
-       yet), *then* run `scripts/sdd-workspace plan.md` to canonicalize the path and git-ignore
-       it, before continuing to step 2.
+    1. `scripts/sdd-workspace` errors if `[plan file name]` does not already exist — it does not
+       create it for you. So if `[plan file name]` does not exist yet: `mkdir -p` the workspace
+       directory yourself and write an initial `[plan file name]` there (mapping table header
+       only, no data rows yet), *then* run `scripts/sdd-workspace [plan file name]` to canonicalize
+       the path and git-ignore it, before continuing to step 2.
     2. For each bead listed in "Beads to plan this round" that does not already have a mapping
        row:
        - Assign it the next ordinal **in dependency order**, continuing the existing sequence
-         (starting at 1 on a fresh plan.md). Never reuse or reassign an ordinal already bound to
-         a different bead.
+         (starting at 1 on a fresh `[plan file name]`). Never reuse or reassign an ordinal already
+         bound to a different bead.
        - Determine this task's **`filesTouched: string[]`** — the concrete list of every file it
          will create or modify. This is your best declaration from the bead and the repo, and it
          is required, not a hint: the coordinator uses it to decide which tasks may run
@@ -65,8 +80,9 @@ Task tool (general-purpose), model: opus:
            `scripts/task-brief` and the implementer/reviewer loop that follows it — do not write
            a two-stage spec-then-quality review contract; SDD's current Task Loop reviews spec
            compliance and quality together, in one reviewer dispatch.
-    3. Never renumber or rewrite an ordinal or `## Task <N>` section already present in `plan.md`,
-       even if you would word it differently now — a fix round may still be pointing at it.
+    3. Never renumber or rewrite an ordinal or `## Task <N>` section already present in `[plan
+       file name]`, even if you would word it differently now — a fix round may still be pointing
+       at it.
     4. If a bead is genuinely too ambiguous to plan (not merely underspecified — a real missing
        decision), leave it out of the mapping table and this round's sections, and report it as
        BLOCKED with exactly what decision is missing. Do not invent scope to force a plan.
@@ -81,13 +97,16 @@ Task tool (general-purpose), model: opus:
     ## Report Format
 
     - **Status:** DONE | PARTIAL | BLOCKED
-    - `planPath`: the `plan.md` path
-    - `mapping`: the **full, cumulative mapping table** — every row assigned so far in `plan.md`,
-      including rows from earlier rounds, not only the rows this round added — `{n: <ordinal>,
-      id: <bead id>, files: <filesTouched list>}` per row. Return the complete table every round:
-      the coordinator replaces its working copy with whatever you return, so a round-scoped
-      subset would make every previously-assigned id's ordinal lookup fail on the very next round.
-      `files` is required on every entry; it is how the coordinator's disjoint-file grouping stays
-      safe.
+    - `planPath`: the `[plan file name]` path (the coordinator compares this against its own
+      independently-derived workspace path and treats a mismatch as fatal — see
+      `coordinator-workflow.md`'s Plan-phase call site — so report the actual path you wrote to,
+      not the literal `plan.md`)
+    - `mapping`: the **full, cumulative mapping table** — every row assigned so far in `[plan file
+      name]`, including rows from earlier rounds, not only the rows this round added — `{n:
+      <ordinal>, id: <bead id>, files: <filesTouched list>}` per row. Return the complete table
+      every round: the coordinator replaces its working copy with whatever you return, so a
+      round-scoped subset would make every previously-assigned id's ordinal lookup fail on the
+      very next round. `files` is required on every entry; it is how the coordinator's
+      disjoint-file grouping stays safe.
     - Any beads left unplanned as BLOCKED, and exactly what decision is missing for each
 ```
