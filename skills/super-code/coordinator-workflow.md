@@ -576,8 +576,15 @@ When the loop ends (and at least some work landed), dispatch the **final whole-e
 (`scripts/review-package PLAN_FILE MERGE_BASE HEAD`, pointed at each completion line's
 parked-with-a-ruling variant — see "Workspace and ledger" above: there is no separate parked LINE
 KIND, only the normal `complete` line's own variant — so it can triage what must be fixed before
-merge) — then hand to `superpowers:finishing-a-development-branch`, which merges the integration
-branch into the user's base branch and cleans up the integration worktree. **Not implemented, as of
+merge). What happens after that review is **conditional on who owns the finish hand-off**. By
+default, hand off to `superpowers:finishing-a-development-branch`, which merges the integration
+branch into the user's base branch and cleans up the integration worktree. **When the caller owns
+the finish** (e.g. an outer sequencer such as `super-auto`, which still needs this run's ledger and
+per-task reports — the only place a PARK ruling's reasoning lives — after this loop ends), the
+coordinator does not hand off: it returns the final review's buckets (`completed`, `escalated`,
+`pendingRetry`, `parked`, `stalled`, `review`) to the caller and stops, leaving the integration
+worktree, its branch, and its ledger intact; the caller decides if and when to invoke
+`finishing-a-development-branch` itself. **Not implemented, as of
 this doc: "pointed at the ledger's deferred-minor notes."** No ledger line kind this script's
 `ledgerLine()` ever writes produces a "deferred-minor" note, and no call site emits one — see
 "Known limitations" below. Read this section's own final-review dispatch as pointing the reviewer
