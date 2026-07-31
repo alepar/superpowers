@@ -623,7 +623,17 @@ function planPrompt(epicId, ids) {
   // blocked descendant on the first planning round. Passing only `ids` here would silently narrow
   // round-1 planning to ready beads and make that documented behaviour unreachable, so the planner
   // is told explicitly to enumerate the wider set itself on round 1 rather than being handed it.
-  return `Follow ./planner-prompt.md for epic ${epicId}. On the FIRST planning round (plan.md has no mapping rows yet), independently enumerate every READY AND BLOCKED descendant bead of ${epicId} — via \`bd show ${epicId} --json\` and its dependency tree — and plan all of them; do not limit round-1 planning to ready ids only, since \`bd ready\` structurally excludes blocked beads. On a REFILL round, plan only beads that don't already have a mapping row (newly-ready or newly-created, blocker beads included). This round's confirmed-ready ids (a subset of the planning scope above, not the full scope): ${JSON.stringify(ids)}. Run \`bd show <id> --json\` for every bead you plan this round, for "Beads to plan this round". Report per that template's Report Format: planPath, and mapping as the FULL CUMULATIVE table (every row assigned so far in plan.md, including earlier rounds' rows — never only this round's new ones).`
+  // ENUMERATION COMMAND — verified live against this repo, do not swap for `bd show <epic>
+  // --json`: `bd show` reports only scalar `dependent_count`/`dependency_count` on an epic, no
+  // child ids at all (parent-child edges point upward — a child names its parent, exactly why
+  // closeEpicsPrompt's walk above works — the reverse direction is not readable from `bd show`).
+  // `bd children <id> --json` is the verified downward-enumeration command, but it is direct
+  // children of ONE level only (confirmed: `bd children super-plan-2c1 --json` in this repo
+  // returns only super-plan-2c1's immediate children, none of any nested epic's own children) —
+  // so a genuine descendant walk must recurse: children of the epic, then children of any of
+  // those that is itself epic-typed (`issue_type: "epic"`), repeating until no unexpanded
+  // epic-typed child remains.
+  return `Follow ./planner-prompt.md for epic ${epicId}. On the FIRST planning round (plan.md has no mapping rows yet), independently enumerate every READY AND BLOCKED descendant bead of ${epicId} and plan all of them: run \`bd children ${epicId} --json\` for its direct children, then run \`bd children <id> --json\` on every one of those children whose \`issue_type\` is "epic" to get its children in turn, repeating until no unexpanded epic-typed child remains (\`bd children\` returns direct children of one level only — do NOT use \`bd show ${epicId} --json\`, which reports only dependent/dependency counts, no child ids, since parent-child edges point upward and it cannot read the downward direction). Do not limit round-1 planning to ready ids only, since \`bd ready\` structurally excludes blocked beads. On a REFILL round, plan only beads that don't already have a mapping row (newly-ready or newly-created, blocker beads included). This round's confirmed-ready ids (a subset of the planning scope above, not the full scope): ${JSON.stringify(ids)}. Run \`bd show <id> --json\` for every bead you plan this round, for "Beads to plan this round". Report per that template's Report Format: planPath, and mapping as the FULL CUMULATIVE table (every row assigned so far in plan.md, including earlier rounds' rows — never only this round's new ones).`
 }
 
 function taskBriefPrompt(planPath, n, id, worktree) {
