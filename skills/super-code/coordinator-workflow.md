@@ -810,10 +810,14 @@ recorded:
 3. `plan` → mapping with `filesTouched`
 4–5. `brief:bd-102`, `brief:bd-101` — same bucket, **concurrent**. **Only bucket membership is
    meaningful here, not the order within it**: this run dispatched 102 before 101; the prior run
-   (below) dispatched 101 before 102 — same code, same args, no regression. `{bd-101, bd-102}`
-   sharing a bucket (disjoint files, `src/a.js`/`src/b.js`), and `bd-103` landing in a *later*
-   bucket, are the assertions; completion order among concurrent siblings within one bucket
-   carries no information and must never be read as an expected fixed sequence.
+   (below) dispatched 101 before 102. The two runs are not identical — fix round 2 changed
+   `RESULT`/`fixPrompt` and the `review:bd-101` stub between them (see "Prior run, kept as
+   history" below) — but the plan stub's file mapping and `groupByDisjointFiles`, the code that
+   actually forms buckets, were unchanged across both, so this specific flip is attributable to
+   concurrent-sibling scheduling, not to anything we changed. `{bd-101, bd-102}` sharing a bucket
+   (disjoint files, `src/a.js`/`src/b.js`), and `bd-103` landing in a *later* bucket, are the
+   assertions; completion order among concurrent siblings within one bucket carries no information
+   and must never be read as an expected fixed sequence.
 6–7. `implement:bd-102`, `implement:bd-101`
 8–9. `review:bd-102` → `CLEAN`; `review:bd-101` → `NEEDS_FIX` (+ `finding`)
 10–11. `fix:bd-101` → `re-review:bd-101` → `CLEAN` — fix round dispatched **only** for the task
