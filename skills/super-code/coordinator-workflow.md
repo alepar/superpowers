@@ -396,16 +396,24 @@ if (!epicId || !integrationBranch || !config) throw new Error('coordinator args 
 log('coordinator: epic=' + epicId + ' branch=' + integrationBranch + ' dryRun=' + !!dryRun)
 const model = role => dryRun ? 'haiku' : config.models[role]
 // dryRun swaps every dispatched prompt for a canned stub from prompts.stubs (see "dryRun policy"
-// below) — same swap as super-roast's `pick()`, plus one addition this coordinator needs and
-// super-roast doesn't: a stub value may be an ARRAY, consumed one entry per call to that key and
-// clamped to the last entry once exhausted. Reason: this script has a `while(true)` round loop
-// (super-roast's pipeline is linear) whose Close/Ready checks call the SAME stub key every round
-// — a single canned value would either break out on round 1 (never exercising the per-task
-// pipeline) or never empty the ready set (infinite loop). The array form is how the recorded
-// baseline below drains in exactly two rounds.
+// below) — same swap as super-roast's `pick()`, with two differences, both hard-won:
+// 1. `pick` takes a THUNK (`() => real`), not the built prompt itself, and calls it only on the
+//    non-dryRun branch. A prompt builder is a plain function call, and JS evaluates a function's
+//    ARGUMENTS before the function runs — `pick(realPromptFn(...), key)` would build the real
+//    prompt unconditionally, even under dryRun, before `pick` ever gets a chance to short-circuit
+//    to the stub. That eager evaluation is exactly what turned "10 undefined prompt-builder
+//    helpers" into a dryRun-time crash instead of a real-run-time one (see "dryRun policy" below)
+//    — the same trap super-roast's build hit and lost a round to. Passing a thunk defers the call
+//    until `pick` has already decided dryRun is false.
+// 2. A stub value may be an ARRAY, consumed one entry per call to that key and clamped to the
+//    last entry once exhausted. Reason: this script has a `while(true)` round loop (super-roast's
+//    pipeline is linear) whose Close/Ready checks call the SAME stub key every round — a single
+//    canned value would either break out on round 1 (never exercising the per-task pipeline) or
+//    never empty the ready set (infinite loop). The array form is how the recorded baseline below
+//    drains in exactly two rounds.
 const stubCallCounts = {}
-function pick(real, stubKey) {
-  if (!dryRun) return real
+function pick(buildReal, stubKey) {
+  if (!dryRun) return buildReal()
   const raw = prompts?.stubs?.[stubKey]
   if (raw === undefined) throw new Error('dryRun: no stub for key ' + stubKey)
   if (!Array.isArray(raw)) return raw
@@ -436,14 +444,14 @@ while (true) {
   // First iteration is harmless: nothing is eligible yet. `mechanical`, not `triage` — this is a
   // deterministic CLI-echo, not a judgment call (see "Coordinator contract").
   phase('Close')
-  const closed = await agent(pick(closeEpicsPrompt(epicId), 'close-epics'),
+  const closed = await agent(pick(() => closeEpicsPrompt(epicId), 'close-epics'),
     { label: 'close-epics', phase: 'Close', schema: CLOSE, model: model('mechanical') })
   if (closed.rootClosed) break
 
   phase('Ready')
   const ready = await agent(
     // MECHANICAL: echo the command output verbatim — no judgment, no --json (see "Authoring pitfalls").
-    pick(`Run exactly: \`bd ready --exclude-type=epic --label sp:${epicId} 2>&1 | grep -oE '${epicId}[.0-9]*' | sort -u\` and return its output lines verbatim as ids. Do NOT use \`--json\`. Do NOT reason about or filter readiness or scope — the command's flags already exclude epics and out-of-tree issues; just return what the command prints (empty output → {ids: []}). Do not start any work.`, 'bd-ready'),
+    pick(() => `Run exactly: \`bd ready --exclude-type=epic --label sp:${epicId} 2>&1 | grep -oE '${epicId}[.0-9]*' | sort -u\` and return its output lines verbatim as ids. Do NOT use \`--json\`. Do NOT reason about or filter readiness or scope — the command's flags already exclude epics and out-of-tree issues; just return what the command prints (empty output → {ids: []}). Do not start any work.`, 'bd-ready'),
     { label: 'bd-ready', phase: 'Ready', schema: READY, model: model('mechanical') })
   const ids = (ready?.ids ?? []).filter(id => !escalated.includes(id))
   // Quarantine exit: the root isn't closed (checked above) but nothing is ready — remaining
@@ -456,7 +464,7 @@ while (true) {
   // "bd-20" never matches); beads has no such file, so the planner (opus) is the bridge and
   // returns the ordinal<->bead-id mapping alongside the plan path.
   phase('Plan')
-  const planned = await agent(pick(planPrompt(epicId, ids), 'plan'),
+  const planned = await agent(pick(() => planPrompt(epicId, ids), 'plan'),
     { label: 'plan', phase: 'Plan', model: model('planner'), schema: PLANNED })
   const ordinalFor = id => planned.mapping.find(m => m.id === id)?.n
 
@@ -472,8 +480,8 @@ while (true) {
   const results = []
   for (const group of groups) {  // disjoint-file groups serialize relative to each other; tasks within a group don't share files
     const groupResults = await pipeline(group,
-      id  => agent(pick(taskBriefPrompt(planned.planPath, ordinalFor(id), id, taskWorktree(id)), `brief:${id}`), { label: `brief:${id}`,   phase: 'Implement', model: model('mechanical'), schema: RESULT }),
-      br  => agent(pick(implementPrompt(br, integrationBranch), `implement:${br.id}`),                          { label: `impl:${br.id}`, phase: 'Implement', model: model('implementer'), schema: RESULT }),
+      id  => agent(pick(() => taskBriefPrompt(planned.planPath, ordinalFor(id), id, taskWorktree(id)), `brief:${id}`), { label: `brief:${id}`,   phase: 'Implement', model: model('mechanical'), schema: RESULT }),
+      br  => agent(pick(() => implementPrompt(br, integrationBranch), `implement:${br.id}`),                          { label: `impl:${br.id}`, phase: 'Implement', model: model('implementer'), schema: RESULT }),
       im  => reviewAndFix(im),
     )
     results.push(...groupResults)
@@ -485,7 +493,7 @@ while (true) {
   phase('Integrate')
   for (const r of results.filter(Boolean)) {
     if (r.status === 'BLOCKED') { await handleBlocker(r); continue }
-    const m = await agent(pick(mergePrompt(r, integrationBranch, integrationWorktree), `merge:${r.id}`),
+    const m = await agent(pick(() => mergePrompt(r, integrationBranch, integrationWorktree), `merge:${r.id}`),
       { label: `merge:${r.id}`, phase: 'Integrate', model: model('reviewer'), schema: MERGE })
     if (m.merged) completed.push(r.id)
     else await handleBlocker({ id: r.id, blockerBead: m.blockerBead })
@@ -495,7 +503,7 @@ while (true) {
 phase('Finish')
 log(`Completed: ${completed.length}. Escalated: ${escalated.length}.`)
 const review = completed.length
-  ? await agent(pick(`Final whole-epic review of integration branch ${integrationBranch} for epic ${epicId}.`, 'final-review'),
+  ? await agent(pick(() => `Final whole-epic review of integration branch ${integrationBranch} for epic ${epicId}.`, 'final-review'),
       { label: 'final-review', phase: 'Finish', model: model('finalReview') })
   : 'no work landed'
 return { completed, escalated, review }
@@ -506,6 +514,76 @@ function closeEpicsPrompt(epicId) {
   // with --json the stop signal is output exactly `[]`, not a `count: 0` object). No readiness
   // judgment: the agent runs the command and reports what happened, it doesn't decide what's eligible.
   return `Run \`bd epic close-eligible --json\` repeatedly, looping until a call's output is exactly \`[]\` (that's the fixpoint — it closes at most one tree level per call, so a single call is not enough). Collect every id closed across all calls into closedThisRun. Then run \`bd show ${epicId} --json\` and report rootClosed as true iff its status is closed.`
+}
+
+// The remaining prompt builders are deliberately minimal — the real prompt content lives in
+// ./planner-prompt.md, ./triage-prompt.md, and subagent-driven-development's own templates (see
+// "Per-task pipeline" and "The blocker-bead path" above), which each builder points at by name.
+// These exist so every agent() call site has a defined, legible dispatch string — not to
+// duplicate those files' content. Keep them short; this is a reference skeleton, not the prompt
+// library. (Every one of these was previously called-but-undefined — see "dryRun policy" below
+// for why a `node --check` pass didn't catch that.)
+
+function planPrompt(epicId, ids) {
+  // planner (opus), once per epic then append-only — see "Plan materialization". Reads the
+  // epic's beads tree and (re)writes <workspace>/plan.md with the ordinal<->bead-id<->files
+  // mapping every downstream call in this script keys off of.
+  return `You are the planner for epic ${epicId}. This round's ready ids: ${JSON.stringify(ids)}. Run \`bd show ${epicId} --json\` and \`bd show <id> --json\` for each ready/blocked descendant. Use scripts/sdd-workspace to resolve <workspace>/plan.md (mkdir -p and write an initial file first if it doesn't exist). For any id not already mapped, append a mapping row {n, id, files} — n continues the existing sequence, never renumber an existing row — plus a "## Task <n>" section carrying that bead's acceptance criteria and any epic-level Global Constraints verbatim. Return planPath and the full mapping array.`
+}
+
+function taskBriefPrompt(planPath, n, id, worktree) {
+  // MECHANICAL: scripts/task-brief owns the awk extraction and brief-file naming (see "Plan
+  // materialization" — do not hand-roll this from the mapping table). n must be the plan
+  // ordinal, never the bead id (task-brief's heading regex requires a leading digit).
+  return `Create the task worktree at ${worktree}, branched from the epic integration branch (see "Dispatching the implementer"). Run \`scripts/task-brief ${planPath} ${n}\` to produce the brief file. Report id ${id}, n ${n}, branch ${worktree}, and status BRIEFED (or, on the script's "task not found" failure, status BLOCKED).`
+}
+
+function implementPrompt(br, integrationBranch) {
+  // subagent-driven-development/implementer-prompt.md + the brief path, unmodified — the two
+  // autonomous-mode additions (worktree convention, self-filing blocker beads) are supplied as
+  // extra dispatch text here, not by editing the prompt file (see "Dispatching the implementer").
+  return `Follow subagent-driven-development/implementer-prompt.md against the brief for task ${br.id} (n ${br.n}), working in ${br.branch}, branched from integration branch ${integrationBranch}. If BLOCKED after 3 no-progress fix-loops, file the blocker bead yourself (see "The blocker-bead path") — there is no human partner to escalate to mid-task. Report id, n, status (IMPLEMENTED or BLOCKED), files touched, and branch.`
+}
+
+function taskReviewPrompt(im) {
+  // scripts/review-package BASE HEAD -> subagent-driven-development/task-reviewer-prompt.md
+  // (single reviewer, spec-compliance + quality in one dispatch — the retired two-stage split
+  // never applies here).
+  return `Run \`scripts/review-package\` for task ${im.id} (n ${im.n}) in ${im.branch} and follow subagent-driven-development/task-reviewer-prompt.md over the resulting package. Report id, n, files, and status CLEAN or NEEDS_FIX (attach the finding when NEEDS_FIX).`
+}
+
+function fixPrompt(rv) {
+  // Round 1 of the fix loop — resumes the original implementer on the reviewer's finding. Rounds
+  // 2-5 and the terminal action at the cap are exactly "The breaker, autonomous variant" above.
+  return `Resume the original implementer in the worktree for task ${rv.id} (n ${rv.n}) and address this review finding: ${JSON.stringify(rv)}. Report id, n, status FIXED, and files touched.`
+}
+
+function reReviewPrompt(fixed) {
+  // subagent-driven-development/re-review-prompt.md, scoped to the fix diff only — not a full
+  // re-review of the whole task.
+  return `Follow subagent-driven-development/re-review-prompt.md, scoped to the fix diff for task ${fixed.id} (n ${fixed.n}) in ${fixed.branch}. Report id, n, and status CLEAN (finding ADDRESSED) or NEEDS_FIX (still open).`
+}
+
+function mergePrompt(r, integrationBranch, integrationWorktree) {
+  // "Serial merge-back": rebase onto the integration branch, run the test command, merge --no-ff
+  // and bd close on success; one bounded auto-resolve attempt on conflict/red, else the blocker path.
+  return `In ${integrationWorktree}, update ${integrationBranch} and rebase task ${r.id}'s branch ${r.branch} onto it. Run the project test command. If clean, merge --no-ff into ${integrationBranch}, run \`bd close ${r.id}\`, and report merged true. If the rebase conflicts or tests are red, make one bounded auto-resolve attempt; if that also fails, file a blocker bead (see "The blocker-bead path") and report merged false with its id as blockerBead.`
+}
+
+function triagePrompt(id, blockerBead) {
+  // The one genuine judgment call in this script's blocker handling (opus) — RESOLVE vs
+  // ESCALATE — see "The blocker-bead path".
+  return `Run \`bd show ${blockerBead} --json\` for the blocker bead filed against task ${id}, plus that task's plan.md section and the relevant spec excerpt. Decide RESOLVE (only when the answer is genuinely derivable from the existing plan/beads — give the clarification) or ESCALATE (give a summary and the decision needed). Report decision and detail.`
+}
+
+function recordClarificationPrompt(id, detail) {
+  // MECHANICAL: recording a RESOLVE clarification on the bead is a fixed write, not a judgment call.
+  return `Record this clarification on bead ${id} (e.g. \`bd comment ${id} "..."\` or the project's equivalent) so the next dispatch round picks it up: ${detail}`
+}
+
+function notifyPrompt(id, detail) {
+  // MECHANICAL: a fixed notification on ESCALATE — see "Escalation = notify + quarantine + continue".
+  return `Send a notification (PushNotification or the configured messaging tool, if available) that task ${id} is ESCALATED: ${detail}. Report sent true/false.`
 }
 
 function groupByDisjointFiles(ids, planned) {
@@ -540,12 +618,12 @@ function groupByDisjointFiles(ids, planned) {
 // unmodified in substance; this function only shows the shape of round 1 so a dryRun stub can
 // exercise "one fix round + re-review" concretely (see the Stub table / Assertions below).
 async function reviewAndFix(im) {
-  const rv = await agent(pick(taskReviewPrompt(im), `review:${im.id}`),
+  const rv = await agent(pick(() => taskReviewPrompt(im), `review:${im.id}`),
     { label: `review:${im.id}`, phase: 'Implement', model: model('reviewer'), schema: RESULT })
   if (rv.status !== 'NEEDS_FIX') return rv
-  const fixed = await agent(pick(fixPrompt(rv), `fix:${rv.id}`),
+  const fixed = await agent(pick(() => fixPrompt(rv), `fix:${rv.id}`),
     { label: `fix:${rv.id}`, phase: 'Implement', model: model('implementer'), schema: RESULT })
-  return agent(pick(reReviewPrompt(fixed), `re-review:${fixed.id}`),
+  return agent(pick(() => reReviewPrompt(fixed), `re-review:${fixed.id}`),
     { label: `re-review:${fixed.id}`, phase: 'Implement', model: model('reviewer'), schema: RESULT })
 }
 
@@ -554,16 +632,16 @@ async function handleBlocker(r) {
   // Genuine judgment call: RESOLVE vs ESCALATE. This is the one dispatch in this script that
   // legitimately spends `triage` (opus) — see "Coordinator contract" on why `triage` and
   // `mechanical` are not interchangeable.
-  const t = await agent(pick(triagePrompt(r.id, r.blockerBead), `triage:${r.id}`),
+  const t = await agent(pick(() => triagePrompt(r.id, r.blockerBead), `triage:${r.id}`),
     { label: `triage:${r.id}`, phase: 'Triage', model: model('triage'), schema: TRIAGE })
   if (t.decision === 'RESOLVE') {
     // re-dispatch next round with clarification recorded on the bead; do NOT mark escalated.
     // Recording a clarification is a mechanical write, not a judgment call.
-    await agent(pick(recordClarificationPrompt(r.id, t.detail), `clarify:${r.id}`), { label: `clarify:${r.id}`, phase: 'Triage', model: model('mechanical') })
+    await agent(pick(() => recordClarificationPrompt(r.id, t.detail), `clarify:${r.id}`), { label: `clarify:${r.id}`, phase: 'Triage', model: model('mechanical') })
   } else {
     escalated.push(r.id)                       // quarantine: dependents stay unready in beads
     // Sending a fixed notification is mechanical, same reasoning as the clarification write above.
-    await agent(pick(notifyPrompt(r.id, t.detail), `notify:${r.id}`), { label: `notify:${r.id}`, phase: 'Triage', model: model('mechanical') }) // push if available
+    await agent(pick(() => notifyPrompt(r.id, t.detail), `notify:${r.id}`), { label: `notify:${r.id}`, phase: 'Triage', model: model('mechanical') }) // push if available
     log(`ESCALATED ${r.id}: ${t.detail}`)      // always surfaces in /workflows + completion
   }
 }
@@ -590,6 +668,23 @@ judgment calls made *inside* a dispatched agent — whether an implementer's fix
 a finding, whether a triage verdict is the *correct* RESOLVE/ESCALATE call, whether a merge's
 auto-resolve attempt would really succeed. Those are exercised only by a live run; the canned
 stubs return a fixed verdict regardless of what a real agent would have concluded.
+
+**A parse check is not a runnability check.** `node --check` on the extracted script only proves
+the syntax is valid — it does not catch undefined references, because those are resolved at
+*call* time, not parse time. This doc's first draft of this section verified the script with only
+`node --check` and shipped with 10 of its 11 prompt-builder helpers (everything except
+`closeEpicsPrompt`) called but never defined; the gap wasn't caught until an actual dryRun run
+died with `planPrompt is not defined` two agents in. Worse, it would have died even on a
+*correctly*-stubbed dryRun, because `pick(real, stubKey)` — as first written — took the already-
+built prompt, not a thunk: `pick(planPrompt(...), 'plan')` evaluates `planPrompt(...)` as a
+function-call argument before `pick` is ever entered, so the broken builder ran regardless of
+`dryRun`. `pick` now takes `() => real` and only invokes it on the non-dryRun branch (see the
+script above), which stops a broken or still-undefined prompt builder from crashing a dryRun that
+was never going to need its output — but that fix narrows the blast radius, it doesn't replace
+verification. Before trusting a structural edit to this script, do more than `node --check`: grep
+the called identifiers against the defined ones (`function <name>` and top-level `const <name> =`)
+and confirm every call site resolves, then actually run the dryRun — a parse pass and a stub-key
+lookup are not proof the script executes.
 
 Required **once at implementation** and **after any structural coordinator edit**: loop order,
 the Close/Ready round shape, disjoint-file batching, merge-back sequencing, or blocker routing.
