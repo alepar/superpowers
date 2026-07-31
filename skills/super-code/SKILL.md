@@ -20,7 +20,7 @@ Drive a beads epic to completion: an epic-scoped `bd ready` loop, disjoint-file 
 | Disjoint-file batching for parallel dispatch | The helper scripts (`scripts/task-brief`, `scripts/review-package`, `scripts/sdd-workspace`) |
 | Per-task worktrees off the epic integration branch + serial merge-back | The plan-scoped workspace / ledger format |
 | Blocker beads (the escalation currency: notify + quarantine + continue) | |
-| Model tiering across the five coordinator roles | |
+| Model tiering across the coordinator's roles (below) | |
 
 ## Trigger rule
 
@@ -32,11 +32,11 @@ Per-task worktrees branch from the epic integration branch (not from `main`, not
 
 ## Model tiering
 
-Five roles, each set explicitly in `config.models` — least powerful model that can handle the judgment the role requires:
+Every role below is set explicitly in `config.models` (the table is the source of truth for the count — do not restate it as a number in prose) — least powerful model that can handle the judgment the role requires:
 
 | Role | Model | Why |
 |---|---|---|
-| `planner` | opus | Materializes `plan.md` from the beads tree once per epic (judgment: dependency ordering, `filesTouched` extraction) |
+| `planner` | opus | Materializes `plan.md` from the beads tree once per epic (judgment: dependency ordering, `filesTouched` extraction, ordinal assignment) |
 | `triage` | opus | Decides RESOLVE vs ESCALATE on a blocker bead — the one genuine judgment call in the escalation path |
 | `finalReview` | opus | Whole-epic review against the integration branch before hand-off |
 | `implementer` | sonnet | Per-task implementation |
@@ -57,6 +57,7 @@ Concurrent dispatch only when declared file sets are disjoint (`filesTouched`, f
 - Silently drop a blocked task — file a blocker bead (notify + quarantine + continue; the run never hard-stops on one stuck task).
 - Let a fix loop run past SDD's five-round breaker — at the cap, file a blocker bead instead of retrying.
 - Dispatch parallel implementers whose declared file sets overlap.
+- Patch `scripts/task-brief` to accept bead ids directly, or collapse the ordinal ↔ bead-id mapping — SDD's `task-brief` only matches integer `## Task <N>` headings, not bead ids.
 
 ## Reference
 
