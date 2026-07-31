@@ -21,8 +21,8 @@ there is no single thing to start and walk away from.
 ## §1 Boundary — what super-auto owns
 
 `super-auto` owns **sequencing**. It invokes `brainstorming` → `super-plan` → `super-roast` →
-`super-code` → `super-roast`, threads four flags through them, carries parked escalations between
-phases, and writes a final report. It does not decompose, review, execute, or fix — each of those
+`super-code` → `super-roast` → fix loop → report → `finishing-a-development-branch` (§3), threads
+four flags through them, and carries parked escalations between phases. It does not decompose, review, execute, or fix — each of those
 already has an owner.
 
 **Governing rule (write this into SKILL.md):** if a change would improve how a *phase* works, it
@@ -65,8 +65,20 @@ execution on its own — that would strand the flags and surrender control of th
 | 3 | `super-roast` (design mode) | Via `super-plan`'s existing opt-in offer; its own fix loop, cap 3 |
 | 4 | `super-code` | Autonomous or interactive per flag |
 | 5 | `super-roast` (PR mode) | Against the epic integration branch |
-| 6 | fix loop | Confirmed findings → beads under the epic → re-enter `super-code` |
-| 7 | `finishing-a-development-branch` | Merge the integration branch and clean up — **once, at the end** |
+| 6 | fix loop | Reopen the root epic, file confirmed findings as beads under it, re-enter `super-code`, re-roast |
+| 7 | report | Write `report.md` per §7 — **before** anything is torn down |
+| 8 | `finishing-a-development-branch` | Merge the integration branch and clean up — **once, at the very end** |
+
+**Phase 7 must precede phase 8, and that ordering is the whole point.** Two of §7's five sources —
+the ledger's completion lines and the per-task implementer reports — live git-ignored inside the
+integration worktree, and phase 8 removes it. Writing the report after the teardown reproduces
+exactly the defect that moving the finish out of `super-code` was meant to fix. Phase 8 is gated on
+`report.md` existing.
+
+**Phase 6 reopens the root epic first.** `super-code` terminates when the root epic closes, and its
+close-eligible fixpoint runs inside the loop — so by the time the code roast returns findings, the
+epic `super-code` just drained is closed. Filing beads under it and re-invoking would hit a loop
+whose first termination check has already fired. Reopen, then file, then re-enter.
 
 **`super-code` is told not to run its own Finish hand-off.** Left to itself, `super-code`'s Finish
 merges the integration branch and hands to `finishing-a-development-branch`, whose cleanup runs
@@ -77,7 +89,11 @@ filing beads against a closed epic.
 
 So `super-auto` owns the finish exactly as it owns the hand-off out of `super-plan` (§3 above):
 `super-code` stops when its loop drains, phases 5–6 run against a **live** integration worktree,
-and only when the code roast is clean does `super-auto` hand to `finishing-a-development-branch`.
+and `super-auto` hands to `finishing-a-development-branch` once the fix loop has **exited** —
+clean, capped out, or skipped. `clean` is a loaded verdict token in `super-roast`/`super-plan` (a
+`clean [low coverage]` qualifier is explicitly not a clearance), so the gate names the loop's exit,
+not the verdict: a cap-out that parks Blocking findings still proceeds to finish, which is what
+§4's accepted risk describes.
 This is what keeps §7's cited sources reachable at report time.
 
 **Step 6 mirrors `super-plan`'s loop deliberately:** cap 3, and stop early if an iteration does not
@@ -87,8 +103,29 @@ everything continues to coordinate through beads rather than session memory.
 
 ## §4 Autonomous mode
 
-**Autonomy begins the moment the first roast report exists.** Everything up to and including the
-settled task tree is interactive; from the first roast onward, no queries.
+**Autonomy begins once the task tree has settled — i.e. the moment phase 2 completes.** Everything
+up to and including the settled task tree is interactive; from there on, no queries.
+
+An earlier draft anchored this to "the first roast report exists." That anchor breaks whenever a
+roast is skipped: with both `skipPlanRoast` and `skipCodeRoast` set — the exact configuration §8
+names for the cheap end-to-end validation run — no roast report is ever produced, so autonomy would
+never begin and the flag would be inert for the whole run. The settled task tree is the boundary the
+user actually specified ("everything after the original design plan"), and it is well-defined in
+every flag combination.
+
+### Sibling skills mandate human pauses inside the autonomous zone
+
+`super-plan` and `super-roast` both require a human at points that now fall *after* the boundary:
+`super-plan` "pause[s] and summarize[s] for the human" at both loop exits and says "surface every
+entry to the human before starting fix work"; `super-roast` states "both the cap-out and the clean
+exit pause for the human." In autonomous mode an agent would otherwise face a direct contradiction
+between the skill it is running and the skill it invoked.
+
+**Resolution:** in autonomous mode, a sibling's mandated human pause is satisfied by **recording the
+item as parked in `run.md` and surfacing it in the final report** — not by querying. This is the
+same trade already made for escalations: nothing is auto-adjudicated and nothing is discarded, but
+the human reads it at the end rather than mid-run. Outside autonomous mode the siblings' pauses
+happen normally.
 
 In the autonomous zone:
 
