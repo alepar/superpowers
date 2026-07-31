@@ -273,6 +273,22 @@ wrote or read this file — everything below described intent, not behavior. `re
   that section's re-invoke covers a *clean drain* where the ready set emptied because of
   quarantined blockers; this section covers resuming a run that stopped mid-flight for any reason
   (crash, restart, manual interruption) while ready work still remained.
+- **Known limitation: `ledger-append` is dispatched fire-and-forget, with no schema — same tier as
+  `notify`/`clarify` (see "Schema-less dispatches" in the dryRun policy section), because that was
+  the right tier when the ledger was only a side notification nothing downstream read. It no longer
+  is: the ledger is now the *only* mechanism by which a restarted run recovers `completed`,
+  `escalated`, `parked`, and `pendingRetry` (see "Resume behavior" above). A `ledger-append` call
+  that silently fails — the dispatched agent errors, or a partial write — does not degrade a report
+  the way a lost `notify` does; it corrupts resume. A silently-lost `BLOCKED` line means a
+  quarantined task's id is missing from the ledger on restart, so the Resume phase never adds it
+  back to `escalated`, and the next `bd ready` re-dispatches already-quarantined work. A silently
+  lost `complete (merged, 1 parked — ruling: ...)` line means a restart never reconstructs `parked`
+  for that id — the adjudicator's ruling is gone, and a later observer has no record the finding was
+  ever overruled rather than simply never found. Neither failure is currently detected: `agent()`'s
+  return from a schema-less dispatch is never inspected. Hardening this (e.g. asking `ledger-append`
+  for a structured confirmation and retrying or escalating on failure) is future work, not something
+  this fix attempts — recorded here so whoever picks it up knows what a silent failure actually
+  costs, not just that one is theoretically possible.
 
 ## Per-task pipeline
 
@@ -1382,20 +1398,48 @@ planner/implementer/reviewer/triage budget and without touching git or `bd` (see
 helper and the `model()` dryRun branch in the script above; same mechanism as `super-roast`'s
 `pick()`, see `skills/super-roast/super-roast-workflow.md`).
 
-**Task 5 (I1/I3/I7 — the ledger, `config.concurrency`, and the per-epic workspace) is a structural
+**Task 5 (I1/I3/I7 — the ledger, `config.concurrency`, and the per-epic workspace) was a structural
 edit to this script**, per the rule further below ("A recorded baseline is evidence only for the
-exact script revision it ran against"): it adds a one-time `read-ledger` dispatch before the round
-loop, a `ledger-append:<id>` dispatch at every merge/pending-retry/BLOCKED outcome, and chunks each
-disjoint-file bucket to `config.concurrency` before dispatch. **Every "Confirmed" run-id and agent
-count recorded below (`wf_ddba38c0-72d`, `wf_e189dd5a-a5f`, `wf_058c4b83-631`) predates this edit**
-— none of those runs' dispatch counts include a `read-ledger` or `ledger-append:*` call, because the
-script they ran against had neither. They remain genuine evidence for the revision they executed
-against (this is not a retraction of those figures), but they are not current evidence and must not
-be cited as proof of today's script. The stub tables and JSON `args` blocks below have been updated
-with the new stub keys and updated *expected* dispatch counts (arithmetic, not measurements) so the
-scenarios remain runnable against the current script, but none has actually been re-run — a future
-maintainer re-establishes the current baseline by running the Workflow tool against these args and
-recording the new run's real figures, not by trusting the updated arithmetic alone.
+exact script revision it ran against"): it added a one-time `read-ledger` dispatch before the round
+loop, a `ledger-append:<id>` dispatch at every merge/pending-retry/BLOCKED outcome, and chunked each
+disjoint-file bucket to `config.concurrency` before dispatch. All three scenarios have since been
+re-run against the post-Task-5 script and are recorded as confirmed baselines below
+(`wf_b337b535-bd4`, `wf_453a6604-52e`, `wf_941e256b-10b`) — the pre-Task-5 run-ids
+(`wf_ddba38c0-72d`, `wf_e189dd5a-a5f`, `wf_058c4b83-631`) remain kept as superseded history in each
+section, the same discipline this doc already applies to `wf_171ab5c1-339`.
+
+**What the three re-runs establish, precisely.** Each re-run hit the exact predicted count computed
+by hand before any run occurred (31, 24, 23 — see each scenario's "Expected dispatch count," which
+was arithmetic *before* these runs and is now confirmed arithmetic). The entire delta over the
+pre-Task-5 counts (26→31, 22→24, 21→23) is ledger traffic: one `read-ledger` plus exactly one
+`ledger-append:<id>` per terminal outcome, no more and no less. Hitting the predicted number is
+therefore a real assertion about I1, not a tautology: **every terminal outcome in all three
+scenarios wrote its ledger line.** Had any outcome's `ledger-append` call been skipped, the run
+would have dispatched one fewer agent than predicted; had an extra one fired, the harness would have
+raised `dryRun: no stub for key ledger-append:<id>` naming exactly which outcome over-fired. Neither
+happened in any of the three runs.
+
+**What these three re-runs do NOT establish — read this before citing them for more than dispatch
+counting.** Every `read-ledger` and `ledger-append` call in all three runs was answered by a canned
+stub (`{text:""}` for every `read-ledger`, `{appended:true}` for every `ledger-append`), per this
+section's own dryRun mechanics — `pick()` never calls a real prompt builder under `dryRun: true`.
+These runs prove the dispatches fire **at the right points, in the right number** (see above). They
+prove **nothing** about:
+- the ledger **line format** actually rendered — `readLedgerPrompt`/`ledgerAppendPrompt` were never
+  called for real, so the exact `Task <N> (<bead id>): ...` text these functions build was never
+  produced or inspected by any of these runs (same caveat as this doc's existing scoping/
+  finding-rendering/branch-carry-forward caveats: verified only by reading the function definitions);
+- a real file actually being written to or read from disk — `dryRun: true` means no I/O occurs at
+  all (see "Key constraint: the script does no I/O" and the intro to this section);
+- **resume actually reconstructing state from real ledger content** — every `read-ledger` stub in
+  all three runs returned `{text:""}` (a fresh epic), so the Resume-phase parsing logic
+  (`resumed.set(...)`/the four `if (kind === ...)` branches) never ran against non-empty text in any
+  of these runs. A genuine resumed-run scenario — a `read-ledger` stub returning multi-line text with
+  a mix of `complete`/`BLOCKED`/`pending retry` entries, asserting the correct ids land in
+  `completed`/`escalated`/`pendingRetry` and that already-escalated/completed ids are excluded from
+  `ids` — remains **unwritten and unrun**. Given this document's history of overclaiming a baseline's
+  coverage (four prior findings, all named under "dryRun policy" below), this gap is stated
+  explicitly rather than left to be inferred from "the ledger is wired up and the baselines pass."
 
 **What a dryRun can and cannot prove.** It proves what the *script* owns: round order, the Close
 fixpoint check, the `bd ready` scoping flags baked into the dispatched prompt text, disjoint-file
@@ -1574,12 +1618,12 @@ untested by any scenario in this doc — inspection-only, same as C-1/C-3 above.
   by inspection of the pipeline call site and `reviewAndFix`'s return paths, not by this scenario
   alone, since `bd-104` is the only stubbed BLOCKED case here and this scenario's fix loop never
   reaches the round-5 cap or the adjudicator).
-- Expected dispatch count (I1: updated arithmetic, not a measured run — see "dryRun policy"'s Task
-  5 staleness note above): `read-ledger` 1 + `close-epics` 2 + `bd-ready` 2 + `plan` 1 + `brief` 4 +
-  `implement` 4 + `review` 3 + `fix` 1 + `re-review` 1 + `merge` 3 + `ledger-append` 4 (`bd-101`,
-  `bd-102`, `bd-103`, `bd-104` — one per terminal outcome) + `triage` 2 + `notify` 1 + `clarify` 1 +
-  `final-review` 1 = **31 agent calls, 0 errors** (`final-review` dispatches because
-  `completed.length` is 2, not 0). The pre-Task-5 script's confirmed count was 26 (see the
+- Expected dispatch count (I1: `read-ledger` 1 + `close-epics` 2 + `bd-ready` 2 + `plan` 1 +
+  `brief` 4 + `implement` 4 + `review` 3 + `fix` 1 + `re-review` 1 + `merge` 3 + `ledger-append` 4
+  (`bd-101`, `bd-102`, `bd-103`, `bd-104` — one per terminal outcome) + `triage` 2 + `notify` 1 +
+  `clarify` 1 + `final-review` 1 = **31 agent calls, 0 errors** (`final-review` dispatches because
+  `completed.length` is 2, not 0) — **confirmed by re-run**, see below; this was computed by hand
+  before that run and matched exactly. The pre-Task-5 script's confirmed count was 26 (see the
   superseded baseline below) — the +5 is exactly the new `read-ledger` (1) and `ledger-append` (4)
   dispatches; nothing else in this scenario's topology changed.
 - `r.branch` reaching `mergePrompt`'s dispatch text and `im.base` reaching `taskReviewPrompt`'s
@@ -1648,19 +1692,32 @@ three defects — no stub ever returned `BLOCKED` at implement, and the fix loop
 one round to loop. It's kept here as history of the *prior* scenario, not as evidence for the
 current script.
 
-**Confirmed against the script as it stood through Task 4 — stale as of Task 5.** Run
-`wf_ddba38c0-72d`: **26 agents dispatched, 0 errors** — matching that revision's expected count
-exactly. Returned `{completed:["bd-101","bd-102"], escalated:["bd-103"], pendingRetry:["bd-104"],
-parked:[]}`. Compare this to the intermediate run `wf_171ab5c1-339` (also 26/0, cited in earlier
-revisions of this section) — **`bd-104` now appears in `pendingRetry`**, where under the engine
-`wf_171ab5c1-339` ran against it vanished from every bucket entirely (neither `completed`,
-`escalated`, nor anything else — the reporting hole review round 2 found). `wf_ddba38c0-72d` is
-what proved that fix end to end, against the script current *at that time*; `wf_171ab5c1-339`
-cannot, because it never ran against a script that had a `pendingRetry`/`parked` return shape at
-all. **Neither run's agent count is current now**: Task 5 (I1/I3/I7) added the `read-ledger` and
-`ledger-append:*` dispatches (see the Task 5 staleness note under "dryRun policy" and the updated
-31-call arithmetic under "Assertions for the canonical dryRun" above) — a fresh run against the
-current script is required before this section can cite a real, current agent count again.
+**Confirmed against the script as it stood through Task 4 — superseded by the post-Task-5 run
+below.** Run `wf_ddba38c0-72d`: **26 agents dispatched, 0 errors** — matching that revision's
+expected count exactly. Returned `{completed:["bd-101","bd-102"], escalated:["bd-103"],
+pendingRetry:["bd-104"], parked:[]}`. Compare this to the intermediate run `wf_171ab5c1-339` (also
+26/0, cited in earlier revisions of this section) — **`bd-104` now appears in `pendingRetry`**,
+where under the engine `wf_171ab5c1-339` ran against it vanished from every bucket entirely
+(neither `completed`, `escalated`, nor anything else — the reporting hole review round 2 found).
+`wf_ddba38c0-72d` is what proved that fix end to end, against the script current *at that time*;
+`wf_171ab5c1-339` cannot, because it never ran against a script that had a `pendingRetry`/`parked`
+return shape at all. Kept here as history of the pre-Task-5 engine, same discipline as
+`wf_171ab5c1-339` below it.
+
+**Confirmed against the current (post-Task-5) script.** Run `wf_b337b535-bd4`: **31 agents
+dispatched, 0 errors** — the exact count predicted by hand above, before this run occurred (see
+"Expected dispatch count"). Returned `{completed:["bd-101","bd-102"], escalated:["bd-103"],
+pendingRetry:["bd-104"], parked:[], stalled:false}` — identical terminal-outcome shape to
+`wf_ddba38c0-72d` above, plus the 5 new ledger dispatches (1 `read-ledger`, 4 `ledger-append:<id>`
+— one per `bd-101`/`bd-102`/`bd-103`/`bd-104`). Hitting the predicted count exactly is itself the
+assertion this run establishes for I1: since the entire +5 delta over the pre-Task-5 count is one
+`read-ledger` plus one `ledger-append` per terminal outcome, and no more, matching 31 on the nose
+means **every one of this scenario's four terminal outcomes wrote its ledger line** — a missed
+append would have landed at 30, and an extra one would have crashed on
+`dryRun: no stub for key ledger-append:<id>` naming the offending id. **What this run does not
+prove:** the ledger line format, real file I/O, or resumed-run reconstruction from real content —
+see "What these three re-runs do NOT establish" under "dryRun policy" above; every `read-ledger`
+and `ledger-append` here was a canned stub (`{text:""}` / `{appended:true}`), never a real dispatch.
 
 **`wf_171ab5c1-339` is kept only as superseded history, not current evidence.** It executed against
 commit `9576d7f` — the state of this script **before** the `4a3e3bc` and `9855503` commits
@@ -1795,9 +1852,9 @@ script and this `args` block:
 If a future structural edit changes this script, re-run with these args, confirm the same shape (or
 update it deliberately alongside the edit that changed it), and replace the figures above — same
 discipline as `super-roast`'s "Passing baseline (recorded, not illustrative)" sections. As of Task
-5, the expected shape is **31 agent calls, 0 errors** (see "Assertions for the canonical dryRun"
-above) — **unverified, arithmetic only**; the 26/0 figure in every "Confirmed"/"Superseded" writeup
-above predates this edit.
+5, the confirmed shape is **31 agent calls, 0 errors** (run `wf_b337b535-bd4`, see "Assertions for
+the canonical dryRun" and "Confirmed against the current (post-Task-5) script" above); the 26/0
+figures in the two writeups above it are pre-Task-5 history.
 
 ## Cap-tripping dryRun scenario (separate baseline)
 
@@ -1867,28 +1924,37 @@ scenario, something regressed: `merge:bd-201` would mean a BLOCKED task reached 
   never merges, so the Integrate loop's `if (r.parkRuling)` push never runs — not that `adj.decision`
   was ever `PARK` here in the first place), `stalled` is `false` (the round that quarantines
   `bd-201` grows `escalated`, which the no-progress guard reads as progress).
-- Expected dispatch count (I1: updated arithmetic, not a measured run — see the Task 5 staleness
-  note under "dryRun policy"): `read-ledger` 1 + `close-epics` 2 + `bd-ready` 2 + `plan` 1 +
+- Expected dispatch count (I1: `read-ledger` 1 + `close-epics` 2 + `bd-ready` 2 + `plan` 1 +
   `brief` 1 + `implement` 1 + `review` 1 + `fix` 5 + `re-review` 5 + `adjudicate` 1 +
   `breaker-blocker` 1 + `triage` 1 + `notify` 1 + `ledger-append` 1 (`bd-201`) = **24 agent calls,
   0 errors** — and, distinctly from every other scenario in this doc, **no `final-review`
-  dispatch**, since `completed.length` is `0`. The pre-Task-5 confirmed count was 22 (below); the
-  +2 is exactly `read-ledger` and `ledger-append:bd-201`.
+  dispatch**, since `completed.length` is `0`) — **confirmed by re-run**, see below; this was
+  computed by hand before that run and matched exactly. The pre-Task-5 confirmed count was 22
+  (below); the +2 is exactly `read-ledger` and `ledger-append:bd-201`.
 
-**Confirmed against the script as it stood through Task 4 — stale as of Task 5.** Run
-`wf_e189dd5a-a5f`: **22 agents dispatched, 0 errors** — matching that revision's expected count
-exactly, including the absent `merge:bd-201`/`final-review` dispatches (neither was ever
-requested). 5 fix rounds, 5 still-open re-reviews, 1 adjudicator call, 1 blocker bead filed, 1
+**Confirmed against the script as it stood through Task 4 — superseded by the post-Task-5 run
+below.** Run `wf_e189dd5a-a5f`: **22 agents dispatched, 0 errors** — matching that revision's
+expected count exactly, including the absent `merge:bd-201`/`final-review` dispatches (neither was
+ever requested). 5 fix rounds, 5 still-open re-reviews, 1 adjudicator call, 1 blocker bead filed, 1
 triage call (`ESCALATE`), 0 merge dispatches. Returned `{completed:[], escalated:["bd-201"],
-pendingRetry:[], parked:[], stalled:false}` — exactly as predicted (`parked` stays empty: this
-scenario's task never merges). This confirms the round-cap boundary (5,
-not 4 or 6), the adjudicator dispatching exactly once at the cap rather than per-round, and the
-BLOCKED path never touching `mergePrompt`. **It does not confirm the PARK arm** — this scenario's
-`adjudicate:bd-201` stub only ever returns `BLOCKED`; see "PARK dryRun scenario" below, which is
-confirmed separately (`wf_058c4b83-631`). It also still does not confirm C-1/C-3 (see "What it
-still cannot prove" above) — those remain inspection-only regardless of how many scenarios pass,
-since `pick()` never builds a real prompt under `dryRun: true` (see "What these three runs
-collectively prove, and what they still don't" at the end of the PARK scenario below).
+pendingRetry:[], parked:[], stalled:false}`. Kept here as history of the pre-Task-5 engine.
+
+**Confirmed against the current (post-Task-5) script.** Run `wf_453a6604-52e`: **24 agents
+dispatched, 0 errors** — the exact count predicted by hand above, before this run occurred.
+Returned `{completed:[], escalated:["bd-201"], pendingRetry:[], parked:[], stalled:false}`, review
+`"no work landed"` — the same terminal-outcome shape as `wf_e189dd5a-a5f` above, plus the 2 new
+ledger dispatches (`read-ledger`, `ledger-append:bd-201`). Hitting 24 exactly means the run's one
+terminal outcome (ESCALATE, via `handleBlocker`) wrote its `BLOCKED` ledger line — a skipped append
+would have landed at 23. This confirms the round-cap boundary (5, not 4 or 6), the adjudicator
+dispatching exactly once at the cap rather than per-round, the BLOCKED path never touching
+`mergePrompt`, and — new for I1 — that a breaker-cap BLOCKED reaches the ledger through the same
+`handleBlocker` write every other blocker trigger uses (see "The breaker, autonomous variant"),
+not a special-cased write inside `reviewAndFix`. **It does not confirm the PARK arm** — this
+scenario's `adjudicate:bd-201` stub only ever returns `BLOCKED`; see "PARK dryRun scenario" below.
+It also does not confirm C-1/C-3 (inspection-only regardless of how many scenarios pass, see "What
+it still cannot prove" above), nor the ledger's line format, real file I/O, or resumed-run
+reconstruction from real content (`read-ledger` returned `{text:""}` here too) — see "What these
+three re-runs do NOT establish" under "dryRun policy" above.
 
 ```json
 {
@@ -1936,9 +2002,9 @@ collectively prove, and what they still don't" at the end of the PARK scenario b
 
 If a future structural edit changes this script, re-run with these args, confirm the same shape (or
 update it deliberately alongside the edit that changed it), and replace the figures above — same
-discipline as the canonical scenario's own baseline. As of Task 5, the expected shape is **24 agent
-calls, 0 errors** (see the updated arithmetic above) — **unverified, arithmetic only**; the 22/0
-figure above predates this edit.
+discipline as the canonical scenario's own baseline. As of Task 5, the confirmed shape is **24
+agent calls, 0 errors** (run `wf_453a6604-52e`, see "Confirmed against the current (post-Task-5)
+script" above); the 22/0 figure above it is pre-Task-5 history.
 
 ## PARK dryRun scenario (separate baseline)
 
@@ -2002,31 +2068,43 @@ to short-circuit the blocker path.
 - The Finish-phase log line reads `... Parked (merged with an overruled finding): 1.` and a
   `PARKED bd-301: ...` line was logged earlier, from inside `reviewAndFix`, distinct from and
   earlier than the Finish-phase summary line.
-- Expected dispatch count (I1: updated arithmetic, not a measured run — see the Task 5 staleness
-  note under "dryRun policy"): `read-ledger` 1 + `close-epics` 2 + `bd-ready` 2 + `plan` 1 +
+- Expected dispatch count (I1: `read-ledger` 1 + `close-epics` 2 + `bd-ready` 2 + `plan` 1 +
   `brief` 1 + `implement` 1 + `review` 1 + `fix` 5 + `re-review` 5 + `adjudicate` 1 + `merge` 1 +
-  `ledger-append` 1 (`bd-301`) + `final-review` 1 = **23 agent calls, 0 errors**. The pre-Task-5
-  confirmed count was 21 (below); the +2 is exactly `read-ledger` and `ledger-append:bd-301`.
+  `ledger-append` 1 (`bd-301`) + `final-review` 1 = **23 agent calls, 0 errors**) — **confirmed by
+  re-run**, see below; this was computed by hand before that run and matched exactly. The
+  pre-Task-5 confirmed count was 21 (below); the +2 is exactly `read-ledger` and
+  `ledger-append:bd-301`.
 
-**Confirmed against the script as it stood through Task 4 — stale as of Task 5.** Run
-`wf_058c4b83-631`: **21 agents dispatched, 0 errors** — matching that revision's expected count
-exactly. Returned `{completed:["bd-301"], escalated:[], pendingRetry:[],
+**Confirmed against the script as it stood through Task 4 — superseded by the post-Task-5 run
+below.** Run `wf_058c4b83-631`: **21 agents dispatched, 0 errors** — matching that revision's
+expected count exactly. Returned `{completed:["bd-301"], escalated:[], pendingRetry:[],
 parked:["bd-301"], stalled:false}` — `bd-301` appears in **both** `completed` and `parked`, exactly
 the distinction the Critical fix exists to make: a task that merged with an adjudicator-overruled
 finding is now visibly different from one that reviewed clean on the first pass, where before it
-was indistinguishable. This branch had never executed before that run.
+was indistinguishable. This branch had never executed before that run. Kept here as history of the
+pre-Task-5 engine.
 
-**All three terminal outcomes were covered by an executed run against the script as it stood
-through Task 4 — every run cited below predates Task 5's ledger/concurrency/workspace edit and
-none of their agent counts are current (see the Task 5 staleness note under "dryRun policy" and
-each scenario's own updated arithmetic above):** the canonical scenario (`wf_ddba38c0-72d`, 26
-agents, 0 errors — normal completion, disjoint-file batching, a BLOCKED implementer quarantined, a
-RESOLVE triage now correctly landing in `pendingRetry`; `wf_171ab5c1-339` is superseded history
-only — it ran two commits earlier, against a pre-`parked`/`pendingRetry` return shape, and is not
-evidence about the current engine, see "Baselines for the canonical scenario" above), the
-cap-tripping scenario (`wf_e189dd5a-a5f`, 22 agents, 0 errors — breaker → BLOCKED: exactly 5 fix
-rounds, 1 adjudicator, 1 blocker bead, **0** merge dispatches), and this PARK scenario
-(`wf_058c4b83-631`, 21 agents, 0 errors — breaker → PARK: merged *and* recorded). All three remain
+**Confirmed against the current (post-Task-5) script.** Run `wf_941e256b-10b`: **23 agents
+dispatched, 0 errors** — the exact count predicted by hand above, before this run occurred.
+Returned `{completed:["bd-301"], escalated:[], pendingRetry:[], parked:["bd-301"],
+stalled:false}` — the same terminal-outcome shape as `wf_058c4b83-631` above, plus the 2 new ledger
+dispatches (`read-ledger`, `ledger-append:bd-301`). Hitting 23 exactly means the run's one terminal
+outcome (PARK, merged) wrote its `complete (merged, 1 parked — ruling: ...)` line — a skipped
+append would have landed at 22. **This does not prove the ledger line format, real file I/O, or
+resumed-run reconstruction** — `read-ledger` returned `{text:""}` here too; see "What these three
+re-runs do NOT establish" under "dryRun policy" above.
+
+**All three terminal outcomes are now covered by a confirmed run against the current (post-Task-5)
+script, each hitting exactly the count predicted by hand before it ran:** the canonical scenario
+(`wf_b337b535-bd4`, 31 agents, 0 errors — normal completion, disjoint-file batching, a BLOCKED
+implementer quarantined, a RESOLVE triage landing in `pendingRetry`), the cap-tripping scenario
+(`wf_453a6604-52e`, 24 agents, 0 errors — breaker → BLOCKED: exactly 5 fix rounds, 1 adjudicator,
+1 blocker bead, **0** merge dispatches), and this PARK scenario (`wf_941e256b-10b`, 23 agents, 0
+errors — breaker → PARK: merged *and* recorded). The pre-Task-5 runs cited above each scenario
+(`wf_ddba38c0-72d` 26/0, `wf_e189dd5a-a5f` 22/0, `wf_058c4b83-631` 21/0; `wf_171ab5c1-339` is
+superseded history only — it ran two commits earlier, against a pre-`parked`/`pendingRetry` return
+shape, and is not evidence about the current engine, see "Baselines for the canonical scenario"
+above) remain
 genuine evidence for the terminal-outcome routing they exercised; none is current evidence for
 today's agent counts until re-run.
 
@@ -2045,7 +2123,14 @@ paraphrase of it (the de-glossed `adjudicatePrompt`, review round 3). This is no
 scenarios could ever be extended to close — it is what `dryRun: true` structurally cannot prove, by
 design (see "dryRun policy" and "What this dryRun proves and does not prove" above). Those three
 claims remain, and will always remain, verified only by reading the relevant function definitions
-directly, or by a live run.
+directly, or by a live run. **A fourth claim joins that list with Task 5's ledger work**: all three
+runs' `read-ledger`/`ledger-append` dispatches were canned stubs, so together they confirm only that
+each terminal outcome dispatches its ledger write at the right point and in the right count (see
+"What the three re-runs establish, precisely" and "What these three re-runs do NOT establish" under
+"dryRun policy" above) — never the line format actually rendered, never a real file being written or
+read, and never a resumed run actually reconstructing `completed`/`escalated`/`parked`/`pendingRetry`
+from real ledger content (every `read-ledger` stub across all three runs returned empty text). A
+resumed-run scenario with non-empty, multi-outcome ledger content remains unwritten.
 
 ```json
 {
@@ -2092,6 +2177,6 @@ directly, or by a live run.
 
 If a future structural edit changes this script, re-run with these args, confirm the same shape (or
 update it deliberately alongside the edit that changed it), and replace the figures above — same
-discipline as the other two scenarios' baselines. As of Task 5, the expected shape is **23 agent
-calls, 0 errors** (see the updated arithmetic above) — **unverified, arithmetic only**; the 21/0
-figure above predates this edit.
+discipline as the other two scenarios' baselines. As of Task 5, the confirmed shape is **23 agent
+calls, 0 errors** (run `wf_941e256b-10b`, see "Confirmed against the current (post-Task-5) script"
+above); the 21/0 figure above it is pre-Task-5 history.
