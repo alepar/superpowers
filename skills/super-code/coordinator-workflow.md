@@ -206,7 +206,7 @@ Each ready bead, in its **own worktree branched from the epic integration branch
 Loop:
 
 `scripts/task-brief` (task brief) → `implementer-prompt.md` (sonnet) →
-`scripts/review-package BASE HEAD` → `task-reviewer-prompt.md` (sonnet; single reviewer,
+`scripts/review-package PLAN_FILE BASE HEAD` → `task-reviewer-prompt.md` (sonnet; single reviewer,
 spec-compliance **and** quality in one dispatch — SDD's current template, not the retired
 two-stage spec/quality split) → on findings, fix rounds (≤5) each ending with a scoped
 `re-review-prompt.md` over the fix diff → a completion line in the ledger.
@@ -459,7 +459,15 @@ const PLANNED = { type: 'object', properties: { planPath: {type:'string'}, mappi
 // NEEDS_FIX result carries the actual review finding text across the schema boundary — without it,
 // taskReviewPrompt's "attach the finding when NEEDS_FIX" instruction has nowhere to land, and
 // fixPrompt has nothing but {id,n,status,files,branch} to build a fix dispatch from.
-const RESULT  = { type: 'object', properties: { id: {type:'string'}, n: {type:'integer'}, status: {type:'string'}, files: { type: 'array', items: {type:'string'} }, branch: {type:'string'}, blockerBead: {type:'string'}, finding: {type:'string'} }, required: ['id','status'] }
+// `base` is the pre-implementer commit — captured once, by the brief stage, right after the task
+// worktree is cut and before the implementer makes any commit (see taskBriefPrompt). It is NOT
+// required (only the brief stage's dispatch actually determines it), but every downstream RESULT
+// on this task's pipeline carries it forward via plain JS assignment rather than asking a
+// subagent to echo it back — same reasoning as `branch`/`n`/`files` below (see the implement
+// pipeline stage and reviewAndFix). Never derive review-package's BASE arg as `HEAD~1` instead —
+// that silently drops all but the last commit of a multi-commit task
+// (subagent-driven-development/SKILL.md:238).
+const RESULT  = { type: 'object', properties: { id: {type:'string'}, n: {type:'integer'}, status: {type:'string'}, files: { type: 'array', items: {type:'string'} }, branch: {type:'string'}, base: {type:'string'}, blockerBead: {type:'string'}, finding: {type:'string'} }, required: ['id','status'] }
 const TRIAGE  = { type: 'object', properties: { decision: {type:'string'}, detail: {type:'string'} }, required: ['decision','detail'] } // decision: RESOLVE | ESCALATE
 const MERGE   = { type: 'object', properties: { id:{type:'string'}, merged:{type:'boolean'}, blockerBead:{type:'string'} }, required: ['id','merged'] }
 const CLOSE   = { type: 'object', properties: { rootClosed: {type:'boolean'}, closedThisRun: { type: 'array', items: { type: 'string' } } }, required: ['rootClosed','closedThisRun'] }
@@ -536,8 +544,17 @@ while (true) {
   for (const group of groups) {  // disjoint-file groups serialize relative to each other; tasks within a group don't share files
     const groupResults = await pipeline(group,
       id  => agent(pick(() => taskBriefPrompt(planned.planPath, ordinalFor(id), id, taskWorktree(id)), `brief:${id}`), { label: `brief:${id}`,   phase: 'Implement', model: model('mechanical'), schema: RESULT }),
-      br  => agent(pick(() => implementPrompt(br, integrationBranch), `implement:${br.id}`),                          { label: `impl:${br.id}`, phase: 'Implement', model: model('implementer'), schema: RESULT }),
-      im  => reviewAndFix(im),
+      // `n`/`branch`/`base` are the coordinator's own data — assigned by `taskWorktree(id)` and
+      // `ordinalFor(id)` (n/branch) or captured once at brief time (base) — not the implementer's
+      // to invent. Carry them forward here in plain JS rather than asking implementPrompt's report
+      // contract to echo them: the implementer has no reason to preserve a value it never needed
+      // (same reasoning "Coordinator contract" applies to `branch` reaching mergePrompt below via
+      // reviewAndFix). Only `status`/`files` are genuinely the implementer's own report.
+      async br => {
+        const im = await agent(pick(() => implementPrompt(br, integrationBranch), `implement:${br.id}`), { label: `impl:${br.id}`, phase: 'Implement', model: model('implementer'), schema: RESULT })
+        return { ...im, n: br.n, branch: br.branch, base: br.base }
+      },
+      im  => reviewAndFix(im, planned.planPath),
     )
     results.push(...groupResults)
   }
@@ -640,36 +657,64 @@ function taskBriefPrompt(planPath, n, id, worktree) {
   // MECHANICAL: scripts/task-brief owns the awk extraction and brief-file naming (see "Plan
   // materialization" — do not hand-roll this from the mapping table). n must be the plan
   // ordinal, never the bead id (task-brief's heading regex requires a leading digit).
-  return `Create the task worktree at ${worktree}, branched from the epic integration branch (see "Dispatching the implementer"). Run \`scripts/task-brief ${planPath} ${n}\` to produce the brief file. Report id ${id}, n ${n}, branch ${worktree}, and status BRIEFED (or, on the script's "task not found" failure, status BLOCKED).`
+  // `base` is captured HERE, right after the worktree is cut and before the implementer makes any
+  // commit — exactly "the commit you recorded before dispatching the implementer" that SKILL.md's
+  // "Handle the report" section requires review-package's BASE to be, instead of `HEAD~1` (which
+  // silently drops all but the last commit of a multi-commit task —
+  // subagent-driven-development/SKILL.md:238). The coordinator carries it forward from here on
+  // (see the implement pipeline stage and reviewAndFix) rather than asking any later subagent to
+  // re-derive or echo it.
+  return `Create the task worktree at ${worktree}, branched from the epic integration branch (see "Dispatching the implementer"). Run \`scripts/task-brief ${planPath} ${n}\` to produce the brief file. In ${worktree}, run \`git rev-parse HEAD\` to capture the pre-implementer commit. Report id ${id}, n ${n}, branch ${worktree}, base <the commit SHA just captured>, and status BRIEFED (or, on the script's "task not found" failure, status BLOCKED).`
 }
 
 function implementPrompt(br, integrationBranch) {
   // subagent-driven-development/implementer-prompt.md + the brief path, unmodified — the two
   // autonomous-mode additions (worktree convention, self-filing blocker beads) are supplied as
   // extra dispatch text here, not by editing the prompt file (see "Dispatching the implementer").
-  return `Follow subagent-driven-development/implementer-prompt.md against the brief for task ${br.id} (n ${br.n}), working in ${br.branch}, branched from integration branch ${integrationBranch}. If BLOCKED after 3 no-progress fix-loops, file the blocker bead yourself (see "The blocker-bead path") — there is no human partner to escalate to mid-task. Report id, n, status (IMPLEMENTED or BLOCKED), files touched, and branch.`
+  // The report contract deliberately asks for only id/status/files, not n/branch/base: those three
+  // are already coordinator-known (from `br`) and are re-stamped onto this call's result in the
+  // pipeline call site regardless of what's reported — asking for them here would just invite a
+  // second, ignorable source of truth (see the pipeline call site and RESULT's `base` comment).
+  return `Follow subagent-driven-development/implementer-prompt.md against the brief for task ${br.id} (n ${br.n}), working in ${br.branch}, branched from integration branch ${integrationBranch}. If BLOCKED after 3 no-progress fix-loops, file the blocker bead yourself (see "The blocker-bead path") — there is no human partner to escalate to mid-task. Report id, status (IMPLEMENTED or BLOCKED), and files touched.`
 }
 
-function taskReviewPrompt(im) {
-  // scripts/review-package BASE HEAD -> subagent-driven-development/task-reviewer-prompt.md
+function taskReviewPrompt(im, planPath) {
+  // scripts/review-package PLAN_FILE BASE HEAD -> subagent-driven-development/task-reviewer-prompt.md
   // (single reviewer, spec-compliance + quality in one dispatch — the retired two-stage split
-  // never applies here).
-  return `Run \`scripts/review-package\` for task ${im.id} (n ${im.n}) in ${im.branch} and follow subagent-driven-development/task-reviewer-prompt.md over the resulting package. Report id, n, files, and status CLEAN or NEEDS_FIX — on NEEDS_FIX, put the finding text in the \`finding\` field (fixPrompt builds the fix dispatch from it directly, not from the rest of this result).`
+  // never applies here). review-package requires all three positional args and exits 2 with fewer
+  // than three — it must never be invoked bare. BASE is `im.base`, the pre-implementer commit the
+  // brief stage captured right after cutting the worktree (see taskBriefPrompt) and the coordinator
+  // carried forward unchanged since (see the implement pipeline stage) — never `HEAD~1`, which
+  // silently drops all but the last commit of a multi-commit task
+  // (subagent-driven-development/SKILL.md:238). HEAD is passed literally: run from inside
+  // ${im.branch}, where it resolves to that worktree's current tip. The report contract below asks
+  // for only id/status/finding, not n/files/branch/base: `reviewAndFix`'s `carried()` re-stamps
+  // those four from `im` on every return regardless of what's reported (see `reviewAndFix` above)
+  // — this is the C2 fix, since neither this contract nor `reReviewPrompt`'s ever reliably carried
+  // `branch`, which is what left `mergePrompt`'s `r.branch` undefined.
+  return `In ${im.branch}, run \`scripts/review-package ${planPath} ${im.base} HEAD\` for task ${im.id} (n ${im.n}) and follow subagent-driven-development/task-reviewer-prompt.md over the resulting package. Report id and status CLEAN or NEEDS_FIX — on NEEDS_FIX, put the finding text in the \`finding\` field (fixPrompt builds the fix dispatch from it directly, not from the rest of this result).`
 }
 
 function fixPrompt(rv) {
   // Round 1 of the fix loop — resumes the original implementer on the reviewer's finding. Rounds
   // 2-5 and the terminal action at the cap are exactly "The breaker, autonomous variant" above.
   // The finding text (rv.finding), not the whole RESULT object, is the substance of this prompt —
-  // stringifying rv wholesale would hand the implementer {id,n,status,files,branch} and no finding
-  // to actually fix, since none of RESULT's other fields carry the reviewer's finding text.
-  return `Resume the original implementer in the worktree for task ${rv.id} (n ${rv.n}) and address this review finding: ${rv.finding}. Report id, n, status FIXED, and files touched.`
+  // stringifying rv wholesale would hand the implementer {id,n,status,files,branch,base} and no
+  // finding to actually fix, since none of RESULT's other fields carry the reviewer's finding text.
+  // `rv` here is already `carried()`-stamped by reviewAndFix, so `rv.branch` (used for "the
+  // worktree for task X") is real, not an echo this function has to trust the reviewer for.
+  // Report contract: id and status only — n/files/branch/base are re-stamped by `carried()` again
+  // after this call, same reasoning as taskReviewPrompt above.
+  return `Resume the original implementer in the worktree ${rv.branch} for task ${rv.id} (n ${rv.n}) and address this review finding: ${rv.finding}. Report id and status FIXED.`
 }
 
 function reReviewPrompt(fixed) {
   // subagent-driven-development/re-review-prompt.md, scoped to the fix diff only — not a full
-  // re-review of the whole task.
-  return `Follow subagent-driven-development/re-review-prompt.md, scoped to the fix diff for task ${fixed.id} (n ${fixed.n}) in ${fixed.branch}. Report id, n, and status CLEAN (finding ADDRESSED) or NEEDS_FIX (still open).`
+  // re-review of the whole task. `fixed` is `carried()`-stamped by reviewAndFix before reaching
+  // here, so `fixed.branch` is real (previously this interpolated a plain fixPrompt-agent echo
+  // that fixPrompt's own report contract never asked for — the same C2 gap, one hop earlier).
+  // Report contract: id and status only, same reasoning as taskReviewPrompt above.
+  return `Follow subagent-driven-development/re-review-prompt.md, scoped to the fix diff for task ${fixed.id} (n ${fixed.n}) in ${fixed.branch}. Report id and status CLEAN (finding ADDRESSED) or NEEDS_FIX (still open).`
 }
 
 function mergePrompt(r, integrationBranch, integrationWorktree) {
@@ -730,14 +775,24 @@ function groupByDisjointFiles(ids, planned) {
 // breaker's terminal action at the cap are exactly "The breaker, autonomous variant" above,
 // unmodified in substance; this function only shows the shape of round 1 so a dryRun stub can
 // exercise "one fix round + re-review" concretely (see the Stub table / Assertions below).
-async function reviewAndFix(im) {
-  const rv = await agent(pick(() => taskReviewPrompt(im), `review:${im.id}`),
+async function reviewAndFix(im, planPath) {
+  const rv = await agent(pick(() => taskReviewPrompt(im, planPath), `review:${im.id}`),
     { label: `review:${im.id}`, phase: 'Implement', model: model('reviewer'), schema: RESULT })
-  if (rv.status !== 'NEEDS_FIX') return rv
-  const fixed = await agent(pick(() => fixPrompt(rv), `fix:${rv.id}`),
+  // C2's fix: none of taskReviewPrompt's/fixPrompt's/reReviewPrompt's report contracts ask for
+  // `branch` (taskReviewPrompt's asks for "id, n, files, and status"; reReviewPrompt's asks for
+  // "id, n, and status") — so `rv`/`fixed` never reliably carry it, and reReviewPrompt below
+  // interpolates `fixed.branch` into its dispatch text. Re-stamp `n`/`files`/`branch`/`base` from
+  // `im` (the implementer's result, itself carried forward from the brief stage — see the pipeline
+  // call site) after every hop in this loop, rather than trusting a reviewer/fixer echo. This is
+  // also what makes `mergePrompt`'s `r.branch` non-undefined: everything reviewAndFix returns has
+  // passed through this re-stamp.
+  const carried = result => ({ ...result, n: im.n, files: im.files, branch: im.branch, base: im.base })
+  if (rv.status !== 'NEEDS_FIX') return carried(rv)
+  const fixed = await agent(pick(() => fixPrompt(carried(rv)), `fix:${rv.id}`),
     { label: `fix:${rv.id}`, phase: 'Implement', model: model('implementer'), schema: RESULT })
-  return agent(pick(() => reReviewPrompt(fixed), `re-review:${fixed.id}`),
+  const rr = await agent(pick(() => reReviewPrompt(carried(fixed)), `re-review:${fixed.id}`),
     { label: `re-review:${fixed.id}`, phase: 'Implement', model: model('reviewer'), schema: RESULT })
+  return carried(rr)
 }
 
 async function handleBlocker(r) {
@@ -850,12 +905,12 @@ attempt, exercising the blocker-bead path end to end: triage `ESCALATE`, notify,
 | `close-epics` (array, 2 entries) | `{rootClosed:false,closedThisRun:[]}` then `{rootClosed:false,closedThisRun:["bd-101","bd-102"]}` | root stays open both rounds (quarantined `bd-103` blocks closure) — round 1 doesn't exit early, round 2 doesn't loop forever |
 | `bd-ready` (array, 2 entries) | `{ids:["bd-101","bd-102","bd-103"]}` then `{ids:[]}` | round 1 supplies the batch; round 2's empty set drains the loop. The **scoping** assertion (`--exclude-type=epic --label sp:<epicId>`) is a property of the dispatched prompt text itself, not of this canned return — verified by reading the prompt, same as `super-roast`'s reporter-arithmetic caveat above |
 | `plan` | `{planPath:"...", mapping:[{n:1,id:"bd-101",files:["src/a.js"]},{n:2,id:"bd-102",files:["src/b.js"]},{n:3,id:"bd-103",files:["src/a.js"]}]}` | ordinal↔bead-id↔files mapping that `groupByDisjointFiles` and every `ordinalFor` lookup consumes |
-| `brief:bd-101` / `brief:bd-102` / `brief:bd-103` | `{id:"bd-1XX",n:<n>,status:"BRIEFED",files:[...],branch:".worktrees/<integrationBranch>--task-bd-1XX"}` | call-site-qualified per id (a single unqualified `brief` key can't return three different ids/branches) |
-| `implement:bd-101` / `implement:bd-102` / `implement:bd-103` | `{id:"bd-1XX",n:<n>,status:"IMPLEMENTED",files:[...],branch:"..."}` | same per-id qualification |
-| `review:bd-101` | `{id:"bd-101",n:1,status:"NEEDS_FIX",files:["src/a.js"],finding:"missing null check on parsed input in src/a.js:42"}` | the one task whose review returns a finding — `finding` is what `fixPrompt` builds the fix dispatch from, not the rest of the result |
+| `brief:bd-101` / `brief:bd-102` / `brief:bd-103` | `{id:"bd-1XX",n:<n>,status:"BRIEFED",files:[...],branch:".worktrees/<integrationBranch>--task-bd-1XX",base:"<40-char-sha>"}` | call-site-qualified per id (a single unqualified `brief` key can't return three different ids/branches); `base` here is the pre-implementer commit taskBriefPrompt now captures — this is where `n`/`branch`/`base` originate for the rest of the pipeline |
+| `implement:bd-101` / `implement:bd-102` / `implement:bd-103` | `{id:"bd-1XX",n:<n>,status:"IMPLEMENTED",files:[...],branch:"..."}` | same per-id qualification. This stub's `n`/`branch` are cosmetic only — the pipeline's implement stage re-stamps `n`/`branch`/`base` from the brief result (`br`) onto whatever this call returns, never trusting the implementer's own echo (see the pipeline call site) |
+| `review:bd-101` | `{id:"bd-101",n:1,status:"NEEDS_FIX",files:["src/a.js"],finding:"missing null check on parsed input in src/a.js:42"}` | the one task whose review returns a finding — `finding` is what `fixPrompt` builds the fix dispatch from, not the rest of the result. No `branch`/`base` here by design: `reviewAndFix`'s `carried()` re-stamps both from `im` regardless of what this report contains, which is the C2 fix |
 | `review:bd-102` / `review:bd-103` | `{id:"bd-1XX",n:<n>,status:"CLEAN",files:[...]}` | clean reviews — no fix loop for these two |
-| `fix:bd-101` | `{id:"bd-101",n:1,status:"FIXED",files:["src/a.js"]}` | fix round dispatched only for the flagged task |
-| `re-review:bd-101` | `{id:"bd-101",n:1,status:"CLEAN"}` | finding `ADDRESSED` — scoped re-review over the fix diff |
+| `fix:bd-101` | `{id:"bd-101",n:1,status:"FIXED",files:["src/a.js"]}` | fix round dispatched only for the flagged task; no `branch` here either, by the same design as `review:bd-101` above |
+| `re-review:bd-101` | `{id:"bd-101",n:1,status:"CLEAN"}` | finding `ADDRESSED` — scoped re-review over the fix diff; `reviewAndFix` re-stamps `branch`/`base`/`n`/`files` from `im` onto this before it becomes the task's final result, which is what reaches `mergePrompt`'s `r.branch` |
 | `merge:bd-101` / `merge:bd-102` | `{id:"bd-1XX",merged:true}` | successful serial merges |
 | `merge:bd-103` | `{id:"bd-103",merged:false,blockerBead:"bd-104"}` | merge fails its bounded auto-resolve attempt → blocker path |
 | `triage:bd-103` | `{decision:"ESCALATE",detail:"rebase conflict on src/a.js survived one auto-resolve attempt"}` | the judgment dispatch in `handleBlocker` |
@@ -893,18 +948,27 @@ folding them into the canonical one.
 - Expected dispatch count: `close-epics` 2 + `bd-ready` 2 + `plan` 1 + `brief` 3 + `implement` 3 +
   `review` 3 + `fix` 1 + `re-review` 1 + `merge` 3 + `triage` 1 + `notify` 1 + `final-review` 1 =
   **22 agent calls, 0 errors** (`final-review` dispatches because `completed.length` is 2, not 0).
+- `r.branch` is never `undefined` at any `merge:<id>` call, and `r.base` is never `undefined` at
+  any `review:<id>` call (C2/C6) — provable structurally under `dryRun`, since none of
+  `review:bd-101`/`review:bd-102`/`review:bd-103`/`fix:bd-101`/`re-review:bd-101`'s stub JSON
+  includes `branch` or `base` at all (see the stub table): if either value reached `mergePrompt` or
+  `taskReviewPrompt`'s dispatch text, it could only have come from the `carried()` re-stamp in
+  `reviewAndFix` or the brief→implement re-stamp in the pipeline call site — not from a reviewer's
+  echo. This is a stronger check than reading the return value: the *stub* deliberately omits the
+  field so the only way it can show up downstream is via the coordinator's own carry-forward code.
 
 If any assertion fails, fix the script **in this doc** (this doc's script is canonical) and
 re-run before committing the fix.
 
 ### Passing baseline (recorded, not illustrative)
 
-Run `wf_b1958510-6bf`, 2026-07-30, against the args below (unchanged since the `finding`-carrying
-`review:bd-101` stub was added in fix round 2): **22 agents dispatched, 0 errors**. Returned
-`{completed: ["bd-101","bd-102"], escalated: ["bd-103"]}` with the final review's verdict
-`conditional-pass`. This confirms every assertion above **except scoping and finding-rendering**
-(see "What this dryRun proves and does not prove" below), in the dispatch order the journal
-recorded:
+Run `wf_b1958510-6bf`, 2026-07-30, against an earlier revision of the args below — one that
+predates the `base`-carrying fix for C2/C6 (Task 3): that revision's `brief:*` stubs had no `base`
+field, `RESULT` had no `base` property, and `reviewAndFix` had no `carried()` re-stamp. **22 agents
+dispatched, 0 errors**. Returned `{completed: ["bd-101","bd-102"], escalated: ["bd-103"]}` with the
+final review's verdict `conditional-pass`. This confirms every assertion above **except scoping and
+finding-rendering** (see "What this dryRun proves and does not prove" below), in the dispatch order
+the journal recorded:
 
 1. `close-epics` → `{rootClosed:false, closedThisRun:[]}`
 2. `bd-ready` → 3 ids — real evidence the loop got its batch, but **not** evidence of scoping: a
@@ -938,6 +1002,16 @@ recorded:
 20. `close-epics` → `{rootClosed:false, closedThisRun:["bd-101","bd-102"]}`
 21. `bd-ready` → `{ids:[]}` — the loop terminates
 22. `final-review`
+
+**Not yet re-verified against the current args block below.** Task 3 added `base` to `RESULT`, to
+the `brief:*` stubs, and to the args JSON below, plus the `carried()` re-stamp inside
+`reviewAndFix` and the brief→implement re-stamp at the pipeline call site. Per "dryRun policy"
+above's own data-edit/structural-edit distinction, this is a data-carrying change, not a topology
+change — no `agent()` call was added, removed, or reordered, so the dispatch order/count above are
+expected to still hold unchanged. That expectation was checked by `node --check` plus a manual
+grep of every call site (see the commit), but **not** by an actual re-run: no Workflow-dispatch
+tool was available in the environment this task was implemented in. Re-run against the args below
+before the next structural edit lands, and replace this recorded run with the fresh one.
 
 **Schema-less dispatches — the harness's "1 empty result" is expected, not a defect.** Two of the
 22 calls carry no `schema:` and so return free text rather than structured output: `notify` (line
@@ -1004,9 +1078,9 @@ scenario this baseline used):
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[]}"
       ],
       "plan": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"planPath\":\".worktrees/epic-bd-100-integration/.sdd/bd-100/plan.md\",\"mapping\":[{\"n\":1,\"id\":\"bd-101\",\"files\":[\"src/a.js\"]},{\"n\":2,\"id\":\"bd-102\",\"files\":[\"src/b.js\"]},{\"n\":3,\"id\":\"bd-103\",\"files\":[\"src/a.js\"]}]}",
-      "brief:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"BRIEFED\",\"files\":[\"src/a.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-101\"}",
-      "brief:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-102\",\"n\":2,\"status\":\"BRIEFED\",\"files\":[\"src/b.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-102\"}",
-      "brief:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-103\",\"n\":3,\"status\":\"BRIEFED\",\"files\":[\"src/a.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-103\"}",
+      "brief:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"BRIEFED\",\"files\":[\"src/a.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-101\",\"base\":\"aaaaaaa1111111111111111111111111111111\"}",
+      "brief:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-102\",\"n\":2,\"status\":\"BRIEFED\",\"files\":[\"src/b.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-102\",\"base\":\"bbbbbbb2222222222222222222222222222222\"}",
+      "brief:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-103\",\"n\":3,\"status\":\"BRIEFED\",\"files\":[\"src/a.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-103\",\"base\":\"ccccccc3333333333333333333333333333333\"}",
       "implement:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"IMPLEMENTED\",\"files\":[\"src/a.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-101\"}",
       "implement:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-102\",\"n\":2,\"status\":\"IMPLEMENTED\",\"files\":[\"src/b.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-102\"}",
       "implement:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-103\",\"n\":3,\"status\":\"IMPLEMENTED\",\"files\":[\"src/a.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-103\"}",
