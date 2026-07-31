@@ -1577,10 +1577,10 @@ pendingRetry:[], stalled:false}` — exactly as predicted. This confirms the rou
 not 4 or 6), the adjudicator dispatching exactly once at the cap rather than per-round, and the
 BLOCKED path never touching `mergePrompt`. **It does not confirm the PARK arm** — this scenario's
 `adjudicate:bd-201` stub only ever returns `BLOCKED`; see "PARK dryRun scenario" below, which is
-authored but **not yet executed** (the coordinator asked for it to be handed back rather than run
-from this environment — same as this scenario originally was). It also still does not confirm
-C-1/C-3 (see "What it still cannot prove" above) — those remain inspection-only regardless of how
-many scenarios pass, since `pick()` never builds a real prompt under `dryRun: true`.
+confirmed separately (`wf_058c4b83-631`). It also still does not confirm C-1/C-3 (see "What it
+still cannot prove" above) — those remain inspection-only regardless of how many scenarios pass,
+since `pick()` never builds a real prompt under `dryRun: true` (see "What these three runs
+collectively prove, and what they still don't" at the end of the PARK scenario below).
 
 ```json
 {
@@ -1628,10 +1628,10 @@ If a future structural edit changes this script, re-run with these args, confirm
 shape (or update it deliberately alongside the edit that changed it), and replace the figures
 above — same discipline as the canonical scenario's own baseline.
 
-## PARK dryRun scenario (separate baseline, not yet executed)
+## PARK dryRun scenario (separate baseline)
 
-Review round 3's Critical finding: no run has ever executed the PARK branch (`:1044-1057` in
-`reviewAndFix` as of this revision) — both prior scenarios stub the adjudicator as `BLOCKED`. This
+Review round 3's Critical finding: no run had ever executed the PARK branch (`reviewAndFix`'s
+`if (adj.decision === 'PARK')` arm) — both prior scenarios stub the adjudicator as `BLOCKED`. This
 is the third, minimal scenario dedicated to it: same one-epic, one-task, five-round shape as the
 cap-tripping scenario above, but the adjudicator rules `PARK` instead of `BLOCKED`.
 
@@ -1646,10 +1646,16 @@ cap-tripping scenario's and can be run on its own.
 **What it still cannot prove:** the same C-1/C-3 inspection-only caveat as every other scenario in
 this doc (`pick()` never builds `adjudicatePrompt`'s or `mergePrompt`'s real dispatch text under
 `dryRun: true`) — plus, specifically, whether a *real* adjudicator dispatch actually renders the
-new "apply SKILL.md's breaker section exactly as written, do not use any other criterion" and
-"BLOCKED if ANY open finding is load-bearing" instructions into its prompt text; that is verified
-only by reading `adjudicatePrompt`'s definition directly, same as `fixPrompt`'s finding-rendering
-caveat above.
+"apply SKILL.md's breaker section exactly as written, do not use any other criterion" and "BLOCKED
+if ANY open finding is load-bearing" instructions into its prompt text; that is verified only by
+reading `adjudicatePrompt`'s definition directly, same as `fixPrompt`'s finding-rendering caveat
+above. **It also does not exercise a malformed adjudicator response.** This scenario's
+`adjudicate:bd-301` stub returns the exact, well-formed token `"PARK"` — it says nothing about what
+happens if a real adjudicator returns anything else (a paraphrase, a typo, an empty string). By
+inspection, `reviewAndFix`'s `if (adj.decision === 'PARK') { ... } else { ...file a blocker bead...
+}` means anything that isn't the literal string `"PARK"` falls to the `BLOCKED` branch — the safe
+direction, matching C-3's fail-closed philosophy elsewhere in this file — but no dryRun demonstrates
+that; it is, and remains, verified only by reading the `if` statement itself.
 
 | Stub key | Canned output (`<json>` content) | Exercises |
 |---|---|---|
@@ -1686,8 +1692,36 @@ to short-circuit the blocker path.
   `review` 1 + `fix` 5 + `re-review` 5 + `adjudicate` 1 + `merge` 1 + `final-review` 1 = **21 agent
   calls, 0 errors**.
 
-**Not yet executed.** Authored per the coordinator's request ("hand the PARK scenario back to me to
-run"), not run from this environment.
+**Confirmed.** Run `wf_058c4b83-631`: **21 agents dispatched, 0 errors** — matching the expected
+count above exactly. Returned `{completed:["bd-301"], escalated:[], pendingRetry:[],
+parked:["bd-301"], stalled:false}` — `bd-301` appears in **both** `completed` and `parked`, exactly
+the distinction the Critical fix exists to make: a task that merged with an adjudicator-overruled
+finding is now visibly different from one that reviewed clean on the first pass, where before it
+was indistinguishable. This branch had never executed before this run.
+
+**All three terminal outcomes are now covered by an executed run:** the canonical scenario
+(`wf_171ab5c1-339`, 26 agents, 0 errors — normal completion, disjoint-file batching, a BLOCKED
+implementer quarantined via a RESOLVE triage), the cap-tripping scenario (`wf_e189dd5a-a5f`, 22
+agents, 0 errors — breaker → BLOCKED: exactly 5 fix rounds, 1 adjudicator, 1 blocker bead, **0**
+merge dispatches), and this PARK scenario (`wf_058c4b83-631`, 21 agents, 0 errors — breaker → PARK:
+merged *and* recorded).
+
+**What these three runs collectively prove, and what they still don't.** Together they confirm
+terminal-outcome routing (a task reaches exactly one of: merged clean, quarantined BLOCKED,
+resolved-pending-retry, or merged-with-a-parked-ruling), the round-cap arithmetic (exactly 5 rounds,
+the adjudicator dispatched exactly once at the cap either way), and that each outcome leaves its own
+distinct artifact in the return value (`completed`/`escalated`/`pendingRetry`/`parked`) rather than
+collapsing into an indistinguishable shape. **None of the three proves anything about prompt
+TEXT**, for the same structural reason repeated at every scenario above: `pick()` never calls a
+real prompt builder under `dryRun: true`, so no number of passing dryRuns — three, or three hundred
+— can ever demonstrate that the sticky finding (C-1) actually reaches a real dispatch string, that a
+real re-reviewer's differently-worded verdict is correctly handled by the fail-closed loop condition
+(C-3), or that a real adjudicator dispatch actually receives SDD's rubric by reference rather than a
+paraphrase of it (the de-glossed `adjudicatePrompt`, review round 3). This is not a gap these
+scenarios could ever be extended to close — it is what `dryRun: true` structurally cannot prove, by
+design (see "dryRun policy" and "What this dryRun proves and does not prove" above). Those three
+claims remain, and will always remain, verified only by reading the relevant function definitions
+directly, or by a live run.
 
 ```json
 {
@@ -1730,5 +1764,6 @@ run"), not run from this environment.
 }
 ```
 
-Run this and record the real dispatch trace (order, count,
-`completed`/`parked`/`escalated`/`pendingRetry`) here, replacing "Not yet executed" above.
+If a future structural edit changes this script, re-run with these args, confirm the same 21/0
+shape (or update it deliberately alongside the edit that changed it), and replace the figures
+above — same discipline as the other two scenarios' baselines.
