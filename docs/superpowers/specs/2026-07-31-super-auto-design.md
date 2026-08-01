@@ -276,6 +276,13 @@ dependency order the task tree already encodes.
 - **Trigger micro-test** on the frontmatter description — three probes: "take this idea to finished
   code" (expect fire), "review this PR" (expect no fire — `super-roast`), "execute this epic"
   (expect no fire — `super-code`).
+
+  **Result (2026-07-31):** 3/3. Three fresh probe agents, each given only the shipped frontmatter
+  `description` of `super-auto`, `super-roast`, and `super-code` (no other context), were asked
+  which skill they would invoke for one scenario apiece. All three routed correctly on the first
+  pass — no misfires, no description changes made. Recorded here because the run that produced it
+  used a git-ignored scratch ledger (`.superpowers/sdd/`) as its only other record, which does not
+  survive `git clean -fdx`.
 - **One cheap end-to-end run:** a trivial feature with both roasts skipped and autonomous off.
   Note this configuration deliberately does **not** exercise autonomous mode — with autonomy off the
   boundary anchor is inert, so this run proves the phases chain and nothing about §4. A second run
