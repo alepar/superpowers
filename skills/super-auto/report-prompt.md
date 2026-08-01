@@ -41,6 +41,14 @@ human's call was made *for* them. Reporting bare `clean` when a degraded-verdict
 record exists is the same lie as reporting `clean` over an unresolved escalation
 — list every qualifier that was parked, e.g. `clean [degraded: low coverage]`.
 
+**A skipped roast is also a degraded qualifier**, sourced from `run.md`'s own
+`skipPlanRoast`/`skipCodeRoast` flags rather than a parked record: nothing was
+adversarially reviewed, so zero Blocking and zero escalations means "never
+checked," not "checked and clean." With both flags set, the status line is
+`clean [degraded: plan roast skipped, code roast skipped]`, never bare `clean` —
+that configuration is also what the cheap end-to-end validation run uses, so
+it is the first status line anyone reading this contract's output will see.
+
 The prohibition: never a bare "done." "Done" says nothing about which of the four
 states above actually happened, and a run that parked Blocking findings, or left
 an escalation unresolved, and reports "done" is indistinguishable, at a glance,
@@ -63,8 +71,8 @@ edit that lets `super-code` run its own Finish (worktree removal included) befor
 
 | Section | Content | Sourced from |
 |---|---|---|
-| Implemented | What landed, task by task | beads closed under the run's epic; `super-code`'s returned `completed` bucket; ledger completion lines, each with its commit range |
-| Remaining | What did not land, and why each didn't | `super-code`'s `escalated` and `pendingRetry` buckets; parked escalations carried in `run.md`; unresolved Blocking findings still open at panel cap-out |
+| Implemented | What landed, task by task | beads closed under the run's epic; `super-code`'s `completed` bucket, recorded in `run.md`'s `codeBuckets` (item 6) at the phase 4→5 transition — not session memory; ledger completion lines, each with its commit range |
+| Remaining | What did not land, and why each didn't | `codeBuckets`' `escalated` and `pendingRetry`; parked escalations carried in `run.md`; unresolved Blocking findings still open at panel cap-out |
 | Gotchas & surprises | Where reality diverged from the design | roast findings that changed a design decision; blocker beads that were triaged; plan-defect findings; anything that forced a nested brainstorm |
 | Entrypoints | Where to start reading, in order | the task tree's dependency order: root-most module first, then its public interface, then the primary caller |
 | Smells | Code the run is uneasy about, each with a one-line "the smell" | parked findings; parked `degraded-verdict` records (a road not taken because autonomous mode answered a sibling's gate itself); `DONE_WITH_CONCERNS` implementer reports; tasks that needed 4-5 fix rounds; tasks that tripped the fix-loop breaker |
@@ -90,9 +98,10 @@ Two properties of the Smells section are load-bearing and easy to lose in a rewr
 ## The sourcing prohibition
 
 > Every section is sourced from a durable artifact — a bead, a ledger line, a
-> `run.md` pointer, a roast report, a returned bucket from `super-code` — never
-> from the writing agent's recollection of how the run felt. If a fact cannot be
-> traced to one of those artifacts, it does not go in the report.
+> `run.md` pointer, a roast report, `run.md`'s recorded `codeBuckets` — never
+> from the writing agent's recollection of how the run felt, and never from
+> `super-code`'s return value directly, which is not itself durable. If a fact
+> cannot be traced to one of those artifacts, it does not go in the report.
 
 This is what keeps the report honest under compaction and restart: the agent
 writing `report.md` may not be the agent (or even the session) that ran phase

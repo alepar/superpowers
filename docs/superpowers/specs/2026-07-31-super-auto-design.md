@@ -89,11 +89,15 @@ filing beads against a closed epic.
 
 So `super-auto` owns the finish exactly as it owns the hand-off out of `super-plan` (§3 above):
 `super-code` stops when its loop drains, phases 5–6 run against a **live** integration worktree,
-and `super-auto` hands to `finishing-a-development-branch` once the fix loop has **exited** —
-clean, capped out, or skipped. `clean` is a loaded verdict token in `super-roast`/`super-plan` (a
-`clean [low coverage]` qualifier is explicitly not a clearance), so the gate names the loop's exit,
-not the verdict: a cap-out that parks Blocking findings still proceeds to finish, which is what
-§4's accepted risk describes.
+and `super-auto` hands to `finishing-a-development-branch` once phase 8's gate passes. That gate is
+**three conditions**, not the fix loop's exit alone: `report.md` exists, `run.md`'s `phase` reads
+`report`, and `report.md`'s status line does not begin `stalled`. Two conditions are not enough — a
+stall recorded exactly at phase 7 can otherwise leave both `phase: report` and a `report.md`
+present without the fix loop having actually exited (clean, capped out, or skipped); the third
+condition is what closes that case. `clean` is itself a loaded verdict token in `super-roast`/
+`super-plan` (a `clean [low coverage]` qualifier is explicitly not a clearance), so the gate never
+treats that token as sufficient on its own either: a cap-out that parks Blocking findings still
+proceeds to finish, which is what §4's accepted risk describes.
 This is what keeps §7's cited sources reachable at report time.
 
 **Step 6 mirrors `super-plan`'s loop deliberately:** cap 3, and stop early if an iteration does not
@@ -120,9 +124,8 @@ request ("performs all roast fixes without asking") specifies.
 An earlier draft anchored this to "the first roast report exists." That anchor breaks whenever a
 roast is skipped: with both `skipPlanRoast` and `skipCodeRoast` set and `autonomous` on, no roast
 report is ever produced, so autonomy would never begin and the flag would be inert for the whole
-run. The settled task tree is the boundary the
-user actually specified ("everything after the original design plan"), and it is well-defined in
-every flag combination.
+run. The coverage loop passing is well-defined in every flag combination, which is why it, not a
+roast report, is the anchor.
 
 ### Sibling skills mandate human pauses inside the autonomous zone
 
@@ -205,10 +208,17 @@ that makes it consistent rather than special-cased.
 `run.md` exists to make a resume *correct*, not merely possible. It holds:
 
 1. **The four flags** — so a resumed run never re-asks.
-2. **Current phase** — where to re-enter.
+2. **Current phase** — one of `brainstorm | plan | roast-design | code | roast-code | fix-loop |
+   report | finish | done`, matching §3's eight phases 1:1 plus the terminal `done`. `finish` means
+   phase 8 started but isn't confirmed complete; `done` means it is. A stall leaves `phase` at
+   whatever value was in flight rather than advancing it to `report` — see §3's three-condition
+   gate.
 3. **Pointers to each phase's own artifact** — spec path, epic id, integration branch, roast report
    paths. Pointers only; `super-auto` never copies what another skill owns.
-4. **Parked escalations and beyond-cap items** accumulated so far.
+4. **Parked items, three kinds** — escalations and beyond-cap findings (as before), plus
+   degraded-verdict records: a sibling's own mandated pause (a declined raised-panelCap re-roast, a
+   `clean [qualifier]` proceed decision) that autonomous mode answered instead of asking, recorded
+   with which branch was taken.
 5. **Roast iteration counts, per loop.**
 
 Item 5 is load-bearing: **a cap that lives in session memory is not a cap.** If a restart resets the
@@ -225,13 +235,21 @@ efficient: where to start, and what to distrust. **Every section is sourced from
 artifact, never from the writing agent's recollection** — a report that narrates from memory is how
 a run with parked Blocking findings ends up reading as "done."
 
-It leads with status on one line: `clean` / `completed with N unresolved Blocking, M escalations` /
-`stalled at phase X`. Never a bare "done."
+It leads with status on one line, one of **four**: `clean` / `clean [degraded: ...]` / `completed
+with N unresolved Blocking, M escalations` / `stalled at phase X`. Never a bare "done."
 
 **An unresolved escalation forces a non-clean status, even with zero Blocking findings.** An
 escalation reached no verdict by construction (§4), so a run carrying one has not been cleared;
 reporting `clean` would claim a resolution that never happened — the precise failure this contract
-exists to prevent. `clean` requires **both** counts at zero.
+exists to prevent. Bare `clean` requires both counts at zero **and** zero parked degraded-verdict
+records (§6 item 4).
+
+**`clean [degraded: ...]` is the fourth status, not a variant of `clean`.** Zero Blocking and zero
+escalations no longer means nothing was left for a human: a degraded-verdict record means a
+sibling's own gate was answered on the human's behalf instead of asked. A roast skipped by flag is
+the same case by extension — nothing was adversarially reviewed, so zero findings means "never
+checked," not "checked and clean." With both roasts skipped, the status is
+`clean [degraded: plan roast skipped, code roast skipped]`, never bare `clean`.
 
 | Section | Content | Sourced from |
 |---|---|---|

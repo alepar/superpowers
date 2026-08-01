@@ -11,9 +11,9 @@ It lives at `docs/superpowers/runs/<slug>/run.md` and is committed alongside the
 other artifacts of the run (spec, plan, roast reports). It is not scratch state —
 every field in it is read back on resume and trusted.
 
-## The five required contents
+## The six required contents
 
-`run.md` MUST hold exactly these five things. Each one is load-bearing: drop it and
+`run.md` MUST hold exactly these six things. Each one is load-bearing: drop it and
 a resume can silently redo work or violate a decision that was already made.
 
 1. **The four flags** — `planOneShot`, `skipPlanRoast`, `skipCodeRoast`, `autonomous`.
@@ -32,6 +32,15 @@ a resume can silently redo work or violate a decision that was already made.
    straight from `report` to `done`) is exactly the failure this enumeration exists
    to rule out — it would resume as "nothing left to do" while the integration
    branch sits unmerged.
+
+   **A stall at phase 1–6 never advances `phase` to `report`** — it still writes
+   `report.md` (`status: stalled at phase <phase>`, naming whatever `phase` already
+   held), but leaves that field where it was. A stall *at* phase 7 itself is the
+   one case where `phase` legitimately already reads `report` with a `stalled`
+   status line — which is why phase 8's gate (`SKILL.md`'s Phase sequence) checks
+   three things, not two: `report.md` exists, `phase` reads `report`, **and** the
+   status line does not begin `stalled`. Only the third condition closes that
+   remaining case.
 
 3. **Pointers** — spec path, plan path, epic id, integration branch, roast report
    paths. Pointers only, never inline content. `run.md` says *where* the spec,
@@ -75,6 +84,14 @@ a resume can silently redo work or violate a decision that was already made.
    Persisting `roastDesignRound` / `roastCodeRound` in `run.md` is what makes the
    cap durable across any restart, not just within one session.
 
+6. **`super-code`'s returned buckets** — `completed`, `escalated`, `pendingRetry`,
+   `parked`, `stalled`, `review`, recorded verbatim at the phase 4→5 transition.
+   `super-code` returns these once, to the calling session, and does not itself
+   persist them; `report-prompt.md`'s Implemented and Remaining sections are
+   sourced from them, and its own sourcing rule anticipates the writing agent may
+   not be the one that ran phase `code`. Unrecorded, these buckets exist only in a
+   session that may have already compacted or ended by the time `report` runs.
+
 ## File format — worked example
 
 The following is a real `run.md` mid-run: the design phase went through two roast
@@ -101,16 +118,25 @@ parked:
 - roast-design-2.md · escalation · "cache invalidation premise unverified — no valid judge votes"
 - roast-design-2.md · degraded-verdict · "clean [low coverage] — proceeded, not re-roasted"
 - roast-code-1.md · beyond-cap · "Blocking candidate left unjudged at panel cap"
+
+codeBuckets:
+  completed: bd-413, bd-414
+  escalated:
+  pendingRetry:
+  parked: bd-415
+  stalled: false
+  review: CLEAN
 ```
 
-Every field above is one of the five required contents: `flags` and `phase` are
+Every field above is one of the six required contents: `flags` and `phase` are
 items 1 and 2; `spec`/`plan`/`epic`/`branch`/`roast-design`/`roast-code` are the
 pointers of item 3 (each one names a path or id, never inline content) —
 `spec`, `plan`, `roast-design`, and `roast-code` are paths, given relative to the
 run directory as stated above; `epic` and `branch` are identifiers, not paths,
 so the relative-path rule doesn't apply to them — `roastDesignRound`/
 `roastCodeRound` are item 5; `parked` is item 4, with each entry naming its
-source report and its kind (`escalation` / `beyond-cap` / `degraded-verdict`).
+source report and its kind (`escalation` / `beyond-cap` / `degraded-verdict`);
+`codeBuckets` is item 6, recorded once, at the phase 4→5 transition.
 
 ## The resume rule
 
