@@ -598,11 +598,15 @@ per-task reports — the only place a PARK ruling's reasoning lives — after th
 coordinator does not hand off: it returns the final review's buckets (`completed`, `escalated`,
 `pendingRetry`, `parked`, `stalled`, `review`) to the caller and stops, leaving the integration
 worktree, its branch, and its ledger intact; the caller decides if and when to invoke
-`finishing-a-development-branch` itself. **Not implemented, as of
-this doc: "pointed at the ledger's deferred-minor notes."** No ledger line kind this script's
-`ledgerLine()` ever writes produces a "deferred-minor" note, and no call site emits one — see
-"Known limitations" below. Read this section's own final-review dispatch as pointing the reviewer
-at the parked-ruling lines only, not at deferred-minor notes that do not exist yet.
+`finishing-a-development-branch` itself. **Deferred minors reach the final reviewer through the ledger.** Every review and re-review
+reports its Minor findings in `RESULT.minors`; `reviewAndFix` accumulates them across all rounds of
+a task (deduped — each round sees only its own diff and cannot re-report an earlier round's minor),
+and the merge gate writes one `Task <N> (<id>): minor (deferred): <one-liner>` ledger line per
+minor, in upstream's own shape. They are written **at the merge gate**, alongside `parked`, for the
+same reason: a minor deferred on a task that never merges is not a deferral — it is part of a
+blocked task's open state, which the blocker path already carries. The Finish-phase reviewer reads
+these lines together with the parked-ruling lines, and triages which must be fixed before the branch
+lands. A minor is deferred, not discarded; the ledger is what makes the difference real.
 
 ## Known limitations
 
@@ -611,65 +615,20 @@ assuming any of these already work. Resolved items are not listed here — they 
 this branch" below, which exists for a narrower reason: each one was a place where the prose said
 something the code did not do, and the risk a maintainer reintroduces it outlives the correction.
 
-1. **Duplicate blocker beads on restart.** Blocker beads are filed with a `blocker` label and no
-   dependency edge, and nothing in this script deduplicates them against an existing open blocker
-   bead for the same task id. Each re-invocation of a still-blocked task that reaches the
-   blocker-bead path again files a **fresh** bead and re-runs `notifyPrompt`/`recordClarificationPrompt`
-   — a restart can leave more than one open blocker bead pointing at the same stuck task, and
-   re-notify for something already notified. Compounding this: this document's "Resume behavior"
-   section (above) used to claim a restart costs exactly "one wasted pipeline pass" on a
-   still-BLOCKED id — corrected in this fix round to "up to two," because that figure was an
-   undercount. `pendingRetry` (the only ledger-reconstructed state that bounds a RESOLVE to one
-   retry — see "Resume behavior" above) is never seeded from a ledger's `BLOCKED` last line, only
-   from a `pending retry` one. So the first blocker-path visit of a NEW run for an id whose *last*
-   ledger line was `BLOCKED` is treated by `handleBlocker` as a first-time RESOLVE candidate (since
-   `pendingRetry.has(id)` is false), not as an already-ESCALATEd id — even though, historically, it
-   already got a full triage verdict before. The real cost of resuming a still-genuinely-blocked id
-   is therefore **up to two** full pipeline passes (one consuming the fresh RESOLVE slot, a second
-   before the bounced-RESOLVE rule quarantines it for good), plus a duplicate blocker bead and a
-   duplicate notification for each pass that reaches ESCALATE. This is compounded further by the
-   `ledger-append` fire-and-forget limitation documented under "Resume behavior" above (see
-   "Workspace and ledger," `:345-363`): `ledger-append` is the *only* mechanism by which a restart
-   recovers `parked`/`pendingRetry` at all, and its schema-less, fire-and-forget dispatch is never
-   inspected for success — so a silently-lost `pending retry` line does not just cost this item's
-   "up to two passes," it can reset `pendingRetry` for that id entirely and let a bad clarification
-   spin for more than one extra round after a restart.
-2. **`completed` and `parked` are plain arrays, not Sets.** `completed.push(id)` at the merge gate
-   runs regardless of whether Resume already seeded `id` into `completed` from a prior run's ledger
-   line — so a resumed id that merges again this run is counted twice in `completed` (and, if it
-   was previously `parked`, its ruling line is effectively double-recorded in spirit even though the
-   ledger append itself only happens once per genuine merge). Worse: a resumed-`complete` id whose
-   merge fails THIS run's rebase/test attempt goes through `handleBlocker` and lands in `escalated`
-   — while it is already sitting in `completed` from Resume's reconstruction (Resume pushes onto
-   `completed`/`parked` for *any* `complete`-kind last line, without regard to what happens to the
-   id later in this same run). The result is an id that is simultaneously in `completed` and in
-   `escalated`, breaking the "exactly one of merged / quarantined / pending-retry / parked" invariant
-   the dryRun section (see "What these three runs collectively prove") asserts holds for every task.
-   Deduplicating via `Set` semantics (or filtering `escalated`/`pendingRetry` pushes against
-   `completed`, or vice versa) is future work, not attempted in this round.
-3. **The workspace-divergence guard (Plan phase) accepts planning from a task worktree.** The guard
-   (see the Plan-phase call site above) only checks that `plannedDir` equals `workspace` or ends
-   with `/${workspace}` — it never checks *which* worktree prefixes that suffix. A planner
-   mistakenly dispatched to run inside `taskWorktree(id)` (`.worktrees/<integrationBranch>--task-<id>`)
-   instead of `integrationWorktree` would report a `planPath` that still ends with
-   `/.superpowers/sdd/<epicId>-plan/<epicId>-plan.md` and would still pass this guard, even though
-   `planPrompt`'s own dispatch text explicitly says "do not plan from a task's own worktree" (see
-   "Plan materialization"). This splits the plan file from the ledger just as surely as the
-   wrong-epic-workspace case this guard exists to catch — the guard was built for the wrong
-   dimension of "which directory," not "which worktree."
-4. **Finish points the final reviewer at "deferred-minor" ledger notes that nothing writes.** See
-   the "Finish" section above, updated in this round to say so directly: no line kind `ledgerLine()`
-   produces is a deferred-minor note, and no call site in this script ever asks for one to be
-   written. The prose has been corrected to stop promising it; the underlying gap (SDD's Final
-   Review wanting a place to read deferred minors from) remains unimplemented.
-5. **`short(undefined)` yields `""`.** A merge agent that reports `merged: true` without `head`
-   and/or `mergeBase` is schema-valid (neither is `required` on `MERGE` — see that schema's comment
-   above) and passes silently; `short()` degrades a missing SHA to an empty string rather than
-   throwing, so the resulting ledger line (e.g. `commits abc1234..` or `commits ..def5678`) still
-   matches `LEDGER_LINE_RE` and parses as an ordinary `complete` line on a future resume — a
-   non-compliant merge dispatch degrades the ledger's commit-range invariant instead of failing
-   loud. Hardening this (e.g. asserting both fields are present before building the ledger line, or
-   escalating instead of degrading) is future work.
+1. **Duplicate blocker beads on restart.** Every blocker-path entry does a `bd create` with a
+   `blocker` label and no dedup against an existing open bead for the same task, so each
+   re-invocation of a still-stuck task files a fresh bead and re-notifies. The clean fix is not
+   deduplication — it is not creating a second artifact at all: annotate the blocked task in place
+   (`bd note <id>` to append why it is stuck, `bd update <id> -t decision` to drop it out of
+   `bd ready --exclude-type=epic,decision` until it gets another design pass). Verified available
+   in `bd`; **designed, not yet implemented.** Until it is, a restart can leave several open beads
+   pointing at one stuck task.
+2. **Restart still costs up to two wasted pipeline passes on a still-blocked id.** `pendingRetry`
+   is reconstructed only from a `pending retry` ledger line, never from a `BLOCKED` one, so the
+   first blocker-path visit of a new run for an id whose last line was `BLOCKED` is treated as a
+   first-time RESOLVE candidate even though it already got a full triage verdict in the prior run.
+   Seeding `pendingRetry` from `BLOCKED` lines would fix it; not attempted here because the same
+   restart path is being reworked by the blocked-task redesign (item 1).
 
 ## Resolved in this branch (kept as guardrails)
 
@@ -919,7 +878,7 @@ const PLANNED = { type: 'object', properties: { planPath: {type:'string'}, mappi
 // post-rebase value instead (`m.mergeBase`, on `MERGE` below), precisely because that rebase moves
 // the task branch's history out from under `base` (see the `mergeBase`/`MERGE` comment and the
 // merge-gate ledger-append call site — Fix 3, final fix round).
-const RESULT  = { type: 'object', properties: { id: {type:'string'}, n: {type:'integer'}, status: {type:'string'}, files: { type: 'array', items: {type:'string'} }, branch: {type:'string'}, base: {type:'string'}, blockerBead: {type:'string'}, finding: {type:'string'} }, required: ['id','status'] }
+const RESULT  = { type: 'object', properties: { id: {type:'string'}, n: {type:'integer'}, status: {type:'string'}, files: { type: 'array', items: {type:'string'} }, branch: {type:'string'}, base: {type:'string'}, blockerBead: {type:'string'}, finding: {type:'string'}, minors: { type: 'array', items: {type:'string'} } }, required: ['id','status'] }
 const TRIAGE  = { type: 'object', properties: { decision: {type:'string'}, detail: {type:'string'} }, required: ['decision','detail'] } // decision: RESOLVE | ESCALATE
 // `head` (fix-round-1, review): the pre-merge tip commit of the task branch, captured by the merge
 // agent (`git rev-parse <branch>`, same "the coordinator has no shell/git access of its own" reason
@@ -979,8 +938,16 @@ const LEDGER_TEXT = { type: 'object', properties: { text: { type: 'string' } }, 
 // stubbed under `dryRun: true` (see "dryRun policy").
 const LEDGER_LINE_RE = /^Task\s+(\S+)\s+\(([^)]+)\):\s*(.*)$/
 
-const escalated = []
-const completed = []
+// Terminal-outcome buckets. **Sets, not arrays, and every write goes through `settle()`.** Resume
+// seeds these from a prior run's ledger, and this run can legitimately reach a DIFFERENT terminal
+// outcome for the same id — Resume deliberately does not filter `ids` by `completed` (see the
+// Resume phase's own comment on why a fixed blocker's task must be re-dispatchable). With plain
+// arrays and bare `.push`, a resumed-`complete` id whose merge fails THIS run landed in `escalated`
+// while still sitting in `completed`: one id in two terminal buckets, contradicting the
+// "exactly one of merged / quarantined / pending-retry / parked" invariant the dryRun section
+// asserts for every task. Arrays also double-counted an id that resumed complete and merged again.
+const escalated = new Set()
+const completed = new Set()
 // I-9 (review round 3, Critical): tasks the cap adjudicator PARKed — merged despite a known open
 // finding the adjudicator ruled non-load-bearing. Before this, `adjudicatePrompt`'s `ruling` was
 // written to a `parkRuling` field on the return value that nothing else in the script read: not
@@ -993,7 +960,18 @@ const completed = []
 // carries INTENT (`r.parkRuling`) until the merge that follows it actually succeeds; gating the
 // push on `m.merged` is what keeps a task whose merge later fails from ending up in `parked` and
 // `escalated`/`pendingRetry` at once (review round 4).
-const parked = []
+const parked = new Set()
+
+// The single writer for terminal state. THIS run's outcome supersedes whatever Resume
+// reconstructed for the same id — last write wins, because a later terminal outcome is by
+// definition the more recent fact about the task. `parked` is not a fourth bucket: it is a modifier
+// on `completed` ("a parked task IS a completed one"), so it is cleared whenever an id settles
+// anywhere other than `completed`, and set separately at the merge gate.
+function settle(id, bucket) {
+  for (const b of [completed, escalated, pendingRetry]) if (b !== bucket) b.delete(id)
+  if (bucket !== completed) parked.delete(id)
+  bucket.add(id)
+}
 // C-2/I6: ids RESOLVEd once by triage, awaiting their one bounded re-attempt (see handleBlocker
 // and "The blocker-bead path"). Membership here is what lets the no-progress guard tell a
 // legitimate first-time RESOLVE (real, if temporary, progress) apart from a round that truly did
@@ -1037,9 +1015,9 @@ for (const raw of (ledger.text || '').split('\n')) {
 }
 let blockedHistoricallyCount = 0
 for (const [id, kind] of resumed) {
-  if (kind === 'complete') completed.push(id)
-  else if (kind === 'parked') { completed.push(id); parked.push(id) }
-  else if (kind === 'pendingRetry') pendingRetry.add(id)
+  if (kind === 'complete') settle(id, completed)
+  else if (kind === 'parked') { settle(id, completed); parked.add(id) }
+  else if (kind === 'pendingRetry') settle(id, pendingRetry)
   else if (kind === 'blockedHistorically') blockedHistoricallyCount++
   // Fix-round-1 (review): a `BLOCKED` line is deliberately NOT folded into `escalated` here. It
   // used to be — but that made every invocation, crash-restart or deliberate re-invoke alike,
@@ -1071,7 +1049,7 @@ for (const [id, kind] of resumed) {
   // that gate reads `completed.length` after Resume has already seeded it from prior-run ledger
   // lines, not only from this run's own `completed.push` calls.
 }
-if (resumed.size) log(`resume: reconstructed from ${ledgerPath} — ${completed.length} complete (${parked.length} parked), ${pendingRetry.size} pending retry, ${blockedHistoricallyCount} previously-BLOCKED id(s) found (not re-quarantined — each gets a fresh attempt this run; see the resume-reconstruction comment above)`)
+if (resumed.size) log(`resume: reconstructed from ${ledgerPath} — ${completed.size} complete (${parked.size} parked), ${pendingRetry.size} pending retry, ${blockedHistoricallyCount} previously-BLOCKED id(s) found (not re-quarantined — each gets a fresh attempt this run; see the resume-reconstruction comment above)`)
 
 while (true) {
   // MECHANICAL: bd epic close-eligible is repo-global (no --label/--parent/--mol — see
@@ -1117,7 +1095,7 @@ while (true) {
   // point of a RESOLVE verdict. `escalated` (live, this-run-only after the fix above) is the one
   // list still legitimately gating dispatch, since it's what stops an immediate re-dispatch loop
   // for a task this same run already quarantined.
-  const ids = (ready?.ids ?? []).filter(id => !escalated.includes(id))
+  const ids = (ready?.ids ?? []).filter(id => !escalated.has(id))
   // Quarantine exit: the root isn't closed (checked above) but nothing is ready — remaining
   // work is blocked/escalated. Not a clean finish; report below distinguishes the two cases.
   if (ids.length === 0) break
@@ -1126,8 +1104,8 @@ while (true) {
   // before the unplannedIds quarantine below can touch `escalated`/`pendingRetry`, so that
   // quarantine (or a first-time RESOLVE) counts as progress too — not just a later
   // Integrate-phase escalation.
-  const completedBefore = completed.length
-  const escalatedBefore = escalated.length
+  const completedBefore = completed.size
+  const escalatedBefore = escalated.size
   const pendingRetryBefore = pendingRetry.size
 
   // Plan materialization — once per epic, append-only on refill (see "Plan materialization").
@@ -1179,9 +1157,15 @@ while (true) {
   // genuine `.superpowers/sdd/` directory boundary provides. Trailing slashes are stripped from
   // `plannedDir` before comparing, since a planner could report either form.
   const plannedDir = planned.planPath.replace(/\/[^/]*$/, '').replace(/\/+$/, '')
-  const workspaceSuffix = `/${workspace}`
-  if (plannedDir !== workspace && !plannedDir.endsWith(workspaceSuffix)) {
-    throw new Error(`workspace divergence: planner reported planPath "${planned.planPath}" (directory "${plannedDir}"), which does not resolve to this coordinator's workspace "${workspace}" (expected it to equal that path, or end with "${workspaceSuffix}"). Refusing to continue — the plan file and the ledger would silently split across two directories. Check that planner-prompt.md's plan-file-name parameter was actually honored by this dispatch.`)
+  // Limitation 3: it is not enough that the path ENDS WITH this epic's workspace — a planner
+  // wrongly dispatched into a TASK worktree reports
+  // `.worktrees/<integrationBranch>--task-<id>/.superpowers/sdd/<epicId>-plan`, which satisfies any
+  // suffix-only test while splitting the plan file from the ledger exactly as the wrong-epic case
+  // would. The guard now pins the prefix too: the only acceptable locations are the repo root
+  // itself and THIS epic's integration worktree.
+  const expected = `${integrationWorktree}/${workspace}`
+  if (plannedDir !== workspace && plannedDir !== expected && !plannedDir.endsWith(`/${expected}`)) {
+    throw new Error(`workspace divergence: planner reported planPath "${planned.planPath}" (directory "${plannedDir}"), which is neither this coordinator's workspace "${workspace}" nor that workspace inside this epic's integration worktree ("${expected}"). Refusing to continue — the plan file and the ledger would silently split across two directories. Two causes to check: planner-prompt.md's plan-file-name parameter was not honored by this dispatch, or the planner ran in a TASK worktree instead of the integration worktree.`)
   }
   const ordinalFor = id => planned.mapping.find(m => m.id === id)?.n
 
@@ -1277,9 +1261,18 @@ while (true) {
     if (r.status === 'BLOCKED') { await handleBlocker(r, planned.planPath); continue }
     const m = await agent(pick(() => mergePrompt(r, integrationBranch, integrationWorktree), `merge:${r.id}`),
       { label: `merge:${r.id}`, phase: 'Integrate', model: model('reviewer'), schema: MERGE })
+    // Limitation 5: `head` and `mergeBase` are not `required` on `MERGE` (neither can be, since a
+    // failed merge legitimately omits both), so a `merged: true` report missing either is
+    // schema-valid. Treat it as a non-compliant merge rather than writing a half-formed commit
+    // range: escalate through the same path as any other blocked task, where a human sees it.
+    // Degrading was the worse option — the bad line is indistinguishable from a good one on resume.
+    if (m.merged && (!m.head || !m.mergeBase)) {
+      log(`merge:${r.id} reported merged without a full commit range (head=${m.head ?? 'missing'}, mergeBase=${m.mergeBase ?? 'missing'}) — treating as BLOCKED`)
+      await handleBlocker({ id: r.id, n: r.n, blockerBead: m.blockerBead }, planned.planPath)
+      continue
+    }
     if (m.merged) {
-      completed.push(r.id)
-      pendingRetry.delete(r.id)  // a RESOLVEd id that then succeeds clears its retry-pending mark (C-2)
+      settle(r.id, completed)  // also clears a stale escalated/pendingRetry mark from a prior run (C-2)
       // Review round 4 (Important): `parked` is recorded HERE, alongside `completed.push`, not back
       // in `reviewAndFix` at adjudication time — `r.parkRuling` (set by the PARK branch there) is
       // only a carried-forward INTENT until the merge that just succeeded confirms it. Had this
@@ -1287,7 +1280,18 @@ while (true) {
       // its bounded auto-resolve would end up in `parked` AND `escalated`/`pendingRetry`
       // simultaneously, absent from `completed` — contradicting "a parked task IS a completed one"
       // below. Gating on `m.merged` makes that invariant hold by construction.
-      if (r.parkRuling) { parked.push(r.id); log(`PARKED ${r.id}: ${r.parkRuling} (open finding, merged anyway: ${r.finding})`) }
+      // Limitation 4: minors are written to the ledger HERE, at the merge gate, for the same
+      // reason `parked` is — a minor deferred on a task that never merges is not a deferral, it is
+      // part of a blocked task's open state, and the blocker path already carries it. Upstream's
+      // shape (`Task <N>: minor (deferred): <one-liner>`) is one line per minor, so this is a loop,
+      // not one bundled line: the Finish-phase reviewer triages them individually. Tasks with no
+      // minors dispatch nothing extra.
+      for (const m2 of (r.minors ?? [])) {
+        await agent(pick(() => ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName,
+            ledgerLine(r.n, r.id, `minor (deferred): ${m2}`)),
+          `ledger-minor:${r.id}:${m2}`), { label: `ledger-minor:${r.id}`, phase: 'Integrate', model: model('mechanical') })
+      }
+      if (r.parkRuling) { parked.add(r.id); log(`PARKED ${r.id}: ${r.parkRuling} (open finding, merged anyway: ${r.finding})`) }
       // I1: mechanical dispatch appends the completion line — SKILL.md's own line shape
       // (`Task <N>: complete (...)`), with the ordinal/bead-id pairing "Workspace and ledger"
       // specifies. A PARK ruling gets upstream's `<K> parked` variant of that same line (K is
@@ -1337,8 +1341,8 @@ while (true) {
   // That lag doesn't weaken the guard: a run making genuine progress always has at least one of
   // the four signals non-empty in any given round once work starts landing; a run making none of
   // the four, in any round, has nothing left that will change next round's outcome either.
-  if (completed.length === completedBefore && closed.closedThisRun.length === 0 &&
-      escalated.length === escalatedBefore && pendingRetry.size === pendingRetryBefore) {
+  if (completed.size === completedBefore && closed.closedThisRun.length === 0 &&
+      escalated.size === escalatedBefore && pendingRetry.size === pendingRetryBefore) {
     stalled = true
     log(`STALLED: round completed 0 tasks, closed 0 epics, quarantined 0 new ids, and RESOLVEd 0 new ids — stopping to avoid an infinite loop. Still-ready ids this round: ${JSON.stringify(ids)}`)
     break
@@ -1346,12 +1350,13 @@ while (true) {
 }
 
 phase('Finish')
-log(`Completed: ${completed.length}. Escalated: ${escalated.length}. Pending retry: ${pendingRetry.size}. Parked (merged with an overruled finding): ${parked.length}.${stalled ? ' Stalled: true — see the STALLED log line above.' : ''}`)
-const review = completed.length
-  ? await agent(pick(() => `Final whole-epic review of integration branch ${integrationBranch} for epic ${epicId}.`, 'final-review'),
+log(`Completed: ${completed.size}. Escalated: ${escalated.size}. Pending retry: ${pendingRetry.size}. Parked (merged with an overruled finding): ${parked.length}.${stalled ? ' Stalled: true — see the STALLED log line above.' : ''}`)
+const review = completed.size
+  ? await agent(pick(() => `Final whole-epic review of integration branch ${integrationBranch} for epic ${epicId}. Read the ledger at ${ledgerPath} first: its \`minor (deferred)\` lines are findings earlier reviews raised and deliberately did not fix, and its \`parked\` lines are findings an adjudicator overruled to let a task merge. Triage both — say which must be addressed before this branch lands. They are the two categories no per-task review will raise again.`, 'final-review'),
       { label: 'final-review', phase: 'Finish', model: model('finalReview') })
   : 'no work landed'
-return { completed, escalated, pendingRetry: [...pendingRetry], parked, stalled, review }
+return { completed: [...completed], escalated: [...escalated], pendingRetry: [...pendingRetry],
+         parked: [...parked], stalled, review }
 
 // --- helpers ---
 function treeMembershipTest(epicId) {
@@ -1530,7 +1535,7 @@ function taskReviewPrompt(im, planPath) {
   // those four from `im` on every return regardless of what's reported (see `reviewAndFix` above)
   // — this is the C2 fix, since neither this contract nor `reReviewPrompt`'s ever reliably carried
   // `branch`, which is what left `mergePrompt`'s `r.branch` undefined.
-  return `In ${im.branch}, run \`scripts/review-package ${planPath} ${im.base} HEAD\` for task ${im.id} (n ${im.n}) and follow subagent-driven-development/task-reviewer-prompt.md over the resulting package. Report id and status CLEAN or NEEDS_FIX — on NEEDS_FIX, put the finding text in the \`finding\` field (fixPrompt builds the fix dispatch from it directly, not from the rest of this result).`
+  return `In ${im.branch}, run \`scripts/review-package ${planPath} ${im.base} HEAD\` for task ${im.id} (n ${im.n}) and follow subagent-driven-development/task-reviewer-prompt.md over the resulting package. Report id and status CLEAN or NEEDS_FIX — on NEEDS_FIX, put the finding text in the \`finding\` field (fixPrompt builds the fix dispatch from it directly, not from the rest of this result). Separately, list every **Minor** finding as a one-line string in the \`minors\` array — minors never enter the fix loop (SKILL.md defers them), so this array is the only way they survive; an empty array or an omitted field means you found none, which the Finish-phase reviewer will read as a real claim.`
 }
 
 function fixPrompt(rv, round) {
@@ -1576,7 +1581,7 @@ function reReviewPrompt(fixed) {
   // exists for — can legitimately report `finding: ""`, and `??` only falls back on null/undefined,
   // not on that empty string) as a second line of defense if a re-reviewer ever omits it, or blanks
   // it, on a genuine NEEDS_FIX-equivalent.
-  return `Follow subagent-driven-development/re-review-prompt.md, scoped to the fix diff for task ${fixed.id} (n ${fixed.n}) in ${fixed.branch}. That template's own vocabulary is per-finding "ADDRESSED"/"NOT ADDRESSED" with a round verdict — map it to a single BARE TOKEN this round's overall \`status\`: "CLEAN" if every finding is ADDRESSED, "NEEDS_FIX" if any finding remains open — no other value, no colon, no extra text in that field, since the coordinator branches on exact string equality against it and fails CLOSED (treats anything that isn't literally "CLEAN" as still open) on anything else. Report id, that status token, and — whenever status is NEEDS_FIX — finding with the still-open finding text verbatim (fixPrompt and, at the cap, breakerBlockerPrompt/adjudicatePrompt build their dispatch from this field directly; omit or leave it blank only when status is CLEAN).`
+  return `Follow subagent-driven-development/re-review-prompt.md, scoped to the fix diff for task ${fixed.id} (n ${fixed.n}) in ${fixed.branch}. That template's own vocabulary is per-finding "ADDRESSED"/"NOT ADDRESSED" with a round verdict — map it to a single BARE TOKEN this round's overall \`status\`: "CLEAN" if every finding is ADDRESSED, "NEEDS_FIX" if any finding remains open — no other value, no colon, no extra text in that field, since the coordinator branches on exact string equality against it and fails CLOSED (treats anything that isn't literally "CLEAN" as still open) on anything else. Report id, that status token, and — whenever status is NEEDS_FIX — finding with the still-open finding text verbatim (fixPrompt and, at the cap, breakerBlockerPrompt/adjudicatePrompt build their dispatch from this field directly; omit or leave it blank only when status is CLEAN). Any NEW Minor finding this fix diff introduced goes in the \`minors\` array, one line each — the coordinator accumulates these across rounds, so do not re-list minors from an earlier round you cannot see.`
 }
 
 function mergePrompt(r, integrationBranch, integrationWorktree) {
@@ -1721,6 +1726,13 @@ function ledgerLine(n, id, rest) {
 }
 
 function short(sha) {
+  // Fails loud on a missing SHA. It used to return `''` for `undefined`, which produced a
+  // ledger line like `commits abc1234..` that STILL matched `LEDGER_LINE_RE` and parsed as an
+  // ordinary `complete` line on a future resume — the commit-range invariant degraded silently
+  // instead of failing. The merge gate now rejects such a report before reaching here (see its
+  // `!m.head || !m.mergeBase` branch); this throw is the backstop for any future call site that
+  // forgets to.
+  if (!sha) throw new Error('short(): missing SHA — a merge report reached the ledger without a commit range')
   // Fix-round-1 (review): the ledger's completion line now names a commit RANGE
   // (`commits <base7>..<head7>`, upstream SKILL.md's own shape), not the bare word "merged" — this
   // is the shared 7-character abbreviation used for both ends of that range at every call site.
@@ -1794,6 +1806,11 @@ async function reviewAndFix(im, planPath) {
     // non-"CLEAN" status with a blanked finding (the exact malformed-report shape C-3's fail-closed
     // loop was added to tolerate). `||` treats that empty string as "no finding reported" instead.
     lastFinding = result.finding || lastFinding
+    // Limitation 4: minors accumulate across rounds rather than being replaced. Each review and
+    // re-review sees only its own diff, so round 3's reviewer cannot re-report round 1's minor —
+    // taking the last round's list alone would silently drop everything raised earlier. Deduped,
+    // because a minor that genuinely persists across rounds does get re-reported.
+    if (result.minors?.length) minors = [...new Set([...minors, ...result.minors])]
     // A CLEAN result never carries a finding forward, even if `lastFinding` is non-empty from an
     // earlier round — this is a GENUINE resolution (a real re-review returned CLEAN), not the
     // PARK-with-a-ruling case below, which builds its own return value and deliberately keeps
@@ -1801,7 +1818,7 @@ async function reviewAndFix(im, planPath) {
     // survive on every clean-after-fix task, which nothing currently reads but would silently
     // corrupt the ledger writer (below) if it ever keyed "parked" off "finding is non-empty"
     // instead of the explicit `parked` list.
-    return { ...result, n: im.n, files: im.files, branch: im.branch, base: im.base, finding: result.status === 'CLEAN' ? undefined : lastFinding }
+    return { ...result, n: im.n, files: im.files, branch: im.branch, base: im.base, minors, finding: result.status === 'CLEAN' ? undefined : lastFinding }
   }
   let rv = carried(await agent(pick(() => taskReviewPrompt(im, planPath), `review:${im.id}`),
     { label: `review:${im.id}`, phase: 'Implement', model: model('reviewer'), schema: RESULT }))
@@ -1894,7 +1911,7 @@ async function handleBlocker(r, planPath) {
   // indefinitely. This is also what makes the outer no-progress guard's `pendingRetry.size` signal
   // meaningful: without a bound, RESOLVE growth could recur forever without ever converging.
   if (t.decision === 'RESOLVE' && !pendingRetry.has(r.id)) {
-    pendingRetry.add(r.id)
+    settle(r.id, pendingRetry)
     // re-dispatch next round with clarification recorded on the bead; do NOT mark escalated.
     // Recording a clarification is a mechanical write, not a judgment call.
     await agent(pick(() => recordClarificationPrompt(r.id, t.detail), `clarify:${r.id}`), { label: `clarify:${r.id}`, phase: 'Triage', model: model('mechanical') })
@@ -1908,8 +1925,7 @@ async function handleBlocker(r, planPath) {
       `ledger-append:${r.id}`), { label: `ledger-append:${r.id}`, phase: 'Triage', model: model('mechanical') })
   } else {
     const bounced = t.decision === 'RESOLVE'  // second RESOLVE for this id — bounced into ESCALATE
-    pendingRetry.delete(r.id)
-    escalated.push(r.id)                       // quarantine: dependents stay unready in beads
+    settle(r.id, escalated)                    // quarantine: dependents stay unready in beads
     const detail = bounced
       ? `Second RESOLVE for ${r.id} without resolving — escalating per the one-retry bound (C-2). Latest triage detail: ${t.detail}`
       : t.detail
