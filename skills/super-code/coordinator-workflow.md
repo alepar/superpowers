@@ -140,9 +140,17 @@ Done by the main session, not the Workflow:
 
 Round-based with refill (each `bd ready` batch is, by definition, mutually independent):
 
-1. **Query** — an agent runs `bd ready --exclude-type=epic --label sp:<epicId>` (excludes
-   epic-type containers, which `bd ready` includes by default, and scopes to this run's tree,
-   since `bd ready` is otherwise repo-global) and returns the ready task ids.
+1. **Query** — an agent runs a fast labelled query first, `bd ready --exclude-type=epic --label
+   sp:<epicId>` (excludes epic-type containers, which `bd ready` includes by default, and scopes to
+   this run's tree via the `sp:` label `super-plan` stamps on everything it creates). **An empty
+   result here does not mean the tree is empty** (formerly "Known limitations" items 7/9): the label
+   only exists on trees `super-plan` created — a hand-made epic, or a sub-epic handed to super-code
+   directly (whose members carry the *root* epic's `sp:` label, not their own id's), always comes up
+   empty on this query even with real ready work waiting. When it does, the agent falls back to
+   `bd ready --exclude-type=epic` (repo-global) and filters the result to this run's tree using the
+   same structural parent-child test the epic-closure step below uses — never the id-prefix
+   convention alone, which a hand-created or nested-subepic bead can violate. One membership test,
+   described once (`treeMembershipTest` in the script skeleton), used by both phases.
 2. **Terminate?** — completion is **the root epic (`epicId`) closed**, not an empty ready set:
    run the epic-closure step (below) after each refill cycle and check whether the root closed.
    An empty ready set with the root still open means the remaining work is quarantined blockers
@@ -414,9 +422,15 @@ before calling `sdd-workspace` to canonicalize the path and git-ignore it. The p
 `sdd-workspace`'s basename-derived workspace directory was the *same path for every epic in the
 repo*, colliding every epic's ledger on one file (see "Workspace and ledger" above for the full
 consequence). On refill, the planner agent re-runs to append new mapping rows and `## Task <N>`
-sections for newly-ready or newly-created beads (blocker beads included) — new ordinals continue
-the existing sequence; an already-assigned ordinal or section is never renumbered or rewritten,
-since a fix round may still be pointing at it.
+sections for newly-ready beads — new ordinals continue the existing sequence; an already-assigned
+ordinal or section is never renumbered or rewritten, since a fix round may still be pointing at it.
+**Blocker beads are never planned and never get a mapping row** (Known limitations, former item
+8): a blocker bead is an escalation record about a task — a `blocker` label and a body stating the
+task id, what failed, and what was tried (see "The blocker-bead path") — not a work item, and the
+planner's `bd children` tree walk has no `--parent` edge to find it by. A blocker bead reaches a
+human or gets acted on exclusively through this run's escalation reporting ("Escalation = notify +
+quarantine + continue") and the triage agent's RESOLVE/ESCALATE call on the **original** blocked
+task, never through re-planning.
 
 **Every downstream call uses the ordinal**: `scripts/task-brief <epicId>-plan.md <N>`, and the
 brief/report/review-package filenames that follow from it. **The bead id remains the durable
@@ -672,39 +686,53 @@ functions' definitions directly, or by a live run against a real restart.
    non-compliant merge dispatch degrades the ledger's commit-range invariant instead of failing
    loud. Hardening this (e.g. asserting both fields are present before building the ledger line, or
    escalating instead of degrading) is future work.
-7. **The `sp:` labelling precondition is stated nowhere.** The Query step (`:143`) and the
-   dispatched prompt at `:1064` require `bd ready --exclude-type=epic --label sp:${epicId}` —
-   SKILL.md's Red Flags table makes bare `bd ready` a Never — but nothing in either document says
-   that label only exists on trees `super-plan` created. A hand-made epic, or a **sub-epic** handed
-   to super-code directly (whose members carry the *root* epic's `sp:` label, not their own id's),
-   yields an empty round 1: `ids.length === 0` → the empty-ready-set quarantine exit ("The
-   coordinator loop," step 2, above) → `break` → Finish reports `completed: 0`, `review: 'no work
-   landed'`. The run exits in seconds via the exact same path as a legitimate quarantine-drain
-   finish, having done nothing, and nothing distinguishes the two outcomes in the report. **This is
-   the highest-consequence item in this section** — it is a silent no-op on a plausible, easy-to-hit
-   invocation, not a degraded feature. Confirmed independently during the fix cycle that produced
-   this document: this repo's own real epic carries no `sp:` labels.
-8. **"Newly-created beads (blocker beads included)" never actually re-enters the loop.** `:417` and
-   `planPrompt` (`:1369`) promise the planner re-plans "newly-ready or newly-created beads (blocker
-   beads included)" on refill. But every `bd create` in this document (`missingBlockerBeadPrompt`
-   `:1534`, `unplannedBlockerPrompt` `:1547`, `breakerBlockerPrompt` `:1577`, and the blocker-bead
-   shape described at `:537`) files a bead with only a `blocker` label — no `--parent`, no
-   `-l sp:<epicId>`. Such a bead matches neither the `bd ready --label sp:` filter nor the
-   `grep -oE '${epicId}[.0-9]*'` postprocessing at `:1064`, so it can never surface in a future `bd
-   ready` batch and never re-enters the planner's or the coordinator's view. The prose promises a
-   recovery path the code, as written, cannot execute.
-9. **The shipped canonical args are inconsistent with the ready-query regex.** The canonical
-   scenario's `args` block uses `epicId: "bd-100"` with children `bd-101`…`bd-104` (`:2444` and
-   surrounding), but the dispatched grep at `:1064` is `grep -oE 'bd-100[.0-9]*'` — a pattern that
-   cannot match `bd-101` through `bd-104` (no shared prefix beyond `bd-10`, and the trailing digit
-   isn't a `.`-delimited suffix of `bd-100`). The dryRun never runs this grep (`bd-ready` is stubbed
-   in every scenario in this doc), so the mismatch passes silently forever — while a maintainer who
-   uses these recorded args as their mental model for a real epic would get a scoping scheme that
-   yields zero ids against a real `bd ready`. Real `bd` ids are hierarchical (e.g.
-   `super-plan-2c1.8`), not flat siblings sharing a numeric prefix the way this scenario's stub ids
-   do; the args are illustrative shorthand for the dryRun's JSON shapes, not a template for a real
-   epic's id scheme. Left unchanged per this round's instructions (recorded baselines are final) —
-   flagged here so a future reader doesn't copy the id scheme as-is.
+7. **The `sp:` labelling precondition used to be stated nowhere, and the Ready phase trusted it as
+   the only signal.** Fixed in this round (see "The coordinator loop" step 1, and `readyPrompt` in
+   the script skeleton): the Query step and the dispatched `bd-ready` prompt used to require
+   `bd ready --exclude-type=epic --label sp:${epicId}` with nothing anywhere saying that label only
+   exists on trees `super-plan` created. A hand-made epic, or a **sub-epic** handed to super-code
+   directly (whose members carry the *root* epic's `sp:` label, not their own id's), used to yield
+   an empty round 1: `ids.length === 0` → the empty-ready-set quarantine exit → `break` → Finish
+   reports `completed: 0`, `review: 'no work landed'` — indistinguishable from a legitimate
+   quarantine-drain finish, having done nothing. This was the highest-consequence item in this
+   section before the fix: a silent no-op on a plausible, easy-to-hit invocation, not a degraded
+   feature. The Ready phase now treats an empty labelled result as inconclusive and falls back to
+   the same structural parent-child test `closeEpicsPrompt` already used for epic closure
+   (`treeMembershipTest`, shared by both — never the id-prefix convention alone). Confirmed
+   independently during the fix cycle that produced this document: this repo's own real epic
+   carries no `sp:` labels — exactly the case the fallback now handles.
+8. **"Newly-created beads (blocker beads included)" was a promise the design never meant to keep.**
+   `:417` and `planPrompt` used to say the planner re-plans "newly-ready or newly-created beads
+   (blocker beads included)" on refill, which reads as: a blocker bead gets its own `## Task <N>`
+   mapping section and, by the same mechanism as any other mapped bead, could end up handed to
+   `scripts/task-brief`/the implementer. That was never reachable as written — every `bd create` in
+   this document (`missingBlockerBeadPrompt`, `unplannedBlockerPrompt`, `breakerBlockerPrompt`, and
+   the self-filing implementer described under "Dispatching the implementer") files a bead with
+   only a `blocker` label, no `--parent`, so the planner's `bd children` tree walk never discovers
+   it and it never gets planned at all. Making it reachable the way the old prose implied would
+   have been worse than the gap: a blocker bead is an **escalation record about a task**, not a
+   work item — its body states the task id, what failed, and what was tried, for a human or the
+   triage agent to read, never acceptance criteria for an implementer to satisfy. Fixed in this
+   round by correcting the promise, not the code: `:417` and `planPrompt` no longer claim blocker
+   beads get planned or given a mapping row. A blocker bead reaches a human or gets acted on
+   exclusively through this run's escalation reporting ("Escalation = notify + quarantine +
+   continue") and the triage agent's RESOLVE/ESCALATE call on the **original** blocked task (see
+   "The blocker-bead path") — never through re-planning, and never through `bd ready`.
+9. **The shipped canonical args used to be inconsistent with the ready-query regex.** Fixed in this
+   round by retiring the regex, not by changing the args: the canonical scenario's `args` block
+   still uses `epicId: "bd-100"` with children `bd-101`…`bd-104` (`:2444` and surrounding) — flat
+   siblings, illustrative shorthand for the dryRun's JSON shapes, never a template for a real
+   epic's id scheme (real `bd` ids are hierarchical, e.g. `super-plan-2c1.8`). The old dispatched
+   grep, `grep -oE 'bd-100[.0-9]*'`, could never match `bd-101` through `bd-104` (no shared prefix
+   beyond `bd-10`, and the trailing digit isn't a `.`-delimited suffix of `bd-100`) — the dryRun
+   never ran it (`bd-ready` is stubbed in every scenario in this doc), so the mismatch passed
+   silently forever, and a maintainer copying these args as a mental model for a real epic would
+   have gotten a scoping scheme that yields zero ids against a real `bd ready`. The fix (see item 7
+   above and `readyPrompt`) removes the grep from the Ready phase entirely rather than reconciling
+   it with these ids: the fast path is the bare `--label sp:${epicId}` query, and the structural
+   fallback needs no naming convention at all. The canonical args are therefore unchanged, and this
+   document's dryRun baselines are unaffected — flagged here so a future reader still doesn't copy
+   the flat id scheme as a template for a real epic's ids.
 10. **The parallelism prose used to claim the opposite of what the code does.** Fixed in this round
     (see "The coordinator loop," step 3, above) — it previously said "dispatch disjoint-file groups
     concurrently," which reads as *buckets* running concurrently with each other. The code actually
@@ -1060,8 +1088,11 @@ while (true) {
 
   phase('Ready')
   const ready = await agent(
-    // MECHANICAL: echo the command output verbatim — no judgment, no --json (see "Authoring pitfalls").
-    pick(() => `Run exactly: \`bd ready --exclude-type=epic --label sp:${epicId} 2>&1 | grep -oE '${epicId}[.0-9]*' | sort -u\` and return its output lines verbatim as ids. Do NOT use \`--json\`. Do NOT reason about or filter readiness or scope — the command's flags already exclude epics and out-of-tree issues; just return what the command prints (empty output → {ids: []}). Do not start any work.`, 'bd-ready'),
+    // MECHANICAL rule-following, not judgment (same tier as closeEpicsPrompt): a fast labelled
+    // query, with a structural fallback when it comes up empty — never a bare echo trusted alone
+    // anymore. See "Known limitations" (former items 7/9) for why the label-only query used to be
+    // treated as authoritative, and `readyPrompt`'s own comment for the fallback mechanics.
+    pick(() => readyPrompt(epicId), 'bd-ready'),
     { label: 'bd-ready', phase: 'Ready', schema: READY, model: model('mechanical') })
   // Fix-round-1 (review): `!completed.includes(id)` used to also gate this filter, as
   // "defense-in-depth" against a ready id that was recorded `complete` on the ledger but never
@@ -1319,6 +1350,41 @@ const review = completed.length
 return { completed, escalated, pendingRetry: [...pendingRetry], parked, stalled, review }
 
 // --- helpers ---
+function treeMembershipTest(epicId) {
+  // Shared, single source for the one membership test this document uses in two places: the
+  // epic-closure fixpoint (closeEpicsPrompt, below) and the Ready phase's structural fallback
+  // (readyPrompt, below) — see "Known limitations" (former items 7/9) on why the Ready phase needed
+  // this test too, not just closeEpicsPrompt. Described once, reused verbatim, so the two phases
+  // can never silently drift onto different tree-membership rules.
+  return `      - IDENTITY: if id === "${epicId}", it is IN-TREE. Stop here — do not attempt a parent walk on the root; the root has no parent-child dependency entry to find (verified: \`bd show ${epicId} --json\` shows an empty or root-parentless \`dependencies\` array for the root itself), so a walk would wrongly conclude OUT-OF-TREE.
+      - PARENT-CHILD WALK (only for id !== "${epicId}"): run \`bd show <id> --json\` and read its \`dependencies\` array for an entry with \`dependency_type: "parent-child"\` — that entry's id is <id>'s parent. If found, repeat the same test (identity check, then walk) on that parent id. If no such entry exists and id !== "${epicId}", it is OUT-OF-TREE (you have reached a different tree's root, or an unparented bead, without ever passing through ${epicId}).
+      - Worked examples (epicId = "super-plan-2c1"): id "super-plan-2c1" -> identity match -> IN-TREE, no walk. id "super-plan-2c1.8" -> not identity -> bd show shows parent-child entry to "super-plan-2c1" -> that IS epicId -> IN-TREE, one hop. id "super-plan-2c1.3.1" (nested subepic) -> not identity -> parent-child entry to "super-plan-2c1.3" -> not identity, not epicId itself -> recurse: bd show super-plan-2c1.3 --json has a parent-child entry to "super-plan-2c1" -> that IS epicId -> IN-TREE, two hops. id "acme-9" (an unrelated epic's own root) -> not identity -> bd show acme-9 --json has no parent-child entry at all -> OUT-OF-TREE.
+      - Bound the walk to a handful of hops (beads trees are shallow); if you somehow exceed ~10 hops without resolving, treat as OUT-OF-TREE and do not close it — err toward leaving an ambiguous id alone.`
+}
+
+function readyPrompt(epicId) {
+  // FAST PATH: the `sp:` label `super-plan` stamps on every bead it creates lets a single scoped
+  // query answer this in one shot, cheaper than the structural fallback below. FIX (Known
+  // limitations, former items 7 & 9): the id-prefix grep this used to pipe through
+  // (`grep -oE '${epicId}[.0-9]*'`) is RETIRED as an authority — former item 9 found it silently
+  // mismatches real hierarchical ids (and this document's own flat illustrative canonical-scenario
+  // ids), and it was never anything but a weaker restatement of what `--label` already scopes; it
+  // is not run at all anymore, not even as a pre-filter. FALLBACK (former item 7): an empty
+  // labelled result does not mean the tree is empty — the `sp:` label only exists on trees
+  // `super-plan` created; a hand-made epic, or a sub-epic handed to super-code directly (whose
+  // members carry the *root* epic's `sp:` label, not their own id's), always comes up empty above
+  // even with real ready work waiting. So an empty fast path falls back to the same structural
+  // parent-child test `closeEpicsPrompt` uses for epic closure (`treeMembershipTest`, shared by
+  // both) — never the id-prefix convention alone, which a hand-created or nested-subepic bead can
+  // violate.
+  return `Run \`bd ready --exclude-type=epic --label sp:${epicId}\` and parse the returned ids (do NOT use \`--json\`; do NOT reason about or filter readiness or scope — the flags already exclude epics and out-of-label issues). If it returns at least one id, report those ids verbatim as \`ids\` and stop here — this is the fast path, do not run the fallback below.
+If it returns NONE, do not conclude the tree has no ready work: the \`sp:\` label only exists on trees \`super-plan\` created — a hand-made epic, or a sub-epic handed to super-code directly (whose members carry the ROOT epic's \`sp:\` label, not their own id's), will always come up empty on the query above even when real ready work is waiting. Fall back to the structural test instead, the same one the epic-closure step uses:
+1. Run \`bd ready --exclude-type=epic\` (repo-global — this can return ready work from unrelated epics sharing this repo; that is expected, filtered in step 2 below, not a bug) and parse the returned ids.
+2. For each returned id, classify it IN-TREE or OUT-OF-TREE using this test, in priority order — do not skip the identity/walk check even when the id "looks like" it belongs:
+${treeMembershipTest(epicId)}
+3. Report only the IN-TREE ids from this fallback pass as \`ids\` (empty array if none). Do not start any work.`
+}
+
 function closeEpicsPrompt(epicId) {
   // MECHANICAL rule-following, not judgment: `bd epic close-eligible` is repo-global — verified
   // via --help, no --label/--parent/--mol exists to scope it — so the mutating form is NEVER
@@ -1347,11 +1413,9 @@ function closeEpicsPrompt(epicId) {
   return `Loop the following. STOP CONDITION: stop when a pass closes zero in-tree ids — do NOT stop merely because a preview call returns \`[]\`; those are different, see step 4.
 1. Run \`bd epic close-eligible --dry-run --json\` and parse the returned array of candidate epic ids. (bd epic close-eligible closes at most one tree level per call, so this loop runs multiple passes even in the simplest case.)
 2. For each candidate id, classify it IN-TREE or OUT-OF-TREE using this test, in priority order — do not skip step (a) even when (b) seems obvious:
-   a. AUTHORITATIVE, checked in this order:
-      - IDENTITY: if id === "${epicId}", it is IN-TREE. Stop here — do not attempt a parent walk on the root; the root has no parent-child dependency entry to find (verified: \`bd show ${epicId} --json\` shows an empty or root-parentless \`dependencies\` array for the root itself), so a walk would wrongly conclude OUT-OF-TREE.
-      - PARENT-CHILD WALK (only for id !== "${epicId}"): run \`bd show <id> --json\` and read its \`dependencies\` array for an entry with \`dependency_type: "parent-child"\` — that entry's id is <id>'s parent. If found, repeat the same test (identity check, then walk) on that parent id. If no such entry exists and id !== "${epicId}", it is OUT-OF-TREE (you have reached a different tree's root, or an unparented bead, without ever passing through ${epicId}).
-      - Worked examples (epicId = "super-plan-2c1"): id "super-plan-2c1" -> identity match -> IN-TREE, no walk. id "super-plan-2c1.8" -> not identity -> bd show shows parent-child entry to "super-plan-2c1" -> that IS epicId -> IN-TREE, one hop. id "super-plan-2c1.3.1" (nested subepic) -> not identity -> parent-child entry to "super-plan-2c1.3" -> not identity, not epicId itself -> recurse: bd show super-plan-2c1.3 --json has a parent-child entry to "super-plan-2c1" -> that IS epicId -> IN-TREE, two hops. id "acme-9" (an unrelated epic's own root) -> not identity -> bd show acme-9 --json has no parent-child entry at all -> OUT-OF-TREE.
-      - Bound the walk to a handful of hops (beads trees are shallow); if you somehow exceed ~10 hops without resolving, treat as OUT-OF-TREE and do not close it — err toward leaving an ambiguous id alone.
+   a. AUTHORITATIVE, checked in this order (same test as the Ready phase's structural fallback —
+      see \`treeMembershipTest\`, shared by both):
+${treeMembershipTest(epicId)}
    b. SANITY CHECK ONLY, never authoritative: the id-prefix convention (<id> === "${epicId}" or <id> starts with "${epicId}.") should agree with (a). If it ever disagrees — e.g. a hand-created bead was given a lookalike id, or a bead outside the naming convention was parented under this epic — trust (a), not the prefix.
 3. Close only the IN-TREE ids from this pass, individually: run \`bd close <id>\` once per id (never the bare, unfiltered \`bd epic close-eligible\` mutating form). Append each closed id to closedThisRun. Leave OUT-OF-TREE ids untouched — they belong to unrelated work sharing this repo, and will keep reappearing in future previews; that is expected, not a bug.
 4. If step 3 closed zero ids this pass (whether because the preview was \`[]\`, or because the preview was non-empty but every candidate was OUT-OF-TREE), STOP — the fixpoint is reached. Otherwise, repeat from step 1.
@@ -1394,7 +1458,7 @@ function planPrompt(epicId, ids, planFileName) {
   // so a genuine descendant walk must recurse: children of the epic, then children of any of
   // those that is itself epic-typed (`issue_type: "epic"`), repeating until no unexpanded
   // epic-typed child remains.
-  return `Working directory: the integration worktree (see "Workspace and ledger" — the same worktree that owns the ledger; do not plan from a task's own worktree). Follow ./planner-prompt.md for epic ${epicId}. Plan file name (the template's "Plan file name" parameter — use this exact name everywhere the template says \`[plan file name]\`, including inside its \`mkdir -p\`/initial-file-write/\`sdd-workspace\` shell-command steps; never the literal \`plan.md\`): \`${planFileName}\` — every epic must use its own plan filename so \`scripts/sdd-workspace ${planFileName}\` resolves to a workspace directory distinct from every other epic's (a shared \`plan.md\` name collides every epic's workspace, including its ledger, on one path; this coordinator also asserts the planner's reported \`planPath\` actually landed in that directory — see the Plan-phase call site). On the FIRST planning round (${planFileName} has no mapping rows yet), independently enumerate every READY AND BLOCKED descendant bead of ${epicId} and plan all of them: run \`bd children ${epicId} --json\` for its direct children, then run \`bd children <id> --json\` on every one of those children whose \`issue_type\` is "epic" to get its children in turn, repeating until no unexpanded epic-typed child remains (\`bd children\` returns direct children of one level only — do NOT use \`bd show ${epicId} --json\`, which reports only dependent/dependency counts, no child ids, since parent-child edges point upward and it cannot read the downward direction). Do not limit round-1 planning to ready ids only, since \`bd ready\` structurally excludes blocked beads. On a REFILL round, plan only beads that don't already have a mapping row (newly-ready or newly-created, blocker beads included). This round's confirmed-ready ids (a subset of the planning scope above, not the full scope): ${JSON.stringify(ids)}. Run \`bd show <id> --json\` for every bead you plan this round, for "Beads to plan this round". Report per that template's Report Format: planPath, and mapping as the FULL CUMULATIVE table (every row assigned so far in ${planFileName}, including earlier rounds' rows — never only this round's new ones).`
+  return `Working directory: the integration worktree (see "Workspace and ledger" — the same worktree that owns the ledger; do not plan from a task's own worktree). Follow ./planner-prompt.md for epic ${epicId}. Plan file name (the template's "Plan file name" parameter — use this exact name everywhere the template says \`[plan file name]\`, including inside its \`mkdir -p\`/initial-file-write/\`sdd-workspace\` shell-command steps; never the literal \`plan.md\`): \`${planFileName}\` — every epic must use its own plan filename so \`scripts/sdd-workspace ${planFileName}\` resolves to a workspace directory distinct from every other epic's (a shared \`plan.md\` name collides every epic's workspace, including its ledger, on one path; this coordinator also asserts the planner's reported \`planPath\` actually landed in that directory — see the Plan-phase call site). On the FIRST planning round (${planFileName} has no mapping rows yet), independently enumerate every READY AND BLOCKED descendant bead of ${epicId} and plan all of them: run \`bd children ${epicId} --json\` for its direct children, then run \`bd children <id> --json\` on every one of those children whose \`issue_type\` is "epic" to get its children in turn, repeating until no unexpanded epic-typed child remains (\`bd children\` returns direct children of one level only — do NOT use \`bd show ${epicId} --json\`, which reports only dependent/dependency counts, no child ids, since parent-child edges point upward and it cannot read the downward direction). Do not limit round-1 planning to ready ids only, since \`bd ready\` structurally excludes blocked beads. On a REFILL round, plan only newly-ready beads that don't already have a mapping row — never a blocker bead: a blocker bead is an escalation record about a task, not a work item, and is never planned or given a mapping row (see "The blocker-bead path"). This round's confirmed-ready ids (a subset of the planning scope above, not the full scope): ${JSON.stringify(ids)}. Run \`bd show <id> --json\` for every bead you plan this round, for "Beads to plan this round". Report per that template's Report Format: planPath, and mapping as the FULL CUMULATIVE table (every row assigned so far in ${planFileName}, including earlier rounds' rows — never only this round's new ones).`
 }
 
 function taskBriefPrompt(planPath, n, id, worktree, integrationBranch) {
@@ -2146,7 +2210,11 @@ untested by any scenario in this doc — inspection-only, same as C-1/C-3 above.
 
 - `bd ready` is scoped to the epic tree (`--exclude-type=epic --label sp:<epicId>`), not the whole
   repo — verified by inspecting the dispatched `bd-ready` prompt text (see the stub table note
-  above; the stub's *return value* can't prove this, only the prompt construction can).
+  above; the stub's *return value* can't prove this, only the prompt construction can). This
+  scenario's canned `bd-ready` stub is always non-empty on round 1, so `readyPrompt`'s structural
+  fallback (former "Known limitations" items 7/9) is never exercised by this or any dryRun in this
+  document — that fallback is verified only by reading `readyPrompt`'s and `treeMembershipTest`'s
+  definitions directly, same tier as the scoping assertion itself.
 - The three disjoint-file tasks (`bd-101`, `bd-102`, `bd-104`) dispatch as one `pipeline()` group —
   **concurrently**; `bd-103` (shares `src/a.js` with `bd-101`) is bucketed alone by
   `groupByDisjointFiles` and its group runs strictly after the first group's `pipeline()` call

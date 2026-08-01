@@ -56,7 +56,11 @@ Concurrent dispatch only when declared file sets are disjoint (`filesTouched`, f
 **Never:**
 - Edit `skills/subagent-driven-development/` — it must stay byte-identical to upstream.
 - Copy SDD's reviewer prompts into this skill, or reinvent per-task review mechanics here.
-- Query `bd ready` without `--exclude-type=epic --label sp:<epicId>` — bare `bd ready` is repo-global and epic-inclusive.
+- Query `bd ready` and trust its output as scoped to this epic without either the `--label
+  sp:<epicId>` fast path or, when that comes up empty, the structural parent-child fallback filter
+  (`./coordinator-workflow.md`'s `readyPrompt`/`treeMembershipTest`) — bare `bd ready` is
+  repo-global and epic-inclusive, and an empty labelled result does not by itself mean the tree has
+  no ready work (the label only exists on trees `super-plan` created).
 - Treat an empty ready set as run completion — completion is the root epic (`epicId`) closed; an empty set with the root still open means the remaining work is quarantined blockers, not done.
 - Silently drop a blocked task — file a blocker bead (notify + quarantine + continue; the run never hard-stops on one stuck task).
 - Let a fix loop run past SDD's five-round breaker — at the cap, dispatch the adjudicator and either park with a ruling or file a blocker bead, never retry past round 5.
