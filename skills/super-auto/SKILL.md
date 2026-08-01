@@ -57,10 +57,10 @@ own, or the flags strand and the sequence is lost. Each row's parenthetical is t
 
 | # | Phase (`run.md` token) | Skill | Note |
 |---|---|---|---|
-| 1 | Spec (`brainstorm`) | `brainstorming` | Mode A/B per flag → approved spec |
+| 1 | Spec (`brainstorm`) | `brainstorming` | Mode A/B per flag → approved spec. **Say in the invocation that the hand-off out of the spec is `super-auto`'s** — `brainstorming` otherwise invokes `super-plan` itself at the end of every spec, and that invocation carries none of your flags, so `super-plan` chains on to `super-code` and phases 3-8 never happen |
 | 2 | Plan (`plan`) | `super-plan` | Coverage loop → settled tree. **Say in the invocation that the hand-off is `super-auto`'s**, or `super-plan` chains into execution and the flags strand. Record the epic id yourself |
 | 3 | Design roast (`roast-design`) | `super-roast` (design) | Via `super-plan`'s own offer, inside its invocation; cap-3 fix loop; `super-auto` records each report path itself |
-| 4 | Code (`code`) | `super-code` | Autonomous or interactive per flag. **Say in the invocation that `super-auto` owns the finish** — there is no config flag; otherwise it merges and deletes the worktree the report needs |
+| 4 | Code (`code`) | `super-code` | Name the integration branch `epic-<epicId>-integration` and create it off the base branch before invoking — `super-code` requires `integrationBranch` and derives its worktree from it, but never creates either. | Autonomous or interactive per flag. **Say in the invocation that `super-auto` owns the finish** — there is no config flag; otherwise it merges and deletes the worktree the report needs |
 | 5 | Code roast (`roast-code`) | `super-roast` (PR) | Against the live integration branch |
 | 6 | Fix loop (`fix-loop`) | — | Reopen the epic, file confirmed findings as beads (shape: see Red Flags), re-enter `super-code`, loop to phase 5; cap 3, stop early if Blocking count doesn't shrink |
 | 7 | Report (`report`) | — | Write `report.md` per `./report-prompt.md`, before anything is torn down |
