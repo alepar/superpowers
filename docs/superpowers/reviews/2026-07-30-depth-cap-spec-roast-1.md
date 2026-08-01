@@ -1,3 +1,5 @@
+> Note: the skill named super-plan here was renamed super-design on 2026-07-31.
+
 super-roast verdict: Blocking (34)
 mode: design        iteration: 1 of 3
 profile (assumed): This is `superpowers`, a personal/community Claude Code plugin repository of markdown skill files and small JS helpers. Blast radius: a defect degrades an individual developer's agent workflow or wastes their tokens; no end users, no user data, no payments/PII, no production deployment. Code lifetime: long — skills are reused across many sessions and evolve for months. Audience: the maintainer plus other agents reading the skills, so clarity and behavioral correctness of instructions matter more than runtime resilience. No network-exposed surface.

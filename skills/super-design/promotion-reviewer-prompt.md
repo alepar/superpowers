@@ -1,6 +1,6 @@
 # Promotion Reviewer Subagent Prompt Template
 
-Use this template when dispatching a super-plan promotion review after decomposing a spec into
+Use this template when dispatching a super-design promotion review after decomposing a spec into
 child tasks. Fresh context only — the reviewer must not have authored the spec or the task list.
 Its job is to counter the author's "they're all fine" bias.
 
@@ -9,7 +9,7 @@ deps) and before any promotion is applied.
 
 ```
 Task tool (general-purpose):
-  description: "super-plan promotion review: [spec name]"
+  description: "super-design promotion review: [spec name]"
   prompt: |
     You are a fresh-context promotion reviewer. You did not write this spec or its task list —
     your job is to judge them with no attachment to the author's choices.

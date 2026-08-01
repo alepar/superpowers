@@ -11,7 +11,7 @@ the identical-judge defect this design corrects.
 One skill that adversarially reviews **either a design spec or a PR**, robustly and
 cost-efficiently: scouts find, a deduper consolidates, a seat-differentiated judge panel
 verifies, a frontier reporter issues final verdicts with environment-aware severity, and the
-report feeds `super-plan`'s fix loop — pausing for the human after at most 3 iterations.
+report feeds `super-design`'s fix loop — pausing for the human after at most 3 iterations.
 
 ## Why (defects in roast this corrects)
 
@@ -38,13 +38,13 @@ report feeds `super-plan`'s fix loop — pausing for the human after at most 3 i
 | 4 | Dedupe | fable | 1 | merge, suggest severity, apply caps |
 | 5 | Judges | sonnet | 3×severe + 1×nit | seat-differentiated verification |
 | 6 | Reporter | fable | 1 | final verdicts, env-aware severity, report file |
-| 7 | Handoff | — | — | report → super-plan fix loop |
+| 7 | Handoff | — | — | report → super-design fix loop |
 
 ### 1. Pre-flight (inline — no dedicated agent)
 
 - **Mode:** caller-supplied > obvious classification from the input (diff/PR ref → PR;
   standalone doc → design) > ask the user. Never silently guess on ambiguity. Non-interactive
-  invocations (brainstorming/super-plan gates) carry the caller's mode.
+  invocations (brainstorming/super-design gates) carry the caller's mode.
 - **Inputs.** Design: spec path(s) + optional caller requirements. PR: branch diff vs
   merge-base with main/dev **including working tree**, or a GitHub PR number fetched via `gh`
   (diff + PR description + review comments as scout context). Record exact refs
@@ -143,7 +143,7 @@ inputs: <spec paths | branch@sha vs base@sha [+dirty] | PR#>
 coverage: <lanes ran> · <raw → deduped → panel/spot-checked counts> · <judge completion %> · remainder-capped: N
 independence: same-family (Claude) — seat-differentiated panel
 
-## Confirmed findings            ← consumed by super-plan, one task per finding
+## Confirmed findings            ← consumed by super-design, one task per finding
 - [SEV] <location> — <claim>
   verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)
   evidence: <strongest seat evidence, file:line / URL+quote>
@@ -166,11 +166,11 @@ that line, and `clean (n nits)` deliberately omits it since nothing was confirme
 ### 7. Handoff & loop
 
 super-roast is **report-only** in both modes, and it does **not** invoke anything: it returns
-the report (and its path) to whoever called it and stops there. **`super-plan` owns the loop
-and calls super-roast, not the reverse** — `super-plan`'s §Adversarial Review Loop offers the
+the report (and its path) to whoever called it and stops there. **`super-design` owns the loop
+and calls super-roast, not the reverse** — `super-design`'s §Adversarial Review Loop offers the
 review once the task tree has settled, and re-invokes super-roast for iteration N+1. (An
-earlier draft of this spec had super-roast end by invoking super-plan, which contradicted that
-skill's own contract and would have made the two mutually invoking.) super-plan fixes
+earlier draft of this spec had super-roast end by invoking super-design, which contradicted that
+skill's own contract and would have made the two mutually invoking.) super-design fixes
 per its normal ladder (inline if small; interactive design work if large; subagent-driven
 implementation), then **auto-decides re-roast by fix scope**: mechanical single-file fixes
 with no design change → done; fixes that changed design decisions, data handling, or
@@ -223,9 +223,9 @@ skills/super-roast/
 
 ## Integration changes
 
-- Delete `skills/roast/`; update `brainstorming` (gate) and `super-plan` references to
+- Delete `skills/roast/`; update `brainstorming` (gate) and `super-design` references to
   `superpowers:super-roast`.
-- super-plan gains the receive-report → fix → auto-re-roast-decision step (small edit,
+- super-design gains the receive-report → fix → auto-re-roast-decision step (small edit,
   coordinated with its own docs).
 - Existing roast spec/plan/eval docs under `docs/superpowers/` remain as history; INDEX
   updated.
@@ -246,5 +246,5 @@ skills/super-roast/
 - Cross-family judge seats (no non-Claude models on this harness; the hook stays: use one
   where available).
 - Calibration loop / measured false-positive rates (post-launch concern).
-- super-plan's internal fix mechanics (owned by that skill's docs).
+- super-design's internal fix mechanics (owned by that skill's docs).
 - Automated fixing inside super-roast (deliberately report-only).

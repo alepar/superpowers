@@ -16,7 +16,7 @@ that keep it stable. Don't duplicate the spec's reasoning here; link it.
 | 4 | Dedupe | fable | 1 | merge, suggest severity, apply caps — spec §4 |
 | 5 | Judges | sonnet | 3×severe + 1×nit | seat-differentiated verification — spec §5 |
 | 6 | Reporter | fable | 1 | final verdicts, env-aware severity, report file — spec §6 |
-| 7 | Handoff | — | — | report → super-plan fix loop — spec §7 |
+| 7 | Handoff | — | — | report → super-design fix loop — spec §7 |
 
 Severity vocabulary throughout (the only one): **Blocking | Should-fix | Nit | FYI**.
 `blocker/major/minor` and `BLOCK/REVISE/PASS` do not appear anywhere in this pipeline.
@@ -542,14 +542,14 @@ design was reviewed by super-roast (`docs/superpowers/reviews/2026-07-30-depth-c
 findings tagged `[super-roast spec]`). Most of its confirmed findings were fixed on this branch —
 the dedupe-liveness Blocking, the `{{COVERAGE_JSON}}` Blocking, unbounded judge fan-out
 (`config.panelCap`), the beyond-remainder-cap reporting gap, the dead-triage signal, and the
-super-plan integration direction. These confirmed findings are **knowingly not fixed**:
+super-design integration direction. These confirmed findings are **knowingly not fixed**:
 
 | Confirmed finding (design run) | Status | Why |
 |---|---|---|
 | §6 — floor 3 ("violation of the artifact's own stated core purpose") can't be applied: the reporter never receives the artifact or its stated purpose | **Deferred** | Fixing it means handing the full artifact to the reporter, changing what the gate stage reads and its cost profile. Needs its own design pass, not a patch in a consistency wave. |
 | §3 — design-mode `spike` recommendations survive dedupe and the schema, then have no report section | **Deferred** | The data path exists end-to-end (`FINDINGS`/`DEDUPED` both carry `spike`); only the report template lacks a slot. Adding a section is cheap but changes the byte-identical template shared with SKILL.md, so it is queued as its own change. |
 | §5 — an under-graded severe finding is spot-checked only by the refute seat, whose job is to kill findings | **Accepted** | The promotion rule (a spot check returning CONFIRM at Blocking/Should-fix escalates to a full panel) is the deliberate mitigation. It is one-sided by construction, and that residual is the price of the tiering. |
-| §7 — the 3-iteration cap depends on the caller handing back the prior report; nothing discovers existing `-roast-N.md` files | **Accepted** | `super-plan` owns the loop and its iteration state (see `skills/super-plan/SKILL.md` §Adversarial Review Loop). super-roast stays report-only; `args.iteration` is caller-supplied by contract. |
+| §7 — the 3-iteration cap depends on the caller handing back the prior report; nothing discovers existing `-roast-N.md` files | **Accepted** | `super-design` owns the loop and its iteration state (see `skills/super-design/SKILL.md` §Adversarial Review Loop). super-roast stays report-only; `args.iteration` is caller-supplied by contract. |
 | §1 — in PR mode the report is written into the working tree, which PR-mode inputs include, so a re-roast can review its own prior report | **Deferred** | Real, but only bites from iteration 2 onward and is avoided in practice by committing the report before re-roasting. A proper fix (excluding `docs/superpowers/reviews/` from PR inputs) belongs with the pre-flight input spec. |
 | §1 + §6 — profile inference runs inline in the main session, which on the brainstorming path authored the spec | **Accepted** | Deliberate: the profile is stated in the report header (`profile (assumed):`) precisely so a wrong or biased inference is visible and correctable by re-running, rather than silently applied. |
 

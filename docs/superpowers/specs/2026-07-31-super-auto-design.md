@@ -5,7 +5,7 @@
 ## Goal
 
 Drive a feature from a raw idea to finished, reviewed code in one invocation, by sequencing the
-fork's three skills — `super-plan`, `super-roast`, `super-code` — around the standard
+fork's three skills — `super-design`, `super-roast`, `super-code` — around the standard
 `brainstorming` entry point, with an optional fully-autonomous mode for everything after the
 design settles.
 
@@ -20,7 +20,7 @@ there is no single thing to start and walk away from.
 
 ## §1 Boundary — what super-auto owns
 
-`super-auto` owns **sequencing**. It invokes `brainstorming` → `super-plan` → `super-roast` →
+`super-auto` owns **sequencing**. It invokes `brainstorming` → `super-design` → `super-roast` →
 `super-code` → `super-roast` → fix loop → report → `finishing-a-development-branch` (§3), threads
 four flags through them, and carries parked escalations between phases. It does not decompose, review, execute, or fix — each of those
 already has an owner.
@@ -31,7 +31,7 @@ This is what stops it becoming a fork of all three.
 
 Concretely, `super-auto` must never:
 
-- Re-implement `super-plan`'s adversarial review loop — it exists, is opt-in, caps at 3, and
+- Re-implement `super-design`'s adversarial review loop — it exists, is opt-in, caps at 3, and
   `super-auto` answers its offer rather than duplicating it.
 - Decide a finding's severity, or adjudicate a roast finding itself.
 - Copy any artifact another skill owns; it holds pointers.
@@ -45,7 +45,7 @@ reaching for `super-auto` wants to start a long run, not answer a quiz.
 | Input | Effect |
 |---|---|
 | plan one-shot | `brainstorming` runs in Mode B (one-shot) instead of Mode A (collaborative) |
-| skip plan roast | Declines `super-plan`'s adversarial-review offer |
+| skip plan roast | Declines `super-design`'s adversarial-review offer |
 | skip code roast | Omits the final PR-mode roast entirely |
 | autonomous | Suppresses all queries *after* the spec and task tree exist (see §4) |
 
@@ -54,15 +54,15 @@ and not re-asked.
 
 ## §3 Phase sequence
 
-`super-auto` owns every transition explicitly. It does **not** let `super-plan` chain into
+`super-auto` owns every transition explicitly. It does **not** let `super-design` chain into
 execution on its own — that would strand the flags and surrender control of the sequence. It tells
-`super-plan` the hand-off is `super-auto`'s to make.
+`super-design` the hand-off is `super-auto`'s to make.
 
 | Phase | Skill | Notes |
 |---|---|---|
 | 1 | `brainstorming` | Mode A or B per flag → approved spec |
-| 2 | `super-plan` | Decompose + coverage loop → settled task tree |
-| 3 | `super-roast` (design mode) | Via `super-plan`'s existing opt-in offer; its own fix loop, cap 3 |
+| 2 | `super-design` | Decompose + coverage loop → settled task tree |
+| 3 | `super-roast` (design mode) | Via `super-design`'s existing opt-in offer; its own fix loop, cap 3 |
 | 4 | `super-code` | Autonomous or interactive per flag |
 | 5 | `super-roast` (PR mode) | Against the epic integration branch |
 | 6 | fix loop | Reopen the root epic, file confirmed findings as beads under it, re-enter `super-code`, re-roast |
@@ -87,7 +87,7 @@ merges the integration branch and hands to `finishing-a-development-branch`, who
 ruling's reasoning is recorded — and would leave phase 5 roasting already-merged code and phase 6
 filing beads against a closed epic.
 
-So `super-auto` owns the finish exactly as it owns the hand-off out of `super-plan` (§3 above):
+So `super-auto` owns the finish exactly as it owns the hand-off out of `super-design` (§3 above):
 `super-code` stops when its loop drains, phases 5–6 run against a **live** integration worktree,
 and `super-auto` hands to `finishing-a-development-branch` once phase 8's gate passes. That gate is
 **three conditions**, not the fix loop's exit alone: `report.md` exists, `run.md`'s `phase` reads
@@ -95,29 +95,29 @@ and `super-auto` hands to `finishing-a-development-branch` once phase 8's gate p
 stall recorded exactly at phase 7 can otherwise leave both `phase: report` and a `report.md`
 present without the fix loop having actually exited (clean, capped out, or skipped); the third
 condition is what closes that case. `clean` is itself a loaded verdict token in `super-roast`/
-`super-plan` (a `clean [low coverage]` qualifier is explicitly not a clearance), so the gate never
+`super-design` (a `clean [low coverage]` qualifier is explicitly not a clearance), so the gate never
 treats that token as sufficient on its own either: a cap-out that parks Blocking findings still
 proceeds to finish, which is what §4's accepted risk describes.
 This is what keeps §7's cited sources reachable at report time.
 
-**Step 6 mirrors `super-plan`'s loop deliberately:** cap 3, and stop early if an iteration does not
+**Step 6 mirrors `super-design`'s loop deliberately:** cap 3, and stop early if an iteration does not
 shrink the confirmed-Blocking count — that is thrash, not progress. Findings become beads rather
 than inline edits so fixes inherit per-task worktrees, review, and serial merge-back, and so
 everything continues to coordinate through beads rather than session memory.
 
 ## §4 Autonomous mode
 
-**Autonomy begins the moment `super-plan`'s coverage loop passes.** Everything up to and including
+**Autonomy begins the moment `super-design`'s coverage loop passes.** Everything up to and including
 that point is interactive; from there on, no queries.
 
-The anchor is the coverage loop, not "the settled tree" — `super-plan` uses *settled* to mean the
+The anchor is the coverage loop, not "the settled tree" — `super-design` uses *settled* to mean the
 state **before** its coverage loop runs, so borrowing the word would put the coverage loop's own
 human arbitration (accepting GAPs, deciding ORPHANs, the recall-floor read-through) inside the
 autonomous zone, where parking cannot serve it: an accepted GAP that is merely parked never becomes
 a task.
 
-**Phase 3 is inside the autonomous zone.** `super-plan`'s adversarial-review offer and its fix loop
-execute within the `super-plan` invocation, after the coverage loop — so in autonomous mode
+**Phase 3 is inside the autonomous zone.** `super-design`'s adversarial-review offer and its fix loop
+execute within the `super-design` invocation, after the coverage loop — so in autonomous mode
 `super-auto` accepts the offer without asking and the loop's pauses are parked, which is what the
 request ("performs all roast fixes without asking") specifies.
 
@@ -129,8 +129,8 @@ roast report, is the anchor.
 
 ### Sibling skills mandate human pauses inside the autonomous zone
 
-`super-plan` and `super-roast` both require a human at points that now fall *after* the boundary:
-`super-plan` "pause[s] and summarize[s] for the human" at both loop exits and says "surface every
+`super-design` and `super-roast` both require a human at points that now fall *after* the boundary:
+`super-design` "pause[s] and summarize[s] for the human" at both loop exits and says "surface every
 entry to the human before starting fix work"; `super-roast` states "both the cap-out and the clean
 exit pause for the human." In autonomous mode an agent would otherwise face a direct contradiction
 between the skill it is running and the skill it invoked.
@@ -174,7 +174,7 @@ All artifacts of one run live in one directory:
 docs/superpowers/runs/YYYY-MM-DD-<slug>/
   design.md          # brainstorming's spec
   plan.md            # writing-plans' implementation plan
-  subepics/          # nested specs super-plan promotes
+  subepics/          # nested specs super-design promotes
   roast-design-N.md  # plan-phase roast reports
   roast-code-N.md    # branch-phase roast reports
   run.md             # super-auto state (§6)

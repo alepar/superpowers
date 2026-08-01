@@ -31,14 +31,14 @@ The review gate is inverted between modes: Mode A has no final-spec review (you 
 
 ## Nested Invocation
 
-`superpowers:super-plan` can invoke brainstorming on a promoted subepic instead of a user invoking it at the root. When invoked this way, the process above still applies, with these deltas:
+`superpowers:super-design` can invoke brainstorming on a promoted subepic instead of a user invoking it at the root. When invoked this way, the process above still applies, with these deltas:
 
 - **Inherit the session's design mode** (Mode A parent → Mode A subepic; Mode B → Mode B). The user may override per-subepic with an explicit request.
-- **Context is handed in by the invoking super-plan**: the parent spec, the chain of ancestor goals, and the specs of already-designed siblings. Open the new spec's `## Goal` with the subepic's local goal, seeded from super-plan's promotion rationale.
+- **Context is handed in by the invoking super-design**: the parent spec, the chain of ancestor goals, and the specs of already-designed siblings. Open the new spec's `## Goal` with the subepic's local goal, seeded from super-design's promotion rationale.
 - Do **not** re-offer the visual companion, and do **not** offer adversarial review — `super-roast` is offered once, at the root, after the coverage loop passes.
-- **Skip Mode B's user-review gate** (step 11 / "User Review Gate" below) — the Mode B human checkpoints for a tree live at the root spec review, the top-split gate, the tripwire, and coverage arbitration, all owned by super-plan.
+- **Skip Mode B's user-review gate** (step 11 / "User Review Gate" below) — the Mode B human checkpoints for a tree live at the root spec review, the top-split gate, the tripwire, and coverage arbitration, all owned by super-design.
 - Do **not** create a new worktree — `superpowers:using-git-worktrees` is idempotent and just verifies the one already in use.
-- End as always by invoking `superpowers:super-plan` on the spec just written.
+- End as always by invoking `superpowers:super-design` on the spec just written.
 
 ## Checklist
 
@@ -55,7 +55,7 @@ You MUST create a task for each of these items and complete them in order:
 9. **Spec self-review** — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
 10. **Offer adversarial review** *(optional)* — offer to run `superpowers:super-roast` on the spec before implementation; on a confirmed-findings verdict (Blocking/Should-fix) loop back to revise the spec; on a **clean** verdict with no qualifier, or if declined, continue; on a **clean** verdict carrying `[low coverage]` or `[panel-capped: N unverified]`, surface the qualifier and let the user decide whether to proceed or dig further (see "Adversarial Review" below)
 11. **User reviews written spec** *(Mode B only)* — ask the user to review the spec file before proceeding
-12. **Transition to implementation** — invoke `superpowers:super-plan` on the written spec, always, both modes, with or without beads
+12. **Transition to implementation** — invoke `superpowers:super-design` on the written spec, always, both modes, with or without beads
 
 ## Process Flow
 
@@ -73,7 +73,7 @@ digraph brainstorming {
     "super-roast spec? (optional)" [shape=diamond];
     "User reviews qualifier" [shape=diamond];
     "Mode B: user reviews spec?" [shape=diamond];
-    "Invoke super-plan skill" [shape=doublecircle];
+    "Invoke super-design skill" [shape=doublecircle];
 
     "Start isolated worktree (using-git-worktrees)" -> "Explore project context";
     "Explore project context" -> "Select design mode";
@@ -91,13 +91,13 @@ digraph brainstorming {
     "Mode B: user reviews spec?" -> "super-roast spec? (optional)" [label="approved"];
     "super-roast spec? (optional)" -> "Write design doc" [label="confirmed findings"];
     "super-roast spec? (optional)" -> "User reviews qualifier" [label="clean [low coverage] / [panel-capped]"];
-    "super-roast spec? (optional)" -> "Invoke super-plan skill" [label="clean (no qualifier) / declined"];
-    "User reviews qualifier" -> "Invoke super-plan skill" [label="user: proceed anyway"];
+    "super-roast spec? (optional)" -> "Invoke super-design skill" [label="clean (no qualifier) / declined"];
+    "User reviews qualifier" -> "Invoke super-design skill" [label="user: proceed anyway"];
     "User reviews qualifier" -> "Write design doc" [label="user: dig further"];
 }
 ```
 
-**The terminal state is always invoking `superpowers:super-plan`** on the written spec, both modes, with or without beads. Do NOT invoke frontend-design, mcp-builder, or any other implementation skill — only super-plan.
+**The terminal state is always invoking `superpowers:super-design`** on the written spec, both modes, with or without beads. Do NOT invoke frontend-design, mcp-builder, or any other implementation skill — only super-design.
 
 ## The Process
 
@@ -147,7 +147,7 @@ digraph brainstorming {
 
 - Write the validated design (spec) to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`
   - (User preferences for spec location override this default)
-- Open every spec with a `## Goal` section: one or two sentences stating an observable outcome (e.g. "a playable game"). `super-plan`'s coverage pass consumes this verbatim.
+- Open every spec with a `## Goal` section: one or two sentences stating an observable outcome (e.g. "a playable game"). `super-design`'s coverage pass consumes this verbatim.
 - End every spec with a `## Post-Implementation Notes` section containing this standing instruction verbatim, so note-taking fires later even though brainstorming has handed off:
   > *As this design is implemented and iterated on — bug fixes, adjustments, anything that diverged from the assumptions above — append a dated note here, whether or not a formal debugging skill was used.*
 - Add a row for the new spec to `docs/superpowers/specs/INDEX.md` with status `draft` (date · title · relative link · one-line summary · status · tags). If `INDEX.md` does not exist, create it from the format documented at the top of that file.
@@ -193,7 +193,7 @@ This is opt-in — the inline self-review already happened; `super-roast` is the
 
 **Implementation:**
 
-Invoke `superpowers:super-plan` on the written spec — always, both modes, with or without beads. super-plan owns decomposition into a task tree, promotion review, recursive nested design, goal-coverage checking, and hand-off to execution. Brainstorming's job ends at the spec.
+Invoke `superpowers:super-design` on the written spec — always, both modes, with or without beads. super-design owns decomposition into a task tree, promotion review, recursive nested design, goal-coverage checking, and hand-off to execution. Brainstorming's job ends at the spec.
 
 Do NOT invoke any other skill.
 

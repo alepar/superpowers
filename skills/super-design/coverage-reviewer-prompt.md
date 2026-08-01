@@ -1,13 +1,13 @@
 # Coverage Reviewer Subagent Prompt Template
 
-Use this template for a `super-plan` coverage reviewer. **Model: opus.** The same
+Use this template for a `super-design` coverage reviewer. **Model: opus.** The same
 template serves both per-subepic passes and the root pass — the caller fills in
 the inputs below; nothing in the template branches on which pass it is. The
 reviewer works in isolated context and must never have authored the tree.
 
 ```
 Task tool (general-purpose), model: opus:
-  description: "super-plan coverage review: [SCOPE_NAME]"
+  description: "super-design coverage review: [SCOPE_NAME]"
   prompt: |
     You are a fresh-context coverage reviewer for a task tree. You did not author this
     tree. Your job is error-of-omission detection: a missed gap is worse than a false

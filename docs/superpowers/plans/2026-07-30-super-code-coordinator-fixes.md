@@ -1,5 +1,7 @@
 # super-code Coordinator Fixes Implementation Plan
 
+> Note: the skill named super-plan here was renamed super-design on 2026-07-31. Bead ids like `super-plan-2c1` below are historical tracker identifiers, unaffected by the rename.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development to implement this plan task-by-task.
 
 **Goal:** Make `skills/super-code/coordinator-workflow.md`'s script able to complete a real `bd` epic, fixing the six Critical and three Important defects the whole-branch review confirmed.

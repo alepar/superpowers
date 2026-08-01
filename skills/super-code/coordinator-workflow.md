@@ -682,7 +682,7 @@ functions' definitions directly, or by a live run against a real restart.
 7. **The `sp:` labelling precondition is stated nowhere.** The Query step (`:143`) and the
    dispatched prompt at `:1064` require `bd ready --exclude-type=epic --label sp:${epicId}` —
    SKILL.md's Red Flags table makes bare `bd ready` a Never — but nothing in either document says
-   that label only exists on trees `super-plan` created. A hand-made epic, or a **sub-epic** handed
+   that label only exists on trees `super-design` created. A hand-made epic, or a **sub-epic** handed
    to super-code directly (whose members carry the *root* epic's `sp:` label, not their own id's),
    yields an empty round 1: `ids.length === 0` → the empty-ready-set quarantine exit ("The
    coordinator loop," step 2, above) → `break` → Finish reports `completed: 0`, `review: 'no work

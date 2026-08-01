@@ -6,9 +6,9 @@ description: Use when taking a feature from a raw idea all the way to finished c
 # super-auto
 
 Drive a feature from a raw idea to finished, reviewed code in one invocation, by sequencing
-`brainstorming` → `super-plan` → `super-roast` (design) → `super-code` → `super-roast` (PR) → a
+`brainstorming` → `super-design` → `super-roast` (design) → `super-code` → `super-roast` (PR) → a
 fix loop → report → `finishing-a-development-branch`, with an optional autonomous mode for
-everything from `super-plan`'s coverage loop passing onward.
+everything from `super-design`'s coverage loop passing onward.
 
 **Core principle:** `super-auto` owns sequencing and nothing else. Every phase already has an
 owner; this skill invokes them, threads four flags through them, carries parked escalations, and
@@ -20,7 +20,7 @@ writes the final report.
 > `super-auto` may only grow in the sequencing dimension.
 
 Never:
-- Re-implement `super-plan`'s adversarial review loop — opt-in, caps at 3; answer its offer, don't
+- Re-implement `super-design`'s adversarial review loop — opt-in, caps at 3; answer its offer, don't
   duplicate it.
 - Decide a finding's severity, or adjudicate a roast finding.
 - Copy an artifact another skill owns — hold pointers, per `./run-state.md`.
@@ -45,9 +45,9 @@ whichever aren't already stated in the invocation.
 | Flag | Effect |
 |---|---|
 | plan one-shot | `brainstorming` runs Mode B instead of Mode A |
-| skip plan roast | Declines `super-plan`'s adversarial-review offer |
+| skip plan roast | Declines `super-design`'s adversarial-review offer |
 | skip code roast | Omits the final PR-mode roast entirely |
-| autonomous | Suppresses all queries once `super-plan`'s coverage loop passes (see Autonomous mode) |
+| autonomous | Suppresses all queries once `super-design`'s coverage loop passes (see Autonomous mode) |
 
 ## Phase sequence
 
@@ -57,9 +57,9 @@ own, or the flags strand and the sequence is lost. Each row's parenthetical is t
 
 | # | Phase (`run.md` token) | Skill | Note |
 |---|---|---|---|
-| 1 | Spec (`brainstorm`) | `brainstorming` | Mode A/B per flag → approved spec. **Say in the invocation that the hand-off out of the spec is `super-auto`'s** — `brainstorming` otherwise invokes `super-plan` itself at the end of every spec, and that invocation carries none of your flags, so `super-plan` chains on to `super-code` and phases 3-8 never happen |
-| 2 | Plan (`plan`) | `super-plan` | Coverage loop → settled tree. **Say in the invocation that the hand-off is `super-auto`'s**, or `super-plan` chains into execution and the flags strand. Record the epic id yourself |
-| 3 | Design roast (`roast-design`) | `super-roast` (design) | Via `super-plan`'s own offer, inside its invocation; cap-3 fix loop; `super-auto` records each report path itself |
+| 1 | Spec (`brainstorm`) | `brainstorming` | Mode A/B per flag → approved spec. **Say in the invocation that the hand-off out of the spec is `super-auto`'s** — `brainstorming` otherwise invokes `super-design` itself at the end of every spec, and that invocation carries none of your flags, so `super-design` chains on to `super-code` and phases 3-8 never happen |
+| 2 | Plan (`plan`) | `super-design` | Coverage loop → settled tree. **Say in the invocation that the hand-off is `super-auto`'s**, or `super-design` chains into execution and the flags strand. Record the epic id yourself |
+| 3 | Design roast (`roast-design`) | `super-roast` (design) | Via `super-design`'s own offer, inside its invocation; cap-3 fix loop; `super-auto` records each report path itself |
 | 4 | Code (`code`) | `super-code` | Name the integration branch `epic-<epicId>-integration` and create it off the base branch before invoking — `super-code` requires `integrationBranch` and derives its worktree from it, but never creates either. | Autonomous or interactive per flag. **Say in the invocation that `super-auto` owns the finish** — there is no config flag; otherwise it merges and deletes the worktree the report needs |
 | 5 | Code roast (`roast-code`) | `super-roast` (PR) | Against the live integration branch |
 | 6 | Fix loop (`fix-loop`) | — | Reopen the epic, file confirmed findings as beads (shape: see Red Flags), re-enter `super-code`, loop to phase 5; cap 3, stop early if Blocking count doesn't shrink |
@@ -74,13 +74,13 @@ condition exists to close.
 
 ## Autonomous mode
 
-> Autonomy begins the moment `super-plan`'s coverage loop passes.
+> Autonomy begins the moment `super-design`'s coverage loop passes.
 
 Not the settled tree, which precedes that loop's own human arbitration (accepting GAPs, deciding
 ORPHANs) — parking can't serve a decision that hasn't been made yet, so phase 3 (running inside the
-`super-plan` invocation, after coverage passes) is already inside the zone.
+`super-design` invocation, after coverage passes) is already inside the zone.
 
-In the autonomous zone, `super-plan`'s and `super-roast`'s own mandated human pauses are answered,
+In the autonomous zone, `super-design`'s and `super-roast`'s own mandated human pauses are answered,
 not asked, and the road not taken is parked (`run-state.md`'s `degraded-verdict` kind):
 
 - **The offer to invoke `super-roast` at all** (phase 3): accepted without asking.
@@ -115,7 +115,7 @@ State and report follow `./run-state.md` and `./report-prompt.md` — do not res
 - Re-implement a phase's behavior instead of invoking it.
 - Auto-adjudicate a roast escalation or a sibling's mandated pause, or fold either into the fix
   queue.
-- Ask a question, or wait on a sibling's mandated pause, once `super-plan`'s coverage loop has
+- Ask a question, or wait on a sibling's mandated pause, once `super-design`'s coverage loop has
   passed and `autonomous` is set.
 - Re-ask the four flags, or reset an iteration count, when a resumable `run.md` already exists.
 - Wait until phase 1 completes to create `run.md` — a crash inside `brainstorming`'s Mode A would
@@ -123,7 +123,7 @@ State and report follow `./run-state.md` and `./report-prompt.md` — do not res
 - Look for a resumable run by assuming today's date in the run directory's path, or give up after
   one glob miss without also matching on the recorded idea/spec.
 - File a phase-6 fix bead without all three of `--parent <root-epic-id>`, `--no-inherit-labels`,
-  and `-l sp:<root-epic-id>` together — the same shape `super-plan` mandates for every `bd create`.
+  and `-l sp:<root-epic-id>` together — the same shape `super-design` mandates for every `bd create`.
   Omitting `--parent` does **not** hide the bead from `bd ready` (that query is gated by the label
   alone); it leaves the bead outside the epic's descendant tree, so `bd epic close-eligible` sees
   the epic as closable and **closes it mid-fix**. Omitting `--no-inherit-labels` smears the
@@ -147,7 +147,7 @@ State and report follow `./run-state.md` and `./report-prompt.md` — do not res
   documented "match by the recorded idea/spec" fallback requires reading each candidate's `design.md`
   — and a crash during phase 1 leaves nothing to match on at all; nothing says whether a phase is
   invoked in-context or as a subagent, which decides whether `roastDesignRound` can be written per
-  round at all; and `super-plan` has no parameter for relaying `super-roast`'s report location, so
+  round at all; and `super-design` has no parameter for relaying `super-roast`'s report location, so
   the design-roast report may land outside the run directory that `run.md` points into.
 
 Shipped as documented gaps this round, not fixed:
@@ -163,12 +163,12 @@ Shipped as documented gaps this round, not fixed:
   documented link format for a run (`../runs/<slug>/design.md`) omits the `YYYY-MM-DD-` prefix the
   real directory carries; nothing enforces adding it back.
 - **`plan:` has no referent in beads mode.** `run-state.md` lists a plan-path pointer
-  unconditionally, but `plan.md` is a no-beads-mode-only artifact (`super-plan`'s Hand-off).
-- **`super-plan`'s Red Flag contradicts the autonomous answer, and sits closer to the decision.**
+  unconditionally, but `plan.md` is a no-beads-mode-only artifact (`super-design`'s Hand-off).
+- **`super-design`'s Red Flag contradicts the autonomous answer, and sits closer to the decision.**
   Its Red Flags forbid treating a `clean` verdict carrying `[low coverage]` or
   `[panel-capped: N unverified]` as a clearance — "the user decides whether to proceed." Phase 3
-  runs *inside* the `super-plan` invocation, so that Red Flag is adjacent while this file's
-  "answer proceed, park the qualifier" resolution is far up-context. Nothing in `super-plan` marks
+  runs *inside* the `super-design` invocation, so that Red Flag is adjacent while this file's
+  "answer proceed, park the qualifier" resolution is far up-context. Nothing in `super-design` marks
   the caller-owned exception.
 - **A skipped code roast leaves phase 6 unmarked on the `phase` field.** With `skipCodeRoast` set,
   `phase` jumps `code` → `report`. The flags themselves are durable in `run.md`, so a reader can

@@ -1,9 +1,11 @@
-# super-plan — Recursive Decomposition & Goal-Coverage Planning
+# super-design — Recursive Decomposition & Goal-Coverage Planning
 
 **Status:** Approved (revised after roast BLOCK — see Roast Findings & Revisions)
 **Date:** 2026-07-27
 **Scope:** Personal/local customization of the Superpowers skill files (not an upstream contribution).
 **Related:** [Design Modes & Beads Workflow](2026-06-06-design-modes-and-beads-workflow-design.md), [Workflow-Coordinated Autonomous Implementation](2026-06-13-workflow-coordinated-autonomous-implementation-design.md), [roast](2026-06-13-roast-adversarial-design-review-design.md)
+
+> Note: the skill named super-plan here was renamed super-design on 2026-07-31. This filename keeps the original dated identifier (INDEX.md links to it); the body text below has been updated to the current name. Bead ids created during the spike (e.g. `super-plan-2c1`, `super-plan-2c1.4`) are historical tracker identifiers and are left unchanged.
 
 ## Goal
 
@@ -15,30 +17,30 @@ The current pipeline runs one brainstorm → one spec → one epic of rough task
 
 ## Solution Overview
 
-A new skill, **`superpowers:super-plan`**, owns everything between "spec approved" and "execution starts":
+A new skill, **`superpowers:super-design`**, owns everything between "spec approved" and "execution starts":
 
 1. **Decompose** the spec into rough child tasks (this moves out of brainstorming).
 2. **Promotion review** — a fresh-context subagent judges each task (leaf vs. needs its own design pass) *and* whether the child set is a correct, complete decomposition of the parent spec.
-3. **Recurse** — each promoted task becomes a subepic and gets a nested brainstorm, which itself ends in super-plan. Recursion is *fully upfront*: the whole tree is designed before execution begins.
+3. **Recurse** — each promoted task becomes a subepic and gets a nested brainstorm, which itself ends in super-design. Recursion is *fully upfront*: the whole tree is designed before execution begins.
 4. **Tripwire** — unbounded depth in principle, but crossing a size threshold pauses for a human go/stop/prune on the tree.
 5. **Coverage loop** (root invocation only) — fresh-context subagents check the finished tree against the goals, hierarchically (each subepic against its local goal, the root against the root goal); accepted gaps loop back into the machinery; repeats until a round comes back clean.
 6. **Hand off** to `superpowers:subagent-driven-development` (beads mode when `bd` is available, plan-file mode otherwise). Two small SDD edits make epic-trees executable (see Hand-off).
 
 All recursion state is **derived from the tracker and spec files, never from session memory** (see Durable State) — the process survives context compaction, session restarts, and mid-tree abandonment.
 
-`brainstorming`'s transition step shrinks to: invoke `superpowers:super-plan`. Always — with or without beads; without beads the same decomposition/promotion/coverage happens on paper (task tables in the spec documents) instead of in a tracker.
+`brainstorming`'s transition step shrinks to: invoke `superpowers:super-design`. Always — with or without beads; without beads the same decomposition/promotion/coverage happens on paper (task tables in the spec documents) instead of in a tracker.
 
 ## Recursion Shape
 
-Recursion happens through the mutual `brainstorming ↔ super-plan` cycle, not through a central orchestrator:
+Recursion happens through the mutual `brainstorming ↔ super-design` cycle, not through a central orchestrator:
 
-- Every *brainstormed* spec (the root spec, or a promoted subepic's spec) flows into super-plan for decomposition.
-- Simple (leaf) tasks are terminal: never brainstormed, never super-planned.
+- Every *brainstormed* spec (the root spec, or a promoted subepic's spec) flows into super-design for decomposition.
+- Simple (leaf) tasks are terminal: never brainstormed, never super-designed.
 - Recursion follows promotion edges only. Base case: no child of the current spec qualifies for promotion → subtree done.
-- The structure is a tree by construction — each super-plan invocation only ever examines freshly created children, so cycles cannot occur. The tripwire guards breadth/depth *explosion*, not cycles.
-- Root vs nested invocation is distinguished by whether a parent spec was handed to super-plan. Only the root invocation runs the coverage loop and the final hand-off.
+- The structure is a tree by construction — each super-design invocation only ever examines freshly created children, so cycles cannot occur. The tripwire guards breadth/depth *explosion*, not cycles.
+- Root vs nested invocation is distinguished by whether a parent spec was handed to super-design. Only the root invocation runs the coverage loop and the final hand-off.
 
-**Order:** siblings are processed in dependency order; each promoted child's entire subtree completes before the next sibling starts (depth-first). Sequential on purpose: later sibling designs can read earlier siblings' specs, so shared interfaces get designed once. To make that real rather than accidental, a nested brainstorm's stated context is: the parent spec, the chain of ancestor goals, **and the specs of already-designed siblings** (listed by the invoking super-plan).
+**Order:** siblings are processed in dependency order; each promoted child's entire subtree completes before the next sibling starts (depth-first). Sequential on purpose: later sibling designs can read earlier siblings' specs, so shared interfaces get designed once. To make that real rather than accidental, a nested brainstorm's stated context is: the parent spec, the chain of ancestor goals, **and the specs of already-designed siblings** (listed by the invoking super-design).
 
 **Nested brainstorms** run in the main session (Mode A requires user interaction, which subagents can't do) and:
 
@@ -47,7 +49,7 @@ Recursion happens through the mutual `brainstorming ↔ super-plan` cycle, not t
 - do not re-offer the visual companion and do **not** offer roast (roast is offered once, at the root, after the coverage loop passes),
 - skip Mode B's per-spec user review gate (the human checkpoints in a Mode B tree are: the root spec review, the top-split gate, the tripwire, and coverage arbitration),
 - do not create a new worktree (`using-git-worktrees` is idempotent and just verifies the existing one),
-- end, as always, by invoking super-plan on the spec they wrote.
+- end, as always, by invoking super-design on the spec they wrote.
 
 ## Durable State & Resumability
 
@@ -62,9 +64,9 @@ Long fully-upfront runs **will** hit context compaction, and users abandon sessi
 
 ## Decomposition & Promotion Pass
 
-**Decomposition** (per super-plan invocation on a spec): split into rough child tasks — title, short description, files-touched hint — with blocking dependencies, exactly as brainstorming's beads step does today. With beads: `bd create --graph` (or `--parent` + `bd dep`) under the current epic, all children labeled `sp:<root-epic-id>`; root case creates the epic first. Without beads: the same task table written into the spec document.
+**Decomposition** (per super-design invocation on a spec): split into rough child tasks — title, short description, files-touched hint — with blocking dependencies, exactly as brainstorming's beads step does today. With beads: `bd create --graph` (or `--parent` + `bd dep`) under the current epic, all children labeled `sp:<root-epic-id>`; root case creates the epic first. Without beads: the same task table written into the spec document.
 
-**Promotion review:** a fresh-context subagent (`skills/super-plan/promotion-reviewer-prompt.md`) receives the spec, the child task list, the chain of ancestor goals, and the sibling specs designed so far. Fresh context deliberately counters author bias — the session that just wrote the tasks will think they're all fine. It returns:
+**Promotion review:** a fresh-context subagent (`skills/super-design/promotion-reviewer-prompt.md`) receives the spec, the child task list, the chain of ancestor goals, and the sibling specs designed so far. Fresh context deliberately counters author bias — the session that just wrote the tasks will think they're all fine. It returns:
 
 1. Per task, `LEAF` or `PROMOTE` with a one-line rationale, applying:
    - **Uncertainty test:** implementing this task would force design decisions the spec doesn't answer. (The HTN compound-task test.)
@@ -76,14 +78,14 @@ The main session sanity-checks the verdicts and may overrule — but an overrule
 
 **Applying a promotion:** with beads, `bd update <id> -t epic` plus `sp_depth`/`sp_order` metadata and `sp:needs-design` label — an in-place type change, same issue id; **Spike 0 (see Validation) verifies before implementation** that retyping preserves dependencies and that bd's tree/children/ready semantics behave over ≥3-deep epic nesting. Without beads, the task-table row is marked as a sub-plan entry. Then the nested brainstorm runs.
 
-**Top-split gate (both modes):** a wrong top-level split invalidates every subtree under it ("hallucination snowballing"), and — since decomposition moved out of brainstorming into super-plan — even a Mode A user never sees the decomposition during the collaborative design. So after the *root* decomposition + promotion review and before any descent, the user approves the top-level split (child list + promotion verdicts), in both modes. One gate, at the level where an error is most expensive. This — not the coverage loop — is the design's top-of-tree validation; coverage is the end-of-tree net.
+**Top-split gate (both modes):** a wrong top-level split invalidates every subtree under it ("hallucination snowballing"), and — since decomposition moved out of brainstorming into super-design — even a Mode A user never sees the decomposition during the collaborative design. So after the *root* decomposition + promotion review and before any descent, the user approves the top-level split (child list + promotion verdicts), in both modes. One gate, at the level where an error is most expensive. This — not the coverage loop — is the design's top-of-tree validation; coverage is the end-of-tree net.
 
 ## Tripwire
 
-Before starting any nested brainstorm, super-plan computes the tree state from the run's labels/metadata (see Durable State): **depth** = the epic's `sp-depth` (promotion edges from root: direct subepics are depth 1), **count** = total `sp:`-labeled epics. The tripwire fires before brainstorming any subepic at **depth 3**, or when the total subepic count would exceed **10**:
+Before starting any nested brainstorm, super-design computes the tree state from the run's labels/metadata (see Durable State): **depth** = the epic's `sp-depth` (promotion edges from root: direct subepics are depth 1), **count** = total `sp:`-labeled epics. The tripwire fires before brainstorming any subepic at **depth 3**, or when the total subepic count would exceed **10**:
 
 - The user is shown the epic tree — what is designed, what still wants promotion, and (because recursion is depth-first) which branches are still unexplored, marked as such.
-- They choose **continue** (and set the next checkpoint; default: thresholds double), **stop** (remaining would-be promotions freeze into leaf tasks flagged `sp:frozen-promotion` — the coverage pass surfaces every such task as an automatic finding, since these are known-underdesigned), or **prune** (drop specific branches, or demote an epic back to task — demotion requires the epic to have no children yet; bd silently allows demoting an epic that has children, which would corrupt the tree, so super-plan must check first).
+- They choose **continue** (and set the next checkpoint; default: thresholds double), **stop** (remaining would-be promotions freeze into leaf tasks flagged `sp:frozen-promotion` — the coverage pass surfaces every such task as an automatic finding, since these are known-underdesigned), or **prune** (drop specific branches, or demote an epic back to task — demotion requires the epic to have no children yet; bd silently allows demoting an epic that has children, which would corrupt the tree, so super-design must check first).
 - **Coverage-spawned subtrees count toward the same counters, and the tripwire stays armed during coverage fix rounds** — the gap loop is not a bypass around the only runaway safeguard.
 
 Rationale: the user chose unbounded recursion to genuinely cover extremely vague features; the research literature (ADaPT's depth caps, BabyAGI's runaway task creation, LangGraph recursion limits) uniformly warns that LLM "is this complex enough?" judgment runs away. The tripwire keeps depth unbounded in principle while capping the damage of a runaway split at one checkpoint's worth of work.
@@ -101,7 +103,7 @@ Runs once the whole tree has settled: every subepic designed, every leaf decompo
 
 **Recall floor & fallback net:** the whole "nothing slips through" promise rides on measured recall. If the coverage-recall spike (see Validation) can't clear its bar after at most two redesign attempts (prompt, panel size, goal-decomposition granularity), the coverage loop is **downgraded to advisory** and the gate becomes a **mandatory human read-through of the goal against the full task tree** before hand-off — disclosed in the round summary, not silently degraded.
 
-**Each reviewer** (`skills/super-plan/coverage-reviewer-prompt.md`, fresh context) runs:
+**Each reviewer** (`skills/super-design/coverage-reviewer-prompt.md`, fresh context) runs:
 
 1. **Forward trace (gaps):** decompose the goal into its necessary elements; every element must map to ≥1 task or spec. Unmapped element → `GAP`.
 2. **Backward trace (orphans):** every task must serve some goal element. Unmapped task → `ORPHAN`.
@@ -110,7 +112,7 @@ Runs once the whole tree has settled: every subepic designed, every leaf decompo
 
 Each finding: type, description, evidence, and a proposed fix (new leaf task under epic X, or new subepic needing design).
 
-**Arbitration loop:** findings are presented deduped to the user, who accepts or rejects each. Accepted `GAP`s: small → leaf task added directly; big → task created → promoted → nested brainstorm (inherited mode) → its own super-plan subtree (tripwire still armed). Accepted `ORPHAN`s: the user picks the resolution — delete the task as scope creep, or add the missing goal element it serves.
+**Arbitration loop:** findings are presented deduped to the user, who accepts or rejects each. Accepted `GAP`s: small → leaf task added directly; big → task created → promoted → nested brainstorm (inherited mode) → its own super-design subtree (tripwire still armed). Accepted `ORPHAN`s: the user picks the resolution — delete the task as scope creep, or add the missing goal element it serves.
 
 **Convergence mechanics:**
 - **Ledger:** every arbitrated finding (accepted *and* rejected, including flag-sweep items) is appended with a stable id and one-line description to a committed sidecar file, `docs/superpowers/specs/<root-slug>-coverage-ledger.md`. Subsequent rounds' reviewers receive it ("previously rejected — do not resurface without new evidence"). The ledger takes precedence over the flag sweep: an already-arbitrated flagged task is not re-surfaced.
@@ -149,10 +151,10 @@ Everything derivable — how to retry a failed subagent, present findings readab
 
 ## Files Touched
 
-- **`skills/super-plan/SKILL.md`** — new. Decomposition, promotion review, nested-brainstorm orchestration, durable-state labels/metadata, tripwire, root-only hierarchical coverage loop, hand-off. Root-vs-nested derivable from the tracker.
-- **`skills/super-plan/promotion-reviewer-prompt.md`** — new. `LEAF`/`PROMOTE` verdicts + decomposition verdict.
-- **`skills/super-plan/coverage-reviewer-prompt.md`** — new. Forward/backward trace, walking skeleton, premortem, flag sweep; used by both per-subepic and root passes; consumes the rejected-findings ledger.
-- **`skills/brainstorming/SKILL.md`** — edited. Transition step becomes "invoke `superpowers:super-plan`" (both modes, beads or not; epic-creation and `writing-plans` instructions move out); add the `## Goal` requirement; add the nested-invocation note (inherit mode, parent+sibling specs as context, no visual-companion/roast re-offer, skip Mode B per-spec review gate, no worktree re-creation).
+- **`skills/super-design/SKILL.md`** — new. Decomposition, promotion review, nested-brainstorm orchestration, durable-state labels/metadata, tripwire, root-only hierarchical coverage loop, hand-off. Root-vs-nested derivable from the tracker.
+- **`skills/super-design/promotion-reviewer-prompt.md`** — new. `LEAF`/`PROMOTE` verdicts + decomposition verdict.
+- **`skills/super-design/coverage-reviewer-prompt.md`** — new. Forward/backward trace, walking skeleton, premortem, flag sweep; used by both per-subepic and root passes; consumes the rejected-findings ledger.
+- **`skills/brainstorming/SKILL.md`** — edited. Transition step becomes "invoke `superpowers:super-design`" (both modes, beads or not; epic-creation and `writing-plans` instructions move out); add the `## Goal` requirement; add the nested-invocation note (inherit mode, parent+sibling specs as context, no visual-companion/roast re-offer, skip Mode B per-spec review gate, no worktree re-creation).
 - **`skills/subagent-driven-development/SKILL.md`** (+ `coordinator-workflow.md`) — edited: ready-query epic filter; epic-closure cascade.
 - Spec + INDEX row for this design itself.
 
@@ -160,7 +162,7 @@ Everything derivable — how to retry a failed subagent, present findings readab
 
 **Spike 0 (before any implementation)** — bd nested-epic semantics, in a scratch `bd init` db:
 - Create epic E → task T under E → `bd update T -t epic` → task U under T → repeat to depth 3.
-- Verify: retyping preserves existing dependencies; children/tree/list queries traverse the full subtree; label + metadata queries work as Durable State assumes (`sp_depth`/`sp_order` keys accepted; `--no-inherit-labels` prevents label smear; label filtering usable on `bd ready`/`bd list` or a reliable post-filter exists); the epic-exclusion flag for `bd ready` works; `bd epic close-eligible` looped to fixpoint closes bottom-up through the root; demoting an epic with children is detectable/preventable; **writes survive a killed session** (check Dolt auto-commit state; if off, identify the explicit commit super-plan must issue after each state change).
+- Verify: retyping preserves existing dependencies; children/tree/list queries traverse the full subtree; label + metadata queries work as Durable State assumes (`sp_depth`/`sp_order` keys accepted; `--no-inherit-labels` prevents label smear; label filtering usable on `bd ready`/`bd list` or a reliable post-filter exists); the epic-exclusion flag for `bd ready` works; `bd epic close-eligible` looped to fixpoint closes bottom-up through the root; demoting an epic with children is detectable/preventable; **writes survive a killed session** (check Dolt auto-commit state; if off, identify the explicit commit super-design must issue after each state change).
 - Kill criteria: if bd cannot represent or traverse ≥3-deep epic nesting correctly, the beads mode must flatten to one level of subepics — and because that guts the tracker-derived cursor, tripwire depth counting, and label scoping for deeper levels, **flattening triggers a redesign of Durable State and the tripwire for the in-spec deeper levels, not a silent fallback**. Redesign before implementing.
 
 **Coverage recall spike:** hand-build three synthetic tree variants (~10 specs / ~60 leaf tasks each, one sized past the ~15-spec summary-fallback threshold so the summarized root pass is itself tested) with **6 seeded gaps total** across them (missing subsystems and missing connective/integration tasks). Run the 3-reviewer union 5× per variant; measure seeded-gap recall, false-positive rate (also 5× on complete trees), and **total findings the arbitrating human must adjudicate per round** (the arbitration-load number). Kill criteria: recall below ~80% after at most two redesign attempts (prompt, panel size, goal-decomposition granularity), or FP volume that makes arbitration noise → the fallback net activates (coverage advisory + mandatory human read-through as the gate) and the design proceeds with that disclosed weaker guarantee.
@@ -171,14 +173,14 @@ Record results in Post-Implementation Notes.
 
 ## Key Decisions & Rationale
 
-- **Fully upfront recursion** (user choice) over rolling-wave/just-in-time. The research favors lazy decomposition (ADaPT: decompose-on-failure beat eager by 27–33%), so the design compensates where the risk actually bites: the Mode B top-split gate validates the most expensive level *before* descent, durable tracker-derived state makes long runs compaction-safe, and the hierarchical coverage loop is the end-of-tree net. (Execution-time feedback that invalidates a design remains out of scope: there is no automatic path from an implementer discovery back into super-plan — the human re-invokes brainstorming on the affected subepic, which is the normal skill entry point.)
+- **Fully upfront recursion** (user choice) over rolling-wave/just-in-time. The research favors lazy decomposition (ADaPT: decompose-on-failure beat eager by 27–33%), so the design compensates where the risk actually bites: the Mode B top-split gate validates the most expensive level *before* descent, durable tracker-derived state makes long runs compaction-safe, and the hierarchical coverage loop is the end-of-tree net. (Execution-time feedback that invalidates a design remains out of scope: there is no automatic path from an implementer discovery back into super-design — the human re-invokes brainstorming on the affected subepic, which is the normal skill entry point.)
 - **Mode inheritance** for nested brainstorms (user choice): the session's mode propagates; explicit per-subepic override allowed. Mode B trees keep four human checkpoints (root spec review, top-split gate, tripwire, coverage arbitration) instead of per-spec review gates. The top-split gate applies in both modes (round-2 roast: once decomposition moved out of brainstorming, even Mode A users never saw the split).
 - **Uncertainty OR size** promotion test (user choice). Considered uncertainty-only with size handled by splitting (rejected: user wants big tasks promoted even when mechanical).
 - **Unbounded depth + tripwire** (user choice, amended by mutual agreement). Hard caps rejected as contrary to the "extremely vague features" ambition; truly-unbounded rejected as the literature's canonical runaway mode. Coverage-spawned work stays inside the tripwire's jurisdiction.
 - **Hierarchical, uniformly 3-sample coverage** over a single monolithic reviewer (revised after roast: single-pass ingestion doesn't scale and single-sample omission detection has low recall; round 2 extended the 3-sample rule to per-subepic passes and pinned the full task tree as non-summarizable root-pass input) and over roast-the-tree (rejected: roast is tuned for single-spec critique; it remains separately offerable at the root — and the user may explicitly roast any individual subepic spec, though no per-subepic adversarial review runs by default). Inline checklist rejected: same-context review misses what it wrote.
 - **User arbitrates gap findings, loop till clean, with a rejected-findings ledger** (ledger added after roast: without memory of rejections the loop can re-litigate forever and never converge).
-- **Standalone skill (`super-plan`)** over extending brainstorming inline (user choice) and over parallel subagent-dispatched nested designs (rejected for now: siblings couldn't see each other's specs; revisit if sequential proves too slow).
-- **Mutual-recursion shape** (brainstorming always ends in super-plan) over a central orchestrator: simpler contract, each level identical by construction — made safe by deriving all traversal state from the tracker instead of session memory.
+- **Standalone skill (`super-design`)** over extending brainstorming inline (user choice) and over parallel subagent-dispatched nested designs (rejected for now: siblings couldn't see each other's specs; revisit if sequential proves too slow).
+- **Mutual-recursion shape** (brainstorming always ends in super-design) over a central orchestrator: simpler contract, each level identical by construction — made safe by deriving all traversal state from the tracker instead of session memory.
 - **SDD edited, not reused as-is** (revised after roast: `bd ready` surfaces epics as claimable work by default, and nothing would ever close epics — both confirmed against bd 1.0.5 behavior — so the tree is executable only with the ready-filter and closure-cascade changes).
 
 ## Roast Findings & Revisions (2026-07-28)
