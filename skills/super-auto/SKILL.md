@@ -59,7 +59,7 @@ own, or the flags strand and the sequence is lost. Each row's parenthetical is t
 |---|---|---|---|
 | 1 | Design (`design`) | `super-design` | Invoked with the goal or raw idea; drives the root brainstorm, decomposition, every subepic brainstorm, and the coverage loop itself → settled tree. **Say in the invocation that the hand-off is `super-auto`'s**, or `super-design` chains into execution and the flags strand. Record the epic id yourself |
 | 2 | Design roast (`roast-design`) | `super-roast` (design) | Via `super-design`'s own offer, inside its invocation; cap-3 fix loop; `super-auto` records each report path itself |
-| 3 | Code (`code`) | `super-code` | Name the integration branch `epic-<epicId>-integration` and create it off the base branch before invoking — `super-code` requires `integrationBranch` and derives its worktree from it, but never creates either. | Autonomous or interactive per flag. **Say in the invocation that `super-auto` owns the finish** — there is no config flag; otherwise it merges and deletes the worktree the report needs |
+| 3 | Code (`code`) | `super-code` | Name the integration branch `epic-<epicId>-integration`; create it off the design branch if absent, **verify it if it already exists** (a resume must never re-create it) — `super-code` requires `integrationBranch` and derives its worktree from it, but never creates either. Autonomous or interactive per flag. **Say in the invocation that `super-auto` owns the finish** — there is no config flag, and without it `super-code` merges and deletes the worktree the report still needs. |
 | 4 | Code roast (`roast-code`) | `super-roast` (PR) | Against the live integration branch |
 | 5 | Fix loop (`fix-loop`) | — | Reopen the epic, file confirmed findings as beads (shape: see Red Flags), re-enter `super-code`, loop to phase 4; cap 3, stop early if Blocking count doesn't shrink |
 | 6 | Report (`report`) | — | Write `report.md` per `./report-prompt.md`, before anything is torn down |
@@ -150,12 +150,13 @@ a human following that link concludes the run is missing while the run is sittin
   a run and a resume, but only by inventing answers at twelve points the files leave open. The ones
   most likely to bite: the slug rule says "kebab-cased from the raw idea" while the worked example
   shows a condensed topic, and a resume phrased "continue the X work" slugs differently again; the
-  four flags have no stated defaults; `run.md`'s six contents do not include the idea text, so the
-  documented "match by the recorded idea/spec" fallback requires reading each candidate's `design.md`
-  — and a crash during phase 1 leaves nothing to match on at all; nothing says whether a phase is
-  invoked in-context or as a subagent, which decides whether `roastDesignRound` can be written per
-  round at all; and `super-design` has no parameter for relaying `super-roast`'s report location, so
-  the design-roast report may land outside the run directory that `run.md` points into.
+  four flags have no stated defaults; the resume fallback says
+  "match by the recorded idea/spec" without saying what counts as a match — substring, token overlap,
+  or judgement — which is a coin flip once more than one run exists; and phase 2 runs *inside* phase
+  1's `super-design` invocation, so `phase: roast-design` and `roastDesignRound` can only ever be
+  written retroactively, leaving a crash mid-design-roast to resume as `phase: design` and restart
+  the root brainstorm. Two of the original twelve are closed: `run.md` now records the raw `idea`,
+  and `super-design` relays an artifact-directory override to `super-roast`.
 
 Shipped as documented gaps this round, not fixed:
 

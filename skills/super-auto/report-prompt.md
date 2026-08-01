@@ -1,7 +1,7 @@
 # report.md — the final report contract
 
 `report.md` is produced at phase `report` and lives at
-`docs/superpowers/runs/<slug>/report.md`, committed alongside the run's other
+`docs/superpowers/runs/YYYY-MM-DD-<slug>/report.md`, committed alongside the run's other
 artifacts. It is written for one reader: a human who did not watch the run and is
 now deciding what to do with it — merge, dig further, or intervene. That reader has
 no context except this file, `run.md`, and the diff.

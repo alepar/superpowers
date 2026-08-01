@@ -7,7 +7,7 @@ file that lets a resumed run pick up exactly where it left off instead of guessi
 contract, not this file's; this file only says what state must persist and how
 re-entry uses it.)
 
-It lives at `docs/superpowers/runs/<slug>/run.md` and is committed alongside the
+It lives at `docs/superpowers/runs/YYYY-MM-DD-<slug>/run.md` and is committed alongside the
 other artifacts of the run (spec, plan, roast reports). It is not scratch state —
 every field in it is read back on resume and trusted.
 
@@ -59,7 +59,7 @@ a resume can silently redo work or violate a decision that was already made.
    exist.
 
    All path-valued pointers are given **relative to the run directory**
-   (`docs/superpowers/runs/<slug>/`) — never bare filenames, never full
+   (`docs/superpowers/runs/YYYY-MM-DD-<slug>/`) — never bare filenames, never full
    repo-relative paths. A `spec:` of `design.md` and a `roast-design:` of
    `roast-design-1.md` both resolve against the same run directory; there is no
    second convention to pick between. This is the one rule that keeps two
