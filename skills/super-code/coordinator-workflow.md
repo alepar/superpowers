@@ -143,7 +143,7 @@ Round-based with refill (each `bd ready` batch is, by definition, mutually indep
 1. **Query** — an agent runs a fast labelled query first, `bd ready --exclude-type=epic --label
    sp:<epicId>` (excludes epic-type containers, which `bd ready` includes by default, and scopes to
    this run's tree via the `sp:` label `super-design` stamps on everything it creates). **An empty
-   result here does not mean the tree is empty** (formerly "Known limitations" items 7/9): the label
+   result here does not mean the tree is empty** (see "Resolved in this branch": the `sp:`-labelling and canonical-args items): the label
    only exists on trees `super-design` created — a hand-made epic, or a sub-epic handed to super-code
    directly (whose members carry the *root* epic's `sp:` label, not their own id's), always comes up
    empty on this query even with real ready work waiting. When it does, the agent falls back to
@@ -424,8 +424,8 @@ repo*, colliding every epic's ledger on one file (see "Workspace and ledger" abo
 consequence). On refill, the planner agent re-runs to append new mapping rows and `## Task <N>`
 sections for newly-ready beads — new ordinals continue the existing sequence; an already-assigned
 ordinal or section is never renumbered or rewritten, since a fix round may still be pointing at it.
-**Blocker beads are never planned and never get a mapping row** (Known limitations, former item
-8): a blocker bead is an escalation record about a task — a `blocker` label and a body stating the
+**Blocker beads are never planned and never get a mapping row** (see "Resolved in this
+branch": the blocker-bead-planning item): a blocker bead is an escalation record about a task — a `blocker` label and a body stating the
 task id, what failed, and what was tried (see "The blocker-bead path") — not a work item, and the
 planner's `bd children` tree walk has no `--parent` edge to find it by. A blocker bead reaches a
 human or gets acted on exclusively through this run's escalation reporting ("Escalation = notify +
@@ -606,24 +606,10 @@ at the parked-ruling lines only, not at deferred-minor notes that do not exist y
 
 ## Known limitations
 
-This is the final, bounded fix round on this document. Fixes 1–3 above (idempotent
-`taskBriefPrompt`, merge-base-derived `base` on a re-entered worktree, and `mergeBase`-derived
-ledger ranges) close the three defects that would otherwise break restart/resume outright. Most of
-the items below are known, real gaps that are being **shipped as documented limitations, by
-decision** — not fixed in this round; two of them (10 and 11) record a prose-only contradiction
-that this same fix round *did* correct in place, kept here because the underlying risk — a future
-maintainer reimplementing from a stale reading of the prose — outlives the correction. A future
-maintainer should read this section before assuming any of these already work.
-
-**All three fixes above are unverifiable by any dryRun.** They live in prompt text
-(`taskBriefPrompt`'s reuse-vs-create branching, `mergePrompt`'s `git merge-base` capture) and in
-real git behavior (whether `git worktree add` actually fails on an existing path/branch, whether a
-post-rebase `git merge-base` actually lands where this doc claims it does). `pick()` never builds a
-real prompt under `dryRun: true` — every stubbed `brief:<id>`/`merge:<id>` call in every scenario in
-this doc returns a canned JSON object regardless of what `taskBriefPrompt`/`mergePrompt` would have
-asked a real agent to do. No number of passing dryRuns, now or later, demonstrates any of the three
-fixes actually behaves as described; that is, and will remain, verified only by reading the two
-functions' definitions directly, or by a live run against a real restart.
+This section lists what ships **unfixed**, by decision. A future maintainer should read it before
+assuming any of these already work. Resolved items are not listed here — they moved to "Resolved in
+this branch" below, which exists for a narrower reason: each one was a place where the prose said
+something the code did not do, and the risk a maintainer reintroduces it outlives the correction.
 
 1. **Duplicate blocker beads on restart.** Blocker beads are filed with a `blocker` label and no
    dependency edge, and nothing in this script deduplicates them against an existing open blocker
@@ -648,16 +634,7 @@ functions' definitions directly, or by a live run against a real restart.
    inspected for success — so a silently-lost `pending retry` line does not just cost this item's
    "up to two passes," it can reset `pendingRetry` for that id entirely and let a bad clarification
    spin for more than one extra round after a restart.
-2. **This document previously contradicted itself on what resume is for**, resolved in this fix
-   round (see "Workspace and ledger" and the Resume-phase code comments above — no separate action
-   needed here beyond noting it was fixed by clarifying the prose, not the code): stated plainly,
-   resume's only dispatch-gating, behavior-affecting reconstruction after the earlier relaxation is
-   `pendingRetry`; `completed`/`parked` are otherwise informational (reporting and the no-progress
-   guard's baseline). The one behavioral use of resumed `completed` that is easy to miss: the
-   Finish-phase final-review gate reads `completed.length` *after* Resume has already seeded it, so
-   a re-invocation that lands zero new merges of its own still dispatches the opus whole-epic
-   review, solely because an earlier run's completions are recorded in the ledger.
-3. **`completed` and `parked` are plain arrays, not Sets.** `completed.push(id)` at the merge gate
+2. **`completed` and `parked` are plain arrays, not Sets.** `completed.push(id)` at the merge gate
    runs regardless of whether Resume already seeded `id` into `completed` from a prior run's ledger
    line — so a resumed id that merges again this run is counted twice in `completed` (and, if it
    was previously `parked`, its ruling line is effectively double-recorded in spirit even though the
@@ -670,7 +647,7 @@ functions' definitions directly, or by a live run against a real restart.
    the dryRun section (see "What these three runs collectively prove") asserts holds for every task.
    Deduplicating via `Set` semantics (or filtering `escalated`/`pendingRetry` pushes against
    `completed`, or vice versa) is future work, not attempted in this round.
-4. **The workspace-divergence guard (Plan phase) accepts planning from a task worktree.** The guard
+3. **The workspace-divergence guard (Plan phase) accepts planning from a task worktree.** The guard
    (see the Plan-phase call site above) only checks that `plannedDir` equals `workspace` or ends
    with `/${workspace}` — it never checks *which* worktree prefixes that suffix. A planner
    mistakenly dispatched to run inside `taskWorktree(id)` (`.worktrees/<integrationBranch>--task-<id>`)
@@ -680,12 +657,12 @@ functions' definitions directly, or by a live run against a real restart.
    "Plan materialization"). This splits the plan file from the ledger just as surely as the
    wrong-epic-workspace case this guard exists to catch — the guard was built for the wrong
    dimension of "which directory," not "which worktree."
-5. **Finish points the final reviewer at "deferred-minor" ledger notes that nothing writes.** See
+4. **Finish points the final reviewer at "deferred-minor" ledger notes that nothing writes.** See
    the "Finish" section above, updated in this round to say so directly: no line kind `ledgerLine()`
    produces is a deferred-minor note, and no call site in this script ever asks for one to be
    written. The prose has been corrected to stop promising it; the underlying gap (SDD's Final
    Review wanting a place to read deferred minors from) remains unimplemented.
-6. **`short(undefined)` yields `""`.** A merge agent that reports `merged: true` without `head`
+5. **`short(undefined)` yields `""`.** A merge agent that reports `merged: true` without `head`
    and/or `mergeBase` is schema-valid (neither is `required` on `MERGE` — see that schema's comment
    above) and passes silently; `short()` degrades a missing SHA to an empty string rather than
    throwing, so the resulting ledger line (e.g. `commits abc1234..` or `commits ..def5678`) still
@@ -693,7 +670,23 @@ functions' definitions directly, or by a live run against a real restart.
    non-compliant merge dispatch degrades the ledger's commit-range invariant instead of failing
    loud. Hardening this (e.g. asserting both fields are present before building the ledger line, or
    escalating instead of degrading) is future work.
-7. **The `sp:` labelling precondition used to be stated nowhere, and the Ready phase trusted it as
+
+## Resolved in this branch (kept as guardrails)
+
+These were real contradictions between this document and its own script, corrected in place. They
+are recorded — not deleted — because each names a specific wrong belief a future editor could
+re-adopt from a stale reading. None of them is an open gap.
+
+1. **This document previously contradicted itself on what resume is for**, resolved in this fix
+   round (see "Workspace and ledger" and the Resume-phase code comments above — no separate action
+   needed here beyond noting it was fixed by clarifying the prose, not the code): stated plainly,
+   resume's only dispatch-gating, behavior-affecting reconstruction after the earlier relaxation is
+   `pendingRetry`; `completed`/`parked` are otherwise informational (reporting and the no-progress
+   guard's baseline). The one behavioral use of resumed `completed` that is easy to miss: the
+   Finish-phase final-review gate reads `completed.length` *after* Resume has already seeded it, so
+   a re-invocation that lands zero new merges of its own still dispatches the opus whole-epic
+   review, solely because an earlier run's completions are recorded in the ledger.
+2. **The `sp:` labelling precondition used to be stated nowhere, and the Ready phase trusted it as
    the only signal.** Fixed in this round (see "The coordinator loop" step 1, and `readyPrompt` in
    the script skeleton): the Query step and the dispatched `bd-ready` prompt used to require
    `bd ready --exclude-type=epic --label sp:${epicId}` with nothing anywhere saying that label only
@@ -708,7 +701,7 @@ functions' definitions directly, or by a live run against a real restart.
    (`treeMembershipTest`, shared by both — never the id-prefix convention alone). Confirmed
    independently during the fix cycle that produced this document: this repo's own real epic
    carries no `sp:` labels — exactly the case the fallback now handles.
-8. **"Newly-created beads (blocker beads included)" was a promise the design never meant to keep.**
+3. **"Newly-created beads (blocker beads included)" was a promise the design never meant to keep.**
    `:417` and `planPrompt` used to say the planner re-plans "newly-ready or newly-created beads
    (blocker beads included)" on refill, which reads as: a blocker bead gets its own `## Task <N>`
    mapping section and, by the same mechanism as any other mapped bead, could end up handed to
@@ -725,7 +718,7 @@ functions' definitions directly, or by a live run against a real restart.
    exclusively through this run's escalation reporting ("Escalation = notify + quarantine +
    continue") and the triage agent's RESOLVE/ESCALATE call on the **original** blocked task (see
    "The blocker-bead path") — never through re-planning, and never through `bd ready`.
-9. **The shipped canonical args used to be inconsistent with the ready-query regex.** Fixed in this
+4. **The shipped canonical args used to be inconsistent with the ready-query regex.** Fixed in this
    round by retiring the regex, not by changing the args: the canonical scenario's `args` block
    still uses `epicId: "bd-100"` with children `bd-101`…`bd-104` (`:2444` and surrounding) — flat
    siblings, illustrative shorthand for the dryRun's JSON shapes, never a template for a real
@@ -734,7 +727,7 @@ functions' definitions directly, or by a live run against a real restart.
    beyond `bd-10`, and the trailing digit isn't a `.`-delimited suffix of `bd-100`) — the dryRun
    never ran it (`bd-ready` is stubbed in every scenario in this doc), so the mismatch passed
    silently forever, and a maintainer copying these args as a mental model for a real epic would
-   have gotten a scoping scheme that yields zero ids against a real `bd ready`. The fix (see item 7
+   have gotten a scoping scheme that yields zero ids against a real `bd ready`. The fix (see the `sp:`-labelling item
    above and `readyPrompt`) removes the grep from the Ready phase entirely rather than reconciling
    it with these ids: the fast path is the bare `--label sp:${epicId}` query, and the structural
    fallback needs no naming convention at all. The canonical args are therefore unchanged **on id
@@ -743,24 +736,25 @@ functions' definitions directly, or by a live run against a real restart.
    see each scenario's "Confirmed against the scope-fix script" writeup). Unchanged args are not a
    licence to carry a run-id across a diff. Flagged here so a future reader still doesn't copy the
    flat id scheme as a template for a real epic's ids.
-10. **The parallelism prose used to claim the opposite of what the code does.** Fixed in this round
-    (see "The coordinator loop," step 3, above) — it previously said "dispatch disjoint-file groups
-    concurrently," which reads as *buckets* running concurrently with each other. The code actually
-    serializes *across* buckets (the `for (const group of groups)` loop, `:1188`) and only chunks to
-    the concurrency cap *within* one bucket (`:1193`); SKILL.md's Parallelism section (`:52`) had it
-    right all along, this document did not. Noted here, not just fixed in place, because getting
-    this backwards is a genuine write-collision risk for anyone reimplementing the loop from this
-    document's prose alone — which the "Annotated script skeleton" section (`:743`) explicitly
-    invites a future maintainer to do.
-11. **"Illustrative" vs. "canonical" was self-contradictory.** Fixed in this round: the script
-    skeleton's own header, in the "Annotated script skeleton" section (`:743`), used to open with
-    "Illustrative — adapt names/prompts to the epic," while the dryRun policy section (`:2202`, "If
-    any assertion fails, fix the script in this doc") called the same script "canonical." Resolved in
-    favor of canonical — it is the only executable artifact in this document, every recorded baseline
-    was run against it verbatim, and "adapt names/prompts to the epic" was never actually license to
-    restructure it. A maintainer who took the old "illustrative" framing at face value and rewrote
-    the script's structure while adapting it to a real epic would silently invalidate every baseline
-    recorded in this document without any signal that they had done so.
+5. **The parallelism prose used to claim the opposite of what the code does.** Fixed in this round
+   (see "The coordinator loop," step 3, above) — it previously said "dispatch disjoint-file groups
+   concurrently," which reads as *buckets* running concurrently with each other. The code actually
+   serializes *across* buckets (the `for (const group of groups)` loop, `:1188`) and only chunks to
+   the concurrency cap *within* one bucket (`:1193`); SKILL.md's Parallelism section (`:52`) had it
+   right all along, this document did not. Noted here, not just fixed in place, because getting
+   this backwards is a genuine write-collision risk for anyone reimplementing the loop from this
+   document's prose alone — which the "Annotated script skeleton" section (`:743`) explicitly
+   invites a future maintainer to do.
+6. **"Illustrative" vs. "canonical" was self-contradictory.** Fixed in this round: the script
+   skeleton's own header, in the "Annotated script skeleton" section (`:743`), used to open with
+   "Illustrative — adapt names/prompts to the epic," while the dryRun policy section (`:2202`, "If
+   any assertion fails, fix the script in this doc") called the same script "canonical." Resolved in
+   favor of canonical — it is the only executable artifact in this document, every recorded baseline
+   was run against it verbatim, and "adapt names/prompts to the epic" was never actually license to
+   restructure it. A maintainer who took the old "illustrative" framing at face value and rewrote
+   the script's structure while adapting it to a real epic would silently invalidate every baseline
+   recorded in this document without any signal that they had done so.
+
 
 ## What autonomous mode changes (summary)
 
@@ -1100,7 +1094,7 @@ while (true) {
   const ready = await agent(
     // MECHANICAL rule-following, not judgment (same tier as closeEpicsPrompt): a fast labelled
     // query, with a structural fallback when it comes up empty — never a bare echo trusted alone
-    // anymore. See "Known limitations" (former items 7/9) for why the label-only query used to be
+    // anymore. See "Resolved in this branch" (the `sp:`-labelling and canonical-args items) for why the label-only query used to be
     // treated as authoritative, and `readyPrompt`'s own comment for the fallback mechanics.
     pick(() => readyPrompt(epicId), 'bd-ready'),
     { label: 'bd-ready', phase: 'Ready', schema: READY, model: model('mechanical') })
@@ -1363,7 +1357,7 @@ return { completed, escalated, pendingRetry: [...pendingRetry], parked, stalled,
 function treeMembershipTest(epicId) {
   // Shared, single source for the one membership test this document uses in two places: the
   // epic-closure fixpoint (closeEpicsPrompt, below) and the Ready phase's structural fallback
-  // (readyPrompt, below) — see "Known limitations" (former items 7/9) on why the Ready phase needed
+  // (readyPrompt, below) — see "Resolved in this branch" (the `sp:`-labelling and canonical-args items) on why the Ready phase needed
   // this test too, not just closeEpicsPrompt. Described once, reused verbatim, so the two phases
   // can never silently drift onto different tree-membership rules.
   return `      - IDENTITY: if id === "${epicId}", it is IN-TREE. Stop here — do not attempt a parent walk on the root; the root has no parent-child dependency entry to find (verified: \`bd show ${epicId} --json\` shows an empty or root-parentless \`dependencies\` array for the root itself), so a walk would wrongly conclude OUT-OF-TREE.
@@ -1375,11 +1369,11 @@ function treeMembershipTest(epicId) {
 function readyPrompt(epicId) {
   // FAST PATH: the `sp:` label `super-design` stamps on every bead it creates lets a single scoped
   // query answer this in one shot, cheaper than the structural fallback below. FIX (Known
-  // limitations, former items 7 & 9): the id-prefix grep this used to pipe through
-  // (`grep -oE '${epicId}[.0-9]*'`) is RETIRED as an authority — former item 9 found it silently
+  // the `sp:`-labelling and canonical-args items under "Resolved in this branch"): the id-prefix grep this used to pipe through
+  // (`grep -oE '${epicId}[.0-9]*'`) is RETIRED as an authority — the canonical-args item found it silently
   // mismatches real hierarchical ids (and this document's own flat illustrative canonical-scenario
   // ids), and it was never anything but a weaker restatement of what `--label` already scopes; it
-  // is not run at all anymore, not even as a pre-filter. FALLBACK (former item 7): an empty
+  // is not run at all anymore, not even as a pre-filter. FALLBACK (the `sp:`-labelling item): an empty
   // labelled result does not mean the tree is empty — the `sp:` label only exists on trees
   // `super-design` created; a hand-made epic, or a sub-epic handed to super-code directly (whose
   // members carry the *root* epic's `sp:` label, not their own id's), always comes up empty above
@@ -2019,7 +2013,7 @@ fix-round-2's unchanged counts made for its own one-`if`-condition fix. See "Con
 final-fix-round script — and why that is not validation" further below (after the PARK scenario) for
 the full accounting, including what a live-run validation of each fix would actually require.
 
-**The scope fix (Known limitations 7/8/9) is the most recent structural edit, and all three
+**The scope fix (the scope fix — see "Resolved in this branch") is the most recent structural edit, and all three
 scenarios were re-run against it** — canonical `wf_cb63ecb9-492` 31/0, cap-tripping
 `wf_caf8953e-374` 24/0, PARK `wf_f18d307b-83e` 23/0, each matching its predecessor exactly. These
 are the current baselines; the final-fix-round ids above are superseded history. The edit extracted
@@ -2244,7 +2238,7 @@ untested by any scenario in this doc — inspection-only, same as C-1/C-3 above.
   repo — verified by inspecting the dispatched `bd-ready` prompt text (see the stub table note
   above; the stub's *return value* can't prove this, only the prompt construction can). This
   scenario's canned `bd-ready` stub is always non-empty on round 1, so `readyPrompt`'s structural
-  fallback (former "Known limitations" items 7/9) is never exercised by this or any dryRun in this
+  fallback (former "Resolved in this branch" (the `sp:`-labelling and canonical-args items)) is never exercised by this or any dryRun in this
   document — that fallback is verified only by reading `readyPrompt`'s and `treeMembershipTest`'s
   definitions directly, same tier as the scoping assertion itself.
 - The three disjoint-file tasks (`bd-101`, `bd-102`, `bd-104`) dispatch as one `pipeline()` group —
@@ -2458,13 +2452,13 @@ provably would not. None of these is a scenario `pick()`'s stub mechanism can be
 JSON response. The next step for anyone who wants Fixes 1–3 actually corroborated is a live epic run
 through a genuine restart, not another dryRun scenario added to this file.
 
-**Confirmed against the scope-fix script (Known limitations 7/8/9).** Run `wf_cb63ecb9-492`:
+**Confirmed against the scope-fix script (the scope fix — see "Resolved in this branch").** Run `wf_cb63ecb9-492`:
 **31 agents dispatched, 0 errors**, terminal shape `{completed:["bd-101","bd-102"],
 escalated:["bd-103"], pendingRetry:["bd-104"], parked:[], stalled:false}` — identical count and
 shape to `wf_ea0a2284-96b` above, which now becomes superseded history. The scope fix extracted
 `treeMembershipTest(epicId)` out of `closeEpicsPrompt`, added `readyPrompt(epicId)` (labelled
 `sp:` query as fast path, structural parent-child walk as fallback), and retired the id-prefix
-grep; item 8 became prose-only, leaving the three bead-creation builders byte-for-byte untouched.
+grep; the blocker-bead-planning fix was prose-only, leaving the three bead-creation builders byte-for-byte untouched.
 **Why this run was worth doing even though the count could not change:** the edit introduced a
 newly extracted helper referenced from two builders, and `node --check` parses without resolving
 references — an undefined-reference defect of exactly the `planPrompt is not defined` class would
@@ -2759,11 +2753,11 @@ add, remove, or reorder any dispatch this scenario exercises. Validating the fix
 a live restart with pre-existing git state (see the canonical scenario's writeup for exactly what
 each fix needs), which no stub scenario — this one included — can provide.
 
-**Confirmed against the scope-fix script (Known limitations 7/8/9).** Run `wf_caf8953e-374`:
+**Confirmed against the scope-fix script (the scope fix — see "Resolved in this branch").** Run `wf_caf8953e-374`:
 **24 agents dispatched, 0 errors**, terminal shape `{completed:[], escalated:["bd-201"],
 pendingRetry:[], parked:[], stalled:false}`, review "no work landed" — identical to
 `wf_3c881af8-70b` above, which becomes superseded history. What this re-run adds over the canonical
-one is narrow and specific: item 8's fix was prose-only precisely so that `breakerBlockerPrompt`
+one is narrow and specific: the blocker-bead-planning fix was prose-only precisely so that `breakerBlockerPrompt`
 and the two other bead-creation builders stayed byte-for-byte unchanged, and this is the only
 scenario that dispatches the breaker's blocker-bead path at all. The unchanged count and shape
 confirm that path's call sites survived the edit intact. It confirms nothing about the blocker
@@ -2946,7 +2940,7 @@ task branch is rebased after at least one *other* task has already merged into t
 branch — exactly the case this scenario's single-task setup cannot represent no matter how its stub
 is edited.
 
-**Confirmed against the scope-fix script (Known limitations 7/8/9).** Run `wf_f18d307b-83e`:
+**Confirmed against the scope-fix script (the scope fix — see "Resolved in this branch").** Run `wf_f18d307b-83e`:
 **23 agents dispatched, 0 errors**, terminal shape `{completed:["bd-301"], escalated:[],
 pendingRetry:[], parked:["bd-301"], stalled:false}` — identical to `wf_ac3e6fae-171` above, which
 becomes superseded history. Its logs carry the PARK ruling and the merge-gate `PARKED bd-301: …

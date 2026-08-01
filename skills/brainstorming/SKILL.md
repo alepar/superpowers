@@ -29,14 +29,15 @@ Brainstorming runs in one of two modes. Choose the mode at the start, before ask
 
 The review gate is inverted between modes: Mode A has no final-spec review (you reviewed together as you went); Mode B requires one (the user saw nothing until the spec was written).
 
-## Nested Invocation
+## Invocation By Another Skill
 
-A caller can invoke brainstorming on a promoted subepic instead of a user invoking it at the root. When invoked this way, the process above still applies, with these deltas:
+Another skill can invoke brainstorming — on a raw goal, or on a promoted subepic of a tree it is decomposing — instead of a user invoking it directly. When invoked this way, the process above still applies, with these deltas:
 
-- **Inherit the session's design mode** (Mode A parent → Mode A subepic; Mode B → Mode B). The user may override per-subepic with an explicit request.
-- **Context is handed in by the invoking caller**: the parent spec, the chain of ancestor goals, and the specs of already-designed siblings. Open the new spec's `## Goal` with the subepic's local goal, seeded from the caller's promotion rationale.
+- **The hand-off is the caller's, not yours. Stop at the committed spec and return it.** Do **not** invoke `writing-plans` or any other skill — this overrides the terminal-state rule below, which governs only a direct user invocation. A caller that asked for a spec is mid-way through its own sequence; chaining into planning strands that sequence and produces a plan for one slice of a design that is not finished being designed.
+- **Inherit the session's design mode** (Mode A caller → Mode A here; Mode B → Mode B). The user may override per-invocation with an explicit request.
+- **Context is handed in by the invoking caller**: for a subepic, the parent spec, the chain of ancestor goals, and the specs of already-designed siblings. Open the new spec's `## Goal` with this invocation's local goal, seeded from the caller's rationale.
 - Do **not** re-offer the visual companion, and do **not** offer adversarial review — that is the caller's concern at its own root, not this invocation's.
-- **Skip Mode B's user-review gate** (step 11 / "User Review Gate" below) — the caller owns the Mode B human checkpoints for a tree (root spec review, top-split gate, tripwire, coverage arbitration).
+- **Skip Mode B's user-review gate** (step 10 / "User Review Gate" below) — the caller owns the Mode B human checkpoints for a tree.
 - Do **not** create a new worktree — `superpowers:using-git-worktrees` is idempotent and just verifies the one already in use.
 
 ## Checklist
@@ -52,9 +53,9 @@ You MUST create a task for each of these items and complete them in order:
 7. **Present design** *(Mode A only)* — in sections scaled to their complexity, get user approval after each section
 8. **Write design doc** — save to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` (opening with a `## Goal` section, ending with a `## Post-Implementation Notes` section), add an INDEX.md row, and commit (Mode B uses the one-shot spec structure)
 9. **Spec self-review** — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
-10. **Offer adversarial review** *(optional)* — offer to run `superpowers:super-roast` on the spec before implementation; on a confirmed-findings verdict (Blocking/Should-fix) loop back to revise the spec; on a **clean** verdict with no qualifier, or if declined, continue; on a **clean** verdict carrying `[low coverage]` or `[panel-capped: N unverified]`, surface the qualifier and let the user decide whether to proceed or dig further (see "Adversarial Review" below)
-11. **User reviews written spec** *(Mode B only)* — ask the user to review the spec file before proceeding
-12. **Transition to implementation** — invoke `superpowers:writing-plans` to create an implementation plan
+10. **User reviews written spec** *(Mode B only)* — ask the user to review the spec file before proceeding. Mode A skips this: you reviewed section by section as you went
+11. **Offer adversarial review** *(optional)* — offer to run `superpowers:super-roast` on the spec before implementation; on a confirmed-findings verdict (Blocking/Should-fix) loop back to revise the spec; on a **clean** verdict with no qualifier, or if declined, continue; on a **clean** verdict carrying `[low coverage]` or `[panel-capped: N unverified]`, surface the qualifier and let the user decide whether to proceed or dig further (see "Adversarial Review" below)
+12. **Transition to implementation** — invoke `superpowers:writing-plans` to create an implementation plan (a caller-invoked run stops at step 11 and returns the spec — see "Invocation By Another Skill")
 
 ## Process Flow
 
@@ -96,7 +97,7 @@ digraph brainstorming {
 }
 ```
 
-**The terminal state is invoking writing-plans.** Do NOT invoke frontend-design, mcp-builder, or any other implementation skill. The ONLY skill you invoke after brainstorming is writing-plans.
+**On a direct user invocation, the terminal state is invoking writing-plans.** Do NOT invoke frontend-design, mcp-builder, or any other implementation skill. The ONLY skill you invoke after brainstorming is writing-plans. **When another skill invoked you** (see "Invocation By Another Skill" above), the terminal state is instead the committed spec: return it and invoke nothing.
 
 ## The Process
 
@@ -192,6 +193,7 @@ This is opt-in — the inline self-review already happened; `super-roast` is the
 
 **Implementation:**
 
+- If another skill invoked you, stop here: return the committed spec and invoke nothing. The rest of this section applies only to a direct user invocation.
 - Invoke the writing-plans skill to create a detailed implementation plan
 - Do NOT invoke any other skill. writing-plans is the next step.
 
