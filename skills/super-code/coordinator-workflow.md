@@ -1947,82 +1947,47 @@ planner/implementer/reviewer/triage budget and without touching git or `bd` (see
 helper and the `model()` dryRun branch in the script above; same mechanism as `super-roast`'s
 `pick()`, see `skills/super-roast/super-roast-workflow.md`).
 
-**Task 5 (I1/I3/I7 — the ledger, `config.concurrency`, and the per-epic workspace) was a structural
-edit to this script**, per the rule further below ("A recorded baseline is evidence only for the
-exact script revision it ran against"): it added a one-time `read-ledger` dispatch before the round
-loop, a `ledger-append:<id>` dispatch at every merge/pending-retry/BLOCKED outcome, and chunked each
-disjoint-file bucket to `config.concurrency` before dispatch. All three scenarios have since been
-re-run against the post-Task-5 script and are recorded as confirmed baselines below
-(`wf_b337b535-bd4`, `wf_453a6604-52e`, `wf_941e256b-10b`) — the pre-Task-5 run-ids
-(`wf_ddba38c0-72d`, `wf_e189dd5a-a5f`, `wf_058c4b83-631`) remain kept as superseded history in each
-section, the same discipline this doc already applies to `wf_171ab5c1-339`.
+**Revision history of these baselines.** Every row below is a superseded run, kept as a one-line
+record because this document's own rule ("a recorded baseline is evidence only for the exact script
+revision it ran against") makes the *sequence* meaningful: each structural edit forced a full re-run,
+and every re-run landed on the same three counts, which is why an unexpected count is a signal. The
+narratives that used to accompany each row are in git history; nothing here depends on them.
 
-**Fix-round-1 (a review pass on Task 5) was itself another structural edit**, layered on top of the
-same script `wf_b337b535-bd4`/`wf_453a6604-52e`/`wf_941e256b-10b` ran against: it changed what the
-Resume phase reconstructs from the ledger (no more folding `BLOCKED` lines into `escalated`, no
-more filtering `ids` by `completed`), added the Plan-phase `planned.planPath`/`workspace`
-divergence check, and changed the merge/ledger-line dispatches (`mergePrompt`/`MERGE` gained
-`head`; every ledger-append call site now builds its line through the new `ledgerLine()` helper,
-and the completion line's shape itself changed — a commit range instead of the bare word "merged,"
-and the parked variant now carries `r.finding`). Per the "evidence only for the exact revision it
-ran against" rule, that made all three of those baselines stale — a state this doc carried
-explicitly for one round.
+| Script revision | canonical | cap-tripping | PARK |
+|---|---|---|---|
+| through Task 4 | `wf_ddba38c0-72d` 26/0 | `wf_e189dd5a-a5f` 22/0 | `wf_058c4b83-631` 21/0 |
+| post-Task-5 (ledger, concurrency, per-epic workspace) | `wf_b337b535-bd4` 31/0 | `wf_453a6604-52e` 24/0 | `wf_941e256b-10b` 23/0 |
+| post-fix-round-2 (divergence-guard predicate) | `wf_fc56493c-a69` 31/0 | `wf_18710e4f-50a` 24/0 | `wf_1e32bcd1-71f` 23/0 |
+| final fix round (brief idempotence, merge-base) | `wf_ea0a2284-96b` 31/0 | `wf_3c881af8-70b` 24/0 | `wf_ac3e6fae-171` 23/0 |
+| **scope fix — CURRENT** | **`wf_cb63ecb9-492` 31/0** | **`wf_caf8953e-374` 24/0** | **`wf_f18d307b-83e` 23/0** |
 
-**Fix-round-2 fixed a defect fix-round-1's own divergence check introduced, and an EXECUTED dryRun
-is what caught it — not review, not `node --check`.** The first version of the `plannedDir`/
-`workspace` comparison used exact string equality; `workspace` is repo-root-relative but the
-planner is dispatched to work inside the integration worktree, whose own git root
-`scripts/sdd-workspace` resolves against is never the main repo's — so a CORRECT planner always
-returns a path prefixed by the integration worktree, which can never equal the bare `workspace`
-string. The canonical dryRun, run `wf_79a00109-4ff`, died on its very first Plan dispatch with the
-divergence error, before a single task was ever briefed. **This run is kept below as history, not
-deleted**, for the same reason `planPrompt is not defined` (see "A parse check is not a
-runnability check," further below) is kept: it is this document's clearest other example of a
-defect that only an *executed* dryRun could find. `node --check` had already passed against
-fix-round-1's script (syntax only, per that section's own warning); reading the guard's code in
-isolation reads as plausible without independently re-deriving what path shape `scripts/sdd-workspace`
-actually produces from inside a worktree. Static review is not a substitute for running the thing.
+Two runs are deliberately absent from the table because neither is a baseline. `wf_171ab5c1-339`
+executed against a script whose return value had no `parked` array at all, so it is not evidence
+about any code that ships here. `wf_79a00109-4ff` never completed: it died on its first Plan
+dispatch, and that is the point of keeping it — see below.
 
-Fix-round-2 replaced the equality check with a suffix check anchored on the leading path separator
-(`plannedDir === workspace || plannedDir.endsWith('/' + workspace)`) — see the Plan-phase call
-site's own comment for the full reasoning. **This was independently verified both directions before
-the re-run below, and both matter equally:** the predicate now accepts the worktree-prefixed path a
-real planner returns (the failure `wf_79a00109-4ff` exposed), **and it still rejects** a planner
-that writes into the old, unparameterized shared directory (`.superpowers/sdd/plan`) — i.e. the
-exact I7 collision this guard exists to catch in the first place. Stating this second half
-explicitly matters: a guard that had simply stopped firing altogether (e.g. by deleting the check,
-or loosening it into a no-op) would have "fixed" the run failure while silently reopening the
-cross-epic collision it was written to prevent — a strictly worse outcome than the loud failure it
-replaced, since a stopped-firing guard gives no signal at all. Re-running all three scenarios against
-the fixed guard (below) hit the SAME counts as the pre-fix-round-1 baselines (31, 24, 23) —
-confirming the guard fix changed only the predicate's correctness, not the script's dispatch
-topology, exactly as expected for a one-`if`-condition fix.
+**An executed dryRun caught a defect that both `node --check` and a review pass missed.** Fix-round-1
+added a Plan-phase guard comparing the planner's reported directory to `workspace` by exact string
+equality. `workspace` is repo-root-relative while the planner works inside the integration worktree,
+so a *correct* planner could never satisfy it. The guard read as plausible in review and parsed
+clean; `wf_79a00109-4ff` died on its very first Plan dispatch. Fix-round-2 replaced equality with a
+separator-anchored suffix check, verified in both directions — it accepts the worktree-prefixed path
+a real planner returns, **and still rejects** a planner writing into the old shared directory. That
+second half matters as much as the first: a guard loosened into a no-op would have "fixed" the
+failure while silently reopening the cross-epic collision it exists to catch.
 
-**The final fix round (Fixes 1–3: idempotent `taskBriefPrompt`, merge-base-derived `base` on a
-re-entered worktree, and `mergeBase`-derived ledger ranges) is itself another structural edit — the
-coordinator re-ran all three scenarios against the fixed script, and every one landed at the exact
-same count and shape as its pre-fix predecessor** (canonical `wf_ea0a2284-96b` 31/0, cap-tripping
-`wf_3c881af8-70b` 24/0, PARK `wf_ac3e6fae-171` 23/0 — see each scenario's own "Confirmed against the
-final-fix-round script" writeup below for the full figures). **Read that identical result correctly:
-it is not evidence the three fixes work.** Fixes 1–3 live entirely in `taskBriefPrompt`'s and
-`mergePrompt`'s dispatch TEXT and in real git semantics (whether `git worktree add` fails on an
-existing path/branch, whether a post-rebase `git merge-base` actually lands where this doc claims) —
-`pick()` never builds either function's real dispatch text under `dryRun: true`, so an unchanged
-count confirms only that the fixes did not perturb dispatch topology, the identical narrow claim
-fix-round-2's unchanged counts made for its own one-`if`-condition fix. See "Confirmed against the
-final-fix-round script — and why that is not validation" further below (after the PARK scenario) for
-the full accounting, including what a live-run validation of each fix would actually require.
-
-**The scope fix (the scope fix — see "Resolved in this branch") is the most recent structural edit, and all three
-scenarios were re-run against it** — canonical `wf_cb63ecb9-492` 31/0, cap-tripping
-`wf_caf8953e-374` 24/0, PARK `wf_f18d307b-83e` 23/0, each matching its predecessor exactly. These
-are the current baselines; the final-fix-round ids above are superseded history. The edit extracted
-`treeMembershipTest(epicId)` shared by `closeEpicsPrompt` and a new `readyPrompt(epicId)`, and
-retired the id-prefix grep. Read the unchanged counts the same narrow way as every round before:
-the fix's substance is prompt TEXT, which `pick()` never builds under `dryRun: true`. What the
-re-run genuinely establishes is that a newly extracted helper referenced from two builders resolves
-at runtime — the defect class `node --check` cannot see and an executed dryRun catches on the first
-dispatch.
+**What no dryRun in this file can validate, and what would.** Three fixes shipped here — idempotent
+`taskBriefPrompt`, merge-base-derived `base` on a re-entered worktree, and `mergeBase`-derived ledger
+ranges — live in dispatch TEXT and in real git semantics, and `pick()` never builds a real prompt
+builder under `dryRun: true`. Each one's defect only exists the SECOND time a piece of git state is
+touched, which a canned stub cannot model: the first needs a restart where the task worktree and its
+branch already exist on disk, so `git worktree add` would have failed without the reuse check; the
+second needs that re-entered branch to already carry a prior attempt's commits, so `HEAD` is
+demonstrably not a pre-implementer commit; the third needs a live rebase where another task merged
+into the integration branch between this worktree's cut and this task's merge, so `r.base..head`
+would provably include that other task's commits and `mergeBase..head` would not. These are
+properties of a real git history over many real dispatches. The next step for anyone wanting them
+corroborated is a live epic run through a genuine restart, not another scenario added to this file.
 
 **One edit landed after those three runs, and it is named here rather than left for a reader to
 discover by diffing.** Merging the `super-auto` branch renamed the `super-plan` skill to
@@ -2298,164 +2263,10 @@ re-run before committing the fix.
 
 ### Baselines for the canonical scenario (recorded, not illustrative)
 
-Run `wf_b1958510-6bf`, 2026-07-30, against an earlier revision of the args below — one that
-predates the `base`-carrying fix for C2/C6 (Task 3): that revision's `brief:*` stubs had no `base`
-field, `RESULT` had no `base` property, and `reviewAndFix` had no `carried()` re-stamp. **22 agents
-dispatched, 0 errors**. Returned `{completed: ["bd-101","bd-102"], escalated: ["bd-103"]}` with the
-final review's verdict `conditional-pass`. **Superseded, kept as history — read the rest of this
-run's writeup with that in mind, not as the current baseline** (see "Superseded by Task 4" below:
-this run predates the five-round breaker, the C4 guard, and `bd-104`, and is confirmed only against
-the revision it actually ran against). At that revision, it confirmed every assertion above **except
-scoping and finding-rendering** (see "What this dryRun proves and does not prove" below), in the
-dispatch order the journal recorded:
-
-1. `close-epics` → `{rootClosed:false, closedThisRun:[]}`
-2. `bd-ready` → 3 ids — real evidence the loop got its batch, but **not** evidence of scoping: a
-   stub returns its canned ids regardless of what flags the prompt baked in, so this step would
-   look identical even if `--exclude-type=epic --label sp:${epicId}` had been deleted from the
-   dispatched prompt. The scoping assertion is, and remains, established only by reading that
-   prompt's construction, confirmed present there — never by this or any dryRun's output (see the
-   `bd-ready` stub table entry and "What this dryRun proves" below).
-3. `plan` → mapping with `filesTouched`
-4–5. `brief:bd-102`, `brief:bd-101` — same bucket, **concurrent**. **Only bucket membership is
-   meaningful here, not the order within it**: this run dispatched 102 before 101; the prior run
-   (below) dispatched 101 before 102. The two runs are not identical — fix round 2 changed
-   `RESULT`/`fixPrompt` and the `review:bd-101` stub between them (see "Prior run, kept as
-   history" below) — but the plan stub's file mapping and `groupByDisjointFiles`, the code that
-   actually forms buckets, were unchanged across both, so this specific flip is attributable to
-   concurrent-sibling scheduling, not to anything we changed. `{bd-101, bd-102}` sharing a bucket
-   (disjoint files, `src/a.js`/`src/b.js`), and `bd-103` landing in a *later* bucket, are the
-   assertions; completion order among concurrent siblings within one bucket carries no information
-   and must never be read as an expected fixed sequence.
-6–7. `implement:bd-102`, `implement:bd-101`
-8–9. `review:bd-102` → `CLEAN`; `review:bd-101` → `NEEDS_FIX` (+ `finding`)
-10–11. `fix:bd-101` → `re-review:bd-101` → `CLEAN` — fix round dispatched **only** for the task
-   whose review returned a finding (unqualified-by-round keys — predates the round-suffix change)
-12–14. `brief`/`implement`/`review` for `bd-103` — **serialized into a later bucket**, because it
-   declares `src/a.js`, colliding with `bd-101`
-15–17. `merge:bd-101` OK → `merge:bd-102` OK → `merge:bd-103` FAILED (blocker bead `bd-104`) —
-   **serial**, one at a time, in dependency/ready order (this cross-bucket/merge order, unlike
-   intra-bucket order above, *is* an assertion and *is* meaningful)
-18. `triage:bd-103` → `ESCALATE`
-19. `notify:bd-103` — the run **continues** rather than halting
-20. `close-epics` → `{rootClosed:false, closedThisRun:["bd-101","bd-102"]}`
-21. `bd-ready` → `{ids:[]}` — the loop terminates
-22. `final-review`
-
-**Superseded by Task 4.** This 22-agent, three-task run predates: the five-round breaker loop (C3,
-round-suffixed `fix`/`re-review` keys), the review-stage status guard (C4, `bd-104`'s BLOCKED
-implement path), and the no-progress guard (I6). It provably could not have caught any of those
-three defects — no stub ever returned `BLOCKED` at implement, and the fix loop never had more than
-one round to loop. It's kept here as history of the *prior* scenario, not as evidence for the
-current script.
-
-**Confirmed against the script as it stood through Task 4 — superseded by the post-Task-5 run
-below.** Run `wf_ddba38c0-72d`: **26 agents dispatched, 0 errors** — matching that revision's
-expected count exactly. Returned `{completed:["bd-101","bd-102"], escalated:["bd-103"],
-pendingRetry:["bd-104"], parked:[]}`. Compare this to the intermediate run `wf_171ab5c1-339` (also
-26/0, cited in earlier revisions of this section) — **`bd-104` now appears in `pendingRetry`**,
-where under the engine `wf_171ab5c1-339` ran against it vanished from every bucket entirely
-(neither `completed`, `escalated`, nor anything else — the reporting hole review round 2 found).
-`wf_ddba38c0-72d` is what proved that fix end to end, against the script current *at that time*;
-`wf_171ab5c1-339` cannot, because it never ran against a script that had a `pendingRetry`/`parked`
-return shape at all. Kept here as history of the pre-Task-5 engine, same discipline as
-`wf_171ab5c1-339` below it.
-
-**Confirmed against the post-Task-5, pre-fix-round-1 script — superseded, kept as history.** Run
-`wf_b337b535-bd4`: **31 agents dispatched, 0 errors** — the exact count predicted by hand above,
-before this run occurred (see "Expected dispatch count"). Returned
-`{completed:["bd-101","bd-102"], escalated:["bd-103"], pendingRetry:["bd-104"], parked:[],
-stalled:false}` — identical terminal-outcome shape to `wf_ddba38c0-72d` above, plus the 5 new
-ledger dispatches (1 `read-ledger`, 4 `ledger-append:<id>` — one per
-`bd-101`/`bd-102`/`bd-103`/`bd-104`). Hitting the predicted count exactly is itself the assertion
-this run establishes for I1: since the entire +5 delta over the pre-Task-5 count is one
-`read-ledger` plus one `ledger-append` per terminal outcome, and no more, matching 31 on the nose
-means **every one of this scenario's four terminal outcomes wrote its ledger line** — a missed
-append would have landed at 30, and an extra (duplicate) one would have landed at 32, not thrown
-(see "What the three re-runs establish, precisely" above for the corrected mechanism — `pick()`
-throws only on a stub key entirely absent from the table, not on a repeated call to one already
-defined). **What this run does not prove:** the ledger line format, real file I/O, or resumed-run
-reconstruction from real content — see "What these three re-runs do NOT establish" under "dryRun
-policy" above; every `read-ledger` and `ledger-append` here was a canned stub (`{text:""}` /
-`{appended:true}`), never a real dispatch. Fix-round-1 (Resume-phase reconstruction, the
-`planned.planPath`/`workspace` divergence check, `MERGE`'s `head` field, the `ledgerLine()`
-rewrite) made this run's script revision obsolete; it is kept here as history, same discipline as
-`wf_ddba38c0-72d` above it, not cited as current evidence for anything past that point.
-
-**`wf_79a00109-4ff` — the canonical dryRun run immediately after fix-round-1, died on its first
-Plan dispatch.** Kept as history, not deleted, because it is this document's clearest other example
-(alongside `planPrompt is not defined`, see "A parse check is not a runnability check" further
-below) of a defect an EXECUTED dryRun caught that neither code review nor `node --check` did:
-fix-round-1's first version of the Plan-phase divergence check compared `plannedDir` against
-`workspace` for exact string equality, and `workspace` is repo-root-relative while a correctly
-working planner — dispatched, by this same script, to work inside the integration worktree — always
-reports a worktree-prefixed path, which can never be byte-identical to the bare `workspace` string.
-The check therefore threw on the very first Plan dispatch of this run, before a single task was
-ever briefed, 0 tasks completed. Fix-round-2 corrected the predicate (see the Plan-phase call site's
-own comment for the fix and the paragraph above "Baselines for the canonical scenario" for why an
-executed run, not inspection, is what surfaced this). The other two scenarios below were not
-separately run against the broken predicate — the defect is in code every scenario's first Plan
-dispatch reaches identically, so there was no need to reproduce it three times once the canonical
-scenario had.
-
-**Confirmed against the current (post-fix-round-2) script.** Run `wf_fc56493c-a69`: **31 agents
-dispatched, 0 errors** — the SAME count as the now-superseded `wf_b337b535-bd4` above, which is
-itself an assertion, not a coincidence: fix-round-2 changed only the divergence guard's comparison
-predicate (an `if` condition), not the existence or count of any dispatch site, so an unchanged
-agent count is exactly what a correct, topology-preserving fix should produce. Returned
-`{completed:["bd-101","bd-102"], escalated:["bd-103"], pendingRetry:["bd-104"], parked:[],
-stalled:false}` — identical terminal-outcome shape to every prior confirmed run of this scenario.
-**What this run newly proves, on top of everything `wf_b337b535-bd4` already established:** the
-fixed divergence guard's predicate does not fire a false positive against a well-formed,
-worktree-prefixed planner path — the exact case `wf_79a00109-4ff` proved it wrongly rejected.
-**What it does not prove:** independently of this run, the predicate was also checked by hand
-against a planner path that SHOULD fail (the old, unparameterized `.superpowers/sdd/plan`
-directory) and still correctly rejects it — that check is by inspection, not by this or any dryRun,
-since no stub table in this doc supplies a deliberately-wrong `planPath` to exercise the reject
-branch; a dryRun that did (a scenario whose `plan` stub returns a path that does NOT resolve to
-`workspace`) remains unwritten, same category of gap as the resumed-run scenario noted elsewhere.
-Nor does this run prove that a REAL planner dispatch produces the well-formed path in the first
-place — `pick()` never builds `planPrompt`'s real dispatch text under `dryRun: true`, so whether a
-live opus agent actually honors `planner-prompt.md`'s now-parameterized plan-file-name is a
-live-run-only question (see the "What this guard, and these re-runs, do NOT prove" paragraph
-earlier in this section). This run also does not prove the ledger line format, real file I/O, or
-resumed-run reconstruction from real content, for the same reasons as every prior run in this
-section — every `read-ledger`/`ledger-append` here was still a canned stub.
-
-**Confirmed against the final-fix-round script — and why that is not validation.** Run
-`wf_ea0a2284-96b`: **31 agents dispatched, 0 errors** — the SAME count and terminal-outcome shape
-(`{completed:["bd-101","bd-102"], escalated:["bd-103"], pendingRetry:["bd-104"], parked:[],
-stalled:false}`) as the now-superseded `wf_fc56493c-a69` above. This is the last recording on this
-scenario; the fix cycle that produced it is closed by decision, so this figure is what the branch
-ships with. **State this precisely, right next to the figure, so it is never read out of context:**
-this identical count is **not** evidence that Fixes 1–3 (idempotent `taskBriefPrompt`, the
-merge-base-derived `base` on a re-entered worktree, the `mergeBase`-derived ledger range) work. All
-three live in `taskBriefPrompt`'s and `mergePrompt`'s dispatch TEXT and in real git semantics —
-`pick()` never builds either function's real prompt under `dryRun: true` (every `brief:<id>`/
-`merge:<id>` call in this scenario is answered by a canned stub, exactly as before this round's
-edits), so this run could not have distinguished the fixed script from a version where
-`taskBriefPrompt` still unconditionally tried to create an already-existing worktree, or where
-`mergePrompt` never captured `mergeBase` at all. An unchanged count confirms only what fix-round-2's
-own unchanged counts confirmed for its one-`if`-condition change: the edit did not perturb dispatch
-topology (call sites, ordering, schema-level field additions) — nothing more. **What would actually
-validate Fixes 1–3, and why no dryRun scenario in this file can do it:** each fix's defect only
-exists on the SECOND time a specific piece of git state is touched, which a canned stub can't
-model. Fix 1 needs a real restart where `.worktrees/<integrationBranch>--task-<id>` and its branch
-already exist on disk before the brief dispatch runs, so `git worktree add` would have failed
-without the reuse check. Fix 2 needs that same re-entered branch to already carry a prior attempt's
-real commits, so `HEAD` is demonstrably not a pre-implementer commit and `git merge-base` must be
-computed to recover the true divergence point. Fix 3 needs a live rebase where at least one OTHER
-task has genuinely merged into the integration branch between this worktree's cut and this task's
-own merge, so `r.base..head` would provably include that other task's commits and `mergeBase..head`
-provably would not. None of these is a scenario `pick()`'s stub mechanism can be extended to cover
-— they are properties of a real git history over multiple real dispatches, not of a single canned
-JSON response. The next step for anyone who wants Fixes 1–3 actually corroborated is a live epic run
-through a genuine restart, not another dryRun scenario added to this file.
-
-**Confirmed against the scope-fix script (the scope fix — see "Resolved in this branch").** Run `wf_cb63ecb9-492`:
+**Confirmed against the scope-fix script — the current baseline.** Run `wf_cb63ecb9-492`:
 **31 agents dispatched, 0 errors**, terminal shape `{completed:["bd-101","bd-102"],
 escalated:["bd-103"], pendingRetry:["bd-104"], parked:[], stalled:false}` — identical count and
-shape to `wf_ea0a2284-96b` above, which now becomes superseded history. The scope fix extracted
+shape to its predecessor (see the revision table under "dryRun policy"). The scope fix extracted
 `treeMembershipTest(epicId)` out of `closeEpicsPrompt`, added `readyPrompt(epicId)` (labelled
 `sp:` query as fast path, structural parent-child walk as fallback), and retired the id-prefix
 grep; the blocker-bead-planning fix was prose-only, leaving the three bead-creation builders byte-for-byte untouched.
@@ -2472,15 +2283,12 @@ the id-prefix grep is what keeps the `bd-100`/`bd-101..104` ids in these args va
 grounds; it does not make them exercised. Only a live epic — specifically one whose beads carry no
 `sp:` label, forcing the fallback path — can corroborate the rule itself.
 
-**`wf_171ab5c1-339` is kept only as superseded history, not current evidence.** It executed against
-commit `9576d7f` — the state of this script **before** the `4a3e3bc` and `9855503` commits
-restructured `reviewAndFix`, `handleBlocker`, and the return value (the C-1/C-2/C-3/I-9/I-7 fixes
-and the `parked` array). Its returned object predates `parked` entirely and couldn't have contained
-the key even by coincidence. A prior revision of this doc cited `wf_171ab5c1-339` as if it covered
-the post-restructure engine — that was citing a run of *different code*, the exact overclaim shape
-"dryRun policy" above now names generally ("A recorded baseline is evidence only for the exact
-script revision it ran against"): a baseline is not evidence about code it never executed, even
-when its own figures are real and unaltered.
+**Where the "evidence only for the revision it ran against" rule came from.** A prior revision of
+this doc cited `wf_171ab5c1-339` as covering the post-restructure engine. It could not have: it ran
+against commit `9576d7f`, before `reviewAndFix`, `handleBlocker`, and the return value were
+restructured, so its returned object predates the `parked` key entirely and could not have contained
+it even by coincidence. The figures were real and unaltered — and still not evidence about code the
+run never executed. That is the failure the rule generalizes.
 
 **Schema-less dispatches — the harness's "N empty results" is expected, not a defect.** Three of
 the 26 calls in the current scenario carry no `schema:` and so return free text rather than
@@ -2535,13 +2343,6 @@ real `fixPrompt`/`reReviewPrompt`/`breakerBlockerPrompt`/`adjudicatePrompt` temp
 never built under `dryRun: true`. See "Cap-tripping dryRun scenario" below for the scenario that at
 least exercises the round-5 boundary itself (still not the finding/vocabulary caveats — those stay
 inspection-only in every scenario, per that section's own note).
-
-**Prior run, kept as history.** Run `wf_d65bc00e-990`, 2026-07-30 (recorded before fix round 2 —
-`review:bd-101`'s stub then had no `finding` field), also passed: 22 agents, 0 errors, identical
-`completed`/`escalated`/verdict. The only observed difference from the (then-current) baseline was
-intra-bucket dispatch order (`brief:bd-101` before `brief:bd-102`, vs. `102` before `101` above) —
-per the correction above, that is not a regression and the two runs are not "identical," just
-both-passing on the dimensions that are actually assertions.
 
 **Journals are session-local.** Run ids and the figures recorded against them are the durable
 record; journals themselves are not guaranteed to remain inspectable. A future maintainer
@@ -2606,20 +2407,11 @@ script and this `args` block:
 
 If a future structural edit changes this script, re-run with these args, confirm the same shape (or
 update it deliberately alongside the edit that changed it), and replace the figures above — same
-discipline as `super-roast`'s "Passing baseline (recorded, not illustrative)" sections. Fix-round-1
-(Resume phase, the Plan-phase divergence check, `MERGE`'s `head`, the ledger-line shape),
-fix-round-2 (the divergence guard's corrected predicate), and the final fix round (Fixes 1–3 —
-idempotent `taskBriefPrompt`, merge-base-derived `base`, `mergeBase`-derived ledger range) were all
-exactly such structural edits, each re-run in turn: **`wf_b337b535-bd4`'s 31/0 is superseded
-history** (see "Confirmed against the post-Task-5, pre-fix-round-1 script" above),
-**`wf_fc56493c-a69`'s 31/0 is likewise superseded** (see "Confirmed against the current
-(post-fix-round-2) script" above), **`wf_ea0a2284-96b`'s 31/0 is superseded by the scope fix** (see
-"Confirmed against the final-fix-round script" above), and the CURRENT confirmed shape is **31 agent
-calls, 0 errors** (run `wf_cb63ecb9-492`, see "Confirmed against the scope-fix script" above — read
-that writeup's own caveat before citing this number for anything beyond dispatch-count/topology) —
-the intervening `wf_79a00109-4ff` run is kept as history of the fix-round-2 defect itself, not as a
-baseline (it died before completing). The 26/0 figures in the two writeups above `wf_b337b535-bd4`
-remain pre-Task-5 history, unaffected by this restatement.
+discipline as `super-roast`'s "Passing baseline (recorded, not illustrative)" sections. Four structural edits have
+forced exactly that re-run, and each landed on the same count — see the revision table under "dryRun
+policy" for the full sequence. The CURRENT confirmed shape is **31 agent calls, 0 errors** (run
+`wf_cb63ecb9-492`, see "Confirmed against the scope-fix script" above — read that writeup's own
+caveat before citing this number for anything beyond dispatch-count/topology).
 
 ## Cap-tripping dryRun scenario (separate baseline)
 
@@ -2697,66 +2489,9 @@ scenario, something regressed: `merge:bd-201` would mean a BLOCKED task reached 
   computed by hand before that run and matched exactly. The pre-Task-5 confirmed count was 22
   (below); the +2 is exactly `read-ledger` and `ledger-append:bd-201`.
 
-**Confirmed against the script as it stood through Task 4 — superseded by the post-Task-5 run
-below.** Run `wf_e189dd5a-a5f`: **22 agents dispatched, 0 errors** — matching that revision's
-expected count exactly, including the absent `merge:bd-201`/`final-review` dispatches (neither was
-ever requested). 5 fix rounds, 5 still-open re-reviews, 1 adjudicator call, 1 blocker bead filed, 1
-triage call (`ESCALATE`), 0 merge dispatches. Returned `{completed:[], escalated:["bd-201"],
-pendingRetry:[], parked:[], stalled:false}`. Kept here as history of the pre-Task-5 engine.
-
-**Confirmed against the post-Task-5, pre-fix-round-1 script — superseded, kept as history.** Run
-`wf_453a6604-52e`: **24 agents dispatched, 0 errors** — the exact count predicted by hand above,
-before this run occurred. Returned `{completed:[], escalated:["bd-201"], pendingRetry:[],
-parked:[], stalled:false}`, review `"no work landed"` — the same terminal-outcome shape as
-`wf_e189dd5a-a5f` above, plus the 2 new ledger dispatches (`read-ledger`, `ledger-append:bd-201`).
-Hitting 24 exactly means the run's one terminal outcome (ESCALATE, via `handleBlocker`) wrote its
-`BLOCKED` ledger line — a skipped append would have landed at 23. This confirms the round-cap
-boundary (5, not 4 or 6), the adjudicator dispatching exactly once at the cap rather than
-per-round, the BLOCKED path never touching `mergePrompt`, and — new for I1 — that a breaker-cap
-BLOCKED reaches the ledger through the same `handleBlocker` write every other blocker trigger uses
-(see "The breaker, autonomous variant"), not a special-cased write inside `reviewAndFix`. **It does
-not confirm the PARK arm** — this scenario's `adjudicate:bd-201` stub only ever returns `BLOCKED`;
-see "PARK dryRun scenario" below. It also does not confirm C-1/C-3 (inspection-only regardless of
-how many scenarios pass, see "What it still cannot prove" above), nor the ledger's line format,
-real file I/O, or resumed-run reconstruction from real content (`read-ledger` returned `{text:""}`
-here too) — see "What these three re-runs do NOT establish" under "dryRun policy" above.
-Fix-round-1's Resume-phase change is exactly the case this scenario's `escalated`/`BLOCKED` outcome
-touches (a ledger `BLOCKED` line is no longer folded into `escalated` on restart — though this run
-never exercised a restart itself, its lone `read-ledger` stub returning `{text:""}`), so this run's
-script revision is obsolete; kept here as history, same discipline as `wf_e189dd5a-a5f` above it.
-
-**Confirmed against the current (post-fix-round-2) script.** Run `wf_18710e4f-50a`: **24 agents
-dispatched, 0 errors** — the SAME count as the now-superseded `wf_453a6604-52e` above, confirming
-fix-round-2's guard-predicate correction (see the canonical scenario's own "confirmed against the
-current script" writeup above for why an unchanged count is the expected, correct outcome of that
-fix) left this scenario's topology untouched. Returned `{completed:[], escalated:["bd-201"],
-pendingRetry:[], parked:[], stalled:false}`, review `"no work landed"` — identical terminal-outcome
-shape to every prior confirmed run of this scenario. This scenario's own `plan`/`bd-ready`/Plan-phase
-dispatches never touch the divergence guard's reject branch (its `plan` stub, like every stub in
-this doc, always returns a well-formed path), so — same caveat as the canonical scenario's own
-"confirmed against the current script" writeup — this run adds no new evidence about the guard
-itself; it establishes only that the round-cap/breaker/blocker-path assertions above still hold
-against the current script.
-
-**Confirmed against the final-fix-round script — and why that is not validation.** Run
-`wf_3c881af8-70b`: **24 agents dispatched, 0 errors** — the SAME count and terminal-outcome shape
-(`{completed:[], escalated:["bd-201"], pendingRetry:[], parked:[], stalled:false}`, review "no work
-landed") as the now-superseded `wf_18710e4f-50a` above. This is the last recording on this scenario;
-the fix cycle is closed by decision. Same caveat as the canonical scenario's own
-"Confirmed against the final-fix-round script — and why that is not validation" writeup, stated here
-too rather than only cross-referenced, since this is exactly where a reader could otherwise take
-"all pass, unchanged" as corroboration: this identical count is **not** evidence that Fixes 1–3 work
-— this scenario's single task (`bd-201`) never merges at all (it's BLOCKED at the breaker cap), so
-neither `taskBriefPrompt`'s reuse branch nor `mergePrompt`'s `mergeBase` capture is ever even
-dispatched here, stubbed or otherwise. An unchanged count confirms only that adding Fixes 1–3 didn't
-add, remove, or reorder any dispatch this scenario exercises. Validating the fixes themselves needs
-a live restart with pre-existing git state (see the canonical scenario's writeup for exactly what
-each fix needs), which no stub scenario — this one included — can provide.
-
-**Confirmed against the scope-fix script (the scope fix — see "Resolved in this branch").** Run `wf_caf8953e-374`:
+**Confirmed against the scope-fix script — the current baseline.** Run `wf_caf8953e-374`:
 **24 agents dispatched, 0 errors**, terminal shape `{completed:[], escalated:["bd-201"],
-pendingRetry:[], parked:[], stalled:false}`, review "no work landed" — identical to
-`wf_3c881af8-70b` above, which becomes superseded history. What this re-run adds over the canonical
+pendingRetry:[], parked:[], stalled:false}`, review "no work landed" — identical to its predecessor (see the revision table under "dryRun policy"). What this re-run adds over the canonical
 one is narrow and specific: the blocker-bead-planning fix was prose-only precisely so that `breakerBlockerPrompt`
 and the two other bead-creation builders stayed byte-for-byte unchanged, and this is the only
 scenario that dispatches the breaker's blocker-bead path at all. The unchanged count and shape
@@ -2809,14 +2544,10 @@ bead's TEXT — same `pick()` limit as everywhere else in this section.
 
 If a future structural edit changes this script, re-run with these args, confirm the same shape (or
 update it deliberately alongside the edit that changed it), and replace the figures above — same
-discipline as the canonical scenario's own baseline. Fix-round-1, fix-round-2, and the final fix
-round were all such edits: **`wf_453a6604-52e`'s 24/0 is superseded history** (see "Confirmed
-against the post-Task-5, pre-fix-round-1 script" above), **`wf_18710e4f-50a`'s 24/0 is likewise
-superseded** (see "Confirmed against the current (post-fix-round-2) script" above),
-**`wf_3c881af8-70b`'s 24/0 is superseded by the scope fix**, and the CURRENT confirmed shape is
-**24 agent calls, 0 errors** (run `wf_caf8953e-374`, see "Confirmed against the scope-fix script"
-above). The 22/0 figure above `wf_453a6604-52e` remains pre-Task-5 history, unaffected by this
-restatement.
+discipline as the canonical scenario's own baseline. Every structural edit so far has forced
+that re-run without moving the count — see the revision table under "dryRun policy". The CURRENT
+confirmed shape is **24 agent calls, 0 errors** (run `wf_caf8953e-374`, see "Confirmed against the
+scope-fix script" above).
 
 ## PARK dryRun scenario (separate baseline)
 
@@ -2887,111 +2618,18 @@ to short-circuit the blocker path.
   pre-Task-5 confirmed count was 21 (below); the +2 is exactly `read-ledger` and
   `ledger-append:bd-301`.
 
-**Confirmed against the script as it stood through Task 4 — superseded by the post-Task-5 run
-below.** Run `wf_058c4b83-631`: **21 agents dispatched, 0 errors** — matching that revision's
-expected count exactly. Returned `{completed:["bd-301"], escalated:[], pendingRetry:[],
-parked:["bd-301"], stalled:false}` — `bd-301` appears in **both** `completed` and `parked`, exactly
-the distinction the Critical fix exists to make: a task that merged with an adjudicator-overruled
-finding is now visibly different from one that reviewed clean on the first pass, where before it
-was indistinguishable. This branch had never executed before that run. Kept here as history of the
-pre-Task-5 engine.
-
-**Confirmed against the post-Task-5, pre-fix-round-1 script — superseded, kept as history.** Run
-`wf_941e256b-10b`: **23 agents dispatched, 0 errors** — the exact count predicted by hand above,
-before this run occurred. Returned `{completed:["bd-301"], escalated:[], pendingRetry:[],
-parked:["bd-301"], stalled:false}` — the same terminal-outcome shape as `wf_058c4b83-631` above,
-plus the 2 new ledger dispatches (`read-ledger`, `ledger-append:bd-301`). Hitting 23 exactly means
-the run's one terminal outcome (PARK, merged) wrote its `complete (merged, 1 parked — ruling: ...)`
-line (the line shape as this script stood when this run executed — see below for how it's changed
-since) — a skipped append would have landed at 22. **This does not prove the ledger line format,
-real file I/O, or resumed-run reconstruction** — `read-ledger` returned `{text:""}` here too; see
-"What these three re-runs do NOT establish" under "dryRun policy" above. This scenario is exactly
-where the parked-completion-line fix landed: `r.finding` is now interpolated into that line
-alongside `r.parkRuling`, `mergePrompt`/`MERGE` gained `head`, and the line is built through
-`ledgerLine()` (fix-round-1) — this run predates all three changes, so it's kept here as history,
-same discipline as `wf_058c4b83-631` above it.
-
-**Confirmed against the current (post-fix-round-2) script.** Run `wf_1e32bcd1-71f`: **23 agents
-dispatched, 0 errors** — the SAME count as the now-superseded `wf_941e256b-10b` above, confirming
-fix-round-2's guard-predicate correction left this scenario's topology untouched (same reasoning as
-the canonical scenario's own "confirmed against the current script" writeup above). Returned
-`{completed:["bd-301"], escalated:[], pendingRetry:[], parked:["bd-301"], stalled:false}` — the
-same terminal-outcome shape as every prior confirmed run of this scenario, now against the script
-that also renders the completion line's parked variant with the commit range and `r.finding`
-included (unverified by this dryRun's stubbed ledger dispatches, same caveat as always — see
-"What these three re-runs do NOT establish"). Like the cap-tripping scenario's own current-script
-run, this scenario's `plan` stub always returns a well-formed path, so this run exercises the
-divergence guard's ACCEPT path only trivially (by never reaching its reject branch) and adds no new
-evidence about the guard beyond what the canonical scenario's `wf_fc56493c-a69` already establishes.
-
-**Confirmed against the final-fix-round script — and why that is not validation.** Run
-`wf_ac3e6fae-171`: **23 agents dispatched, 0 errors** — the SAME count and terminal-outcome shape
-(`{completed:["bd-301"], escalated:[], pendingRetry:[], parked:["bd-301"], stalled:false}`) as the
-now-superseded `wf_1e32bcd1-71f` above. This is the last recording on this scenario; the fix cycle
-is closed by decision. Same caveat as the canonical scenario's own writeup of the same name, stated
-here as well: this identical count is **not** evidence that Fixes 1–3 work. `mergePrompt`'s stub for
-`merge:bd-301` in this scenario's own args (below) was updated in this fix round to include a
-`mergeBase` value alongside `head` — the fact that adding an optional field to an already-passing
-stub changes nothing about the dispatch count or shape is expected and unremarkable, not a
-confirmation that a *real* merge agent computes `mergeBase` correctly, since `pick()` never builds
-`mergePrompt`'s real dispatch text under `dryRun: true` regardless of what the stub table says.
-Validating Fix 3 specifically, for this scenario's shape, would need a live epic where `bd-301`'s
-task branch is rebased after at least one *other* task has already merged into the integration
-branch — exactly the case this scenario's single-task setup cannot represent no matter how its stub
-is edited.
-
-**Confirmed against the scope-fix script (the scope fix — see "Resolved in this branch").** Run `wf_f18d307b-83e`:
+**Confirmed against the scope-fix script — the current baseline.** Run `wf_f18d307b-83e`:
 **23 agents dispatched, 0 errors**, terminal shape `{completed:["bd-301"], escalated:[],
-pendingRetry:[], parked:["bd-301"], stalled:false}` — identical to `wf_ac3e6fae-171` above, which
-becomes superseded history. Its logs carry the PARK ruling and the merge-gate `PARKED bd-301: …
+pendingRetry:[], parked:["bd-301"], stalled:false}` — identical to its predecessor (see the revision table
+under "dryRun policy"). Its logs carry the PARK ruling and the merge-gate `PARKED bd-301: …
 (open finding, merged anyway: …)` line, so the parked-with-a-ruling path survived the edit
 intact. The scope fix touched neither adjudication nor the merge gate; this run is here because
 the document's own rule requires it, not because a change was expected.
 
-**All three scenarios have since been re-run against the scope-fix script and land at the same
-three counts** (`wf_cb63ecb9-492` 31/0, `wf_caf8953e-374` 24/0, `wf_f18d307b-83e` 23/0). The
-paragraphs immediately below were written for the final-fix-round runs; every claim and every
-non-claim in them carries over unchanged, since the scope fix moved prompt TEXT and left dispatch
-topology alone.
-
-**All three baselines were confirmed against the final-fix-round script — the last recording
-before the scope fix; that fix cycle is closed by decision.** The canonical scenario (`wf_ea0a2284-96b`, 31
-agents, 0 errors), the cap-tripping scenario (`wf_3c881af8-70b`, 24 agents, 0 errors), and this PARK
-scenario (`wf_ac3e6fae-171`, 23 agents, 0 errors) each hit exactly the same count and
-terminal-outcome shape as their now-superseded post-fix-round-2 predecessor (`wf_fc56493c-a69` 31,
-`wf_18710e4f-50a` 24, `wf_1e32bcd1-71f` 23) — which themselves matched their post-Task-5/
-pre-fix-round-1 predecessor before that (`wf_b337b535-bd4` 31, `wf_453a6604-52e` 24,
-`wf_941e256b-10b` 23). `wf_79a00109-4ff` — the canonical scenario run against fix-round-1's
-still-broken predicate, which died on the first Plan dispatch before any task was briefed — remains
-kept as history of that specific defect (see "the canonical dryRun run immediately after
-fix-round-1" above), not as a baseline for anything. The full superseded-history chain for each
-scenario (pre-Task-5 → post-Task-5/pre-fix-round-1 → post-fix-round-2 → final) remains recorded
-above each scenario's own writeup, same discipline this doc has applied since `wf_171ab5c1-339`.
-
-**State this precisely, here where the final figures are recorded, not only inside each scenario's
-own writeup: these three unchanged counts are not evidence that Fixes 1–3 work.** Fixes 1–3
-(idempotent `taskBriefPrompt`, merge-base-derived `base` on a re-entered worktree, `mergeBase`-derived
-ledger ranges) live entirely in `taskBriefPrompt`'s and `mergePrompt`'s dispatch TEXT and in real git
-semantics — `pick()` never builds either function's real prompt under `dryRun: true`, so all three
-re-runs could not have told the fixed script apart from a version where `taskBriefPrompt` still
-unconditionally attempted a fresh `git worktree add` or `mergePrompt` never captured `mergeBase` at
-all. What an unchanged count across all three scenarios *does* confirm — the same narrow claim
-fix-round-2's own unchanged counts made for its one-`if`-condition fix — is that Fixes 1–3 did not
-perturb dispatch topology: no call site was added, removed, or reordered, and the one schema change
-(`mergeBase` on `MERGE`) is additive and optional. Nothing more.
-
-**What would actually validate Fixes 1–3, stated once here plainly, since it cannot be a dryRun
-scenario in this file:** each defect these fixes address only manifests on the SECOND touch of a
-specific piece of real git state, which a canned `pick()` stub cannot model. Fix 1 needs a genuine
-restart where the task's worktree path and branch already exist on disk when the brief dispatch
-runs. Fix 2 needs that same re-entered branch to already carry a prior attempt's real commits, so
-`HEAD` is demonstrably not a pre-implementer commit. Fix 3 needs a live rebase where at least one
-OTHER task has actually merged into the integration branch between this worktree's cut and this
-task's own merge, so the old `r.base..head` range would provably span that other task's commits and
-`mergeBase..head` provably would not. None of these can be added to this file as a new stub
-scenario — they are properties of a real, multi-dispatch git history, not of one canned JSON
-response. The next step for corroborating Fixes 1–3 is a live epic run through an actual restart,
-not another entry in the stub table below.
+**All three scenarios were re-run against the scope-fix script and land at the same three counts**
+(`wf_cb63ecb9-492` 31/0, `wf_caf8953e-374` 24/0, `wf_f18d307b-83e` 23/0). What an unchanged count
+across all three does and does not license is stated once, under "dryRun policy" — read it there
+before citing any of these figures.
 
 **What these three runs collectively prove, and what they still don't.** Together they confirm
 terminal-outcome routing (a task reaches exactly one of: merged clean, quarantined BLOCKED,
@@ -3071,12 +2709,10 @@ question, same structural limit as the other four claims above.
 
 If a future structural edit changes this script, re-run with these args, confirm the same shape (or
 update it deliberately alongside the edit that changed it), and replace the figures above — same
-discipline as the other two scenarios' baselines. Fix-round-1, fix-round-2, and the final fix round
-were all such edits (the final round's own edit here was data-only — adding `mergeBase` to the
-`merge:bd-301` stub — but the round is still listed for the same reason "recorded, not illustrative"
-demands it): **`wf_941e256b-10b`'s 23/0 and `wf_1e32bcd1-71f`'s 23/0 are both superseded history**
-(see "Confirmed against the post-Task-5, pre-fix-round-1 script" and "Confirmed against the current
-(post-fix-round-2) script" above), **`wf_ac3e6fae-171`'s 23/0 is superseded by the scope fix**, and
-the CURRENT confirmed shape is **23 agent calls, 0 errors** (run `wf_f18d307b-83e`, see "Confirmed
+discipline as the other two scenarios' baselines. Every structural edit so far has forced that
+re-run without moving the count — see the revision table under "dryRun policy". One of those rounds
+touched only this scenario's data (adding `mergeBase` to the `merge:bd-301` stub) and was re-run
+anyway, because "recorded, not illustrative" does not have a too-small-to-matter exemption. The
+CURRENT confirmed shape is **23 agent calls, 0 errors** (run `wf_f18d307b-83e`, see "Confirmed
 against the scope-fix script" above). The 21/0 figure above `wf_941e256b-10b` remains pre-Task-5
 history, unaffected by this restatement.
