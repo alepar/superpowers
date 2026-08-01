@@ -1,30 +1,35 @@
 ---
 name: super-design
-description: Use when a brainstormed spec is approved and before execution starts — recursively decomposes it into a fully-designed task tree (promotion review → nested brainstorm), then goal-coverage-checks the finished tree before hand-off.
+description: Use when there's a goal or idea to design out, before execution starts.
 ---
 
 # super-design
 
-Recursively decompose an approved spec into a fully-designed task tree, then check the finished tree against its goal before execution starts.
+Drive a goal or raw idea through brainstorming into a spec, recursively decompose that spec into a fully-designed task tree, then check the finished tree against its goal before execution starts.
 
 **Core principle:** all traversal state is derived from the tracker (or the spec's task tables in no-beads mode), never from session memory — the run survives context compaction and session restart.
 
 ## When to Use
 
-Entered at the end of every brainstormed spec — both design modes, with or without `bd`. `brainstorming`'s transition step invokes `superpowers:super-design` on the spec it just wrote.
+Entered at the root with a goal or a raw idea to design out — no spec exists yet; this skill invokes `superpowers:brainstorming` itself to produce the root spec, then drives every iteration from there. Nested invocations are instead handed a freshly-written spec directly by the parent invocation's own nested-brainstorm step (§Nested Brainstorms) — they skip straight to decomposition.
 
-Root vs. nested is **derived, not remembered**: nested iff a parent spec was handed to this invocation. Only the root invocation runs the coverage loop (§Coverage) and the final hand-off (§Hand-off). Base case for any invocation: no child qualifies for promotion → this subtree is done.
+Root vs. nested is **derived, not remembered**: nested iff this invocation was handed a spec directly rather than a goal/idea. Only the root invocation runs the coverage loop (§Coverage) and the final hand-off (§Hand-off). Base case for any invocation: no child qualifies for promotion → this subtree is done.
 
 ## The Process
 
-1. **Decompose** the spec into rough child tasks (title, short description, files-touched hint, blocking deps) — §Decomposition.
-2. **Promotion review** — dispatch a fresh-context reviewer, sanity-check its verdicts, fix any decomposition-verdict `ISSUES` — §Promotion Review.
-3. **Apply promotions** — §Applying Promotions.
-4. **Top-split gate** (root only, both modes) — before any descent, the user approves the top-level split (child list + promotion verdicts). One gate, at the most expensive level.
-5. For each promoted child, **in dependency order, depth-first** (a child's entire subtree completes before the next sibling starts, so later siblings can read earlier siblings' finished specs): check the tripwire (§Tripwire), then run its nested brainstorm — §Nested Brainstorms. The nested brainstorm ends by invoking `superpowers:super-design` again on the spec it wrote; that is the recursion.
-6. **Root only**, once the tree has settled (every subepic designed, every leaf decomposed, no pending promotions): run the coverage loop — §Coverage.
-7. **Root only, optional:** offer `superpowers:super-roast` on the settled tree; on a confirmed-findings verdict, run the fix + auto-re-roast loop — §Adversarial Review Loop.
-8. **Root only:** hand off to execution — §Hand-off.
+1. **Produce the spec** (root only) — invoke `superpowers:brainstorming` on the goal or idea to produce the root spec — §Root Brainstorm. Nested invocations skip this: they already hold the spec their parent's nested-brainstorm step wrote.
+2. **Decompose** the spec into rough child tasks (title, short description, files-touched hint, blocking deps) — §Decomposition.
+3. **Promotion review** — dispatch a fresh-context reviewer, sanity-check its verdicts, fix any decomposition-verdict `ISSUES` — §Promotion Review.
+4. **Apply promotions** — §Applying Promotions.
+5. **Top-split gate** (root only, both modes) — before any descent, the user approves the top-level split (child list + promotion verdicts). One gate, at the most expensive level.
+6. For each promoted child, **in dependency order, depth-first** (a child's entire subtree completes before the next sibling starts, so later siblings can read earlier siblings' finished specs): check the tripwire (§Tripwire), then run its nested brainstorm — §Nested Brainstorms — then invoke `superpowers:super-design` on the spec it wrote; that is the recursion.
+7. **Root only**, once the tree has settled (every subepic designed, every leaf decomposed, no pending promotions): run the coverage loop — §Coverage.
+8. **Root only, optional:** offer `superpowers:super-roast` on the settled tree; on a confirmed-findings verdict, run the fix + auto-re-roast loop — §Adversarial Review Loop.
+9. **Root only:** hand off to execution — §Hand-off.
+
+## Root Brainstorm
+
+Root only. Invoke `superpowers:brainstorming` on the goal or raw idea handed to this invocation — no parent spec, no ancestor-goal chain, no sibling specs to hand in, since none exist yet. Brainstorming runs its full process (worktree, mode selection, questions or one-shot reasoning, design doc, self-review, optional adversarial review) and returns with a written, committed spec. Take that spec forward into §Decomposition.
 
 ## Decomposition
 
@@ -54,7 +59,7 @@ Run in the main session (interactive Mode A can't run in a subagent). Context ha
 - Opens with its own local `## Goal`, seeded from the promotion rationale.
 - Does not re-offer the visual companion or super-roast (super-roast is offered once, at the root, after coverage passes) and skips Mode B's per-spec review gate — a Mode B tree's checkpoints are the root spec review, the top-split gate, the tripwire, and coverage arbitration.
 - Does not create a new worktree; `using-git-worktrees` idempotently verifies the existing one.
-- Ends, as always, by invoking `superpowers:super-design` on the spec it wrote.
+- Once it returns with a written, committed spec, invoke `superpowers:super-design` on that spec — §The Process, step 6; that is the recursion.
 
 ## Durable State
 
@@ -83,7 +88,7 @@ On fire, show the epic tree — beads: `bd list --parent <root> --pretty --statu
 
 ## Coverage / Gap Loop (root only)
 
-Runs once the tree has settled (§The Process, step 6).
+Runs once the tree has settled (§The Process, step 7).
 
 **Hierarchical:**
 - **Per-subepic pass:** that subepic's spec + children + parent goal chain, checked against its local `## Goal`.
@@ -177,7 +182,8 @@ Same decomposition/promotion/coverage, on paper. Each task-table row needs: a st
 
 ## Integration
 
-- Invoked by `superpowers:brainstorming` at the end of every spec, root and nested.
+- Entered at the root with a goal or idea — by a user directly, or by an outer caller (e.g. `super-auto`); recurses into itself, nested, once each promoted subepic's brainstorm returns a spec.
+- Invokes `superpowers:brainstorming` — once at the root to produce the root spec (§Root Brainstorm), then once per promoted subepic (§Nested Brainstorms).
 - Dispatches `./promotion-reviewer-prompt.md` and `./coverage-reviewer-prompt.md`.
 - Offers `superpowers:super-roast` (root only, optional) once the coverage loop passes; consumes its report to drive the fix + auto-re-roast loop — §Adversarial Review Loop.
 - Hands off to `superpowers:super-code` (beads mode) or `superpowers:subagent-driven-development` (plan-file mode once per epic in no-beads mode); no-beads mode also uses `superpowers:writing-plans`.
