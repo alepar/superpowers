@@ -71,7 +71,7 @@ edit that lets `super-code` run its own Finish (worktree removal included) befor
 
 | Section | Content | Sourced from |
 |---|---|---|
-| Implemented | What landed, task by task | beads closed under the run's epic; `super-code`'s `completed` bucket, recorded in `run.md`'s `codeBuckets` (item 6) at the phase 4→5 transition — not session memory; ledger completion lines, each with its commit range |
+| Implemented | What landed, task by task | beads closed under the run's epic; `super-code`'s `completed` bucket, recorded in `run.md`'s `codeBuckets` (item 6) at the phase 3→4 transition — not session memory; ledger completion lines, each with its commit range |
 | Remaining | What did not land, and why each didn't | `codeBuckets`' `escalated` and `pendingRetry`; parked escalations carried in `run.md`; unresolved Blocking findings still open at panel cap-out |
 | Gotchas & surprises | Where reality diverged from the design | roast findings that changed a design decision; blocker beads that were triaged; plan-defect findings; anything that forced a nested brainstorm |
 | Entrypoints | Where to start reading, in order | the task tree's dependency order: root-most module first, then its public interface, then the primary caller |

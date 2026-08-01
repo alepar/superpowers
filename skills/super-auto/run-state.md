@@ -21,23 +21,23 @@ a resume can silently redo work or violate a decision that was already made.
    resumed run never re-asks — re-asking mid-run would let a resume flip a
    decision the run is already partway through acting on.
 
-2. **Current phase** — one of `brainstorm | plan | roast-design | code | roast-code
+2. **Current phase** — one of `design | roast-design | code | roast-code
    | fix-loop | report | finish | done`. This is the resume pointer: it says which
    stage of the pipeline was in flight when the run last stopped, so re-entry knows
    what to do next instead of what to do first. The set names exactly `SKILL.md`'s
-   eight phases (`brainstorm`=1 … `finish`=8), plus `done`: `finish` means phase 8
+   seven phases (`design`=1 … `finish`=7), plus `done`: `finish` means phase 7
    (merge + cleanup) started but hasn't been confirmed complete — a resume reading
    `finish` must resume or verify the merge, not treat the run as over; `done` means
-   phase 8 actually completed. Reading `done` when phase 8 never ran (skipping
+   phase 7 actually completed. Reading `done` when phase 7 never ran (skipping
    straight from `report` to `done`) is exactly the failure this enumeration exists
    to rule out — it would resume as "nothing left to do" while the integration
    branch sits unmerged.
 
-   **A stall at phase 1–6 never advances `phase` to `report`** — it still writes
+   **A stall at phase 1–5 never advances `phase` to `report`** — it still writes
    `report.md` (`status: stalled at phase <phase>`, naming whatever `phase` already
-   held), but leaves that field where it was. A stall *at* phase 7 itself is the
+   held), but leaves that field where it was. A stall *at* phase 6 itself is the
    one case where `phase` legitimately already reads `report` with a `stalled`
-   status line — which is why phase 8's gate (`SKILL.md`'s Phase sequence) checks
+   status line — which is why phase 7's gate (`SKILL.md`'s Phase sequence) checks
    three things, not two: `report.md` exists, `phase` reads `report`, **and** the
    status line does not begin `stalled`. Only the third condition closes that
    remaining case.
@@ -85,7 +85,7 @@ a resume can silently redo work or violate a decision that was already made.
    cap durable across any restart, not just within one session.
 
 6. **`super-code`'s returned buckets** — `completed`, `escalated`, `pendingRetry`,
-   `parked`, `stalled`, `review`, recorded verbatim at the phase 4→5 transition.
+   `parked`, `stalled`, `review`, recorded verbatim at the phase 3→4 transition.
    `super-code` returns these once, to the calling session, and does not itself
    persist them; `report-prompt.md`'s Implemented and Remaining sections are
    sourced from them, and its own sourcing rule anticipates the writing agent may
@@ -136,7 +136,7 @@ run directory as stated above; `epic` and `branch` are identifiers, not paths,
 so the relative-path rule doesn't apply to them — `roastDesignRound`/
 `roastCodeRound` are item 5; `parked` is item 4, with each entry naming its
 source report and its kind (`escalation` / `beyond-cap` / `degraded-verdict`);
-`codeBuckets` is item 6, recorded once, at the phase 4→5 transition.
+`codeBuckets` is item 6, recorded once, at the phase 3→4 transition.
 
 ## The resume rule
 
