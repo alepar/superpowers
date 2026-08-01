@@ -110,6 +110,12 @@ invocation, which relays it to every `brainstorming` iteration it runs (root and
 location-preference override; `super-roast` uses the report-location override added for this.
 State and report follow `./run-state.md` and `./report-prompt.md` — do not restate them here.
 
+**Every link into a run directory carries the full `YYYY-MM-DD-<slug>` name, never the bare slug.**
+That includes the `specs/INDEX.md` row for this run, which links to
+`../runs/YYYY-MM-DD-<slug>/design.md`. The date prefix is not decoration: Resume globs
+`runs/*-<slug>/run.md`, so a link written without it points at a directory that does not exist, and
+a human following that link concludes the run is missing while the run is sitting on disk.
+
 ## Red Flags
 
 **Never:**
@@ -155,26 +161,11 @@ Shipped as documented gaps this round, not fixed:
 
 - **Gate order is convention, not enforcement.** Nothing catches an agent that writes `phase:
   finish` before actually confirming phase 7's three conditions; the rule is evaluate, then write.
-- **A beyond-cap finding has no status consequence outside autonomous mode.** A human can decline
-  the panelCap re-roast interactively and proceed anyway; nothing records that choice the way
-  `degraded-verdict` does in autonomous mode, so `clean` can hide it.
 - **Resume can't distinguish a stall from a plain interruption.** Both leave `phase` at whatever was
   in flight; nothing marks *why* the run stopped there.
-- **Sibling artifacts can omit the date prefix the resume glob needs.** `specs/INDEX.md`'s
-  documented link format for a run (`../runs/<slug>/design.md`) omits the `YYYY-MM-DD-` prefix the
-  real directory carries; nothing enforces adding it back.
-- **`plan:` has no referent in beads mode.** `run-state.md` lists a plan-path pointer
-  unconditionally, but `plan.md` is a no-beads-mode-only artifact (`super-design`'s Hand-off).
 - **`super-design`'s Red Flag contradicts the autonomous answer, and sits closer to the decision.**
   Its Red Flags forbid treating a `clean` verdict carrying `[low coverage]` or
   `[panel-capped: N unverified]` as a clearance — "the user decides whether to proceed." Phase 2
   runs *inside* the `super-design` invocation, so that Red Flag is adjacent while this file's
   "answer proceed, park the qualifier" resolution is far up-context. Nothing in `super-design` marks
   the caller-owned exception.
-- **A skipped code roast leaves phase 5 unmarked on the `phase` field.** With `skipCodeRoast` set,
-  `phase` jumps `code` → `report`. The flags themselves are durable in `run.md`, so a reader can
-  infer skipped-by-flag from them — but the phase field alone does not distinguish skipped from
-  not-yet-reached.
-- **The two state files key resume on different things.** `run-state.md`'s resume rule keys on "the
-  same spec"; this file's Resume section keys on the run directory plus an idea/spec-text fallback.
-  Not yet reconciled to name one operation.

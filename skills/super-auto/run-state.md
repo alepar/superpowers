@@ -22,7 +22,12 @@ a resume can silently redo work or violate a decision that was already made.
    decision the run is already partway through acting on.
 
 2. **Current phase** — one of `design | roast-design | code | roast-code
-   | fix-loop | report | finish | done`. This is the resume pointer: it says which
+   | fix-loop | report | finish | done`. **A phase skipped by flag is still
+   written, with `(skipped)` appended** — `phase: roast-code (skipped)` — and only
+   then advanced. Without this, `skipCodeRoast` makes `phase` jump `code` → `report`
+   and a reader cannot tell skipped-by-flag from never-reached; the flags are durable
+   and could be cross-referenced, but a resume should not have to infer a phase's fate
+   from a different field. The same applies to `roast-design` under `skipPlanRoast`. This is the resume pointer: it says which
    stage of the pipeline was in flight when the run last stopped, so re-entry knows
    what to do next instead of what to do first. The set names exactly `SKILL.md`'s
    seven phases (`design`=1 … `finish`=7), plus `done`: `finish` means phase 7
@@ -42,10 +47,16 @@ a resume can silently redo work or violate a decision that was already made.
    status line does not begin `stalled`. Only the third condition closes that
    remaining case.
 
-3. **Pointers** — spec path, plan path, epic id, integration branch, roast report
-   paths. Pointers only, never inline content. `run.md` says *where* the spec,
-   plan, and reports live; it never restates their contents. Content lives in its
-   own file and can grow or be re-read independently of the state file.
+3. **Pointers** — the raw idea text, spec path, epic id, integration branch, roast
+   report paths, and — **in no-beads mode only** — the plan path. Pointers only,
+   never inline content: `run.md` says *where* the spec and reports live and never
+   restates them. Two exceptions to "pointers only," both deliberate. `idea` carries
+   the raw idea verbatim, because the resume rule's fallback matches on it and a run
+   that crashes during phase 1 has no spec to match on yet. `plan` is written **only**
+   when no tracker is in use — in beads mode there is no `plan.md`; the epic and its
+   beads are the plan, and `epic` already points at them. Writing an unconditional
+   `plan:` line invites a resume to go looking for a file that was never meant to
+   exist.
 
    All path-valued pointers are given **relative to the run directory**
    (`docs/superpowers/runs/<slug>/`) — never bare filenames, never full
@@ -62,6 +73,15 @@ a resume can silently redo work or violate a decision that was already made.
      re-roast-at-raised-`config.panelCap` offer, or a `clean [low coverage]` /
      `clean [panel-capped: N unverified]` verdict autonomous mode proceeded past.
      Recorded with which branch was taken, e.g. `"clean [low coverage] — proceeded"`.
+
+   **Parking is mode-independent.** A `beyond-cap` or `degraded-verdict` item is
+   recorded the same way whether autonomous mode answered the question or a human
+   did — including when the human answers "proceed anyway." Only the recorded
+   branch differs (`"— proceeded, not re-roasted"` either way; note who chose).
+   Recording only the autonomous answers would mean an interactive run can decline
+   a panel-cap re-roast, proceed, and still report a bare `clean` — the exact
+   outcome the status line exists to make impossible. The question was raised and
+   an unverified Blocking candidate survived it; who answered does not change that.
 
    These are decisions already surfaced during design or code roast — or, for
    degraded-verdict entries, decisions a sibling skill would have put to a human
@@ -104,8 +124,8 @@ code roast.
 flags: planOneShot=false skipPlanRoast=false skipCodeRoast=false autonomous=true
 phase: roast-code
 
+idea: add a per-tenant rate limiter to the public API
 spec: design.md
-plan: plan.md
 epic: bd-412
 branch: epic-bd-412-integration
 roast-design: roast-design-1.md, roast-design-2.md
@@ -140,7 +160,7 @@ source report and its kind (`escalation` / `beyond-cap` / `degraded-verdict`);
 
 ## The resume rule
 
-> On invocation, an existing `run.md` for the same spec means **resume from its recorded phase**, not restart. Re-entry reads the flags and iteration counts
+> On invocation, an existing `run.md` for **this run** means **resume from its recorded phase**, not restart. Re-entry reads the flags and iteration counts
 > from the file and continues; it never re-asks the flags and never resets a
 > counter.
 

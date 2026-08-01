@@ -111,8 +111,10 @@ same offer brainstorming makes on a single un-decomposed spec — a decomposed t
 instead, after the tree has settled, since that's the first point a full design exists to review.
 Opt-in; declining goes straight to hand-off.
 
-On accept, invoke `superpowers:super-roast` (design mode) on the settled tree. The report file is
-the only cross-iteration state. **Three of its sections drive this loop — reading only
+On accept, invoke `superpowers:super-roast` (design mode) on the settled tree. **If this invocation
+was given an artifact-directory override** (see §Artifact Location), relay it to `super-roast` as
+its report-location override, so the report lands beside the specs it is about rather than in
+`super-roast`'s own default directory. The report file is the only cross-iteration state. **Three of its sections drive this loop — reading only
 `## Confirmed findings` silently discards the two that most need a human:**
 
 | Report section | What this loop does with it |
@@ -160,6 +162,19 @@ What happens once the tree has settled is **conditional on who owns the hand-off
 ## No-Beads Mode
 
 Same decomposition/promotion/coverage, on paper. Each task-table row needs: a stable id (`<epic-slug>.<ordinal>`), a **depth column**, and a **deps column listing blocker row-ids** — as table data, not prose, or the cursor rule above is unreconstructable. Promoted rows are marked `sub-plan: <spec path>` (or `needs-design` until written). The cursor eligibility rule and tripwire counts run over these columns exactly as beads mode runs them over labels/metadata.
+
+## Artifact Location
+
+By default every spec goes to `docs/superpowers/specs/` and the arbitration ledger to
+`docs/superpowers/reviews/`. **A caller may hand this invocation a single artifact-directory
+override**; when it does, everything this skill produces or causes to be produced goes there
+instead — root and nested specs, the arbitration ledger, and the `super-roast` report (relayed as
+that skill's own report-location override, §Adversarial Review Loop). Relay it to `brainstorming`
+the same way, as its documented spec-location preference. One override in, one directory out: a
+caller that redirects the specs but not the roast report ends up with a run directory that does not
+contain its own review, which is the failure this exists to prevent. `specs/INDEX.md` stays at its
+canonical path regardless — it is a repo-wide catalogue, not a run artifact — and its row links to
+the overridden location.
 
 ## Conventions
 
