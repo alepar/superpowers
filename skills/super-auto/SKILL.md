@@ -58,9 +58,9 @@ own, or the flags strand and the sequence is lost. Each row's parenthetical is t
 | # | Phase (`run.md` token) | Skill | Note |
 |---|---|---|---|
 | 1 | Spec (`brainstorm`) | `brainstorming` | Mode A/B per flag → approved spec |
-| 2 | Plan (`plan`) | `super-plan` | Coverage loop → settled tree; caller-owned hand-off — `super-auto` records the epic id itself |
+| 2 | Plan (`plan`) | `super-plan` | Coverage loop → settled tree. **Say in the invocation that the hand-off is `super-auto`'s**, or `super-plan` chains into execution and the flags strand. Record the epic id yourself |
 | 3 | Design roast (`roast-design`) | `super-roast` (design) | Via `super-plan`'s own offer, inside its invocation; cap-3 fix loop; `super-auto` records each report path itself |
-| 4 | Code (`code`) | `super-code` | Autonomous or interactive per flag; caller-owned finish, no config flag |
+| 4 | Code (`code`) | `super-code` | Autonomous or interactive per flag. **Say in the invocation that `super-auto` owns the finish** — there is no config flag; otherwise it merges and deletes the worktree the report needs |
 | 5 | Code roast (`roast-code`) | `super-roast` (PR) | Against the live integration branch |
 | 6 | Fix loop (`fix-loop`) | — | Reopen the epic, file confirmed findings as beads (shape: see Red Flags), re-enter `super-code`, loop to phase 5; cap 3, stop early if Blocking count doesn't shrink |
 | 7 | Report (`report`) | — | Write `report.md` per `./report-prompt.md`, before anything is torn down |
@@ -103,8 +103,9 @@ not asked, and the road not taken is parked (`run-state.md`'s `degraded-verdict`
 
 ## Run directory
 
-All artifacts of one run live under `docs/superpowers/runs/YYYY-MM-DD-<slug>/`, named once at
-phase 1 (see Resume). `brainstorming` and `writing-plans` take this directory as their documented
+All artifacts of one run live under `docs/superpowers/runs/YYYY-MM-DD-<slug>/`. **Slug and date are
+both fixed once, kebab-cased from the raw idea, before phase 1** — `brainstorming` has not produced
+a title yet, and the directory must exist to be handed to it as an override. `brainstorming` and `writing-plans` take this directory as their documented
 location-preference override; `super-roast` uses the report-location override added for this.
 State and report follow `./run-state.md` and `./report-prompt.md` — do not restate them here.
 
@@ -152,11 +153,16 @@ Shipped as documented gaps this round, not fixed:
   real directory carries; nothing enforces adding it back.
 - **`plan:` has no referent in beads mode.** `run-state.md` lists a plan-path pointer
   unconditionally, but `plan.md` is a no-beads-mode-only artifact (`super-plan`'s Hand-off).
-- **`super-plan`'s own text still reads unconditionally.** Its Adversarial Review Loop states both
-  exits "pause and summarize for the human" and that the loop "never declares itself finished" —
-  true in isolation, silently overridden here; nothing in `super-plan` itself marks the exception.
-- **A skipped code roast leaves phase 6 unmarked.** With `skipCodeRoast` set, `phase` jumps `code`
-  → `report`; nothing records phases 5–6 as skipped-by-flag versus not-yet-reached.
+- **`super-plan`'s Red Flag contradicts the autonomous answer, and sits closer to the decision.**
+  Its Red Flags forbid treating a `clean` verdict carrying `[low coverage]` or
+  `[panel-capped: N unverified]` as a clearance — "the user decides whether to proceed." Phase 3
+  runs *inside* the `super-plan` invocation, so that Red Flag is adjacent while this file's
+  "answer proceed, park the qualifier" resolution is far up-context. Nothing in `super-plan` marks
+  the caller-owned exception.
+- **A skipped code roast leaves phase 6 unmarked on the `phase` field.** With `skipCodeRoast` set,
+  `phase` jumps `code` → `report`. The flags themselves are durable in `run.md`, so a reader can
+  infer skipped-by-flag from them — but the phase field alone does not distinguish skipped from
+  not-yet-reached.
 - **The two state files key resume on different things.** `run-state.md`'s resume rule keys on "the
   same spec"; this file's Resume section keys on the run directory plus an idea/spec-text fallback.
   Not yet reconciled to name one operation.
