@@ -730,9 +730,12 @@ functions' definitions directly, or by a live run against a real restart.
    have gotten a scoping scheme that yields zero ids against a real `bd ready`. The fix (see item 7
    above and `readyPrompt`) removes the grep from the Ready phase entirely rather than reconciling
    it with these ids: the fast path is the bare `--label sp:${epicId}` query, and the structural
-   fallback needs no naming convention at all. The canonical args are therefore unchanged, and this
-   document's dryRun baselines are unaffected — flagged here so a future reader still doesn't copy
-   the flat id scheme as a template for a real epic's ids.
+   fallback needs no naming convention at all. The canonical args are therefore unchanged **on id
+   grounds** — but this round was still a structural edit, so all three baselines were re-run
+   against it regardless (`wf_cb63ecb9-492` 31/0, `wf_caf8953e-374` 24/0, `wf_f18d307b-83e` 23/0;
+   see each scenario's "Confirmed against the scope-fix script" writeup). Unchanged args are not a
+   licence to carry a run-id across a diff. Flagged here so a future reader still doesn't copy the
+   flat id scheme as a template for a real epic's ids.
 10. **The parallelism prose used to claim the opposite of what the code does.** Fixed in this round
     (see "The coordinator loop," step 3, above) — it previously said "dispatch disjoint-file groups
     concurrently," which reads as *buckets* running concurrently with each other. The code actually
@@ -2009,6 +2012,17 @@ fix-round-2's unchanged counts made for its own one-`if`-condition fix. See "Con
 final-fix-round script — and why that is not validation" further below (after the PARK scenario) for
 the full accounting, including what a live-run validation of each fix would actually require.
 
+**The scope fix (Known limitations 7/8/9) is the most recent structural edit, and all three
+scenarios were re-run against it** — canonical `wf_cb63ecb9-492` 31/0, cap-tripping
+`wf_caf8953e-374` 24/0, PARK `wf_f18d307b-83e` 23/0, each matching its predecessor exactly. These
+are the current baselines; the final-fix-round ids above are superseded history. The edit extracted
+`treeMembershipTest(epicId)` shared by `closeEpicsPrompt` and a new `readyPrompt(epicId)`, and
+retired the id-prefix grep. Read the unchanged counts the same narrow way as every round before:
+the fix's substance is prompt TEXT, which `pick()` never builds under `dryRun: true`. What the
+re-run genuinely establishes is that a newly extracted helper referenced from two builders resolves
+at runtime — the defect class `node --check` cannot see and an executed dryRun catches on the first
+dispatch.
+
 **What this guard, and these re-runs, do NOT prove.** The predicate accepts a well-formed,
 worktree-prefixed planner path — that is a fact about the `if` statement, checked directly (see
 above) and now exercised by three passing dryRuns. It does **not** prove that a real planner
@@ -2426,6 +2440,26 @@ provably would not. None of these is a scenario `pick()`'s stub mechanism can be
 JSON response. The next step for anyone who wants Fixes 1–3 actually corroborated is a live epic run
 through a genuine restart, not another dryRun scenario added to this file.
 
+**Confirmed against the scope-fix script (Known limitations 7/8/9).** Run `wf_cb63ecb9-492`:
+**31 agents dispatched, 0 errors**, terminal shape `{completed:["bd-101","bd-102"],
+escalated:["bd-103"], pendingRetry:["bd-104"], parked:[], stalled:false}` — identical count and
+shape to `wf_ea0a2284-96b` above, which now becomes superseded history. The scope fix extracted
+`treeMembershipTest(epicId)` out of `closeEpicsPrompt`, added `readyPrompt(epicId)` (labelled
+`sp:` query as fast path, structural parent-child walk as fallback), and retired the id-prefix
+grep; item 8 became prose-only, leaving the three bead-creation builders byte-for-byte untouched.
+**Why this run was worth doing even though the count could not change:** the edit introduced a
+newly extracted helper referenced from two builders, and `node --check` parses without resolving
+references — an undefined-reference defect of exactly the `planPrompt is not defined` class would
+have killed the run on its first Ready dispatch, as `wf_79a00109-4ff` did on its first Plan
+dispatch. It did not. **What it does not prove, stated with the same precision as the paragraph
+above:** the fix's entire substance is prompt TEXT — the membership rule the Ready and Close agents
+are told to apply — and `pick()` never builds `readyPrompt` or `closeEpicsPrompt` under
+`dryRun: true`. Every `bd-ready`/`close-epics` call here is a canned stub, so this run cannot
+distinguish the fixed script from one whose fallback rule is wrong, inverted, or absent. Retiring
+the id-prefix grep is what keeps the `bd-100`/`bd-101..104` ids in these args valid on scoping
+grounds; it does not make them exercised. Only a live epic — specifically one whose beads carry no
+`sp:` label, forcing the fallback path — can corroborate the rule itself.
+
 **`wf_171ab5c1-339` is kept only as superseded history, not current evidence.** It executed against
 commit `9576d7f` — the state of this script **before** the `4a3e3bc` and `9855503` commits
 restructured `reviewAndFix`, `handleBlocker`, and the return value (the C-1/C-2/C-3/I-9/I-7 fixes
@@ -2502,10 +2536,10 @@ record; journals themselves are not guaranteed to remain inspectable. A future m
 re-verifies the current baseline by re-running the Workflow tool with the `args` below and
 recording the new run's figures here — not by going looking for any prior run's journal.
 
-The current baseline (`wf_ea0a2284-96b`, 31 agents, 0 errors — see "Confirmed against the
-final-fix-round script — and why that is not validation" above) is already verified against the
-final-fix-round script; the fix cycle is closed by decision. To reproduce it, or to re-verify after
-any future structural edit, run the Workflow tool with this script and this `args` block:
+The current baseline (`wf_cb63ecb9-492`, 31 agents, 0 errors — see "Confirmed against the scope-fix
+script" above) is verified against the scope-fix script, the most recent structural edit. To
+reproduce it, or to re-verify after any future structural edit, run the Workflow tool with this
+script and this `args` block:
 
 ```json
 {
@@ -2567,13 +2601,13 @@ idempotent `taskBriefPrompt`, merge-base-derived `base`, `mergeBase`-derived led
 exactly such structural edits, each re-run in turn: **`wf_b337b535-bd4`'s 31/0 is superseded
 history** (see "Confirmed against the post-Task-5, pre-fix-round-1 script" above),
 **`wf_fc56493c-a69`'s 31/0 is likewise superseded** (see "Confirmed against the current
-(post-fix-round-2) script" above), and the CURRENT, final confirmed shape is **31 agent calls, 0
-errors** (run `wf_ea0a2284-96b`, see "Confirmed against the final-fix-round script — and why that is
-not validation" above — read that writeup's own caveat before citing this number for anything beyond
-dispatch-count/topology) — the intervening `wf_79a00109-4ff` run is kept as history of the
-fix-round-2 defect itself, not as a baseline (it died before completing). The 26/0 figures in the
-two writeups above `wf_b337b535-bd4` remain pre-Task-5 history, unaffected by this restatement. This
-is the last recording on this scenario — the fix cycle is closed by decision.
+(post-fix-round-2) script" above), **`wf_ea0a2284-96b`'s 31/0 is superseded by the scope fix** (see
+"Confirmed against the final-fix-round script" above), and the CURRENT confirmed shape is **31 agent
+calls, 0 errors** (run `wf_cb63ecb9-492`, see "Confirmed against the scope-fix script" above — read
+that writeup's own caveat before citing this number for anything beyond dispatch-count/topology) —
+the intervening `wf_79a00109-4ff` run is kept as history of the fix-round-2 defect itself, not as a
+baseline (it died before completing). The 26/0 figures in the two writeups above `wf_b337b535-bd4`
+remain pre-Task-5 history, unaffected by this restatement.
 
 ## Cap-tripping dryRun scenario (separate baseline)
 
@@ -2707,6 +2741,16 @@ add, remove, or reorder any dispatch this scenario exercises. Validating the fix
 a live restart with pre-existing git state (see the canonical scenario's writeup for exactly what
 each fix needs), which no stub scenario — this one included — can provide.
 
+**Confirmed against the scope-fix script (Known limitations 7/8/9).** Run `wf_caf8953e-374`:
+**24 agents dispatched, 0 errors**, terminal shape `{completed:[], escalated:["bd-201"],
+pendingRetry:[], parked:[], stalled:false}`, review "no work landed" — identical to
+`wf_3c881af8-70b` above, which becomes superseded history. What this re-run adds over the canonical
+one is narrow and specific: item 8's fix was prose-only precisely so that `breakerBlockerPrompt`
+and the two other bead-creation builders stayed byte-for-byte unchanged, and this is the only
+scenario that dispatches the breaker's blocker-bead path at all. The unchanged count and shape
+confirm that path's call sites survived the edit intact. It confirms nothing about the blocker
+bead's TEXT — same `pick()` limit as everywhere else in this section.
+
 ```json
 {
   "epicId": "bd-200",
@@ -2756,11 +2800,11 @@ update it deliberately alongside the edit that changed it), and replace the figu
 discipline as the canonical scenario's own baseline. Fix-round-1, fix-round-2, and the final fix
 round were all such edits: **`wf_453a6604-52e`'s 24/0 is superseded history** (see "Confirmed
 against the post-Task-5, pre-fix-round-1 script" above), **`wf_18710e4f-50a`'s 24/0 is likewise
-superseded** (see "Confirmed against the current (post-fix-round-2) script" above), and the CURRENT,
-final confirmed shape is **24 agent calls, 0 errors** (run `wf_3c881af8-70b`, see "Confirmed against
-the final-fix-round script — and why that is not validation" above). The 22/0 figure above
-`wf_453a6604-52e` remains pre-Task-5 history, unaffected by this restatement. This is the last
-recording on this scenario — the fix cycle is closed by decision.
+superseded** (see "Confirmed against the current (post-fix-round-2) script" above),
+**`wf_3c881af8-70b`'s 24/0 is superseded by the scope fix**, and the CURRENT confirmed shape is
+**24 agent calls, 0 errors** (run `wf_caf8953e-374`, see "Confirmed against the scope-fix script"
+above). The 22/0 figure above `wf_453a6604-52e` remains pre-Task-5 history, unaffected by this
+restatement.
 
 ## PARK dryRun scenario (separate baseline)
 
@@ -2884,8 +2928,22 @@ task branch is rebased after at least one *other* task has already merged into t
 branch — exactly the case this scenario's single-task setup cannot represent no matter how its stub
 is edited.
 
-**All three baselines are now confirmed against the final-fix-round script — this is the last
-recording; the fix cycle is closed by decision.** The canonical scenario (`wf_ea0a2284-96b`, 31
+**Confirmed against the scope-fix script (Known limitations 7/8/9).** Run `wf_f18d307b-83e`:
+**23 agents dispatched, 0 errors**, terminal shape `{completed:["bd-301"], escalated:[],
+pendingRetry:[], parked:["bd-301"], stalled:false}` — identical to `wf_ac3e6fae-171` above, which
+becomes superseded history. Its logs carry the PARK ruling and the merge-gate `PARKED bd-301: …
+(open finding, merged anyway: …)` line, so the parked-with-a-ruling path survived the edit
+intact. The scope fix touched neither adjudication nor the merge gate; this run is here because
+the document's own rule requires it, not because a change was expected.
+
+**All three scenarios have since been re-run against the scope-fix script and land at the same
+three counts** (`wf_cb63ecb9-492` 31/0, `wf_caf8953e-374` 24/0, `wf_f18d307b-83e` 23/0). The
+paragraphs immediately below were written for the final-fix-round runs; every claim and every
+non-claim in them carries over unchanged, since the scope fix moved prompt TEXT and left dispatch
+topology alone.
+
+**All three baselines were confirmed against the final-fix-round script — the last recording
+before the scope fix; that fix cycle is closed by decision.** The canonical scenario (`wf_ea0a2284-96b`, 31
 agents, 0 errors), the cap-tripping scenario (`wf_3c881af8-70b`, 24 agents, 0 errors), and this PARK
 scenario (`wf_ac3e6fae-171`, 23 agents, 0 errors) each hit exactly the same count and
 terminal-outcome shape as their now-superseded post-fix-round-2 predecessor (`wf_fc56493c-a69` 31,
@@ -3006,7 +3064,7 @@ were all such edits (the final round's own edit here was data-only — adding `m
 `merge:bd-301` stub — but the round is still listed for the same reason "recorded, not illustrative"
 demands it): **`wf_941e256b-10b`'s 23/0 and `wf_1e32bcd1-71f`'s 23/0 are both superseded history**
 (see "Confirmed against the post-Task-5, pre-fix-round-1 script" and "Confirmed against the current
-(post-fix-round-2) script" above), and the CURRENT confirmed shape — the last recording on this
-scenario, the fix cycle closed by decision — is **23 agent calls, 0 errors** (run `wf_ac3e6fae-171`,
-see "Confirmed against the final-fix-round script — and why that is not validation" above). The 21/0
-figure above `wf_941e256b-10b` remains pre-Task-5 history, unaffected by this restatement.
+(post-fix-round-2) script" above), **`wf_ac3e6fae-171`'s 23/0 is superseded by the scope fix**, and
+the CURRENT confirmed shape is **23 agent calls, 0 errors** (run `wf_f18d307b-83e`, see "Confirmed
+against the scope-fix script" above). The 21/0 figure above `wf_941e256b-10b` remains pre-Task-5
+history, unaffected by this restatement.
