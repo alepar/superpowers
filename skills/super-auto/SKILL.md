@@ -129,7 +129,7 @@ State and report follow `./run-state.md` and `./report-prompt.md` — do not res
   the epic as closable and **closes it mid-fix**. Omitting `--no-inherit-labels` smears the
   parent's own labels onto the child.
 - Invoke `finishing-a-development-branch` on anything less than all three of phase 8's gate
-  conditions.
+  conditions. The gate governs *entering* phase 8; a resume already reading `phase: finish` is past it — resume or verify the merge rather than re-testing a gate its own phase value cannot satisfy.
 - Rely on `super-code`'s returned buckets from session memory once phase 4 has transitioned — read
   `run.md`'s recorded `codeBuckets` instead.
 - Report "done" without a status line, or report bare `clean` when a `degraded-verdict` record is
@@ -138,6 +138,17 @@ State and report follow `./run-state.md` and `./report-prompt.md` — do not res
 - Move existing flat `specs/`/`plans/` documents into a run directory.
 
 ## Known limitations
+
+- **The dry walk's remaining open questions.** A cold walk of these files alone (2026-07-31) completed
+  a run and a resume, but only by inventing answers at twelve points the files leave open. The ones
+  most likely to bite: the slug rule says "kebab-cased from the raw idea" while the worked example
+  shows a condensed topic, and a resume phrased "continue the X work" slugs differently again; the
+  four flags have no stated defaults; `run.md`'s six contents do not include the idea text, so the
+  documented "match by the recorded idea/spec" fallback requires reading each candidate's `design.md`
+  — and a crash during phase 1 leaves nothing to match on at all; nothing says whether a phase is
+  invoked in-context or as a subagent, which decides whether `roastDesignRound` can be written per
+  round at all; and `super-plan` has no parameter for relaying `super-roast`'s report location, so
+  the design-roast report may land outside the run directory that `run.md` points into.
 
 Shipped as documented gaps this round, not fixed:
 
