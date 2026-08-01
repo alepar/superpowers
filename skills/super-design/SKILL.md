@@ -191,7 +191,10 @@ the overridden location.
 - Read only `## Confirmed findings` out of a super-roast report — `## Escalations (need human)`
   and `## Not verified (beyond panel cap)` must reach the human too.
 - Treat a `clean` verdict carrying `[low coverage]` or `[panel-capped: N unverified]` as a
-  clearance — that's a degraded run, and the user decides whether to proceed.
+  clearance — that's a degraded run, and the user decides whether to proceed. **Exception, when a
+  caller owns the hand-off and told you it is running autonomously:** the caller already answered
+  this — proceed, and hand the qualifier back verbatim for the caller to park. Never drop it, and
+  never ask.
 - Summarize the task tree for the root coverage pass — only spec prose may be summarized.
 - Overrule a `PROMOTE` verdict without recording `sp:demoted-by-session` and the reason.
 

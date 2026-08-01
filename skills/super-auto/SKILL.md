@@ -163,9 +163,3 @@ Shipped as documented gaps this round, not fixed:
   finish` before actually confirming phase 7's three conditions; the rule is evaluate, then write.
 - **Resume can't distinguish a stall from a plain interruption.** Both leave `phase` at whatever was
   in flight; nothing marks *why* the run stopped there.
-- **`super-design`'s Red Flag contradicts the autonomous answer, and sits closer to the decision.**
-  Its Red Flags forbid treating a `clean` verdict carrying `[low coverage]` or
-  `[panel-capped: N unverified]` as a clearance — "the user decides whether to proceed." Phase 2
-  runs *inside* the `super-design` invocation, so that Red Flag is adjacent while this file's
-  "answer proceed, park the qualifier" resolution is far up-context. Nothing in `super-design` marks
-  the caller-owned exception.
