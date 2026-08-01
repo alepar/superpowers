@@ -142,9 +142,9 @@ Round-based with refill (each `bd ready` batch is, by definition, mutually indep
 
 1. **Query** — an agent runs a fast labelled query first, `bd ready --exclude-type=epic --label
    sp:<epicId>` (excludes epic-type containers, which `bd ready` includes by default, and scopes to
-   this run's tree via the `sp:` label `super-plan` stamps on everything it creates). **An empty
+   this run's tree via the `sp:` label `super-design` stamps on everything it creates). **An empty
    result here does not mean the tree is empty** (formerly "Known limitations" items 7/9): the label
-   only exists on trees `super-plan` created — a hand-made epic, or a sub-epic handed to super-code
+   only exists on trees `super-design` created — a hand-made epic, or a sub-epic handed to super-code
    directly (whose members carry the *root* epic's `sp:` label, not their own id's), always comes up
    empty on this query even with real ready work waiting. When it does, the agent falls back to
    `bd ready --exclude-type=epic` (repo-global) and filters the result to this run's tree using the
@@ -590,8 +590,15 @@ When the loop ends (and at least some work landed), dispatch the **final whole-e
 (`scripts/review-package PLAN_FILE MERGE_BASE HEAD`, pointed at each completion line's
 parked-with-a-ruling variant — see "Workspace and ledger" above: there is no separate parked LINE
 KIND, only the normal `complete` line's own variant — so it can triage what must be fixed before
-merge) — then hand to `superpowers:finishing-a-development-branch`, which merges the integration
-branch into the user's base branch and cleans up the integration worktree. **Not implemented, as of
+merge). What happens after that review is **conditional on who owns the finish hand-off**. By
+default, hand off to `superpowers:finishing-a-development-branch`, which merges the integration
+branch into the user's base branch and cleans up the integration worktree. **When the caller owns
+the finish** (e.g. an outer sequencer such as `super-auto`, which still needs this run's ledger and
+per-task reports — the only place a PARK ruling's reasoning lives — after this loop ends), the
+coordinator does not hand off: it returns the final review's buckets (`completed`, `escalated`,
+`pendingRetry`, `parked`, `stalled`, `review`) to the caller and stops, leaving the integration
+worktree, its branch, and its ledger intact; the caller decides if and when to invoke
+`finishing-a-development-branch` itself. **Not implemented, as of
 this doc: "pointed at the ledger's deferred-minor notes."** No ledger line kind this script's
 `ledgerLine()` ever writes produces a "deferred-minor" note, and no call site emits one — see
 "Known limitations" below. Read this section's own final-review dispatch as pointing the reviewer
@@ -690,7 +697,7 @@ functions' definitions directly, or by a live run against a real restart.
    the only signal.** Fixed in this round (see "The coordinator loop" step 1, and `readyPrompt` in
    the script skeleton): the Query step and the dispatched `bd-ready` prompt used to require
    `bd ready --exclude-type=epic --label sp:${epicId}` with nothing anywhere saying that label only
-   exists on trees `super-plan` created. A hand-made epic, or a **sub-epic** handed to super-code
+   exists on trees `super-design` created. A hand-made epic, or a **sub-epic** handed to super-code
    directly (whose members carry the *root* epic's `sp:` label, not their own id's), used to yield
    an empty round 1: `ids.length === 0` → the empty-ready-set quarantine exit → `break` → Finish
    reports `completed: 0`, `review: 'no work landed'` — indistinguishable from a legitimate
@@ -1366,7 +1373,7 @@ function treeMembershipTest(epicId) {
 }
 
 function readyPrompt(epicId) {
-  // FAST PATH: the `sp:` label `super-plan` stamps on every bead it creates lets a single scoped
+  // FAST PATH: the `sp:` label `super-design` stamps on every bead it creates lets a single scoped
   // query answer this in one shot, cheaper than the structural fallback below. FIX (Known
   // limitations, former items 7 & 9): the id-prefix grep this used to pipe through
   // (`grep -oE '${epicId}[.0-9]*'`) is RETIRED as an authority — former item 9 found it silently
@@ -1374,14 +1381,14 @@ function readyPrompt(epicId) {
   // ids), and it was never anything but a weaker restatement of what `--label` already scopes; it
   // is not run at all anymore, not even as a pre-filter. FALLBACK (former item 7): an empty
   // labelled result does not mean the tree is empty — the `sp:` label only exists on trees
-  // `super-plan` created; a hand-made epic, or a sub-epic handed to super-code directly (whose
+  // `super-design` created; a hand-made epic, or a sub-epic handed to super-code directly (whose
   // members carry the *root* epic's `sp:` label, not their own id's), always comes up empty above
   // even with real ready work waiting. So an empty fast path falls back to the same structural
   // parent-child test `closeEpicsPrompt` uses for epic closure (`treeMembershipTest`, shared by
   // both) — never the id-prefix convention alone, which a hand-created or nested-subepic bead can
   // violate.
   return `Run \`bd ready --exclude-type=epic --label sp:${epicId}\` and parse the returned ids (do NOT use \`--json\`; do NOT reason about or filter readiness or scope — the flags already exclude epics and out-of-label issues). If it returns at least one id, report those ids verbatim as \`ids\` and stop here — this is the fast path, do not run the fallback below.
-If it returns NONE, do not conclude the tree has no ready work: the \`sp:\` label only exists on trees \`super-plan\` created — a hand-made epic, or a sub-epic handed to super-code directly (whose members carry the ROOT epic's \`sp:\` label, not their own id's), will always come up empty on the query above even when real ready work is waiting. Fall back to the structural test instead, the same one the epic-closure step uses:
+If it returns NONE, do not conclude the tree has no ready work: the \`sp:\` label only exists on trees \`super-design\` created — a hand-made epic, or a sub-epic handed to super-code directly (whose members carry the ROOT epic's \`sp:\` label, not their own id's), will always come up empty on the query above even when real ready work is waiting. Fall back to the structural test instead, the same one the epic-closure step uses:
 1. Run \`bd ready --exclude-type=epic\` (repo-global — this can return ready work from unrelated epics sharing this repo; that is expected, filtered in step 2 below, not a bug) and parse the returned ids.
 2. For each returned id, classify it IN-TREE or OUT-OF-TREE using this test, in priority order — do not skip the identity/walk check even when the id "looks like" it belongs:
 ${treeMembershipTest(epicId)}
@@ -2022,6 +2029,17 @@ the fix's substance is prompt TEXT, which `pick()` never builds under `dryRun: t
 re-run genuinely establishes is that a newly extracted helper referenced from two builders resolves
 at runtime — the defect class `node --check` cannot see and an executed dryRun catches on the first
 dispatch.
+
+**One edit landed after those three runs, and it is named here rather than left for a reader to
+discover by diffing.** Merging the `super-auto` branch renamed the `super-plan` skill to
+`super-design`, which touched this script in exactly three places: two comments in `readyPrompt`
+and one identifier inside its returned prompt string. The three run-ids above are still cited as
+current, and the justification is stronger than the usual "topology unchanged" — the changed lines
+sit inside a function body `pick()` never invokes under `dryRun: true`, so the code these runs
+executed is not merely equivalent to the current script, it is byte-identical to it. Verified by
+diffing the current block against the exact `.js` the three runs consumed: the rename is the whole
+delta. Any future edit that reaches an executed line, however small it looks, requires a re-run —
+that is the standing rule, and this is a stated exception to its letter, not a loophole in it.
 
 **What this guard, and these re-runs, do NOT prove.** The predicate accepts a well-formed,
 worktree-prefixed planner path — that is a fact about the `if` statement, checked directly (see

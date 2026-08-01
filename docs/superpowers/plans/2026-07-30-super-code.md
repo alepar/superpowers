@@ -1,5 +1,7 @@
 # super-code Implementation Plan
 
+> Note: the skill named super-plan here was renamed super-design on 2026-07-31.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Build `skills/super-code/` — the fork's autonomous beads-driven execution capability as its own skill, per `docs/superpowers/specs/2026-07-30-super-code-design.md` — then rewire its callers.

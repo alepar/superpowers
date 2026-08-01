@@ -1,5 +1,7 @@
 # super-roast Implementation Plan
 
+> Note: the skill named super-plan here was renamed super-design on 2026-07-31.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Build `skills/super-roast/` — a dual-mode (design/PR) adversarial review skill per `docs/superpowers/specs/2026-07-29-super-roast-design.md` — validate it, then replace `skills/roast/`.

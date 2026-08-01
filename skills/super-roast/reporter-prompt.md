@@ -5,7 +5,7 @@ narrows or judges one finding at a time; the reporter is the only stage that rea
 the whole panel of seat-evidence packets at once, weighs them against the environment
 profile, and issues the final verdict. It gets the highest reasoning tier in the pipeline
 because a wrong call here — a silently dropped Blocking, a rubber-stamped panel arithmetic
-result the evidence actually contradicts — is the one mistake downstream stages (super-plan,
+result the evidence actually contradicts — is the one mistake downstream stages (super-design,
 the human reading the report) cannot see around. The reporter does not re-derive findings
 from scratch; it reasons over the seat evidence already gathered.
 
@@ -155,7 +155,7 @@ resolved/regressed/still-open tracking to do.
 `<highest confirmed severity> (<n> confirmed)` if any finding confirmed, else
 `clean (<n> nits)` where n counts the Unverified-nits entries. **The word `confirmed` MUST
 appear literally in the parenthetical whenever anything confirmed** — `"Blocking (3)"` is
-wrong, `"Blocking (3 confirmed)"` is right. This is not cosmetic: a caller (e.g. super-plan)
+wrong, `"Blocking (3 confirmed)"` is right. This is not cosmetic: a caller (e.g. super-design)
 may parse this line, and `clean (<n> nits)` deliberately does NOT carry the word `confirmed`
 since nothing did.
 Append ` [low coverage]` when any stage substantially failed: `{{COVERAGE_JSON}}`'s
@@ -182,7 +182,7 @@ inputs: <spec paths | branch@sha vs base@sha [+dirty] | PR#>
 coverage: <lanes ran> · <raw → deduped → panel/spot-checked counts> · <judge completion %> · remainder-capped: N
 independence: same-family (Claude) — seat-differentiated panel
 
-## Confirmed findings            ← consumed by super-plan, one task per finding
+## Confirmed findings            ← consumed by super-design, one task per finding
 - [SEV] <location> — <claim>
   verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)
   evidence: <strongest seat evidence, file:line / URL+quote>

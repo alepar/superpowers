@@ -63,7 +63,7 @@ engine script: **`./super-roast-workflow.md`**.
 5. **Judges (sonnet, tiered)** — see "Tiered verification" below. See `./judge-seat-prompts.md`.
 6. **Reporter (fable, 1)** — issues final verdicts, applies the environment-aware severity
    floors, and writes the report. See `./reporter-prompt.md` and Output below.
-7. **Handoff** — report only; the caller (e.g. `super-plan`) decides whether to loop a fix pass
+7. **Handoff** — report only; the caller (e.g. `super-design`) decides whether to loop a fix pass
    and re-roast. Auto re-roast is scoped to what the fix touched, capped at 3 iterations, and
    stops early on no progress; both the cap-out and the clean exit **pause for the human** —
    super-roast never declares its own loop finished.
@@ -133,7 +133,7 @@ inputs: <spec paths | branch@sha vs base@sha [+dirty] | PR#>
 coverage: <lanes ran> · <raw → deduped → panel/spot-checked counts> · <judge completion %> · remainder-capped: N
 independence: same-family (Claude) — seat-differentiated panel
 
-## Confirmed findings            ← consumed by super-plan, one task per finding
+## Confirmed findings            ← consumed by super-design, one task per finding
 - [SEV] <location> — <claim>
   verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)
   evidence: <strongest seat evidence, file:line / URL+quote>
@@ -153,6 +153,7 @@ independence: same-family (Claude) — seat-differentiated panel
 The report is written to `docs/superpowers/reviews/YYYY-MM-DD-<topic>-roast-N.md` (N = iteration)
 by the orchestrator, after the engine returns `reportMarkdown` — the pipeline itself writes
 nothing to the repo.
+- (User preferences for report location override this default — `super-auto` supplies its run directory.)
 
 **The two caps lose findings differently, and the report says so differently.** `beyondPanelCap`
 (severe candidates the judge panel never reached) are listed individually under "## Not verified
@@ -186,7 +187,7 @@ Full template and field semantics: `./reporter-prompt.md`.
   current iteration's evidence differs *materially* from what the prior report cited, and the
   reconsideration explicitly cites that specific new evidence. No new evidence, no reopening.
 - Edit the artifact or create tasks — super-roast is **report-only**; the caller (human or
-  `super-plan`) decides what happens next.
+  `super-design`) decides what happens next.
 - Guess the mode on ambiguous input — ask.
 - Report a clean verdict when scouts or judges failed to complete — that's
   `clean (n nits) [low coverage]`, not a clearance.
@@ -207,7 +208,7 @@ instead of silently applying it.
 
 - **superpowers:brainstorming** — offers `super-roast` (design mode) as an optional gate after
   the spec is written, before the implementation handoff.
-- **super-plan** — consumes the report to decide on a scoped fix + re-roast loop (capped,
+- **super-design** — consumes the report to decide on a scoped fix + re-roast loop (capped,
   human-paused at both exits).
 - **superpowers:requesting-code-review** — a lighter-weight, non-adversarial code review; use
   `super-roast` (PR mode) when you want adversarial defect-hunting with verified findings

@@ -1,5 +1,7 @@
 # super-auto Implementation Plan
 
+> Note: the skill named super-plan here was renamed super-design on 2026-07-31.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Build `skills/super-auto/` — a sequencing skill that drives a feature from a raw idea to finished code by invoking `brainstorming` → `super-plan` → `super-roast` (design) → `super-code` → `super-roast` (PR) behind four flags.

@@ -94,7 +94,7 @@ fork's *intent* is re-expressed inside it — the same rule used to resolve the 
 
 ## §4 Callers
 
-- **`skills/super-plan/SKILL.md` (lines 148, 183)** — currently hands off to
+- **`skills/super-design/SKILL.md` (lines 148, 183)** — currently hands off to
   `superpowers:subagent-driven-development` expecting a beads mode that no longer exists. Rewire:
   invoke `superpowers:super-code` when there is a beads epic; fall back to
   `superpowers:subagent-driven-development` (plan-file mode) in no-beads mode.
