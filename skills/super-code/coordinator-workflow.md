@@ -293,8 +293,8 @@ wrote or read this file — everything below described intent, not behavior. `re
   the authority on whether the bead is actually closed, and if `bd close` genuinely succeeded the id
   is already absent from `bd ready`'s output; `bd ready`'s own exclusion, not this script's resume
   reconstruction, is what actually avoids redoing merged work. **The one behavioral exception to
-  "reporting only":** a nonzero *resumed* `completed.length` still changes what happens at Finish —
-  the opus `final-review` dispatch is gated on `completed.length` being nonzero, and Resume seeds
+  "reporting only":** a nonzero *resumed* `completed.size` still changes what happens at Finish —
+  the opus `final-review` dispatch is gated on `completed.size` being nonzero, and Resume seeds
   that count from prior-run ledger lines before this run's own loop ever executes, so a
   re-invocation whose own rounds land zero new merges can still dispatch the whole-epic final review
   solely because an earlier run's work is recorded there. (Fix-round-1, review: this used to also filter the Ready-phase `ids` by
@@ -642,7 +642,7 @@ re-adopt from a stale reading. None of them is an open gap.
    resume's only dispatch-gating, behavior-affecting reconstruction after the earlier relaxation is
    `pendingRetry`; `completed`/`parked` are otherwise informational (reporting and the no-progress
    guard's baseline). The one behavioral use of resumed `completed` that is easy to miss: the
-   Finish-phase final-review gate reads `completed.length` *after* Resume has already seeded it, so
+   Finish-phase final-review gate reads `completed.size` *after* Resume has already seeded it, so
    a re-invocation that lands zero new merges of its own still dispatches the opus whole-epic
    review, solely because an earlier run's completions are recorded in the ledger.
 2. **The `sp:` labelling precondition used to be stated nowhere, and the Ready phase trusted it as
@@ -691,7 +691,7 @@ re-adopt from a stale reading. None of them is an open gap.
    it with these ids: the fast path is the bare `--label sp:${epicId}` query, and the structural
    fallback needs no naming convention at all. The canonical args are therefore unchanged **on id
    grounds** — but this round was still a structural edit, so all three baselines were re-run
-   against it regardless (`wf_cb63ecb9-492` 31/0, `wf_caf8953e-374` 24/0, `wf_f18d307b-83e` 23/0;
+   against it regardless (see the revision table under "dryRun policy" for that round's figures;
    see each scenario's "Confirmed against the scope-fix script" writeup). Unchanged args are not a
    licence to carry a run-id across a diff. Flagged here so a future reader still doesn't copy the
    flat id scheme as a template for a real epic's ids.
@@ -1044,9 +1044,9 @@ for (const [id, kind] of resumed) {
   // `parked` are otherwise purely informational — `bd ready` alone is what actually prevents
   // redoing merged work, by excluding a genuinely-closed bead from its own output, with or without
   // this script's resume reconstruction. The one exception, easy to miss: a nonzero *resumed*
-  // `completed.length` still changes behavior at Finish (below) — it makes the opus
+  // `completed.size` still changes behavior at Finish (below) — it makes the opus
   // `final-review` dispatch even on a re-invocation whose OWN rounds land zero new merges, since
-  // that gate reads `completed.length` after Resume has already seeded it from prior-run ledger
+  // that gate reads `completed.size` after Resume has already seeded it from prior-run ledger
   // lines, not only from this run's own `completed.push` calls.
 }
 if (resumed.size) log(`resume: reconstructed from ${ledgerPath} — ${completed.size} complete (${parked.size} parked), ${pendingRetry.size} pending retry, ${blockedHistoricallyCount} previously-BLOCKED id(s) found (not re-quarantined — each gets a fresh attempt this run; see the resume-reconstruction comment above)`)
@@ -1286,10 +1286,14 @@ while (true) {
       // shape (`Task <N>: minor (deferred): <one-liner>`) is one line per minor, so this is a loop,
       // not one bundled line: the Finish-phase reviewer triages them individually. Tasks with no
       // minors dispatch nothing extra.
-      for (const m2 of (r.minors ?? [])) {
+      // Stub key is qualified by INDEX, not by the minor's text: a key built from free text an
+      // agent produced is unpredictable, so no dryRun args block could ever declare it (the first
+      // run of this loop failed exactly that way). Same convention as `fix:<id>:<round>`.
+      const taskMinors = r.minors ?? []
+      for (let mi = 0; mi < taskMinors.length; mi++) {
         await agent(pick(() => ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName,
-            ledgerLine(r.n, r.id, `minor (deferred): ${m2}`)),
-          `ledger-minor:${r.id}:${m2}`), { label: `ledger-minor:${r.id}`, phase: 'Integrate', model: model('mechanical') })
+            ledgerLine(r.n, r.id, `minor (deferred): ${taskMinors[mi]}`)),
+          `ledger-minor:${r.id}:${mi + 1}`), { label: `ledger-minor:${r.id}:${mi + 1}`, phase: 'Integrate', model: model('mechanical') })
       }
       if (r.parkRuling) { parked.add(r.id); log(`PARKED ${r.id}: ${r.parkRuling} (open finding, merged anyway: ${r.finding})`) }
       // I1: mechanical dispatch appends the completion line — SKILL.md's own line shape
@@ -1350,7 +1354,7 @@ while (true) {
 }
 
 phase('Finish')
-log(`Completed: ${completed.size}. Escalated: ${escalated.size}. Pending retry: ${pendingRetry.size}. Parked (merged with an overruled finding): ${parked.length}.${stalled ? ' Stalled: true — see the STALLED log line above.' : ''}`)
+log(`Completed: ${completed.size}. Escalated: ${escalated.size}. Pending retry: ${pendingRetry.size}. Parked (merged with an overruled finding): ${parked.size}.${stalled ? ' Stalled: true — see the STALLED log line above.' : ''}`)
 const review = completed.size
   ? await agent(pick(() => `Final whole-epic review of integration branch ${integrationBranch} for epic ${epicId}. Read the ledger at ${ledgerPath} first: its \`minor (deferred)\` lines are findings earlier reviews raised and deliberately did not fix, and its \`parked\` lines are findings an adjudicator overruled to let a task merge. Triage both — say which must be addressed before this branch lands. They are the two categories no per-task review will raise again.`, 'final-review'),
       { label: 'final-review', phase: 'Finish', model: model('finalReview') })
@@ -1799,6 +1803,7 @@ async function reviewAndFix(im, planPath) {
   // across every hop, as a second line of defense on top of reReviewPrompt's now-explicit "report
   // finding on NEEDS_FIX" contract (the two together mean a single omitted report can't lose it).
   let lastFinding
+  let minors = []   // limitation 4: deferred minors, accumulated across every round of this task
   const carried = result => {
     // `||`, not `??`: `??` only falls back on null/undefined, so an EMPTY-STRING finding (which
     // reReviewPrompt's own contract explicitly permits on a clean verdict — "omit or leave it
@@ -1975,7 +1980,8 @@ narratives that used to accompany each row are in git history; nothing here depe
 | post-Task-5 (ledger, concurrency, per-epic workspace) | `wf_b337b535-bd4` 31/0 | `wf_453a6604-52e` 24/0 | `wf_941e256b-10b` 23/0 |
 | post-fix-round-2 (divergence-guard predicate) | `wf_fc56493c-a69` 31/0 | `wf_18710e4f-50a` 24/0 | `wf_1e32bcd1-71f` 23/0 |
 | final fix round (brief idempotence, merge-base) | `wf_ea0a2284-96b` 31/0 | `wf_3c881af8-70b` 24/0 | `wf_ac3e6fae-171` 23/0 |
-| **scope fix — CURRENT** | **`wf_cb63ecb9-492` 31/0** | **`wf_caf8953e-374` 24/0** | **`wf_f18d307b-83e` 23/0** |
+| scope fix | `wf_cb63ecb9-492` 31/0 | `wf_caf8953e-374` 24/0 | `wf_f18d307b-83e` 23/0 |
+| **limitations fix (Sets, guard, minors, merge range) — CURRENT** | **`wf_97164f71-a3c` 32/0** | **`wf_527ad491-790` 24/0** | **`wf_4203efd4-84d` 23/0** |
 
 Two runs are deliberately absent from the table because neither is a baseline. `wf_171ab5c1-339`
 executed against a script whose return value had no `parked` array at all, so it is not evidence
@@ -2257,7 +2263,7 @@ untested by any scenario in this doc — inspection-only, same as C-1/C-3 above.
   `brief` 4 + `implement` 4 + `review` 3 + `fix` 1 + `re-review` 1 + `merge` 3 + `ledger-append` 4
   (`bd-101`, `bd-102`, `bd-103`, `bd-104` — one per terminal outcome) + `triage` 2 + `notify` 1 +
   `clarify` 1 + `final-review` 1 = **31 agent calls, 0 errors** (`final-review` dispatches because
-  `completed.length` is 2, not 0) — **confirmed by re-run**, see below; this was computed by hand
+  `completed.size` is 2, not 0) — **confirmed by re-run**, see below; this was computed by hand
   before that run and matched exactly. The pre-Task-5 script's confirmed count was 26 (see the
   superseded baseline below) — the +5 is exactly the new `read-ledger` (1) and `ledger-append` (4)
   dispatches; nothing else in this scenario's topology changed.
@@ -2279,8 +2285,12 @@ re-run before committing the fix.
 
 ### Baselines for the canonical scenario (recorded, not illustrative)
 
-**Confirmed against the scope-fix script — the current baseline.** Run `wf_cb63ecb9-492`:
-**31 agents dispatched, 0 errors**, terminal shape `{completed:["bd-101","bd-102"],
+**Confirmed against the current script.** Run `wf_97164f71-a3c`: **32 agents dispatched, 0 errors**
+— one MORE than the 31 every prior revision hit, and the +1 is load-bearing: it is the new
+`ledger-minor:bd-101:1` dispatch, firing because this scenario's `review:bd-101` stub now returns a
+`minors` array. That is a real assertion about the deferred-minor mechanism, not a topology
+accident — had the writer been skipped, the run would have landed back on 31. Superseded detail
+from the scope-fix run (`wf_cb63ecb9-492`, 31/0), terminal shape `{completed:["bd-101","bd-102"],
 escalated:["bd-103"], pendingRetry:["bd-104"], parked:[], stalled:false}` — identical count and
 shape to its predecessor (see the revision table under "dryRun policy"). The scope fix extracted
 `treeMembershipTest(epicId)` out of `closeEpicsPrompt`, added `readyPrompt(epicId)` (labelled
@@ -2346,7 +2356,7 @@ those two functions' definitions directly. **The same caveat applies a fourth ti
 status guard and the I6 no-progress guard**: both are plain JS `if` checks, not behind `pick()`, so
 a real run exercises the actual branch (this scenario's `bd-104` genuinely never reaches
 `review:bd-104`) — but the no-progress guard specifically is **not exercised by this scenario at
-all**, since `bd-101`/`bd-102` merge in round 1 (real progress), so `completed.length` grows and
+all**, since `bd-101`/`bd-102` merge in round 1 (real progress), so `completed.size` grows and
 the guard's condition is never true. Proving the no-progress guard actually stops a spinning run
 requires a *separate* scenario — an all-RESOLVE-no-merge round — which this canonical scenario
 deliberately does not attempt to also be. **The same caveat applies a fifth time, to C-1's sticky
@@ -2365,7 +2375,7 @@ record; journals themselves are not guaranteed to remain inspectable. A future m
 re-verifies the current baseline by re-running the Workflow tool with the `args` below and
 recording the new run's figures here — not by going looking for any prior run's journal.
 
-The current baseline (`wf_cb63ecb9-492`, 31 agents, 0 errors — see "Confirmed against the scope-fix
+The current baseline (`wf_97164f71-a3c`, 32 agents, 0 errors — see "Confirmed against the current
 script" above) is verified against the scope-fix script, the most recent structural edit. To
 reproduce it, or to re-verify after any future structural edit, run the Workflow tool with this
 script and this `args` block:
@@ -2399,13 +2409,14 @@ script and this `args` block:
       "implement:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-102\",\"n\":2,\"status\":\"IMPLEMENTED\",\"files\":[\"src/b.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-102\"}",
       "implement:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-103\",\"n\":3,\"status\":\"IMPLEMENTED\",\"files\":[\"src/a.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-103\"}",
       "implement:bd-104": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-104\",\"n\":4,\"status\":\"BLOCKED\",\"files\":[\"src/c.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-104\",\"blockerBead\":\"bd-109\"}",
-      "review:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"NEEDS_FIX\",\"files\":[\"src/a.js\"],\"finding\":\"missing null check on parsed input in src/a.js:42\"}",
+      "review:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"NEEDS_FIX\",\"files\":[\"src/a.js\"],\"finding\":\"missing null check on parsed input in src/a.js:42\",\"minors\":[\"variable name x in src/a.js:17 is uninformative\"]}",
       "review:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-102\",\"n\":2,\"status\":\"CLEAN\",\"files\":[\"src/b.js\"]}",
       "review:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-103\",\"n\":3,\"status\":\"CLEAN\",\"files\":[\"src/a.js\"]}",
       "fix:bd-101:1": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/a.js\"]}",
       "re-review:bd-101:1": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"CLEAN\"}",
       "merge:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"merged\":true,\"head\":\"a1a1a1a1111111111111111111111111111111\",\"mergeBase\":\"aaaaaaa1111111111111111111111111111111\"}",
       "ledger-append:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "ledger-minor:bd-101:1": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "merge:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-102\",\"merged\":true,\"head\":\"b2b2b2b2222222222222222222222222222222\",\"mergeBase\":\"bbbbbbb2222222222222222222222222222222\"}",
       "ledger-append:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "merge:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-103\",\"merged\":false,\"blockerBead\":\"bd-108\"}",
@@ -2425,8 +2436,8 @@ If a future structural edit changes this script, re-run with these args, confirm
 update it deliberately alongside the edit that changed it), and replace the figures above — same
 discipline as `super-roast`'s "Passing baseline (recorded, not illustrative)" sections. Four structural edits have
 forced exactly that re-run, and each landed on the same count — see the revision table under "dryRun
-policy" for the full sequence. The CURRENT confirmed shape is **31 agent calls, 0 errors** (run
-`wf_cb63ecb9-492`, see "Confirmed against the scope-fix script" above — read that writeup's own
+policy" for the full sequence. The CURRENT confirmed shape is **32 agent calls, 0 errors** (run
+`wf_97164f71-a3c`, see "Confirmed against the current script" above — read that writeup's own
 caveat before citing this number for anything beyond dispatch-count/topology).
 
 ## Cap-tripping dryRun scenario (separate baseline)
@@ -2475,11 +2486,11 @@ reading `reviewAndFix`'s definition directly (the loop condition is `rv.status !
 | `ledger-append:bd-201` | `{appended:true}` | I1: `handleBlocker`'s ESCALATE branch appends `Task 1 (bd-201): BLOCKED — <detail>` — the breaker-cap BLOCKED case reaches the ledger through the SAME `handleBlocker` write every other blocker trigger uses, not a special-cased write inside `reviewAndFix` |
 
 **No `merge:bd-201` and no `final-review` key exist in this scenario's args** — both are part of
-the test. `bd-201` never reaches `mergePrompt` (it's BLOCKED, never CLEAN); `completed.length` stays
+the test. `bd-201` never reaches `mergePrompt` (it's BLOCKED, never CLEAN); `completed.size` stays
 `0` for the whole run, so the `? ... : 'no work landed'` ternary in the Finish phase takes its
 `false` branch and `final-review` is never dispatched. If either key is ever requested under this
 scenario, something regressed: `merge:bd-201` would mean a BLOCKED task reached the merge gate;
-`final-review` would mean `completed.length` was nonzero despite nothing merging.
+`final-review` would mean `completed.size` was nonzero despite nothing merging.
 
 **Assertions:**
 - Exactly 5 `fix:bd-201:<round>` / `re-review:bd-201:<round>` pairs dispatch, rounds 1 through 5 —
@@ -2501,12 +2512,13 @@ scenario, something regressed: `merge:bd-201` would mean a BLOCKED task reached 
   `brief` 1 + `implement` 1 + `review` 1 + `fix` 5 + `re-review` 5 + `adjudicate` 1 +
   `breaker-blocker` 1 + `triage` 1 + `notify` 1 + `ledger-append` 1 (`bd-201`) = **24 agent calls,
   0 errors** — and, distinctly from every other scenario in this doc, **no `final-review`
-  dispatch**, since `completed.length` is `0`) — **confirmed by re-run**, see below; this was
+  dispatch**, since `completed.size` is `0`) — **confirmed by re-run**, see below; this was
   computed by hand before that run and matched exactly. The pre-Task-5 confirmed count was 22
   (below); the +2 is exactly `read-ledger` and `ledger-append:bd-201`.
 
-**Confirmed against the scope-fix script — the current baseline.** Run `wf_caf8953e-374`:
-**24 agents dispatched, 0 errors**, terminal shape `{completed:[], escalated:["bd-201"],
+**Confirmed against the current script.** Run `wf_527ad491-790`: **24 agents dispatched, 0 errors**
+— unchanged, as expected: `bd-201` never merges, so neither the deferred-minor writer nor the
+merge-gate commit-range check is ever reached. Superseded detail (`wf_caf8953e-374`, 24/0), terminal shape `{completed:[], escalated:["bd-201"],
 pendingRetry:[], parked:[], stalled:false}`, review "no work landed" — identical to its predecessor (see the revision table under "dryRun policy"). What this re-run adds over the canonical
 one is narrow and specific: the blocker-bead-planning fix was prose-only precisely so that `breakerBlockerPrompt`
 and the two other bead-creation builders stayed byte-for-byte unchanged, and this is the only
@@ -2562,7 +2574,7 @@ If a future structural edit changes this script, re-run with these args, confirm
 update it deliberately alongside the edit that changed it), and replace the figures above — same
 discipline as the canonical scenario's own baseline. Every structural edit so far has forced
 that re-run without moving the count — see the revision table under "dryRun policy". The CURRENT
-confirmed shape is **24 agent calls, 0 errors** (run `wf_caf8953e-374`, see "Confirmed against the
+confirmed shape is **24 agent calls, 0 errors** (run `wf_527ad491-790`, see "Confirmed against the
 scope-fix script" above).
 
 ## PARK dryRun scenario (separate baseline)
@@ -2608,7 +2620,7 @@ that; it is, and remains, verified only by reading the `if` statement itself.
 | `adjudicate:bd-301` | `{id:"bd-301",decision:"PARK",ruling:"style-only finding, not load-bearing and doesn't reveal a plan defect; safe to merge as-is"}` | **the PARK arm** — the one branch neither other scenario exercises |
 | `merge:bd-301` | `{id:"bd-301",merged:true,head:"<40-char-sha>",mergeBase:"<40-char-sha>"}` | the PARK ruling reaches `mergePrompt` — a task with a known-open finding merging, the ONE legitimate path for that in this script; `head` (fix-round-1) and `mergeBase` (Fix 3, final fix round) together render the ledger's commit-range line below |
 | `ledger-append:bd-301` | `{appended:true}` | I1: the merge-gate `ledger-append` dispatch — `Task 1 (bd-301): complete (commits <mergeBase7>..<head7>, 1 parked — ruling: ... — finding: ...)`, SKILL.md's `<K> parked` completion-line variant (fix-round-1: now also carries `r.finding`, not only the ruling, and the commit range instead of the bare word "merged"; Fix 3, final fix round: the range's first half is `mergeBase`, not `base`) |
-| `final-review` | `{summary:"stub: 1/1 task merged; bd-301 parked with a ruling",verdict:"conditional-pass"}` | dispatched because `completed.length` is 1, not 0 |
+| `final-review` | `{summary:"stub: 1/1 task merged; bd-301 parked with a ruling",verdict:"conditional-pass"}` | dispatched because `completed.size` is 1, not 0 |
 
 **No `breaker-blocker:bd-301`, `triage:bd-301`, or `notify:bd-301` key exists in this scenario's
 args** — all three are part of the test. A PARK ruling never reaches `handleBlocker` at all (it
@@ -2634,8 +2646,10 @@ to short-circuit the blocker path.
   pre-Task-5 confirmed count was 21 (below); the +2 is exactly `read-ledger` and
   `ledger-append:bd-301`.
 
-**Confirmed against the scope-fix script — the current baseline.** Run `wf_f18d307b-83e`:
-**23 agents dispatched, 0 errors**, terminal shape `{completed:["bd-301"], escalated:[],
+**Confirmed against the current script.** Run `wf_4203efd4-84d`: **23 agents dispatched, 0 errors**
+— unchanged, and this run newly confirms the finish log reads `Parked (merged with an overruled
+finding): 1` rather than `undefined`, which is what the Set conversion broke and this re-run caught.
+Superseded detail (`wf_f18d307b-83e`, 23/0), terminal shape `{completed:["bd-301"], escalated:[],
 pendingRetry:[], parked:["bd-301"], stalled:false}` — identical to its predecessor (see the revision table
 under "dryRun policy"). Its logs carry the PARK ruling and the merge-gate `PARKED bd-301: …
 (open finding, merged anyway: …)` line, so the parked-with-a-ruling path survived the edit
@@ -2643,7 +2657,7 @@ intact. The scope fix touched neither adjudication nor the merge gate; this run 
 the document's own rule requires it, not because a change was expected.
 
 **All three scenarios were re-run against the scope-fix script and land at the same three counts**
-(`wf_cb63ecb9-492` 31/0, `wf_caf8953e-374` 24/0, `wf_f18d307b-83e` 23/0). What an unchanged count
+(`wf_97164f71-a3c` 32/0, `wf_527ad491-790` 24/0, `wf_4203efd4-84d` 23/0). What a count that holds
 across all three does and does not license is stated once, under "dryRun policy" — read it there
 before citing any of these figures.
 
@@ -2729,6 +2743,6 @@ discipline as the other two scenarios' baselines. Every structural edit so far h
 re-run without moving the count — see the revision table under "dryRun policy". One of those rounds
 touched only this scenario's data (adding `mergeBase` to the `merge:bd-301` stub) and was re-run
 anyway, because "recorded, not illustrative" does not have a too-small-to-matter exemption. The
-CURRENT confirmed shape is **23 agent calls, 0 errors** (run `wf_f18d307b-83e`, see "Confirmed
+CURRENT confirmed shape is **23 agent calls, 0 errors** (run `wf_4203efd4-84d`, see "Confirmed
 against the scope-fix script" above). The 21/0 figure above `wf_941e256b-10b` remains pre-Task-5
 history, unaffected by this restatement.
