@@ -39,7 +39,9 @@ A caller supplies these; there are no other inputs, and none of them are inferab
 | who owns the finish | **state it explicitly if the caller owns it.** There is no config flag. Left unsaid, this skill runs its own Finish: it merges the integration branch and deletes the worktree — taking the ledger and the per-task reports with it, which is where a caller's report gets its sources |
 | `config.models`, `config.concurrency` | optional; see Model tiering and Parallelism below for what they default to and why an explicit map is preferred |
 
-It returns six buckets — `completed`, `escalated`, `pendingRetry`, `parked`, `stalled`, `review`.
+It returns six buckets — `completed`, `escalated`, `pendingRetry`, `parked`, `stalled`, `review` —
+covering **the epic's whole tree as of return, not only the tasks this invocation dispatched**: a
+resumed epic's previously-closed tasks appear in `completed`.
 Every task lands in exactly one of the first four; `parked` is a modifier on `completed` (merged
 over an overruled review finding), not a fifth outcome. A caller that records run state records
 these verbatim.

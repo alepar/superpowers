@@ -15,6 +15,21 @@ Entered at the root with a goal or a raw idea to design out — no spec exists y
 
 Root vs. nested is **derived, not remembered**: nested iff this invocation was handed a spec directly rather than a goal/idea. Only the root invocation runs the coverage loop (§Coverage) and the final hand-off (§Hand-off). Base case for any invocation: no child qualifies for promotion → this subtree is done.
 
+## Inputs (from a caller)
+
+Beyond the goal or spec itself, a caller may pass any of these; each has exactly one effect, named
+where it lands:
+
+| Input | Effect |
+|---|---|
+| artifact-directory override | §Artifact Location — everything this skill produces goes there |
+| run-state file path | §Run-State File — record each fact as it becomes true |
+| phase token(s) | §Run-State File — written into the run-state file when the named stage begins |
+| design mode (A/B) | relayed to every `brainstorming` invocation, root and nested |
+| autonomous | the loop-exit and qualifier exceptions (§Adversarial Review Loop) fire; gates still ask unless a recorded approval replays (§Run-State File) |
+| skip the roast | §Adversarial Review Loop's offer is pre-declined — skip to hand-off without asking |
+| starting roast round | §Hand-off — resume the cap-3 loop from it rather than from 1 |
+
 ## The Process
 
 1. **Produce the spec** (root only) — invoke `superpowers:brainstorming` on the goal or idea to produce the root spec — §Root Brainstorm. On a re-entry, adopt a spec that already exists — §Re-entry. Nested invocations skip this: they already hold the spec their parent's nested-brainstorm step wrote.
@@ -40,12 +55,6 @@ is done-vs-not: check for the artifact a step would produce before producing it.
 | §Decomposition, children | children already under that epic — decompose only what has none |
 | §Promotion Review | verdicts already applied (`-t epic` + `sp:needs-design`, or `sp:demoted-by-session`) — re-review only undecided children |
 | §The Process step 5 / §Coverage | a recorded gate answer — see §Run-State File |
-
-**Why this is stated rather than left to judgement:** only the subepic cursor (§Durable State) is
-tracker-derived. Steps 1–4 have no such rule, so a literal re-entry re-runs the root brainstorm and
-writes a second dated spec, a second `INDEX.md` row, and — worse — a second root epic with its own
-label, splitting the tree in two with no way to tell which half is real. The tracker already holds
-every fact needed to avoid it; this table just says to look.
 
 **A partially-written artifact is not an adoptable one.** Adopt a spec only if it is committed, and
 an epic only if it carries its own `sp:` label — the label flip and the commit are the "done"
@@ -133,7 +142,8 @@ Runs once the tree has settled (§The Process, step 7).
 Runs once the coverage loop passes (§Coverage), before hand-off. Offered once, at the root, the
 same offer brainstorming makes on a single un-decomposed spec — a decomposed tree gets it here
 instead, after the tree has settled, since that's the first point a full design exists to review.
-Opt-in; declining goes straight to hand-off.
+Opt-in; declining goes straight to hand-off — and a caller may pre-decline it (§Inputs), which
+skips the offer without asking anyone.
 
 On accept, invoke `superpowers:super-roast` (design mode) on the settled tree. **If this invocation
 was given an artifact-directory override** (see §Artifact Location), relay it to `super-roast` as

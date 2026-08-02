@@ -28,27 +28,14 @@ a resume can silently redo work or violate a decision that was already made.
    decision the run is already partway through acting on.
 
 2. **Current phase** — one of `design | roast-design | code | roast-code
-   | fix-loop | report | finish | done`. **A phase that does not run is still
-   written, with `(skipped)` appended**, whether it was skipped by a flag or had
-   no work to do — `fix-loop (skipped)` when no confirmed findings reached it,
-   which is the common case on a clean roast and the only case when a roast was
-   skipped. Restricting the marker to flag-skips would reproduce the same
-   never-reached-or-skipped ambiguity one phase over — `phase: roast-code (skipped)` — and only
-   then advanced. Without this, `skipCodeRoast` makes `phase` jump `code` → `report`
-   and a reader cannot tell skipped-by-flag from never-reached; the flags are durable
-   and could be cross-referenced, but a resume should not have to infer a phase's fate
-   from a different field. The same applies to `roast-design` under `skipPlanRoast`. This is the resume pointer: it says which
-   stage of the pipeline was in flight when the run last stopped, so re-entry knows
-   what to do next instead of what to do first. The set names exactly `SKILL.md`'s
-   seven phases (`design`=1 … `finish`=7), plus `done`: `finish` means phase 7
-   (merge + cleanup) started but hasn't been confirmed complete — a resume reading
-   `finish` must resume or verify the merge, not treat the run as over; `done` means
-   phase 7 actually completed — the human answered the menu, whichever option they
-   chose. "Keep the branch as-is" completes phase 7 as surely as a merge does; the
-   run is over either way, and a resume must not re-enter it looking for a merge. Reading `done` when phase 7 never ran (skipping
-   straight from `report` to `done`) is exactly the failure this enumeration exists
-   to rule out — it would resume as "nothing left to do" while the integration
-   branch sits unmerged.
+   | fix-loop | report | finish | done`, matching `SKILL.md`'s seven phases plus
+   `done`. A phase that does not run — skipped by flag, or with no work to do
+   (`fix-loop` after a clean roast) — is still written, with `(skipped)`
+   appended, then advanced past: a bare jump is unreadable as
+   skipped-versus-never-reached. `finish` means phase 7 started but is not
+   confirmed complete — a resume reading it must verify the merge, not treat the
+   run as over. `done` means the human answered the menu, whichever option they
+   chose; "keep the branch as-is" ends the run as surely as a merge.
 
    **A stall at phase 1–5 never advances `phase` to `report`** — it still writes
    `report.md` (`status: stalled at phase <phase>`, naming whatever `phase` already
@@ -128,10 +115,6 @@ a resume can silently redo work or violate a decision that was already made.
    > A cap that lives in session memory is not a cap: if a restart resets the
    > counter, the cap-3 loop can run indefinitely.
 
-   Concretely: an autonomous run that restarts mid-roast-loop with the round
-   counter reset to zero will run the fix-and-reroast cycle for another 3 rounds,
-   and another 3 after the next restart, without limit — burning the most
-   expensive model in the pipeline on a loop that was supposed to terminate.
    Persisting `roastDesignRound` / `roastCodeRound` in `run.md` is what makes the
    cap durable across any restart, not just within one session.
 
@@ -211,23 +194,7 @@ codeBuckets:
   review: CLEAN
 ```
 
-Every field above is one of the seven required contents: `flags` and `phase` are
-items 1 and 2; `idea`/`spec`/`epic`/`branch`/`base`/`roast-design`/`roast-code` are the
-pointers of item 3 (each one names a path or id, never inline content) —
-`spec`, `roast-design`, and `roast-code` are paths, given relative to the
-run directory as stated above; `epic` and `branch` are identifiers, not paths,
-so the relative-path rule doesn't apply to them — `roastDesignRound`/
-`roastCodeRound` are item 5; `parked` is item 4, with each entry naming its
-source report and its kind (`escalation` / `beyond-cap` / `degraded-verdict`);
-`codeBuckets` is item 6, recorded once, at the phase 3→4 transition; `approvals`
-is item 7, each entry naming the gate and the shape it approved.
-
 ## The resume rule
 
-> On invocation, an existing `run.md` for **this run** means **resume from its recorded phase**, not restart. Re-entry reads the flags and iteration counts
-> from the file and continues; it never re-asks the flags and never resets a
-> counter.
-
-This is the failure the rule exists to prevent: a resumed run that restarts at
-phase 1 re-brainstorms an already-approved spec and re-executes work that has
-already been merged.
+Normative in `SKILL.md` §Resume, restated here only as a pointer: resume from the recorded phase;
+never re-ask the flags, never reset a counter.

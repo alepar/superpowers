@@ -37,8 +37,8 @@ Another skill can invoke brainstorming — on a raw goal, or on a promoted subep
 - **Inherit the session's design mode** (Mode A caller → Mode A here; Mode B → Mode B). The user may override per-invocation with an explicit request.
 - **Context is handed in by the invoking caller**: for a subepic, the parent spec, the chain of ancestor goals, and the specs of already-designed siblings. Open the new spec's `## Goal` with this invocation's local goal, seeded from the caller's rationale.
 - Do **not** re-offer the visual companion, and do **not** offer adversarial review — that is the caller's concern at its own root, not this invocation's.
-- **Skip Mode B's user-review gate** (step 10 / "User Review Gate" below) — the caller owns the Mode B human checkpoints for a tree.
-- Do **not** create a new worktree — `superpowers:using-git-worktrees` is idempotent and just verifies the one already in use.
+- **Skip Mode B's user-review gate** (step 10 / "User Review Gate" below) — the caller owns the Mode B human checkpoints for a tree, and the HARD-GATE above is satisfied at the caller's own approval gate, not skipped.
+- Do **not** create a new worktree — `superpowers:using-git-worktrees` is idempotent and just verifies the one already in use; do not re-run its baseline test suite on a workspace that already passed it this run.
 
 ## Checklist
 

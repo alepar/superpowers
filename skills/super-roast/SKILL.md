@@ -37,6 +37,19 @@ high-stakes reviews pair super-roast with a human or cross-family review.
 **Mode selection:** caller-stated mode wins; otherwise infer from what's obviously being
 reviewed (a spec file path vs. a diff/branch); if genuinely ambiguous, **ask — never guess.**
 
+## Inputs (from a caller)
+
+| Input | Meaning |
+|---|---|
+| mode | `design` or `PR` — see When to Use |
+| the artifact | design mode: a spec file or settled tree; PR mode: `branch@sha` vs `base@sha` — the caller supplies the base to diff against |
+| report-location override | directory the report is written to instead of the default below |
+| iteration `N` | printed in the report header (`iteration: N of 3`); this skill is stateless, so the caller carries the count |
+| prior report path (rounds ≥ 2) | lets the run skip re-litigating what `## Rejected (with reason)` already settled |
+| autonomous (optional) | see the Handoff exception in The Process step 7 |
+
+Only mode and the artifact are required; a bare invocation gets defaults for the rest.
+
 ## The Process
 
 Run via the `Workflow` tool when available (subagent fan-out otherwise; inline as last resort —
@@ -66,7 +79,10 @@ engine script: **`./super-roast-workflow.md`**.
 7. **Handoff** — report only; the caller (e.g. `super-design`) decides whether to loop a fix pass
    and re-roast. Auto re-roast is scoped to what the fix touched, capped at 3 iterations, and
    stops early on no progress; both the cap-out and the clean exit **pause for the human** —
-   super-roast never declares its own loop finished.
+   super-roast never declares its own loop finished. **Exception when the caller states the run is
+   autonomous:** return the same summary to the caller instead of pausing — the caller parks it and
+   surfaces it in its own report. Still never declare the loop finished; report to a caller rather
+   than a human.
 
 ### Design-mode lens widening
 
@@ -119,9 +135,6 @@ budget:
 - **Nit / FYI candidates** get a **single refute-seat spot check.**
 - A spot check that returns **CONFIRM at Blocking/Should-fix** is under-graded — it's
   **promoted** to the full three-seat panel.
-
-If you're migrating from `roast` and looking for a depth/cap setting: it isn't here by design —
-severity-driven tiering replaces it.
 
 ### Report format
 

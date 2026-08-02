@@ -67,11 +67,12 @@ record exists is the same lie as reporting `clean` over an unresolved escalation
 adversarially reviewed, so zero Blocking and zero escalations means "never
 checked," not "checked and clean." With both flags set and nothing else
 wrong, the status line is `clean [degraded: plan roast skipped, code roast
-skipped]`, never bare `clean`. That configuration is what the cheap end-to-end
-validation run uses, so it is the first status line anyone reading this
-contract's output will see — which is exactly why the `codeBuckets` rule above
-matters: in that configuration the roast-sourced counters are both zero by
-construction, and `codeBuckets` is the only thing left that can tell the truth.
+skipped]`, never bare `clean` — and in that configuration the roast-sourced
+counters are zero by construction, so the `codeBuckets` rule above is the only
+thing left that can tell the truth.
+
+**`codeBuckets.stalled: true` maps to `status: stalled at phase code`** — a stalled `super-code`
+is a stalled run, and no other rule would put it on the status line.
 
 The prohibition: never a bare "done." "Done" says nothing about which of the four
 states above actually happened, and a run that parked Blocking findings, or left
@@ -111,13 +112,9 @@ Two properties of the Smells section are load-bearing and easy to lose in a rewr
 > implementer could not see its way through cleanly. Populating this section means
 > reading those signals back, not re-judging the code from scratch.
 
-> This is the one section that deliberately surfaces work that **passed** review.
-> Every other section can restrict itself to what's still open or what broke. A
-> parked finding cleared the gate — the code is merged, the task is `completed` —
-> but a human reading the diff should still know a judge argued against it and was
-> overruled. Leaving parked-but-passed work out of the report because it "isn't a
-> problem anymore" is exactly how a run with known-argued-over code ends up reading
-> as unremarkable.
+> This is the one section that deliberately surfaces work that **passed** review:
+> a parked finding cleared the gate, but the reader should still know a judge
+> argued against it and was overruled.
 
 ## The sourcing prohibition
 
