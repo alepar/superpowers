@@ -11,9 +11,9 @@ It lives at `docs/superpowers/runs/YYYY-MM-DD-<slug>/run.md` and is committed al
 other artifacts of the run (spec, plan, roast reports). It is not scratch state —
 every field in it is read back on resume and trusted.
 
-## The six required contents
+## The seven required contents
 
-`run.md` MUST hold exactly these six things **as they become known**. At creation,
+`run.md` MUST hold exactly these seven things **as they become known**. At creation,
 before phase 1 runs, only `flags`, `phase`, and `idea` exist — write those three and
 add each of the rest as the phase that produces it returns. Omitted is not the same
 as empty: a resume reading no `epic:` line knows phase 1 never got that far, where
@@ -140,6 +140,28 @@ a resume can silently redo work or violate a decision that was already made.
    not be the one that ran phase `code`. Unrecorded, these buckets exist only in a
    session that may have already compacted or ended by the time `report` runs.
 
+7. **Human approvals already granted, and what each one approved.** The design
+   gates are the human's — but they are the human's **once**. A resumed run replays
+   a recorded approval instead of re-soliciting it; without this, a session that
+   ends after the design was approved comes back and asks for the same approval
+   again, which is the "unattended run stops and re-approves a design it already
+   approved" failure in its purest form.
+
+   **An approval is bound to what it approved, and a record that cannot be checked
+   is not an approval.** Record enough to tell whether the thing changed:
+
+   - `top-split` — the child ids and their `LEAF`/`PROMOTE` verdicts, as approved.
+     On resume, replay only if the current set is identical; if it changed, re-ask
+     and say what changed.
+   - `coverage-round-<N>` — the disposition the human chose for each finding in
+     that round. Replay those; findings a later round newly surfaces are not
+     covered by an earlier round's approval.
+
+   Anything not recorded was never approved. **Never widen a replay into a blanket
+   "the human approved this run"** — that turns one approval into consent for work
+   they never saw, which is the failure mode this record exists to prevent, arrived
+   at from the other direction.
+
 ## File format — worked example
 
 The following is a real `run.md` mid-run: the design phase went through two roast
@@ -163,6 +185,10 @@ roast-code: 2026-08-01-per-tenant-rate-limiter-roast-pr-1.md
 roastDesignRound: 2
 roastCodeRound: 1
 
+approvals:
+- top-split · bd-413 PROMOTE, bd-414 PROMOTE, bd-415 LEAF, bd-416 LEAF
+- coverage-round-1 · GAP "no backpressure path" accepted as leaf bd-417; ORPHAN "metrics exporter" kept, goal element added
+
 parked:
 - 2026-07-31-per-tenant-rate-limiter-roast-design-2.md · escalation · "cache invalidation premise unverified — no valid judge votes"
 - 2026-07-31-per-tenant-rate-limiter-roast-design-2.md · degraded-verdict · "clean [low coverage] — proceeded, not re-roasted"
@@ -177,7 +203,7 @@ codeBuckets:
   review: CLEAN
 ```
 
-Every field above is one of the six required contents: `flags` and `phase` are
+Every field above is one of the seven required contents: `flags` and `phase` are
 items 1 and 2; `spec`/`plan`/`epic`/`branch`/`roast-design`/`roast-code` are the
 pointers of item 3 (each one names a path or id, never inline content) —
 `spec`, `plan`, `roast-design`, and `roast-code` are paths, given relative to the
@@ -185,7 +211,8 @@ run directory as stated above; `epic` and `branch` are identifiers, not paths,
 so the relative-path rule doesn't apply to them — `roastDesignRound`/
 `roastCodeRound` are item 5; `parked` is item 4, with each entry naming its
 source report and its kind (`escalation` / `beyond-cap` / `degraded-verdict`);
-`codeBuckets` is item 6, recorded once, at the phase 3→4 transition.
+`codeBuckets` is item 6, recorded once, at the phase 3→4 transition; `approvals`
+is item 7, each entry naming the gate and the shape it approved.
 
 ## The resume rule
 

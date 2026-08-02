@@ -21,7 +21,7 @@ Root vs. nested is **derived, not remembered**: nested iff this invocation was h
 2. **Decompose** the spec into rough child tasks (title, short description, files-touched hint, blocking deps) — §Decomposition.
 3. **Promotion review** — dispatch a fresh-context reviewer, sanity-check its verdicts, fix any decomposition-verdict `ISSUES` — §Promotion Review.
 4. **Apply promotions** — §Applying Promotions.
-5. **Top-split gate** (root only, both modes) — before any descent, the user approves the top-level split (child list + promotion verdicts). One gate, at the most expensive level.
+5. **Top-split gate** (root only, both modes) — before any descent, the user approves the top-level split (child list + promotion verdicts). One gate, at the most expensive level. If a caller supplied a run-state file and it already records a matching approval, replay it — §Run-State File.
 6. For each promoted child, **in dependency order, depth-first** (a child's entire subtree completes before the next sibling starts, so later siblings can read earlier siblings' finished specs): check the tripwire (§Tripwire), then run its nested brainstorm — §Nested Brainstorms — then invoke `superpowers:super-design` on the spec it wrote; that is the recursion.
 7. **Root only**, once the tree has settled (every subepic designed, every leaf decomposed, no pending promotions): run the coverage loop — §Coverage.
 8. **Root only, optional:** offer `superpowers:super-roast` on the settled tree; on a confirmed-findings verdict, run the fix + auto-re-roast loop — §Adversarial Review Loop.
@@ -100,7 +100,7 @@ Runs once the tree has settled (§The Process, step 7).
 
 **Rounds are incremental:** round N+1 re-runs only the per-subepic passes whose subtrees changed since round N, plus the root pass (always). The loop ends when a round yields zero accepted findings.
 
-**Arbitration:** present deduped findings to the user. Accepted `GAP`: small → leaf task added directly; big → task created → promoted → nested brainstorm → its own super-design subtree (tripwire stays armed). Accepted `ORPHAN`: the user picks delete (scope creep) or add the missing goal element it serves.
+**Arbitration:** present deduped findings to the user — minus any this round already has a recorded disposition for (§Run-State File), which are replayed, not re-asked. Accepted `GAP`: small → leaf task added directly; big → task created → promoted → nested brainstorm → its own super-design subtree (tripwire stays armed). Accepted `ORPHAN`: the user picks delete (scope creep) or add the missing goal element it serves.
 
 **Recall floor & fallback net:** if a pass stays degraded or a round otherwise can't be trusted, downgrade coverage to **advisory** and make the gate a **mandatory human read-through of the goal against the full task tree** — disclose this in the round summary, never silently.
 
@@ -203,6 +203,21 @@ Write these, each as it happens:
 | the roast round count | incremented **per round**, before the next round starts |
 | a parked escalation, beyond-cap item, or verdict qualifier | the round that produced it |
 | the caller's phase token, if it supplied one for this stage | entering that stage |
+| **each human gate answer, with the shape it approved** | the moment it is given |
+
+**Gate answers are recorded, and replayed rather than re-asked.** Before presenting the top-split
+gate (§The Process step 5) or a coverage arbitration round (§Coverage), check the run-state file for
+an answer already given:
+
+- **Top-split:** record the approved child ids with their `LEAF`/`PROMOTE` verdicts. On re-entry,
+  replay only if the current set matches exactly; if a child was added, removed, or re-verdicted,
+  the approval is stale — ask again and say what changed.
+- **Coverage:** record each round's dispositions against that round. Replay them; findings a later
+  round newly surfaces were never approved and still need an answer.
+
+Without this, every resumed run re-asks for approval of a design the human already approved — and a
+caller running unattended stalls on a question it has an answer to. **Never widen a replay into
+"this run was approved":** a recorded answer covers the shape it names and nothing else.
 
 Two rules on top:
 

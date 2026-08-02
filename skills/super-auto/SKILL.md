@@ -93,7 +93,7 @@ whichever aren't already stated in the invocation.
 | plan one-shot | Stated to `super-design`, which relays it to every `brainstorming` iteration it runs (root spec, each subepic) — Mode B instead of Mode A |
 | skip plan roast | Declines **both** design-mode roast offers: `brainstorming`'s on the root spec and `super-design`'s on the settled tree. They are two separate offers; declining only the second still gets the user asked once, after they said to skip it |
 | skip code roast | Omits the final PR-mode roast entirely |
-| autonomous | No query interrupts work in flight once `super-design`'s coverage loop passes; the run still hands back for the integration decision when every bead is done (see Autonomous mode) |
+| autonomous | You are needed at the design gates (top split, coverage arbitration); after the design is approved no query interrupts work in flight, and a resume replays those approvals rather than re-asking. The run still hands back for the integration decision when every bead is done (see Autonomous mode) |
 
 ## Phase sequence
 
@@ -119,7 +119,7 @@ condition exists to close.
 
 ## Autonomous mode
 
-> Autonomy begins the moment `super-design`'s coverage loop passes.
+> Autonomy begins the moment the design is approved — `super-design`'s coverage loop passing is that moment on a first run, and a replayed approval is that moment on a resume.
 
 Not the settled tree, which precedes that loop's own human arbitration (accepting GAPs, deciding
 ORPHANs) — parking can't serve a decision that hasn't been made yet, so phase 2 (running inside the
@@ -141,6 +141,21 @@ not asked, and the road not taken is parked (`run-state.md`'s `degraded-verdict`
 - Escalations and beyond-cap items are parked and surfaced **in the final report**, never
   auto-adjudicated and never queried about mid-run.
 - `super-code` runs in its own autonomous mode.
+
+**Where the zone begins: when the design is approved, not at a phase number.** The design gates
+are the human's — `super-design`'s top-split gate (the child list and its `LEAF`/`PROMOTE` verdicts)
+and its coverage arbitration (accepting `GAP`s, ruling on `ORPHAN`s). Neither is auto-answerable:
+an `ORPHAN` asks whether a task is scope creep or the goal was underspecified, which is not a
+question a run can answer about itself. **Say this when confirming the flags** — `autonomous` means
+"I will need you at the design gates, then it runs to the end unattended," and a user who reads it
+as "no questions at all" is surprised at the first gate.
+
+**They are the human's once, not once per session.** Every gate answer is recorded in `run.md`
+(`./run-state.md` item 7) with the shape it approved. A resumed run **replays** a matching approval
+rather than re-asking — a session that ends after the design was approved must not come back and
+re-solicit it. Replay only on an exact match: if the child set or the verdicts changed since, the
+approval is stale, so ask again and say what changed. Anything unrecorded was never approved, and a
+replay is never widened into "the human approved this run."
 
 **Where the zone ends: when the work is done, not at a phase number.** Autonomy means no question
 interrupts work that is still in progress. It does **not** mean the run merges itself. Once every
