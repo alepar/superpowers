@@ -53,7 +53,7 @@ markers §Durable State already relies on. Anything half-made gets finished, not
 
 ## Root Brainstorm
 
-Root only. Invoke `superpowers:brainstorming` on the goal or raw idea handed to this invocation — no parent spec, no ancestor-goal chain, no sibling specs to hand in, since none exist yet. Brainstorming runs its full process (worktree, mode selection, questions or one-shot reasoning, design doc, self-review, optional adversarial review) and returns with a written, committed spec. Take that spec forward into §Decomposition.
+Root only. Invoke `superpowers:brainstorming` on the goal or raw idea handed to this invocation — no parent spec, no ancestor-goal chain, no sibling specs to hand in, since none exist yet. Brainstorming runs its full process (worktree, mode selection, questions or one-shot reasoning, design doc, self-review) and returns with a written, committed spec. It does **not** offer adversarial review to a caller-invoked run — that offer is this skill's, once, on the settled tree (§Adversarial Review Loop), so a run has exactly one design-mode roast. Take that spec forward into §Decomposition.
 
 ## Decomposition
 
@@ -120,7 +120,7 @@ Runs once the tree has settled (§The Process, step 7).
 
 **Each pass runs 3 independent reviewers** (`./coverage-reviewer-prompt.md`, fresh context, model opus); findings are unioned and deduped before arbitration (union, not majority — a miss costs more than a false positive, and arbitration removes false positives anyway). A pass returning fewer than 3 valid reviews is marked **degraded** in the round summary, never silently accepted.
 
-**Ledger:** every arbitrated finding — accepted, rejected, and flag-sweep — is appended (stable id + one-line description) to `docs/superpowers/specs/<root-slug>-coverage-ledger.md` and committed. Pass its contents to every reviewer; the ledger takes precedence over the flag sweep (an already-arbitrated flagged task is not re-surfaced).
+**Ledger:** every arbitrated finding — accepted, rejected, and flag-sweep — is appended (stable id + one-line description) to the arbitration ledger in the artifact directory (§Artifact Location) and committed. Pass its contents to every reviewer; the ledger takes precedence over the flag sweep (an already-arbitrated flagged task is not re-surfaced).
 
 **Rounds are incremental:** round N+1 re-runs only the per-subepic passes whose subtrees changed since round N, plus the root pass (always). The loop ends when a round yields zero accepted findings.
 
@@ -147,7 +147,7 @@ its report-location override, so the report lands beside the specs it is about r
 | `## Escalations (need human)` | **Surface every entry to the human before starting fix work.** These are findings with a dead panel seat, an unresolved external premise, or material dissent between seats — in the recorded PR run, findings with **zero** valid judge votes landed here. They need a human by definition: no verdict was reached, so there is nothing to auto-fix and nothing to auto-dismiss. Never fold them into the fix queue, and never let a `clean` verdict elsewhere in the report imply they were resolved. |
 | `## Not verified (beyond panel cap)` | Severe candidates the panel cap left unjudged. Present them next to the escalations and ask whether to re-roast with a raised `config.panelCap` before fixing anything — an unverified Blocking candidate is not a cleared one. |
 
-1. **Create one task per confirmed finding.**
+1. **Create one task per confirmed finding**, with §Decomposition's full `bd create` flag triple (`--parent <root-epic-id> --no-inherit-labels -l sp:<root-epic-id>`) — a fix task outside the epic's descendant tree lets `bd epic close-eligible` close the epic mid-fix.
 2. **Fix per the normal ladder** — inline for small fixes, interactive design work for large ones
    (may itself promote/nest), subagent-driven implementation for delegable work.
 3. **Auto-decide re-roast by fix scope:**
@@ -165,14 +165,20 @@ its report-location override, so the report lands beside the specs it is about r
   qualifier says the run itself was degraded (dead triage, dead scout, dead dedupe, incomplete
   judging, or zero findings on a non-trivial artifact) or that N severe candidates were never
   judged. Do not auto-proceed: surface the qualifier verbatim and let the user choose to proceed
-  anyway, re-roast, or dig in.
+  anyway, re-roast, or dig in. **Exception when the caller owns the hand-off and stated the run is
+  autonomous** (§Run-State File): proceed, record the qualifier, and hand it back verbatim — the
+  caller already answered this.
 - A confirmed-findings verdict carrying either qualifier → fix as normal, but carry the qualifier
   into the exit summary: a shrinking Blocking count under low coverage is weaker evidence of
   progress than it looks, and the early-stop test above can be fooled by it.
 
 Both exits — cap-out and clean — **pause and summarize for the human**, restating any open
 escalations, any beyond-panel-cap candidates, and any qualifier still on the verdict; this loop
-never declares itself finished, mirroring `super-roast`'s own handoff contract.
+never declares itself finished, mirroring `super-roast`'s own handoff contract. **Exception when the
+caller owns the hand-off and stated the run is autonomous** (§Run-State File): record that same
+summary into the run-state file and return it in the hand-off instead of pausing — the caller
+surfaces it. The loop still never declares itself finished; it just reports to a caller rather than
+a human.
 
 ## Hand-off (root only)
 
@@ -196,7 +202,7 @@ Same decomposition/promotion/coverage, on paper. Each task-table row needs: a st
 
 ## Artifact Location
 
-By default every spec goes to `docs/superpowers/specs/` and the arbitration ledger to
+With no override, specs go to `docs/superpowers/specs/` and the arbitration ledger to
 `docs/superpowers/reviews/`. **A caller may hand this invocation a single artifact-directory
 override**; when it does, everything this skill produces or causes to be produced goes there
 instead — root and nested specs, the arbitration ledger, and the `super-roast` report (relayed as
@@ -228,6 +234,13 @@ Write these, each as it happens:
 | the caller's phase token, if it supplied one for this stage | entering that stage |
 | **each human gate answer, with the shape it approved** | the moment it is given |
 
+**When the caller owns the hand-off and stated the run is autonomous**, this skill does not pause
+for the human at its own loop exits. Both exits — cap-out and clean-with-a-qualifier — are satisfied
+by **recording** what was open into the run-state file and returning it in the hand-off, not by
+waiting. The caller surfaces it in its own report. Without this, a run its caller was told to drive
+unattended stops inside this invocation, which is the one place the caller holds no control and
+cannot rescue it.
+
 **Gate answers are recorded, and replayed rather than re-asked.** Before presenting the top-split
 gate (§The Process step 5) or a coverage arbitration round (§Coverage), check the run-state file for
 an answer already given:
@@ -244,8 +257,10 @@ caller running unattended stalls on a question it has an answer to. **Never wide
 
 Two rules on top:
 
-- **Append your facts; never rewrite the file.** The caller owns fields you were not handed, and
-  clobbering them turns its resume into a restart.
+- **Update in place only the fields listed above; never touch a field you were not handed.** The
+  caller owns the rest, and clobbering them turns its resume into a restart. Single-valued fields
+  (the round count, the phase token) are *replaced*, not appended — two `roastDesignRound` lines in
+  one file means a resume can read the stale one and spend the cap twice.
 - **The round count is the one that must be written per round, not per loop.** A cap that is only
   recorded after the loop finishes is not a cap: a session that ends mid-loop resumes at round 1 and
   runs the full allowance again. Accept a starting round on entry (§Hand-off) and resume from it.
@@ -256,7 +271,7 @@ skill's work instead of re-running all of it.
 ## Conventions
 
 - Every spec (root and nested) opens with `## Goal` — one or two sentences, an observable outcome. Coverage consumes it verbatim.
-- Subepic spec naming: `docs/superpowers/specs/YYYY-MM-DD-<root-slug>--<sub-slug>-design.md` (deeper levels extend the double-dash chain). Each nested spec's header links its parent spec and its bead id.
+- Subepic spec naming: `<artifact directory>/YYYY-MM-DD-<root-slug>--<sub-slug>-design.md` (§Artifact Location; the default artifact directory is `docs/superpowers/specs/`) (deeper levels extend the double-dash chain). Each nested spec's header links its parent spec and its bead id.
 - Every nested spec gets its own INDEX.md row, tagged with the root slug.
 
 ## Red Flags

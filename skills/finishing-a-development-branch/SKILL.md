@@ -208,6 +208,12 @@ cd "$MAIN_ROOT"
 Use the `GIT_DIR`/`GIT_COMMON`/`WORKTREE_PATH` values captured in Step 2,
 from before any directory change.
 
+**Before deleting the branch:** if the feature branch is still checked out in a worktree, `git
+branch -d` fails. Leave that worktree first — via your platform's workspace-exit tool if it has one,
+otherwise from the main repo root — then delete. This bites specifically on the path
+`using-git-worktrees` prefers: a native worktree tool places the workspace outside `.worktrees/`,
+where the rule below declines to clean it up, and the branch stays checked out.
+
 **If `GIT_DIR == GIT_COMMON`:** Normal repo, no worktree to clean up. Done.
 
 **If `WORKTREE_PATH` is under `.worktrees/` or `worktrees/`:** Superpowers

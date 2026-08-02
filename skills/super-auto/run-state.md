@@ -14,8 +14,9 @@ every field in it is read back on resume and trusted.
 ## The seven required contents
 
 `run.md` MUST hold exactly these seven things **as they become known**. At creation,
-before phase 1 runs, only `flags`, `phase`, and `idea` exist — write those three and
-add each of the rest as the phase that produces it returns. Omitted is not the same
+before phase 1 runs, five exist — `flags`, `phase`, `idea`, `branch`, and `base`, the last two
+because the caller created the workspace in pre-flight — and each of the rest is added as the phase
+that produces it returns. Omitted is not the same
 as empty: a resume reading no `epic:` line knows phase 1 never got that far, where
 an `epic:` with a blank value reads as a malformed file. Each one is load-bearing:
 drop it and
@@ -42,7 +43,9 @@ a resume can silently redo work or violate a decision that was already made.
    seven phases (`design`=1 … `finish`=7), plus `done`: `finish` means phase 7
    (merge + cleanup) started but hasn't been confirmed complete — a resume reading
    `finish` must resume or verify the merge, not treat the run as over; `done` means
-   phase 7 actually completed. Reading `done` when phase 7 never ran (skipping
+   phase 7 actually completed — the human answered the menu, whichever option they
+   chose. "Keep the branch as-is" completes phase 7 as surely as a merge does; the
+   run is over either way, and a resume must not re-enter it looking for a merge. Reading `done` when phase 7 never ran (skipping
    straight from `report` to `done`) is exactly the failure this enumeration exists
    to rule out — it would resume as "nothing left to do" while the integration
    branch sits unmerged.
@@ -133,7 +136,12 @@ a resume can silently redo work or violate a decision that was already made.
    cap durable across any restart, not just within one session.
 
 6. **`super-code`'s returned buckets** — `completed`, `escalated`, `pendingRetry`,
-   `parked`, `stalled`, `review`, recorded verbatim at the phase 3→4 transition.
+   `parked`, `stalled`, `review`, recorded verbatim at **every** phase 3→4 transition —
+   overwritten on each fix-loop re-entry, not written once. `super-code` runs again
+   for every fix round, and the buckets it returns then are the current truth; keeping
+   only the first run's would leave every fix bead out of the report's Implemented
+   section and every fix-loop quarantine out of its escalation count, which is exactly
+   how a run reports `clean` over an escalation.
    `super-code` returns these once, to the calling session, and does not itself
    persist them; `report-prompt.md`'s Implemented and Remaining sections are
    sourced from them, and its own sourcing rule anticipates the writing agent may
@@ -177,7 +185,7 @@ phase: roast-code
 idea: add a per-tenant rate limiter to the public API
 spec: 2026-07-31-per-tenant-rate-limiter-design.md
 epic: bd-412
-branch: epic-bd-412-integration
+branch: super-auto/per-tenant-rate-limiter
 base: main
 roast-design: 2026-07-31-per-tenant-rate-limiter-roast-design-1.md, 2026-07-31-per-tenant-rate-limiter-roast-design-2.md
 roast-code: 2026-08-01-per-tenant-rate-limiter-roast-pr-1.md
@@ -204,9 +212,9 @@ codeBuckets:
 ```
 
 Every field above is one of the seven required contents: `flags` and `phase` are
-items 1 and 2; `spec`/`plan`/`epic`/`branch`/`roast-design`/`roast-code` are the
+items 1 and 2; `idea`/`spec`/`epic`/`branch`/`base`/`roast-design`/`roast-code` are the
 pointers of item 3 (each one names a path or id, never inline content) —
-`spec`, `plan`, `roast-design`, and `roast-code` are paths, given relative to the
+`spec`, `roast-design`, and `roast-code` are paths, given relative to the
 run directory as stated above; `epic` and `branch` are identifiers, not paths,
 so the relative-path rule doesn't apply to them — `roastDesignRound`/
 `roastCodeRound` are item 5; `parked` is item 4, with each entry naming its
