@@ -27,6 +27,23 @@ Drive a beads epic to completion: an epic-scoped `bd ready` loop, disjoint-file 
 
 Any beads-backed execution. `subagent-driven-development` handles plan-file execution. The moment there is a `bd` epic, super-code runs it — autonomous or interactive, same coordinator contract.
 
+## Invocation
+
+A caller supplies these; there are no other inputs, and none of them are inferable from the repo:
+
+| Input | Meaning |
+|---|---|
+| `epicId` | the root epic to drain. Its tree is the scope — see `./coordinator-workflow.md`'s Ready phase for how membership is resolved when the `sp:` label is absent |
+| `integrationBranch` | conventionally `epic-<epicId>-integration`. **The caller creates the branch and its worktree; this skill creates neither**, and fails if either is missing |
+| mode | autonomous or interactive. Same contract either way — mode changes who answers a blocked task, never what gets reviewed |
+| who owns the finish | **state it explicitly if the caller owns it.** There is no config flag. Left unsaid, this skill runs its own Finish: it merges the integration branch and deletes the worktree — taking the ledger and the per-task reports with it, which is where a caller's report gets its sources |
+| `config.models`, `config.concurrency` | optional; see Model tiering and Parallelism below for what they default to and why an explicit map is preferred |
+
+It returns six buckets — `completed`, `escalated`, `pendingRetry`, `parked`, `stalled`, `review`.
+Every task lands in exactly one of the first four; `parked` is a modifier on `completed` (merged
+over an overruled review finding), not a fifth outcome. A caller that records run state records
+these verbatim.
+
 ## Worktree topology
 
 Per-task worktrees branch from the epic integration branch (not from `main`, not from a plan-file branch); on pass, each is merged back into the integration branch **serially**, in dependency order. New ready tasks branch from the updated integration branch, so dependents inherit prior work. Full three-layer topology (user's worktree / integration worktree / per-task worktrees) and the Workflow-coordinated procedure: `./coordinator-workflow.md`.

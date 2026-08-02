@@ -28,9 +28,12 @@ Never:
 ## Resume
 
 On invocation, glob `docs/superpowers/runs/*-<slug>/run.md` — the date prefix is fixed at phase 1,
-not today's (see Run directory). No exact match: enumerate `docs/superpowers/runs/*/run.md` and
-match by the recorded idea/spec before concluding no run exists — the same idea kebab-cased two
-different ways must not read as two different runs. A match resumes from its recorded phase
+not today's (see Run directory). No exact match: enumerate `docs/superpowers/runs/*/run.md`, read each
+`idea:` line, and compare it against this invocation's text before concluding no run exists — the
+same idea kebab-cased two different ways must not read as two different runs. **Resolve the
+comparison, don't leave it to feel:** exactly one candidate sharing a content noun phrase with the
+invocation resumes; zero starts a fresh run; **two or more stops and asks which** — that is not a
+mid-run question, no work is in flight yet, and picking wrong resumes the wrong feature. A match resumes from its recorded phase
 (`./run-state.md`) — never re-ask the flags, never reset a counter. `run.md` is created the moment
 the run directory exists, with `phase: design` and the four flags already written — before
 `super-design` itself runs — so a crash mid-run still resumes without re-asking. Written again
