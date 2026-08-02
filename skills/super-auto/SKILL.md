@@ -34,7 +34,10 @@ directory, before Resume.** Run `bd --version`; if it is not available, stop and
 > drive the phases by hand — `superpowers:super-design` to get a task tree, then
 > `superpowers:writing-plans` plus `superpowers:subagent-driven-development` to execute it.
 
-**Why this is a hard stop rather than a fallback path.** Every load-bearing structure in this run is
+Once `bd` is confirmed, **create this run's workspace and branch** (§Run directory) before anything
+else touches the repo — the run directory and `run.md` are written inside it.
+
+**Why the tracker check is a hard stop rather than a fallback path.** Every load-bearing structure in this run is
 a tracker structure: the epic is the unit phase 3 executes, `run.md`'s `epic:` pointer is how a
 resume finds the work, phase 5 files fix findings as beads under that epic, and the report's
 Implemented/Remaining sections and its `<M>` escalation counter all read `codeBuckets`, which only
@@ -45,7 +48,7 @@ no-beads run is a different skill's job, not a degraded mode of this one.
 
 ## Resume
 
-On invocation, glob `docs/superpowers/runs/*-<slug>/run.md` — the date prefix is fixed at phase 1,
+On invocation, glob `docs/superpowers/runs/*-<slug>/run.md` — in the current checkout **and in every path `git worktree list` reports**, since a run's directory lives on its own branch and a session started from `base` cannot otherwise see it — the date prefix is fixed at phase 1,
 not today's (see Run directory). No exact match: enumerate `docs/superpowers/runs/*/run.md`, read each
 `idea:` line, and compare it against this invocation's text before concluding no run exists — the
 same idea kebab-cased two different ways must not read as two different runs. **Resolve the
@@ -61,9 +64,10 @@ after every phase transition and after every roast round — by `super-auto` for
 them.** `super-auto` holds no control between invoking it and its return — which is the longest,
 most expensive stretch of a run, and the likeliest place for a session to end. Rather than leave that
 window unrecorded, **hand `super-design` the `run.md` path** along with the artifact-directory
-override; its §Run-State File contract has it record the design branch and its base, the spec path,
-the epic id, each roast report, and the roast round count **as each becomes true**, plus the
-`roast-design` phase token when that stage begins.
+override; its §Run-State File contract has it record the spec path, the epic id, each
+roast report, the roast round count and each gate answer **as each becomes true**, plus the
+`roast-design` phase token when that stage begins. (`branch` and `base` are already recorded — you
+created the workspace in pre-flight.)
 
 Field ownership is split and does not overlap: `super-design` writes what phases 1–2 produce;
 `super-auto` writes everything from phase 3 on (`branch`, `codeBuckets`, `roast-code`,
@@ -105,11 +109,11 @@ own, or the flags strand and the sequence is lost. Each row's parenthetical is t
 |---|---|---|---|
 | 1 | Design (`design`) | `super-design` | Invoked with the goal or raw idea; drives the root brainstorm, decomposition, every subepic brainstorm, and the coverage loop itself → settled tree. **Say in the invocation that the hand-off is `super-auto`'s**, or `super-design` chains into execution and the flags strand. Record the epic id yourself |
 | 2 | Design roast (`roast-design`) | `super-roast` (design) | Runs **inside** phase 1's `super-design` invocation, via its own offer; cap-3 fix loop. `super-auto` holds no control while it runs, so `super-design` writes `phase: roast-design`, the report paths and `roastDesignRound` into `run.md` itself, per its §Run-State File contract — see above. |
-| 3 | Code (`code`) | `super-code` | Name the integration branch `epic-<epicId>-integration`; create it off the design branch if absent, **verify it if it already exists** (a resume must never re-create it); cut it from the design branch and record `branch` in `run.md` (`base` was recorded at phase 1) — `super-code` requires `integrationBranch` and derives its worktree from it, but never creates either. Autonomous or interactive per flag. **Say in the invocation that `super-auto` owns the finish** — there is no config flag, and without it `super-code` merges and deletes the worktree the report still needs. |
+| 3 | Code (`code`) | `super-code` | The integration branch **is this run's branch**, and its integration worktree **is this run's worktree** — both exist already, from pre-flight (§Run directory). Create nothing; pass them, and record `branch` in `run.md`. Autonomous or interactive per flag. **Say in the invocation that `super-auto` owns the finish** — there is no config flag, and without it `super-code` merges and deletes the worktree the report still needs. |
 | 4 | Code roast (`roast-code`) | `super-roast` (PR) | Against the live integration branch |
 | 5 | Fix loop (`fix-loop`) | — | Reopen the epic, file confirmed findings as beads (shape: see Red Flags), re-enter `super-code`, loop to phase 4; cap 3, stop early if Blocking count doesn't shrink |
 | 6 | Report (`report`) | — | Write `report.md` per `./report-prompt.md`, before anything is torn down |
-| 7 | Finish (`finish`→`done`) | `finishing-a-development-branch` | Merge + clean up, once, gated per below. Supply `run.md`'s `base` so the base-branch question is not asked, and present `report.md` alongside the menu. **The menu itself is always the human's, autonomous or not** — see "Where the zone ends". |
+| 7 | Finish (`finish`→`done`) | `finishing-a-development-branch` | Merge + clean up, once, gated per below. Invoke it **from this run's worktree**, supplying `run.md`'s `branch` as the feature branch to merge and `base` as its destination, so neither is asked nor inferred from the cwd. Present `report.md` alongside the menu. **The menu itself is always the human's, autonomous or not** — see "Where the zone ends". |
 
 Phase 7's gate is three conditions, not one: `report.md` exists, `run.md`'s `phase` reads `report`,
 and its status line does not begin `stalled` — existence alone is not enough. A stall at any phase
@@ -188,28 +192,40 @@ invocation, which relays it to every `brainstorming` iteration it runs (root and
 override added for this.
 State and report follow `./run-state.md` and `./report-prompt.md` — do not restate them here.
 
-**Which working tree the run directory lives in, and the one merge that keeps it whole.**
-`brainstorming` creates an isolated worktree as its first act, before it writes the spec — so
-without a rule here, `run.md` (created before phase 1, in whatever checkout you were invoked from)
-and every spec (written inside that worktree) end up in different trees, and `run.md`'s
-run-directory-relative pointers resolve to nothing. Two rules settle it:
+**One workspace, one branch, for the whole run.** Create them yourself, in pre-flight, *before*
+phase 1 — via `superpowers:using-git-worktrees`, on a branch named for the run (`super-auto/<slug>`).
+Record the branch it was cut from as `base`. Then create the run directory and `run.md` **inside that
+worktree, on that branch**, and do every subsequent write there: specs, roast reports, further
+`run.md` writes, `report.md`.
 
-- **Create the run directory and `run.md` in the checkout you were invoked from**, and take the
-  worktree `brainstorming` creates as this run's working tree from phase 1 onward. Everything after
-  that — specs, roast reports, further `run.md` writes, `report.md` — is written and committed
-  there.
-- **At phase 3, cut the integration branch from the branch carrying the design work**, not from
-  `base`. The specs, the `INDEX.md` row, and `run.md` were committed on it; branch off `base`
-  instead and every design artifact is stranded on a branch nothing ever merges — including the
-  `report.md` sources and the run state a resume needs. Because the design branch itself came off
-  `base`, the integration branch still forks from `base` transitively, which is what phase 7 needs.
+Creating it here rather than letting `brainstorming` do it settles four things at once:
 
-**`base` is the branch the whole run merges back into** — the repo branch the design worktree was
-cut from, usually `main`. **`super-design` records it** when it creates that worktree, per its
-§Run-State File contract; `super-auto` cannot, because it holds no control at that moment. It is the one branch name phase 7 hands to
-`finishing-a-development-branch`, and it is deliberately **not** the integration branch's immediate
-parent: the design branch is a fork point, `base` is a destination, and merging the finished work
-into its own design branch would leave it exactly as unmerged as before.
+- **`run.md` exists exactly once.** Created in the invoking checkout while every later write goes to
+  a worktree, it exists twice — a frozen stub where Resume globs, and the live copy on a branch
+  Resume never looks at. Every resume then reads the stub, sees `phase: design`, and re-runs work
+  that is already done.
+- **`brainstorming`'s worktree step becomes verification.** `using-git-worktrees` is idempotent, so
+  a workspace that already exists is confirmed, not replaced — and its consent question does not
+  interrupt a run that already made the decision.
+- **`base` is observed, not guessed.** You are the one cutting the branch, so you know what it came
+  from. Nothing downstream has to reconstruct it.
+- **Phase 7 has a branch to merge.** One branch carries the design commits *and* the code, so the
+  single merge into `base` takes the whole run — report included.
+
+**The integration branch is this same branch.** Pass it to `super-code` as `integrationBranch`, and
+this worktree as its integration worktree; `super-code` cuts per-task worktrees off it and merges
+them back into it serially, exactly as it does for any caller. (Its `epic-<epicId>-integration`
+naming is a convention, not a requirement — and the branch has to exist before the epic id does.)
+Nothing about parallel dispatch changes: per-task worktrees still fan out from the integration
+branch and still serialize on shared files.
+
+**Resume must look in worktrees, not just the current checkout.** The run directory lives on a branch
+that is not `base`, so a fresh session started from `base` cannot see it. Glob the current checkout
+**and** every path in `git worktree list`.
+
+**`base` is the branch the whole run merges back into** — the repo branch this run's worktree was cut
+from, usually `main`. It is the one branch name phase 7 hands to `finishing-a-development-branch`,
+which merges the run branch into it, once, from this worktree.
 
 **Every link into a run directory carries the full `YYYY-MM-DD-<slug>` name, never the bare slug.**
 That includes the `specs/INDEX.md` row for this run, which links to
@@ -253,12 +269,11 @@ a human following that link concludes the run is missing while the run is sittin
 
 ## Known limitations
 
-- **A resumed run re-enters `super-design` at step 1, which has no idempotency guard.** State
-  written during phases 1–2 is now durable (`super-design` writes `run.md` live), so a resume knows
-  the spec path, epic id and round count — but knowing them is not the same as `super-design`
-  skipping the work that produced them. Its §The Process step 1 re-invokes `brainstorming`
-  unconditionally, and only its subepic cursor is tracker-derived. Until that guard exists, a
-  session that ends inside phase 1 can produce a second root spec on re-entry.
+- **Nothing enforces the workspace rule.** Pre-flight creating the run's worktree and branch is
+  the load-bearing assumption behind one `run.md`, an observable `base`, and a phase-7 merge that
+  carries the whole run. Nothing checks it happened, and a run that skips it fails far downstream —
+  at phase 7, with the report on an unmerged branch.
+
 - **This skill has never been executed — it is validated by inspection only.** (A statement of
   fact about its history, not an instruction: running it end to end is exactly what it is for, and
   the most useful thing anyone can do with it next.) Two cold dry walks (2026-08-01) drove a full

@@ -220,7 +220,6 @@ Write these, each as it happens:
 
 | Fact | Written when |
 |---|---|
-| the design worktree's branch, and the branch it was cut from | the worktree is created, at the root brainstorm |
 | the root spec's path | `brainstorming` commits it |
 | the root epic id | §Decomposition creates it |
 | each roast report path | `super-roast` returns it |
