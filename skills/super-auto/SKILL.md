@@ -59,7 +59,7 @@ own, or the flags strand and the sequence is lost. Each row's parenthetical is t
 |---|---|---|---|
 | 1 | Design (`design`) | `super-design` | Invoked with the goal or raw idea; drives the root brainstorm, decomposition, every subepic brainstorm, and the coverage loop itself → settled tree. **Say in the invocation that the hand-off is `super-auto`'s**, or `super-design` chains into execution and the flags strand. Record the epic id yourself |
 | 2 | Design roast (`roast-design`) | `super-roast` (design) | Via `super-design`'s own offer, inside its invocation; cap-3 fix loop; `super-auto` records each report path itself |
-| 3 | Code (`code`) | `super-code` | Name the integration branch `epic-<epicId>-integration`; create it off the design branch if absent, **verify it if it already exists** (a resume must never re-create it); record both `branch` and the `base` it was cut from in `run.md` — `super-code` requires `integrationBranch` and derives its worktree from it, but never creates either. Autonomous or interactive per flag. **Say in the invocation that `super-auto` owns the finish** — there is no config flag, and without it `super-code` merges and deletes the worktree the report still needs. |
+| 3 | Code (`code`) | `super-code` | Name the integration branch `epic-<epicId>-integration`; create it off the design branch if absent, **verify it if it already exists** (a resume must never re-create it); cut it from the design branch and record `branch` in `run.md` (`base` was recorded at phase 1) — `super-code` requires `integrationBranch` and derives its worktree from it, but never creates either. Autonomous or interactive per flag. **Say in the invocation that `super-auto` owns the finish** — there is no config flag, and without it `super-code` merges and deletes the worktree the report still needs. |
 | 4 | Code roast (`roast-code`) | `super-roast` (PR) | Against the live integration branch |
 | 5 | Fix loop (`fix-loop`) | — | Reopen the epic, file confirmed findings as beads (shape: see Red Flags), re-enter `super-code`, loop to phase 4; cap 3, stop early if Blocking count doesn't shrink |
 | 6 | Report (`report`) | — | Write `report.md` per `./report-prompt.md`, before anything is torn down |
@@ -124,6 +124,29 @@ invocation, which relays it to every `brainstorming` iteration it runs (root and
 (invoked directly by `super-auto`, in no-beads mode) takes the same directory as its documented
 location-preference override; `super-roast` uses the report-location override added for this.
 State and report follow `./run-state.md` and `./report-prompt.md` — do not restate them here.
+
+**Which working tree the run directory lives in, and the one merge that keeps it whole.**
+`brainstorming` creates an isolated worktree as its first act, before it writes the spec — so
+without a rule here, `run.md` (created before phase 1, in whatever checkout you were invoked from)
+and every spec (written inside that worktree) end up in different trees, and `run.md`'s
+run-directory-relative pointers resolve to nothing. Two rules settle it:
+
+- **Create the run directory and `run.md` in the checkout you were invoked from**, and take the
+  worktree `brainstorming` creates as this run's working tree from phase 1 onward. Everything after
+  that — specs, roast reports, further `run.md` writes, `report.md` — is written and committed
+  there.
+- **At phase 3, cut the integration branch from the branch carrying the design work**, not from
+  `base`. The specs, the `INDEX.md` row, and `run.md` were committed on it; branch off `base`
+  instead and every design artifact is stranded on a branch nothing ever merges — including the
+  `report.md` sources and the run state a resume needs. Because the design branch itself came off
+  `base`, the integration branch still forks from `base` transitively, which is what phase 7 needs.
+
+**`base` is the branch the whole run merges back into** — the repo branch the design worktree was
+cut from, usually `main`. Record it in `run.md` (`./run-state.md` item 3) at phase 1, when that
+worktree is created, not at phase 3. It is the one branch name phase 7 hands to
+`finishing-a-development-branch`, and it is deliberately **not** the integration branch's immediate
+parent: the design branch is a fork point, `base` is a destination, and merging the finished work
+into its own design branch would leave it exactly as unmerged as before.
 
 **Every link into a run directory carries the full `YYYY-MM-DD-<slug>` name, never the bare slug.**
 That includes the `specs/INDEX.md` row for this run, which links to

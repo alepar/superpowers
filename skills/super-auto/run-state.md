@@ -48,9 +48,11 @@ a resume can silently redo work or violate a decision that was already made.
    remaining case.
 
 3. **Pointers** — the raw idea text, spec path, epic id, integration branch, the
-   **base branch** that branch was cut from, roast report paths, and — **in
-   no-beads mode only** — the plan path. `base` is written at phase 3 alongside
-   `branch`, and exists so phase 7 can supply it instead of asking: this skill's
+   **base branch** the run merges back into — the repo branch the design
+   worktree was cut from, usually `main`, *not* the integration branch's
+   immediate parent — roast report paths, and — **in
+   no-beads mode only** — the plan path. `base` is written at phase 1, when the design
+   worktree is created, and exists so phase 7 can supply it instead of asking: this skill's
    finish step asks for the base only "if it is not already known," and a resumed
    run has no other way to know it. Pointers only,
    never inline content: `run.md` says *where* the spec and reports live and never
