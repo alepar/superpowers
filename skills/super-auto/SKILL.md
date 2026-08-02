@@ -47,7 +47,7 @@ whichever aren't already stated in the invocation.
 | plan one-shot | Stated to `super-design`, which relays it to every `brainstorming` iteration it runs (root spec, each subepic) — Mode B instead of Mode A |
 | skip plan roast | Declines `super-design`'s adversarial-review offer |
 | skip code roast | Omits the final PR-mode roast entirely |
-| autonomous | Suppresses all queries once `super-design`'s coverage loop passes (see Autonomous mode) |
+| autonomous | No query interrupts work in flight once `super-design`'s coverage loop passes; the run still hands back for the integration decision when every bead is done (see Autonomous mode) |
 
 ## Phase sequence
 
@@ -59,11 +59,11 @@ own, or the flags strand and the sequence is lost. Each row's parenthetical is t
 |---|---|---|---|
 | 1 | Design (`design`) | `super-design` | Invoked with the goal or raw idea; drives the root brainstorm, decomposition, every subepic brainstorm, and the coverage loop itself → settled tree. **Say in the invocation that the hand-off is `super-auto`'s**, or `super-design` chains into execution and the flags strand. Record the epic id yourself |
 | 2 | Design roast (`roast-design`) | `super-roast` (design) | Via `super-design`'s own offer, inside its invocation; cap-3 fix loop; `super-auto` records each report path itself |
-| 3 | Code (`code`) | `super-code` | Name the integration branch `epic-<epicId>-integration`; create it off the design branch if absent, **verify it if it already exists** (a resume must never re-create it) — `super-code` requires `integrationBranch` and derives its worktree from it, but never creates either. Autonomous or interactive per flag. **Say in the invocation that `super-auto` owns the finish** — there is no config flag, and without it `super-code` merges and deletes the worktree the report still needs. |
+| 3 | Code (`code`) | `super-code` | Name the integration branch `epic-<epicId>-integration`; create it off the design branch if absent, **verify it if it already exists** (a resume must never re-create it); record both `branch` and the `base` it was cut from in `run.md` — `super-code` requires `integrationBranch` and derives its worktree from it, but never creates either. Autonomous or interactive per flag. **Say in the invocation that `super-auto` owns the finish** — there is no config flag, and without it `super-code` merges and deletes the worktree the report still needs. |
 | 4 | Code roast (`roast-code`) | `super-roast` (PR) | Against the live integration branch |
 | 5 | Fix loop (`fix-loop`) | — | Reopen the epic, file confirmed findings as beads (shape: see Red Flags), re-enter `super-code`, loop to phase 4; cap 3, stop early if Blocking count doesn't shrink |
 | 6 | Report (`report`) | — | Write `report.md` per `./report-prompt.md`, before anything is torn down |
-| 7 | Finish (`finish`→`done`) | `finishing-a-development-branch` | Merge + clean up, once, gated per below |
+| 7 | Finish (`finish`→`done`) | `finishing-a-development-branch` | Merge + clean up, once, gated per below. Supply `run.md`'s `base` so the base-branch question is not asked, and present `report.md` alongside the menu. **The menu itself is always the human's, autonomous or not** — see "Where the zone ends". |
 
 Phase 7's gate is three conditions, not one: `report.md` exists, `run.md`'s `phase` reads `report`,
 and its status line does not begin `stalled` — existence alone is not enough. A stall at any phase
@@ -96,6 +96,21 @@ not asked, and the road not taken is parked (`run-state.md`'s `degraded-verdict`
   auto-adjudicated and never queried about mid-run.
 - `super-code` runs in its own autonomous mode.
 
+**Where the zone ends: when the work is done, not at a phase number.** Autonomy means no question
+interrupts work that is still in progress. It does **not** mean the run merges itself. Once every
+bead under the epic has reached a terminal state and `report.md` is written, the run has finished
+what it was asked to do — it presents the report and hands control back, and the merge of the
+integration branch into the base branch is the human's call like any other.
+
+That hand-back is **not** a violation of "no questions," because there is no work left to
+interrupt: a run sitting at the integration decision is *done*, not blocked. Read it the other way
+round and the rule is sharper — **never stop for a question while a bead is still unresolved.**
+Every bullet above exists to keep a mid-run pause from happening; none of them licenses merging to
+the base branch unattended, which is the one action in this pipeline a human cannot cheaply undo.
+
+Merges *into* the run's own integration branch are a different thing and need no confirmation:
+`super-code` performs them itself, serially, and never presents a menu for them.
+
 > If a roast fix loop caps out at 3 with Blocking findings unresolved, autonomous mode parks them
 > rather than halting. A run can finish having merged code with known Blocking findings — which is
 > why the report leads with status.
@@ -122,8 +137,12 @@ a human following that link concludes the run is missing while the run is sittin
 - Re-implement a phase's behavior instead of invoking it.
 - Auto-adjudicate a roast escalation or a sibling's mandated pause, or fold either into the fix
   queue.
-- Ask a question, or wait on a sibling's mandated pause, once `super-design`'s coverage loop has
-  passed and `autonomous` is set.
+- Ask a question, or wait on a sibling's mandated pause, **while any bead is still unresolved**,
+  once `super-design`'s coverage loop has passed and `autonomous` is set. Presenting the finished
+  report and the integration decision is not this — that is the run handing back, with no work
+  left in flight.
+- Merge the integration branch into the base branch without the human's explicit choice, in any
+  mode. `autonomous` buys an unattended *run*, never an unattended *merge*.
 - Re-ask the four flags, or reset an iteration count, when a resumable `run.md` already exists.
 - Wait until phase 1 completes to create `run.md` — a crash inside `super-design`'s root brainstorm
   Mode A would then restart and re-ask the flags, which every rule above promises never happens.

@@ -47,8 +47,12 @@ a resume can silently redo work or violate a decision that was already made.
    status line does not begin `stalled`. Only the third condition closes that
    remaining case.
 
-3. **Pointers** — the raw idea text, spec path, epic id, integration branch, roast
-   report paths, and — **in no-beads mode only** — the plan path. Pointers only,
+3. **Pointers** — the raw idea text, spec path, epic id, integration branch, the
+   **base branch** that branch was cut from, roast report paths, and — **in
+   no-beads mode only** — the plan path. `base` is written at phase 3 alongside
+   `branch`, and exists so phase 7 can supply it instead of asking: this skill's
+   finish step asks for the base only "if it is not already known," and a resumed
+   run has no other way to know it. Pointers only,
    never inline content: `run.md` says *where* the spec and reports live and never
    restates them. Two exceptions to "pointers only," both deliberate. `idea` carries
    the raw idea verbatim, because the resume rule's fallback matches on it and a run
@@ -128,6 +132,7 @@ idea: add a per-tenant rate limiter to the public API
 spec: design.md
 epic: bd-412
 branch: epic-bd-412-integration
+base: main
 roast-design: roast-design-1.md, roast-design-2.md
 roast-code: roast-code-1.md
 

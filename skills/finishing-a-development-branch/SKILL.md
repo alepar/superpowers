@@ -35,6 +35,23 @@ Locate the originating design spec via the plan header's `Spec:` line (or, in be
 
 If no spec is found (ad-hoc work with no brainstorming), skip this step.
 
+## Invoked as part of a larger run
+
+An orchestrating skill (the `super-*` family) may invoke this skill at the end of a run it owns.
+Two things change, and only two:
+
+- **Merges into that run's own integration branch or worktree are the caller's, not yours.** They
+  happen as the run proceeds, without a menu — you are not invoked for them at all. This skill
+  governs one merge: the completed work into the base branch.
+- **The base branch is supplied, not asked** (Step 3), because the caller recorded which branch the
+  integration branch was cut from. Confirm it silently against `git merge-base` and proceed.
+
+**What does not change: the menu.** The integration decision is the human's in every mode,
+including a run the user asked to be fully autonomous. Autonomy buys an unattended *run*, not an
+unattended *merge* — and a run that has finished all its work and is waiting here is done, not
+blocked. Present the report the caller wrote alongside the menu so the choice is made with the
+summary in hand.
+
 ## Step 2: Detect Environment
 
 ```bash
@@ -225,5 +242,6 @@ place. If your platform provides a workspace-exit tool, use it.
 | "This other worktree looks stale — I'll clean it too" | Clean up only worktrees under `.worktrees/` or `worktrees/`. Everything else belongs to the host. |
 | "The merged-result failure is probably flaky" | A failing merged result stops everything. Branch and worktree stay put while you investigate. |
 | "The base branch is obviously main" | Confirm the fork point or ask. Merging into the wrong base is expensive to undo. |
+| "The caller said the whole run is autonomous, so I'll pick a menu option too" | Autonomy is about not interrupting work in progress. The work is finished; the merge is the human's, same as always. Present the menu and wait. |
 | "The push was rejected — force-push will fix it" | A rejected push means the remote moved. Investigate; force-push only on your human partner's explicit request. |
 | "The spec is close enough to what we built" | Step 1.5 is not optional when the plan header names a `Spec:`. The next person reads the design doc, not this session. |
