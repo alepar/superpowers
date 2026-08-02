@@ -17,7 +17,7 @@ Root vs. nested is **derived, not remembered**: nested iff this invocation was h
 
 ## The Process
 
-1. **Produce the spec** (root only) — invoke `superpowers:brainstorming` on the goal or idea to produce the root spec — §Root Brainstorm. Nested invocations skip this: they already hold the spec their parent's nested-brainstorm step wrote.
+1. **Produce the spec** (root only) — invoke `superpowers:brainstorming` on the goal or idea to produce the root spec — §Root Brainstorm. On a re-entry, adopt a spec that already exists — §Re-entry. Nested invocations skip this: they already hold the spec their parent's nested-brainstorm step wrote.
 2. **Decompose** the spec into rough child tasks (title, short description, files-touched hint, blocking deps) — §Decomposition.
 3. **Promotion review** — dispatch a fresh-context reviewer, sanity-check its verdicts, fix any decomposition-verdict `ISSUES` — §Promotion Review.
 4. **Apply promotions** — §Applying Promotions.
@@ -26,6 +26,30 @@ Root vs. nested is **derived, not remembered**: nested iff this invocation was h
 7. **Root only**, once the tree has settled (every subepic designed, every leaf decomposed, no pending promotions): run the coverage loop — §Coverage.
 8. **Root only, optional:** offer `superpowers:super-roast` on the settled tree; on a confirmed-findings verdict, run the fix + auto-re-roast loop — §Adversarial Review Loop.
 9. **Root only:** hand off to execution — §Hand-off.
+
+## Re-entry (this skill can be invoked twice on the same goal)
+
+A caller whose session ended mid-run re-invokes this skill on the same goal. **Every step below
+adopts what already exists rather than producing a second one.** Root vs. nested is derived, and so
+is done-vs-not: check for the artifact a step would produce before producing it.
+
+| Step | Adopt instead of re-producing |
+|---|---|
+| §Root Brainstorm | a committed root spec already in the artifact directory (or named by the run-state file's spec pointer) — read it and go to §Decomposition |
+| §Decomposition, root | an epic already labelled `sp:<its-own-id>` for this goal (or named by the run-state file's epic pointer) — adopt it; **never `bd create` a second root epic** |
+| §Decomposition, children | children already under that epic — decompose only what has none |
+| §Promotion Review | verdicts already applied (`-t epic` + `sp:needs-design`, or `sp:demoted-by-session`) — re-review only undecided children |
+| §The Process step 5 / §Coverage | a recorded gate answer — see §Run-State File |
+
+**Why this is stated rather than left to judgement:** only the subepic cursor (§Durable State) is
+tracker-derived. Steps 1–4 have no such rule, so a literal re-entry re-runs the root brainstorm and
+writes a second dated spec, a second `INDEX.md` row, and — worse — a second root epic with its own
+label, splitting the tree in two with no way to tell which half is real. The tracker already holds
+every fact needed to avoid it; this table just says to look.
+
+**A partially-written artifact is not an adoptable one.** Adopt a spec only if it is committed, and
+an epic only if it carries its own `sp:` label — the label flip and the commit are the "done"
+markers §Durable State already relies on. Anything half-made gets finished, not adopted.
 
 ## Root Brainstorm
 
@@ -240,6 +264,8 @@ skill's work instead of re-running all of it.
 
 **Never:**
 - Run the coverage loop or hand-off from a nested (non-root) invocation.
+- Produce a second root spec or a second root epic on a re-entry — adopt what exists (§Re-entry).
+  Two root epics for one goal split the tree with no way to tell which half is real.
 - Create a child without both `--no-inherit-labels` and an explicit `-l sp:<root-epic-id>` on the same `bd create` call.
 - Demote an epic to a task without first confirming `bd children <id> --json` is empty.
 - Read only `## Confirmed findings` out of a super-roast report — `## Escalations (need human)`
