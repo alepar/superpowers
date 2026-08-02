@@ -21,8 +21,29 @@ failure this contract exists to prevent.
 status: clean
 status: clean [degraded: <qualifier>, ...]
 status: completed with <N> unresolved Blocking, <M> escalations
+status: completed with <N> unresolved Blocking, <M> escalations [degraded: <qualifier>, ...]
 status: stalled at phase <phase>
 ```
+
+**`[degraded: ...]` attaches to the `completed with ...` form too, not only to
+`clean`.** A run can carry both unresolved Blocking findings and a parked
+qualifier; if the suffix were `clean`-only, the qualifier would have to be
+silently dropped to make the line fit — reintroducing the exact discard this
+contract exists to prevent, at the one status where the reader is already being
+told something went wrong.
+
+**`<N>` and `<M>` count code outcomes, not only roast findings.** `<M>` is the
+number of parked roast escalations **plus every id in `run.md`'s
+`codeBuckets.escalated`** — a task `super-code` quarantined is an unresolved
+escalation in exactly the sense this line reports, and it is the single most
+likely thing a reader needs to know. A non-empty `codeBuckets.parked` adds
+`code findings parked` to the degraded list: a parked ruling is code merged over
+a live review finding, which is a decision made on the human's behalf, the same
+class as a `degraded-verdict`. Without this rule the counters read only roast
+output, so a run that skipped both roasts, quarantined a task, and merged over a
+review finding still opens `clean [degraded: plan roast skipped, code roast
+skipped]` — the exact "everything's fine" misreading named at the top of this
+file, produced by the configuration the validation run uses.
 
 An escalation is a distinct outcome class from a Blocking finding: it is a case
 that reached no verdict at all, not a case that reached a Blocking verdict. Both
@@ -44,10 +65,13 @@ record exists is the same lie as reporting `clean` over an unresolved escalation
 **A skipped roast is also a degraded qualifier**, sourced from `run.md`'s own
 `skipPlanRoast`/`skipCodeRoast` flags rather than a parked record: nothing was
 adversarially reviewed, so zero Blocking and zero escalations means "never
-checked," not "checked and clean." With both flags set, the status line is
-`clean [degraded: plan roast skipped, code roast skipped]`, never bare `clean` —
-that configuration is also what the cheap end-to-end validation run uses, so
-it is the first status line anyone reading this contract's output will see.
+checked," not "checked and clean." With both flags set and nothing else
+wrong, the status line is `clean [degraded: plan roast skipped, code roast
+skipped]`, never bare `clean`. That configuration is what the cheap end-to-end
+validation run uses, so it is the first status line anyone reading this
+contract's output will see — which is exactly why the `codeBuckets` rule above
+matters: in that configuration the roast-sourced counters are both zero by
+construction, and `codeBuckets` is the only thing left that can tell the truth.
 
 The prohibition: never a bare "done." "Done" says nothing about which of the four
 states above actually happened, and a run that parked Blocking findings, or left
