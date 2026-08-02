@@ -150,10 +150,15 @@ independence: same-family (Claude) — seat-differentiated panel
 ## Escalations (need human)      ← UNVERIFIED externals, incomplete panels, material dissent
 ```
 
-The report is written to `docs/superpowers/reviews/YYYY-MM-DD-<topic>-roast-N.md` (N = iteration)
-by the orchestrator, after the engine returns `reportMarkdown` — the pipeline itself writes
-nothing to the repo.
+The report is written to `docs/superpowers/reviews/YYYY-MM-DD-<topic>-roast-<mode>-N.md`
+(`<mode>` = `design` or `pr`, N = iteration) by the orchestrator, after the engine returns
+`reportMarkdown` — the pipeline itself writes nothing to the repo.
 - (User preferences for report location override this default — `super-auto` supplies its run directory.)
+- **`<mode>` is in the filename, not just the header, because the same topic gets roasted twice:
+  once as a design and once as a PR.** Without it both land on `…-roast-1.md` on the same day in
+  the same directory, and the PR-mode report silently overwrites the design-mode one — taking with
+  it the only record of which design decisions a roast changed. A caller that redirects the
+  directory inherits this protection automatically; one that renames the file must keep the mode.
 
 **The two caps lose findings differently, and the report says so differently.** `beyondPanelCap`
 (severe candidates the judge panel never reached) are listed individually under "## Not verified

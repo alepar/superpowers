@@ -64,10 +64,18 @@ a resume can silently redo work or violate a decision that was already made.
 
    All path-valued pointers are given **relative to the run directory**
    (`docs/superpowers/runs/YYYY-MM-DD-<slug>/`) — never bare filenames, never full
-   repo-relative paths. A `spec:` of `design.md` and a `roast-design:` of
-   `roast-design-1.md` both resolve against the same run directory; there is no
-   second convention to pick between. This is the one rule that keeps two
-   implementations of this contract from producing incompatible files.
+   repo-relative paths. There is no second convention to pick between, which is
+   what keeps two implementations of this contract from producing incompatible
+   files.
+
+   **Record the filename the producing skill actually wrote — never a name this
+   contract wishes it had used.** `brainstorming` writes
+   `YYYY-MM-DD-<topic>-design.md`; `super-roast` writes
+   `YYYY-MM-DD-<topic>-roast-<mode>-N.md`. Redirecting the directory does not
+   rename the file. A pointer invented to look tidy (`design.md`, `roast-code-1.md`)
+   is a dangling pointer, and the report is sourced through these pointers — the
+   sections that read them come back empty and the report reads thinner than the
+   run actually was.
 
 4. **Parked items** — three kinds, each with its source report:
    - **escalations** — a roast finding that reached no verdict at all;
@@ -129,20 +137,20 @@ flags: planOneShot=false skipPlanRoast=false skipCodeRoast=false autonomous=true
 phase: roast-code
 
 idea: add a per-tenant rate limiter to the public API
-spec: design.md
+spec: 2026-07-31-rate-limiter-design.md
 epic: bd-412
 branch: epic-bd-412-integration
 base: main
-roast-design: roast-design-1.md, roast-design-2.md
-roast-code: roast-code-1.md
+roast-design: 2026-07-31-rate-limiter-roast-design-1.md, 2026-07-31-rate-limiter-roast-design-2.md
+roast-code: 2026-08-01-rate-limiter-roast-pr-1.md
 
 roastDesignRound: 2
 roastCodeRound: 1
 
 parked:
-- roast-design-2.md · escalation · "cache invalidation premise unverified — no valid judge votes"
-- roast-design-2.md · degraded-verdict · "clean [low coverage] — proceeded, not re-roasted"
-- roast-code-1.md · beyond-cap · "Blocking candidate left unjudged at panel cap"
+- 2026-07-31-rate-limiter-roast-design-2.md · escalation · "cache invalidation premise unverified — no valid judge votes"
+- 2026-07-31-rate-limiter-roast-design-2.md · degraded-verdict · "clean [low coverage] — proceeded, not re-roasted"
+- 2026-08-01-rate-limiter-roast-pr-1.md · beyond-cap · "Blocking candidate left unjudged at panel cap"
 
 codeBuckets:
   completed: bd-413, bd-414

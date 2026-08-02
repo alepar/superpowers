@@ -127,7 +127,9 @@ State and report follow `./run-state.md` and `./report-prompt.md` — do not res
 
 **Every link into a run directory carries the full `YYYY-MM-DD-<slug>` name, never the bare slug.**
 That includes the `specs/INDEX.md` row for this run, which links to
-`../runs/YYYY-MM-DD-<slug>/design.md`. The date prefix is not decoration: Resume globs
+`../runs/YYYY-MM-DD-<slug>/<the spec's actual filename>` — `brainstorming` names it
+`YYYY-MM-DD-<topic>-design.md`, and redirecting the directory does not rename the file, so never
+hard-code `design.md`. The date prefix on the directory is not decoration: Resume globs
 `runs/*-<slug>/run.md`, so a link written without it points at a directory that does not exist, and
 a human following that link concludes the run is missing while the run is sitting on disk.
 
