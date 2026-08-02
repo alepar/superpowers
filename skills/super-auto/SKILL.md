@@ -221,9 +221,12 @@ a human following that link concludes the run is missing while the run is sittin
   crash-atomic unit (see above): a crash inside the design-roast loop loses this run's round count
   and the cap-3 loop restarts at 1. `super-design` now reports its round count back and accepts a
   starting round, which closes the gap across the boundary but not within it.
-- **Never run end to end.** Two cold dry walks (2026-08-01) drove a full run, a resume, and a
-  both-roasts-skipped run from these files alone, and every defect they found is fixed above — but a
-  walk narrates; it does not execute. No real epic has been driven through this skill.
+- **This skill has never been executed — it is validated by inspection only.** (A statement of
+  fact about its history, not an instruction: running it end to end is exactly what it is for, and
+  the most useful thing anyone can do with it next.) Two cold dry walks (2026-08-01) drove a full
+  run, a resume, and a both-roasts-skipped run from these files alone, and every defect they found
+  is fixed above — but a walk narrates; it does not execute. Nothing here is yet evidence about
+  behavior, only about documents.
 
 Shipped as documented gaps this round, not fixed:
 
