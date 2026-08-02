@@ -1,6 +1,6 @@
 ---
 name: super-auto
-description: Use when taking a feature from a raw idea all the way to finished code in one invocation, optionally unattended. Not for reviewing an existing PR or design (that is super-roast) and not for executing an epic that already has a task tree (that is super-code).
+description: Use when taking a feature from a raw idea all the way to finished code in one invocation, optionally unattended, in a repo with a beads (`bd`) tracker. Not for reviewing an existing PR or design (that is super-roast) and not for executing an epic that already has a task tree (that is super-code).
 ---
 
 # super-auto
@@ -24,6 +24,24 @@ Never:
   duplicate it.
 - Decide a finding's severity, or adjudicate a roast finding.
 - Copy an artifact another skill owns — hold pointers, per `./run-state.md`.
+
+## Pre-flight
+
+**A beads (`bd`) tracker is required. Check before anything else — before the flags, before the run
+directory, before Resume.** Run `bd --version`; if it is not available, stop and say so:
+
+> `super-auto` needs a beads tracker and this repo has none. Options: install `bd` and re-invoke, or
+> drive the phases by hand — `superpowers:super-design` to get a task tree, then
+> `superpowers:writing-plans` plus `superpowers:subagent-driven-development` to execute it.
+
+**Why this is a hard stop rather than a fallback path.** Every load-bearing structure in this run is
+a tracker structure: the epic is the unit phase 3 executes, `run.md`'s `epic:` pointer is how a
+resume finds the work, phase 5 files fix findings as beads under that epic, and the report's
+Implemented/Remaining sections and its `<M>` escalation counter all read `codeBuckets`, which only
+`super-code` produces. Without a tracker there is no epic to name, no `super-code` to invoke, no bead
+to file, and no buckets to report from — a no-tracker run would have to fabricate all four, which is
+exactly the narrated-from-recollection failure `./report-prompt.md` exists to prevent. Sequencing a
+no-beads run is a different skill's job, not a degraded mode of this one.
 
 ## Resume
 
@@ -147,9 +165,8 @@ kebab-case them** — "add a per-tenant rate limiter to the public API, run it a
 `per-tenant-rate-limiter`. Concrete because Resume globs on it: two sessions that slug one idea
 differently create two runs for one feature, which is the failure Resume's fallback exists to catch — `brainstorming` has not produced
 a title yet, and the directory must exist to be handed to `super-design` as an override at phase 1's
-invocation, which relays it to every `brainstorming` iteration it runs (root and nested). `writing-plans`
-(invoked directly by `super-auto`, in no-beads mode) takes the same directory as its documented
-location-preference override; `super-roast` uses the report-location override added for this.
+invocation, which relays it to every `brainstorming` iteration it runs (root and nested). `super-roast` uses the report-location
+override added for this.
 State and report follow `./run-state.md` and `./report-prompt.md` — do not restate them here.
 
 **Which working tree the run directory lives in, and the one merge that keeps it whole.**

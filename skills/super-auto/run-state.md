@@ -59,19 +59,19 @@ a resume can silently redo work or violate a decision that was already made.
 3. **Pointers** — the raw idea text, spec path, epic id, integration branch, the
    **base branch** the run merges back into — the repo branch the design
    worktree was cut from, usually `main`, *not* the integration branch's
-   immediate parent — roast report paths, and — **in
-   no-beads mode only** — the plan path. `base` is written at phase 1, when the design
+   immediate parent — and the roast report paths. There is no plan pointer: a
+   tracker is required (`SKILL.md` §Pre-flight), so the epic is the plan and
+   `epic` already points at it. `base` is written at phase 1, when the design
    worktree is created, and exists so phase 7 can supply it instead of asking: this skill's
    finish step asks for the base only "if it is not already known," and a resumed
    run has no other way to know it. Pointers only,
    never inline content: `run.md` says *where* the spec and reports live and never
-   restates them. Two exceptions to "pointers only," both deliberate. `idea` carries
-   the raw idea verbatim, because the resume rule's fallback matches on it and a run
-   that crashes during phase 1 has no spec to match on yet. `plan` is written **only**
-   when no tracker is in use — in beads mode there is no `plan.md`; the epic and its
-   beads are the plan, and `epic` already points at them. Writing an unconditional
-   `plan:` line invites a resume to go looking for a file that was never meant to
-   exist.
+   restates them. One exception to "pointers only," deliberate: `idea`
+   carries the raw idea verbatim, because the resume rule's fallback matches on it
+   and a run whose session dies during phase 1 has no spec to match on yet. There is
+   no `plan` pointer at all — a tracker is required, so the epic and its beads are
+   the plan, and a `plan:` line would only send a resume looking for a file that was
+   never meant to exist.
 
    All path-valued pointers are given **relative to the run directory**
    (`docs/superpowers/runs/YYYY-MM-DD-<slug>/`) — never bare filenames, never full
