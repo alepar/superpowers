@@ -114,6 +114,11 @@ a resume can silently redo work or violate a decision that was already made.
    never saw raised or made.
 
 5. **Roast iteration counts, per loop** — `roastDesignRound`, `roastCodeRound`.
+   **Both are written per round, by whichever skill is running that round** —
+   `roastCodeRound` by the sequencer, `roastDesignRound` by `super-design`, whose
+   loop runs inside its own invocation where the sequencer has no control. A count
+   written only when a loop finishes is not durable, which is the whole point of
+   the paragraph below.
    Both roast fix loops (design and code) are capped at 3 iterations. That cap is
    only real if the count survives a restart:
 

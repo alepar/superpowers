@@ -183,6 +183,38 @@ contain its own review, which is the failure this exists to prevent. `specs/INDE
 canonical path regardless — it is a repo-wide catalogue, not a run artifact — and its row links to
 the overridden location.
 
+## Run-State File (when a caller supplies one)
+
+A caller that tracks a longer run may hand this invocation a **run-state file path** alongside the
+artifact-directory override. When it does, **record each fact into that file at the moment it
+becomes true — not on return.** A caller has no control while this skill runs, so anything left
+until the hand-off is lost if the session ends mid-run, and this skill's own work (root brainstorm,
+decomposition, the whole coverage loop, the roast fix loop) is the longest stretch of any run it
+takes part in.
+
+Write these, each as it happens:
+
+| Fact | Written when |
+|---|---|
+| the design worktree's branch, and the branch it was cut from | the worktree is created, at the root brainstorm |
+| the root spec's path | `brainstorming` commits it |
+| the root epic id | §Decomposition creates it |
+| each roast report path | `super-roast` returns it |
+| the roast round count | incremented **per round**, before the next round starts |
+| a parked escalation, beyond-cap item, or verdict qualifier | the round that produced it |
+| the caller's phase token, if it supplied one for this stage | entering that stage |
+
+Two rules on top:
+
+- **Append your facts; never rewrite the file.** The caller owns fields you were not handed, and
+  clobbering them turns its resume into a restart.
+- **The round count is the one that must be written per round, not per loop.** A cap that is only
+  recorded after the loop finishes is not a cap: a session that ends mid-loop resumes at round 1 and
+  runs the full allowance again. Accept a starting round on entry (§Hand-off) and resume from it.
+
+This costs one small write per event and is what lets a caller resume into the middle of this
+skill's work instead of re-running all of it.
+
 ## Conventions
 
 - Every spec (root and nested) opens with `## Goal` — one or two sentences, an observable outcome. Coverage consumes it verbatim.

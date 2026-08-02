@@ -55,22 +55,26 @@ mid-run question, no work is in flight yet, and picking wrong resumes the wrong 
 (`./run-state.md`) — never re-ask the flags, never reset a counter. `run.md` is created the moment
 the run directory exists, with `phase: design` and the four flags already written — before
 `super-design` itself runs — so a crash mid-run still resumes without re-asking. Written again
-after every phase transition and after every roast round.
+after every phase transition and after every roast round — by `super-auto` for phases 3–7, and by `super-design` for phases 1–2, which run inside its invocation (see below).
 
-**Phases 1 and 2 are one crash-atomic unit.** `super-auto` holds no control between invoking
-`super-design` and its return, so nothing can be written to `run.md` while the root brainstorm, the
-decomposition, the coverage loop, or the design-roast loop are running. A crash anywhere in there
-resumes at `phase: design` and re-enters `super-design` from the top. Two consequences, both
-deliberate rather than accidental:
+**Phases 1 and 2 run inside one `super-design` invocation, so `super-design` writes `run.md` during
+them.** `super-auto` holds no control between invoking it and its return — which is the longest,
+most expensive stretch of a run, and the likeliest place for a session to end. Rather than leave that
+window unrecorded, **hand `super-design` the `run.md` path** along with the artifact-directory
+override; its §Run-State File contract has it record the design branch and its base, the spec path,
+the epic id, each roast report, and the roast round count **as each becomes true**, plus the
+`roast-design` phase token when that stage begins.
 
-- **Do not treat a resume at `phase: design` as "nothing happened."** The tracker holds the real
-  state — the epic, its children, their `sp:needs-design` labels — and `super-design`'s own cursor is
-  a query over that, not session memory. Re-entering it resumes the tree where the labels say it is;
-  it does not redesign what is already designed.
-- **`roastDesignRound` is durable only across the phase-2 boundary, not inside it.** A crash mid
-  design-roast loses this run's round count, and the loop restarts at 1. That is the one place this
-  file's cap-3 guarantee is weaker than `run-state.md` states it — recorded here rather than left
-  for a reader to discover, and the reason `super-design`'s hand-off reports its round count back.
+Field ownership is split and does not overlap: `super-design` writes what phases 1–2 produce;
+`super-auto` writes everything from phase 3 on (`branch`, `codeBuckets`, `roast-code`,
+`roastCodeRound`, and every phase token from `code` onward). Neither rewrites the other's fields.
+
+**This makes the state durable; it does not make re-entry idempotent.** A resumed run still re-enters
+`super-design` at step 1, and knowing that `spec:` and `epic:` already exist is not the same as
+`super-design` skipping the work that produced them — that guard lives in `super-design`, not here.
+Treat a resume at `phase: design` accordingly: the recorded pointers plus the tracker (the epic, its
+children, their `sp:needs-design` labels) say where the tree actually is, and `super-design`'s cursor
+is a query over that rather than session memory.
 
 ## Inputs
 
@@ -100,7 +104,7 @@ own, or the flags strand and the sequence is lost. Each row's parenthetical is t
 | # | Phase (`run.md` token) | Skill | Note |
 |---|---|---|---|
 | 1 | Design (`design`) | `super-design` | Invoked with the goal or raw idea; drives the root brainstorm, decomposition, every subepic brainstorm, and the coverage loop itself → settled tree. **Say in the invocation that the hand-off is `super-auto`'s**, or `super-design` chains into execution and the flags strand. Record the epic id yourself |
-| 2 | Design roast (`roast-design`) | `super-roast` (design) | Runs **inside** phase 1's `super-design` invocation, via its own offer; cap-3 fix loop. `super-auto` holds no control while it runs, so `phase: roast-design`, the report paths and `roastDesignRound` are all written **on return**, from what `super-design` hands back (§Hand-off). Phases 1–2 are therefore one crash-atomic unit — see below. |
+| 2 | Design roast (`roast-design`) | `super-roast` (design) | Runs **inside** phase 1's `super-design` invocation, via its own offer; cap-3 fix loop. `super-auto` holds no control while it runs, so `super-design` writes `phase: roast-design`, the report paths and `roastDesignRound` into `run.md` itself, per its §Run-State File contract — see above. |
 | 3 | Code (`code`) | `super-code` | Name the integration branch `epic-<epicId>-integration`; create it off the design branch if absent, **verify it if it already exists** (a resume must never re-create it); cut it from the design branch and record `branch` in `run.md` (`base` was recorded at phase 1) — `super-code` requires `integrationBranch` and derives its worktree from it, but never creates either. Autonomous or interactive per flag. **Say in the invocation that `super-auto` owns the finish** — there is no config flag, and without it `super-code` merges and deletes the worktree the report still needs. |
 | 4 | Code roast (`roast-code`) | `super-roast` (PR) | Against the live integration branch |
 | 5 | Fix loop (`fix-loop`) | — | Reopen the epic, file confirmed findings as beads (shape: see Red Flags), re-enter `super-code`, loop to phase 4; cap 3, stop early if Blocking count doesn't shrink |
@@ -186,8 +190,8 @@ run-directory-relative pointers resolve to nothing. Two rules settle it:
   `base`, the integration branch still forks from `base` transitively, which is what phase 7 needs.
 
 **`base` is the branch the whole run merges back into** — the repo branch the design worktree was
-cut from, usually `main`. Record it in `run.md` (`./run-state.md` item 3) at phase 1, when that
-worktree is created, not at phase 3. It is the one branch name phase 7 hands to
+cut from, usually `main`. **`super-design` records it** when it creates that worktree, per its
+§Run-State File contract; `super-auto` cannot, because it holds no control at that moment. It is the one branch name phase 7 hands to
 `finishing-a-development-branch`, and it is deliberately **not** the integration branch's immediate
 parent: the design branch is a fork point, `base` is a destination, and merging the finished work
 into its own design branch would leave it exactly as unmerged as before.
@@ -234,10 +238,12 @@ a human following that link concludes the run is missing while the run is sittin
 
 ## Known limitations
 
-- **`roastDesignRound` is durable only across the phase-2 boundary.** Phases 1–2 are one
-  crash-atomic unit (see above): a crash inside the design-roast loop loses this run's round count
-  and the cap-3 loop restarts at 1. `super-design` now reports its round count back and accepts a
-  starting round, which closes the gap across the boundary but not within it.
+- **A resumed run re-enters `super-design` at step 1, which has no idempotency guard.** State
+  written during phases 1–2 is now durable (`super-design` writes `run.md` live), so a resume knows
+  the spec path, epic id and round count — but knowing them is not the same as `super-design`
+  skipping the work that produced them. Its §The Process step 1 re-invokes `brainstorming`
+  unconditionally, and only its subepic cursor is tracker-derived. Until that guard exists, a
+  session that ends inside phase 1 can produce a second root spec on re-entry.
 - **This skill has never been executed — it is validated by inspection only.** (A statement of
   fact about its history, not an instruction: running it end to end is exactly what it is for, and
   the most useful thing anyone can do with it next.) Two cold dry walks (2026-08-01) drove a full
