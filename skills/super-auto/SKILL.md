@@ -56,6 +56,12 @@ deliberate rather than accidental:
 
 ## Inputs
 
+**All four default to `false`.** Ask only for the ones the invocation leaves genuinely open, and
+take the default for anything the user shows no interest in rather than turning a start into a quiz.
+Note what `autonomous=false` on its own does *not* mean: with `planOneShot=false` the design phase is
+collaborative regardless, so "run it autonomously" still buys an interactive design and an unattended
+everything-after — say so when confirming, since the opposite is the natural reading.
+
 Four flags, collected once, before any phase runs (and skipped entirely on a resume — see
 Resume above), in **one batched question** — never four sequential ones — and only asked for
 whichever aren't already stated in the invocation.
@@ -135,8 +141,11 @@ Merges *into* the run's own integration branch are a different thing and need no
 
 ## Run directory
 
-All artifacts of one run live under `docs/superpowers/runs/YYYY-MM-DD-<slug>/`. **Slug and date are
-both fixed once, kebab-cased from the raw idea, before phase 1** — `brainstorming` has not produced
+All artifacts of one run live under `docs/superpowers/runs/YYYY-MM-DD-<slug>/`. **Slug and date are both fixed once, before phase 1**:
+take the idea's **content words, drop stopwords and any flag clause, keep the first three to five,
+kebab-case them** — "add a per-tenant rate limiter to the public API, run it autonomously" gives
+`per-tenant-rate-limiter`. Concrete because Resume globs on it: two sessions that slug one idea
+differently create two runs for one feature, which is the failure Resume's fallback exists to catch — `brainstorming` has not produced
 a title yet, and the directory must exist to be handed to `super-design` as an override at phase 1's
 invocation, which relays it to every `brainstorming` iteration it runs (root and nested). `writing-plans`
 (invoked directly by `super-auto`, in no-beads mode) takes the same directory as its documented
@@ -208,17 +217,13 @@ a human following that link concludes the run is missing while the run is sittin
 
 ## Known limitations
 
-- **The dry walk's remaining open questions.** A cold walk of these files alone (2026-07-31) completed
-  a run and a resume, but only by inventing answers at twelve points the files leave open. The ones
-  most likely to bite: the slug rule says "kebab-cased from the raw idea" while the worked example
-  shows a condensed topic, and a resume phrased "continue the X work" slugs differently again; the
-  four flags have no stated defaults; the resume fallback says
-  "match by the recorded idea/spec" without saying what counts as a match — substring, token overlap,
-  or judgement — which is a coin flip once more than one run exists; and phase 2 runs *inside* phase
-  1's `super-design` invocation, so `phase: roast-design` and `roastDesignRound` can only ever be
-  written retroactively, leaving a crash mid-design-roast to resume as `phase: design` and restart
-  the root brainstorm. Two of the original twelve are closed: `run.md` now records the raw `idea`,
-  and `super-design` relays an artifact-directory override to `super-roast`.
+- **`roastDesignRound` is durable only across the phase-2 boundary.** Phases 1–2 are one
+  crash-atomic unit (see above): a crash inside the design-roast loop loses this run's round count
+  and the cap-3 loop restarts at 1. `super-design` now reports its round count back and accepts a
+  starting round, which closes the gap across the boundary but not within it.
+- **Never run end to end.** Two cold dry walks (2026-08-01) drove a full run, a resume, and a
+  both-roasts-skipped run from these files alone, and every defect they found is fixed above — but a
+  walk narrates; it does not execute. No real epic has been driven through this skill.
 
 Shipped as documented gaps this round, not fixed:
 

@@ -142,26 +142,26 @@ rounds (one still parked as an escalation) and the run is now one round into
 code roast.
 
 ```markdown
-# super-auto run — 2026-07-31-rate-limiter
+# super-auto run — 2026-07-31-per-tenant-rate-limiter
 
 flags: planOneShot=false skipPlanRoast=false skipCodeRoast=false autonomous=true
 phase: roast-code
 
 idea: add a per-tenant rate limiter to the public API
-spec: 2026-07-31-rate-limiter-design.md
+spec: 2026-07-31-per-tenant-rate-limiter-design.md
 epic: bd-412
 branch: epic-bd-412-integration
 base: main
-roast-design: 2026-07-31-rate-limiter-roast-design-1.md, 2026-07-31-rate-limiter-roast-design-2.md
-roast-code: 2026-08-01-rate-limiter-roast-pr-1.md
+roast-design: 2026-07-31-per-tenant-rate-limiter-roast-design-1.md, 2026-07-31-per-tenant-rate-limiter-roast-design-2.md
+roast-code: 2026-08-01-per-tenant-rate-limiter-roast-pr-1.md
 
 roastDesignRound: 2
 roastCodeRound: 1
 
 parked:
-- 2026-07-31-rate-limiter-roast-design-2.md · escalation · "cache invalidation premise unverified — no valid judge votes"
-- 2026-07-31-rate-limiter-roast-design-2.md · degraded-verdict · "clean [low coverage] — proceeded, not re-roasted"
-- 2026-08-01-rate-limiter-roast-pr-1.md · beyond-cap · "Blocking candidate left unjudged at panel cap"
+- 2026-07-31-per-tenant-rate-limiter-roast-design-2.md · escalation · "cache invalidation premise unverified — no valid judge votes"
+- 2026-07-31-per-tenant-rate-limiter-roast-design-2.md · degraded-verdict · "clean [low coverage] — proceeded, not re-roasted"
+- 2026-08-01-per-tenant-rate-limiter-roast-pr-1.md · beyond-cap · "Blocking candidate left unjudged at panel cap"
 
 codeBuckets:
   completed: bd-413, bd-414
