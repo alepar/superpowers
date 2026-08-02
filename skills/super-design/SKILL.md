@@ -157,7 +157,14 @@ What happens once the tree has settled is **conditional on who owns the hand-off
 - **Beads:** hand off the root epic to `superpowers:super-code`, which owns the epic-scoped `bd ready` loop and the `bd epic close-eligible` fixpoint. Run completion = the root epic is closed.
 - **No beads:** run `superpowers:writing-plans` once per epic (a mixed epic still gets a plan for its own leaf tasks); invoke `superpowers:subagent-driven-development`'s plan-file mode once per plan, serially, in dependency order.
 
-**When the caller owns the hand-off** (e.g. an outer sequencer such as `super-auto`, which needs to thread its own flags and hand-off decisions into the next phase), `super-design` still completes the coverage loop (§Coverage) and the adversarial-review offer (§Adversarial Review Loop), then reports the settled tree and stops — the onward invocation is the caller's to make: `super-code` in beads mode, or, in no-beads mode, `writing-plans` per epic **followed by** `subagent-driven-development`'s plan-file mode (the plan file is not optional — SDD extracts each task's brief from it).
+**When the caller owns the hand-off** (e.g. an outer sequencer such as `super-auto`, which needs to thread its own flags and hand-off decisions into the next phase), `super-design` still completes the coverage loop (§Coverage) and the adversarial-review offer (§Adversarial Review Loop), then reports the settled tree and stops. **The report back to a caller that owns the hand-off
+carries four things beyond the tree**: the root epic id, the roast report paths in order, the number
+of roast rounds run, and any verdict qualifier left unresolved. A caller cannot observe any of these
+from outside this invocation — the roast loop runs entirely inside it — so a caller that has to
+record them (`super-auto` does, per its `run.md` contract) has no way to do so unless this skill
+hands them back. Symmetrically, **a caller may hand in a starting round number**; resume from it
+rather than from 1, or the cap-3 loop silently restarts on every resumed run. The onward invocation
+is the caller's to make: `super-code` in beads mode, or, in no-beads mode, `writing-plans` per epic **followed by** `subagent-driven-development`'s plan-file mode (the plan file is not optional — SDD extracts each task's brief from it).
 
 ## No-Beads Mode
 

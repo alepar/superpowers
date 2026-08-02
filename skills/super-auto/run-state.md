@@ -13,7 +13,12 @@ every field in it is read back on resume and trusted.
 
 ## The six required contents
 
-`run.md` MUST hold exactly these six things. Each one is load-bearing: drop it and
+`run.md` MUST hold exactly these six things **as they become known**. At creation,
+before phase 1 runs, only `flags`, `phase`, and `idea` exist — write those three and
+add each of the rest as the phase that produces it returns. Omitted is not the same
+as empty: a resume reading no `epic:` line knows phase 1 never got that far, where
+an `epic:` with a blank value reads as a malformed file. Each one is load-bearing:
+drop it and
 a resume can silently redo work or violate a decision that was already made.
 
 1. **The four flags** — `planOneShot`, `skipPlanRoast`, `skipCodeRoast`, `autonomous`.
@@ -22,8 +27,12 @@ a resume can silently redo work or violate a decision that was already made.
    decision the run is already partway through acting on.
 
 2. **Current phase** — one of `design | roast-design | code | roast-code
-   | fix-loop | report | finish | done`. **A phase skipped by flag is still
-   written, with `(skipped)` appended** — `phase: roast-code (skipped)` — and only
+   | fix-loop | report | finish | done`. **A phase that does not run is still
+   written, with `(skipped)` appended**, whether it was skipped by a flag or had
+   no work to do — `fix-loop (skipped)` when no confirmed findings reached it,
+   which is the common case on a clean roast and the only case when a roast was
+   skipped. Restricting the marker to flag-skips would reproduce the same
+   never-reached-or-skipped ambiguity one phase over — `phase: roast-code (skipped)` — and only
    then advanced. Without this, `skipCodeRoast` makes `phase` jump `code` → `report`
    and a reader cannot tell skipped-by-flag from never-reached; the flags are durable
    and could be cross-referenced, but a resume should not have to infer a phase's fate

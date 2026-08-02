@@ -36,6 +36,21 @@ the run directory exists, with `phase: design` and the four flags already writte
 `super-design` itself runs — so a crash mid-run still resumes without re-asking. Written again
 after every phase transition and after every roast round.
 
+**Phases 1 and 2 are one crash-atomic unit.** `super-auto` holds no control between invoking
+`super-design` and its return, so nothing can be written to `run.md` while the root brainstorm, the
+decomposition, the coverage loop, or the design-roast loop are running. A crash anywhere in there
+resumes at `phase: design` and re-enters `super-design` from the top. Two consequences, both
+deliberate rather than accidental:
+
+- **Do not treat a resume at `phase: design` as "nothing happened."** The tracker holds the real
+  state — the epic, its children, their `sp:needs-design` labels — and `super-design`'s own cursor is
+  a query over that, not session memory. Re-entering it resumes the tree where the labels say it is;
+  it does not redesign what is already designed.
+- **`roastDesignRound` is durable only across the phase-2 boundary, not inside it.** A crash mid
+  design-roast loses this run's round count, and the loop restarts at 1. That is the one place this
+  file's cap-3 guarantee is weaker than `run-state.md` states it — recorded here rather than left
+  for a reader to discover, and the reason `super-design`'s hand-off reports its round count back.
+
 ## Inputs
 
 Four flags, collected once, before any phase runs (and skipped entirely on a resume — see
@@ -45,7 +60,7 @@ whichever aren't already stated in the invocation.
 | Flag | Effect |
 |---|---|
 | plan one-shot | Stated to `super-design`, which relays it to every `brainstorming` iteration it runs (root spec, each subepic) — Mode B instead of Mode A |
-| skip plan roast | Declines `super-design`'s adversarial-review offer |
+| skip plan roast | Declines **both** design-mode roast offers: `brainstorming`'s on the root spec and `super-design`'s on the settled tree. They are two separate offers; declining only the second still gets the user asked once, after they said to skip it |
 | skip code roast | Omits the final PR-mode roast entirely |
 | autonomous | No query interrupts work in flight once `super-design`'s coverage loop passes; the run still hands back for the integration decision when every bead is done (see Autonomous mode) |
 
@@ -58,7 +73,7 @@ own, or the flags strand and the sequence is lost. Each row's parenthetical is t
 | # | Phase (`run.md` token) | Skill | Note |
 |---|---|---|---|
 | 1 | Design (`design`) | `super-design` | Invoked with the goal or raw idea; drives the root brainstorm, decomposition, every subepic brainstorm, and the coverage loop itself → settled tree. **Say in the invocation that the hand-off is `super-auto`'s**, or `super-design` chains into execution and the flags strand. Record the epic id yourself |
-| 2 | Design roast (`roast-design`) | `super-roast` (design) | Via `super-design`'s own offer, inside its invocation; cap-3 fix loop; `super-auto` records each report path itself |
+| 2 | Design roast (`roast-design`) | `super-roast` (design) | Runs **inside** phase 1's `super-design` invocation, via its own offer; cap-3 fix loop. `super-auto` holds no control while it runs, so `phase: roast-design`, the report paths and `roastDesignRound` are all written **on return**, from what `super-design` hands back (§Hand-off). Phases 1–2 are therefore one crash-atomic unit — see below. |
 | 3 | Code (`code`) | `super-code` | Name the integration branch `epic-<epicId>-integration`; create it off the design branch if absent, **verify it if it already exists** (a resume must never re-create it); cut it from the design branch and record `branch` in `run.md` (`base` was recorded at phase 1) — `super-code` requires `integrationBranch` and derives its worktree from it, but never creates either. Autonomous or interactive per flag. **Say in the invocation that `super-auto` owns the finish** — there is no config flag, and without it `super-code` merges and deletes the worktree the report still needs. |
 | 4 | Code roast (`roast-code`) | `super-roast` (PR) | Against the live integration branch |
 | 5 | Fix loop (`fix-loop`) | — | Reopen the epic, file confirmed findings as beads (shape: see Red Flags), re-enter `super-code`, loop to phase 4; cap 3, stop early if Blocking count doesn't shrink |
@@ -82,7 +97,7 @@ ORPHANs) — parking can't serve a decision that hasn't been made yet, so phase 
 In the autonomous zone, `super-design`'s and `super-roast`'s own mandated human pauses are answered,
 not asked, and the road not taken is parked (`run-state.md`'s `degraded-verdict` kind):
 
-- **The offer to invoke `super-roast` at all** (phase 2): accepted without asking.
+- **The offer to invoke `super-roast` at all** (phase 2): accepted without asking — **unless `skipPlanRoast` is set, which wins.** An explicit flag beats a mode default; otherwise the flag would be unreachable in exactly the configuration (`skipPlanRoast` + `autonomous`) the cheap validation run uses.
 - **"Re-roast with a raised `config.panelCap`?"** (a beyond-cap finding): answered **no** — proceed
   with the findings in hand; the unexplored raise is parked, not silently dropped.
 - **The `clean [low coverage]` / `clean [panel-capped: N unverified]` three-way gate**, at both
