@@ -1,7 +1,7 @@
 {
   "name": "superpowers-alepar",
   "interface": {
-    "displayName": "Superpowers Dev"
+    "displayName": "Superpowers (alepar fork)"
   },
   "plugins": [
     {
