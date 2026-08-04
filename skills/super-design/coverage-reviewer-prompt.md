@@ -15,6 +15,15 @@ Task tool (general-purpose), model: opus:
     arbitrates away anything that isn't real. Surface anything plausible. A rubber-stamp
     is a failure.
 
+    **Your entire review window is this prompt. Call no tools: do not read files, do not
+    explore the repository, do not query the tracker** — the caller assembled everything
+    this pass may consider into the sections below, and the bound is the point: coverage
+    is judged goal-vs-tree, not tree-vs-codebase, and a reviewer that roams re-reviews
+    scope some other pass owns. If the input below looks insufficient to judge the goal —
+    a section empty that shouldn't be, a task tree that references specs you weren't
+    given — report that as a finding (**type: INSUFFICIENT-INPUT**, naming what's
+    missing) instead of going to look for it.
+
     ## Goal
     [GOAL — the applicable spec's `## Goal` section, verbatim]
 
