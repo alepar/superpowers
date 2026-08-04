@@ -27,8 +27,9 @@ where it lands:
 | phase token(s) | §Run-State File — written into the run-state file when the named stage begins |
 | design mode (A/B) | relayed to every `brainstorming` invocation, root and nested |
 | autonomous | the loop-exit and qualifier exceptions (§Adversarial Review Loop) fire; gates still ask unless a recorded approval replays (§Run-State File) |
-| skip the roast | §Adversarial Review Loop's offer is pre-declined — skip to hand-off without asking |
+| roast preference (on/off) | §Adversarial Review Loop's offer is pre-decided either way — never re-asked |
 | starting roast round | §Hand-off — resume the cap-3 loop from it rather than from 1 |
+| hand-off ownership | §Hand-off's caller-owned branch, and half the precondition of both autonomous exceptions — "the caller owns the hand-off **and** stated the run is autonomous" |
 
 ## The Process
 
@@ -142,13 +143,16 @@ Runs once the tree has settled (§The Process, step 7).
 Runs once the coverage loop passes (§Coverage), before hand-off. Offered once, at the root, the
 same offer brainstorming makes on a single un-decomposed spec — a decomposed tree gets it here
 instead, after the tree has settled, since that's the first point a full design exists to review.
-Opt-in; declining goes straight to hand-off — and a caller may pre-decline it (§Inputs), which
-skips the offer without asking anyone.
+Opt-in; declining goes straight to hand-off — and a caller may pre-decide it **either way**
+(§Inputs): pre-declined skips to hand-off, pre-accepted runs the roast, and in neither case is the
+offerer's question asked — the caller's user already answered it once.
 
-On accept, invoke `superpowers:super-roast` (design mode) on the settled tree. **If this invocation
-was given an artifact-directory override** (see §Artifact Location), relay it to `super-roast` as
-its report-location override, so the report lands beside the specs it is about rather than in
-`super-roast`'s own default directory. The report file is the only cross-iteration state. **Three of its sections drive this loop — reading only
+On accept, invoke `superpowers:super-roast` (design mode) on the settled tree, passing per its
+Inputs table: the artifact-directory override as its report-location override (so the report lands
+beside the specs it is about), **the iteration number from the round count** (without it a later
+round's report overwrites an earlier one's file), **`autonomous` when this invocation was told the
+run is** (without it super-roast pauses for a human at its loop exits), and on rounds ≥2 the prior
+report. The report file is the only cross-iteration state. **Three of its sections drive this loop — reading only
 `## Confirmed findings` silently discards the two that most need a human:**
 
 | Report section | What this loop does with it |
@@ -199,10 +203,9 @@ What happens once the tree has settled is **conditional on who owns the hand-off
 
 **When the caller owns the hand-off** (e.g. an outer sequencer such as `super-auto`, which needs to thread its own flags and hand-off decisions into the next phase), `super-design` still completes the coverage loop (§Coverage) and the adversarial-review offer (§Adversarial Review Loop), then reports the settled tree and stops. **The report back to a caller that owns the hand-off
 carries four things beyond the tree**: the root epic id, the roast report paths in order, the number
-of roast rounds run, and any verdict qualifier left unresolved. A caller cannot observe any of these
-from outside this invocation — the roast loop runs entirely inside it — so a caller that has to
-record them (`super-auto` does, per its `run.md` contract) has no way to do so unless this skill
-hands them back. Symmetrically, **a caller may hand in a starting round number**; resume from it
+of roast rounds run, and any verdict qualifier left unresolved. These were already written into the
+run-state file as they happened (§Run-State File); hand them back as well so the caller need not
+re-read the file to proceed. Symmetrically, **a caller may hand in a starting round number**; resume from it
 rather than from 1, or the cap-3 loop silently restarts on every resumed run. The onward invocation
 is the caller's to make: `super-code` in beads mode, or, in no-beads mode, `writing-plans` per epic **followed by** `subagent-driven-development`'s plan-file mode (the plan file is not optional — SDD extracts each task's brief from it).
 
@@ -243,6 +246,10 @@ Write these, each as it happens:
 | a parked escalation, beyond-cap item, or verdict qualifier | the round that produced it |
 | the caller's phase token, if it supplied one for this stage | entering that stage |
 | **each human gate answer, with the shape it approved** | the moment it is given |
+
+**A caller that hands in a run-state file hands in its format contract too** — follow that file's
+field names, entry shapes, and relative-path rule exactly; the caller reads these fields back, and
+a co-writer that invents its own shapes produces a state file the caller cannot parse.
 
 **When the caller owns the hand-off and stated the run is autonomous**, this skill does not pause
 for the human at its own loop exits. Both exits — cap-out and clean-with-a-qualifier — are satisfied

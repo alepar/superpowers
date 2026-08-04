@@ -71,6 +71,12 @@ skipped]`, never bare `clean` — and in that configuration the roast-sourced
 counters are zero by construction, so the `codeBuckets` rule above is the only
 thing left that can tell the truth.
 
+**Two more `codeBuckets` fields reach the status line, or nothing does.** A non-empty
+`pendingRetry` is work that did **not** land — it forces the `completed with …` form and adds
+`tasks pending retry` to the degraded list; "every bead terminal" was never true of a pending
+retry. A `review` other than `CLEAN` adds `final review: <verdict>` to the degraded list — the
+whole-epic reviewer's doubt must not be silently outvoted by empty counters.
+
 **`codeBuckets.stalled: true` maps to `status: stalled at phase code`** — a stalled `super-code`
 is a stalled run, and no other rule would put it on the status line.
 
@@ -96,7 +102,7 @@ edit that lets `super-code` run its own Finish (worktree removal included) befor
 
 | Section | Content | Sourced from |
 |---|---|---|
-| Implemented | What landed, task by task | beads closed under the run's epic; `super-code`'s `completed` bucket, recorded in `run.md`'s `codeBuckets` (item 6) at the phase 3→4 transition — not session memory; ledger completion lines, each with its commit range |
+| Implemented | What landed, task by task | beads closed under the run's epic; `super-code`'s `completed` bucket, recorded in `run.md`'s `codeBuckets` (item 6) at the phase 3→4 transition — not session memory; ledger completion lines, each with its commit range (the ledger path is part of `super-code`'s return) |
 | Remaining | What did not land, and why each didn't | `codeBuckets`' `escalated` and `pendingRetry`; parked escalations carried in `run.md`; unresolved Blocking findings still open at panel cap-out |
 | Gotchas & surprises | Where reality diverged from the design | roast findings that changed a design decision; blocker beads that were triaged; plan-defect findings; anything that forced a nested brainstorm |
 | Entrypoints | Where to start reading, in order | the task tree's dependency order: root-most module first, then its public interface, then the primary caller |

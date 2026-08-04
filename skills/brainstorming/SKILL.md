@@ -38,6 +38,10 @@ Another skill can invoke brainstorming — on a raw goal, or on a promoted subep
 - **Context is handed in by the invoking caller**: for a subepic, the parent spec, the chain of ancestor goals, and the specs of already-designed siblings. Open the new spec's `## Goal` with this invocation's local goal, seeded from the caller's rationale.
 - Do **not** re-offer the visual companion, and do **not** offer adversarial review — that is the caller's concern at its own root, not this invocation's.
 - **Skip Mode B's user-review gate** (step 10 / "User Review Gate" below) — the caller owns the Mode B human checkpoints for a tree, and the HARD-GATE above is satisfied at the caller's own approval gate, not skipped.
+- **A caller may hand in a spec-location override** — a directory that replaces the default
+  `docs/superpowers/specs/` for the spec file. The `INDEX.md` row still goes to the canonical
+  `docs/superpowers/specs/INDEX.md`, linking into the override directory **by its full directory
+  name** (date prefix included — a bare-slug link points at a directory that does not exist).
 - Do **not** create a new worktree — `superpowers:using-git-worktrees` is idempotent and just verifies the one already in use; do not re-run its baseline test suite on a workspace that already passed it this run.
 
 ## Checklist

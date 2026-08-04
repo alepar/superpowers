@@ -52,7 +52,7 @@ run is a different skill's job, not a degraded mode of this one.
 
 ## Resume
 
-On invocation, glob `docs/superpowers/runs/*-<slug>/run.md` — in the current checkout **and in every path `git worktree list` reports**, since a run's directory lives on its own branch and a session started from `base` cannot otherwise see it — the date prefix is fixed at phase 1,
+On invocation, glob `docs/superpowers/runs/*-<slug>/run.md` — in the current checkout **and in every path `git worktree list` reports**, since a run's directory lives on its own branch and a session started from `base` cannot otherwise see it. (On a resume phrased as a resume, this glob usually misses — the `idea:` scan below is the primary matcher, not the fallback.) — the date prefix is fixed at phase 1,
 not today's (see Run directory). No exact match: enumerate `docs/superpowers/runs/*/run.md` **across the same
 places — the current checkout and every `git worktree list` path** — read each `idea:` line, and
 compare it against this invocation's text before concluding no run exists — the
@@ -61,19 +61,26 @@ comparison, don't leave it to feel:** exactly one candidate sharing a content no
 invocation resumes; zero starts a fresh run; **two or more stops and asks which** — that is not a
 mid-run question, no work is in flight yet, and picking wrong resumes the wrong feature. **A worktree is not the only place a run can be.** If both globs come up empty, check the branches
 directly — `git for-each-ref --format='%(refname:short)' refs/heads/super-auto/`, then
-`git show <branch>:docs/superpowers/runs/<dir>/run.md` — before concluding no run exists. A worktree
+`git ls-tree --name-only <branch> docs/superpowers/runs/` to learn the directory name (its date
+prefix is the run's, not today's), then `git show <branch>:docs/superpowers/runs/<dir>/run.md` —
+before concluding no run exists. A worktree
 that was pruned, a fresh clone, or a different machine leaves the branch intact and the worktree
 gone; discovery that only looks at worktrees calls that run missing and starts a second one over
 live work.
 
 **On a match, switch into that run's worktree before writing anything** — or re-create one on
-`run.md`'s `branch` if it is gone. Every later write (specs, roast reports, `run.md`, `report.md`)
+`run.md`'s `branch` if it is gone (`git worktree add <path> <branch>` — **no `-b`**: the branch
+exists, and the `-b` form fails on it). Every later write (specs, roast reports, `run.md`, `report.md`)
 must land on that branch, and a resume that stays in the checkout it was invoked from puts all of it
 on the default branch, where phase 7 will not merge it.
 
 **Hand `super-design` the recorded `idea:`, not the words the user just typed.** A resume is phrased
 as a resume ("keep going on the X work"); passing that verbatim points the root brainstorm at a
 meta-instruction instead of the goal.
+
+A resume at `phase: fix-loop` re-queries the open fix beads under the epic and re-enters
+`super-code` with them; findings recorded in the latest `roast-code` report but missing as beads
+are re-filed first — the report is durable, the filing may not have finished.
 
 A resume at `phase: code` whose epic is already closed has nothing to dispatch — `bd ready` comes
 back empty by construction. Skip to phase 4 and source Implemented from the closed beads; do not
@@ -95,8 +102,10 @@ roast report, the roast round count and each gate answer **as each becomes true*
 created the workspace in pre-flight.)
 
 Field ownership is split and does not overlap: `super-design` writes what phases 1–2 produce;
-`super-auto` writes everything from phase 3 on (`branch`, `codeBuckets`, `roast-code`,
-`roastCodeRound`, and every phase token from `code` onward). Neither rewrites the other's fields.
+`super-auto` writes everything from phase 3 on (`codeBuckets`, `roast-code`, `roastCodeRound`, and
+every phase token from `code` onward) — plus `roast-design (skipped)` when `skipPlanRoast` is set,
+since a stage that never begins is one `super-design` never writes a token for. Neither rewrites
+the other's fields.
 
 **This makes the state durable; it does not make re-entry idempotent.** A resumed run still re-enters
 `super-design` at step 1, and knowing that `spec:` and `epic:` already exist is not the same as
@@ -120,7 +129,7 @@ whichever aren't already stated in the invocation.
 | Flag | Effect |
 |---|---|
 | plan one-shot | Stated to `super-design`, which relays it to every `brainstorming` iteration it runs (root spec, each subepic) — Mode B instead of Mode A |
-| skip plan roast | **Stated to `super-design`** — declines its adversarial-review offer on the settled tree, the one design-mode roast in the sequence |
+| skip plan roast | **Stated to `super-design`, either way** — it pre-decides the adversarial-review offer on the settled tree (skip or run), so the user, who already answered here, is never asked again |
 | skip code roast | Omits the final PR-mode roast entirely |
 | autonomous | **Stated to `super-design`** — it owns both design gates and its own roast loop, and its autonomous behavior is conditional on being told. You are needed at the design gates (top split, coverage arbitration); after the design is approved no query interrupts work in flight, and a resume replays those approvals rather than re-asking. The run still hands back for the integration decision when every bead is done (see Autonomous mode) |
 
@@ -132,13 +141,13 @@ own, or the flags strand and the sequence is lost. Each row's parenthetical is t
 
 | # | Phase (`run.md` token) | Skill | Note |
 |---|---|---|---|
-| 1 | Design (`design`) | `super-design` | Pass all seven: the goal (**on a resume, `run.md`'s recorded `idea:`**), the artifact-directory override, the `run.md` path, the `roast-design` phase token to write when that stage begins, the design mode from `planOneShot`, `autonomous` and `skipPlanRoast`, and — resuming mid-roast — the starting round. **Say the hand-off is `super-auto`'s.** It drives the root brainstorm, decomposition, every subepic brainstorm, the coverage loop and the design roast, recording into `run.md` as it goes. |
+| 1 | Design (`design`) | `super-design` | Pass all seven: the goal (**on a resume, `run.md`'s recorded `idea:`**), the artifact-directory override, the `run.md` path **together with `./run-state.md`, whose field names and formats govern every write** (a co-writer that never sees the contract invents an incompatible one), the `roast-design` phase token to write when that stage begins, the design mode from `planOneShot`, `autonomous` and `skipPlanRoast`, and — resuming mid-roast — the starting round. **Say the hand-off is `super-auto`'s.** It drives the root brainstorm, decomposition, every subepic brainstorm, the coverage loop and the design roast, recording into `run.md` as it goes. |
 | 2 | Design roast (`roast-design`) | `super-roast` (design) | Runs **inside** phase 1's `super-design` invocation, via its own offer; cap-3 fix loop. `super-auto` holds no control while it runs, so `super-design` writes `phase: roast-design`, the report paths and `roastDesignRound` into `run.md` itself, per its §Run-State File contract — see above. |
 | 3 | Code (`code`) | `super-code` | The integration branch **is this run's branch**, and its integration worktree **is this run's worktree** — both exist already, from pre-flight (§Run directory). Create nothing; pass them. (`branch` was recorded at run-directory creation.) Autonomous or interactive per flag. **Say in the invocation that `super-auto` owns the finish** — there is no config flag, and without it `super-code` merges and deletes the worktree the report still needs. |
-| 4 | Code roast (`roast-code`) | `super-roast` (PR) | Against the live integration branch, diffed against `run.md`'s `base`. Pass the run directory as the report-location override, and on rounds ≥2 the prior report — without it the round re-litigates what the last one already cleared |
-| 5 | Fix loop (`fix-loop`) | — | Reopen the epic (`bd update <epicId> --status open`), file confirmed findings as beads — §Decomposition's four fields (title, short description, **files-touched hint**, blocking deps; without the files hint every fix bead runs alone) with Red Flags' flag triple — re-enter `super-code`, loop to phase 4; cap 3, stop early if Blocking count doesn't shrink |
+| 4 | Code roast (`roast-code`) | `super-roast` (PR) | Against the live integration branch, diffed against `run.md`'s `base`. Pass the run directory as the report-location override, **the iteration number from `roastCodeRound`** (without it round 2's report overwrites round 1's file), **`autonomous` when the run is** (without it super-roast pauses for a human at its loop exits), and on rounds ≥2 the prior report — without which the round re-litigates what the last one already cleared |
+| 5 | Fix loop (`fix-loop`) | — | Reopen the epic (`bd update <epicId> --status open`), file confirmed findings as beads — `super-design`'s §Decomposition four fields (title, short description, **files-touched hint**, blocking deps; without the files hint every fix bead runs alone) with Red Flags' flag triple — re-enter `super-code`, loop to phase 4; cap 3, stop early if Blocking count doesn't shrink |
 | 6 | Report (`report`) | — | Write `report.md` per `./report-prompt.md`, before anything is torn down |
-| 7 | Finish (`finish`→`done`) | `finishing-a-development-branch` | Merge + clean up, once, gated per below. Invoke it **from this run's worktree**, supplying `run.md`'s `branch` as the feature branch to merge and `base` as its destination, so neither is asked nor inferred from the cwd. Present `report.md` alongside the menu. **The menu itself is always the human's, autonomous or not** — see "Where the zone ends". |
+| 7 | Finish (`finish`→`done`) | `finishing-a-development-branch` | Merge + clean up, once, gated per below. Invoke it **from this run's worktree**, supplying `run.md`'s `branch` as the feature branch to merge and `base` as its destination, so neither is asked nor inferred from the cwd. Present `report.md` alongside the menu. **The menu itself is always the human's, autonomous or not** — see "Where the zone ends". If the suite fails there, rewrite `report.md`'s status line to `stalled at phase finish` before stopping — the report already on disk says otherwise. |
 
 Phase 7's gate is three conditions, not one: `report.md` exists, `run.md`'s `phase` reads `report`,
 and its status line does not begin `stalled` — existence alone is not enough. A stall at any phase
@@ -230,9 +239,10 @@ Creating it here — not letting `brainstorming` do it — is what keeps `run.md
 whole run on one mergeable branch. Two facts to get right at creation:
 
 - **`base` is observed from git, not from intent**: a native worktree tool picks its own base ref
-  (often `origin/<default>`, not your checkout's HEAD). After the workspace exists, record what the
-  branch actually forked from (`git merge-base <run-branch> <default-branch>` resolves it). It is
-  the one value phase 7 merges into.
+  (often `origin/<default>`, not your checkout's HEAD). After the workspace exists, record **the
+  branch name** the run merges back into, confirming the fork point against it with
+  `git merge-base <run-branch> <that-branch>` — merge-base yields a commit, which verifies the
+  choice but is not the value: phase 7 needs a branch it can check out and merge into.
 - **This worktree is yours to remove once phase 7 completes.** `finishing-a-development-branch`'s
   cleanup only owns workspaces under `.worktrees/`; a native tool's lives elsewhere and is declined.
   After the menu is answered, exit the worktree (platform exit tool) and remove it — a branch still

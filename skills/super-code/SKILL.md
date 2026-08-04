@@ -29,19 +29,22 @@ Any beads-backed execution. `subagent-driven-development` handles plan-file exec
 
 ## Invocation
 
-A caller supplies these; there are no other inputs, and none of them are inferable from the repo:
+A caller supplies these — none are inferable from the repo:
 
 | Input | Meaning |
 |---|---|
 | `epicId` | the root epic to drain. Its tree is the scope — see `./coordinator-workflow.md`'s Ready phase for how membership is resolved when the `sp:` label is absent |
-| `integrationBranch` | conventionally `epic-<epicId>-integration`. **The caller creates the branch and its worktree; this skill creates neither**, and fails if either is missing |
+| `integrationBranch` | conventionally `epic-<epicId>-integration`. **The caller creates the branch; this skill creates neither it nor its worktree**, and fails if either is missing |
+| integration worktree | the checkout of `integrationBranch` this skill works in — conventionally the caller's own run worktree, or the invocation cwd when unstated |
 | mode | autonomous or interactive. Same contract either way — mode changes who answers a blocked task, never what gets reviewed |
 | who owns the finish | **state it explicitly if the caller owns it.** There is no config flag. Left unsaid, this skill runs its own Finish: it merges the integration branch and deletes the worktree — taking the ledger and the per-task reports with it, which is where a caller's report gets its sources |
 | `config.models`, `config.concurrency` | optional; see Model tiering and Parallelism below for what they default to and why an explicit map is preferred |
 
 It returns six buckets — `completed`, `escalated`, `pendingRetry`, `parked`, `stalled`, `review` —
-covering **the epic's whole tree as of return, not only the tasks this invocation dispatched**: a
-resumed epic's previously-closed tasks appear in `completed`.
+covering **the epic's whole tree as of return, not only the tasks this invocation dispatched** (a
+resumed epic's previously-closed tasks appear in `completed`) — **plus the ledger path** inside the
+integration worktree, because a caller's report cites ledger completion lines and no other channel
+names where they live.
 Every task lands in exactly one of the first four; `parked` is a modifier on `completed` (merged
 over an overruled review finding), not a fifth outcome. A caller that records run state records
 these verbatim.
@@ -52,7 +55,7 @@ Per-task worktrees branch from the epic integration branch (not from `main`, not
 
 ## Model tiering
 
-Every role below is set explicitly in `config.models` — except `fixEscalation`, which is optional and additive (falls back to `triage`'s tier when omitted; see `./coordinator-workflow.md`'s "Coordinator contract") — least powerful model that can handle the judgment the role requires. The table is the source of truth for the count; do not restate it as a number in prose:
+Every role below has a tier; a caller may override any of them via `config.models` — `fixEscalation` is additionally optional and additive (falls back to `triage`'s tier when omitted; see `./coordinator-workflow.md`'s "Coordinator contract") — least powerful model that can handle the judgment the role requires. The table is the source of truth for the count; do not restate it as a number in prose:
 
 | Role | Model | Why |
 |---|---|---|
