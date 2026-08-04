@@ -1,6 +1,6 @@
 {
   "name": "superpowers-alepar",
-  "description": "Development marketplace for Superpowers core skills library",
+  "description": "alepar's fork of Superpowers: adds super-design, super-roast, super-code, and super-auto on top of the core skills library",
   "owner": {
     "name": "Jesse Vincent",
     "email": "jesse@fsck.com"
@@ -9,7 +9,7 @@
     {
       "name": "superpowers",
       "description": "Core skills library for Claude Code: TDD, debugging, collaboration patterns, and proven techniques",
-      "version": "6.2.0-alepar2.0",
+      "version": "6.2.0-alepar2.1",
       "source": "./",
       "author": {
         "name": "Jesse Vincent",
