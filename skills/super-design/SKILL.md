@@ -69,6 +69,15 @@ Root only. Invoke `superpowers:brainstorming` on the goal or raw idea handed to 
 
 Same fields as brainstorming's old beads step: title, short description, files-touched hint, blocking deps per child.
 
+**Blocking deps encode genuine blocking, not narrative order.** Add an edge only when the dependent
+task literally cannot start until the other finishes — its interface, schema, or file must exist
+first. Do not encode the order you happened to describe things in: a decomposer narrating a build
+order writes a linear chain by reflex, and a chain of N tasks is N sequential execution rounds no
+matter how disjoint their files are. Execution dispatches every ready task at once, so each
+unnecessary edge is a round of parallelism deleted at design time, invisibly — `super-code` cannot
+tell a decorative edge from a real one. When in doubt, leave it out: two tasks that turn out to
+conflict serialize anyway on their files-touched overlap.
+
 - **Beads:** for every child, `bd create ... --parent <id> --no-inherit-labels -l sp:<root-epic-id>` — both flags together, every time. `--no-inherit-labels` alone still strips the wanted root label; without it, parent labels (including `sp:needs-design`) smear onto every leaf. The root invocation creates the epic first, labeled `sp:<its-own-id>`.
 - **No beads:** the same fields as a task-table row — see §No-Beads Mode for the columns it must carry.
 

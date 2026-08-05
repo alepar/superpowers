@@ -71,7 +71,25 @@ Every role below has a tier; a caller may override any of them via `config.model
 
 ## Parallelism
 
+**This skill overrides `subagent-driven-development`'s "Never dispatch multiple implementation
+subagents in parallel (conflicts)" — read this before dispatching anything.** That rule is correct
+*for SDD*, where every task shares one working tree, so two implementers collide on the tree itself
+whatever files they touch. Here each task gets **its own worktree** off the integration branch, so
+the premise does not hold and the prohibition does not carry. The override is scoped to **dispatch
+concurrency only**: every other part of SDD's Task Loop — the brief, the report contract, the review
+package, the five-round fix breaker, serial merge-back — is inherited unchanged. Left unstated, an
+agent following this skill's own instruction to run SDD's per-task pipeline reads an absolute
+prohibition on the one thing this skill exists to do, and silently serializes the epic.
+
 Concurrent dispatch only when declared file sets are disjoint (`filesTouched`, from the planner's per-task mapping). Two ready tasks that share a file serialize — never siblings in the same dispatch. A task with no declared files runs alone (fail safe: an incomplete declaration costs serialization, never a write collision). Buckets of disjoint-file tasks serialize relative to each other; concurrency within a bucket is capped at `config.concurrency` (default 4) — a bucket larger than the cap runs as sequential sub-batches, not one unbounded dispatch.
+
+**Serialization is a cost, not a safe default.** Every rule above fails safe toward running alone,
+and each is individually right — but they compound, and a round that dispatches one task at a time
+has lost the reason this skill exists. When a round's buckets come out mostly singletons, say so in
+the run and name the cause; it is upstream of here every time: over-declared `filesTouched`
+(`./planner-prompt.md`), dependency edges encoding narrative order rather than genuine blocking
+(`super-design`'s §Decomposition), or one shared file — a barrel, an index, a registry — that every
+task touches and that should be split or assigned to a single task.
 
 ## Red Flags
 
