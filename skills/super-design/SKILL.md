@@ -67,10 +67,12 @@ Root only. Invoke `superpowers:brainstorming` on the goal or raw idea handed to 
 
 ## The run's root epic
 
-**A bead handed in as the starting point IS the root. Decompose into it; never insert a layer
-beneath it.** Its direct children are the top split, they carry `--parent <that bead>` with the flag
-triple, and `epic:` in the run-state file is that bead — the same id execution drains and completion
-is measured on.
+**One epic is the root, and there is exactly one way to get it:** a bead handed in as the starting
+point *is* the root — adopt it; or, when nothing was handed in, create it (§Decomposition's root
+step, labelled `sp:<its-own-id>`). Either way **decompose into it and never insert a layer beneath
+it.** Its direct children are the top split, they carry `--parent <root>` with the flag triple, and
+`epic:` in the run-state file is that bead — the same id execution drains and completion is measured
+on.
 
 **Do not create an "implementation" epic under it.** A root written as *consider / investigate /
 evaluate*, or carrying a note that it does not by itself authorize implementation, is describing the
