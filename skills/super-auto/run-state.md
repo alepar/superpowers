@@ -131,6 +131,23 @@ a resume can silently redo work or violate a decision that was already made.
    not be the one that ran phase `code`. Unrecorded, these buckets exist only in a
    session that may have already compacted or ended by the time `report` runs.
 
+   **Do not wait for the return to start writing them.** Phase 3 is the longest
+   stretch of a run, and a return-only write records nothing across it: a session
+   that ends inside phase 3 resumes knowing only `phase: code`. Refresh
+   `codeBuckets` from the tracker as the phase proceeds — closed beads under the
+   epic are `completed`, quarantined ones are `escalated` — so the file always
+   reflects the last completed round. Same fields, written more often; not a
+   second schema.
+
+   **`review` records what the final whole-epic review found, not only that it
+   ran.** `CLEAN` when it found nothing; otherwise the verdict and its finding
+   count (`Blocking (10 confirmed)`). That review is mandatory in `super-code`
+   even when `skipCodeRoast` omitted the PR-mode roast, and its findings are
+   fixed the same way phase 5's are — **as beads under the epic**, carrying the
+   parent link and `sp:` label, never as ad-hoc branches. A fix campaign that
+   leaves no beads is invisible to the tree, to `codeBuckets`, and to the report,
+   which then describes a run that reviewed clean.
+
 7. **Human approvals already granted, and what each one approved.** The design
    gates are the human's — but they are the human's **once**. A resumed run replays
    a recorded approval instead of re-soliciting it; without this, a session that

@@ -33,7 +33,7 @@ A caller supplies these — none are inferable from the repo:
 
 | Input | Meaning |
 |---|---|
-| `epicId` | the root epic to drain. Its tree is the scope — see `./coordinator-workflow.md`'s Ready phase for how membership is resolved when the `sp:` label is absent |
+| `epicId` | the root epic to drain, and **the epic whose closure means this run is done**. It is the root the design used — **never a child narrowed to at execution time**: draining a sub-epic closes the sub-epic and leaves the real root open, so the run can never report completion however much work landed (`super-design`'s §The run's root epic). Its tree is the scope — see `./coordinator-workflow.md`'s Ready phase for how membership is resolved when the `sp:` label is absent |
 | `integrationBranch` | conventionally `epic-<epicId>-integration`. **The caller creates the branch; this skill creates neither it nor its worktree**, and fails if either is missing |
 | integration worktree | the checkout of `integrationBranch` this skill works in — conventionally the caller's own run worktree, or the invocation cwd when unstated |
 | mode | autonomous or interactive. Same contract either way — mode changes who answers a blocked task, never what gets reviewed |

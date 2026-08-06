@@ -65,9 +65,36 @@ markers §Durable State already relies on. Anything half-made gets finished, not
 
 Root only. Invoke `superpowers:brainstorming` on the goal or raw idea handed to this invocation — no parent spec, no ancestor-goal chain, no sibling specs to hand in, since none exist yet. Brainstorming runs its full process (worktree, mode selection, questions or one-shot reasoning, design doc, self-review) and returns with a written, committed spec. It does **not** offer adversarial review to a caller-invoked run — that offer is this skill's, once, on the settled tree (§Adversarial Review Loop), so a run has exactly one design-mode roast. Take that spec forward into §Decomposition.
 
+## The run's root epic
+
+**A bead handed in as the starting point IS the root. Decompose into it; never insert a layer
+beneath it.** Its direct children are the top split, they carry `--parent <that bead>` with the flag
+triple, and `epic:` in the run-state file is that bead — the same id execution drains and completion
+is measured on.
+
+**Do not create an "implementation" epic under it.** A root written as *consider / investigate /
+evaluate*, or carrying a note that it does not by itself authorize implementation, is describing the
+approval that produced this run — not asking for a sub-epic to hold the work. Inserting one is quiet
+and expensive: the tree builds correctly, execution runs correctly, and completion is then measured
+on the inserted layer while the real root stays open forever. The tell is a top split whose ids are
+two levels down (`<root>.2.1`, `<root>.2.2`) instead of one (`<root>.1`, `<root>.2`).
+
+The rule has one checkable form: **the root must be an epic this run can legitimately close.** If it
+genuinely is not — it holds unrelated work, or is a standing tracker meant to outlive this run —
+that is a scoping problem to raise with the user before decomposing, not something to route around
+by rooting lower on your own.
+
 ## Decomposition
 
 Same fields as brainstorming's old beads step: title, short description, files-touched hint, blocking deps per child.
+
+**The tree stops at merge-ready.** Decompose only work that is finished when the code is written,
+reviewed, and merged. Operational follow-on — activating something in production, running a live
+campaign, monitoring a rollout, operating a system through a target — is **not** part of this tree,
+even when the goal implies it: an execution run ends at the merge, so a tree containing such tasks
+can never drain, and its epic can never close. When the goal reaches past the merge, say so in the
+spec's own follow-on section and leave those tasks out of the tree, or file them as a sibling epic
+this run does not own.
 
 **Blocking deps encode genuine blocking, not narrative order.** Add an edge only when the dependent
 task literally cannot start until the other finishes — its interface, schema, or file must exist

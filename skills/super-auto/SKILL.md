@@ -41,7 +41,26 @@ repo and the other two decide whether they should:
 1. **Resume glob** (§Resume). A run already in flight is resumed, and everything below is skipped.
 2. **Flags** (§Inputs) — fresh runs only; a resume never re-asks.
 3. **Create this run's workspace and branch** (§Run directory).
-4. **Create the run directory and `run.md`** inside that worktree, on that branch.
+4. **Create the run directory and `run.md`** inside that worktree, on that branch. Write exactly
+   this, filled in — copy the shape, do not compose your own:
+
+   ```markdown
+   # super-auto run — YYYY-MM-DD-<slug>
+
+   flags: planOneShot=<t/f> skipPlanRoast=<t/f> skipCodeRoast=<t/f> autonomous=<t/f>
+   phase: design
+
+   idea: <the invocation's idea text, verbatim>
+   branch: super-auto/<slug>
+   base: <the branch this run merges back into>
+   ```
+
+   Every later field is added under these, with the names and shapes `./run-state.md` defines —
+   **its field names are the contract, not a suggestion**: `epic`, `spec`, `roast-design`,
+   `roast-code`, `roastDesignRound`, `roastCodeRound`, `parked`, `approvals`, `codeBuckets`, and the
+   phase tokens from its enum. Inventing a clearer-looking name or a richer phase word makes the
+   file unreadable to every later phase, to the report, and to a resume — all of which read these
+   names literally.
 
 Creating the branch before step 1 would collide a resumed run with its own existing branch, and
 `run.md` cannot be written before step 2 because the flags are among the first things it records.
@@ -49,6 +68,13 @@ Creating the branch before step 1 would collide a resumed run with its own exist
 Hard stop, not a fallback: every load-bearing structure here — the epic, `run.md`'s pointers,
 phase 5's fix beads, the report's `codeBuckets` — is a tracker structure. Sequencing a no-tracker
 run is a different skill's job, not a degraded mode of this one.
+
+**A run ends at the merge.** Idea → design → code → review → fixes → merged is the whole scope.
+Work that only begins once the code is live — deploying it, activating it in production, running a
+campaign on it, operating it toward a target — is follow-on work outside any `super-*` invocation,
+and must not be in the epic phase 3 drains (`super-design`'s §Decomposition). An epic holding such
+tasks cannot drain and cannot close, so the run can never report completion however well every
+other phase went.
 
 ## Resume
 
