@@ -169,7 +169,7 @@ own, or the flags strand and the sequence is lost. Each row's parenthetical is t
 |---|---|---|---|
 | 1 | Design (`design`) | `super-design` | Pass all seven: the goal (**on a resume, `run.md`'s recorded `idea:`**), the artifact-directory override, the `run.md` path **together with `./run-state.md`, whose field names and formats govern every write** (a co-writer that never sees the contract invents an incompatible one), the `roast-design` phase token to write when that stage begins, the design mode from `planOneShot`, `autonomous` and `skipPlanRoast`, and — resuming mid-roast — the starting round. **Say the hand-off is `super-auto`'s.** It drives the root brainstorm, decomposition, every subepic brainstorm, the coverage loop and the design roast, recording into `run.md` as it goes. |
 | 2 | Design roast (`roast-design`) | `super-roast` (design) | Runs **inside** phase 1's `super-design` invocation, via its own offer; cap-3 fix loop. `super-auto` holds no control while it runs, so `super-design` writes `phase: roast-design`, the report paths and `roastDesignRound` into `run.md` itself, per its §Run-State File contract — see above. |
-| 3 | Code (`code`) | `super-code` | The integration branch **is this run's branch**, and its integration worktree **is this run's worktree** — both exist already, from pre-flight (§Run directory). Create nothing; pass them. (`branch` was recorded at run-directory creation.) Autonomous or interactive per flag. **Say in the invocation that `super-auto` owns the finish** — there is no config flag, and without it `super-code` merges and deletes the worktree the report still needs. |
+| 3 | Code (`code`) | `super-code` | The integration branch **is this run's branch**, and its integration worktree **is this run's worktree** — both exist already, from pre-flight (§Run directory). Create nothing; pass them — **the worktree's real path explicitly, as `integrationWorktree`**, never left for `super-code` to derive: the run branch `super-auto/<slug>` contains a slash, and `super-code`'s no-arg fallback derives a slash-collapsed `.worktrees/` path that matches no worktree this run ever created (mismatched by construction on every handoff before this field existed). (`branch` was recorded at run-directory creation.) Autonomous or interactive per flag. **Say in the invocation that `super-auto` owns the finish** — there is no config flag, and without it `super-code` merges and deletes the worktree the report still needs. |
 | 4 | Code roast (`roast-code`) | `super-roast` (PR) | Against the live integration branch, diffed against `run.md`'s `base`. Pass the run directory as the report-location override, **the iteration number from `roastCodeRound`** (without it round 2's report overwrites round 1's file), **`autonomous` when the run is** (without it super-roast pauses for a human at its loop exits), and on rounds ≥2 the prior report — without which the round re-litigates what the last one already cleared |
 | 5 | Fix loop (`fix-loop`) | — | Reopen the epic (`bd update <epicId> --status open`), file confirmed findings as beads — `super-design`'s §Decomposition four fields (title, short description, **files-touched hint**, blocking deps; without the files hint every fix bead runs alone) with Red Flags' flag triple — re-enter `super-code`, loop to phase 4; cap 3, stop early if Blocking count doesn't shrink |
 | 6 | Report (`report`) | — | Write `report.md` per `./report-prompt.md`, before anything is torn down |
@@ -275,9 +275,13 @@ whole run on one mergeable branch. Two facts to get right at creation:
   checked out in a surviving worktree cannot be deleted.
 
 **The integration branch is this same branch.** Pass it to `super-code` as `integrationBranch`, and
-this worktree as its integration worktree; `super-code` cuts per-task worktrees off it and merges
-them back into it serially, exactly as it does for any caller. (Its `epic-<epicId>-integration`
-naming is a convention, not a requirement — and the branch has to exist before the epic id does.)
+this worktree's **real path** as `integrationWorktree` — an explicit contract field, not an
+ambient fact `super-code` can infer: its no-arg fallback derives `.worktrees/<branch>` with the
+slash in `super-auto/<slug>` collapsed to `-`, which cannot match a worktree created here by
+`using-git-worktrees` (native tools put worktrees wherever they put them). `super-code` cuts
+per-task worktrees off the branch and merges them back into it serially, exactly as it does for
+any caller. (Its `epic-<epicId>-integration` naming is a convention, not a requirement — and the
+branch has to exist before the epic id does.)
 Nothing about parallel dispatch changes: per-task worktrees still fan out from the integration
 branch and still serialize on shared files.
 

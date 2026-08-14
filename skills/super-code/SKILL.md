@@ -35,7 +35,7 @@ A caller supplies these — none are inferable from the repo:
 |---|---|
 | `epicId` | the root epic to drain, and **the epic whose closure means this run is done**. It is the root the design used — **never a child narrowed to at execution time**: draining a sub-epic closes the sub-epic and leaves the real root open, so the run can never report completion however much work landed (`super-design`'s §The run's root epic). Its tree is the scope — see `./coordinator-workflow.md`'s Ready phase for how membership is resolved when the `sp:` label is absent |
 | `integrationBranch` | conventionally `epic-<epicId>-integration`. **The caller creates the branch; this skill creates neither it nor its worktree**, and fails if either is missing |
-| integration worktree | the checkout of `integrationBranch` this skill works in — conventionally the caller's own run worktree, or the invocation cwd when unstated |
+| integration worktree | the checkout of `integrationBranch` this skill works in — passed as `integrationWorktree` in the coordinator contract (optional, additive). A caller that created the worktree itself (`super-auto`'s run worktree, any native-tool worktree) **must pass its path**: when omitted, the coordinator derives `.worktrees/<integrationBranch>` with any `/` in the branch name collapsed to `-`, which only matches worktrees created by this skill's own pre-flight convention — a slashed branch like `super-auto/<slug>` makes the derived path wrong by construction for any externally-created worktree (`./coordinator-workflow.md`'s "Coordinator contract") |
 | mode | autonomous or interactive. Same contract either way — mode changes who answers a blocked task, never what gets reviewed |
 | who owns the finish | **state it explicitly if the caller owns it.** There is no config flag. Left unsaid, this skill runs its own Finish: it merges the integration branch and deletes the worktree — taking the ledger and the per-task reports with it, which is where a caller's report gets its sources |
 | `config.models`, `config.concurrency` | optional; see Model tiering and Parallelism below for what they default to and why an explicit map is preferred |
@@ -47,7 +47,13 @@ integration worktree, because a caller's report cites ledger completion lines an
 names where they live.
 Every task lands in exactly one of the first four; `parked` is a modifier on `completed` (merged
 over an overruled review finding), not a fifth outcome. A caller that records run state records
-these verbatim.
+these verbatim. The return also carries **`stopReason`** — `root-closed` (the one true
+completion), `ready-drained` (empty ready set, root still open: quarantined blockers remain),
+`stalled` (no-progress guard), or `ready-unavailable` / `plan-unavailable` (infrastructure outage:
+the `bd ready` or planner dispatch kept dying on terminal API errors). The last two are **never**
+completion — a caller that treats any stop as "done" without checking `stopReason` repeats the
+live defect this field exists to prevent (a null ready query used to exit indistinguishably from a
+drained epic; `./coordinator-workflow.md`'s "Null dispatch policy").
 
 ## Worktree topology
 
@@ -107,10 +113,13 @@ task touches and that should be split or assigned to a single task.
 - Treat any re-review verdict other than the literal token `CLEAN` as safe to merge — fail closed: an unrecognized or differently-worded verdict keeps looping (bounded by the round cap), it never falls through to `mergePrompt`.
 - Dispatch parallel implementers whose declared file sets overlap.
 - Patch `scripts/task-brief` to accept bead ids directly, or collapse the ordinal ↔ bead-id mapping — SDD's `task-brief` only matches integer `## Task <N>` headings, not bead ids.
+- Treat a null `agent()` result as a result — the Workflow runtime returns null when a subagent dies on a terminal API error after retries, and every dispatch class has its own explicit null semantic (`./coordinator-workflow.md`'s "Null dispatch policy"); most defaults fabricate success (a null merge is not a failed merge, a null ready query is not an empty ready set, a null close-epics never closed the root).
+- File a blocker bead with anything besides the bare `blocker` label — an `sp:` label or a `--parent` makes the escalation record reachable as work and starts a self-sustaining blocker-filing loop (one new bead per round, reproduced live).
+- Dispatch a reviewer without [BRIEF_FILE]/[REPORT_FILE]/[DIFF_FILE] filled with absolute, integration-workspace paths — SDD's reviewer templates hard-require all three, and a reviewer without the implementer's report reviews blind.
 
 ## Reference
 
-- `./coordinator-workflow.md` — full Workflow-coordinated autonomous procedure: coordinator contract, the coordinator loop, plan materialization, per-task pipeline, the breaker's autonomous variant, serial merge-back, the blocker-bead path, finish. Its "Known limitations" section lists real, shipped gaps — read it before assuming any of them already work; validation to date is dryRun-only, never a live run. Its "Finish" section documents a caller-owned-finish mode: a caller may keep the merge-and-cleanup hand-off for itself, in which case the coordinator stops after its final review and leaves the integration worktree and ledger intact.
+- `./coordinator-workflow.md` — full Workflow-coordinated autonomous procedure: coordinator contract, the coordinator loop, plan materialization, per-task pipeline, the breaker's autonomous variant, serial merge-back, the blocker-bead path, finish. Its "Known limitations" section lists real, shipped gaps — read it before assuming any of them already work. Validation is dryRun/replay-based (`tests/super-code/test-coordinator-replay.sh` — replays the recorded scenarios plus null-injection and prompt-text checks no dryRun can express); the one live run to date (2026-08, a 185-bead epic) surfaced five defect classes that are now fixed and regression-covered there, and anything beyond what that harness asserts is still live-run-territory. Its "Finish" section documents a caller-owned-finish mode: a caller may keep the merge-and-cleanup hand-off for itself, in which case the coordinator stops after its final review and leaves the integration worktree and ledger intact.
 - `./planner-prompt.md` — dispatch the per-epic planner (opus) that materializes `plan.md` from the beads tree.
 - `./triage-prompt.md` — dispatch the blocker triage agent (opus): RESOLVE vs ESCALATE.
 
