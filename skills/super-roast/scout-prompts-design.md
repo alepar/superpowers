@@ -7,7 +7,9 @@ deduper suggests it, judges rate it provisionally, and the reporter makes the fi
 triage prompt). The scout works in isolated context and must never have authored the spec.
 
 Build each scout's full prompt as: **shared core** below, with the `[LENS]` marker replaced
-by that lens's block (from the list further down), and the `category` field's lens name in
+by that lens's block (from the list further down), the `[ITERATION_STANCE]` marker replaced
+by the round-matched stance block (see "Iteration stance", directly after the shared core —
+this is assembled by round, not fixed), and the `category` field's lens name in
 the output contract filled with the same lens name used for `[LENS]`. This is the assembly
 that produces the distinct per-lens strings living at `args.prompts.scouts['<lens>']`; this
 file documents how each is assembled and stays the source of truth if a lens block needs to
@@ -17,7 +19,7 @@ change.
 
 ```
 You are an adversarial design reviewer. Your stance: **assume this design is flawed and
-prove it.** Find the strongest objections, not the polite ones. A rubber-stamp is a failure.
+prove it.** Find the strongest objections, not the polite ones. [ITERATION_STANCE]
 
 ## Spec to review
 [SPEC_FILE_PATH — read it]
@@ -88,6 +90,35 @@ names the spec text that leans on it and says what would have to be true.
 Report only real, defensible findings. Quality over quantity — but do not soften.
 ```
 
+## Iteration stance (assembled by round — the `[ITERATION_STANCE]` marker)
+
+The orchestrator MUST fill `[ITERATION_STANCE]` by round when assembling `args.prompts.scouts`
+— it is not optional garnish. Live runs showed why: with the round-1 stance on every round,
+rounds 1 and 2 each returned ~20 findings partly because the framing punished a null result,
+and round 3 reliably degraded into manufactured marginal findings that a human had to
+intervene on. The stance is the round-1 recall pressure on round 1, and the
+materiality bar once the artifact has already survived a round of review and fixes.
+
+**Iteration 1** (no prior report):
+
+```
+A rubber-stamp is a failure.
+```
+
+**Iterations ≥ 2** (a prior report exists):
+
+```
+A rubber-stamp is a failure — and so is its mirror image. This artifact has already survived
+adversarial review and a fix pass; **"no material findings" is now a valid and expected
+outcome**, and the failure mode at this stage is manufacturing marginal findings to appear
+useful, not missing obvious ones. This paragraph overrides the "High recall" section below for
+this round: report a finding only if it is (a) NEW — not a restatement, re-slicing, or
+wording-variant of anything the prior report lists in ANY of its sections — and (b) one you
+would defend as materially affecting the artifact's outcome, not a could-be-slightly-better
+observation. If nothing clears that bar, return an empty findings array — that is a correct,
+complete answer, not a failure.
+```
+
 ## Lens: premortem
 
 ```
@@ -125,6 +156,33 @@ Assume each component/dependency fails — trace the blast radius.
 As warranted for a security or maintainability review of this spec. These two lenses widen
 the core set when triage returns no domains (`domains: [none]`).
 ```
+
+## Lens: regression (iterations ≥ 2 only)
+
+```
+The prior round's fixes are themselves the change under review. Read the prior report below
+and the spec as it now stands, and hunt ONLY for damage the fixes did:
+1. **Contradictions** — a fix changed one section or task while text elsewhere still assumes
+   the old decision.
+2. **Ownership collisions** — after the fixes, two tasks now own the same file, decision, or
+   interface.
+3. **Scope creep** — a fix inflated a task beyond what satisfying its finding required, or
+   spawned work nothing depends on.
+4. **Claimed-but-absent** — the prior report's finding is marked resolved, but the current
+   text does not actually reflect the fix.
+Anything that was already true before the prior round's fixes is out of your lane — earlier
+rounds covered that ground; do not report it.
+```
+
+Dispatched **only on iterations ≥ 2**: the orchestrator appends `regression` to
+`config.coreLenses` and assembles `prompts.scouts.regression` (shared core + this block +
+the iterations-≥2 stance) whenever it passes a prior report, and omits both on iteration 1 —
+there is no prior fix pass to review, so the lens would have an empty lane. This lens is what
+makes the re-roast actually examine *what the fixes touched* instead of only re-sweeping the
+whole artifact with general-purpose lenses. Engine note: this is pure config/prompt data — the
+roster expression in `super-roast-workflow.md` reads `config.coreLenses` verbatim, so no
+engine edit is involved (and per its dryRun policy, roster data edits don't invalidate the
+recorded baselines).
 
 ## Lens: domain:\<name\> — the `scoutDomainTemplate`
 

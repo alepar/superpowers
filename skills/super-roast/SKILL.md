@@ -45,7 +45,7 @@ reviewed (a spec file path vs. a diff/branch); if genuinely ambiguous, **ask —
 | the artifact | design mode: a spec file or settled tree; PR mode: `branch@sha` vs `base@sha` — the caller supplies the base to diff against |
 | report-location override | directory the report is written to instead of the default below |
 | iteration `N` | printed in the report header (`iteration: N of 3`); this skill is stateless, so the caller carries the count |
-| prior report path (rounds ≥ 2) | lets the run skip re-litigating what `## Rejected (with reason)` already settled |
+| prior report path (rounds ≥ 2) | lets the run skip re-litigating what `## Rejected (with reason)` already settled — and switches the run into its late-round shape: scouts get the iterations-≥2 stance ("no material findings" is a valid, expected outcome; manufacturing marginal findings is the failure mode) instead of round 1's recall pressure, and a `regression` lens/lane joins the roster to review what the fixes themselves touched (see the scout prompt files' "Iteration stance" sections) |
 | autonomous (optional) | see the Handoff exception in The Process step 7 |
 
 Only mode and the artifact are required; a bare invocation gets defaults for the rest.
@@ -63,7 +63,10 @@ engine script: **`./super-roast-workflow.md`**.
 2. **Triage (sonnet, 1)** — design mode: name 1–3 domains for domain-expert scouts. PR mode:
    activate conditional lanes on top of the always-on core lanes. See `./triage-prompt.md`.
 3. **Scouts (opus, parallel)** — design: core lenses (+ domain experts, + widened lenses if
-   triage found no domain — see below). PR: core lanes + activated lanes. Adversarial, may use
+   triage found no domain — see below). PR: core lanes + activated lanes. **Rounds ≥ 2** (a
+   prior report was supplied): scouts run under the late-round stance and the `regression`
+   lens/lane joins the roster — both assembled by the orchestrator, per the "Iteration stance"
+   sections of the scout prompt files. Adversarial, may use
    WebSearch/WebFetch, return structured findings. See `./scout-prompts-design.md` /
    `./scout-prompts-pr.md`.
 4. **Dedupe-and-rank (fable, 1)** — merges overlapping findings (same location + root claim),
@@ -77,8 +80,11 @@ engine script: **`./super-roast-workflow.md`**.
 6. **Reporter (fable, 1)** — issues final verdicts, applies the environment-aware severity
    floors, and writes the report. See `./reporter-prompt.md` and Output below.
 7. **Handoff** — report only; the caller (e.g. `super-design`) decides whether to loop a fix pass
-   and re-roast. Auto re-roast is scoped to what the fix touched, capped at 3 iterations, and
-   stops early on no progress; both the cap-out and the clean exit **pause for the human** —
+   and re-roast. A re-roast reviews the full artifact each round — under the late-round stance,
+   with the `regression` lens covering what the fixes themselves touched (step 3) — capped at 3
+   iterations, and
+   stops early on no progress **or on a `[converged]` verdict** (zero Blocking of any
+   provenance on a non-degraded round ≥ 2 — see Report format below); both the cap-out and the clean exit **pause for the human** —
    super-roast never declares its own loop finished. **Exception when the caller states the run is
    autonomous:** return the same summary to the caller instead of pausing — the caller parks it and
    surfaces it in its own report. Still never declare the loop finished; report to a caller rather
@@ -139,10 +145,11 @@ budget:
 ### Report format
 
 ```
-super-roast verdict: <Blocking (n confirmed) | Should-fix (n confirmed) | clean (n nits)> [low coverage] [panel-capped: N unverified]
+super-roast verdict: <Blocking (n confirmed) | Should-fix (n confirmed) | clean (n nits)> [low coverage] [panel-capped: N unverified] [converged]
 mode: design | PR        iteration: N of 3
 profile (assumed): <2–4 sentence inferred profile>
 inputs: <spec paths | branch@sha vs base@sha [+dirty] | PR#>
+delta vs prior: <X> new confirmed (<xB> Blocking) · <Y> carried (<yB> Blocking) · <Z> resolved · <W> regressed (<wB> Blocking)   ← iterations ≥ 2 only
 coverage: <lanes ran> · <raw → deduped → panel/spot-checked counts> · <judge completion %> · remainder-capped: N
 independence: same-family (Claude) — seat-differentiated panel
 
@@ -172,6 +179,16 @@ The report is written to `docs/superpowers/reviews/YYYY-MM-DD-<topic>-roast-<mod
   the same directory, and the PR-mode report silently overwrites the design-mode one — taking with
   it the only record of which design decisions a roast changed. A caller that redirects the
   directory inherits this protection automatically; one that renames the file must keep the mode.
+
+**`delta vs prior` and `[converged]` are the loop's convergence signal** (iterations ≥ 2
+only; both absent on iteration 1). The delta line counts confirmed findings as new / carried /
+resolved / regressed against the prior report, with Blocking sub-counts. `[converged]` appears
+on the verdict when a non-degraded round ≥ 2 confirms **zero Blocking of any provenance** —
+no new, no regressed, no carried — and is never emitted alongside `[low coverage]` or
+`[panel-capped]` (a degraded round finding nothing is absence of evidence, not convergence).
+It tells the caller's fix loop to stop iterating and treat any remaining sub-Blocking
+confirmations as a punch list instead of running another round into diminishing returns.
+Full semantics: `./reporter-prompt.md` Steps 3–4.
 
 **The two caps lose findings differently, and the report says so differently.** `beyondPanelCap`
 (severe candidates the judge panel never reached) are listed individually under "## Not verified
@@ -209,6 +226,13 @@ Full template and field semantics: `./reporter-prompt.md`.
 - Guess the mode on ambiguous input — ask.
 - Report a clean verdict when scouts or judges failed to complete — that's
   `clean (n nits) [low coverage]`, not a clearance.
+- Run a round ≥ 2 with round-1 scout framing — the late-round stance ("no material findings"
+  is a valid, expected outcome) and the `regression` lens are what keep a re-roast from
+  manufacturing marginal findings against an already-hardened artifact; skipping them is how
+  round 3 turns into noise a human has to shut down.
+- Emit `[converged]` on iteration 1, on a `[low coverage]`/`[panel-capped]` round, or while
+  any Blocking (new, carried, or regressed) is confirmed — a wrong `[converged]` ends the
+  caller's fix loop with real work still open.
 - CONFIRM an external-fact claim without a resolved citation — if it can't be grounded via
   WebSearch/WebFetch, return UNVERIFIED, don't confirm from memory.
 - Drop UNVERIFIED findings, incomplete panels, or material dissent — escalate to human, never

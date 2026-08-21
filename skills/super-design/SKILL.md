@@ -207,8 +207,21 @@ report. The report file is the only cross-iteration state. **Three of its sectio
    - Fixes that changed a design decision, changed data handling, or resolved multiple Blocking
      findings → re-invoke `superpowers:super-roast`, passing the prior report so it can skip
      re-litigating what it already cleared.
-4. **Cap at 3 iterations.** Also stop early if an iteration resolves nothing — the confirmed-Blocking
-   count did not shrink from the prior report — that's thrash, not progress.
+4. **Cap at 3 iterations.** Two early exits, opposite in meaning — check the convergence one
+   first:
+   - **Converged** — the report's verdict carries `[converged]` (a non-degraded round ≥ 2
+     confirming zero Blocking of any provenance: no new, no carried, no regressed — see
+     super-roast's Report format / `reporter-prompt.md` Steps 3–4). The roast has nothing
+     Blocking left to find; another fix + re-roast round is diminishing returns by
+     construction. Exit the loop, and hand the remaining sub-Blocking confirmations to the
+     human (or the exit summary, when autonomous) as a **punch list** — file the ones worth
+     doing as ordinary tasks with the §Decomposition flag triple, or decline them explicitly;
+     do not re-roast to chase them. This exit exists because, without it, a run that has
+     genuinely converged still spends round 3 manufacturing marginal findings a human then has
+     to shut down by hand.
+   - **Thrash** — an iteration resolves nothing: the confirmed-Blocking count did not shrink
+     from the prior report. That's thrash, not progress — stop and pause for the human as
+     below. (A carried/still-open Blocking lands here, never in the converged exit.)
 
 **Verdict qualifiers gate the exits** — the same rule `brainstorming` applies at its own gate:
 
@@ -224,8 +237,10 @@ report. The report file is the only cross-iteration state. **Three of its sectio
   into the exit summary: a shrinking Blocking count under low coverage is weaker evidence of
   progress than it looks, and the early-stop test above can be fooled by it.
 
-Both exits — cap-out and clean — **pause and summarize for the human**, restating any open
-escalations, any beyond-panel-cap candidates, and any qualifier still on the verdict; this loop
+Every exit — cap-out, clean, converged, and thrash — **pauses and summarizes for the human**,
+restating any open
+escalations, any beyond-panel-cap candidates, the converged exit's punch list (when that exit
+fired), and any qualifier still on the verdict; this loop
 never declares itself finished, mirroring `super-roast`'s own handoff contract. **Exception when the
 caller owns the hand-off and stated the run is autonomous** (§Run-State File): record that same
 summary into the run-state file and return it in the hand-off instead of pausing — the caller

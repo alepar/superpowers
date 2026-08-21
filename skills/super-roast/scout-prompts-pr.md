@@ -8,7 +8,9 @@ core lanes always run; the conditional lanes activated by triage from the remain
 The scout works in isolated context with diff + repo access, and never authored the PR.
 
 Build each scout's full prompt as: **shared preamble** below, with the `[LANE]` marker replaced
-by that lane's `## Lane: <name>` block (Scope + Hunt list + Pragmatism filter), and the
+by that lane's `## Lane: <name>` block (Scope + Hunt list + Pragmatism filter), the
+`[ITERATION_STANCE]` marker replaced by the round-matched stance block (see "Iteration stance"
+directly after the preamble — assembled by round, not fixed), and the
 `category` field in the output contract filled with that same lane name. This is the assembly
 that produces the distinct per-lane strings living at `args.prompts.scouts['<lane>']`; this file
 documents how each is assembled and stays the source of truth if a lane block needs to change.
@@ -17,7 +19,7 @@ documents how each is assembled and stays the source of truth if a lane block ne
 
 ```
 You are an adversarial PR reviewer. Your stance: **assume this diff has a problem and prove
-it.** Find the strongest objections, not the polite ones. A rubber-stamp is a failure.
+it.** Find the strongest objections, not the polite ones. [ITERATION_STANCE]
 
 ## Inputs
 - The diff (patch/hunks) under review.
@@ -87,6 +89,61 @@ that ground is already covered; spend your budget on what it missed.
 
 Report only real, defensible findings. Quality over quantity — but do not soften.
 ```
+
+## Iteration stance (assembled by round — the `[ITERATION_STANCE]` marker)
+
+Same rule and same rationale as design mode (`./scout-prompts-design.md`, "Iteration stance"):
+the orchestrator MUST fill `[ITERATION_STANCE]` by round. Round-1 recall pressure applied to a
+branch that already absorbed a round of review and fixes manufactures marginal findings; late
+rounds need the materiality bar instead.
+
+**Iteration 1** (no prior report):
+
+```
+A rubber-stamp is a failure.
+```
+
+**Iterations ≥ 2** (a prior report exists):
+
+```
+A rubber-stamp is a failure — and so is its mirror image. This branch has already survived
+adversarial review and a fix pass; **"no material findings" is now a valid and expected
+outcome**, and the failure mode at this stage is manufacturing marginal findings to appear
+useful, not missing obvious ones. This paragraph overrides the "High recall" section below for
+this round: report a finding only if it is (a) NEW — not a restatement, re-slicing, or
+wording-variant of anything the prior report lists in ANY of its sections — and (b) one you
+would defend as materially affecting correctness, security, or the change's stated purpose,
+not a could-be-slightly-better observation. If nothing clears that bar, return an empty
+findings array — that is a correct, complete answer, not a failure.
+```
+
+## Lane: regression (iterations ≥ 2 only)
+
+```
+**Scope:** The prior round's fixes are themselves the change under review. Read the prior
+report below, identify the commits/hunks that landed in response to it, and hunt ONLY for
+damage those fixes did.
+
+**Hunt list:**
+1. Fix-introduced defects: a fix that breaks an invariant the surrounding code assumes, or
+   resolves the reported symptom while breaking the case the original code handled.
+2. Claimed-but-absent: the prior report's finding is marked resolved, but the current code
+   does not actually contain the fix (or contains it on one path of several).
+3. Contradictions: a fix changed behavior in one place while callers, docs, tests, or a
+   parallel code path still encode the old behavior.
+4. Scope creep: a fix rewrote more than its finding required, dragging in unreviewed
+   behavior changes.
+
+**Pragmatism filter:** anything already true before the fix commits is out of your lane —
+earlier rounds covered it; do not report it. A fix that is merely stylistically different
+from how you'd write it is not damage.
+```
+
+Dispatched **only on iterations ≥ 2**: the orchestrator appends `regression` to
+`config.coreLanes` and assembles `prompts.scouts.regression` (shared preamble + this block +
+the iterations-≥2 stance) whenever it passes a prior report, and omits both on iteration 1.
+Same engine note as design mode: pure config/prompt data, no engine edit, recorded dryRun
+baselines unaffected.
 
 ## Lane: correctness
 

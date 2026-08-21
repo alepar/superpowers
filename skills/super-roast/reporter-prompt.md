@@ -148,8 +148,18 @@ If `{{PRIOR_REPORT}}` is non-empty:
   rejection stands; do not reopen it. This exception exists because a fix can legitimately
   turn a previously-immaterial claim into a real one — it is NOT a licence to re-argue
   rejections you simply disagree with.
+Then compute the **delta counts** this iteration's header reports (see Step 5's
+`delta vs prior:` line) — they are what lets the caller's loop decide convergence without
+re-parsing prose:
+- `new`: confirmed findings in THIS report that the prior report does not list in any
+  section (a restatement, re-slicing, or wording-variant of a prior entry is NOT new —
+  match on substance, not wording). Track separately how many of these are Blocking.
+- `carried`: confirmed findings marked still-open from the prior report.
+- `resolved`: prior confirmed findings marked resolved.
+- `regressed`: prior confirmed findings marked regressed. Track separately how many are
+  Blocking — a regressed Blocking counts against convergence exactly like a new one.
 If `{{PRIOR_REPORT}}` is empty, this is iteration 1 — skip this step; there is no
-resolved/regressed/still-open tracking to do.
+resolved/regressed/still-open tracking to do and no delta line to render.
 
 ## Step 4 — Verdict line
 `<highest confirmed severity> (<n> confirmed)` if any finding confirmed, else
@@ -169,16 +179,27 @@ whether anything confirmed — append it even to a `clean` verdict.
 Append ` [panel-capped: N unverified]` when `{{COVERAGE_JSON}}`'s `beyondPanelCap` is
 non-zero, with N equal to that count. This is independent of `[low coverage]` — both
 qualifiers can appear together, and either can appear alone.
+Append ` [converged]` when ALL of these hold — it is the signal a caller's fix loop uses to
+stop iterating instead of running another round into diminishing returns:
+- `{{PRIOR_REPORT}}` is non-empty (never on iteration 1 — one round proves nothing about
+  convergence);
+- **no confirmed Blocking of any provenance this round** — zero new, zero regressed, AND
+  zero carried/still-open Blocking (a carried Blocking means the fix pass failed on it, and
+  the loop must keep driving it — that is the caller's no-shrink thrash exit's territory,
+  never convergence). Confirmed findings below Blocking do not block convergence;
+- neither `[low coverage]` nor `[panel-capped]` applies — a degraded round finding nothing
+  new is absence of evidence, not convergence; never emit `[converged]` alongside either.
 
 ## Step 5 — Assemble the report
 Render the full report using this template verbatim (fill the bracketed parts; keep every
 heading exactly as written):
 
 ---
-super-roast verdict: <Blocking (n confirmed) | Should-fix (n confirmed) | clean (n nits)> [low coverage] [panel-capped: N unverified]
+super-roast verdict: <Blocking (n confirmed) | Should-fix (n confirmed) | clean (n nits)> [low coverage] [panel-capped: N unverified] [converged]
 mode: design | PR        iteration: N of 3
 profile (assumed): <2–4 sentence inferred profile>
 inputs: <spec paths | branch@sha vs base@sha [+dirty] | PR#>
+delta vs prior: <X> new confirmed (<xB> Blocking) · <Y> carried (<yB> Blocking) · <Z> resolved · <W> regressed (<wB> Blocking)
 coverage: <lanes ran> · <raw → deduped → panel/spot-checked counts> · <judge completion %> · remainder-capped: N
 independence: same-family (Claude) — seat-differentiated panel
 
@@ -204,6 +225,11 @@ Notes on filling it in:
   `{{ITERATION}}`, and `{{INPUTS}}` verbatim. Do not re-derive them from the packets and do not
   invent specifics; if a token arrives empty, write `not supplied` rather than a guess.
 - `profile (assumed)` is `{{PROFILE}}`, rendered as the 2-4 sentence prose.
+- `delta vs prior` renders Step 3's delta counts with per-severity Blocking sub-counts.
+  **Iterations ≥ 2 only**: on iteration 1 omit the line entirely (there is no prior to delta
+  against — an invented `0 · 0 · 0 · 0` line would make a first look like a converged
+  round). The parenthesized Blocking sub-counts are what the `[converged]` qualifier is
+  computed from (Step 4) and what a caller's loop reads — keep the line's shape exactly.
 - `coverage` reports the pipeline funnel (raw → deduped → panel/spot-checked) and judge
   completion percentage — read these directly off `{{COVERAGE_JSON}}`, don't re-derive them
   from the packets (packets alone can't tell you about a dead triage, a dead scout or a dead
@@ -241,7 +267,8 @@ Notes on filling it in:
 
 - `verdict`: the verdict line from Step 4, exactly as it appears in the report header
   (e.g. `"Blocking (2 confirmed)"`, `"clean (3 nits)"`, `"Should-fix (1 confirmed) [low
-  coverage]"`, `"Blocking (2 confirmed) [panel-capped: 3 unverified]"`).
+  coverage]"`, `"Blocking (2 confirmed) [panel-capped: 3 unverified]"`,
+  `"Should-fix (2 confirmed) [converged]"`).
 - `reportMarkdown`: the entire rendered report from Step 5, as one markdown string.
 - `confirmedCount`: integer count of entries under "## Confirmed findings".
 - `escalations`: array of one-line strings, one per entry under "## Escalations (need
