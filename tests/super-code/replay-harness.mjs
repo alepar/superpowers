@@ -48,31 +48,57 @@ const scriptFn = new AsyncFunction('args', 'agent', 'log', 'phase', 'pipeline', 
 
 // ---------- runtime stubs ----------
 
-// canned: { [label]: value | value[] } — arrays are consumed one entry per call, clamped to the
-// last entry; an entry (or the whole value) of null models a dead subagent. In dryrun mode canned
-// is ignored and each stub prompt's embedded JSON is the answer, except labels listed in
+// canned: { [label]: value | value[] | fn } — arrays are consumed one entry per call, clamped to
+// the last entry; an entry (or the whole value) of null models a dead subagent. A FUNCTION value
+// is awaited with a context `{ waitFor(label), counts, trace }` — `waitFor` resolves once a
+// dispatch with that label has been observed (immediately if it already was), which lets a
+// scenario build stragglers and cross-task orderings without timers. In dryrun mode canned is
+// ignored and each stub prompt's embedded JSON is the answer, except labels listed in
 // nullLabels, which return null (dryRun stubs can't model null — that is the point of this knob).
-async function run({ args, canned = {}, nullLabels = new Set(), nullAll = false }) {
+// `maxOpen` (returned) tracks the concurrent-in-flight high-water mark per label KIND (the text
+// before the first ':') — `maxOpen.merge === 1` is the single-flight merge invariant.
+// `timeoutMs` converts a deadlock (e.g. a reintroduced dispatch/merge barrier that makes a
+// waitFor unsatisfiable) into a test failure instead of a hang.
+async function run({ args, canned = {}, nullLabels = new Set(), nullAll = false, timeoutMs = 15000 }) {
   const trace = []
   const logs = []
   const counts = {}
+  const open = {}
+  const maxOpen = {}
+  const seen = new Set()
+  const waiters = []
   let error = null
+
+  const waitFor = label => seen.has(label)
+    ? Promise.resolve()
+    : new Promise(res => waiters.push({ label, res }))
 
   async function agent(prompt, opts = {}) {
     const label = opts.label ?? '<unlabelled>'
+    const kind = label.split(':')[0]
     trace.push({ label, phase: opts.phase, prompt })
     counts[label] = (counts[label] ?? 0) + 1
-    if (nullAll || nullLabels.has(label)) return null
-    if (args.dryRun) {
-      const marker = 'Return exactly this JSON as your structured output: '
-      const i = prompt.lastIndexOf(marker)
-      if (i === -1) throw new Error(`dryrun stub prompt without JSON payload for ${label}`)
-      return JSON.parse(prompt.slice(i + marker.length))
+    seen.add(label)
+    for (let i = waiters.length - 1; i >= 0; i--) {
+      if (waiters[i].label === label) { waiters[i].res(); waiters.splice(i, 1) }
     }
-    if (!(label in canned)) throw new Error(`no canned answer for label ${label}`)
-    let v = canned[label]
-    if (Array.isArray(v)) v = v[Math.min(counts[label] - 1, v.length - 1)]
-    return typeof v === 'function' ? v() : v
+    open[kind] = (open[kind] ?? 0) + 1
+    maxOpen[kind] = Math.max(maxOpen[kind] ?? 0, open[kind])
+    try {
+      if (nullAll || nullLabels.has(label)) return null
+      if (args.dryRun) {
+        const marker = 'Return exactly this JSON as your structured output: '
+        const i = prompt.lastIndexOf(marker)
+        if (i === -1) throw new Error(`dryrun stub prompt without JSON payload for ${label}`)
+        return JSON.parse(prompt.slice(i + marker.length))
+      }
+      if (!(label in canned)) throw new Error(`no canned answer for label ${label}`)
+      let v = canned[label]
+      if (Array.isArray(v)) v = v[Math.min(counts[label] - 1, v.length - 1)]
+      return typeof v === 'function' ? await v({ waitFor, counts, trace }) : v
+    } finally {
+      open[kind]--
+    }
   }
 
   async function pipeline(items, ...stages) {
@@ -93,12 +119,19 @@ async function run({ args, canned = {}, nullLabels = new Set(), nullAll = false 
   const workflow = () => { throw new Error('workflow() not available in replay') }
 
   let result = null
+  let timer = null
   try {
-    result = await scriptFn(args, agent, m => logs.push(m), () => {}, pipeline, parallel, budget, workflow)
+    result = await Promise.race([
+      scriptFn(args, agent, m => logs.push(m), () => {}, pipeline, parallel, budget, workflow),
+      new Promise((_, rej) => { timer = setTimeout(() => rej(new Error(`HARNESS TIMEOUT after ${timeoutMs}ms — an unsatisfied waitFor usually means a dispatch/merge barrier was reintroduced`)), timeoutMs) }),
+    ])
   } catch (e) {
     error = e
+  } finally {
+    if (timer) clearTimeout(timer)
+    for (const w of waiters) w.res()  // release stranded waiters so node can exit
   }
-  return { result, trace, logs, counts, error }
+  return { result, trace, logs, counts, maxOpen, error }
 }
 
 // ---------- assertion plumbing ----------
@@ -160,15 +193,15 @@ const PLANPATH = `${PLANDIR}/${EPIC}-plan.md`
 
 const SHA = c => c.repeat(40)
 
+const MODELS = { planner: 'opus', implementer: 'sonnet', reviewer: 'sonnet', mechanical: 'sonnet', triage: 'opus', finalReview: 'opus', fixEscalation: 'opus' }
+const cfg = (extra = {}) => ({ concurrency: 4, models: MODELS, ...extra })
+
 function liveArgs(overrides = {}) {
   return {
     epicId: EPIC,
     integrationBranch: BRANCH,
     dryRun: false,
-    config: {
-      concurrency: 4,
-      models: { planner: 'opus', implementer: 'sonnet', reviewer: 'sonnet', mechanical: 'sonnet', triage: 'opus', finalReview: 'opus', fixEscalation: 'opus' },
-    },
+    config: cfg(),
     ...overrides,
   }
 }
@@ -545,6 +578,117 @@ async function main() {
     check(out.counts['bd-ready'] === 1, `exactly one spin round before the guard (got ${out.counts['bd-ready']})`)
     check(JSON.stringify(out.result?.completed) === '["bd-101"]', 'resume reconstructed completed from real ledger text', JSON.stringify(out.result?.completed))
     check(out.logs.some(l => l.startsWith('STALLED')), 'stall is logged')
+    assertBucketsDisjoint(out.result)
+  }
+
+  // ===== 4. parallelism scenarios (round-barrier removal, scheduler, single-flight merge) =====
+  // Each straggler below is TIMER-FREE: it waits on other dispatches having happened (waitFor),
+  // so a reintroduced barrier makes the wait unsatisfiable and the harness timeout turns the
+  // deadlock into a failure instead of a hang.
+
+  const tick = v => async () => { await new Promise(r => setImmediate(r)); return v }
+
+  function manyTaskCanned(ids, overrides = {}) {
+    const c = {
+      'read-ledger': { text: '' },
+      'close-epics': { rootClosed: false, closedThisRun: [] },
+      'bd-ready': [{ ids: [...ids] }, { ids: [] }],
+      'plan': { planPath: PLANPATH, mapping: ids.map((id, i) => ({ n: i + 1, id, files: [`src/f${i}.js`] })) },
+      'final-review': 'fine',
+    }
+    for (const id of ids) {
+      c[`brief:${id}`] = { id, status: 'BRIEFED', files: [], branch: 'x', base: SHA('a') }
+      // implementers and merges yield a tick: instant answers resolve synchronously inside one
+      // microtask, so genuine concurrency (and a broken single-flight queue) would never be
+      // OBSERVABLE as overlapping in-flight dispatches without the yield
+      c[`impl:${id}`] = tick({ id, status: 'IMPLEMENTED', files: [] })
+      c[`review:${id}`] = { id, status: 'CLEAN' }
+      c[`merge:${id}`] = tick({ id, merged: true, head: SHA('b'), mergeBase: SHA('a') })
+      c[`ledger-append:${id}`] = { appended: true }
+    }
+    return { ...c, ...overrides }
+  }
+
+  scenario('no round barrier: 12 siblings merge while the 13th still implements (live-incident shape)')
+  {
+    // The measured incident: 13 finished-or-finishing tasks, one straggler, ZERO merges for
+    // 3h15m under the old `await pipeline(...)` round barrier. Here the straggler's implementer
+    // cannot even return until all 12 siblings' completion ledger lines exist — impossible
+    // under a barrier (merges only started after every implementer returned), so the old shape
+    // deadlocks into the harness timeout.
+    const ids = Array.from({ length: 13 }, (_, i) => `bd-${101 + i}`)
+    const siblings = ids.slice(0, 12)
+    const canned = manyTaskCanned(ids, {
+      'impl:bd-113': async ctx => {
+        await Promise.all(siblings.map(s => ctx.waitFor(`ledger-append:${s}`)))
+        return { id: 'bd-113', status: 'IMPLEMENTED', files: [] }
+      },
+    })
+    const out = await run({ args: liveArgs({ config: cfg({ concurrency: 14 }) }), canned })
+    assertNoThrow(out)
+    check(out.result?.completed.length === 13, `all 13 completed (got ${out.result?.completed.length})`)
+    check(out.maxOpen.merge === 1, `exactly one merge in flight, ever (maxOpen.merge = ${out.maxOpen.merge})`)
+    check((out.maxOpen.impl ?? 0) >= 2, `implementers genuinely concurrent (maxOpen.impl = ${out.maxOpen.impl})`)
+    check(ids.every(id => out.counts[`merge:${id}`] === 1), 'every task merged exactly once')
+    check(out.logs.some(l => /parallelism: 13 ready · cap 14 · peak in-flight/.test(l)), 'detector line reports ready/cap/peak', out.logs.find(l => l.startsWith('parallelism')))
+    assertBucketsDisjoint(out.result)
+  }
+
+  scenario('sliding window: a straggler does not block later dispatch (no chunk barrier)')
+  {
+    // cap 2, three tasks. bd-101's implementer waits for bd-103's completion ledger line —
+    // satisfiable ONLY if bd-103 can dispatch while bd-101 still holds a slot freed by bd-102.
+    // Under the old chunk([101,102],[103]) wave barriers, bd-103's dispatch waited on bd-101 →
+    // deadlock → timeout.
+    const ids = ['bd-101', 'bd-102', 'bd-103']
+    const canned = manyTaskCanned(ids, {
+      'impl:bd-101': async ctx => { await ctx.waitFor('ledger-append:bd-103'); return { id: 'bd-101', status: 'IMPLEMENTED', files: [] } },
+    })
+    const out = await run({ args: liveArgs({ config: cfg({ concurrency: 2 }) }), canned })
+    assertNoThrow(out)
+    check(out.result?.completed.length === 3, `all 3 completed (got ${out.result?.completed.length})`)
+    check(out.logs.some(l => /peak in-flight 2/.test(l)), 'peak in-flight equals the cap', out.logs.find(l => l.startsWith('parallelism')))
+    check(out.maxOpen.merge === 1, 'single-flight merge invariant held')
+    assertBucketsDisjoint(out.result)
+  }
+
+  scenario('hot-file cap: same-file task waits for the file to drain, disjoint task overtakes')
+  {
+    // cap 4 but hotFileCap 1. bd-101 and bd-103 both declare src/a.js; bd-102 declares
+    // src/b.js. bd-101 stalls until bd-102 has merged, so dispatch order proves the
+    // constraint: without it, brief:bd-103 fires in the first microtask (before bd-101's
+    // review); with it, bd-103 dispatches only after bd-101 releases src/a.js.
+    const ids = ['bd-101', 'bd-102', 'bd-103']
+    const canned = manyTaskCanned(ids, {
+      'plan': { planPath: PLANPATH, mapping: [{ n: 1, id: 'bd-101', files: ['src/a.js'] }, { n: 2, id: 'bd-102', files: ['src/b.js'] }, { n: 3, id: 'bd-103', files: ['src/a.js'] }] },
+      'impl:bd-101': async ctx => { await ctx.waitFor('ledger-append:bd-102'); return { id: 'bd-101', status: 'IMPLEMENTED', files: [] } },
+    })
+    const out = await run({ args: liveArgs({ config: cfg({ hotFileCap: 1 }) }), canned })
+    assertNoThrow(out)
+    const idx = label => out.trace.findIndex(t => t.label === label)
+    check(idx('brief:bd-103') > idx('review:bd-101'), 'same-file task waited for the hot file to drain', `brief:bd-103@${idx('brief:bd-103')} vs review:bd-101@${idx('review:bd-101')}`)
+    check(idx('brief:bd-102') < idx('review:bd-101'), 'disjoint-file task overtook the hot-file wait')
+    check(out.logs.some(l => l.includes('hot-file deferrals: src/a.js')), 'detector names the hot file', out.logs.find(l => l.startsWith('parallelism')))
+    check(out.result?.completed.length === 3, 'all 3 still completed')
+    assertBucketsDisjoint(out.result)
+  }
+
+  scenario('unplanned-id triage rides the merge queue instead of stalling dispatch')
+  {
+    // bd-105 is ready but unmapped. Its triage answer waits for bd-101's IMPLEMENTER to have
+    // dispatched — impossible under the old shape, which awaited the full blocker path
+    // (filing + opus triage) serially BEFORE any implementation dispatch.
+    const canned = oneTaskCanned({
+      'bd-ready': [{ ids: ['bd-101', 'bd-105'] }, { ids: [] }],
+      'unplanned-blocker:bd-105': { id: 'bd-105', status: 'BLOCKED', blockerBead: 'bd-110' },
+      'triage:bd-105': async ctx => { await ctx.waitFor('impl:bd-101'); return { decision: 'ESCALATE', detail: 'needs a human' } },
+      'notify:bd-105': { sent: true },
+      'ledger-append:bd-105': { appended: true },
+    })
+    const out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    check(JSON.stringify(out.result?.completed) === '["bd-101"]', 'mapped task completed', JSON.stringify(out.result))
+    check(JSON.stringify(out.result?.escalated) === '["bd-105"]', 'unmapped id escalated via the queue')
     assertBucketsDisjoint(out.result)
   }
 

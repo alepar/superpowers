@@ -5,7 +5,7 @@ description: Use when executing a beads (`bd`) epic as a work queue — autonomo
 
 # super-code
 
-Drive a beads epic to completion: an epic-scoped `bd ready` loop, disjoint-file parallel dispatch, per-task worktrees off an epic integration branch with serial merge-back, and blocker beads for anything that can't proceed — autonomous (Workflow-coordinated) or interactive (manual ready-driven loop), same contract either way.
+Drive a beads epic to completion: an epic-scoped `bd ready` loop, sliding-window parallel dispatch with single-flight merge-back, per-task worktrees off an epic integration branch, and blocker beads for anything that can't proceed — autonomous (Workflow-coordinated) or interactive (manual ready-driven loop), same contract either way.
 
 **Core principle:** tasks coordinate only through beads and the integration branch, never through session memory. An interrupted epic resumes from the ledger, not from coordinator memory.
 
@@ -18,8 +18,8 @@ Drive a beads epic to completion: an epic-scoped `bd ready` loop, disjoint-file 
 | The coordinator (Workflow-coordinated autonomous loop, or the manual ready-driven fallback) | `task-brief` → implementer → `review-package` → task-reviewer → scoped re-review → ledger |
 | The epic-scoped `bd ready` loop, refilled to a fixpoint | |
 | The fix loop's autonomous **sequencing** — round counting, dispatching every fix/re-review round, invoking the cap's adjudicator (a dispatched agent) rather than adjudicating inline, filing the blocker bead on a BLOCKED verdict | The fix loop's **rubric** — the resume-then-escalate-model structure, the ADDRESSED/NOT-ADDRESSED vocabulary, and the load-bearing-vs-park criteria the cap adjudicator follows verbatim (`subagent-driven-development/SKILL.md`'s "The fix loop" / "The breaker") |
-| Disjoint-file batching for parallel dispatch | The helper scripts (`scripts/task-brief`, `scripts/review-package`, `scripts/sdd-workspace`) |
-| Per-task worktrees off the epic integration branch + serial merge-back | The plan-scoped workspace / ledger format |
+| Sliding-window parallel dispatch (concurrency cap + hot-file cap) | The helper scripts (`scripts/task-brief`, `scripts/review-package`, `scripts/sdd-workspace`) |
+| Per-task worktrees off the epic integration branch + single-flight merge-back | The plan-scoped workspace / ledger format |
 | Blocker beads (the escalation currency: notify + quarantine + continue) | |
 | Model tiering across the coordinator's roles (below) | |
 
@@ -38,7 +38,7 @@ A caller supplies these — none are inferable from the repo:
 | integration worktree | the checkout of `integrationBranch` this skill works in — passed as `integrationWorktree` in the coordinator contract (optional, additive). A caller that created the worktree itself (`super-auto`'s run worktree, any native-tool worktree) **must pass its path**: when omitted, the coordinator derives `.worktrees/<integrationBranch>` with any `/` in the branch name collapsed to `-`, which only matches worktrees created by this skill's own pre-flight convention — a slashed branch like `super-auto/<slug>` makes the derived path wrong by construction for any externally-created worktree (`./coordinator-workflow.md`'s "Coordinator contract") |
 | mode | autonomous or interactive. Same contract either way — mode changes who answers a blocked task, never what gets reviewed |
 | who owns the finish | **state it explicitly if the caller owns it.** There is no config flag. Left unsaid, this skill runs its own Finish: it merges the integration branch and deletes the worktree — taking the ledger and the per-task reports with it, which is where a caller's report gets its sources |
-| `config.models`, `config.concurrency` | optional; see Model tiering and Parallelism below for what they default to and why an explicit map is preferred |
+| `config.models`, `config.concurrency`, `config.hotFileCap` | optional; see Model tiering and Parallelism below for what they default to and why an explicit map is preferred |
 
 It returns six buckets — `completed`, `escalated`, `pendingRetry`, `parked`, `stalled`, `review` —
 covering **the epic's whole tree as of return, not only the tasks this invocation dispatched** (a
@@ -57,7 +57,7 @@ drained epic; `./coordinator-workflow.md`'s "Null dispatch policy").
 
 ## Worktree topology
 
-Per-task worktrees branch from the epic integration branch (not from `main`, not from a plan-file branch); on pass, each is merged back into the integration branch **serially**, in dependency order. New ready tasks branch from the updated integration branch, so dependents inherit prior work. Full three-layer topology (user's worktree / integration worktree / per-task worktrees) and the Workflow-coordinated procedure: `./coordinator-workflow.md`.
+Per-task worktrees branch from the epic integration branch (not from `main`, not from a plan-file branch); on pass, each is merged back into the integration branch through the **single-flight merge queue** — exactly one merge in flight, in completion order, enqueued the instant a task's own chain ends (a `bd ready` batch is mutually independent, so within-round order carries no dependency meaning). New ready tasks branch from the updated integration branch, so dependents inherit prior work. Full three-layer topology (user's worktree / integration worktree / per-task worktrees) and the Workflow-coordinated procedure: `./coordinator-workflow.md`.
 
 ## Model tiering
 
@@ -87,15 +87,35 @@ package, the five-round fix breaker, serial merge-back — is inherited unchange
 agent following this skill's own instruction to run SDD's per-task pipeline reads an absolute
 prohibition on the one thing this skill exists to do, and silently serializes the epic.
 
-Concurrent dispatch only when declared file sets are disjoint (`filesTouched`, from the planner's per-task mapping). Two ready tasks that share a file serialize — never siblings in the same dispatch. A task with no declared files runs alone (fail safe: an incomplete declaration costs serialization, never a write collision). Buckets of disjoint-file tasks serialize relative to each other; concurrency within a bucket is capped at `config.concurrency` (default 4) — a bucket larger than the cap runs as sequential sub-batches, not one unbounded dispatch.
+**Dispatch is not gated on file overlap.** Every ready task dispatches as soon as a slot frees,
+bounded by `config.concurrency` (default 4) as a **sliding window** — never as batches with
+barriers between them — and each task's integration joins a **single-flight merge queue the
+instant its own chain ends**, draining in completion order while siblings still run. Exactly one
+merge touches the integration branch at any moment, guaranteed by chaining, not batching.
+`filesTouched` (from the planner's per-task mapping) survives as one scheduling constraint: at
+most `config.hotFileCap` (default 3) in-flight tasks may declare the same file, which bounds
+worst-case rebase churn on a shared barrel/index/registry without collapsing the frontier. A task
+with no declared files dispatches normally — isolation makes dispatch-time collision impossible.
 
-**Serialization is a cost, not a safe default.** Every rule above fails safe toward running alone,
-and each is individually right — but they compound, and a round that dispatches one task at a time
-has lost the reason this skill exists. When a round's buckets come out mostly singletons, say so in
-the run and name the cause; it is upstream of here every time: over-declared `filesTouched`
-(`./planner-prompt.md`), dependency edges encoding narrative order rather than genuine blocking
-(`super-design`'s §Decomposition), or one shared file — a barrel, an index, a registry — that every
-task touches and that should be split or assigned to a single task.
+**This replaced disjoint-file bucketing, on measurement, not taste** (197-bead epic, 2026-08):
+bucketing collapsed 17 ready beads into 4 buckets — effective parallelism 4.25 against a cap of
+14, and raising the cap 4→14 bought 1.5×, not 3.5× — while all 12 BLOCKED outcomes in the epic
+were plan/spec ordering defects and **zero** were rebase conflicts: the protection cost ~3.5× and
+prevented nothing that occurred. The same epic exposed a round barrier in the coordinator (merges
+started only after every task in the round finished; one straggler held 13 completed beads
+unmerged for 3h15m) — the completion-order merge queue is that fix. Full mechanics, the measured
+numbers, and the honest counter-evidence (one semantic clash bucketing would have caught, now
+caught by the merge gate's post-rebase test run plus reviews): `./coordinator-workflow.md`'s
+Implement-phase relaxation comment.
+
+**Serialization is a cost, and now it has a detector.** Every round the coordinator logs
+effective parallelism against the cap (`parallelism: N ready · cap C · peak in-flight P`) with
+hot-file deferrals named per file, and points at the cause when it degrades: over-declared
+`filesTouched` (`./planner-prompt.md`), dependency edges encoding narrative order rather than
+genuine blocking (`super-design`'s §Decomposition), or one shared file — a barrel, an index, a
+registry — that every task touches and that should be split or assigned to a single task. The
+old rule told the operator to "notice" collapse; a warning that depends on someone voluntarily
+looking is not a detector, and the measured collapse ran unnoticed for five days.
 
 ## Red Flags
 
@@ -111,7 +131,9 @@ task touches and that should be split or assigned to a single task.
 - Silently drop a blocked task — file a blocker bead (notify + quarantine + continue; the run never hard-stops on one stuck task).
 - Let a fix loop run past SDD's five-round breaker — at the cap, dispatch the adjudicator and either park with a ruling or file a blocker bead, never retry past round 5.
 - Treat any re-review verdict other than the literal token `CLEAN` as safe to merge — fail closed: an unrecognized or differently-worded verdict keeps looping (bounded by the round cap), it never falls through to `mergePrompt`.
-- Dispatch parallel implementers whose declared file sets overlap.
+- Run two merges into the integration branch concurrently, or let anything bypass the single-flight merge queue — exactly one merge in flight, ever, is the invariant that makes concurrent implementers safe.
+- Hold completed tasks' merges behind a batch or round barrier — each task's integration is enqueued the instant its own chain ends; a straggler must never block its finished siblings from merging (measured live: 13 beads held for 3h15m).
+- Exceed `config.hotFileCap` concurrently-dispatched tasks declaring the same file — overlap is allowed, unbounded hot-file pile-ups are not.
 - Patch `scripts/task-brief` to accept bead ids directly, or collapse the ordinal ↔ bead-id mapping — SDD's `task-brief` only matches integer `## Task <N>` headings, not bead ids.
 - Treat a null `agent()` result as a result — the Workflow runtime returns null when a subagent dies on a terminal API error after retries, and every dispatch class has its own explicit null semantic (`./coordinator-workflow.md`'s "Null dispatch policy"); most defaults fabricate success (a null merge is not a failed merge, a null ready query is not an empty ready set, a null close-epics never closed the root).
 - File a blocker bead with anything besides the bare `blocker` label — an `sp:` label or a `--parent` makes the escalation record reachable as work and starts a self-sustaining blocker-filing loop (one new bead per round, reproduced live).

@@ -27,11 +27,16 @@ args = {
   dryRun,
   config: {
     concurrency: 4,
+    hotFileCap: 3,        // optional — see below
     models: { planner: 'opus', implementer: 'sonnet', reviewer: 'sonnet', mechanical: 'sonnet', triage: 'opus', finalReview: 'opus', fixEscalation: 'opus' },
   },
   prompts: { ... },
 }
 ```
+
+`hotFileCap` is **optional** — additive, defaulting to 3: how many in-flight tasks may declare
+the same `filesTouched` file at once (the scheduling constraint that replaced disjoint-file
+bucketing — see "The coordinator loop" step 3 and SKILL.md §Parallelism).
 
 `integrationWorktree` is **optional** — additive and non-breaking, same tier as `fixEscalation`
 below: the path of the integration branch's checkout. When omitted, the script derives it from
@@ -221,19 +226,23 @@ Round-based with refill (each `bd ready` batch is, by definition, mutually indep
    *single* stuck id eventually terminates, but this guard is the belt-and-suspenders backstop for
    the general case (any future loop-control edge this doc hasn't anticipated). Stop and report
    rather than spin (see the script skeleton's no-progress guard, right after the Integrate phase).
-3. **Group for parallelism, then pipeline the batch** — bucket the round's ready ids so no two
-   ids in the same bucket share a declared file (recorded on the bead body / brief, not derived
-   by the script). **Buckets serialize relative to each other** (never dispatched concurrently
-   with one another); **within a bucket**, ids run as concurrent siblings, chunked to the
-   concurrency cap (default 4) — this is where the concurrency actually lives, never across
-   buckets. Two ready ids that share a file are never siblings in the same `pipeline()`/
-   `parallel()` call — put in different buckets and so **serialized** relative to each other —
-   since concurrent implementers on the same file race each other's worktree and merge. Within a
-   bucket, run the per-task pipeline (below) with **no barrier between stages** (a fast task isn't
-   held up by a slow sibling).
-4. **Serial merge gate** — completed tasks are merged back into the integration branch **one at
-   a time** (never two concurrently), in dependency order. A successful merge does
-   `bd close <id>` — a leaf-task close; epic closure is the separate step below.
+3. **Dispatch the batch under a sliding window** — every planned id dispatches as soon as a slot
+   frees, bounded by the concurrency cap (default 4), with one file-based scheduling constraint:
+   at most `config.hotFileCap` (default 3) in-flight tasks may declare the same file
+   (`filesTouched`, from the planner's mapping — a churn bound for shared barrel/index/registry
+   files, not a dispatch gate). No batch or wave barriers anywhere: a straggler never delays the
+   next task's dispatch, and the per-task chain has **no barrier between stages** either (a fast
+   task isn't held up by a slow sibling at any point, including its merge — see step 4).
+   Disjoint-file bucketing used to gate dispatch here; it was removed on live measurement — see
+   SKILL.md §Parallelism and the Implement-phase relaxation comment in the script skeleton for
+   the numbers and the recorded counter-evidence.
+4. **Single-flight merge queue** — each task's integration is enqueued **the instant its own
+   chain ends** and drains in completion order, with **exactly one merge in flight, ever**
+   (guaranteed by promise chaining, not batching — see `enqueueIntegration` in the skeleton).
+   Completion order loses nothing dependency-wise: a `bd ready` batch is mutually independent by
+   definition (step 1), so within-round merge order was never load-bearing. A successful merge
+   does `bd close <id>` — a leaf-task close; epic closure is the separate step below. Blocked
+   tasks and their triage ride the same queue, so `bd` mutations never race a `git merge`.
 5. **Epic closure** — `bd epic close-eligible` is repo-global: it has no `--label`/`--parent`/
    `--mol` scoping flag (verified via `--help`), so the mutating form is **never** called
    unfiltered — in a repo holding more than one live epic it would close epics belonging to
@@ -473,8 +482,8 @@ beads tree (`bd show` on the epic and its ready/blocked descendants) and writes
 
 1. An **ordinal ↔ bead-id mapping table** at the top — one row per task, `N` assigned in
    dependency order starting at 1, plus each task's declared `filesTouched` — the durable
-   translation every downstream consumer of this file reads from, including the disjoint-file
-   grouping described below.
+   translation every downstream consumer of this file reads from, including the scheduler's
+   hot-file cap described below.
 2. One `## Task <N>` section per row, headed by the **ordinal**, carrying the bead's acceptance
    criteria and any Global Constraints from the epic body verbatim — the same content discipline
    SKILL.md expects of a hand-written plan.
@@ -563,7 +572,7 @@ it — the governing rule forbids the latter, not the former (see "Boundary" in 
   (`Task <N> (<bead id>): complete (commits <base7>..<head7>, 1 parked — ruling: ... — finding:
   ...)`, both the ruling and the overruled finding — see "Workspace and ledger" above) — written at
   the **merge
-  gate** (the Integrate loop's `if (m.merged)` branch), not here inside `reviewAndFix`: a PARK
+  gate** (`integrateOne`'s `if (m.merged)` branch), not here inside `reviewAndFix`: a PARK
   ruling only carries *intent* until the merge that follows it actually succeeds (see the merge
   gate's own comment — a PARKed task whose merge later fails must not end up recorded as both
   `parked` and `escalated`/`pendingRetry`).
@@ -576,7 +585,7 @@ it — the governing rule forbids the latter, not the former (see "Boundary" in 
      ruling, the plan text (from `plan.md`) it collides with, and the fix history from the report
      file. `reviewAndFix`'s `breakerBlockerPrompt` does this and returns `status: 'BLOCKED'`.
   2. **Routes through the same `handleBlocker`/triage path as every other blocker trigger** (see
-     the pipeline call site and "The blocker-bead path" below) rather than `mergePrompt` — even a
+     the runTask chain call site and "The blocker-bead path" below) rather than `mergePrompt` — even a
      breaker-cap BLOCKED gets one triage RESOLVE-vs-ESCALATE pass, the same as a self-filed or
      merge-failure blocker; a RESOLVE here is a real (if less likely) escape from the cap.
   3. **Appends the ledger line and quarantines only once `handleBlocker` reaches an ESCALATE
@@ -593,7 +602,9 @@ rubric, dispatched rather than performed inline, in both modes.
 
 ## Serial merge-back
 
-In the integration worktree, for one task at a time, in dependency order:
+In the integration worktree, for **one task at a time — exactly one merge in flight, ever** —
+in completion order off the single-flight queue ("The coordinator loop" step 4; completion order
+is safe because a `bd ready` batch is mutually independent by definition):
 
 1. Update the integration branch; rebase the task branch onto it.
 2. Run the project test command.
@@ -601,6 +612,18 @@ In the integration worktree, for one task at a time, in dependency order:
    close; epic closure is the separate fixpoint step in "The coordinator loop").
 4. If the rebase conflicts **or** tests are red: make **one bounded auto-resolve attempt** (a fix
    agent). If that fails → the blocker-bead path.
+
+**Step 2 means the full project test command by default.** If a project substitutes a scoped
+selection to keep the gate fast, derive the file→test mapping **from the actual import graph —
+grep the imports — never by grouping packages that feel related.** Measured on the live epic that
+shaped this section: a felt-related bundle ("anything touching training/evaluation/diagnostics
+pulls in all three test trees") was wrong in both directions — the real graph was a star centred
+on `training` (evaluation↔diagnostics: zero import lines, zero shared fixtures, either way),
+so the bundle was simultaneously too wide (evaluation and diagnostics do not imply each other)
+and too narrow (it omitted `model`, `api`, and `agents`, which genuinely import `training`).
+A wrong mapping either wastes the merge gate's time on every merge or silently skips the tests
+that would catch a cross-task semantic clash — the one defect class the dispatch relaxation
+above stopped catching at dispatch time.
 
 ## The blocker-bead path (the escalation currency)
 
@@ -780,7 +803,12 @@ re-adopt from a stale reading. None of them is an open gap.
    right all along, this document did not. Noted here, not just fixed in place, because getting
    this backwards is a genuine write-collision risk for anyone reimplementing the loop from this
    document's prose alone — which the "Annotated script skeleton" section (`:743`) explicitly
-   invites a future maintainer to do.
+   invites a future maintainer to do. **Superseded (2026-08-22): buckets no longer exist at all**
+   — disjoint-file bucketing was removed on live measurement in favor of the sliding-window
+   scheduler + hot-file cap ("The coordinator loop" step 3, and the Implement-phase relaxation
+   comment in the skeleton). Kept because its lesson generalizes: prose and code drifting on
+   *which* things serialize is exactly how both the bucket collapse and the round barrier went
+   unnoticed.
 6. **"Illustrative" vs. "canonical" was self-contradictory.** Fixed in this round: the script
    skeleton's own header, in the "Annotated script skeleton" section (`:743`), used to open with
    "Illustrative — adapt names/prompts to the epic," while the dryRun policy section (`:2202`, "If
@@ -801,7 +829,8 @@ skill's predecessor:
 
 - Per-task worktrees branched off the **epic integration branch** (not off `main` and not off a
   local plan-file branch).
-- **Serial merge-back in dependency order**, one task at a time, never concurrent merges.
+- **Single-flight merge-back in completion order**, exactly one merge in flight ever, enqueued
+  per task the instant its chain ends — never concurrent merges, and never a round barrier.
 - The **blocker-bead escalation path** — notify, quarantine, continue — that lets a Workflow run
   survive a stuck task instead of freezing.
 - The breaker's terminal action on a load-bearing finding: **file a blocker bead**, not stop the
@@ -922,14 +951,18 @@ const taskWorktree = id => `.worktrees/${branchSlug}--task-${id}`
 const planFileName = `${epicId}-plan.md`
 const workspace = `.superpowers/sdd/${epicId}-plan`
 const ledgerPath = `${workspace}/progress.md`
-// I3: config.concurrency bounds per-bucket fan-out. It's read from `args`, documented in the
-// contract, SKILL.md, and spec §1 as the thing that stops a bucket of N disjoint-file tasks from
-// dispatching N concurrent implementers and N worktrees — but until this fix nothing in the script
-// ever read the key, so a 12-task disjoint bucket dispatched all 12 concurrently regardless of its
-// value. Applied in the Implement phase's group loop (below): each disjoint-file bucket is chunked
-// into sub-batches of at most `cap` ids before being handed to pipeline() — sub-batches serialize
-// relative to each other, the same way buckets already did; only a bucket's dispatch SIZE changes.
+// I3: config.concurrency bounds concurrent per-task chains. It's read from `args` and documented
+// in the contract as the thing that stops N ready tasks from dispatching N concurrent
+// implementers and N worktrees at once. Enforced by `makeScheduler` (helpers below) as a
+// sliding window — a slot frees, the next id dispatches — never as `chunk()`ed sub-batches with
+// barriers between them (that shape was the round-barrier defect one level down; see the
+// Implement phase's relaxation comment).
 const cap = Math.max(1, Number(config.concurrency) || 4)
+// Hot-file cap (optional, additive contract key — like `fixEscalation`/`integrationWorktree`):
+// how many in-flight tasks may declare the same file at once. The dispatch-relaxation comment in
+// the Implement phase carries the measured evidence for why this replaced disjoint-file
+// bucketing as filesTouched's only scheduling role.
+const hotFileCap = Math.max(1, Number(config.hotFileCap) || 3)
 
 // Null-dispatch guard (live-run defect: see "Null dispatch policy"). agent() returns null when a
 // dispatched subagent dies on a terminal API error after retries; a single 529 on a merge dispatch
@@ -955,7 +988,7 @@ async function dispatch(buildReal, stubKey, opts) {
 
 const READY   = { type: 'object', properties: { ids: { type: 'array', items: { type: 'string' } } }, required: ['ids'] }
 // mapping: ordinal (N, as scripts/task-brief needs it) <-> bead id (as bd needs it) <-> declared
-// touched files (as groupByDisjointFiles needs it) — see "Plan materialization". This is the
+// touched files (as the scheduler's hot-file cap needs it) — see "Plan materialization". This is the
 // FULL CUMULATIVE table, every round, not just this round's new rows: the coordinator replaces
 // `planned` wholesale each round (it does not merge across rounds), so a round-scoped return
 // would drop every earlier id and make ordinalFor(id) resolve to undefined for them — see
@@ -1031,7 +1064,7 @@ const ADJUDICATE = { type: 'object', properties: { id: {type:'string'}, decision
 // string if the ledger doesn't exist yet — a fresh epic, or one whose first task hasn't merged or
 // blocked yet) so parsing stays pure JS in this script (see the Resume-phase block below) rather
 // than asking an agent to interpret ledger semantics — the same "mechanical extraction, judgment
-// stays in the script" split groupByDisjointFiles already uses for the planner's file mapping.
+// stays in the script" split the scheduler already uses for the planner's file mapping.
 // `ledger-append` is schema-less and fire-and-forget, same tier as `notify`/`clarify` (see
 // "Schema-less dispatches" in the dryRun policy section below) — the coordinator never reads its
 // return value, only whether the call errored.
@@ -1063,7 +1096,7 @@ const completed = new Set()
 // — so a PARKed merge was indistinguishable in every report from a task that came back clean on
 // the first pass, exactly the "silent discard" `subagent-driven-development/SKILL.md:377` forbids.
 // `parked` and the ledger note it maps to (I1: the merge gate's `ledger-append` dispatch, below)
-// are what make an overruled finding visible instead. Pushed at the MERGE GATE (the Integrate loop's
+// are what make an overruled finding visible instead. Pushed at the MERGE GATE (integrateOne's
 // `if (m.merged)` branch), not back in `reviewAndFix` at adjudication time — a PARK ruling only
 // carries INTENT (`r.parkRuling`) until the merge that follows it actually succeeds; gating the
 // push on `m.merged` is what keeps a task whose merge later fails from ending up in `parked` and
@@ -1351,101 +1384,34 @@ while (true) {
     }
   }
 
-  // planner-prompt.md permits leaving a genuinely unplannable bead unmapped (its "Your Job" step
-  // 4: BLOCKED, no mapping row, no ## Task <N> section). If such an id is in this round's `ids`
-  // and reaches groupByDisjointFiles/taskBriefPrompt anyway, ordinalFor(id) is undefined and
-  // `scripts/task-brief <plan> undefined` fails the whole round — the same crash C5 fixed,
-  // through a different door. Filter to ids the planner actually mapped before grouping/dispatch;
-  // quarantine the rest explicitly (same `escalated` list "Escalation = notify + quarantine +
-  // continue" uses) rather than letting them fail silently downstream.
-  // Closes the TODO seam Task 2 left here: route each unmapped id through the SAME blocker-bead +
-  // triage flow as every other blocker trigger (see "The blocker-bead path"), instead of a bare
-  // quarantine — a `RESOLVE` verdict (e.g. "re-plan with this clarification") gets a real chance
-  // next round; only an `ESCALATE` actually quarantines (handleBlocker's own logic, unchanged).
-  const plannedIds = ids.filter(id => ordinalFor(id) !== undefined)
-  const unplannedIds = ids.filter(id => ordinalFor(id) === undefined)
-  if (unplannedIds.length) {
-    log('plan: ' + unplannedIds.length + ' id(s) left unmapped this round by the planner (BLOCKED, no plan.md section) — routing through the blocker-bead path: ' + JSON.stringify(unplannedIds))
-    for (const id of unplannedIds) {
-      // Null bead filing ("Null dispatch policy"): pass blockerBead through null-safe —
-      // handleBlocker's missing-bead fallback files one, and if that also nulls, it leaves the
-      // task unsettled rather than triaging against "the blocker bead undefined".
-      const bead = await dispatch(() => unplannedBlockerPrompt(id, epicId), `unplanned-blocker:${id}`,
-        { label: `unplanned-blocker:${id}`, phase: 'Plan', model: model('mechanical'), schema: RESULT })
-      await handleBlocker({ id, blockerBead: bead?.blockerBead }, planned.planPath)
-    }
+  // ROUND-BARRIER REMOVAL (measured live, 197-bead epic, 2026-08-20..23): this round's merges
+  // used to run in a `for` loop AFTER `await pipeline(...)` returned for the whole batch — a
+  // round barrier. Observed: 115 agents dispatched, 114 finished, one straggler held 13
+  // completed beads unmerged for over two hours (zero merges in 3h15m) — with the barrier,
+  // wall-clock IS the sum-of-slowest-per-stage the pipeline rationale promises to avoid.
+  // Now each task enqueues its own integration THE INSTANT its chain ends, onto a promise-chain
+  // queue that guarantees **exactly one merge in flight, ever** — the invariant serial
+  // merge-back exists for (two concurrent `git merge` into the integration worktree is the
+  // failure mode), preserved by CHAINING rather than by batching. Integration k+1 cannot start
+  // until k has fully returned. Blocked tasks and their triage ride the same queue, so
+  // `bd create`/`bd close` never race a `git merge`. Drain order is completion order — which
+  // loses nothing dependency-wise: a `bd ready` batch is mutually independent by definition
+  // (see "The coordinator loop"), so within-round merge order was never load-bearing.
+  // This shape was implemented and replay-verified on the live epic's adaptation first
+  // (a straggler's siblings observed merging while its implementer still ran), then ported here.
+  let integrateAnnounced = false
+  let mergeChain = Promise.resolve()
+  const enqueueIntegration = r => {
+    const run = mergeChain.then(() => integrateOne(r))
+    mergeChain = run.then(() => {}, () => {})   // settled either way: a throw must not poison the queue
+    return run
   }
-
-  // Group by declared touched-files (from plan.md) so same-file tasks never run as siblings.
-  // Only ids with a mapping row reach here (see the filter above) — the "undeclared -> solo
-  // bucket" fail-safe below is about a MAPPED id with an empty/missing `files` list, not about an
-  // unmapped id (those never reach this call at all).
-  const groups = groupByDisjointFiles(plannedIds, planned)  // pure JS, no I/O — reads planned.mapping[].files; solo-buckets anything with undeclared files (fail safe)
-
-  // Per-task pipeline. NO barrier between stages: a fast task proceeds while a slow sibling lags.
-  // Each agent works in its own worktree cut from the integration branch (taskWorktree(id)) and
-  // does its own git/bd I/O (see prompt templates). The brief stage dispatches on `mechanical`
-  // (task-brief is a deterministic extraction, not judgment); implement/review stay on their
-  // config-tiered roles.
-  phase('Implement')
-  const results = []
-  for (const group of groups) {  // disjoint-file groups serialize relative to each other; tasks within a group don't share files
-   // I3: chunk each bucket to `cap` before dispatch — see the `cap` comment above. A bucket larger
-   // than `cap` (e.g. 12 mutually disjoint-file ids under a concurrency cap of 4) still runs to
-   // completion, just as 3 sequential sub-batches of ≤4 concurrent siblings each, instead of 12
-   // concurrent implementers/worktrees at once. `chunk(group, cap)` is pure JS, no I/O.
-   for (const sub of chunk(group, cap)) {
-    const groupResults = await pipeline(sub,
-      id  => dispatch(() => taskBriefPrompt(planned.planPath, ordinalFor(id), id, taskWorktree(id), integrationBranch, artifacts(id).brief), `brief:${id}`, { label: `brief:${id}`,   phase: 'Implement', model: model('mechanical'), schema: RESULT }),
-      // `n`/`branch` are sourced from `ordinalFor(br.id)`/`taskWorktree(br.id)` DIRECTLY — the same
-      // pure closures used to build the brief dispatch above — never from `br.n`/`br.branch` (the
-      // brief agent's own echo of them). `RESULT` doesn't require either field, so trusting the
-      // echo would reproduce C2's "branch: undefined" failure one hop earlier, in a spot the
-      // coordinator can make unconditionally correct for free since it already knows both values
-      // before it ever dispatches the brief. `base`, by contrast, genuinely cannot be sourced this
-      // way: it's a commit SHA captured via `git rev-parse HEAD` inside the task's own worktree
-      // (see taskBriefPrompt), and the coordinator has no shell/git access of its own to compute or
-      // verify it (see "Key constraint: the script does no I/O") — so `base` is the one field where
-      // round-tripping through the brief agent's report is deliberate, not an oversight. Only
-      // `status`/`files` are genuinely the implementer's own report.
-      // I-8: symmetric guard at the brief hop. A brief that reports BLOCKED (task-brief's "task
-      // not found" failure) must not be handed to the implementer — dispatching against a brief
-      // that was never produced is nonsensical, and it's exactly the path C4's "no path reaches
-      // mergePrompt with a status other than a clean review result" assertion didn't cover. Pass
-      // the BLOCKED brief straight through with `n`/`branch` stamped, same as every other hop; a
-      // brief failure never self-files a blocker bead the way implementPrompt's BLOCKED case does,
-      // but it doesn't need to — see the I-7 note on `handleBlocker` below.
-      async br => {
-        if (!br) return null  // null brief ("Null dispatch policy"): no progress this round — dispatch() already logged it; the next ready query re-surfaces the id
-        if (br.status === 'BLOCKED') return { ...br, n: ordinalFor(br.id), branch: taskWorktree(br.id) }
-        const im = await dispatch(() => implementPrompt(br, integrationBranch, artifacts(br.id).brief, artifacts(br.id).report), `implement:${br.id}`, { label: `impl:${br.id}`, phase: 'Implement', model: model('implementer'), schema: RESULT })
-        if (!im) return null  // null implement: same — not CLEAN, not BLOCKED, re-enters next round
-        return { ...im, n: ordinalFor(br.id), branch: taskWorktree(br.id), base: br.base }
-      },
-      // C4: guard the review stage on the incoming status. Without this, an implementer's own
-      // BLOCKED (self-filed bead, see implementPrompt) gets handed to reviewAndFix anyway, whose
-      // CLEAN/NEEDS_FIX verdict overwrites `status` and erases BLOCKED before the Integrate stage's
-      // `if (r.status === 'BLOCKED')` check ever sees it — routing blocked work to `mergePrompt`.
-      // Skip review entirely and pass the implementer's result straight through unchanged. Review
-      // round 3 (Important, I-7): this used to also fall back to `missingBlockerBeadPrompt` right
-      // here when `im.blockerBead` was missing — but that only covered THIS one hop of blocker
-      // entry. `handleBlocker` (below) is the single place all blocker-path entries converge — the
-      // implementer/brief-BLOCKED case via the Integrate loop's `if (r.status === 'BLOCKED')`
-      // branch, the breaker cap's adjudicated BLOCKED, a failed merge, AND an unmapped planner id —
-      // so the fallback is hoisted there instead, covering all of them with one check instead of
-      // duplicating it at every call site (see `handleBlocker`'s first lines).
-      im => !im ? null : (im.status === 'BLOCKED' ? im : reviewAndFix(im, planned.planPath, artifacts(im.id))),
-    )
-    results.push(...groupResults)
-   }
-  }
-
-  // SERIAL merge gate — outside any parallel/pipeline stage so only one merge touches the
-  // integration branch at a time, in dependency order. Runs in the integration worktree. Merges
-  // close leaf tasks only (bd close <id>); epic closure happens at the top of the next iteration.
-  phase('Integrate')
-  for (const r of results.filter(Boolean)) {
-    if (r.status === 'BLOCKED') { await handleBlocker(r, planned.planPath); continue }
+  const integrateOne = async r => {
+    // Lazy phase announcement, once per round, on the first integration — merges now interleave
+    // with the Implement phase's still-running chains, so a fixed phase('Integrate') call site
+    // no longer exists. Cosmetic only: every dispatch below carries its own opts.phase.
+    if (!integrateAnnounced) { integrateAnnounced = true; phase('Integrate') }
+    if (r.status === 'BLOCKED') { await handleBlocker(r, planned.planPath); return }
     const m = await dispatch(() => mergePrompt(r, integrationBranch, integrationWorktree), `merge:${r.id}`,
       { label: `merge:${r.id}`, phase: 'Integrate', model: model('reviewer'), schema: MERGE })
     // Null merge ("Null dispatch policy") — the exact dispatch whose unguarded `m.merged` deref
@@ -1455,7 +1421,7 @@ while (true) {
     // the next round's ready query re-surfaces it and the idempotent brief stage re-enters the
     // already-implemented worktree — a re-run no-op review/merge that completes the task exactly
     // once (settle() is a Set write; a second merge of the same id can't double-count).
-    if (!m) continue
+    if (!m) return
     // Limitation 5: `head` and `mergeBase` are not `required` on `MERGE` (neither can be, since a
     // failed merge legitimately omits both), so a `merged: true` report missing either is
     // schema-valid. Treat it as a non-compliant merge rather than writing a half-formed commit
@@ -1464,13 +1430,13 @@ while (true) {
     if (m.merged && (!m.head || !m.mergeBase)) {
       log(`merge:${r.id} reported merged without a full commit range (head=${m.head ?? 'missing'}, mergeBase=${m.mergeBase ?? 'missing'}) — treating as BLOCKED`)
       await handleBlocker({ id: r.id, n: r.n, blockerBead: m.blockerBead }, planned.planPath)
-      continue
+      return
     }
     if (m.merged) {
       settle(r.id, completed)  // also clears a stale escalated/pendingRetry mark from a prior run (C-2)
-      // Review round 4 (Important): `parked` is recorded HERE, alongside `completed.push`, not back
-      // in `reviewAndFix` at adjudication time — `r.parkRuling` (set by the PARK branch there) is
-      // only a carried-forward INTENT until the merge that just succeeded confirms it. Had this
+      // Review round 4 (Important): `parked` is recorded HERE, alongside the completed settle, not
+      // back in `reviewAndFix` at adjudication time — `r.parkRuling` (set by the PARK branch there)
+      // is only a carried-forward INTENT until the merge that just succeeded confirms it. Had this
       // pushed unconditionally at adjudication time instead, a PARKed task whose merge later failed
       // its bounded auto-resolve would end up in `parked` AND `escalated`/`pendingRetry`
       // simultaneously, absent from `completed` — contradicting "a parked task IS a completed one"
@@ -1520,9 +1486,139 @@ while (true) {
     }
     // `n: r.n` carried forward here so a failed-merge blocker's eventual ledger line (in
     // handleBlocker) can still cite the plan ordinal — `r` already carries it (stamped by
-    // reviewAndFix/the pipeline call site); the bare object built here previously dropped it.
+    // reviewAndFix/the chain call site); the bare object built here previously dropped it.
     else await handleBlocker({ id: r.id, n: r.n, blockerBead: m.blockerBead }, planned.planPath)
   }
+
+  // planner-prompt.md permits leaving a genuinely unplannable bead unmapped (its "Your Job" step
+  // 4: BLOCKED, no mapping row, no ## Task <N> section). If such an id is in this round's `ids`
+  // and reaches the scheduler/taskBriefPrompt anyway, ordinalFor(id) is undefined and
+  // `scripts/task-brief <plan> undefined` fails the whole round — the same crash C5 fixed,
+  // through a different door. Filter to ids the planner actually mapped before grouping/dispatch;
+  // quarantine the rest explicitly (same `escalated` list "Escalation = notify + quarantine +
+  // continue" uses) rather than letting them fail silently downstream.
+  // Closes the TODO seam Task 2 left here: route each unmapped id through the SAME blocker-bead +
+  // triage flow as every other blocker trigger (see "The blocker-bead path"), instead of a bare
+  // quarantine — a `RESOLVE` verdict (e.g. "re-plan with this clarification") gets a real chance
+  // next round; only an `ESCALATE` actually quarantines (handleBlocker's own logic, unchanged).
+  const plannedIds = ids.filter(id => ordinalFor(id) !== undefined)
+  const unplannedIds = ids.filter(id => ordinalFor(id) === undefined)
+  if (unplannedIds.length) {
+    log('plan: ' + unplannedIds.length + ' id(s) left unmapped this round by the planner (BLOCKED, no plan.md section) — routing through the blocker-bead path: ' + JSON.stringify(unplannedIds))
+    // Parallelism fix (same review as the round-barrier removal): this used to `await` a bead
+    // filing AND a full opus triage PER ID, serially, before any implementer dispatched — an
+    // unmapped id could stall the whole round's real work behind minutes of triage. The filings
+    // are independent mechanical dispatches — file them in parallel — and the triage rides the
+    // integration queue (each unmapped id enqueued as a BLOCKED record, handled by
+    // `handleBlocker` via `integrateOne`'s BLOCKED branch), so implementation dispatch below
+    // starts immediately and triage serializes only against merges/other triage, which is the
+    // queue's job. Null bead filing ("Null dispatch policy"): blockerBead passes through
+    // null-safe — handleBlocker's missing-bead fallback files one, and if that also nulls, it
+    // leaves the task unsettled rather than triaging against "the blocker bead undefined".
+    const beads = await parallel(unplannedIds.map(id => () =>
+      dispatch(() => unplannedBlockerPrompt(id, epicId), `unplanned-blocker:${id}`,
+        { label: `unplanned-blocker:${id}`, phase: 'Plan', model: model('mechanical'), schema: RESULT })))
+    unplannedIds.forEach((id, i) => enqueueIntegration({ id, status: 'BLOCKED', blockerBead: beads[i]?.blockerBead }))
+  }
+
+  // DISPATCH IS NO LONGER GATED ON FILE OVERLAP (measured live, 197-bead epic durak-hgr,
+  // 2026-08-20..23): disjoint-file bucketing collapsed 17 ready beads into 4 buckets — effective
+  // parallelism 4.25 against a configured cap of 14, and raising the cap 4→14 bought 1.5×, not
+  // 3.5×. Across the whole epic, ALL 12 BLOCKED ledger lines were plan/spec ordering defects —
+  // not one was a rebase conflict. The protection cost ~3.5× and prevented nothing that
+  // occurred: every task runs in its own worktree (on-disk collision between concurrent
+  // implementers is impossible), and the only real conflict point — the rebase at the merge
+  // gate — is serial by construction (the integration queue above), with a bounded auto-resolve
+  // and the blocker path behind it. What replaces bucketing:
+  // - a SLIDING-WINDOW scheduler (`makeScheduler`, helpers below): every planned id dispatches
+  //   the moment a slot frees, bounded by `cap` (config.concurrency). No wave/chunk barriers —
+  //   the old `chunk(group, cap)` inter-batch barrier was the round-barrier defect one level
+  //   down: a straggler in batch k held batch k+1's DISPATCH hostage exactly the way the round
+  //   barrier held merges hostage.
+  // - a HOT-FILE CAP (`config.hotFileCap`, default 3 — optional, additive contract key like
+  //   `fixEscalation`): at most that many in-flight tasks may declare the same file.
+  //   `filesTouched` demotes from a dispatch gate to a scheduling constraint — it bounds
+  //   worst-case rebase churn on a shared barrel/index/registry file without collapsing the
+  //   frontier. An id with undeclared files no longer runs solo: worktree isolation makes
+  //   dispatch-time collision impossible, so the old solo-bucket fail-safe bought nothing but
+  //   full serialization.
+  // DESIGN ALTERNATIVES CONSIDERED AND REJECTED (recorded so the next reader doesn't re-derive
+  // them): (a) keeping filesTouched as a MERGE-ORDERING hint (merge same-file tasks adjacently
+  // to minimise rebase distance) — rejected: it conflicts with completion-order drain; holding a
+  // finished task's merge until a same-file sibling completes is the round barrier in miniature,
+  // a certain wait cost paid for a speculative rebase-distance saving. The dispatch-decoupling
+  // half of that idea IS what shipped. (b) keeping chunk-wave dispatch with the merge queue
+  // inside each wave — rejected after inspection: a straggler in wave k still blocks wave k+1's
+  // DISPATCH entirely (the same defect one level down), and the sliding window subsumes waves
+  // at no extra complexity (verified by the harness's straggler-overtake scenario).
+  // HONEST COUNTER-EVIDENCE, recorded rather than hidden: bucketing DID catch one real event in
+  // the measured epic — a semantic clash (durak-hgr.2.13) where two textually disjoint edits
+  // merged cleanly and WRONG (git reported no conflict; serialization would have let the second
+  // implementer build on the first's change). This relaxation stops catching that class at
+  // dispatch time. What catches it now: the merge gate's post-rebase project test run (every
+  // merge, before the branch advances), per-task review, and the Finish-phase whole-epic
+  // review. That is not free, and this comment exists so nobody re-derives the old rule OR
+  // presents the new one as costless.
+  //
+  // Per-task chain, per id. NO barrier between stages OR between tasks: a fast task proceeds —
+  // all the way through its own merge, via enqueueIntegration — while a slow sibling lags.
+  // Each agent works in its own worktree cut from the integration branch (taskWorktree(id)) and
+  // does its own git/bd I/O (see prompt templates). The brief stage dispatches on `mechanical`
+  // (task-brief is a deterministic extraction, not judgment); implement/review stay on their
+  // config-tiered roles.
+  //
+  // Comments preserved from the staged-pipeline shape, still load-bearing here:
+  // - `n`/`branch` are sourced from `ordinalFor(br.id)`/`taskWorktree(br.id)` DIRECTLY — never
+  //   from the brief agent's own echo (`RESULT` doesn't require either field; trusting the echo
+  //   reproduces C2's "branch: undefined"). `base`, by contrast, genuinely cannot be sourced
+  //   this way: it's a commit SHA captured inside the task's worktree (see taskBriefPrompt) and
+  //   the coordinator has no git access to compute it — the one field where round-tripping
+  //   through the brief report is deliberate.
+  // - I-8: a brief that reports BLOCKED (task-brief's "task not found") must not be handed to
+  //   the implementer — it becomes the task's result directly, `n`/`branch` stamped.
+  // - C4: an implementer's own BLOCKED skips review entirely — reviewAndFix's CLEAN/NEEDS_FIX
+  //   would overwrite the status and route blocked work to `mergePrompt`. The BLOCKED result
+  //   flows to `integrateOne`, whose status guard hands it to `handleBlocker` (the single
+  //   convergence point for every blocker trigger — see its I-7 comment).
+  phase('Implement')
+  const sched = makeScheduler(cap, hotFileCap, id => planned.mapping.find(m => m.id === id)?.files ?? [])
+  const runTask = async id => {
+    await sched.acquire(id)
+    let r = null
+    try {
+      const br = await dispatch(() => taskBriefPrompt(planned.planPath, ordinalFor(id), id, taskWorktree(id), integrationBranch, artifacts(id).brief), `brief:${id}`, { label: `brief:${id}`, phase: 'Implement', model: model('mechanical'), schema: RESULT })
+      if (!br) return null  // null brief ("Null dispatch policy"): no progress this round — dispatch() already logged it; the next ready query re-surfaces the id
+      if (br.status === 'BLOCKED') r = { ...br, n: ordinalFor(br.id), branch: taskWorktree(br.id) }
+      else {
+        const im = await dispatch(() => implementPrompt(br, integrationBranch, artifacts(br.id).brief, artifacts(br.id).report), `implement:${br.id}`, { label: `impl:${br.id}`, phase: 'Implement', model: model('implementer'), schema: RESULT })
+        if (!im) return null  // null implement: same — not CLEAN, not BLOCKED, re-enters next round
+        const done = { ...im, n: ordinalFor(br.id), branch: taskWorktree(br.id), base: br.base }
+        r = done.status === 'BLOCKED' ? done : await reviewAndFix(done, planned.planPath, artifacts(done.id))
+      }
+    } finally {
+      sched.release(id)  // free the dispatch slot BEFORE integration: merges ride their own
+                         // single-flight queue and must not hold a concurrency slot hostage
+    }
+    // The instant this task's own chain ends, its integration joins the queue — no round
+    // barrier. A null chain result (dead dispatch somewhere above) enqueues nothing: no
+    // progress this round, re-enters via the next ready batch.
+    if (r) await enqueueIntegration(r)
+    return r
+  }
+  await parallel(plannedIds.map(id => () => runTask(id)))
+  // Drain: every enqueued integration — including the unplanned-id triage enqueued above —
+  // completes before the detector line and the no-progress guard read this round's outcome.
+  await mergeChain
+
+  // THE DETECTOR the old rule never had. §Parallelism used to tell the operator to "notice"
+  // bucket collapse and "say so in the run" — a warning that depends on someone voluntarily
+  // looking is not a detector, and the measured 4.25-of-14 collapse ran unnoticed for five
+  // days. Every round now reports effective parallelism against the configured cap and names
+  // the suspected cause from the causes §Parallelism already lists.
+  const hotDeferrals = Object.entries(sched.stats.hotFileDeferrals)
+  log(`parallelism: ${plannedIds.length} ready · cap ${cap} · peak in-flight ${sched.stats.peak}`
+    + (hotDeferrals.length ? ` · hot-file deferrals: ${hotDeferrals.map(([f, n]) => `${f} (${n} task(s) waited)`).join(', ')} — a shared barrel/index/registry to split or assign to one task, or over-declared filesTouched (./planner-prompt.md)` : '')
+    + (plannedIds.length < cap ? ` · ready frontier smaller than the cap — if more open beads are waiting on dependencies, check for edges encoding narrative order rather than genuine blocking (super-design §Decomposition)` : ''))
 
   // I6/C-2: no-progress guard. A round that made no forward progress at all — no task merged, no
   // epic closed, no id newly quarantined, AND no id newly RESOLVEd-pending-retry — stops rather
@@ -1666,7 +1762,7 @@ function planPrompt(epicId, ids, planFileName) {
   // planner (opus), once per epic then append-only — see "Plan materialization". Follows
   // ./planner-prompt.md verbatim (do not paraphrase it here — that template is what carries the
   // filesTouched-in-section-body requirement and the over-declare-when-uncertain policy that
-  // makes groupByDisjointFiles' fail-safe bucketing correct); this builder only supplies the
+  // keeps the scheduler's hot-file cap meaningful); this builder only supplies the
   // per-dispatch variables that template's "Epic" / "Plan file name" / "Beads to plan this round"
   // sections need. Fix-round-1 (review): `planFileName` is now supplied as the value of
   // planner-prompt.md's own "Plan file name" parameter (the template was edited to reference
@@ -1749,9 +1845,9 @@ function implementPrompt(br, integrationBranch, briefFile, reportFile) {
   // Both paths are absolute and integration-workspace-rooted (see the `artifacts` helper).
   // The report contract deliberately asks for only id/status/files, not n/branch/base: those three
   // are already coordinator-known (from `br`) and are re-stamped onto this call's result in the
-  // pipeline call site regardless of what's reported — asking for them here would just invite a
-  // second, ignorable source of truth (see the pipeline call site and RESULT's `base` comment).
-  return `Follow subagent-driven-development/implementer-prompt.md against the brief for task ${br.id} (n ${br.n}), working in ${br.branch}, branched from integration branch ${integrationBranch}. The template's [BRIEF_FILE] is ${briefFile} and its [REPORT_FILE] is ${reportFile} — both absolute paths in the integration worktree's workspace, deliberately not this task worktree's own .superpowers/ (which is git-ignored and not shared across worktrees; only the integration workspace's copy is read downstream). You MUST write your full report to ${reportFile} before finishing — the reviewer's template hard-requires it and reviews blind without it. If BLOCKED after 3 no-progress fix-loops, file the blocker bead yourself (see "The blocker-bead path") — there is no human partner to escalate to mid-task; the bead carries ONLY the \`blocker\` label — no \`sp:\` label, no other label, and no \`--parent\` — because either addition makes it reachable as work and starts a self-sustaining blocker-filing loop. Report id, status (IMPLEMENTED or BLOCKED), files touched, and — only on BLOCKED — blockerBead with the id of the bead you just filed (handleBlocker's triage dispatch needs it; see the pipeline call site's status guard).`
+  // runTask chain call site regardless of what's reported — asking for them here would just invite a
+  // second, ignorable source of truth (see the runTask chain call site and RESULT's `base` comment).
+  return `Follow subagent-driven-development/implementer-prompt.md against the brief for task ${br.id} (n ${br.n}), working in ${br.branch}, branched from integration branch ${integrationBranch}. The template's [BRIEF_FILE] is ${briefFile} and its [REPORT_FILE] is ${reportFile} — both absolute paths in the integration worktree's workspace, deliberately not this task worktree's own .superpowers/ (which is git-ignored and not shared across worktrees; only the integration workspace's copy is read downstream). You MUST write your full report to ${reportFile} before finishing — the reviewer's template hard-requires it and reviews blind without it. If BLOCKED after 3 no-progress fix-loops, file the blocker bead yourself (see "The blocker-bead path") — there is no human partner to escalate to mid-task; the bead carries ONLY the \`blocker\` label — no \`sp:\` label, no other label, and no \`--parent\` — because either addition makes it reachable as work and starts a self-sustaining blocker-filing loop. Report id, status (IMPLEMENTED or BLOCKED), files touched, and — only on BLOCKED — blockerBead with the id of the bead you just filed (handleBlocker's triage dispatch needs it; see the runTask chain call site's status guard).`
 }
 
 function taskReviewPrompt(im, planPath, art) {
@@ -1978,39 +2074,46 @@ function short(sha) {
   return String(sha || '').slice(0, 7)
 }
 
-function chunk(arr, size) {
-  // I3, pure JS, no I/O: splits an array into consecutive sub-arrays of at most `size` — used to
-  // bound a disjoint-file bucket's fan-out to `config.concurrency` before it's handed to pipeline()
-  // (see the `cap` comment near `integrationWorktree`/`taskWorktree` and the Implement-phase loop).
-  const out = []
-  for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size))
-  return out
-}
-
-function groupByDisjointFiles(ids, planned) {
-  // Pure computation over data already returned by the planner agent (planned.mapping[].files) —
-  // no I/O. Buckets ids so no two ids in the same bucket share a declared file; ids within a
-  // bucket run as concurrent siblings via pipeline() below, with `chunk(group, cap)` (I3, see that
-  // helper above) bounding how many run at once to `config.concurrency` — buckets themselves still
-  // serialize relative to each other (see the `for (const group of groups)` loop above). FAIL SAFE, per Global Constraints ("dispatch
-  // concurrently only when file sets are disjoint"): an id with no declared files, or any id
-  // whose disjointness can't be established, must run alone in its own singleton bucket rather
-  // than default into a parallel batch — an incomplete files declaration must cost
-  // serialization, never risk a write collision. Illustrative pairwise grouping, not a tuned
-  // disjoint-set implementation:
-  const filesFor = id => planned.mapping.find(m => m.id === id)?.files
-  const buckets = []
-  for (const id of ids) {
-    const files = filesFor(id)
-    if (!files || !files.length) { buckets.push([id]); continue }  // fail safe: undeclared -> solo bucket
-    const bucket = buckets.find(b => b.every(other => {
-      const otherFiles = filesFor(other)
-      return otherFiles && otherFiles.length && !otherFiles.some(f => files.includes(f))
-    }))
-    if (bucket) bucket.push(id)
-    else buckets.push([id])
+function makeScheduler(cap, hotFileCap, filesFor) {
+  // Pure JS, no I/O — the sliding-window dispatch scheduler that replaced disjoint-file
+  // bucketing and `chunk()`'s inter-batch barriers (see the Implement phase's relaxation
+  // comment for the measured evidence). Two constraints, enforced at acquire time:
+  // - at most `cap` chains in flight (strict FIFO for the cap: when the window is full,
+  //   nothing overtakes — deterministic, and `bd ready` order stays dispatch order);
+  // - at most `hotFileCap` in-flight chains declaring the same file (an id blocked ONLY by a
+  //   hot file is skipped and later ids may overtake it — that is the point: one hot file must
+  //   not stall the whole frontier; the skipped id dispatches when the file drains).
+  // `stats` feeds the round's parallelism detector line: `peak` is the high-water mark of
+  // in-flight chains; `hotFileDeferrals` counts, once per id per file, the ids that had to wait
+  // on a hot file — the observable trace of over-declared filesTouched or a genuinely shared
+  // barrel/index/registry.
+  let active = 0
+  const fileCounts = {}
+  const waiting = []   // FIFO of { id, res }
+  const deferred = new Set()  // ids already counted in hotFileDeferrals — count once, not per pump
+  const stats = { peak: 0, hotFileDeferrals: {} }
+  const pump = () => {
+    for (let i = 0; i < waiting.length; ) {
+      if (active >= cap) break  // window full — strict FIFO, no overtaking on the cap
+      const { id, res } = waiting[i]
+      const hot = filesFor(id).find(f => (fileCounts[f] ?? 0) >= hotFileCap)
+      if (hot) {
+        if (!deferred.has(id)) { deferred.add(id); stats.hotFileDeferrals[hot] = (stats.hotFileDeferrals[hot] ?? 0) + 1 }
+        i++  // hot-file skip: later ids may overtake this one
+        continue
+      }
+      waiting.splice(i, 1)
+      active++
+      stats.peak = Math.max(stats.peak, active)
+      for (const f of filesFor(id)) fileCounts[f] = (fileCounts[f] ?? 0) + 1
+      res()
+    }
   }
-  return buckets
+  return {
+    stats,
+    acquire: id => new Promise(res => { waiting.push({ id, res }); pump() }),
+    release: id => { active--; for (const f of filesFor(id)) fileCounts[f]--; pump() },
+  }
 }
 
 // The five-round fix-loop breaker (C3/C-1/C-3/I-9). Loops fix -> scoped re-review while the
@@ -2115,12 +2218,12 @@ async function reviewAndFix(im, planPath, art) {
     // cleared) so the merged result still carries what was overruled.
     // Review round 4 (Important): the FIRST fix pushed to `parked` right here, at adjudication
     // time — but this function returns `status: 'CLEAN'` and hands off to the SEPARATE, LATER merge
-    // gate (the Integrate loop below); `mergePrompt` can still fail its rebase or tests after its
+    // gate (`integrateOne`, on the single-flight queue); `mergePrompt` can still fail its rebase or tests after its
     // one bounded auto-resolve attempt, in which case `completed.push` never runs and the id goes
     // to `handleBlocker` instead — `escalated` or `pendingRetry`. Pushing here unconditionally would
     // leave that id in `parked` FOREVER even though it never merged, contradicting "a parked task IS
     // a completed one" below by construction. `parked` is populated ONLY at the merge gate now,
-    // alongside `completed.push` (see the Integrate loop's `if (m.merged)` branch) — "this task
+    // alongside the completed settle (see `integrateOne`'s `if (m.merged)` branch) — "this task
     // merged" and "it merged with an overruled finding" are both established at that one point, so
     // recording them together there makes the invariant hold by construction, not convention.
     log(`PARK ruling for ${rv.id}: ${adj.ruling} — proceeding to the merge gate with the open finding intact: ${rv.finding}`)
@@ -2128,7 +2231,7 @@ async function reviewAndFix(im, planPath, art) {
   }
   // Load-bearing: file a blocker bead and quarantine. Returning `status: 'BLOCKED'` here is what
   // the Integrate stage's `if (r.status === 'BLOCKED')` check routes to `handleBlocker` instead of
-  // `mergePrompt` (see the pipeline call site).
+  // `mergePrompt` (see the runTask chain call site).
   const bead = await dispatch(() => breakerBlockerPrompt(rv, planPath, adj.ruling), `breaker-blocker:${rv.id}`,
     { label: `breaker-blocker:${rv.id}`, phase: 'Implement', model: model('mechanical'), schema: RESULT })
   // Null bead filing: proceed without a bead id — handleBlocker's missing-bead fallback files one
@@ -2140,7 +2243,7 @@ async function reviewAndFix(im, planPath, art) {
 async function handleBlocker(r, planPath) {
   phase('Triage')
   // I-7 (review round 3): every blocker-path entry converges here — the implementer/brief-BLOCKED
-  // case (via the Integrate loop's `if (r.status === 'BLOCKED')` branch), the breaker cap's
+  // case (via `integrateOne`'s `if (r.status === 'BLOCKED')` branch), the breaker cap's
   // adjudicated BLOCKED (reviewAndFix), a merge that failed its auto-resolve attempt, and an
   // unmapped planner id (the `unplannedIds` loop) — FOUR call sites, THREE of which were passing a
   // `blockerBead` no schema actually requires (`RESULT` and `MERGE` both leave it optional). A
@@ -2233,7 +2336,7 @@ async function handleBlocker(r, planPath) {
 ## dryRun policy
 
 `dryRun: true` swaps every dispatched agent for a haiku stub returning canned JSON, validating
-the **script's topology** — round sequencing, the disjoint-file grouping/concurrency cap, the
+the **script's topology** — round sequencing, the sliding-window scheduler/concurrency cap, the
 serial merge gate, the blocker-triage routing, schemas — for pennies, without spending real
 planner/implementer/reviewer/triage budget and without touching git or `bd` (see the `pick()`
 helper and the `model()` dryRun branch in the script above; same mechanism as `super-roast`'s
@@ -2253,7 +2356,21 @@ narratives that used to accompany each row are in git history; nothing here depe
 | final fix round (brief idempotence, merge-base) | `wf_ea0a2284-96b` 31/0 | `wf_3c881af8-70b` 24/0 | `wf_ac3e6fae-171` 23/0 |
 | scope fix | `wf_cb63ecb9-492` 31/0 | `wf_caf8953e-374` 24/0 | `wf_f18d307b-83e` 23/0 |
 | limitations fix (Sets, guard, minors, merge range) | `wf_97164f71-a3c` 32/0 | `wf_527ad491-790` 24/0 | `wf_4203efd4-84d` 23/0 |
-| **live-run fixes (null-dispatch guard, stopReason, reviewer file plumbing, blocker exclusion, integrationWorktree) — CURRENT** | **replay 32/0** | **replay 24/0** | **replay 23/0** |
+| live-run fixes (null-dispatch guard, stopReason, reviewer file plumbing, blocker exclusion, integrationWorktree) | replay 32/0 | replay 24/0 | replay 23/0 |
+| **relax-sequencing (sliding-window scheduler + hot-file cap, single-flight completion-order merge queue, parallelism detector) — CURRENT** | **replay 32/0** | **replay 24/0** | **replay 23/0** |
+
+The relax-sequencing row is a **structural** edit (dispatch scheduling and merge sequencing both
+changed shape), re-verified by replay: all three recorded scenarios land on identical dispatch
+counts and terminal shapes — the relaxation adds no dispatches and changes no outcome on these
+fixtures, only *when* work is allowed to run. The replay harness additionally grew dedicated
+parallelism scenarios that no canned-count fixture can express: the live-incident shape (12
+siblings' merges observed dispatched **and completed** while the 13th task's implementer is
+still running — the old round barrier deadlocks this fixture into the harness timeout), a
+sliding-window straggler (a later id dispatches through a slot freed mid-round, impossible under
+the old chunk waves), a hot-file-cap firing case (same-file task defers, disjoint task
+overtakes, detector names the file), the unplanned-id triage riding the merge queue instead of
+stalling dispatch, and a mechanical `maxOpen.merge === 1` check that the single-flight invariant
+held in every one of them.
 
 **The current row's figures come from the offline replay harness, not Workflow runs.**
 `tests/super-code/replay-harness.mjs` extracts this document's canonical script, stubs the
@@ -2446,9 +2563,9 @@ Close/Ready calls report nothing left to do.
 
 Each stub prompt is `You are a stub. Call no tools. Return exactly this JSON as your structured
 output: <json>` (exact phrasing — see "dryRun policy" above). The set below is the one used for
-the canonical topology scenario: **four** ready tasks under one epic — `bd-101`, `bd-102`, and
-`bd-104` touch disjoint files (`src/a.js`, `src/b.js`, `src/c.js`) and dispatch **concurrently**;
-`bd-103` also touches `src/a.js`, so it **serializes** after that group. `bd-101`'s review returns
+the canonical topology scenario: **four** ready tasks under one epic — all four dispatch under
+the sliding window (cap 4; `bd-101` and `bd-103` share `src/a.js`, which is fine under the
+default `hotFileCap: 3` — two in-flight declarers of one file). `bd-101`'s review returns
 a finding and goes through one fix round + re-review (`ADDRESSED`) — fix-loop stub keys are now
 **round-suffixed** (`fix:<id>:<round>`, `re-review:<id>:<round>`), since `reviewAndFix` can now run
 up to 5 rounds and the same unqualified key would otherwise be ambiguous across rounds. `bd-103`'s
@@ -2479,15 +2596,15 @@ round 1, changing every downstream assertion this scenario makes about bucketing
 | `bd-ready` (array, 2 entries) | `{ids:["bd-101","bd-102","bd-103","bd-104"]}` then `{ids:[]}` | round 1 supplies the batch; round 2's empty set drains the loop (a canned value, not real `bd` continuity — see "What this dryRun proves and does not prove" below on why a RESOLVE'd `bd-104` not reappearing in round 2 is not itself an assertion). The **scoping** assertion (`--exclude-type=epic --label sp:<epicId>`) is a property of the dispatched prompt text itself, not of this canned return — verified by reading the prompt, same as `super-roast`'s reporter-arithmetic caveat above |
 | `plan` | `{planPath:"...", mapping:[{n:1,id:"bd-101",files:["src/a.js"]},{n:2,id:"bd-102",files:["src/b.js"]},{n:3,id:"bd-103",files:["src/a.js"]},{n:4,id:"bd-104",files:["src/c.js"]}]}` | ordinal↔bead-id↔files mapping that `groupByDisjointFiles` and every `ordinalFor` lookup consumes |
 | `brief:bd-101` / `brief:bd-102` / `brief:bd-103` / `brief:bd-104` | `{id:"bd-1XX",n:<n>,status:"BRIEFED",files:[...],branch:".worktrees/<integrationBranch>--task-bd-1XX",base:"<40-char-sha>"}` | call-site-qualified per id (a single unqualified `brief` key can't return four different ids/branches); `base` here is the pre-implementer commit taskBriefPrompt now captures — this is where `n`/`branch`/`base` originate for the rest of the pipeline |
-| `implement:bd-101` / `implement:bd-102` / `implement:bd-103` | `{id:"bd-1XX",n:<n>,status:"IMPLEMENTED",files:[...],branch:"..."}` | same per-id qualification. This stub's `n`/`branch` are cosmetic only — the pipeline's implement stage re-stamps `n` from `ordinalFor(br.id)` and `branch` from `taskWorktree(br.id)` directly (never trusting the implementer's own echo, nor even the brief agent's — see the pipeline call site); only `base` is carried from the brief result (`br.base`), since that one genuinely can't be recomputed |
-| `implement:bd-104` | `{id:"bd-104",n:4,status:"BLOCKED",files:["src/c.js"],branch:".worktrees/epic-bd-100-integration--task-bd-104",blockerBead:"bd-109"}` | **C4**: the implementer itself reports BLOCKED and has already self-filed the bead (`blockerBead`), per implementPrompt's report contract — `n`/`branch` are re-stamped by the pipeline as usual, but `status`/`blockerBead` are this stub's own and must survive the pipeline call site's guard unmodified |
+| `implement:bd-101` / `implement:bd-102` / `implement:bd-103` | `{id:"bd-1XX",n:<n>,status:"IMPLEMENTED",files:[...],branch:"..."}` | same per-id qualification. This stub's `n`/`branch` are cosmetic only — the pipeline's implement stage re-stamps `n` from `ordinalFor(br.id)` and `branch` from `taskWorktree(br.id)` directly (never trusting the implementer's own echo, nor even the brief agent's — see the runTask chain call site); only `base` is carried from the brief result (`br.base`), since that one genuinely can't be recomputed |
+| `implement:bd-104` | `{id:"bd-104",n:4,status:"BLOCKED",files:["src/c.js"],branch:".worktrees/epic-bd-100-integration--task-bd-104",blockerBead:"bd-109"}` | **C4**: the implementer itself reports BLOCKED and has already self-filed the bead (`blockerBead`), per implementPrompt's report contract — `n`/`branch` are re-stamped by the pipeline as usual, but `status`/`blockerBead` are this stub's own and must survive the runTask chain call site's guard unmodified |
 | `review:bd-101` | `{id:"bd-101",n:1,status:"NEEDS_FIX",files:["src/a.js"],finding:"missing null check on parsed input in src/a.js:42"}` | the one task whose review returns a finding — `finding` is what `fixPrompt` builds the fix dispatch from, not the rest of the result. No `branch`/`base` here by design: `reviewAndFix`'s `carried()` re-stamps both from `im` regardless of what this report contains, which is the C2 fix |
 | `review:bd-102` / `review:bd-103` | `{id:"bd-1XX",n:<n>,status:"CLEAN",files:[...]}` | clean reviews — no fix loop for these two. **No `review:bd-104` key exists** — that dispatch must never fire (see C4 above); its absence from this table is itself part of the test: a regression that dropped the pipeline's status guard would throw `dryRun: no stub for key review:bd-104` |
 | `fix:bd-101:1` | `{id:"bd-101",n:1,status:"FIXED",files:["src/a.js"]}` | round 1 of the fix loop, dispatched only for the flagged task; no `branch` here either, by the same design as `review:bd-101` above. Round-suffixed (`:1`) because `reviewAndFix`'s loop can now run up to 5 rounds and each round is its own stub key |
 | `re-review:bd-101:1` | `{id:"bd-101",n:1,status:"CLEAN"}` | finding `ADDRESSED` on round 1 — the loop exits immediately since `rv.status === 'CLEAN'` (C-3's fail-closed condition; this is the ONE way out of the loop besides the round cap), so no `fix:bd-101:2`/`re-review:bd-101:2` stub is needed or dispatched; `reviewAndFix` re-stamps `branch`/`base`/`n`/`files` from `im` onto this before it becomes the task's final result, which is what reaches `mergePrompt`'s `r.branch` |
 | `merge:bd-101` / `merge:bd-102` | `{id:"bd-1XX",merged:true,head:"<40-char-sha>",mergeBase:"<40-char-sha>"}` | successful serial merges — `head` (fix-round-1) is the rebased branch's tip commit, `mergeBase` (Fix 3, final fix round) is the post-rebase merge-base; both together render the ledger's commit-range completion line below (`mergeBase..head`, never `base..head`) |
 | `ledger-append:bd-101` / `ledger-append:bd-102` | `{appended:true}` | I1: the merge-gate `ledger-append` dispatch — `Task <n> (bd-1XX): complete (commits <mergeBase7>..<head7>, review clean)` (fix-round-1: was `complete (merged, review clean)`, dropping the commit range upstream SKILL.md specifies; Fix 3, final fix round: the range's first half is `mergeBase`, not `base` — see the `mergeBase`/`MERGE` schema comment) (schema-less, like `notify`/`clarify` — the coordinator never reads this return) |
-| `merge:bd-103` | `{id:"bd-103",merged:false,blockerBead:"bd-108"}` | merge fails its bounded auto-resolve attempt → blocker path. **No `merge:bd-104` key exists** — `bd-104` never reaches `mergePrompt` at all, since its BLOCKED status routes it to `handleBlocker` directly at the top of the Integrate loop (see the `if (r.status === 'BLOCKED')` check); its absence is part of the test, same reasoning as `review:bd-104`'s absence above |
+| `merge:bd-103` | `{id:"bd-103",merged:false,blockerBead:"bd-108"}` | merge fails its bounded auto-resolve attempt → blocker path. **No `merge:bd-104` key exists** — `bd-104` never reaches `mergePrompt` at all, since its BLOCKED status routes it to `handleBlocker` directly at the top of `integrateOne` (see the `if (r.status === 'BLOCKED')` check); its absence is part of the test, same reasoning as `review:bd-104`'s absence above |
 | `triage:bd-103` | `{decision:"ESCALATE",detail:"rebase conflict on src/a.js survived one auto-resolve attempt"}` | the judgment dispatch in `handleBlocker`, ESCALATE branch — notify + quarantine |
 | `triage:bd-104` | `{decision:"RESOLVE",detail:"implementer needs the missing config constant named explicitly; re-plan and re-attempt"}` | the judgment dispatch in `handleBlocker`, **RESOLVE branch** — the one branch the prior three-task scenario never exercised. This is `bd-104`'s FIRST time through `handleBlocker`, so `pendingRetry` doesn't have it yet and C-2's one-retry bound doesn't fire (that requires a SECOND blocker-path visit for the same id, which this scenario doesn't stage — see the round-2 `bd-ready` note above) |
 | `notify:bd-103` | `{sent:true}` | fixed-notification mechanical dispatch on the ESCALATE branch |
@@ -2521,20 +2638,22 @@ untested by any scenario in this doc — inspection-only, same as C-1/C-3 above.
   fallback (former "Resolved in this branch" (the `sp:`-labelling and canonical-args items)) is never exercised by this or any dryRun in this
   document — that fallback is verified only by reading `readyPrompt`'s and `treeMembershipTest`'s
   definitions directly, same tier as the scoping assertion itself.
-- The three disjoint-file tasks (`bd-101`, `bd-102`, `bd-104`) dispatch as one `pipeline()` group —
-  **concurrently**; `bd-103` (shares `src/a.js` with `bd-101`) is bucketed alone by
-  `groupByDisjointFiles` and its group runs strictly after the first group's `pipeline()` call
-  resolves — **serialized**, never a sibling in the same call.
-- `bd-101`/`bd-102`/`bd-103` run the full pipeline in order — brief → implementer →
+- All four tasks dispatch under the sliding-window scheduler (cap 4); `bd-101`/`bd-103`'s shared
+  `src/a.js` stays under the default `hotFileCap` of 3, so nothing defers — the hot-file-cap
+  *firing* is exercised by the replay harness's dedicated scenario (`tests/super-code/`), not by
+  this one.
+- `bd-101`/`bd-102`/`bd-103` run the full per-task chain in order — brief → implementer →
   review-package (task-reviewer) — and `bd-101` additionally runs one fix round + a scoped
   re-review that reports the finding `ADDRESSED` (see `reviewAndFix` in the script above).
 - **`bd-104` never reaches `review:bd-104`, `fix:bd-104:*`, `re-review:bd-104:*`, or
-  `merge:bd-104`** (C4): its implementer reports BLOCKED, the pipeline's status guard passes that
-  result straight through unmodified, and it lands directly in the Integrate loop's
+  `merge:bd-104`** (C4): its implementer reports BLOCKED, the chain's status guard passes that
+  result straight through unmodified, and it lands directly in `integrateOne`'s
   `if (r.status === 'BLOCKED')` branch. If this dryRun ever dispatches any of those four keys for
   `bd-104`, the guard has regressed — that is the failure mode this scenario exists to catch.
-- Merge-back is **serial**: three `merge:<id>` calls (`bd-101`, `bd-102`, `bd-103` — never
-  `bd-104`), one at a time, in dependency/ready order, never two concurrently.
+- Merge-back is **single-flight**: three `merge:<id>` calls (`bd-101`, `bd-102`, `bd-103` — never
+  `bd-104`), exactly one in flight at a time off the completion-order queue, never two
+  concurrently (`maxOpen.merge === 1` is asserted mechanically by the replay harness's
+  parallelism scenarios).
 - The blocker path fires on `bd-103`'s failed merge: a blocker bead reference (`blockerBead`) is
   returned, `handleBlocker` dispatches `triage:bd-103` → `ESCALATE` → `notify:bd-103`, `bd-103` is
   pushed onto `escalated` (quarantined, not closed) — and the run **continues**: `bd-101`/`bd-102`
@@ -2549,7 +2668,7 @@ untested by any scenario in this doc — inspection-only, same as C-1/C-3 above.
   rounds, or a PARK ruling — see "Cap-tripping dryRun scenario" below for that path) review result:
   `bd-101`/`bd-102`/`bd-103` are the only three `merge:<id>` dispatches, and each is reached only
   after `reviewAndFix` returned a `CLEAN` result (this is Step 4's verification target — confirmed
-  by inspection of the pipeline call site and `reviewAndFix`'s return paths, not by this scenario
+  by inspection of the runTask chain call site and `reviewAndFix`'s return paths, not by this scenario
   alone, since `bd-104` is the only stubbed BLOCKED case here and this scenario's fix loop never
   reaches the round-5 cap or the adjudicator).
 - Expected dispatch count (I1: `read-ledger` 1 + `close-epics` 2 + `bd-ready` 2 + `plan` 1 +
@@ -2776,7 +2895,7 @@ reading `reviewAndFix`'s definition directly (the loop condition is `rv.status !
 | `re-review:bd-201:1` … `re-review:bd-201:5` | `{id:"bd-201",n:1,status:"NEEDS_FIX",finding:"race condition writing the shared cache in src/x.js:17"}` (all 5) | the verdict that keeps the loop going every round — never `CLEAN`, so the loop runs the full 5 rounds and never exits early |
 | `adjudicate:bd-201` | `{id:"bd-201",decision:"BLOCKED",ruling:"real race condition with no test coverage for the interleaving; must not merge"}` | the cap adjudicator (I-9) — dispatched exactly once, after round 5, never once per round |
 | `breaker-blocker:bd-201` | `{id:"bd-201",status:"BLOCKED",blockerBead:"bd-210"}` | the blocker bead filed on a BLOCKED ruling — `breakerBlockerPrompt` now takes the adjudicator's `ruling` as a third argument (verified by reading the definition, not this canned return) |
-| `triage:bd-201` | `{decision:"ESCALATE",detail:"race condition confirmed load-bearing by the breaker adjudicator; needs a human decision on the caching strategy"}` | `handleBlocker`'s normal triage dispatch, reached via the Integrate loop's `if (r.status === 'BLOCKED')` branch — same path any other BLOCKED result takes, confirming the breaker's BLOCKED exit isn't a special case downstream |
+| `triage:bd-201` | `{decision:"ESCALATE",detail:"race condition confirmed load-bearing by the breaker adjudicator; needs a human decision on the caching strategy"}` | `handleBlocker`'s normal triage dispatch, reached via `integrateOne`'s `if (r.status === 'BLOCKED')` branch — same path any other BLOCKED result takes, confirming the breaker's BLOCKED exit isn't a special case downstream |
 | `notify:bd-201` | `{sent:true}` | fixed-notification mechanical dispatch on the ESCALATE branch |
 | `ledger-append:bd-201` | `{appended:true}` | I1: `handleBlocker`'s ESCALATE branch appends `Task 1 (bd-201): BLOCKED — <detail>` — the breaker-cap BLOCKED case reaches the ledger through the SAME `handleBlocker` write every other blocker trigger uses, not a special-cased write inside `reviewAndFix` |
 
@@ -2796,11 +2915,11 @@ scenario, something regressed: `merge:bd-201` would mean a BLOCKED task reached 
   return (not exercised by this scenario's stubs, but confirmed by reading the code) would instead
   return `{...rv, status:'CLEAN', ...}` from `reviewAndFix` and skip `breaker-blocker:bd-201`
   entirely, reaching `mergePrompt` instead.
-- The task's final status reaching the Integrate loop is `BLOCKED` with `blockerBead: "bd-210"` —
+- The task's final status reaching `integrateOne` is `BLOCKED` with `blockerBead: "bd-210"` —
   routed to `handleBlocker`, never to `mergePrompt`.
 - `completed` is `[]`, `escalated` is `["bd-201"]`, `pendingRetry` is `[]` (triage ESCALATEd, not
   RESOLVEd, so `handleBlocker`'s `pendingRetry.add` branch never fires), `parked` is `[]` (the task
-  never merges, so the Integrate loop's `if (r.parkRuling)` push never runs — not that `adj.decision`
+  never merges, so `integrateOne`'s `if (r.parkRuling)` push never runs — not that `adj.decision`
   was ever `PARK` here in the first place), `stalled` is `false` (the round that quarantines
   `bd-201` grows `escalated`, which the no-progress guard reads as progress).
 - Expected dispatch count (I1: `read-ledger` 1 + `close-epics` 2 + `bd-ready` 2 + `plan` 1 +
