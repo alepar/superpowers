@@ -88,7 +88,9 @@ agent following this skill's own instruction to run SDD's per-task pipeline read
 prohibition on the one thing this skill exists to do, and silently serializes the epic.
 
 **Dispatch is not gated on file overlap.** Every ready task dispatches as soon as a slot frees,
-bounded by `config.concurrency` (default 4) as a **sliding window** — never as batches with
+bounded by `config.concurrency` (default 16, matching the Workflow runtime's fixed per-workflow
+agent cap of `min(16, cores-2)` — the runtime queues anything over-admitted, so the effective
+default is exactly that formula on every machine) as a **sliding window** — never as batches with
 barriers between them — and each task's integration joins a **single-flight merge queue the
 instant its own chain ends**, draining in completion order while siblings still run. Exactly one
 merge touches the integration branch at any moment, guaranteed by chaining, not batching.

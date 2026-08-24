@@ -26,7 +26,7 @@ args = {
   integrationWorktree,   // optional — see below
   dryRun,
   config: {
-    concurrency: 4,
+    concurrency: 16,
     hotFileCap: 3,        // optional — see below
     models: { planner: 'opus', implementer: 'sonnet', reviewer: 'sonnet', mechanical: 'sonnet', triage: 'opus', finalReview: 'opus', fixEscalation: 'opus' },
   },
@@ -194,7 +194,12 @@ Done by the main session, not the Workflow:
    `super-auto` created it as its run worktree), skip creation entirely and pass its real path as
    `integrationWorktree` — never re-derive it. The user's original worktree stays untouched.
    Record: epic id, integration branch name, and (when not derivable) the worktree path.
-3. Choose a concurrency cap (default 4; the Workflow tool also caps at `min(16, cores-2)`).
+3. Choose a concurrency cap. Default 16 — deliberately matching the Workflow runtime's own
+   fixed per-workflow agent cap of `min(16, cores-2)`: the script cannot read the core count (no
+   Node APIs in Workflow scripts), but it doesn't need to — the runtime queues any agent calls
+   the script over-admits, so a script cap of 16 yields an effective concurrency of exactly
+   `min(16, cores-2)` on every machine. Pass a smaller cap only to deliberately throttle below
+   the runtime (budget, or a repo where many concurrent worktrees hurt).
 4. Launch the Workflow (background) with the args from "Coordinator contract" above. Progress is
    visible via `/workflows`; the main session is free.
 
@@ -227,7 +232,9 @@ Round-based with refill (each `bd ready` batch is, by definition, mutually indep
    the general case (any future loop-control edge this doc hasn't anticipated). Stop and report
    rather than spin (see the script skeleton's no-progress guard, right after the Integrate phase).
 3. **Dispatch the batch under a sliding window** — every planned id dispatches as soon as a slot
-   frees, bounded by the concurrency cap (default 4), with one file-based scheduling constraint:
+   frees, bounded by the concurrency cap (default 16 — effectively `min(16, cores-2)`, the
+   Workflow runtime's own fixed agent cap, which queues anything over-admitted), with one
+   file-based scheduling constraint:
    at most `config.hotFileCap` (default 3) in-flight tasks may declare the same file
    (`filesTouched`, from the planner's mapping — a churn bound for shared barrel/index/registry
    files, not a dispatch gate). No batch or wave barriers anywhere: a straggler never delays the
@@ -957,7 +964,12 @@ const ledgerPath = `${workspace}/progress.md`
 // sliding window — a slot frees, the next id dispatches — never as `chunk()`ed sub-batches with
 // barriers between them (that shape was the round-barrier defect one level down; see the
 // Implement phase's relaxation comment).
-const cap = Math.max(1, Number(config.concurrency) || 4)
+// Default 16 = the Workflow runtime's own per-workflow agent-call cap ceiling (min(16, cores-2),
+// not configurable). The script can't read the core count, and doesn't need to: the runtime
+// queues over-admitted agent calls, so a script cap of 16 makes the EFFECTIVE concurrency
+// min(16, cores-2) on every machine. A caller passes a smaller value only to throttle below the
+// runtime deliberately.
+const cap = Math.max(1, Number(config.concurrency) || 16)
 // Hot-file cap (optional, additive contract key — like `fixEscalation`/`integrationWorktree`):
 // how many in-flight tasks may declare the same file at once. The dispatch-relaxation comment in
 // the Implement phase carries the measured evidence for why this replaced disjoint-file
