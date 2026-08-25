@@ -195,7 +195,7 @@ roastCodeRound: 1
 
 approvals:
 - top-split · bd-413 PROMOTE, bd-414 PROMOTE, bd-415 LEAF, bd-416 LEAF
-- coverage-round-1 · GAP "no backpressure path" accepted as leaf bd-417; ORPHAN "metrics exporter" kept, goal element added
+- coverage-round-1 · GAP "no backpressure path" accepted as leaf bd-417; ORPHAN "metrics exporter" kept, goal element added; UNOWNED-SEAM "tenant-id propagation" accepted, contract bd-418 / integration bd-419
 
 parked:
 - 2026-07-31-per-tenant-rate-limiter-roast-design-2.md · escalation · "cache invalidation premise unverified — no valid judge votes"

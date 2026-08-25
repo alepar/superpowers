@@ -54,7 +54,9 @@ Task tool (general-purpose), model: opus:
        element must map to at least one task or spec section. An unmapped element is a
        `GAP`.
     2. **Backward trace → ORPHAN.** Every task must serve some goal element. A task that
-       serves none is an `ORPHAN`.
+       serves none is an `ORPHAN`. Tasks titled `Seam contract:`, `Seam integration:`, or
+       `Integration sweep:` are seam machinery created by arbitration, not decomposition — they
+       serve the boundary or the tree they name and are never `ORPHAN`s.
     3. **Walking skeleton.** Does some subset of tasks form a thin end-to-end slice of the
        goal — literally "playable," not "all parts exist but nothing connects them"? Use
        a premortem framing to test it: the tree was fully executed and the goal still

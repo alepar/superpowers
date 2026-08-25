@@ -65,15 +65,20 @@ Task tool (general-purpose), model: opus:
        - Determine this task's **`filesTouched: string[]`** — the concrete list of every file it
          will **create or modify**. Files it only *reads* do not belong: reads never collide, and
          listing them is the most common way this list becomes useless. This is required, not a
-         hint: the coordinator uses it to decide which tasks may run concurrently (same-file tasks
-         must never run as siblings), so an incomplete list degrades parallel safety.
+         hint: dispatch is not gated on file overlap — worktree isolation makes dispatch-time
+         collision impossible — but `filesTouched` still bounds worst-case rebase churn on a
+         shared file via a hot-file cap (at most `config.hotFileCap` in-flight tasks may declare
+         the same file), so an incomplete list degrades that scheduling constraint.
          On *genuine* uncertainty about a write, over-declare rather than under-declare — but do
          not adopt over-declaring as a posture. **Both directions have a real cost**:
-         under-declaring risks a write collision; over-declaring serializes the round, and a round
-         serialized to one task at a time defeats the parallel dispatch this mapping exists to
-         enable. If one file — a barrel, an index, a registry, a migrations list — would appear in
-         nearly every task's list, say so in the plan and prefer assigning it to a single task
-         (or a single follow-up task) rather than letting it serialize the whole round.
+         under-declaring risks a write collision; over-declaring pushes more tasks against the
+         hot-file cap on a shared file, deferring dispatch and defeating the parallelism this
+         mapping exists to enable. If one file — a barrel, an index, a registry, a migrations
+         list — would appear in nearly every task's list, say so in the plan and prefer assigning
+         it to a single task (or a single follow-up task) rather than capping the whole round
+         against it. One exception to over-declaration being a cost to avoid: a `Seam contract:`
+         bead deliberately declares files on both sides of the boundary it contracts — that span
+         is its point, not an over-declaration, so preserve it as reported rather than trimming it.
        - Append one row to the mapping table: ordinal, bead id, task name, `filesTouched`.
        - Append a `## Task <N>` section, headed by the **ordinal** (never the bead id), containing:
          - The `filesTouched` list, stated first, in the section body itself (not only in the
