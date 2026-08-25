@@ -51,9 +51,8 @@ these verbatim. The return also carries **`stopReason`** — `root-closed` (the 
 completion), `ready-drained` (empty ready set, root still open: quarantined blockers remain),
 `stalled` (no-progress guard), or `ready-unavailable` / `plan-unavailable` (infrastructure outage:
 the `bd ready` or planner dispatch kept dying on terminal API errors). The last two are **never**
-completion — a caller that treats any stop as "done" without checking `stopReason` repeats the
-live defect this field exists to prevent (a null ready query used to exit indistinguishably from a
-drained epic; `./coordinator-workflow.md`'s "Null dispatch policy").
+completion — never treat a stop as "done" without checking `stopReason`
+(`./coordinator-workflow.md`'s "Null dispatch policy").
 
 ## Worktree topology
 
@@ -102,25 +101,14 @@ A `Seam contract:` bead (super-design's §Coverage) legitimately declares files 
 of its boundary — that is its job, not over-declaration; it merges before its dependents by
 construction, so its span never contends with them.
 
-**This replaced disjoint-file bucketing, on measurement, not taste** (197-bead epic, 2026-08):
-bucketing collapsed 17 ready beads into 4 buckets — effective parallelism 4.25 against a cap of
-14, and raising the cap 4→14 bought 1.5×, not 3.5× — while all 12 BLOCKED outcomes in the epic
-were plan/spec ordering defects and **zero** were rebase conflicts: the protection cost ~3.5× and
-prevented nothing that occurred. The same epic exposed a round barrier in the coordinator (merges
-started only after every task in the round finished; one straggler held 13 completed beads
-unmerged for 3h15m) — the completion-order merge queue is that fix. Full mechanics, the measured
-numbers, and the honest counter-evidence (one semantic clash bucketing would have caught, now
-caught by the merge gate's post-rebase test run plus reviews): `./coordinator-workflow.md`'s
-Implement-phase relaxation comment.
-
-**Serialization is a cost, and now it has a detector.** Every round the coordinator logs
+**Serialization is a cost, and it has a detector.** Every round the coordinator logs
 effective parallelism against the cap (`parallelism: N ready · cap C · peak in-flight P`) with
 hot-file deferrals named per file, and points at the cause when it degrades: over-declared
 `filesTouched` (`./planner-prompt.md`), dependency edges encoding narrative order rather than
 genuine blocking (`super-design`'s §Decomposition), or one shared file — a barrel, an index, a
-registry — that every task touches and that should be split or assigned to a single task. The
-old rule told the operator to "notice" collapse; a warning that depends on someone voluntarily
-looking is not a detector, and the measured collapse ran unnoticed for five days.
+registry — that every task touches and that should be split or assigned to a single task.
+Rationale, measured evidence, and counter-evidence for this dispatch model:
+`./coordinator-workflow.md`'s Implement-phase relaxation comment.
 
 ## Red Flags
 
@@ -137,7 +125,7 @@ looking is not a detector, and the measured collapse ran unnoticed for five days
 - Let a fix loop run past SDD's five-round breaker — at the cap, dispatch the adjudicator and either park with a ruling or file a blocker bead, never retry past round 5.
 - Treat any re-review verdict other than the literal token `CLEAN` as safe to merge — fail closed: an unrecognized or differently-worded verdict keeps looping (bounded by the round cap), it never falls through to `mergePrompt`.
 - Run two merges into the integration branch concurrently, or let anything bypass the single-flight merge queue — exactly one merge in flight, ever, is the invariant that makes concurrent implementers safe.
-- Hold completed tasks' merges behind a batch or round barrier — each task's integration is enqueued the instant its own chain ends; a straggler must never block its finished siblings from merging (measured live: 13 beads held for 3h15m).
+- Hold completed tasks' merges behind a batch or round barrier — each task's integration is enqueued the instant its own chain ends; a straggler must never block its finished siblings from merging.
 - Exceed `config.hotFileCap` concurrently-dispatched tasks declaring the same file — overlap is allowed, unbounded hot-file pile-ups are not.
 - Patch `scripts/task-brief` to accept bead ids directly, or collapse the ordinal ↔ bead-id mapping — SDD's `task-brief` only matches integer `## Task <N>` headings, not bead ids.
 - Treat a null `agent()` result as a result — the Workflow runtime returns null when a subagent dies on a terminal API error after retries, and every dispatch class has its own explicit null semantic (`./coordinator-workflow.md`'s "Null dispatch policy"); most defaults fabricate success (a null merge is not a failed merge, a null ready query is not an empty ready set, a null close-epics never closed the root).
@@ -146,18 +134,8 @@ looking is not a detector, and the measured collapse ran unnoticed for five days
 
 ## Reference
 
-- `./coordinator-workflow.md` — full Workflow-coordinated autonomous procedure: coordinator contract, the coordinator loop, plan materialization, per-task pipeline, the breaker's autonomous variant, serial merge-back, the blocker-bead path, finish. Its "Known limitations" section lists real, shipped gaps — read it before assuming any of them already work. Validation is dryRun/replay-based (`tests/super-code/test-coordinator-replay.sh` — replays the recorded scenarios plus null-injection and prompt-text checks no dryRun can express); the one live run to date (2026-08, a 185-bead epic) surfaced five defect classes that are now fixed and regression-covered there, and anything beyond what that harness asserts is still live-run-territory. Its "Finish" section documents a caller-owned-finish mode: a caller may keep the merge-and-cleanup hand-off for itself, in which case the coordinator stops after its final review and leaves the integration worktree and ledger intact.
+- `./coordinator-workflow.md` — full Workflow-coordinated autonomous procedure: coordinator contract, the coordinator loop, plan materialization, per-task pipeline, the breaker's autonomous variant, serial merge-back, the blocker-bead path, finish. Its "Known limitations" section lists real, shipped gaps — read it before assuming any of them already work. Validation is dryRun/replay-based (`tests/super-code/test-coordinator-replay.sh` — replays the recorded scenarios plus null-injection and prompt-text checks no dryRun can express); anything beyond what that harness asserts is live-run territory. Its "Finish" section documents a caller-owned-finish mode: a caller may keep the merge-and-cleanup hand-off for itself, in which case the coordinator stops after its final review and leaves the integration worktree and ledger intact.
 - `./planner-prompt.md` — dispatch the per-epic planner (opus) that materializes `plan.md` from the beads tree.
 - `./triage-prompt.md` — dispatch the blocker triage agent (opus): RESOLVE vs ESCALATE.
+- `./trigger-micro-test.md` — the frontmatter description's probe set; re-run it before changing the description. Maintenance-only, deliberately outside this file.
 
-## Trigger micro-test
-
-Three fresh haiku subagents, each given *only* this skill's frontmatter description plus one scenario, asked "would you invoke this skill? yes/no." Re-run all three on any miss.
-
-| Probe | Scenario | Expected | Result |
-|---|---|---|---|
-| (a) | "run the epic in beads — build out all the ready tasks" | yes | yes |
-| (b) | "execute this implementation plan task by task, review between tasks" | no (that is SDD) | no |
-| (c) | "spin up a few agents to investigate why these three tests are flaky" | no (that is dispatching-parallel-agents) | no |
-
-All three matched on the first pass; the description was not tightened. A future editor changing the description should re-run this probe set before merging.

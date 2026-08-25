@@ -338,16 +338,7 @@ a human following that link concludes the run is missing while the run is sittin
   carries the whole run. Nothing checks it happened, and a run that skips it fails far downstream —
   at phase 7, with the report on an unmerged branch.
 
-- **Live-run history (supersedes the original "never executed, inspection-only" warning):** first
-  executed on real work in 2026-08 — a full idea→code run driving a ~200-bead epic end to end.
-  That run did what inspection could not: it surfaced whole defect classes the dry walks had
-  missed (null-dispatch handling, a false-completion stop, reviewer file plumbing, a blocker-bead
-  filing loop, the branch→worktree handoff, roast late-round noise, dispatch serialization), all
-  since fixed in the phase skills with regression coverage. The general lesson stands: a dry walk
-  narrates rather than executes, so anything here not yet exercised by a live run is still
-  evidence about documents, not behavior.
-
-Shipped as documented gaps this round, not fixed:
+Documented gaps, deliberately not fixed:
 
 - **Gate order is convention, not enforcement.** Nothing catches an agent that writes `phase:
   finish` before actually confirming phase 7's three conditions; the rule is evaluate, then write.
