@@ -59,19 +59,34 @@ Task tool (general-purpose), model: opus:
        goal — literally "playable," not "all parts exist but nothing connects them"? Use
        a premortem framing to test it: the tree was fully executed and the goal still
        wasn't met — why?
-    4. **Flag sweep.** Every id in "Flagged tasks" is an automatic finding — known-
+    4. **Seam trace → UNOWNED-SEAM.** For every pair of tasks that exchange a named piece
+       of data or an interface — one defines a config value the other reads, one exposes a
+       function the other calls, one writes a format the other parses — check that exactly
+       one task's description **owns** the boundary (its "owns:" line names it; the
+       counterpart "consumes:" it). If no task owns the wiring between them, that is an
+       `UNOWNED-SEAM`: name both task ids and the exchanged thing concretely, and quote
+       the description text that implies the exchange. The canonical miss this check
+       exists for: a config parameter implemented in a schema task and honored in a
+       consumer task, with the pass-through wiring owned by neither — both tasks satisfy
+       their local descriptions and the parameter ships inert. Disjoint files are not
+       evidence of independence; the exchange is dataflow, not file overlap. Do not
+       report a seam whose boundary a task plainly owns, and do not invent exchanges the
+       descriptions don't imply.
+    5. **Flag sweep.** Every id in "Flagged tasks" is an automatic finding — known-
        underdesigned work must not sail through silently — *unless* it already has an
        entry in the rejected-findings ledger, which takes precedence over the sweep.
 
     ## Required structured output (do NOT write a prose essay)
 
     One entry per finding:
-    - **type:** `GAP` | `ORPHAN` | flag-sweep
+    - **type:** `GAP` | `ORPHAN` | `UNOWNED-SEAM` | flag-sweep
     - **description:** the problem, one sentence
-    - **evidence:** the unmapped goal element, the orphaned task id, or the flag and its
-      task id
+    - **evidence:** the unmapped goal element, the orphaned task id, the seam's two
+      participant task ids + the exchanged data/interface + the quoted description text
+      implying the exchange, or the flag and its task id
     - **proposed fix:** a new leaf task under a named epic, or a new subepic needing
-      design
+      design; for `UNOWNED-SEAM`, name the boundary to be contracted (arbitration turns an
+      accepted seam into a contract bead + integration bead — see SKILL.md §Coverage)
 
     Report only defensible findings. Quality over quantity — but do not soften.
 ```
