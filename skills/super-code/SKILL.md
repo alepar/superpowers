@@ -98,6 +98,9 @@ merge touches the integration branch at any moment, guaranteed by chaining, not 
 most `config.hotFileCap` (default 3) in-flight tasks may declare the same file, which bounds
 worst-case rebase churn on a shared barrel/index/registry without collapsing the frontier. A task
 with no declared files dispatches normally — isolation makes dispatch-time collision impossible.
+A `Seam contract:` bead (super-design's §Coverage) legitimately declares files on **both** sides
+of its boundary — that is its job, not over-declaration; it merges before its dependents by
+construction, so its span never contends with them.
 
 **This replaced disjoint-file bucketing, on measurement, not taste** (197-bead epic, 2026-08):
 bucketing collapsed 17 ready beads into 4 buckets — effective parallelism 4.25 against a cap of
