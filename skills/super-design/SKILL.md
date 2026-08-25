@@ -90,6 +90,17 @@ by rooting lower on your own.
 
 Same fields as brainstorming's old beads step: title, short description, files-touched hint, blocking deps per child.
 
+**Every child's description names the boundaries it owns and the boundaries it consumes** —
+e.g. "owns: `TrainingConfig` schema field; consumes: regime entry-point signature". A boundary
+is any data or interface this child exchanges with a sibling: a config value one child defines
+and another reads, a function one exposes and another calls, a file format one writes and
+another parses. This is not a fifth field — it lives inside the short description — and it is
+load-bearing: the recurring seam-bug class (a config parameter implemented in the schema child
+and honored in the regime child, with the wiring between them owned by neither, shipping inert)
+is an *ownership ambiguity* created here, at decomposition. The coverage loop's `UNOWNED-SEAM`
+check (§Coverage) reads these declarations; a child description with no owns/consumes line for
+a boundary it plainly touches is what that check exists to catch.
+
 **The tree stops at merge-ready.** Decompose only work that is finished when the code is written,
 reviewed, and merged. Operational follow-on — activating something in production, running a live
 campaign, monitoring a rollout, operating a system through a target — is **not** part of this tree,
