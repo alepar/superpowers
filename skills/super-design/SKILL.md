@@ -183,9 +183,25 @@ Runs once the tree has settled (§The Process, step 7).
 
 **Rounds are incremental:** round N+1 re-runs only the per-subepic passes whose subtrees changed since round N, plus the root pass (always). The loop ends when a round yields zero accepted findings.
 
-**Arbitration:** present deduped findings to the user — minus any this round already has a recorded disposition for (§Run-State File), which are replayed, not re-asked. Accepted `GAP`: small → leaf task added directly; big → task created → promoted → nested brainstorm → its own super-design subtree (tripwire stays armed). Accepted `ORPHAN`: the user picks delete (scope creep) or add the missing goal element it serves.
+**Arbitration:** present deduped findings to the user — minus any this round already has a recorded disposition for (§Run-State File), which are replayed, not re-asked. Accepted `GAP`: small → leaf task added directly; big → task created → promoted → nested brainstorm → its own super-design subtree (tripwire stays armed). Accepted `ORPHAN`: the user picks delete (scope creep) or add the missing goal element it serves. Accepted `UNOWNED-SEAM`: create **two leaf tasks** with the standard flag triple, and wire the tree:
+
+- **`Seam contract: <boundary>`** — delivers **compilable boundary code**, not prose: the interface/types/signatures, the schema fields, and the wiring itself plumbed end-to-end as stubs or defaults (the value must flow even if inert-by-default). Acceptance: compiles, suite green, wiring present. Add a dependency edge from **every participant onto the contract bead** (`bd dep add <participant> <contract>`) — a genuine blocking edge by §Decomposition's own rule (the interface must exist first), not narrative order. Its files-touched hint deliberately spans both sides of the seam; execution merges it before its dependents by construction, so the overlap is expected.
+- **`Seam integration: <boundary>`** — depends on that seam's participants only (`bd dep add <integration> <participant>` for each). Delivers: verify the wiring end-to-end, write integration test(s) crossing the seam, see them pass. Small fixes inline; anything larger goes through execution's normal blocker path.
+- Append one line to **each participant's** bead description: `boundary contract: <contract-bead-id>` (`bd update <participant> --description` with the line appended) — the pointer flows into execution briefs through the planner with zero execution-side changes.
 
 **Recall floor & fallback net:** if a pass stays degraded or a round otherwise can't be trusted, downgrade coverage to **advisory** and make the gate a **mandatory human read-through of the goal against the full task tree** — disclose this in the round summary, never silently.
+
+**Root integration sweep (after the loop ends):** once the coverage loop yields zero accepted
+findings and the tree has ≥2 implementation leaves, create one final leaf with the standard
+flag triple — **`Integration sweep: <root goal, short>`** — depending on **every implementation
+leaf and every `Seam integration:` bead** (its "tests no per-seam bead covers" scope is only
+decidable once those exist). Scope-bounded deliverable: verify the goal's main flow(s) end to
+end, add integration tests no per-seam bead covers, and sweep for unwired config values,
+parameters, and interfaces; fix small gaps inline, file blockers for big ones. Unlike the
+execution Finish-phase review (report-only), this bead *implements* what it finds — it is the
+unknown-unknowns net for seams the reviewers missed, and it occupies the terminal join position
+that serializes anyway. Fix-loop beads created after the sweep ran do not get edges onto it;
+the roast covers that ground.
 
 ## Adversarial Review Loop (root only)
 
