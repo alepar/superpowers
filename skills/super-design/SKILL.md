@@ -194,11 +194,29 @@ Dispatch `./promotion-reviewer-prompt.md` fresh-context (it must not have author
 
 Sanity-check the verdicts; you may overrule them. A `SPLIT` verdict is handled like a
 decomposition `ISSUES`: apply it — shrink the flagged bead to its named unblocking artifact and
-move the remainder into a dependent or a non-gating sibling that depends on it — or overrule it by
+move the remainder into a dependent or a non-gating sibling that depends on it, then re-point the
+bead's dependents (§Splitting a Bead below — the checklist, not optional) — or overrule it by
 flagging the task `sp:demoted-by-session` with the reason — the flag marks any session override of
 the fresh reviewer, a SPLIT overrule included (the name predates `SPLIT`); this is what makes the
 override visible to coverage's flag sweep and prevents a resumed run from re-applying a split the
 session rejected. **Overruling a `PROMOTE` back to `LEAF` must be recorded on the task** — flag `sp:demoted-by-session` plus the reason — so coverage and the human can see where session judgment overrode the fresh reviewer. Fix any `ISSUES` in the decomposition verdict before applying any promotion.
+
+## Splitting a Bead
+
+Every split — a `SPLIT` verdict, a coverage-accepted restructuring, a session judgment — moves
+scope out of one bead into another, and the graph hides the damage: the tree stays acyclic and
+every bead still *looks* correctly blocked, so a dependent left pointing at the wrong fragment
+surfaces nowhere (measured live: three dependents stayed blocked on a split bead's residual
+two-paragraph scope; re-pointing one moved the critical path 15 → 11 rounds). A split is not done
+until its dependents are re-pointed:
+
+1. **Enumerate the original bead's dependents** — every bead whose blocking deps list its id,
+   read from the bulk dump (`bd list --json`), not per-bead `bd show`.
+2. **For each dependent, name which fragment it now depends on** — the artifact it consumes
+   (the edge rules above) decides; "unchanged" is an explicit answer you record, never the
+   default you fall into.
+3. **Apply the re-points** (`bd dep remove <dependent> <original>`, `bd dep add <dependent>
+   <fragment>`) for every dependent whose answer wasn't "unchanged".
 
 ## Applying Promotions
 
@@ -256,7 +274,7 @@ Runs once the tree has settled (§The Process, step 7).
 
 **Rounds are incremental:** round N+1 re-runs only the per-subepic passes whose subtrees changed since round N, plus the root pass (always). **A round's passes are mutually independent — dispatch every pass's reviewers concurrently** (all per-subepic passes and the root pass together, 3 reviewers each): each pass's inputs are assembled before dispatch and no pass reads another's findings — union, dedupe, and arbitration all happen after the fan-out returns. Serializing them buys nothing and multiplies the round's wall-clock by the pass count. The loop ends when a round yields zero accepted findings.
 
-**Arbitration:** present deduped findings to the user — minus any this round already has a recorded disposition for (§Run-State File), which are replayed, not re-asked. Accepted `GAP`: small → leaf task added directly; big → task created → promoted → nested brainstorm → its own super-design subtree (tripwire stays armed). Accepted `ORPHAN`: the user picks delete (scope creep) or add the missing goal element it serves. Accepted `NARRATIVE-EDGE`: drop the edge (`bd dep remove <dependent> <blocker>`) or repoint it (`bd dep remove`, then `bd dep add <dependent> <actual-producer>`), per the finding's proposed fix — question-shaped edges never arrive as this kind (reviewers report those as `UNOWNED-SEAM`, whose contract path replaces the ordering). Accepted `UNOWNED-SEAM`: **before creating either bead, check whether a `Seam contract:` /
+**Arbitration:** present deduped findings to the user — minus any this round already has a recorded disposition for (§Run-State File), which are replayed, not re-asked. Accepted `GAP`: small → leaf task added directly; big → task created → promoted → nested brainstorm → its own super-design subtree (tripwire stays armed). Accepted `ORPHAN`: the user picks delete (scope creep) or add the missing goal element it serves. Accepted `NARRATIVE-EDGE`: drop the edge (`bd dep remove <dependent> <blocker>`) or repoint it (`bd dep remove`, then `bd dep add <dependent> <actual-producer>`), per the finding's proposed fix — question-shaped edges never arrive as this kind (reviewers report those as `UNOWNED-SEAM`, whose contract path replaces the ordering). Any accepted finding whose fix splits or shrinks an existing bead — moving scope out of it — follows §Splitting a Bead, dependents re-pointed included. Accepted `UNOWNED-SEAM`: **before creating either bead, check whether a `Seam contract:` /
 `Seam integration:` bead for this boundary already exists — including via a replayed disposition
 from the run-state file — and adopt it instead of duplicating it and its edges.** Otherwise create
 **two leaf tasks** with the standard flag triple, and wire the tree:
