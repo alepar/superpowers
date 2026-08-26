@@ -38,7 +38,7 @@ A caller supplies these — none are inferable from the repo:
 | integration worktree | the checkout of `integrationBranch` this skill works in — passed as `integrationWorktree` in the coordinator contract (optional, additive). A caller that created the worktree itself (`super-auto`'s run worktree, any native-tool worktree) **must pass its path**: when omitted, the coordinator derives `.worktrees/<integrationBranch>` with any `/` in the branch name collapsed to `-`, which only matches worktrees created by this skill's own pre-flight convention — a slashed branch like `super-auto/<slug>` makes the derived path wrong by construction for any externally-created worktree (`./coordinator-workflow.md`'s "Coordinator contract") |
 | mode | autonomous or interactive. Same contract either way — mode changes who answers a blocked task, never what gets reviewed |
 | who owns the finish | **state it explicitly if the caller owns it.** There is no config flag. Left unsaid, this skill runs its own Finish: it merges the integration branch and deletes the worktree — taking the ledger and the per-task reports with it, which is where a caller's report gets its sources |
-| `config.models`, `config.concurrency`, `config.hotFileCap` | optional; see Model tiering and Parallelism below for what they default to and why an explicit map is preferred |
+| `config.models`, `config.concurrency`, `config.hotFileCap`, `config.topUpQueryCap` | optional; see Model tiering and Parallelism below for what they default to and why an explicit map is preferred |
 
 It returns six buckets — `completed`, `escalated`, `pendingRetry`, `parked`, `stalled`, `review` —
 covering **the epic's whole tree as of return, not only the tasks this invocation dispatched** (a

@@ -28,6 +28,7 @@ args = {
   config: {
     concurrency: 16,
     hotFileCap: 3,        // optional — see below
+    topUpQueryCap: 40,    // optional — see below
     models: { planner: 'opus', implementer: 'sonnet', reviewer: 'sonnet', mechanical: 'sonnet', triage: 'opus', finalReview: 'opus', fixEscalation: 'opus' },
   },
   prompts: { ... },
@@ -37,6 +38,12 @@ args = {
 `hotFileCap` is **optional** — additive, defaulting to 3: how many in-flight tasks may declare
 the same `filesTouched` file at once (the scheduling constraint that replaced disjoint-file
 bucketing — see "The coordinator loop" step 3 and SKILL.md §Parallelism).
+
+`topUpQueryCap` is **optional** — additive, defaulting to 40: the per-round budget of mid-round
+top-up ready re-queries ("The coordinator loop" step 4). The dedup set bounds dispatches; this
+bounds the queries themselves — a merge that unblocks nothing still costs one mechanical agent.
+Exhaustion degrades to the ordinary round-boundary refill (no work lost), and the detector line
+reports usage so the default can be tuned from evidence; it is an untuned first guess.
 
 `integrationWorktree` is **optional** — additive and non-breaking, same tier as `fixEscalation`
 below: the path of the integration branch's checkout. When omitted, the script derives it from
@@ -982,6 +989,14 @@ const cap = Math.max(1, Number(config.concurrency) || 16)
 // the Implement phase carries the measured evidence for why this replaced disjoint-file
 // bucketing as filesTouched's only scheduling role.
 const hotFileCap = Math.max(1, Number(config.hotFileCap) || 3)
+// Top-up query budget, PER ROUND (optional, additive contract key — the counter lives in the
+// round loop, so every round gets a fresh allowance; a run-global budget belongs to callers
+// that have one): a merge that unblocks nothing still
+// costs a ready-re-query agent, and the dedup set bounds DISPATCHES, not QUERIES — so queries
+// get their own per-round cap. Default 40 is an untuned first guess from the live adaptation;
+// the detector line reports usage so it can be tuned from evidence. Exhausting it degrades to
+// the old round-boundary refill: no work is lost, dependents just wait for the next round.
+const topUpQueryCap = Math.max(0, Number(config.topUpQueryCap) || 40)
 
 // Null-dispatch guard (live-run defect: see "Null dispatch policy"). agent() returns null when a
 // dispatched subagent dies on a terminal API error after retries; a single 529 on a merge dispatch
@@ -1679,6 +1694,7 @@ while (true) {
   const dispatched = new Set(plannedIds)
   const chains = plannedIds.map(id => runTask(id).catch(() => null))
   let topUpActive = false, topUpQueued = false
+  let topUpQueriesUsed = 0
   const topUps = []
   const runTopUp = async () => {
     if (topUpActive) { topUpQueued = true; return }  // coalesce: the in-flight query re-runs once
@@ -1686,6 +1702,15 @@ while (true) {
     try {
       do {
         topUpQueued = false
+        // QUERY budget, separate from the dispatch bound: the dedup set caps dispatches (each id
+        // at most once per round) but not queries — a long round of merges that unblock nothing
+        // would otherwise spend one mechanical agent per merge on empty re-queries. Exhaustion
+        // logs once and degrades to the round-boundary refill; nothing is lost.
+        if (topUpQueriesUsed >= topUpQueryCap) {
+          if (topUpQueriesUsed === topUpQueryCap) { topUpQueriesUsed++; log(`top-up query budget exhausted (${topUpQueryCap}) — remaining unblocked beads dispatch via the next round's refill; raise config.topUpQueryCap if the detector shows this recurring`) }
+          return
+        }
+        topUpQueriesUsed++
         // Same prompt as the round query (same blocker-label exclusion, same structural
         // fallback), DISTINCT stub key/label: a dryRun scenario controls top-up responses
         // separately from the round-gating query's consumed-per-round array.
@@ -1694,7 +1719,14 @@ while (true) {
         if (!more) { log('top-up ready query returned null — skipping this top-up; the next round query is the authority'); return }
         for (const id of (more.ids ?? [])) {
           if (dispatched.has(id) || escalated.has(id)) continue
-          if (ordinalFor(id) === undefined) continue  // no mapping row: next round's planner pass owns it
+          if (ordinalFor(id) === undefined) {
+            // Safety net, not an edge case: briefing against an undefined ordinal fails the whole
+            // chain (`task-brief <plan> undefined`), and if the planner's ready-AND-blocked
+            // enumeration ever regresses, this filter degrades the top-up to a logged no-op
+            // instead of breaking rounds. Logged so the degradation is visible, never silent.
+            log(`top-up: ${id} is ready but has no mapping row — leaving it for the next round's planner pass`)
+            continue
+          }
           dispatched.add(id)
           chains.push(runTask(id).catch(() => null))
         }
@@ -1731,9 +1763,14 @@ while (true) {
   // days. Every round now reports effective parallelism against the configured cap and names
   // the suspected cause from the causes §Parallelism already lists.
   const hotDeferrals = Object.entries(sched.stats.hotFileDeferrals)
-  log(`parallelism: ${plannedIds.length} ready · topped-up ${dispatched.size - plannedIds.length} · cap ${cap} · peak in-flight ${sched.stats.peak}`
+  // The frontier hint keys on TOTAL dispatched (planned + topped-up), never on plannedIds alone:
+  // after the top-up fix, a small round-start frontier that the top-up then filled is the fix
+  // WORKING, not a narrative-order smell — keying the hint on plannedIds would make it fire on
+  // exactly the healthy rounds. Query usage is reported so config.topUpQueryCap's default can be
+  // tuned from evidence rather than guessed.
+  log(`parallelism: ${plannedIds.length} ready · topped-up ${dispatched.size - plannedIds.length} · cap ${cap} · peak in-flight ${sched.stats.peak} · top-up queries ${Math.min(topUpQueriesUsed, topUpQueryCap)}/${topUpQueryCap}`
     + (hotDeferrals.length ? ` · hot-file deferrals: ${hotDeferrals.map(([f, n]) => `${f} (${n} task(s) waited)`).join(', ')} — a shared barrel/index/registry to split or assign to one task, or over-declared filesTouched (./planner-prompt.md)` : '')
-    + (plannedIds.length < cap ? ` · ready frontier smaller than the cap — if more open beads are waiting on dependencies, check for edges encoding narrative order rather than genuine blocking (super-design §Decomposition)` : ''))
+    + (dispatched.size < cap ? ` · dispatched frontier smaller than the cap — if more open beads are waiting on dependencies, check for edges encoding narrative order rather than genuine blocking (super-design §Decomposition)` : ''))
 
   // I6/C-2: no-progress guard. A round that made no forward progress at all — no task merged, no
   // epic closed, no id newly quarantined, AND no id newly RESOLVEd-pending-retry — stops rather
@@ -2473,7 +2510,8 @@ narratives that used to accompany each row are in git history; nothing here depe
 | limitations fix (Sets, guard, minors, merge range) | `wf_97164f71-a3c` 32/0 | `wf_527ad491-790` 24/0 | `wf_4203efd4-84d` 23/0 |
 | live-run fixes (null-dispatch guard, stopReason, reviewer file plumbing, blocker exclusion, integrationWorktree) | replay 32/0 | replay 24/0 | replay 23/0 |
 | relax-sequencing (sliding-window scheduler + hot-file cap, single-flight completion-order merge queue, parallelism detector) | replay 32/0 | replay 24/0 | replay 23/0 |
-| **mid-round top-up (inter-round barrier removal: ready re-query per successful merge, quiescence loop) — CURRENT** | **replay 34/0** | **replay 24/0** | **replay 24/0** |
+| mid-round top-up (inter-round barrier removal: ready re-query per successful merge, quiescence loop) | replay 34/0 | replay 24/0 | replay 24/0 |
+| **top-up corrections (per-round query cap `topUpQueryCap`, frontier hint keyed on dispatched not planned, logged unmapped skips) — CURRENT** | **replay 34/0** | **replay 24/0** | **replay 24/0** |
 
 The relax-sequencing row is a **structural** edit (dispatch scheduling and merge sequencing both
 changed shape), re-verified by replay: all three recorded scenarios land on identical dispatch

@@ -764,6 +764,48 @@ async function main() {
     assertBucketsDisjoint(out.result)
   }
 
+  scenario('top-up: query budget exhausts, degrades to round-boundary refill losing no work')
+  {
+    // Chain bd-101 -> bd-102 -> bd-103 with a query cap of 1: the single allowed top-up
+    // dispatches bd-102; bd-102's merge finds the budget spent, so bd-103 waits for the next
+    // ROUND's refill — and still completes. No work lost, exactly one top-up query.
+    const canned = manyTaskCanned(['bd-101', 'bd-102', 'bd-103'], {
+      'bd-ready': [{ ids: ['bd-101'] }, { ids: ['bd-103'] }, { ids: [] }],
+      'bd-ready-topup': [{ ids: ['bd-102'] }, { ids: ['bd-103'] }],
+    })
+    const out = await run({ args: liveArgs({ config: cfg({ topUpQueryCap: 1 }) }), canned })
+    assertNoThrow(out)
+    check(JSON.stringify(out.result?.completed.sort()) === '["bd-101","bd-102","bd-103"]', 'all three completed despite the exhausted budget', JSON.stringify(out.result))
+    check(out.counts['bd-ready-topup'] === 2, `one query per round under the PER-ROUND cap: round 1's only allowed query + round 2's own fresh allowance (got ${out.counts['bd-ready-topup']})`)
+    check(out.counts['bd-ready'] === 3, `bd-103 arrived via the next round's refill (got ${out.counts['bd-ready']} round queries)`)
+    check(out.logs.some(l => l.includes('top-up query budget exhausted (1)')), 'exhaustion logged once with the tuning pointer')
+    check(out.logs.some(l => l.includes('top-up queries 1/1')), 'detector reports query usage against the cap', out.logs.find(l => l.startsWith('parallelism')))
+    assertBucketsDisjoint(out.result)
+  }
+
+  scenario('top-up at scale: 40-bead unblock-two graph drains in ONE round (simulation shape)')
+  {
+    // Each bead's merge unblocks two more (binary tree over 40 beads). The top-up canned
+    // answer is a FUNCTION computing the faithful ready frontier: a bead is ready once its
+    // parent's completion ledger line exists. Under the old barrier this graph needs ~6 rounds;
+    // with the top-up it must drain in one, with the single-flight invariant intact throughout.
+    const ids = Array.from({ length: 40 }, (_, i) => `bd-${101 + i}`)
+    const readyNow = counts => ids.filter((id, k) => k === 0 || counts[`ledger-append:${ids[Math.floor((k - 1) / 2)]}`])
+    const canned = manyTaskCanned(ids, {
+      'bd-ready': [{ ids: ['bd-101'] }, { ids: [] }],
+      'bd-ready-topup': ctx => ({ ids: readyNow(ctx.counts) }),
+    })
+    const out = await run({ args: liveArgs({ config: cfg({ concurrency: 14 }) }), canned, timeoutMs: 30000 })
+    assertNoThrow(out)
+    check(out.result?.completed.length === 40, `all 40 completed (got ${out.result?.completed.length})`)
+    check(out.counts['bd-ready'] === 2, `one working round + the drained round (got ${out.counts['bd-ready']}) — ~6 rounds under the old barrier`)
+    check(out.maxOpen.merge === 1, 'single-flight merge invariant held across 40 recursive top-ups')
+    check(ids.every(id => (out.counts[`brief:${id}`] ?? 0) === 1), 'no double dispatch anywhere in the graph')
+    check(out.logs.some(l => l.includes('topped-up 39')), 'detector counts the 39 topped-up beads', out.logs.find(l => l.startsWith('parallelism')))
+    check((out.counts['bd-ready-topup'] ?? 0) <= 40, `query count within the default budget (got ${out.counts['bd-ready-topup']})`)
+    assertBucketsDisjoint(out.result)
+  }
+
   // ===== summary =====
   console.log(`\n${passes} passed, ${failures} failed`)
   process.exit(failures ? 1 : 0)
