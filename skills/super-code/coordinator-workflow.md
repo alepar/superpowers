@@ -2846,6 +2846,22 @@ the called identifiers against the defined ones (`function <name>` and top-level
 and confirm every call site resolves, then actually run the dryRun — a parse pass and a stub-key
 lookup are not proof the script executes.
 
+**And a parse check is not a literal-boundary check either** (issue #2 defect 7, distinct from
+the undefined-helper failure above). A raw backtick inside prose inserted into a template literal
+terminates the literal early: the rest of the prompt becomes code, or code becomes prompt, and
+the file frequently REMAINS syntactically valid JavaScript — `node --check` is right to pass it,
+and then either the Workflow runtime rejects what node accepted or, worse, the prompt content is
+silently wrong. The check that catches it is span accounting, not parsing: the replay harness's
+template-literal scan (`scanTemplateSpans`, section 0) tokenizes the script with a
+string/comment/template-aware state machine and compares the top-level literal count against a
+recorded baseline — an unintended count change is the signature. After ANY edit that inserts
+prose into the script: escape every backtick in the inserted text (\`), then run the harness; if
+the span count moved and you did not deliberately add or remove a literal, the edit broke a
+boundary. Update the baseline only alongside a deliberate literal add/remove, the same
+recorded-not-illustrative discipline as the dispatch counts. (For a from-scratch coordinator with
+no baseline to compare against, the applicable form is the escaping rule alone: no raw backtick
+in any inserted prose, ever.)
+
 Required **once at implementation** and **after any structural coordinator edit**: loop order,
 the Close/Ready round shape, disjoint-file batching, merge-back sequencing, or blocker routing.
 **Data edits skip it** — roster/prompt/tier edits (which model a role uses, prompt wording, the

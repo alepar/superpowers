@@ -227,9 +227,83 @@ function oneTaskCanned(overrides = {}) {
   }
 }
 
+// ---------- template-literal span scan (issue #2 defect 7) ----------
+// `node --check` passes a script whose template-literal boundaries MOVED: a raw backtick in
+// prose inserted into a literal terminates it early, the rest of the prompt becomes code (or
+// vice versa), and the file often remains syntactically valid — node is right to accept it,
+// and the Workflow runtime (or the prompt content) is silently wrong. The detector is span
+// accounting: scan the script with a string/comment/template-aware state machine and compare
+// the top-level template-literal count against the recorded baseline below. An unintended
+// span change is the signature of the backtick-in-prose trap; update the baseline ONLY
+// alongside an edit that deliberately adds or removes a template literal.
+function scanTemplateSpans(src) {
+  const spans = []
+  let state = 'code'            // code | line | block | str1 | str2 | tpl
+  const tplDepth = []           // ${} nesting: each entry is the brace depth inside one ${...}
+  let start = -1
+  let prevSig = ''              // last significant char in code state, for regex-vs-division
+  for (let i = 0; i < src.length; i++) {
+    const c = src[i], n = src[i + 1]
+    if (state === 'line') { if (c === '\n') state = 'code'; continue }
+    if (state === 'block') { if (c === '*' && n === '/') { state = 'code'; i++ } continue }
+    if (state === 'str1') { if (c === '\\') i++; else if (c === "'") state = 'code'; continue }
+    if (state === 'str2') { if (c === '\\') i++; else if (c === '"') state = 'code'; continue }
+    if (state === 'tpl') {
+      if (c === '\\') { i++; continue }
+      if (c === '$' && n === '{') { tplDepth.push(0); state = 'code'; i++; continue }
+      if (c === '`') { state = 'code'; spans.push([start, i]); prevSig = '`' }
+      continue
+    }
+    // code state
+    if (c === '/' && n === '/') { state = 'line'; i++; continue }
+    if (c === '/' && n === '*') { state = 'block'; i++; continue }
+    if (c === '/' && /[=(,:;!&|?{}[+\-*%~^<>]/.test(prevSig)) {
+      // regex literal: skip to its unescaped closing /, honoring character classes
+      let cls = false
+      for (i++; i < src.length; i++) {
+        const r = src[i]
+        if (r === '\\') { i++; continue }
+        if (r === '[') cls = true
+        else if (r === ']') cls = false
+        else if (r === '/' && !cls) break
+      }
+      prevSig = '/'
+      continue
+    }
+    if (c === "'") { state = 'str1'; continue }
+    if (c === '"') { state = 'str2'; continue }
+    if (c === '`') { if (tplDepth.length === 0) start = i; state = 'tpl'; continue }
+    if (tplDepth.length > 0) {
+      if (c === '{') tplDepth[tplDepth.length - 1]++
+      else if (c === '}') {
+        if (tplDepth[tplDepth.length - 1] === 0) { tplDepth.pop(); state = 'tpl'; continue }
+        tplDepth[tplDepth.length - 1]--
+      }
+    }
+    if (!/\s/.test(c)) prevSig = c
+  }
+  return { spans, clean: state === 'code' && tplDepth.length === 0 }
+}
 // ---------- scenarios ----------
 
 async function main() {
+
+  // ===== 0. template-literal span accounting (issue #2 defect 7) =====
+  scenario('template-literal spans: scanner clean, count matches recorded baseline')
+  {
+    const scan = scanTemplateSpans(scriptBody)
+    check(scan.clean, 'scanner ends in code state (no unterminated literal, string, or ${})')
+    check(scan.spans.length === 107,
+      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 107) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
+    // self-test: inject a raw backtick mid-way through the first literal's content and assert
+    // the detector actually fires — a detector that cannot catch the known failure is decoration
+    const [s, e] = scan.spans[0]
+    const mid = Math.floor((s + e) / 2)
+    const mutated = scriptBody.slice(0, mid) + '`' + scriptBody.slice(mid)
+    const rescan = scanTemplateSpans(mutated)
+    check(!rescan.clean || rescan.spans.length !== scan.spans.length,
+      'injected raw backtick is detected (span count shifts or scan ends dirty)')
+  }
 
   // ===== 1. The three recorded dryRun scenarios, replayed offline =====
   const jsonBlocks = extractJsonBlocks()
