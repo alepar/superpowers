@@ -91,6 +91,14 @@ by rooting lower on your own.
 
 Same fields as brainstorming's old beads step: title, short description, files-touched hint, blocking deps per child.
 
+**A deletion bead's acceptance must sweep the whole repo, not just imports.** "grep shows zero
+importers" passes while the deleted path still appears in build/lock/digest/manifest artifacts —
+a codegen manifest, a lockfile, a checksum or approved-source list (measured live: a deleted
+module was a hashed identity input in one manifest and four digest lists, and no bead in the tree
+named the manifest at all). State the acceptance as: search the repo for the path AND its
+basename, source and non-source artifacts alike; every manifest-class hit must be owned by a
+named bead.
+
 **Decompose in two explicit steps.** **Step A — split:** carve the spec into minimal
 logically-cohesive chunks per the sizing bar below, ignoring narrative/build order while splitting.
 **Step B — connect, as a first approximation:** add blocking deps per the edge rules further
@@ -274,7 +282,7 @@ Runs once the tree has settled (§The Process, step 7).
 
 **Rounds are incremental:** round N+1 re-runs only the per-subepic passes whose subtrees changed since round N, plus the root pass (always). **A round's passes are mutually independent — dispatch every pass's reviewers concurrently** (all per-subepic passes and the root pass together, 3 reviewers each): each pass's inputs are assembled before dispatch and no pass reads another's findings — union, dedupe, and arbitration all happen after the fan-out returns. Serializing them buys nothing and multiplies the round's wall-clock by the pass count. The loop ends when a round yields zero accepted findings.
 
-**Arbitration:** present deduped findings to the user — minus any this round already has a recorded disposition for (§Run-State File), which are replayed, not re-asked. Accepted `GAP`: small → leaf task added directly; big → task created → promoted → nested brainstorm → its own super-design subtree (tripwire stays armed). Accepted `ORPHAN`: the user picks delete (scope creep) or add the missing goal element it serves. Accepted `NARRATIVE-EDGE`: drop the edge (`bd dep remove <dependent> <blocker>`) or repoint it (`bd dep remove`, then `bd dep add <dependent> <actual-producer>`), per the finding's proposed fix — question-shaped edges never arrive as this kind (reviewers report those as `UNOWNED-SEAM`, whose contract path replaces the ordering). Any accepted finding whose fix splits or shrinks an existing bead — moving scope out of it — follows §Splitting a Bead, dependents re-pointed included. Accepted `UNOWNED-SEAM`: **before creating either bead, check whether a `Seam contract:` /
+**Arbitration:** present deduped findings to the user — minus any this round already has a recorded disposition for (§Run-State File), which are replayed, not re-asked. Accepted `GAP`: small → leaf task added directly; big → task created → promoted → nested brainstorm → its own super-design subtree (tripwire stays armed). Accepted `ORPHAN`: the user picks delete (scope creep) or add the missing goal element it serves. Accepted `NARRATIVE-EDGE`: drop the edge (`bd dep remove <dependent> <blocker>`) or repoint it (`bd dep remove`, then `bd dep add <dependent> <actual-producer>`), per the finding's proposed fix — question-shaped edges never arrive as this kind (reviewers report those as `UNOWNED-SEAM`, whose contract path replaces the ordering). Any accepted finding whose fix splits or shrinks an existing bead — moving scope out of it — follows §Splitting a Bead, dependents re-pointed included. Accepted `UNSATISFIABLE-ACCEPTANCE`: apply the finding's proposed fix — restate the criterion in terms of an artifact that exists when the task completes (`bd update <id> --description` with the full amended text), or re-point the edge so the referenced validator genuinely precedes the task. Accepted `UNOWNED-SEAM`: **before creating either bead, check whether a `Seam contract:` /
 `Seam integration:` bead for this boundary already exists — including via a replayed disposition
 from the run-state file — and adopt it instead of duplicating it and its edges.** Otherwise create
 **two leaf tasks** with the standard flag triple, and wire the tree:

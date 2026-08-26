@@ -41,7 +41,10 @@ Task tool (general-purpose), model: opus:
     blocking deps, marked `(epic)`: an epic→epic edge gates every leaf under the dependent
     epic and is invisible to a leaves-only dump, which blinds the edge audit to the
     single most expensive edge class. Leaf tasks and their dependency lists are
-    dumped from the bd DB, not read from spec files.]
+    dumped from the bd DB via the BULK dump (`bd list --json`), not read from spec files
+    and not assembled from per-bead `bd show --json` — `show`'s dependencies field
+    underreports blocking edges (verified bd 1.0.5: `show` returned no usable edges where
+    the bulk dump did), so a `(none)` from `show` is not evidence of absence.]
 
     ## Flagged tasks
     [FLAGGED_TASKS — task ids carrying flag `sp:frozen-promotion` or
@@ -100,24 +103,37 @@ Task tool (general-purpose), model: opus:
        leaf>, and drop the epic-level edge". An epic edge you can fully justify (every leaf
        genuinely consumes the whole epic's output) is not a finding, but say so explicitly
        in one line rather than skipping it.
-    6. **Flag sweep.** Every id in "Flagged tasks" is an automatic finding — known-
+    6. **Acceptance satisfiability → UNSATISFIABLE-ACCEPTANCE.** Where a task's
+       description states an acceptance criterion in terms of another deliverable ("the X
+       validator accepts...", "passes the Y suite", "conforms to §N's contract"), resolve
+       that deliverable to the task that produces it and check the graph direction: if the
+       producing task is a transitive DEPENDENT of the task under review (it cannot exist
+       until this task is done), the criterion is unsatisfiable at completion time — the
+       cycle lives across the acceptance-text/dependency-graph boundary, which no
+       single-artifact check spans. Propose either restating the criterion in terms of an
+       artifact that exists when the task completes, or re-pointing the edge so the
+       validator genuinely precedes it. A criterion referencing a dependency (not a
+       dependent) is correct and is not a finding.
+    7. **Flag sweep.** Every id in "Flagged tasks" is an automatic finding — known-
        underdesigned work must not sail through silently — *unless* it already has an
        entry in the rejected-findings ledger, which takes precedence over the sweep.
 
     ## Required structured output (do NOT write a prose essay)
 
     One entry per finding:
-    - **type:** `GAP` | `ORPHAN` | `UNOWNED-SEAM` | `NARRATIVE-EDGE` | flag-sweep
+    - **type:** `GAP` | `ORPHAN` | `UNOWNED-SEAM` | `NARRATIVE-EDGE` | `UNSATISFIABLE-ACCEPTANCE` | flag-sweep
     - **description:** the problem, one sentence
     - **evidence:** the unmapped goal element, the orphaned task id, the seam's two
       participant task ids + the exchanged data/interface + the quoted description text
       implying the exchange, the edge (dependent ← blocker) + which of unnameable/
-      misdirected/duplicated it is + the quoted description text, or the flag and its
-      task id
+      misdirected/duplicated it is + the quoted description text, the quoted acceptance
+      criterion + the producing task id + the dependency path proving it is a transitive
+      dependent, or the flag and its task id
     - **proposed fix:** a new leaf task under a named epic, or a new subepic needing
       design; for `UNOWNED-SEAM`, name the boundary to be contracted (arbitration turns an
       accepted seam into a contract bead + integration bead — see SKILL.md §Coverage); for
-      `NARRATIVE-EDGE`, drop the edge, or name the task it should repoint to
+      `NARRATIVE-EDGE`, drop the edge, or name the task it should repoint to; for
+      `UNSATISFIABLE-ACCEPTANCE`, the restated criterion, or the edge to re-point
 
     Report only defensible findings. Quality over quantity — but do not soften.
 ```

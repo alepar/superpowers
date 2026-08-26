@@ -757,6 +757,38 @@ does not apply — this is the default-finish case), it runs `superpowers:upstre
 merging and deleting the integration worktree, since the worktree's ledger and per-task reports are
 inputs the analysis pass needs and cannot recover once they are gone.
 
+## Local adaptations (porting this skeleton to a project)
+
+A project run typically adapts this skeleton — extra reporters, project gates, tuned prompts.
+Four rules from a measured 198-bead adaptation (issue #2), for the adapting session:
+
+- **A measurement of record needs a validity floor.** Any reporter you add whose numbers feed
+  decisions (bisect candidates, baselines, round gates) must assert its own sample validity
+  before printing a counts line: collected/sampled count checked against the recorded baseline or
+  the previous round, and `MEASUREMENT INVALID: <cause>` emitted instead of counts when the check
+  fails. Measured live: a full-suite reporter printed `0 passed / 1 failed` for ten straight
+  rounds against a ~7,900-test suite — a collection error, not a result — and nothing compared it
+  to the recorded 4,425-pass baseline; a run collecting ~0.01% of the suite is worse than no
+  measurement because it is indistinguishable from a green one. For pytest-family suites, pass
+  `--continue-on-collection-errors` and carry the collection-error count as a first-class field.
+- **Port upstream's hunks; don't rebuild and re-graft.** When this skeleton advances under a
+  live adaptation, compare sizes before choosing a direction: the skeleton's delta (hunks
+  changed) versus your local adaptations' line count. Measured live: skeleton delta 13 hunks
+  (+224/−34) against local adaptations rewriting ~80% of a 1,479-line base — the targeted hunk
+  port reached the identical end state with ~5× less transcription and left the live-validated
+  remainder byte-identical, provable by diff. Rebuild-and-re-graft is the worse path whenever
+  the adaptation outweighs the delta.
+- **Stamp the adaptation with its skeleton source.** Record the plugin tag this skeleton was
+  ported from as a logged constant next to the launch log line (e.g.
+  `log('coordinator skeleton: <tag>')`). The installed plugin cache can lag the marketplace repo
+  (measured: cache at one version while the repo had advanced seven) — the stamp dates every
+  journal against the code that actually ran, making cache-vs-repo skew visible instead of
+  inferred.
+- **Read dependency edges from the bulk dump only.** `bd show --json`'s dependencies field
+  underreports blocking edges (verified bd 1.0.5: per-bead `show` returned no usable edges where
+  `bd list --json` did) — a `(none)` from `show` is not evidence of absence. Any adaptation that
+  reasons about the graph reads edges from `bd list --json`.
+
 ## Known limitations
 
 This section lists what ships **unfixed**, by decision. A future maintainer should read it before
