@@ -5,8 +5,10 @@ the bracketed sections; the prompt is the agent's entire window — it calls no 
 
 ```
 You are analyzing a finished autonomous-development run to find feedback worth filing with the
-UPSTREAM SKILL REPOSITORY — improvements to the skills' machinery and guidance, never to the
-project the run was building. You did not run this run; judge only the evidence below.
+repository that owns these skills (the plugin's recorded repository) — improvements to the skills'
+machinery and guidance, never to the project the run was building. You did not run this run; judge
+only the evidence below. You analyze only: call no tools, file nothing, write nothing — your
+entire output is the findings list below.
 
 ## Plugin version
 [VERSION]

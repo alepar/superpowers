@@ -13,7 +13,7 @@ every field in it is read back on resume and trusted.
 
 ## The seven required contents
 
-`run.md` MUST hold exactly these seven things **as they become known**. At creation,
+`run.md` MUST hold exactly these seven things (plus the optional `feedback:` pointer below) **as they become known**. At creation,
 before phase 1 runs, five exist — `flags`, `phase`, `idea`, `branch`, and `base`, the last two
 because the caller created the workspace in pre-flight — and each of the rest is added as the phase
 that produces it returns. Omitted is not the same
@@ -77,6 +77,12 @@ a resume can silently redo work or violate a decision that was already made.
    is a dangling pointer, and the report is sourced through these pointers — the
    sections that read them come back empty and the report reads thinner than the
    run actually was.
+
+   **Eighth field, OPTIONAL: `feedback: <issue-url>`.** Written by `superpowers:upstream-feedback`
+   via `super-auto` when phase 6's analysis pass results in a filed issue; absent when it didn't
+   (a clean run, a declined proposal, or a parked-not-yet-filed draft). Unlike the seven required
+   fields, its absence is not a sign of an interrupted run — it is the normal outcome whenever
+   nothing was filed.
 
 4. **Parked items** — three kinds, each with its source report:
    - **escalations** — a roast finding that reached no verdict at all;

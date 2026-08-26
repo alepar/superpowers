@@ -140,7 +140,7 @@ Rationale, measured evidence, and counter-evidence for this dispatch model:
 
 ## Friction log & upstream feedback
 
-Throughout a run, append friction events (defects hit, workarounds, guidance that read wrong, visible stalls) to the enclosing run's friction log — `<workspace>/friction.md` beside the ledger when this skill is the outermost invocation — per `superpowers:upstream-feedback`'s format, the moment they happen. When this skill is the outermost invocation and owns its own Finish, invoke `superpowers:upstream-feedback` after the final review; when a caller owns the finish, only append — the caller's own hook runs the analysis.
+Throughout a run, append friction events (defects hit, workarounds, guidance that read wrong, visible stalls) to the enclosing run's friction log — `<workspace>/friction.md` beside the ledger when this skill is the outermost invocation — per `superpowers:upstream-feedback`'s format, the moment they happen. When this skill is the outermost invocation and owns its own Finish, invoke `superpowers:upstream-feedback` after the final review; when a caller owns the finish, only append — the caller's own hook runs the analysis. **When nested under a caller** (e.g. `super-auto`'s phase 3), append to the friction-log path the caller passed — `super-auto` passes `<run-dir>/friction.md`. **When no path was passed, skip appending** rather than inventing a location — a nested invocation has no committed directory of its own to write into.
 
 ## Reference
 

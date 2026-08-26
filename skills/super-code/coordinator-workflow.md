@@ -738,6 +738,18 @@ blocked task's open state, which the blocker path already carries. The Finish-ph
 these lines together with the parked-ruling lines, and triages which must be fixed before the branch
 lands. A minor is deferred, not discarded; the ledger is what makes the difference real.
 
+**Friction capture is the invoking session's job, not the Workflow script's.** The Workflow script
+itself cannot write files — it has no I/O (see "Key constraint: the script does no I/O") — so it
+cannot append to a friction log no matter how interesting an event is. In Workflow-coordinated
+runs, the INVOKING session is the one with a filesystem: it watches the coordinator's own log
+output and appends what it sees to the run's friction log — NULL-dispatch log lines, STALLED /
+stall-guard events, null-retry rounds, detector-line anomalies (peak in-flight far below the
+concurrency cap, exhausted top-up query budgets), and any `stopReason` other than `root-closed`.
+When that same invoking session owns the finish (§Finish above, "when the caller owns the finish"
+does not apply — this is the default-finish case), it runs `superpowers:upstream-feedback` **before**
+merging and deleting the integration worktree, since the worktree's ledger and per-task reports are
+inputs the analysis pass needs and cannot recover once they are gone.
+
 ## Known limitations
 
 This section lists what ships **unfixed**, by decision. A future maintainer should read it before

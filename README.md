@@ -19,7 +19,7 @@ This fork used to bolt issue-tracker (beads / `bd`) logic *into* the upstream sk
 
 **What you need to update:** any invocation or doc that names `superpowers:super-plan` — it is now `superpowers:super-design`. If you relied on the worktree surviving after a PR was opened, re-establish a workspace when feedback arrives.
 
-**The four new skills**
+**The five new skills**
 
 | Skill | Does |
 |---|---|
@@ -27,6 +27,7 @@ This fork used to bolt issue-tracker (beads / `bd`) logic *into* the upstream sk
 | `super-roast` | Adversarial review of a **design doc** or a **PR/branch/diff** — scouts, then a seat-differentiated judge panel |
 | `super-code` | Drives a beads epic to finished, reviewed, merged code — parallel dispatch, per-task worktrees, serial merge-back |
 | `super-auto` | Runs the whole lifecycle below in one invocation, optionally unattended |
+| `upstream-feedback` | Turns a run's friction into a user-gated GitHub issue on the skill plugin's owning repository |
 
 **A feature's lifecycle, idea to finished implementation**
 
