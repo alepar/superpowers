@@ -92,21 +92,25 @@ by rooting lower on your own.
 Same fields as brainstorming's old beads step: title, short description, files-touched hint, blocking deps per child.
 
 **Decompose in two explicit steps.** **Step A — split:** carve the spec into minimal
-logically-cohesive chunks per the sizing bar below, ignoring ordering entirely while splitting.
+logically-cohesive chunks per the sizing bar below, ignoring narrative/build order while splitting.
 **Step B — connect, as a first approximation:** add blocking deps per the edge rules further
-down, sparse by the standing "when in doubt, leave it out" policy. The deps you write are a
+down, sparse by the standing "when in doubt, leave it out" policy. When connecting reveals a bead
+that gates two or more others, re-apply the bottleneck rule to it before moving on — dependent
+counts only exist once edges do. The deps you write are a
 first approximation by design — the promotion review runs next, and coverage's edge audit
 (`NARRATIVE-EDGE`) and seam check (`UNOWNED-SEAM`) refine edges after the tree settles — so do
-not agonize over edges; a dedicated audit owns edge quality. Step A's job, which nothing
-downstream can recover, is to not miss work and to not fuse work that could run apart.
+not agonize over edges; a dedicated audit owns edge quality. Missed work is recoverable — coverage's
+`GAP` exists for it. Fused work is what nothing downstream un-fuses: the promotion review's `SPLIT`
+catches only the bottleneck case, so Step A's job is to not fuse work that could run apart.
 
 **The sizing bar (Step A):**
 
 - **Cohesion:** a leaf is one merge-worthy deliverable a reviewer accepts or rejects as a
   unit. A description that needs "and then" is two beads.
 - **Floor:** execution spends roughly five dispatches of ceremony per bead (brief → implement →
-  review → merge → ledger), so never split below one coherent reviewable change — a bead whose
-  implementation is smaller than its own ceremony merges into a sibling. Minimal is not tiny.
+  review → merge, plus re-review rounds and ledger writes), so never split below one coherent
+  reviewable change — a bead whose implementation is smaller than its own ceremony merges into a
+  sibling. Minimal is not tiny.
 - **Bottleneck rule (fan-out-aware):** size a bead inversely to how many others depend on it. A
   bead that gates others lands **only the unblocking artifact** — polish, tests beyond the
   artifact's own acceptance, and remaining call-site migration move into dependents or a
@@ -179,13 +183,15 @@ means the file should be split or assigned to a single bead.
 
 ## Promotion Review
 
-Dispatch `./promotion-reviewer-prompt.md` fresh-context (it must not have authored the spec or task list — countering author bias is the point), giving it the spec, the child task list, the ancestor-goal chain, and the specs of already-designed siblings. It returns per-task `LEAF`/`PROMOTE`/`SPLIT` verdicts and a decomposition verdict (`COMPLETE`/`ISSUES`).
+Dispatch `./promotion-reviewer-prompt.md` fresh-context (it must not have authored the spec or task list — countering author bias is the point), giving it the spec, the child task list (with each child's deps — the SPLIT test counts dependents from them), the ancestor-goal chain, and the specs of already-designed siblings. It returns per-task `LEAF`/`PROMOTE`/`SPLIT` verdicts and a decomposition verdict (`COMPLETE`/`ISSUES`).
 
 Sanity-check the verdicts; you may overrule them. A `SPLIT` verdict is handled like a
 decomposition `ISSUES`: apply it — shrink the flagged bead to its named unblocking artifact and
-move the remainder into a dependent or a non-gating sibling that depends on it — or overrule it
-with the reason recorded on the task (a comment on the bead; no new flag), the same recording
-discipline as a demotion. **Overruling a `PROMOTE` back to `LEAF` must be recorded on the task** — flag `sp:demoted-by-session` plus the reason — so coverage and the human can see where session judgment overrode the fresh reviewer. Fix any `ISSUES` in the decomposition verdict before applying any promotion.
+move the remainder into a dependent or a non-gating sibling that depends on it — or overrule it by
+flagging the task `sp:demoted-by-session` with the reason — the flag marks any session override of
+the fresh reviewer, a SPLIT overrule included (the name predates `SPLIT`); this is what makes the
+override visible to coverage's flag sweep and prevents a resumed run from re-applying a split the
+session rejected. **Overruling a `PROMOTE` back to `LEAF` must be recorded on the task** — flag `sp:demoted-by-session` plus the reason — so coverage and the human can see where session judgment overrode the fresh reviewer. Fix any `ISSUES` in the decomposition verdict before applying any promotion.
 
 ## Applying Promotions
 
