@@ -2908,7 +2908,7 @@ silently wrong. The check that catches it is span accounting, not parsing: the r
 template-literal scan (`scanTemplateSpans`, section 0) tokenizes the script with a
 string/comment/template-aware state machine and compares the top-level literal count against a
 recorded baseline — an unintended count change is the signature. After ANY edit that inserts
-prose into the script: escape every backtick in the inserted text (\`), then run the harness; if
+prose into the script: escape every backtick in the inserted text (backslash before backtick), then run the harness; if
 the span count moved and you did not deliberately add or remove a literal, the edit broke a
 boundary. Update the baseline only alongside a deliberate literal add/remove, the same
 recorded-not-illustrative discipline as the dispatch counts. (For a from-scratch coordinator with
