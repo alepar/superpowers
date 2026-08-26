@@ -212,6 +212,27 @@ Done by the main session, not the Workflow:
 4. Launch the Workflow (background) with the args from "Coordinator contract" above. Progress is
    visible via `/workflows`; the main session is free.
 
+### Quiesce before a planned relaunch (decided policy — issue #2 design question C)
+
+A Workflow loads its script once, so every coordinator edit costs stop + relaunch — and a
+`TaskStop` mid-round destroys the in-flight implementers and gates it interrupts:
+`resumeFromRunId` returns cached results for *completed* agents only, never running ones
+(measured live: ~30 minutes of destroyed in-flight work per relaunch, four relaunches paid, on a
+run that expects 4-6 relaunches for the agent-budget cap alone). For a **planned** relaunch —
+a coordinator edit, a config change — quiesce instead of killing:
+
+1. Do not stop mid-round. Watch `/workflows` (or the per-round detector line) for the in-flight
+   count to drain — the natural window is after a round's last merge, before the next round's
+   dispatches.
+2. Stop in that window, edit, relaunch with `resumeFromRunId` — every completed agent replays
+   from cache; nothing running was killed, so nothing is re-paid.
+3. An **unplanned** stop (the script is wrong *now*) is the exception that justifies killing
+   mid-round: pay the in-flight loss, but say so in the relaunch note rather than absorbing it
+   silently.
+
+The waiting is idle time by construction — it converts destroyed work into a bounded delay and
+needs no runtime change.
+
 ## The coordinator loop
 
 Round-based with refill (each `bd ready` batch is, by definition, mutually independent):

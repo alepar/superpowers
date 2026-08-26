@@ -168,7 +168,7 @@ own, or the flags strand and the sequence is lost. Each row's parenthetical is t
 | # | Phase (`run.md` token) | Skill | Note |
 |---|---|---|---|
 | 1 | Design (`design`) | `super-design` | Pass all seven: the goal (**on a resume, `run.md`'s recorded `idea:`**), the artifact-directory override, the `run.md` path **together with `./run-state.md`, whose field names and formats govern every write** (a co-writer that never sees the contract invents an incompatible one), the `roast-design` phase token to write when that stage begins, the design mode from `planOneShot`, `autonomous` and `skipPlanRoast`, and — resuming mid-roast — the starting round. **Say the hand-off is `super-auto`'s.** It drives the root brainstorm, decomposition, every subepic brainstorm, the coverage loop and the design roast, recording into `run.md` as it goes. |
-| 2 | Design roast (`roast-design`) | `super-roast` (design) | Runs **inside** phase 1's `super-design` invocation, via its own offer; cap-3 fix loop. `super-auto` holds no control while it runs, so `super-design` writes `phase: roast-design`, the report paths and `roastDesignRound` into `run.md` itself, per its §Run-State File contract — see above. |
+| 2 | Design roast (`roast-design`) | `super-roast` (design) | Runs **inside** phase 1's `super-design` invocation, via its own offer; cap-3 fix loop with the capped-Blocking extension: a still-Blocking round 3 gets exactly one extension round, and a still-Blocking extension hard-stops the run as `capped-blocking` instead of proceeding to phase 3 (see the roast-cap note under Phase 7, and `run-state.md`). `super-auto` holds no control while it runs, so `super-design` writes `phase: roast-design`, the report paths and `roastDesignRound` into `run.md` itself, per its §Run-State File contract — see above. |
 | 3 | Code (`code`) | `super-code` | The integration branch **is this run's branch**, and its integration worktree **is this run's worktree** — both exist already, from pre-flight (§Run directory). Create nothing; pass them — **the worktree's real path explicitly, as `integrationWorktree`**, never left for `super-code` to derive: the run branch `super-auto/<slug>` contains a slash, and `super-code`'s no-arg fallback derives a slash-collapsed `.worktrees/` path that matches no worktree this run ever created (mismatched by construction on every handoff before this field existed). (`branch` was recorded at run-directory creation.) Autonomous or interactive per flag. **Say in the invocation that `super-auto` owns the finish** — there is no config flag, and without it `super-code` merges and deletes the worktree the report still needs. Also pass the friction-log path (`<run-dir>/friction.md`) so phase 3 can append to it. |
 | 4 | Code roast (`roast-code`) | `super-roast` (PR) | Against the live integration branch, diffed against `run.md`'s `base`. Pass the run directory as the report-location override, **the iteration number from `roastCodeRound`** (without it round 2's report overwrites round 1's file), **`autonomous` when the run is** (without it super-roast pauses for a human at its loop exits), and on rounds ≥2 the prior report — without which the round re-litigates what the last one already cleared |
 | 5 | Fix loop (`fix-loop`) | — | Reopen the epic (`bd update <epicId> --status open`), file confirmed findings as beads — `super-design`'s §Decomposition four fields (title, short description, **files-touched hint**, blocking deps; without the files hint every fix bead runs alone) with Red Flags' flag triple — re-enter `super-code`, loop to phase 4; cap 3, stop early if Blocking count doesn't shrink (thrash), **or when the roast verdict carries `[converged]`** (zero Blocking of any provenance on a non-degraded round — the roast's own convergence signal; park remaining sub-Blocking findings into `report.md` as a punch list instead of another fix round) |
@@ -241,9 +241,15 @@ the base branch unattended, which is the one action in this pipeline a human can
 Merges *into* the run's own integration branch are a different thing and need no confirmation:
 `super-code` performs them itself, serially, and never presents a menu for them.
 
-> If a roast fix loop caps out at 3 with Blocking findings unresolved, autonomous mode parks them
-> rather than halting. A run can finish having merged code with known Blocking findings — which is
-> why the report leads with status.
+> The two roasts cap out differently, by decided policy (issue #2 design question A). The
+> **design roast** (phase 2): a still-Blocking round 3 extends the cap by exactly one round; a
+> still-Blocking extension hard-stops the run as `capped-blocking` — no code phase runs on a
+> kernel three-plus rounds called defective with unverified last fixes (super-design's
+> §Adversarial Review Loop owns the mechanics; a later human-relaunched run that executes anyway
+> first acknowledges the recorded state in its ledger). The **code roast** (phase 5): capping at
+> 3 with Blocking findings unresolved parks them rather than halting — the code exists and was
+> reviewed; a run can finish having merged code with known Blocking findings, which is why the
+> report leads with status.
 
 ## Run directory
 

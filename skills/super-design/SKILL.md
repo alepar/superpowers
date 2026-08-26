@@ -282,6 +282,20 @@ Runs once the tree has settled (§The Process, step 7).
 
 **Rounds are incremental:** round N+1 re-runs only the per-subepic passes whose subtrees changed since round N, plus the root pass (always). **A round's passes are mutually independent — dispatch every pass's reviewers concurrently** (all per-subepic passes and the root pass together, 3 reviewers each): each pass's inputs are assembled before dispatch and no pass reads another's findings — union, dedupe, and arbitration all happen after the fan-out returns. Serializing them buys nothing and multiplies the round's wall-clock by the pass count. The loop ends when a round yields zero accepted findings.
 
+**Divergence guard (decided policy — issue #2 design question B).** Zero-findings is the only
+*success* exit, but it is not the only exit: a loop can refine instead of converge, and its only
+other brake used to be a human noticing (measured live: ~45 → ~180 findings round-over-round,
+ended by human arbitration). On every round ≥ 2, before arbitration, compare the round's deduped
+findings against all prior rounds' by identity (type + subject: the task id, edge pair, or
+boundary). A converging loop shrinks and re-litigates; a round whose finding count did not shrink
+AND whose findings are mostly novel identities is widening scope, not closing it. Raise that
+explicitly — present the count trajectory and the novel fraction, and let the human choose:
+continue one more round (a legitimately widened scope can look like this once), restructure the
+passes, or arbitrate what is already found and park the un-arbitrated tail in the run summary.
+Never run a third consecutive non-shrinking round. (The human is present at coverage arbitration
+in every mode — the guard makes the run raise divergence instead of relying on the human to
+notice it.)
+
 **Arbitration:** present deduped findings to the user — minus any this round already has a recorded disposition for (§Run-State File), which are replayed, not re-asked. Accepted `GAP`: small → leaf task added directly; big → task created → promoted → nested brainstorm → its own super-design subtree (tripwire stays armed). Accepted `ORPHAN`: the user picks delete (scope creep) or add the missing goal element it serves. Accepted `NARRATIVE-EDGE`: drop the edge (`bd dep remove <dependent> <blocker>`) or repoint it (`bd dep remove`, then `bd dep add <dependent> <actual-producer>`), per the finding's proposed fix — question-shaped edges never arrive as this kind (reviewers report those as `UNOWNED-SEAM`, whose contract path replaces the ordering). Any accepted finding whose fix splits or shrinks an existing bead — moving scope out of it — follows §Splitting a Bead, dependents re-pointed included. Accepted `UNSATISFIABLE-ACCEPTANCE`: apply the finding's proposed fix — restate the criterion in terms of an artifact that exists when the task completes (`bd update <id> --description` with the full amended text), or re-point the edge so the referenced validator genuinely precedes the task. Accepted `UNOWNED-SEAM`: **before creating either bead, check whether a `Seam contract:` /
 `Seam integration:` bead for this boundary already exists — including via a replayed disposition
 from the run-state file — and adopt it instead of duplicating it and its edges.** Otherwise create
@@ -359,6 +373,18 @@ report. The report file is the only cross-iteration state. **Three of its sectio
      from the prior report. That's thrash, not progress — stop and pause for the human as
      below. (A carried/still-open Blocking lands here, never in the converged exit.)
 
+   **Capped Blocking — the cap is a cost control, not a clearance.** When round 3 (the cap)
+   still ends with a confirmed-Blocking verdict, extend the cap by exactly ONE round — one more
+   fix + re-roast — and require that extension to come back clean or `[converged]`. If the
+   extension round still ends Blocking, the design does not proceed to execution: three-plus
+   independent rounds called the same kernel defective and the latest fixes are unverified, and
+   spending implementer agents on that kernel is the expensive failure. Interactive: the pause
+   below is the stop — the human owns what happens next. Autonomous / caller-owned hand-off:
+   record `capped-blocking` in the run-state file with the exit summary and return **without
+   handing off to execution** — this is the one exit that overrides the autonomous
+   record-and-proceed exception below. A later, human-relaunched run that chooses to execute the
+   tree anyway must first acknowledge the recorded `capped-blocking` state in its own ledger.
+
 **Verdict qualifiers gate the exits** — the same rule `brainstorming` applies at its own gate:
 
 - `clean` with **no qualifier** → the loop is done; proceed to hand-off.
@@ -380,7 +406,8 @@ fired), and any qualifier still on the verdict; this loop
 never declares itself finished, mirroring `super-roast`'s own handoff contract. **Exception when the
 caller owns the hand-off and stated the run is autonomous** (§Run-State File): record that same
 summary into the run-state file and return it in the hand-off instead of pausing — the caller
-surfaces it. The loop still never declares itself finished; it just reports to a caller rather than
+surfaces it — **except the Capped Blocking exit above, which returns a stopped run, not a
+hand-off**. The loop still never declares itself finished; it just reports to a caller rather than
 a human.
 
 ## Hand-off (root only)

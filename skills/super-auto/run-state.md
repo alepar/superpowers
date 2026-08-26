@@ -27,9 +27,14 @@ a resume can silently redo work or violate a decision that was already made.
    resumed run never re-asks — re-asking mid-run would let a resume flip a
    decision the run is already partway through acting on.
 
-2. **Current phase** — one of `design | roast-design | code | roast-code
+2. **Current phase** — one of `design | roast-design | capped-blocking | code | roast-code
    | fix-loop | report | finish | done`, matching `SKILL.md`'s seven phases plus
-   `done`. A phase that does not run — skipped by flag, or with no work to do
+   `done` and the design-roast stop state: `capped-blocking` means the design roast's
+   extension round still ended Blocking and the run hard-stopped before code (see
+   `SKILL.md`'s roast-cap note) — it is terminal for the run like a stall, and a later
+   human-relaunched run that chooses to execute the tree anyway must first append an
+   acknowledgment line (`capped-blocking acknowledged: <human's reason>`) to its own
+   ledger before entering phase 3. A phase that does not run — skipped by flag, or with no work to do
    (`fix-loop` after a clean roast) — is still written, with `(skipped)`
    appended, then advanced past: a bare jump is unreadable as
    skipped-versus-never-reached. `finish` means phase 7 started but is not
