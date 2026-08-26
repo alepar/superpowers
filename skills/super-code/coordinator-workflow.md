@@ -149,6 +149,7 @@ Two rules, both mandatory in the skeleton below:
 | `close-epics` | **Closed zero epics — never `rootClosed`**: defaulting `rootClosed` true would declare an unfinished epic done. |
 | `bd-ready` | **Not completion.** An explicit `stopReason: 'ready-unavailable'` after the bounded retry below — never the drained exit. |
 | `bd-ready-topup` (the mid-round top-up re-query) | **Opportunistic**: a null skips this top-up — logged, no bounded retry, never a stopReason. The next round's `bd-ready` remains the authority; the missed bead dispatches then. |
+| `bd-ready-recheck` (the post-closure re-query when Close reported in-tree closures) | **Opportunistic**: a null keeps the original concurrent ready result — logged, never a stopReason. |
 | `plan` | Round abandoned (nothing downstream can run without the mapping); bounded retry, then `stopReason: 'plan-unavailable'`. |
 | `read-ledger` | Resume reconstructs nothing, loudly: `bd ready` remains the authority on closed work, but prior-run `pendingRetry` bounds are lost for this run — logged, not silent. |
 | `final-review` | `review` is an explicit UNAVAILABLE string — **never** "no findings". |
@@ -228,6 +229,9 @@ Round-based with refill (each `bd ready` batch is, by definition, mutually indep
    same structural parent-child test the epic-closure step below uses — never the id-prefix
    convention alone, which a hand-created or nested-subepic bead can violate. One membership test,
    described once (`treeMembershipTest` in the script skeleton), used by both phases.
+   The Close pass and this query dispatch **concurrently** (they are independent except for
+   epic-dependent tasks); when Close reports in-tree closures, one opportunistic re-check
+   refreshes the ready result so epic-dependents join this round.
 2. **Terminate?** — completion is **the root epic (`epicId`) closed**, not an empty ready set:
    run the epic-closure step (below) after each refill cycle and check whether the root closed.
    An empty ready set with the root still open means the remaining work is quarantined blockers
@@ -361,8 +365,9 @@ wrote or read this file — everything below described intent, not behavior. `re
     keeps it sticky through the fix loop — see `reviewAndFix`) and is now included alongside the
     ruling.
   - `Task <N> (<bead id>): pending retry — RESOLVE: <detail>` — a blocker bead got a first-time
-    RESOLVE verdict; the task is due exactly one bounded re-attempt next round (see "The
-    blocker-bead path"), not yet complete and not quarantined.
+    RESOLVE verdict; the task gets exactly one bounded re-attempt — same-round via the RESOLVE
+    retry hook when it has a mapping row, next round otherwise (see "The blocker-bead path") —
+    not yet complete and not quarantined.
   - `Task <N> (<bead id>): BLOCKED — <reason>` — the task is quarantined: triage ESCALATEd (or a
     second RESOLVE for the same id bounced into an ESCALATE), regardless of which of the four
     blocker-path triggers produced it (self-filed by an implementer, a failed merge, the breaker
@@ -516,7 +521,9 @@ before calling `sdd-workspace` to canonicalize the path and git-ignore it. The p
 **per epic**, not literally `plan.md` — I7: every epic used to name it `plan.md`, so
 `sdd-workspace`'s basename-derived workspace directory was the *same path for every epic in the
 repo*, colliding every epic's ledger on one file (see "Workspace and ledger" above for the full
-consequence). On refill, the planner agent re-runs to append new mapping rows and `## Task <N>`
+consequence). On refill, the planner re-runs ONLY when some ready id lacks a mapping row (the coordinator
+retains the cumulative mapping across rounds and skips the dispatch otherwise — see the Plan
+phase's planner-skip comment); when it does run, it appends new mapping rows and `## Task <N>`
 sections for newly-ready beads — new ordinals continue the existing sequence; an already-assigned
 ordinal or section is never renumbered or rewritten, since a fix round may still be pointing at it.
 **Blocker beads are never planned and never get a mapping row** (see "Resolved in this
@@ -673,8 +680,10 @@ Anything that cannot proceed becomes a beads issue, never a silent retry and nev
 - **Triage (opus):** the coordinator dispatches the triage agent (`./triage-prompt.md`) with the
   blocker bead + the task's `plan.md` section + the relevant spec excerpt. It returns exactly one
   of:
-  - `RESOLVE: <clarification>` → the coordinator re-dispatches the task with that clarification
-    added to its context (next round). Use only when the answer is genuinely derivable from the
+  - `RESOLVE: <clarification>` → the clarification is recorded on the bead (`bd comment`; the
+    implement dispatch tells every implementer to read `bd comments <id>` as binding context) and
+    the task is re-dispatched — **in the same round** when it has a mapping row (the RESOLVE
+    retry hook in the skeleton), next round otherwise. Use only when the answer is genuinely derivable from the
     existing plan/beads. **Bounded to one retry per id** (`pendingRetry`, tracked in
     `handleBlocker`): if the *same* id triggers the blocker-bead path again after a RESOLVE — the
     clarification didn't fix it — the second occurrence is treated as `ESCALATE` regardless of
@@ -1237,6 +1246,12 @@ if (resumed.size) log(`resume: reconstructed from ${ledgerPath} — ${completed.
 // (no-progress guard), 'ready-unavailable' / 'plan-unavailable' (infrastructure outage after the
 // bounded null-retry — NEVER completion; the epic may still hold ready work).
 let stopReason = null
+// PLANNER SKIP state: the mapping is append-only by contract (planPrompt requires the FULL
+// CUMULATIVE table every dispatch), so last round's result stays valid for every id it already
+// covers. Retained across rounds so a refill round whose ready ids are all mapped skips the
+// opus planner dispatch entirely — the slowest head dispatch, previously paid every round.
+// In-memory only: a restarted run has lastPlanned === null and plans on its first round, as before.
+let lastPlanned = null
 while (true) {
   nullsThisRound = 0
   // MECHANICAL: bd epic close-eligible is repo-global (no --label/--parent/--mol — see
@@ -1250,24 +1265,43 @@ while (true) {
   // parent-chain walk, so root is never misclassified OUT-OF-TREE and rootClosed can go true.
   // First iteration is harmless: nothing is eligible yet. `mechanical`, not `triage` — every
   // branch here is a fixed, pre-decided rule, not a judgment call (see "Coordinator contract").
+  // ROUND HEAD, OVERLAPPED: Close and Ready used to run serially (two full dispatch latencies
+  // with zero work in flight). They are independent except in one case — a task depending on an
+  // EPIC bead becomes ready only once Close closes that epic — so they now dispatch
+  // concurrently, and when Close reports in-tree closures the Ready result is refreshed by one
+  // opportunistic re-check (distinct stub key `bd-ready-recheck`, same prompt) so
+  // epic-dependent tasks join this round instead of waiting a full round.
   phase('Close')
-  const closedRes = await dispatch(() => closeEpicsPrompt(epicId), 'close-epics',
+  const closePromise = dispatch(() => closeEpicsPrompt(epicId), 'close-epics',
     { label: 'close-epics', phase: 'Close', schema: CLOSE, model: model('mechanical') })
-  // Null close-epics ("Null dispatch policy"): closed ZERO epics, never rootClosed — defaulting
-  // rootClosed true would end the run declaring an unfinished epic done, the worst possible
-  // fabrication. The zeroed default also feeds the no-progress guard's closedThisRun signal
-  // honestly: a null close pass genuinely closed nothing.
-  const closed = closedRes ?? { rootClosed: false, closedThisRun: [] }
-  if (closed.rootClosed) { stopReason = 'root-closed'; break }
-
   phase('Ready')
-  const ready = await dispatch(
+  const readyPromise = dispatch(
     // MECHANICAL rule-following, not judgment (same tier as closeEpicsPrompt): a fast labelled
     // query, with a structural fallback when it comes up empty — never a bare echo trusted alone
     // anymore. See "Resolved in this branch" (the `sp:`-labelling and canonical-args items) for why the label-only query used to be
     // treated as authoritative, and `readyPrompt`'s own comment for the fallback mechanics.
     () => readyPrompt(epicId), 'bd-ready',
     { label: 'bd-ready', phase: 'Ready', schema: READY, model: model('mechanical') })
+  // Null close-epics ("Null dispatch policy"): closed ZERO epics, never rootClosed — defaulting
+  // rootClosed true would end the run declaring an unfinished epic done, the worst possible
+  // fabrication. The zeroed default also feeds the no-progress guard's closedThisRun signal
+  // honestly: a null close pass genuinely closed nothing.
+  const closed = (await closePromise) ?? { rootClosed: false, closedThisRun: [] }
+  if (closed.rootClosed) {
+    stopReason = 'root-closed'
+    await readyPromise.catch(() => {})  // settle the concurrent query before exiting; its result is moot
+    break
+  }
+  let ready = await readyPromise
+  // Closure re-check: only when this pass actually closed something in-tree (the one event that
+  // can mint readiness between the two concurrent dispatches above). A null re-check keeps the
+  // original result — opportunistic like the top-up, never a stopReason, logged by dispatch().
+  if (ready && closed.closedThisRun.length > 0) {
+    const recheck = await dispatch(() => readyPrompt(epicId), 'bd-ready-recheck',
+      { label: 'bd-ready-recheck', phase: 'Ready', schema: READY, model: model('mechanical') })
+    if (recheck) ready = recheck
+    else log('post-closure ready re-check returned null — keeping the original ready result; next round remains the authority')
+  }
   // Defect 2 (live, silent false completion — worse than the crash class): this used to be
   // `(ready?.ids ?? []).filter(...)`, which LOOKS handled — but a null here crashes nothing and
   // exits the loop reporting the epic drained, on a stop shape indistinguishable from real
@@ -1322,20 +1356,32 @@ while (true) {
   // "bd-20" never matches); beads has no such file, so the planner (opus) is the bridge and
   // returns the ordinal<->bead-id mapping alongside the plan path.
   phase('Plan')
-  const planned = await dispatch(() => planPrompt(epicId, ids, planFileName), 'plan',
-    { label: 'plan', phase: 'Plan', model: model('planner'), schema: PLANNED })
-  // Null plan ("Null dispatch policy"): nothing downstream can run without the mapping — abandon
-  // the round (no fabricated empty mapping: that would route every ready id through the
-  // unplanned-blocker path as if the planner had judged them unplannable). Bounded like ready.
-  if (!planned) {
-    if (consecutiveNullRounds >= 2) {
-      stopReason = 'plan-unavailable'
-      log(`planner unavailable for ${consecutiveNullRounds + 1} consecutive attempts — stopping with stopReason 'plan-unavailable'. NOT completion; the epic still holds ready work: ${JSON.stringify(ids)}`)
-      break
+  // PLANNER SKIP: dispatch the planner only when some ready id lacks a mapping row. On a refill
+  // round whose ids are all covered by the retained cumulative mapping (`lastPlanned`, above),
+  // the dispatch — an opus round-trip — is skipped outright; the plan file already exists on
+  // disk from the round that wrote it, so every downstream consumer (task-brief, artifacts) is
+  // unaffected. The divergence guard below still runs on the retained value: it is a pure
+  // string check, and re-asserting it each round is cheaper than reasoning about staleness.
+  let planned = lastPlanned
+  if (!lastPlanned || ids.some(id => !lastPlanned.mapping.some(m => m.id === id))) {
+    planned = await dispatch(() => planPrompt(epicId, ids, planFileName), 'plan',
+      { label: 'plan', phase: 'Plan', model: model('planner'), schema: PLANNED })
+    // Null plan ("Null dispatch policy"): nothing downstream can run without the mapping — abandon
+    // the round (no fabricated empty mapping: that would route every ready id through the
+    // unplanned-blocker path as if the planner had judged them unplannable). Bounded like ready.
+    if (!planned) {
+      if (consecutiveNullRounds >= 2) {
+        stopReason = 'plan-unavailable'
+        log(`planner unavailable for ${consecutiveNullRounds + 1} consecutive attempts — stopping with stopReason 'plan-unavailable'. NOT completion; the epic still holds ready work: ${JSON.stringify(ids)}`)
+        break
+      }
+      consecutiveNullRounds++
+      log(`planner returned null — abandoning this round, retrying next (null-retry ${consecutiveNullRounds}/2)`)
+      continue
     }
-    consecutiveNullRounds++
-    log(`planner returned null — abandoning this round, retrying next (null-retry ${consecutiveNullRounds}/2)`)
-    continue
+    lastPlanned = planned
+  } else {
+    log(`plan: all ${ids.length} ready id(s) already mapped — skipping the planner dispatch this round`)
   }
   // Fix-round-1 (review): `planned.planPath` is the planner AGENT's own report of where it wrote
   // the plan file — it was never checked against `workspace` (derived above by an independent,
@@ -1443,6 +1489,13 @@ while (true) {
   // awaited from inside integrateOne, or the ready re-query would serialize into the single-flight
   // merge queue it exists to overlap with.
   let topUpHook = () => {}
+  // Same-round RESOLVE retry hook (assigned in the dispatch section, same pattern as topUpHook):
+  // a blocker triaged RESOLVE is ready NOW with its clarification already recorded — waiting for
+  // the next round's head was pure dead time. handleBlocker invokes this on its RESOLVE branch;
+  // the assigned hook re-pushes the task's chain into this round (mapping-row-gated). C-2's
+  // one-retry bound is enforced in handleBlocker itself and is round-agnostic, so retrying
+  // same-round spends the same single allowance it always did.
+  let resolveRetryHook = () => {}
   let integrateAnnounced = false
   let mergeChain = Promise.resolve()
   const enqueueIntegration = r => {
@@ -1455,7 +1508,7 @@ while (true) {
     // with the Implement phase's still-running chains, so a fixed phase('Integrate') call site
     // no longer exists. Cosmetic only: every dispatch below carries its own opts.phase.
     if (!integrateAnnounced) { integrateAnnounced = true; phase('Integrate') }
-    if (r.status === 'BLOCKED') { await handleBlocker(r, planned.planPath); return }
+    if (r.status === 'BLOCKED') { await handleBlocker(r, planned.planPath, id => resolveRetryHook(id)); return }
     const m = await dispatch(() => mergePrompt(r, integrationBranch, integrationWorktree), `merge:${r.id}`,
       { label: `merge:${r.id}`, phase: 'Integrate', model: model('reviewer'), schema: MERGE })
     // Null merge ("Null dispatch policy") — the exact dispatch whose unguarded `m.merged` deref
@@ -1473,7 +1526,7 @@ while (true) {
     // Degrading was the worse option — the bad line is indistinguishable from a good one on resume.
     if (m.merged && (!m.head || !m.mergeBase)) {
       log(`merge:${r.id} reported merged without a full commit range (head=${m.head ?? 'missing'}, mergeBase=${m.mergeBase ?? 'missing'}) — treating as BLOCKED`)
-      await handleBlocker({ id: r.id, n: r.n, blockerBead: m.blockerBead }, planned.planPath)
+      await handleBlocker({ id: r.id, n: r.n, blockerBead: m.blockerBead }, planned.planPath, id => resolveRetryHook(id))
       return
     }
     if (m.merged) {
@@ -1535,7 +1588,7 @@ while (true) {
     // `n: r.n` carried forward here so a failed-merge blocker's eventual ledger line (in
     // handleBlocker) can still cite the plan ordinal — `r` already carries it (stamped by
     // reviewAndFix/the chain call site); the bare object built here previously dropped it.
-    else await handleBlocker({ id: r.id, n: r.n, blockerBead: m.blockerBead }, planned.planPath)
+    else await handleBlocker({ id: r.id, n: r.n, blockerBead: m.blockerBead }, planned.planPath, id => resolveRetryHook(id))
   }
 
   // planner-prompt.md permits leaving a genuinely unplannable bead unmapped (its "Your Job" step
@@ -1741,6 +1794,17 @@ while (true) {
   // configuration error, not an outage to swallow.
   let topUpFailure = null
   topUpHook = () => { topUps.push(runTopUp().catch(e => { topUpFailure = topUpFailure ?? e })) }
+  // Same-round RESOLVE retry: re-push the task's chain immediately. The id stays in `dispatched`
+  // (top-ups must not triple-dispatch it); the deliberate second runTask is this retry itself,
+  // and C-2 bounds RESOLVEs to one per id, so at most one retry chain per task per run. Gated on
+  // a mapping row for the same reason the top-up is — an unmapped id (e.g. an unplanned-path
+  // RESOLVE, whose verdict usually means "re-plan") briefs against an undefined ordinal and
+  // fails the chain; it waits for the next round's planner pass instead, as before.
+  resolveRetryHook = id => {
+    if (ordinalFor(id) === undefined) { log(`RESOLVE retry for ${id} deferred to next round — no mapping row yet (it needs the planner pass first)`); return }
+    log(`RESOLVE retry: re-dispatching ${id} into this round with its clarification recorded`)
+    chains.push(runTask(id).catch(() => null))
+  }
   // QUIESCENCE, then drain. A chain's promise resolves only after its own integration completed
   // (runTask awaits enqueueIntegration), and an integration may have fired a top-up that is
   // still querying — so await chains AND top-ups together, and loop until NEITHER array grew
@@ -1999,7 +2063,7 @@ function implementPrompt(br, integrationBranch, briefFile, reportFile) {
   // are already coordinator-known (from `br`) and are re-stamped onto this call's result in the
   // runTask chain call site regardless of what's reported — asking for them here would just invite a
   // second, ignorable source of truth (see the runTask chain call site and RESULT's `base` comment).
-  return `Follow subagent-driven-development/implementer-prompt.md against the brief for task ${br.id} (n ${br.n}), working in ${br.branch}, branched from integration branch ${integrationBranch}. The template's [BRIEF_FILE] is ${briefFile} and its [REPORT_FILE] is ${reportFile} — both absolute paths in the integration worktree's workspace, deliberately not this task worktree's own .superpowers/ (which is git-ignored and not shared across worktrees; only the integration workspace's copy is read downstream). You MUST write your full report to ${reportFile} before finishing — the reviewer's template hard-requires it and reviews blind without it. If BLOCKED after 3 no-progress fix-loops, file the blocker bead yourself (see "The blocker-bead path") — there is no human partner to escalate to mid-task; the bead carries ONLY the \`blocker\` label — no \`sp:\` label, no other label, and no \`--parent\` — because either addition makes it reachable as work and starts a self-sustaining blocker-filing loop. Report id, status (IMPLEMENTED or BLOCKED), files touched, and — only on BLOCKED — blockerBead with the id of the bead you just filed (handleBlocker's triage dispatch needs it; see the runTask chain call site's status guard).`
+  return `Follow subagent-driven-development/implementer-prompt.md against the brief for task ${br.id} (n ${br.n}), working in ${br.branch}, branched from integration branch ${integrationBranch}. The template's [BRIEF_FILE] is ${briefFile} and its [REPORT_FILE] is ${reportFile} — both absolute paths in the integration worktree's workspace, deliberately not this task worktree's own .superpowers/ (which is git-ignored and not shared across worktrees; only the integration workspace's copy is read downstream). You MUST write your full report to ${reportFile} before finishing — the reviewer's template hard-requires it and reviews blind without it. Before starting, run \`bd comments ${br.id}\` — any clarification recorded there (a triage RESOLVE writes one) is binding context that overrides your own reading of the brief on the point it clarifies. If BLOCKED after 3 no-progress fix-loops, file the blocker bead yourself (see "The blocker-bead path") — there is no human partner to escalate to mid-task; the bead carries ONLY the \`blocker\` label — no \`sp:\` label, no other label, and no \`--parent\` — because either addition makes it reachable as work and starts a self-sustaining blocker-filing loop. Report id, status (IMPLEMENTED or BLOCKED), files touched, and — only on BLOCKED — blockerBead with the id of the bead you just filed (handleBlocker's triage dispatch needs it; see the runTask chain call site's status guard).`
 }
 
 function taskReviewPrompt(im, planPath, art) {
@@ -2392,7 +2456,7 @@ async function reviewAndFix(im, planPath, art) {
   return { ...rv, status: 'BLOCKED', blockerBead: bead?.blockerBead }
 }
 
-async function handleBlocker(r, planPath) {
+async function handleBlocker(r, planPath, onResolve) {
   phase('Triage')
   // I-7 (review round 3): every blocker-path entry converges here — the implementer/brief-BLOCKED
   // case (via `integrateOne`'s `if (r.status === 'BLOCKED')` branch), the breaker cap's
@@ -2454,6 +2518,10 @@ async function handleBlocker(r, planPath) {
     await dispatch(() => ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName,
         ledgerLine(r.n, r.id, `pending retry — RESOLVE: ${t.detail}`)),
       `ledger-append:${r.id}`, { label: `ledger-append:${r.id}`, phase: 'Triage', model: model('mechanical') })
+    // Same-round retry (see resolveRetryHook): the clarification is recorded and the bead is
+    // still ready — re-attempt now instead of next round. The callback is optional-chained: the
+    // caller decides whether a same-round retry mechanism exists (integrateOne passes it).
+    onResolve?.(r.id)
   } else {
     const bounced = t.decision === 'RESOLVE'  // second RESOLVE for this id — bounced into ESCALATE
     settle(r.id, escalated)                    // quarantine: dependents stay unready in beads
@@ -2511,7 +2579,8 @@ narratives that used to accompany each row are in git history; nothing here depe
 | live-run fixes (null-dispatch guard, stopReason, reviewer file plumbing, blocker exclusion, integrationWorktree) | replay 32/0 | replay 24/0 | replay 23/0 |
 | relax-sequencing (sliding-window scheduler + hot-file cap, single-flight completion-order merge queue, parallelism detector) | replay 32/0 | replay 24/0 | replay 23/0 |
 | mid-round top-up (inter-round barrier removal: ready re-query per successful merge, quiescence loop) | replay 34/0 | replay 24/0 | replay 24/0 |
-| **top-up corrections (per-round query cap `topUpQueryCap`, frontier hint keyed on dispatched not planned, logged unmapped skips) — CURRENT** | **replay 34/0** | **replay 24/0** | **replay 24/0** |
+| top-up corrections (per-round query cap `topUpQueryCap`, frontier hint keyed on dispatched not planned, logged unmapped skips) | replay 34/0 | replay 24/0 | replay 24/0 |
+| **round-head parallelism (planner skip on fully-mapped rounds, Close∥Ready + post-closure re-check, same-round RESOLVE retry + `bd comments` clarification plumbing) — CURRENT** | **replay 40/0** | **replay 24/0** | **replay 24/0** |
 
 The relax-sequencing row is a **structural** edit (dispatch scheduling and merge sequencing both
 changed shape), re-verified by replay: all three recorded scenarios land on identical dispatch
@@ -2749,6 +2818,7 @@ round 1, changing every downstream assertion this scenario makes about bucketing
 | `close-epics` (array, 2 entries) | `{rootClosed:false,closedThisRun:[]}` then `{rootClosed:false,closedThisRun:["bd-101","bd-102"]}` | root stays open both rounds (quarantined `bd-103` and unresolved `bd-104` block closure) — round 1 doesn't exit early, round 2 doesn't loop forever |
 | `bd-ready` (array, 2 entries) | `{ids:["bd-101","bd-102","bd-103","bd-104"]}` then `{ids:[]}` | round 1 supplies the batch; round 2's empty set drains the loop (a canned value, not real `bd` continuity — see "What this dryRun proves and does not prove" below on why a RESOLVE'd `bd-104` not reappearing in round 2 is not itself an assertion). The **scoping** assertion (`--exclude-type=epic --label sp:<epicId>`) is a property of the dispatched prompt text itself, not of this canned return — verified by reading the prompt, same as `super-roast`'s reporter-arithmetic caveat above |
 | `bd-ready-topup` | `{ids:[]}` (single value, reused) | the mid-round top-up re-query fired after each successful merge (`bd-101`, `bd-102`) — empty here, so no bead tops up; the top-up DISPATCH path itself (a topped-up bead implementing mid-round) is exercised by the replay harness's dedicated scenarios, not by this fixture |
+| `bd-ready-recheck` | `{ids:[]}` | the post-closure ready re-check, fired once — round 2's `close-epics` stub reports in-tree closures |
 | `plan` | `{planPath:"...", mapping:[{n:1,id:"bd-101",files:["src/a.js"]},{n:2,id:"bd-102",files:["src/b.js"]},{n:3,id:"bd-103",files:["src/a.js"]},{n:4,id:"bd-104",files:["src/c.js"]}]}` | ordinal↔bead-id↔files mapping that `groupByDisjointFiles` and every `ordinalFor` lookup consumes |
 | `brief:bd-101` / `brief:bd-102` / `brief:bd-103` / `brief:bd-104` | `{id:"bd-1XX",n:<n>,status:"BRIEFED",files:[...],branch:".worktrees/<integrationBranch>--task-bd-1XX",base:"<40-char-sha>"}` | call-site-qualified per id (a single unqualified `brief` key can't return four different ids/branches); `base` here is the pre-implementer commit taskBriefPrompt now captures — this is where `n`/`branch`/`base` originate for the rest of the pipeline |
 | `implement:bd-101` / `implement:bd-102` / `implement:bd-103` | `{id:"bd-1XX",n:<n>,status:"IMPLEMENTED",files:[...],branch:"..."}` | same per-id qualification. This stub's `n`/`branch` are cosmetic only — the pipeline's implement stage re-stamps `n` from `ordinalFor(br.id)` and `branch` from `taskWorktree(br.id)` directly (never trusting the implementer's own echo, nor even the brief agent's — see the runTask chain call site); only `base` is carried from the brief result (`br.base`), since that one genuinely can't be recomputed |
@@ -2761,11 +2831,12 @@ round 1, changing every downstream assertion this scenario makes about bucketing
 | `ledger-append:bd-101` / `ledger-append:bd-102` | `{appended:true}` | I1: the merge-gate `ledger-append` dispatch — `Task <n> (bd-1XX): complete (commits <mergeBase7>..<head7>, review clean)` (fix-round-1: was `complete (merged, review clean)`, dropping the commit range upstream SKILL.md specifies; Fix 3, final fix round: the range's first half is `mergeBase`, not `base` — see the `mergeBase`/`MERGE` schema comment) (schema-less, like `notify`/`clarify` — the coordinator never reads this return) |
 | `merge:bd-103` | `{id:"bd-103",merged:false,blockerBead:"bd-108"}` | merge fails its bounded auto-resolve attempt → blocker path. **No `merge:bd-104` key exists** — `bd-104` never reaches `mergePrompt` at all, since its BLOCKED status routes it to `handleBlocker` directly at the top of `integrateOne` (see the `if (r.status === 'BLOCKED')` check); its absence is part of the test, same reasoning as `review:bd-104`'s absence above |
 | `triage:bd-103` | `{decision:"ESCALATE",detail:"rebase conflict on src/a.js survived one auto-resolve attempt"}` | the judgment dispatch in `handleBlocker`, ESCALATE branch — notify + quarantine |
-| `triage:bd-104` | `{decision:"RESOLVE",detail:"implementer needs the missing config constant named explicitly; re-plan and re-attempt"}` | the judgment dispatch in `handleBlocker`, **RESOLVE branch** — the one branch the prior three-task scenario never exercised. This is `bd-104`'s FIRST time through `handleBlocker`, so `pendingRetry` doesn't have it yet and C-2's one-retry bound doesn't fire (that requires a SECOND blocker-path visit for the same id, which this scenario doesn't stage — see the round-2 `bd-ready` note above) |
+| `triage:bd-104` | `{decision:"RESOLVE",detail:"implementer needs the missing config constant named explicitly; re-plan and re-attempt"}` | the judgment dispatch in `handleBlocker`, **called twice** (single value, reused): the first visit RESOLVEs (C-2 grants the retry, `clarify:bd-104` fires); the same-round retry's implementer reports BLOCKED again, and the SECOND visit's RESOLVE is bounced by C-2 into ESCALATE (`notify:bd-104` fires, `bd-104` quarantines) — the one-retry bound exercised end to end in one round |
 | `notify:bd-103` | `{sent:true}` | fixed-notification mechanical dispatch on the ESCALATE branch |
+| `notify:bd-104` | `{sent:true}` | the bounced second RESOLVE's escalation notification (see `triage:bd-104` above) |
 | `ledger-append:bd-103` | `{appended:true}` | I1: `handleBlocker`'s ESCALATE branch appends `Task 3 (bd-103): BLOCKED — <detail>` so a resumed run reconstructs `escalated` for this id |
 | `clarify:bd-104` | `{recorded:true}` | fixed-clarification-recording mechanical dispatch on the RESOLVE branch (schema-less, like `notify` — see "Schema-less dispatches" below); this is also what makes `pendingRetry` grow, which the no-progress guard reads as this round's progress signal (C-2) |
-| `ledger-append:bd-104` | `{appended:true}` | I1: `handleBlocker`'s RESOLVE branch appends `Task 4 (bd-104): pending retry — RESOLVE: <detail>` so a resumed run reconstructs `pendingRetry` (and C-2's one-retry bound) for this id |
+| `ledger-append:bd-104` | `{appended:true}` | I1: called twice (single value, reused) — the RESOLVE branch's `pending retry` line, then the bounced visit's `BLOCKED` line |
 | `final-review` | `{summary:"stub: 2/4 tasks merged; bd-103 quarantined, bd-104 resolved pending re-attempt",verdict:"conditional-pass"}` | whole-epic review dispatched once at least one task landed |
 
 **Stub keys are call-site qualified** (`brief:<id>`, `review:<id>`, `merge:<id>`, `triage:<id>`,
@@ -2813,12 +2884,15 @@ untested by any scenario in this doc — inspection-only, same as C-1/C-3 above.
   returned, `handleBlocker` dispatches `triage:bd-103` → `ESCALATE` → `notify:bd-103`, `bd-103` is
   pushed onto `escalated` (quarantined, not closed) — and the run **continues**: `bd-101`/`bd-102`
   still merge and close.
-- The blocker path also fires on `bd-104`'s implement-stage BLOCKED: `handleBlocker` dispatches
-  `triage:bd-104` → `RESOLVE` (first time for this id, so C-2's one-retry bound doesn't fire) →
-  `clarify:bd-104` (not `notify:bd-104`) — and `bd-104` is **not** pushed onto `escalated`, but IS
-  added to `pendingRetry`, per `handleBlocker`'s RESOLVE branch. The run proceeds to round 2
-  instead of halting either way; the no-progress guard doesn't fire this round regardless, since
-  `bd-101`/`bd-102` also merge (real progress on the `completed` signal alone).
+- The blocker path also fires on `bd-104`'s implement-stage BLOCKED, and now exercises the FULL
+  same-round retry arc: `handleBlocker` dispatches `triage:bd-104` → `RESOLVE` (first time, so
+  C-2 grants the retry) → `clarify:bd-104`, `bd-104` enters `pendingRetry`, and the RESOLVE
+  retry hook re-dispatches it **in the same round** (second `brief:bd-104`/`implement:bd-104` —
+  the single-valued stubs answer both attempts, so the retry implementer reports BLOCKED again)
+  → second `triage:bd-104` RESOLVE is **bounced by C-2** into ESCALATE → `notify:bd-104`, the
+  `BLOCKED` ledger line, and `bd-104` settles in `escalated` with `pendingRetry` drained. One
+  scenario now covers RESOLVE, the same-round retry, and the one-retry bound end to end; the
+  no-progress guard doesn't fire regardless, since `bd-101`/`bd-102` merge (real progress).
 - No path reaches `mergePrompt` with a status other than a clean (`CLEAN`, after however many fix
   rounds, or a PARK ruling — see "Cap-tripping dryRun scenario" below for that path) review result:
   `bd-101`/`bd-102`/`bd-103` are the only three `merge:<id>` dispatches, and each is reached only
@@ -2828,10 +2902,13 @@ untested by any scenario in this doc — inspection-only, same as C-1/C-3 above.
   reaches the round-5 cap or the adjudicator).
 - Expected dispatch count (I1: `read-ledger` 1 + `close-epics` 2 + `bd-ready` 2 +
   `bd-ready-topup` 2 (one per successful merge — `bd-101`, `bd-102`; deterministic under replay,
-  where the re-entrancy guard never coalesces instant stubs) + `plan` 1 +
-  `brief` 4 + `implement` 4 + `review` 3 + `fix` 1 + `re-review` 1 + `merge` 3 + `ledger-append` 4
-  (`bd-101`, `bd-102`, `bd-103`, `bd-104` — one per terminal outcome) + `triage` 2 + `notify` 1 +
-  `clarify` 1 + `final-review` 1 = **33 agent calls, 0 errors** (`final-review` dispatches because
+  where the re-entrancy guard never coalesces instant stubs) + `bd-ready-recheck` 1 (round 2's
+  Close reports in-tree closures) + `plan` 1 (round 2 skips the planner — all ids mapped) +
+  `brief` 5 + `implement` 5 (`bd-104` twice: first attempt + same-round RESOLVE retry) +
+  `review` 3 + `fix` 1 + `re-review` 1 + `merge` 3 + `ledger-append` 5
+  (one per terminal outcome, `bd-104` twice: `pending retry` then the bounced `BLOCKED`) +
+  `triage` 3 (`bd-103`, `bd-104` twice) + `notify` 2 (`bd-103`, bounced `bd-104`) +
+  `clarify` 1 + `final-review` 1 = **39 agent calls, 0 errors** (`final-review` dispatches because
   `completed.size` is 2, not 0) — **confirmed by re-run**, see below; this was computed by hand
   before that run and matched exactly. The pre-Task-5 script's confirmed count was 26 (see the
   superseded baseline below) — the +5 is exactly the new `read-ledger` (1) and `ledger-append` (4)
@@ -2970,6 +3047,7 @@ script and this `args` block:
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[]}"
       ],
       "bd-ready-topup": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[]}",
+      "bd-ready-recheck": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[]}",
       "plan": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"planPath\":\".worktrees/epic-bd-100-integration/.superpowers/sdd/bd-100-plan/bd-100-plan.md\",\"mapping\":[{\"n\":1,\"id\":\"bd-101\",\"files\":[\"src/a.js\"]},{\"n\":2,\"id\":\"bd-102\",\"files\":[\"src/b.js\"]},{\"n\":3,\"id\":\"bd-103\",\"files\":[\"src/a.js\"]},{\"n\":4,\"id\":\"bd-104\",\"files\":[\"src/c.js\"]}]}",
       "brief:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"BRIEFED\",\"files\":[\"src/a.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-101\",\"base\":\"aaaaaaa1111111111111111111111111111111\"}",
       "brief:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-102\",\"n\":2,\"status\":\"BRIEFED\",\"files\":[\"src/b.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-102\",\"base\":\"bbbbbbb2222222222222222222222222222222\"}",
@@ -2993,6 +3071,7 @@ script and this `args` block:
       "triage:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"decision\":\"ESCALATE\",\"detail\":\"rebase conflict on src/a.js survived one auto-resolve attempt\"}",
       "triage:bd-104": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"decision\":\"RESOLVE\",\"detail\":\"implementer needs the missing config constant named explicitly; re-plan and re-attempt\"}",
       "notify:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"sent\":true}",
+      "notify:bd-104": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"sent\":true}",
       "ledger-append:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "clarify:bd-104": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"recorded\":true}",
       "ledger-append:bd-104": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
@@ -3006,8 +3085,8 @@ If a future structural edit changes this script, re-run with these args, confirm
 update it deliberately alongside the edit that changed it), and replace the figures above — same
 discipline as `super-roast`'s "Passing baseline (recorded, not illustrative)" sections. Five structural edits have
 forced exactly that re-run, and each landed on the same count — see the revision table under "dryRun
-policy" for the full sequence. The CURRENT confirmed shape is **34 agent calls, 0 errors, terminal
-stopReason `ready-drained`** (33 from the dispatch arithmetic above + 1 `ledger-minor:bd-101:1`) — confirmed by the offline replay harness against the current script
+policy" for the full sequence. The CURRENT confirmed shape is **40 agent calls, 0 errors, terminal
+stopReason `ready-drained`** (39 from the dispatch arithmetic above + 1 `ledger-minor:bd-101:1`) — confirmed by the offline replay harness against the current script
 (see the current-row paragraph under "dryRun policy"; `wf_97164f71-a3c` is the last Workflow-hosted
 run, against the previous revision — read that writeup's own caveat before citing either figure for
 anything beyond dispatch-count/topology).
@@ -3121,6 +3200,7 @@ bead's TEXT — same `pick()` limit as everywhere else in this section.
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[]}"
       ],
       "bd-ready-topup": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[]}",
+      "bd-ready-recheck": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[]}",
       "plan": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"planPath\":\".worktrees/epic-bd-200-integration/.superpowers/sdd/bd-200-plan/bd-200-plan.md\",\"mapping\":[{\"n\":1,\"id\":\"bd-201\",\"files\":[\"src/x.js\"]}]}",
       "brief:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"BRIEFED\",\"files\":[\"src/x.js\"],\"branch\":\".worktrees/epic-bd-200-integration--task-bd-201\",\"base\":\"eeeeeee5555555555555555555555555555555\"}",
       "implement:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"IMPLEMENTED\",\"files\":[\"src/x.js\"],\"branch\":\".worktrees/epic-bd-200-integration--task-bd-201\"}",
@@ -3293,6 +3373,7 @@ question, same structural limit as the other four claims above.
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[]}"
       ],
       "bd-ready-topup": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[]}",
+      "bd-ready-recheck": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[]}",
       "plan": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"planPath\":\".worktrees/epic-bd-300-integration/.superpowers/sdd/bd-300-plan/bd-300-plan.md\",\"mapping\":[{\"n\":1,\"id\":\"bd-301\",\"files\":[\"src/y.js\"]}]}",
       "brief:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"BRIEFED\",\"files\":[\"src/y.js\"],\"branch\":\".worktrees/epic-bd-300-integration--task-bd-301\",\"base\":\"fffffff6666666666666666666666666666666\"}",
       "implement:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"IMPLEMENTED\",\"files\":[\"src/y.js\"],\"branch\":\".worktrees/epic-bd-300-integration--task-bd-301\"}",

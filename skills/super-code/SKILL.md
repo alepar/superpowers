@@ -100,6 +100,9 @@ with no declared files dispatches normally — isolation makes dispatch-time col
 Each successful merge fires a **mid-round top-up** — a ready re-query that dispatches
 newly-unblocked, already-mapped beads into the same round's window, so dependents overlap the
 merge drain instead of waiting for the next round.
+The round head is overlapped too: Close and Ready dispatch concurrently (with one post-closure
+re-check when Close closed in-tree epics), the opus planner is skipped on rounds whose ready ids
+are all already mapped, and a RESOLVE-triaged blocker retries within the round it was triaged in.
 A `Seam contract:` bead (super-design's §Coverage) legitimately declares files on **both** sides
 of its boundary — that is its job, not over-declaration; it merges before its dependents by
 construction, so its span never contends with them.

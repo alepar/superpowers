@@ -214,6 +214,7 @@ function oneTaskCanned(overrides = {}) {
     'close-epics': { rootClosed: false, closedThisRun: [] },
     'bd-ready': [{ ids: ['bd-101'] }, { ids: [] }],
     'bd-ready-topup': { ids: [] },
+    'bd-ready-recheck': { ids: [] },
     'plan': { planPath: PLANPATH, mapping: [{ n: 1, id: 'bd-101', files: ['src/a.js'] }] },
     'brief:bd-101': { id: 'bd-101', n: 1, status: 'BRIEFED', files: ['src/a.js'], branch: 'x', base: SHA('a') },
     'impl:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', files: ['src/a.js'] },
@@ -238,11 +239,11 @@ async function main() {
   {
     const out = await run({ args: canonicalArgs })
     assertNoThrow(out)
-    check(out.trace.length === 34, `34 agent dispatches (got ${out.trace.length}) — 32 + 2 top-up queries after bd-101/bd-102's merges`)
+    check(out.trace.length === 40, `40 agent dispatches (got ${out.trace.length}) — 32 + 2 top-up queries + 1 post-closure re-check (round 2's Close reports closures) + bd-104's same-round RESOLVE retry wave (brief, implement, bounced triage, notify, BLOCKED ledger line)`)
     const r = out.result
     check(r && JSON.stringify(r.completed.sort()) === '["bd-101","bd-102"]', 'completed = [bd-101, bd-102]', JSON.stringify(r?.completed))
-    check(r && JSON.stringify(r.escalated) === '["bd-103"]', 'escalated = [bd-103]', JSON.stringify(r?.escalated))
-    check(r && JSON.stringify(r.pendingRetry) === '["bd-104"]', 'pendingRetry = [bd-104]', JSON.stringify(r?.pendingRetry))
+    check(r && JSON.stringify(r.escalated.sort()) === '["bd-103","bd-104"]', 'escalated = [bd-103, bd-104] — bd-104 spent its C-2 retry same-round (stub implementer stays BLOCKED) and bounced', JSON.stringify(r?.escalated))
+    check(r && r.pendingRetry.length === 0, 'pendingRetry drained — the same-round retry resolved it to a terminal bucket', JSON.stringify(r?.pendingRetry))
     check(r && r.parked.length === 0 && r.stalled === false, 'parked empty, stalled false')
     check(r && r.stopReason === 'ready-drained', "stopReason = 'ready-drained'", r?.stopReason)
     check(!out.trace.some(t => ['review:bd-104', 'merge:bd-104'].includes(t.label)), 'bd-104 never reviewed or merged (C4 guard held)')
@@ -284,6 +285,8 @@ async function main() {
       'bd-ready': [{ ids: ['bd-101', 'bd-104'] }, { ids: [] }],
       'plan': { planPath: PLANPATH, mapping: [{ n: 1, id: 'bd-101', files: ['src/a.js'] }, { n: 4, id: 'bd-104', files: ['src/c.js'] }] },
       'bd-ready-topup': { ids: [] },
+      'bd-ready-recheck': { ids: [] },
+    'bd-ready-recheck': { ids: [] },
       'brief:bd-101': { id: 'bd-101', n: 1, status: 'BRIEFED', files: ['src/a.js'], branch: 'x', base: SHA('a') },
       'brief:bd-104': { id: 'bd-104', n: 4, status: 'BRIEFED', files: ['src/c.js'], branch: 'x', base: SHA('d') },
       'impl:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', files: ['src/a.js'] },
@@ -296,6 +299,7 @@ async function main() {
       'ledger-append:bd-104': { appended: true },
       'triage:bd-104': { decision: 'RESOLVE', detail: 'name the constant' },
       'clarify:bd-104': { recorded: true },
+      'notify:bd-104': { sent: true },
       'final-review': 'fine',
     }
     const out = await run({ args: liveArgs(), canned })
@@ -334,7 +338,7 @@ async function main() {
     check(/ONLY the `blocker` label/.test(impl104 ?? '') && /no `--parent`/.test(impl104 ?? ''), 'implementer self-filing instruction is label-only', impl104)
 
     const r = out.result
-    check(JSON.stringify(r?.completed) === '["bd-101"]' && JSON.stringify(r?.pendingRetry) === '["bd-104"]', 'terminal buckets correct', JSON.stringify(r))
+    check(JSON.stringify(r?.completed) === '["bd-101"]' && JSON.stringify(r?.escalated) === '["bd-104"]' && r?.pendingRetry.length === 0, 'terminal buckets correct (bd-104 retried same-round and bounced to escalated)', JSON.stringify(r))
     assertBucketsDisjoint(r)
   }
 
@@ -596,6 +600,8 @@ async function main() {
       'close-epics': { rootClosed: false, closedThisRun: [] },
       'bd-ready': [{ ids: [...ids] }, { ids: [] }],
       'bd-ready-topup': { ids: [] },
+      'bd-ready-recheck': { ids: [] },
+    'bd-ready-recheck': { ids: [] },
       'plan': { planPath: PLANPATH, mapping: ids.map((id, i) => ({ n: i + 1, id, files: [`src/f${i}.js`] })) },
       'final-review': 'fine',
     }
@@ -803,6 +809,95 @@ async function main() {
     check(ids.every(id => (out.counts[`brief:${id}`] ?? 0) === 1), 'no double dispatch anywhere in the graph')
     check(out.logs.some(l => l.includes('topped-up 39')), 'detector counts the 39 topped-up beads', out.logs.find(l => l.startsWith('parallelism')))
     check((out.counts['bd-ready-topup'] ?? 0) <= 40, `query count within the default budget (got ${out.counts['bd-ready-topup']})`)
+    assertBucketsDisjoint(out.result)
+  }
+
+  // ===== 6. round-head parallelism scenarios =====
+
+  scenario('planner skip: a refill round with fully-mapped ids dispatches no planner')
+  {
+    // Round 1 maps both ids (planner enumerates ready AND blocked); round 2's ready id bd-102
+    // already has a row, so the opus planner must not re-dispatch.
+    const canned = manyTaskCanned(['bd-101', 'bd-102'], {
+      'bd-ready': [{ ids: ['bd-101'] }, { ids: ['bd-102'] }, { ids: [] }],
+    })
+    const out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    check(out.counts['plan'] === 1, `planner dispatched once across two working rounds (got ${out.counts['plan']})`)
+    check(out.logs.some(l => l.includes('already mapped — skipping the planner dispatch')), 'skip is logged')
+    check(JSON.stringify(out.result?.completed.sort()) === '["bd-101","bd-102"]', 'both rounds still complete their work', JSON.stringify(out.result))
+    assertBucketsDisjoint(out.result)
+  }
+
+  scenario('Close∥Ready: in-tree closures trigger the ready re-check, epic-dependent task joins the round')
+  {
+    // Round 1's Close closes an in-tree epic; the initial (concurrent) ready query missed the
+    // task that closure unblocked, the re-check catches it.
+    const canned = manyTaskCanned(['bd-101', 'bd-102'], {
+      'close-epics': [{ rootClosed: false, closedThisRun: ['bd-090'] }, { rootClosed: false, closedThisRun: [] }],
+      'bd-ready': [{ ids: ['bd-101'] }, { ids: [] }],
+      'bd-ready-recheck': { ids: ['bd-101', 'bd-102'] },
+    })
+    const out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    check(out.counts['bd-ready-recheck'] === 1, `re-check fired exactly once, on the closure round (got ${out.counts['bd-ready-recheck']})`)
+    check(JSON.stringify(out.result?.completed.sort()) === '["bd-101","bd-102"]', 'the epic-dependent task completed in round 1', JSON.stringify(out.result))
+    check(out.counts['bd-ready'] === 2, `no extra round needed (got ${out.counts['bd-ready']} round queries)`)
+    assertBucketsDisjoint(out.result)
+  }
+
+  scenario('Close∥Ready: null re-check keeps the original ready result (opportunistic)')
+  {
+    const canned = manyTaskCanned(['bd-101'], {
+      'close-epics': [{ rootClosed: false, closedThisRun: ['bd-090'] }, { rootClosed: false, closedThisRun: [] }],
+      'bd-ready-recheck': null,
+    })
+    const out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    check(JSON.stringify(out.result?.completed) === '["bd-101"]', 'round proceeds on the original ready result', JSON.stringify(out.result))
+    check(out.logs.some(l => l.includes('keeping the original ready result')), 'null re-check logged as opportunistic')
+    check(out.result?.stopReason === 'ready-drained', 'never a stopReason', out.result?.stopReason)
+    assertBucketsDisjoint(out.result)
+  }
+
+  scenario('RESOLVE retry: clarified task completes in the SAME round')
+  {
+    // First implement attempt reports BLOCKED with a self-filed bead; triage RESOLVEs; the
+    // same-round retry re-briefs and the second attempt succeeds — merged without a new round.
+    const canned = manyTaskCanned(['bd-101'], {
+      'impl:bd-101': [
+        { id: 'bd-101', status: 'BLOCKED', files: [], blockerBead: 'bd-109' },
+        tick({ id: 'bd-101', status: 'IMPLEMENTED', files: [] }),
+      ],
+      'triage:bd-101': { decision: 'RESOLVE', detail: 'use the existing constant' },
+      'clarify:bd-101': { recorded: true },
+    })
+    const out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    check(JSON.stringify(out.result?.completed) === '["bd-101"]', 'completed within the round', JSON.stringify(out.result))
+    check(out.result?.pendingRetry.length === 0, 'pendingRetry cleared by the successful retry')
+    check(out.counts['bd-ready'] === 2, `no extra round consumed (got ${out.counts['bd-ready']})`)
+    check(out.counts['impl:bd-101'] === 2 && out.counts['brief:bd-101'] === 2, 'retry re-briefed and re-implemented once')
+    check(out.counts['triage:bd-101'] === 1, 'C-2 allowance spent exactly once')
+    const impl = promptOf(out.trace, 'impl:bd-101')
+    check(impl?.includes('bd comments bd-101'), 'implement dispatch tells the implementer to read recorded clarifications', impl)
+    assertBucketsDisjoint(out.result)
+  }
+
+  scenario('RESOLVE retry: still-blocked retry bounces to ESCALATE within the round (C-2 bound intact)')
+  {
+    const canned = manyTaskCanned(['bd-101'], {
+      'impl:bd-101': { id: 'bd-101', status: 'BLOCKED', files: [], blockerBead: 'bd-109' },  // BLOCKED every attempt
+      'triage:bd-101': { decision: 'RESOLVE', detail: 'try the constant' },  // RESOLVE every time — C-2 must bounce the second
+      'clarify:bd-101': { recorded: true },
+      'notify:bd-101': { sent: true },
+    })
+    const out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    check(JSON.stringify(out.result?.escalated) === '["bd-101"]', 'second RESOLVE bounced to quarantine', JSON.stringify(out.result))
+    check(out.result?.pendingRetry.length === 0, 'not left pending')
+    check(out.counts['impl:bd-101'] === 2, `exactly one retry, then the bounce (got ${out.counts['impl:bd-101']} implements)`)
+    check(out.counts['bd-ready'] === 2, 'all within one working round')
     assertBucketsDisjoint(out.result)
   }
 
