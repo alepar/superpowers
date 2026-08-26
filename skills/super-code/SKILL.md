@@ -97,9 +97,10 @@ merge touches the integration branch at any moment, guaranteed by chaining, not 
 most `config.hotFileCap` (default 3) in-flight tasks may declare the same file, which bounds
 worst-case rebase churn on a shared barrel/index/registry without collapsing the frontier. A task
 with no declared files dispatches normally — isolation makes dispatch-time collision impossible.
-Each successful merge fires a **mid-round top-up** — a ready re-query that dispatches
-newly-unblocked, already-mapped beads into the same round's window, so dependents overlap the
-merge drain instead of waiting for the next round.
+Each successful merge fires a **mid-round top-up** — an epic-close pass (the just-closed bead may
+have been its epic's last open child, and an unclosed epic hides every epic-edge dependent)
+followed by a ready re-query that dispatches newly-unblocked, already-mapped beads into the same
+round's window, so dependents overlap the merge drain instead of waiting for the next round.
 The round head is overlapped too: Close and Ready dispatch concurrently (with one post-closure
 re-check when Close closed in-tree epics), the opus planner is skipped on rounds whose ready ids
 are all already mapped, and a RESOLVE-triaged blocker retries within the round it was triaged in.

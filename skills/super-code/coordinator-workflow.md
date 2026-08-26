@@ -1815,10 +1815,12 @@ while (true) {
           return
         }
         topUpQueriesUsed++
-        // Same prompt as the round query (same blocker-label exclusion, same structural
-        // fallback), DISTINCT stub key/label: a dryRun scenario controls top-up responses
-        // separately from the round-gating query's consumed-per-round array.
-        const more = await dispatch(() => readyPrompt(epicId), 'bd-ready-topup',
+        // topUpPrompt = epic-close pass + the round query's own text (same blocker-label
+        // exclusion, same structural fallback), DISTINCT stub key/label: a dryRun scenario
+        // controls top-up responses separately from the round-gating query's consumed-per-round
+        // array. The close pass rides this dispatch because the top-up fires per successful
+        // merge — the exact moment an epic can become close-eligible (issue #2 defect 3).
+        const more = await dispatch(() => topUpPrompt(epicId), 'bd-ready-topup',
           { label: 'bd-ready-topup', phase: 'Implement', schema: READY, model: model('mechanical') })
         if (!more) { log('top-up ready query returned null — skipping this top-up; the next round query is the authority'); return }
         for (const id of (more.ids ?? [])) {
@@ -2024,6 +2026,15 @@ function closeEpicsPrompt(epicId) {
   //   condition is instead "a pass closes zero in-tree ids" — immune to a permanently-eligible
   //   out-of-tree candidate, and still correct: each pass that closes something can unlock the
   //   next tree level up, so the loop still reaches a real fixpoint.
+  return `${closeEpicsProcedure(epicId)}
+When the loop stops, run \`bd show ${epicId} --json\` and report rootClosed as true iff its status is closed, plus closedThisRun listing only the ids this run actually closed via \`bd close\` across all passes.`
+}
+
+function closeEpicsProcedure(epicId) {
+  // The epic-closure loop body, shared verbatim by closeEpicsPrompt (the round-head Close pass,
+  // which adds the rootClosed/closedThisRun report) and topUpPrompt (the mid-round top-up, which
+  // runs it as phase 1 before its ready re-query) — one procedure, stated once, so an edit to the
+  // membership filter or the stop condition cannot drift between the two call sites.
   return `Loop the following. STOP CONDITION: stop when a pass closes zero in-tree ids — do NOT stop merely because a preview call returns \`[]\`; those are different, see step 4.
 1. Run \`bd epic close-eligible --dry-run --json\` and parse the returned array of candidate epic ids. (bd epic close-eligible closes at most one tree level per call, so this loop runs multiple passes even in the simplest case.)
 2. For each candidate id, classify it IN-TREE or OUT-OF-TREE using this test, in priority order — do not skip step (a) even when (b) seems obvious:
@@ -2032,8 +2043,21 @@ function closeEpicsPrompt(epicId) {
 ${treeMembershipTest(epicId)}
    b. SANITY CHECK ONLY, never authoritative: the id-prefix convention (<id> === "${epicId}" or <id> starts with "${epicId}.") should agree with (a). If it ever disagrees — e.g. a hand-created bead was given a lookalike id, or a bead outside the naming convention was parented under this epic — trust (a), not the prefix.
 3. Close only the IN-TREE ids from this pass, individually: run \`bd close <id>\` once per id (never the bare, unfiltered \`bd epic close-eligible\` mutating form). Append each closed id to closedThisRun. Leave OUT-OF-TREE ids untouched — they belong to unrelated work sharing this repo, and will keep reappearing in future previews; that is expected, not a bug.
-4. If step 3 closed zero ids this pass (whether because the preview was \`[]\`, or because the preview was non-empty but every candidate was OUT-OF-TREE), STOP — the fixpoint is reached. Otherwise, repeat from step 1.
-When the loop stops, run \`bd show ${epicId} --json\` and report rootClosed as true iff its status is closed, plus closedThisRun listing only the ids this run actually closed via \`bd close\` across all passes.`
+4. If step 3 closed zero ids this pass (whether because the preview was \`[]\`, or because the preview was non-empty but every candidate was OUT-OF-TREE), STOP — the fixpoint is reached. Otherwise, repeat from step 1.`
+}
+
+function topUpPrompt(epicId) {
+  // Issue #2 defect 3: a close-eligible epic used to wait for the next round head's Close pass,
+  // and a mid-round merge drain is precisely the low-concurrency window — measured live, closing
+  // one such epic by hand took the ready set 2 → 6 and active agents 2 → 11. The top-up dispatch
+  // IS the child-close hook (it fires after each successful merge), so it now closes
+  // newly-eligible epics first: the task bead the merge just closed may have been its epic's last
+  // open child, and an unclosed epic keeps every epic-edge dependent invisible to the ready
+  // query. Same READY schema — the closes are side effects; the round-head Close pass remains the
+  // authority on rootClosed (a root closed here is simply found already-closed there).
+  return `Two phases, in order, one report.
+PHASE 1 — close any newly-eligible epics (a bead just merged and closed; if it was its epic's last open child, that epic is now close-eligible and its own dependents are invisible to PHASE 2 until it closes): ${closeEpicsProcedure(epicId)}
+PHASE 2 — ready re-query: ${readyPrompt(epicId)}`
 }
 
 // The remaining prompt builders are deliberately minimal — the real prompt content lives in
