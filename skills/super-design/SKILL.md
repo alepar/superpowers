@@ -91,6 +91,29 @@ by rooting lower on your own.
 
 Same fields as brainstorming's old beads step: title, short description, files-touched hint, blocking deps per child.
 
+**Decompose in two explicit steps.** **Step A — split:** carve the spec into minimal
+logically-cohesive chunks per the sizing bar below, ignoring ordering entirely while splitting.
+**Step B — connect, as a first approximation:** add blocking deps per the edge rules further
+down, sparse by the standing "when in doubt, leave it out" policy. The deps you write are a
+first approximation by design — the promotion review runs next, and coverage's edge audit
+(`NARRATIVE-EDGE`) and seam check (`UNOWNED-SEAM`) refine edges after the tree settles — so do
+not agonize over edges; a dedicated audit owns edge quality. Step A's job, which nothing
+downstream can recover, is to not miss work and to not fuse work that could run apart.
+
+**The sizing bar (Step A):**
+
+- **Cohesion:** a leaf is one merge-worthy deliverable a reviewer accepts or rejects as a
+  unit. A description that needs "and then" is two beads.
+- **Floor:** execution spends roughly five dispatches of ceremony per bead (brief → implement →
+  review → merge → ledger), so never split below one coherent reviewable change — a bead whose
+  implementation is smaller than its own ceremony merges into a sibling. Minimal is not tiny.
+- **Bottleneck rule (fan-out-aware):** size a bead inversely to how many others depend on it. A
+  bead that gates others lands **only the unblocking artifact** — polish, tests beyond the
+  artifact's own acceptance, and remaining call-site migration move into dependents or a
+  non-gating sibling that depends on it. Seam-contract beads are the exemplar: compilable
+  stubs, inert-by-default. Width is parallelism — every line moved off a bottleneck bead moves
+  work off the critical path.
+
 **Every child's description names the boundaries it owns and the boundaries it consumes** —
 e.g. "owns: `TrainingConfig` schema field; consumes: regime entry-point signature". A boundary
 is any data or interface this child exchanges with a sibling: a config value one child defines
