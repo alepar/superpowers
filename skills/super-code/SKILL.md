@@ -114,6 +114,12 @@ hot-file deferrals named per file, and points at the cause when it degrades: ove
 `filesTouched` (`./planner-prompt.md`), dependency edges encoding narrative order rather than
 genuine blocking (`super-design`'s §Decomposition), or one shared file — a barrel, an index, a
 registry — that every task touches and that should be split or assigned to a single task.
+A ready set that stays small against many open beads has one more cause the leaf graph cannot
+show: an **epic-level edge** — `bd ready` honors epic→epic blocking, so a leaf whose own deps
+are all closed can still be refused for days (measured: 11.4 days on one leaf). When ready looks
+starved, check the open leaves' ancestor epics for blocking deps (`bd show <epic> --json`); a
+whole-epic gate whose dependents really need specific leaves is a design defect — narrow it to
+leaf-level edges (super-design's fifth edge rule) rather than waiting it out.
 Rationale, measured evidence, and counter-evidence for this dispatch model:
 `./coordinator-workflow.md`'s Implement-phase relaxation comment.
 

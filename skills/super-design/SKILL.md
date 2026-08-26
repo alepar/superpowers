@@ -151,8 +151,8 @@ tell a decorative edge from a real one. When in doubt, leave it out: execution's
 and post-rebase test run catch a genuine conflict at the cost of one rework cycle, while a
 decorative edge costs a full round on every run.
 
-Four edge rules, each the generalization of a measured live failure (the coverage loop's
-`NARRATIVE-EDGE` check audits the first three — §Coverage):
+Five edge rules, each the generalization of a measured live failure (the coverage loop's
+`NARRATIVE-EDGE` check audits the first three and the fifth — §Coverage):
 
 - **Name the consumed artifact or drop the edge.** Every edge is justified by a specific artifact
   — an interface, schema, file, or recorded decision — that the dependent consumes and the blocker
@@ -170,6 +170,13 @@ Four edge rules, each the generalization of a measured live failure (the coverag
   the question — it hands the decision, implicitly, to whichever implementer runs first. Decide it
   in the spec, or extract it as a seam contract (§Coverage's `UNOWNED-SEAM` machinery) and let
   both tasks run in parallel against the decided boundary.
+- **Prefer leaf-level edges over epic-level edges.** An epic→epic edge claims every leaf under
+  the dependent needs ALL of the blocking epic — and it is invisible to `bd ready` readers of the
+  leaf graph, so nothing downstream re-audits it (measured live: one such edge idled a leaf whose
+  own deps were satisfied for 11.4 days, in an epic holding two leaves with no deps at all).
+  Write the specific leaf→leaf edges the artifacts justify; reserve an epic-level edge for the
+  rare case where every leaf genuinely consumes the whole predecessor epic, and say why in the
+  dependent epic's description.
 
 **Check the graph's shape before moving on.** Execution rounds ≈ the longest dependency chain. A
 wide body with a long thin tail — a finishing layer written as wire-up → verify → polish — is a

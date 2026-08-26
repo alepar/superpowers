@@ -37,7 +37,10 @@ Task tool (general-purpose), model: opus:
 
     ## Task tree
     [TASK_TREE — every task's id, title, description, and the ids it depends on (its
-    blocking deps), for the scope under review. Leaf tasks and their dependency lists are
+    blocking deps), for the scope under review — INCLUDING epic-typed nodes and their own
+    blocking deps, marked `(epic)`: an epic→epic edge gates every leaf under the dependent
+    epic and is invisible to a leaves-only dump, which blinds the edge audit to the
+    single most expensive edge class. Leaf tasks and their dependency lists are
     dumped from the bd DB, not read from spec files.]
 
     ## Flagged tasks
@@ -89,6 +92,14 @@ Task tool (general-purpose), model: opus:
        ordering. Do not flag edges onto `Seam contract:` beads (that is the seam mechanism
        working), and do not flag an edge whose artifact you can name and locate at its
        producer — a real edge is not a finding.
+       Audit edges on `(epic)` nodes with EXTRA scrutiny: an epic→epic edge claims every
+       leaf under the dependent epic needs all of the blocking epic finished. That claim is
+       rarely true and its cost is the whole subtree's idle time — if the dependents' real
+       needs are specific leaves of the blocking epic, the finding is MISDIRECTED with the
+       proposed fix "narrow to leaf-level edges: <dependent leaf> → <specific producer
+       leaf>, and drop the epic-level edge". An epic edge you can fully justify (every leaf
+       genuinely consumes the whole epic's output) is not a finding, but say so explicitly
+       in one line rather than skipping it.
     6. **Flag sweep.** Every id in "Flagged tasks" is an automatic finding — known-
        underdesigned work must not sail through silently — *unless* it already has an
        entry in the rejected-findings ledger, which takes precedence over the sweep.
