@@ -211,6 +211,7 @@ function liveArgs(overrides = {}) {
 function oneTaskCanned(overrides = {}) {
   return {
     'read-ledger': { text: '' },
+    'ledger-append:launch': { appended: true },
     'close-epics': { rootClosed: false, closedThisRun: [] },
     'bd-ready': [{ ids: ['bd-101'] }, { ids: [] }],
     'bd-ready-topup': { ids: [] },
@@ -239,7 +240,7 @@ async function main() {
   {
     const out = await run({ args: canonicalArgs })
     assertNoThrow(out)
-    check(out.trace.length === 40, `40 agent dispatches (got ${out.trace.length}) — 32 + 2 top-up queries + 1 post-closure re-check (round 2's Close reports closures) + bd-104's same-round RESOLVE retry wave (brief, implement, bounced triage, notify, BLOCKED ledger line)`)
+    check(out.trace.length === 41, `41 agent dispatches (got ${out.trace.length}) — 32 + 1 launch-args ledger record + 2 top-up queries + 1 post-closure re-check (round 2's Close reports closures) + bd-104's same-round RESOLVE retry wave (brief, implement, bounced triage, notify, BLOCKED ledger line)`)
     const r = out.result
     check(r && JSON.stringify(r.completed.sort()) === '["bd-101","bd-102"]', 'completed = [bd-101, bd-102]', JSON.stringify(r?.completed))
     check(r && JSON.stringify(r.escalated.sort()) === '["bd-103","bd-104"]', 'escalated = [bd-103, bd-104] — bd-104 spent its C-2 retry same-round (stub implementer stays BLOCKED) and bounced', JSON.stringify(r?.escalated))
@@ -254,7 +255,7 @@ async function main() {
   {
     const out = await run({ args: capArgs })
     assertNoThrow(out)
-    check(out.trace.length === 24, `24 agent dispatches (got ${out.trace.length})`)
+    check(out.trace.length === 25, `25 agent dispatches (got ${out.trace.length}) — 24 + 1 launch-args ledger record`)
     const r = out.result
     check(r && r.completed.length === 0 && JSON.stringify(r.escalated) === '["bd-201"]', 'completed empty, escalated = [bd-201]', JSON.stringify(r))
     check(r && r.review === 'no work landed', "review = 'no work landed'", r?.review)
@@ -268,7 +269,7 @@ async function main() {
   {
     const out = await run({ args: parkArgs })
     assertNoThrow(out)
-    check(out.trace.length === 24, `24 agent dispatches (got ${out.trace.length}) — 23 + 1 top-up query after bd-301's merge`)
+    check(out.trace.length === 25, `25 agent dispatches (got ${out.trace.length}) — 23 + 1 launch-args ledger record + 1 top-up query after bd-301's merge`)
     const r = out.result
     check(r && JSON.stringify(r.completed) === '["bd-301"]' && JSON.stringify(r.parked) === '["bd-301"]', 'bd-301 completed AND parked', JSON.stringify(r))
     check(out.trace.some(t => t.label === 'merge:bd-301'), 'PARK ruling reached the merge gate')
@@ -281,6 +282,7 @@ async function main() {
   {
     const canned = {
       'read-ledger': { text: '' },
+      'ledger-append:launch': { appended: true },
       'close-epics': { rootClosed: false, closedThisRun: [] },
       'bd-ready': [{ ids: ['bd-101', 'bd-104'] }, { ids: [] }],
       'plan': { planPath: PLANPATH, mapping: [{ n: 1, id: 'bd-101', files: ['src/a.js'] }, { n: 4, id: 'bd-104', files: ['src/c.js'] }] },
@@ -597,6 +599,7 @@ async function main() {
   function manyTaskCanned(ids, overrides = {}) {
     const c = {
       'read-ledger': { text: '' },
+      'ledger-append:launch': { appended: true },
       'close-epics': { rootClosed: false, closedThisRun: [] },
       'bd-ready': [{ ids: [...ids] }, { ids: [] }],
       'bd-ready-topup': { ids: [] },

@@ -1210,6 +1210,18 @@ const ledger = await dispatch(() => readLedgerPrompt(integrationWorktree, ledger
 // the authority on closed work either way, but a prior run's `pendingRetry` bounds are lost for
 // this run, which is worth a log line rather than silence.
 if (!ledger) log('resume: ledger read unavailable (null dispatch) — proceeding with an empty reconstruction; bd ready remains the authority on closed work, but prior-run pendingRetry bounds are lost for this run')
+// Issue #2 defect 6: `args` appear in neither journal.jsonl nor the transcript dir, so every
+// relaunch reverse-engineered `{epicId, integrationBranch, config:{...}}` from the script's own
+// call sites — the first live attempt failed outright with "coordinator args missing: undefined",
+// at ~30 minutes per lost relaunch on a run that expects 4-6 invocations for the agent-budget cap
+// alone. The fully-resolved launch args are therefore written to the ledger as the first act of
+// every launch (fire-and-forget tier, `ledger-append` null policy): a later relaunch copies the
+// `Launch:` line's JSON back into the Workflow invocation verbatim instead of reconstructing it.
+// `prompts` (the dryRun stub tables) is deliberately omitted — it can run to many KB and a live
+// relaunch never needs it; `dryRun` itself is recorded so a stub-table omission is self-evident.
+await dispatch(() => ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName,
+    `Launch: args ${JSON.stringify({ epicId, integrationBranch, integrationWorktree, config, dryRun: !!dryRun })}`),
+  'ledger-append:launch', { label: 'ledger-append:launch', phase: 'Resume', model: model('mechanical') })
 // Pure JS parse — no judgment, no further I/O (the text is already fetched above). Ledger lines are
 // append-only, so a bead id can have MORE THAN ONE line over a run's history (e.g. a "pending retry"
 // line followed later by a "complete" or "BLOCKED" one) — keep only the LAST line per id, the same
@@ -2679,7 +2691,8 @@ narratives that used to accompany each row are in git history; nothing here depe
 | relax-sequencing (sliding-window scheduler + hot-file cap, single-flight completion-order merge queue, parallelism detector) | replay 32/0 | replay 24/0 | replay 23/0 |
 | mid-round top-up (inter-round barrier removal: ready re-query per successful merge, quiescence loop) | replay 34/0 | replay 24/0 | replay 24/0 |
 | top-up corrections (per-round query cap `topUpQueryCap`, frontier hint keyed on dispatched not planned, logged unmapped skips) | replay 34/0 | replay 24/0 | replay 24/0 |
-| **round-head parallelism (planner skip on fully-mapped rounds, Close∥Ready + post-closure re-check, same-round RESOLVE retry + `bd comments` clarification plumbing) — CURRENT** | **replay 40/0** | **replay 24/0** | **replay 24/0** |
+| round-head parallelism (planner skip on fully-mapped rounds, Close∥Ready + post-closure re-check, same-round RESOLVE retry + `bd comments` clarification plumbing) | replay 40/0 | replay 24/0 | replay 24/0 |
+| **issue #2 batch (ready-query `--limit` + truncation rule, top-up epic-close phase, `ledger-append:launch` args record) — CURRENT** | **replay 41/0** | **replay 25/0** | **replay 25/0** |
 
 The relax-sequencing row is a **structural** edit (dispatch scheduling and merge sequencing both
 changed shape), re-verified by replay: all three recorded scenarios land on identical dispatch
@@ -2922,6 +2935,7 @@ round 1, changing every downstream assertion this scenario makes about bucketing
 | Stub key | Canned output (`<json>` content) | Exercises |
 |---|---|---|
 | `read-ledger` | `{text:""}` | I1: the one-time Resume-phase read, before the round loop starts — empty text means a fresh epic with no prior ledger, so nothing is reconstructed into `completed`/`escalated`/`parked`/`pendingRetry` (a resumed-run scenario, with non-empty ledger text, is not covered by this scenario — see "What this dryRun still can't prove" additions below) |
+| `ledger-append:launch` | `{appended:true}` | issue #2 defect 6: the launch-args `Launch:` ledger record, written once per launch right after the Resume read |
 | `close-epics` (array, 2 entries) | `{rootClosed:false,closedThisRun:[]}` then `{rootClosed:false,closedThisRun:["bd-101","bd-102"]}` | root stays open both rounds (quarantined `bd-103` and unresolved `bd-104` block closure) — round 1 doesn't exit early, round 2 doesn't loop forever |
 | `bd-ready` (array, 2 entries) | `{ids:["bd-101","bd-102","bd-103","bd-104"]}` then `{ids:[]}` | round 1 supplies the batch; round 2's empty set drains the loop (a canned value, not real `bd` continuity — see "What this dryRun proves and does not prove" below on why a RESOLVE'd `bd-104` not reappearing in round 2 is not itself an assertion). The **scoping** assertion (`--exclude-type=epic --label sp:<epicId>`) is a property of the dispatched prompt text itself, not of this canned return — verified by reading the prompt, same as `super-roast`'s reporter-arithmetic caveat above |
 | `bd-ready-topup` | `{ids:[]}` (single value, reused) | the mid-round top-up re-query fired after each successful merge (`bd-101`, `bd-102`) — empty here, so no bead tops up; the top-up DISPATCH path itself (a topped-up bead implementing mid-round) is exercised by the replay harness's dedicated scenarios, not by this fixture |
@@ -3007,7 +3021,8 @@ untested by any scenario in this doc — inspection-only, same as C-1/C-3 above.
   by inspection of the runTask chain call site and `reviewAndFix`'s return paths, not by this scenario
   alone, since `bd-104` is the only stubbed BLOCKED case here and this scenario's fix loop never
   reaches the round-5 cap or the adjudicator).
-- Expected dispatch count (I1: `read-ledger` 1 + `close-epics` 2 + `bd-ready` 2 +
+- Expected dispatch count (I1: `read-ledger` 1 + `ledger-append:launch` 1 (the launch-args
+  record, issue #2 defect 6) + `close-epics` 2 + `bd-ready` 2 +
   `bd-ready-topup` 2 (one per successful merge — `bd-101`, `bd-102`; deterministic under replay,
   where the re-entrancy guard never coalesces instant stubs) + `bd-ready-recheck` 1 (round 2's
   Close reports in-tree closures) + `plan` 1 (round 2 skips the planner — all ids mapped) +
@@ -3015,7 +3030,7 @@ untested by any scenario in this doc — inspection-only, same as C-1/C-3 above.
   `review` 3 + `fix` 1 + `re-review` 1 + `merge` 3 + `ledger-append` 5
   (one per terminal outcome, `bd-104` twice: `pending retry` then the bounced `BLOCKED`) +
   `triage` 3 (`bd-103`, `bd-104` twice) + `notify` 2 (`bd-103`, bounced `bd-104`) +
-  `clarify` 1 + `final-review` 1 = **39 agent calls, 0 errors** (`final-review` dispatches because
+  `clarify` 1 + `final-review` 1 = **40 agent calls, 0 errors** (`final-review` dispatches because
   `completed.size` is 2, not 0) — **confirmed by re-run**, see below; this was computed by hand
   before that run and matched exactly. The pre-Task-5 script's confirmed count was 26 (see the
   superseded baseline below) — the +5 is exactly the new `read-ledger` (1) and `ledger-append` (4)
@@ -3145,6 +3160,7 @@ script and this `args` block:
   "prompts": {
     "stubs": {
       "read-ledger": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"text\":\"\"}",
+      "ledger-append:launch": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "close-epics": [
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"rootClosed\":false,\"closedThisRun\":[]}",
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"rootClosed\":false,\"closedThisRun\":[\"bd-101\",\"bd-102\"]}"
@@ -3190,10 +3206,10 @@ script and this `args` block:
 
 If a future structural edit changes this script, re-run with these args, confirm the same shape (or
 update it deliberately alongside the edit that changed it), and replace the figures above — same
-discipline as `super-roast`'s "Passing baseline (recorded, not illustrative)" sections. Five structural edits have
-forced exactly that re-run, and each landed on the same count — see the revision table under "dryRun
-policy" for the full sequence. The CURRENT confirmed shape is **40 agent calls, 0 errors, terminal
-stopReason `ready-drained`** (39 from the dispatch arithmetic above + 1 `ledger-minor:bd-101:1`) — confirmed by the offline replay harness against the current script
+discipline as `super-roast`'s "Passing baseline (recorded, not illustrative)" sections. Six structural edits have
+forced exactly that re-run — see the revision table under "dryRun
+policy" for the full sequence. The CURRENT confirmed shape is **41 agent calls, 0 errors, terminal
+stopReason `ready-drained`** (40 from the dispatch arithmetic above + 1 `ledger-minor:bd-101:1`) — confirmed by the offline replay harness against the current script
 (see the current-row paragraph under "dryRun policy"; `wf_97164f71-a3c` is the last Workflow-hosted
 run, against the previous revision — read that writeup's own caveat before citing either figure for
 anything beyond dispatch-count/topology).
@@ -3229,6 +3245,7 @@ reading `reviewAndFix`'s definition directly (the loop condition is `rv.status !
 | Stub key | Canned output (`<json>` content) | Exercises |
 |---|---|---|
 | `read-ledger` | `{text:""}` | I1: the one-time Resume-phase read — fresh epic, nothing reconstructed |
+| `ledger-append:launch` | `{appended:true}` | the launch-args `Launch:` ledger record (issue #2 defect 6), once per launch |
 | `close-epics` (array, 2 entries) | `{rootClosed:false,closedThisRun:[]}` twice | root never closes — `bd-201` never merges in this scenario |
 | `bd-ready` (array, 2 entries) | `{ids:["bd-201"]}` then `{ids:[]}` | round 1 supplies the one task; round 2's empty set drains the loop (`bd-201` is excluded from round 2 anyway, via the `escalated` filter, once triage ESCALATEs it below) |
 | `bd-ready-topup` | `{ids:[]}` | present in the args for uniformity; **never dispatched here** — nothing merges, and the top-up fires only on a successful merge (its firing would be a regression this scenario catches) |
@@ -3267,9 +3284,10 @@ scenario, something regressed: `merge:bd-201` would mean a BLOCKED task reached 
   never merges, so `integrateOne`'s `if (r.parkRuling)` push never runs — not that `adj.decision`
   was ever `PARK` here in the first place), `stalled` is `false` (the round that quarantines
   `bd-201` grows `escalated`, which the no-progress guard reads as progress).
-- Expected dispatch count (I1: `read-ledger` 1 + `close-epics` 2 + `bd-ready` 2 + `plan` 1 +
+- Expected dispatch count (I1: `read-ledger` 1 + `ledger-append:launch` 1 + `close-epics` 2 +
+  `bd-ready` 2 + `plan` 1 +
   `brief` 1 + `implement` 1 + `review` 1 + `fix` 5 + `re-review` 5 + `adjudicate` 1 +
-  `breaker-blocker` 1 + `triage` 1 + `notify` 1 + `ledger-append` 1 (`bd-201`) = **24 agent calls,
+  `breaker-blocker` 1 + `triage` 1 + `notify` 1 + `ledger-append` 1 (`bd-201`) = **25 agent calls,
   0 errors** — and **no `bd-ready-topup` dispatch**: nothing merges in this scenario, and the
   top-up fires only on a successful merge; its firing here would itself be a regression — and, distinctly from every other scenario in this doc, **no `final-review`
   dispatch**, since `completed.size` is `0`) — **confirmed by re-run**, see below; this was
@@ -3298,6 +3316,7 @@ bead's TEXT — same `pick()` limit as everywhere else in this section.
   "prompts": {
     "stubs": {
       "read-ledger": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"text\":\"\"}",
+      "ledger-append:launch": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "close-epics": [
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"rootClosed\":false,\"closedThisRun\":[]}",
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"rootClosed\":false,\"closedThisRun\":[]}"
@@ -3335,8 +3354,8 @@ bead's TEXT — same `pick()` limit as everywhere else in this section.
 If a future structural edit changes this script, re-run with these args, confirm the same shape (or
 update it deliberately alongside the edit that changed it), and replace the figures above — same
 discipline as the canonical scenario's own baseline. Every structural edit so far has forced
-that re-run without moving the count — see the revision table under "dryRun policy". The CURRENT
-confirmed shape is **24 agent calls, 0 errors** — confirmed by the offline replay harness against
+that re-run — see the revision table under "dryRun policy". The CURRENT
+confirmed shape is **25 agent calls, 0 errors** — confirmed by the offline replay harness against
 the current script (see the current-row paragraph under "dryRun policy"; `wf_527ad491-790` is the
 last Workflow-hosted run, against the previous revision).
 
@@ -3372,6 +3391,7 @@ that; it is, and remains, verified only by reading the `if` statement itself.
 | Stub key | Canned output (`<json>` content) | Exercises |
 |---|---|---|
 | `read-ledger` | `{text:""}` | I1: the one-time Resume-phase read — fresh epic, nothing reconstructed |
+| `ledger-append:launch` | `{appended:true}` | the launch-args `Launch:` ledger record (issue #2 defect 6), once per launch |
 | `close-epics` (array, 2 entries) | `{rootClosed:false,closedThisRun:[]}` twice | root stays open (this scenario's canned world doesn't bother modeling epic closure after the one child merges — same simplification the other two scenarios make) |
 | `bd-ready` (array, 2 entries) | `{ids:["bd-301"]}` then `{ids:[]}` | round 1 supplies the one task; round 2's empty set drains the loop |
 | `bd-ready-topup` | `{ids:[]}` (reused) | fired once, after `bd-301`'s successful (PARKed) merge — empty, so nothing tops up |
@@ -3403,10 +3423,11 @@ to short-circuit the blocker path.
 - The Finish-phase log line reads `... Parked (merged with an overruled finding): 1.` and a
   `PARKED bd-301: ...` line was logged earlier, from inside `reviewAndFix`, distinct from and
   earlier than the Finish-phase summary line.
-- Expected dispatch count (I1: `read-ledger` 1 + `close-epics` 2 + `bd-ready` 2 + `plan` 1 +
+- Expected dispatch count (I1: `read-ledger` 1 + `ledger-append:launch` 1 + `close-epics` 2 +
+  `bd-ready` 2 + `plan` 1 +
   `brief` 1 + `implement` 1 + `review` 1 + `fix` 5 + `re-review` 5 + `adjudicate` 1 + `merge` 1 +
   `ledger-append` 1 (`bd-301`) + `bd-ready-topup` 1 (after `bd-301`'s successful merge) +
-  `final-review` 1 = **24 agent calls, 0 errors**) — **confirmed by
+  `final-review` 1 = **25 agent calls, 0 errors**) — **confirmed by
   re-run**, see below; this was computed by hand before that run and matched exactly. The
   pre-Task-5 confirmed count was 21 (below); the +2 is exactly `read-ledger` and
   `ledger-append:bd-301`.
@@ -3471,6 +3492,7 @@ question, same structural limit as the other four claims above.
   "prompts": {
     "stubs": {
       "read-ledger": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"text\":\"\"}",
+      "ledger-append:launch": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "close-epics": [
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"rootClosed\":false,\"closedThisRun\":[]}",
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"rootClosed\":false,\"closedThisRun\":[]}"
@@ -3510,7 +3532,7 @@ discipline as the other two scenarios' baselines. Every structural edit so far h
 re-run without moving the count — see the revision table under "dryRun policy". One of those rounds
 touched only this scenario's data (adding `mergeBase` to the `merge:bd-301` stub) and was re-run
 anyway, because "recorded, not illustrative" does not have a too-small-to-matter exemption. The
-CURRENT confirmed shape is **24 agent calls, 0 errors** — confirmed by the offline replay harness
+CURRENT confirmed shape is **25 agent calls, 0 errors** — confirmed by the offline replay harness
 against the current script (see the current-row paragraph under "dryRun policy";
 `wf_4203efd4-84d` is the last Workflow-hosted run, against the previous revision). The 21/0 figure
 above `wf_941e256b-10b` remains pre-Task-5 history, unaffected by this restatement.
