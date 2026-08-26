@@ -217,10 +217,14 @@ Done by the main session, not the Workflow:
 Round-based with refill (each `bd ready` batch is, by definition, mutually independent):
 
 1. **Query** — an agent runs a fast labelled query first, `bd ready --exclude-type=epic
-   --exclude-label blocker --label sp:<epicId>` (excludes epic-type containers, which `bd ready`
+   --exclude-label blocker --label sp:<epicId> --limit 500` (excludes epic-type containers, which `bd ready`
    includes by default; excludes blocker beads, which are escalation records and never work items —
-   see "The blocker-bead path" for the live loop that dispatching one causes; and scopes to
-   this run's tree via the `sp:` label `super-design` stamps on everything it creates). **An empty
+   see "The blocker-bead path" for the live loop that dispatching one causes; scopes to
+   this run's tree via the `sp:` label `super-design` stamps on everything it creates; and
+   overrides `bd ready`'s silent default of `--limit 100` with its repo-global priority sort,
+   under which a busy repo starves this epic's beads out of the result entirely — a returned
+   count equal to the limit means truncation, and the query agent re-runs higher, per
+   `readyPrompt`'s truncation rule). **An empty
    result here does not mean the tree is empty** (see "Resolved in this branch": the `sp:`-labelling and canonical-args items): the label
    only exists on trees `super-design` created — a hand-made epic, or a sub-epic handed to super-code
    directly (whose members carry the *root* epic's `sp:` label, not their own id's), always comes up
@@ -1979,9 +1983,16 @@ function readyPrompt(epicId) {
   // now scopes BOTH the labelled query and the repo-global fallback, and step 3 drops any
   // surviving blocker-labelled id as a second line of defense against a filing agent that added
   // extra labels (the other half of the fix — see the label-only rule in the filing prompts).
-  return `Run \`bd ready --exclude-type=epic --exclude-label blocker --label sp:${epicId}\` and parse the returned ids (do NOT use \`--json\`; do NOT reason about or filter readiness or scope — the flags already exclude epics, blocker beads, and out-of-label issues). If it returns at least one id, apply step 3 below to those ids, report the survivors verbatim as \`ids\`, and stop — this is the fast path, do not run the fallback.
+  //
+  // Issue #2 defect 4: `bd ready` DEFAULTS to `--limit 100` with a repo-global priority sort, so
+  // on a busy repo this epic's beads can rank below the cut and the coordinator sees an empty
+  // ready set for a tree nowhere near drained (measured live: 111 ready repo-wide, this epic's
+  // P2 beads at ranks 71-75 — 25 slots from silent starvation). Both query forms below therefore
+  // pass an explicit `--limit 500`, and a result of exactly the limit is treated as truncation —
+  // re-query higher, never report a full-to-the-brim result as a complete answer.
+  return `Run \`bd ready --exclude-type=epic --exclude-label blocker --label sp:${epicId} --limit 500\` and parse the returned ids (do NOT use \`--json\`; do NOT reason about or filter readiness or scope — the flags already exclude epics, blocker beads, and out-of-label issues). TRUNCATION RULE, both this query and the fallback below: \`bd ready\` silently caps its output at the limit — if a query returns EXACTLY as many ids as its \`--limit\`, the result is truncated, not complete; re-run the same query with the limit doubled until the count comes back below it (at most 3 re-runs, then report what you have and state in \`ids\` order the highest-priority first). If the labelled query returns at least one id, apply step 3 below to those ids, report the survivors verbatim as \`ids\`, and stop — this is the fast path, do not run the fallback.
 If it returns NONE, do not conclude the tree has no ready work: the \`sp:\` label only exists on trees \`super-design\` created — a hand-made epic, or a sub-epic handed to super-code directly (whose members carry the ROOT epic's \`sp:\` label, not their own id's), will always come up empty on the query above even when real ready work is waiting. Fall back to the structural test instead, the same one the epic-closure step uses:
-1. Run \`bd ready --exclude-type=epic --exclude-label blocker\` (repo-global — this can return ready work from unrelated epics sharing this repo; that is expected, filtered in step 2 below, not a bug) and parse the returned ids.
+1. Run \`bd ready --exclude-type=epic --exclude-label blocker --limit 500\` (repo-global — this can return ready work from unrelated epics sharing this repo; that is expected, filtered in step 2 below, not a bug; the truncation rule above applies) and parse the returned ids.
 2. For each returned id, classify it IN-TREE or OUT-OF-TREE using this test, in priority order — do not skip the identity/walk check even when the id "looks like" it belongs:
 ${treeMembershipTest(epicId)}
 3. EITHER PATH, before reporting: run \`bd show <id>\` for each id you are about to report and DROP any id whose labels include \`blocker\` — a blocker bead is an escalation record about a task, never dispatchable work, and one that reaches this report starts a self-sustaining filing loop. This is a fixed rule, not a judgment call.
