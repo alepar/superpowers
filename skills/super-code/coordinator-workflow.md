@@ -1019,6 +1019,17 @@ const topUpQueryCap = Math.max(0, Number(config.topUpQueryCap) || 40)
 // null triage is not an ESCALATE; a null close-epics never closed the root).
 let nullsThisRound = 0
 let consecutiveNullRounds = 0  // rounds abandoned/unproductive due to nulls, since the last real progress
+// ADAPTATION POINT (2nd downstream feedback round, defect #2): "the top-up must not spend a query
+// when the coordinator would refuse to start the work it would find." This reference skeleton has
+// no budget concept, so the predicate is constant-true — but a project coordinator with a budget
+// or a capacity reserve replaces THIS ONE FUNCTION (e.g. `() => !budgetStopped &&
+// budgetHeadroom(...) >= PIPELINE_COST`) instead of forking runTopUp/resolveRetryHook. It cannot
+// arrive via `args` — args is pure JSON, functions never cross that boundary — which is why it is
+// a named function in the skeleton rather than a config key. Gates BOTH mid-round work starters:
+// the top-up query (a query whose results are unusable is waste) and the same-round RESOLVE retry
+// (which starts work directly, no query). The round-boundary refill is deliberately NOT gated
+// here — what happens at a budget stop between rounds is the adaptation's own policy.
+const canStartWork = () => true
 async function dispatch(buildReal, stubKey, opts) {
   const out = await agent(pick(buildReal, stubKey), opts)
   if (out === null || out === undefined) {
@@ -1745,9 +1756,23 @@ while (true) {
   //   full quiescence + drain below, so it can never make a productive round look unproductive
   //   either: everything the round did, top-ups included, is settled before it runs.
   const dispatched = new Set(plannedIds)
-  const chains = plannedIds.map(id => runTask(id).catch(() => null))
+  // Chain rejections are swallowed to null — mirroring parallel()'s per-thunk catch, so one dead
+  // chain cannot abort the round-end drain — but the EXCEPTION IS LOGGED IN FULL first (2nd
+  // downstream feedback round, defect #1): a bare `.catch(() => null)` made a chain that died on
+  // a schema mismatch or a thrown prompt builder vanish with no type, no message, no stack — the
+  // round just reported a smaller frontier for no visible reason. One helper, applied at ALL
+  // THREE chain call sites (planned, top-up, RESOLVE retry) so every path reports identically.
+  // NOTE: parallel() cannot replace this array — its thunk list is fixed at call time and
+  // `chains` must grow while being awaited; the sliding-window scheduler is what bounds
+  // concurrency here, parallel() never was. Do not "restore" parallel() for this.
+  const chainCatch = id => e => {
+    log(`chain for ${id} REJECTED — swallowed to null exactly as parallel() does, so the round-end drain still completes: ${e && e.stack ? e.stack : String(e)}`)
+    return null
+  }
+  const chains = plannedIds.map(id => runTask(id).catch(chainCatch(id)))
   let topUpActive = false, topUpQueued = false
   let topUpQueriesUsed = 0
+  let startGateLogged = false
   const topUps = []
   const runTopUp = async () => {
     if (topUpActive) { topUpQueued = true; return }  // coalesce: the in-flight query re-runs once
@@ -1755,6 +1780,13 @@ while (true) {
     try {
       do {
         topUpQueued = false
+        // canStartWork gate BEFORE spending the query (see the adaptation point near dispatch()):
+        // a coordinator that would refuse to start the work must not pay a mechanical agent to
+        // find it. Log-once per round — without the flag, a stopped round emits one line per merge.
+        if (!canStartWork()) {
+          if (!startGateLogged) { startGateLogged = true; log('top-up suppressed — canStartWork() is false (coordinator cannot start new work); remaining unblocked beads dispatch via the next round refill') }
+          return
+        }
         // QUERY budget, separate from the dispatch bound: the dedup set caps dispatches (each id
         // at most once per round) but not queries — a long round of merges that unblock nothing
         // would otherwise spend one mechanical agent per merge on empty re-queries. Exhaustion
@@ -1781,7 +1813,7 @@ while (true) {
             continue
           }
           dispatched.add(id)
-          chains.push(runTask(id).catch(() => null))
+          chains.push(runTask(id).catch(chainCatch(id)))
         }
       } while (topUpQueued)
     } finally { topUpActive = false }
@@ -1789,9 +1821,14 @@ while (true) {
   // A top-up promise created DURING a quiescence await has no handler attached until the next
   // loop iteration — attach the catch at push time, or a rejection in that window (e.g. a
   // scenario missing the stub key) is an unhandled rejection that kills the process instead of
-  // failing the round loudly. The first failure is kept and rethrown after quiescence: a top-up
-  // that THROWS (as opposed to a null dispatch, which runTopUp already handles) is a
-  // configuration error, not an outage to swallow.
+  // failing the round loudly. The first failure is kept; what happens to it after quiescence was
+  // ADJUDICATED with the downstream adaptation (2nd feedback round, item #3) and the position is
+  // stated here deliberately, not left silent: **rethrow under `dryRun`, swallow-and-log in a
+  // live run.** The throws this catches are configuration errors (an unregistered stub key, a
+  // broken prompt builder) — exactly what a dryRun exists to surface loudly and cheaply. In a
+  // LIVE run the same rethrow would abort a round of real work — merges already queued included —
+  // to report a component that gates nothing: a top-up's worst failure mode is the pre-top-up
+  // behaviour, work waiting for the next round's refill. A slowdown, not a loss.
   let topUpFailure = null
   topUpHook = () => { topUps.push(runTopUp().catch(e => { topUpFailure = topUpFailure ?? e })) }
   // Same-round RESOLVE retry: re-push the task's chain immediately. The id stays in `dispatched`
@@ -1801,9 +1838,13 @@ while (true) {
   // RESOLVE, whose verdict usually means "re-plan") briefs against an undefined ordinal and
   // fails the chain; it waits for the next round's planner pass instead, as before.
   resolveRetryHook = id => {
+    if (!canStartWork()) {
+      if (!startGateLogged) { startGateLogged = true; log('same-round RESOLVE retry suppressed — canStartWork() is false; the retry re-enters via the next round refill') }
+      return
+    }
     if (ordinalFor(id) === undefined) { log(`RESOLVE retry for ${id} deferred to next round — no mapping row yet (it needs the planner pass first)`); return }
     log(`RESOLVE retry: re-dispatching ${id} into this round with its clarification recorded`)
-    chains.push(runTask(id).catch(() => null))
+    chains.push(runTask(id).catch(chainCatch(id)))
   }
   // QUIESCENCE, then drain. A chain's promise resolves only after its own integration completed
   // (runTask awaits enqueueIntegration), and an integration may have fired a top-up that is
@@ -1818,7 +1859,10 @@ while (true) {
     await Promise.all([...chains, ...topUps])
     if (chains.length === chainCount && topUps.length === topUpCount) break
   }
-  if (topUpFailure) throw topUpFailure
+  if (topUpFailure) {
+    if (dryRun) throw topUpFailure  // configuration error — loud where it is cheap (see above)
+    log(`top-up failed and was swallowed (live run — a top-up gates nothing; see the adjudicated rethrow policy above): ${topUpFailure && topUpFailure.stack ? topUpFailure.stack : String(topUpFailure)}`)
+  }
   await mergeChain
 
   // THE DETECTOR the old rule never had. §Parallelism used to tell the operator to "notice"
@@ -2228,6 +2272,9 @@ function triagePrompt(id, blockerBead, planPath) {
 
 function recordClarificationPrompt(id, detail) {
   // MECHANICAL: recording a RESOLVE clarification on the bead is a fixed write, not a judgment call.
+  // PAIRED with implementPrompt's "run bd comments <id>" read instruction — both halves are
+  // required: without the write there is nothing to read, and without the read instruction the
+  // RESOLVE retry re-runs the task blind. Editing either side alone silently breaks retries.
   return `Record this clarification on bead ${id} (e.g. \`bd comment ${id} "..."\` or the project's equivalent) so the next dispatch round picks it up: ${detail}`
 }
 
@@ -2756,6 +2803,14 @@ The orchestrator should pass `args` as an actual JSON value wherever the harness
 the string-tolerance in the script (`typeof args === 'string' ? JSON.parse(args) : args`) exists
 as a defensive fallback for harness paths that stringify `args`, not as license to always
 stringify by default.
+
+**Every stub key a scenario can reach must be registered — including the mid-round keys.** The
+top-up (`bd-ready-topup`) and the post-closure re-check (`bd-ready-recheck`) are deliberately
+distinct keys from `bd-ready`, so scenarios control them independently — which also means a
+scenario whose fixture merges anything (top-up fires) or closes in-tree epics (re-check fires)
+MUST register them or `pick()` throws. Under `dryRun` that throw is deliberately fatal (the
+adjudicated rethrow policy in the skeleton's quiescence block); in a live run the same failure is
+swallowed and logged. All three recorded scenarios below register both keys.
 
 **Stub phrasing is exact, not a paraphrase.** Every stub prompt MUST use the literal wording
 

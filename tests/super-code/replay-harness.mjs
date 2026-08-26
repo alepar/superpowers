@@ -901,6 +901,41 @@ async function main() {
     assertBucketsDisjoint(out.result)
   }
 
+  // ===== 7. failure-visibility scenarios (2nd downstream feedback round) =====
+
+  scenario('dryRun: an unregistered top-up stub key is FATAL (config errors loud where they are cheap)')
+  {
+    const args = JSON.parse(JSON.stringify(canonicalArgs))
+    delete args.prompts.stubs['bd-ready-topup']
+    const out = await run({ args })
+    check(!!out.error, 'run fails instead of silently degrading')
+    check(String(out.error).includes('no stub for key bd-ready-topup'), 'failure names the missing key', String(out.error).slice(0, 200))
+  }
+
+  scenario('live run: a failing top-up is swallowed AND logged with the exception, round completes')
+  {
+    const canned = oneTaskCanned()
+    delete canned['bd-ready-topup']  // the top-up dispatch will throw ("no canned answer")
+    const out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    check(JSON.stringify(out.result?.completed) === '["bd-101"]', 'the round completed its real work', JSON.stringify(out.result))
+    check(out.logs.some(l => l.includes('top-up failed and was swallowed') && l.includes('bd-ready-topup')), 'the swallowed failure is logged with its cause', out.logs.find(l => l.includes('swallowed')))
+    assertBucketsDisjoint(out.result)
+  }
+
+  scenario('chain rejection is logged with the exception, never vanished (all chain paths share chainCatch)')
+  {
+    const canned = manyTaskCanned(['bd-101', 'bd-102'], {})
+    delete canned['brief:bd-102']  // bd-102's chain dies at its first dispatch
+    const out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    check(JSON.stringify(out.result?.completed) === '["bd-101"]', 'the sibling still completed and merged', JSON.stringify(out.result))
+    const rejLog = out.logs.find(l => l.includes('chain for bd-102 REJECTED'))
+    check(!!rejLog, 'the dead chain is logged by id')
+    check(!!rejLog && rejLog.includes('no canned answer for label brief:bd-102'), 'the log carries the actual exception, not just the fact of failure', rejLog)
+    assertBucketsDisjoint(out.result)
+  }
+
   // ===== summary =====
   console.log(`\n${passes} passed, ${failures} failed`)
   process.exit(failures ? 1 : 0)
