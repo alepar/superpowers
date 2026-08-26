@@ -66,7 +66,7 @@ independently testable deliverable.
 
 **Tech Stack:** [Key technologies/libraries]
 
-**Spec:** [path to the originating design spec under docs/superpowers/specs/, or "none" if ad-hoc] — finishing-a-development-branch uses this to append post-implementation notes back to the design.
+**Spec:** [path to the originating design spec under docs/superpowers/specs/, or "none" if ad-hoc] — the plan argues from the spec, so the spec travels with it: executors read both, and finishing-a-development-branch uses this to append post-implementation notes back to the design.
 
 ## Global Constraints
 

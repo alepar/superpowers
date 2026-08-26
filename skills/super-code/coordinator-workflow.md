@@ -582,13 +582,15 @@ enter the loop; plan-mandated conflicts are a human decision, same as any plan c
 Read SKILL.md's "The fix loop" for that full mechanics — it applies unchanged.
 
 **What autonomous mode changes is the terminal action at the cap, and who performs the
-adjudication.** Spec §3.2 requires adopting *both* of SKILL.md's outcomes at round 5 — park with a
-ruling, or stop on a load-bearing finding — not cap-always-blocks; a cap that always blocks
-quarantines correct work (and every dependent) whenever the reviewer was wrong or the finding
-doesn't matter downstream, which is exactly the case most likely to survive five rounds unchanged
-(a real defect usually gets fixed; a contestable one doesn't). SKILL.md's breaker adjudicates this
-itself, inline, because there's a human controller present to read the plan and the finding and
-decide. A Workflow run has no synchronous human partner to do that reading — so `reviewAndFix`
+adjudication.** SKILL.md's breaker ("Rulings, not stalls") has three outcomes at round 5: park a
+contestable finding with a ruling, park a real-but-nothing-builds-on-it finding with a ruling, or
+— on a real, load-bearing finding — rule on the smallest change that unblocks dependent work and
+carry it forward, stopping only when every path forward is a guess. Not cap-always-blocks: a cap
+that always blocks quarantines correct work (and every dependent) whenever the reviewer was wrong
+or the finding doesn't matter downstream, which is exactly the case most likely to survive five
+rounds unchanged (a real defect usually gets fixed; a contestable one doesn't). SKILL.md's breaker
+adjudicates this itself, inline, because there's a controller present with the plan and cross-task
+context loaded. A Workflow coordinator holds neither — so `reviewAndFix`
 dispatches a fresh agent (`adjudicatePrompt`) that follows SKILL.md's "The breaker" section
 verbatim to make the *same* call: is this finding load-bearing, or contestable/non-load-bearing?
 This is a dispatched **invocation** of SDD's rubric, not a coordinator-side reimplementation of
@@ -604,10 +606,11 @@ it — the governing rule forbids the latter, not the former (see "Boundary" in 
   ruling only carries *intent* until the merge that follows it actually succeeds (see the merge
   gate's own comment — a PARKed task whose merge later fails must not end up recorded as both
   `parked` and `escalated`/`pendingRetry`).
-- **BLOCKED** (load-bearing): the same load-bearing verdict SKILL.md's breaker reaches, but
-  Workflow has no synchronous human partner to stop the whole run for — halting would freeze every
-  *other*, unrelated ready task behind one stuck bead, which defeats the reason to run
-  autonomously at all. So instead:
+- **BLOCKED** (load-bearing): the same load-bearing verdict SKILL.md's breaker reaches. SKILL.md's
+  own controller then rules on the smallest unblocking change and carries the ruling into the next
+  task's dispatch; a Workflow coordinator's carry-forward vehicle is the tracker, and halting
+  instead would freeze every *other*, unrelated ready task behind one stuck bead, which defeats
+  the reason to run autonomously at all. So BLOCKED is this run's rule-and-continue, not a stop:
   1. **Files a blocker bead** instead of stopping the session — same shape as any other blocker
      bead (see "The blocker-bead path"): the task id, the load-bearing finding, the adjudicator's
      ruling, the plan text (from `plan.md`) it collides with, and the fix history from the report
@@ -1080,7 +1083,7 @@ const PLANNED = { type: 'object', properties: { planPath: {type:'string'}, mappi
 // forward via plain JS assignment rather than re-asking a later subagent to echo it back (see the
 // implement pipeline stage and reviewAndFix). Never derive review-package's BASE arg as `HEAD~1`
 // instead — that silently drops all but the last commit of a multi-commit task
-// (subagent-driven-development/SKILL.md:238). NOTE: `base` feeds `review-package` only, which runs
+// (subagent-driven-development/SKILL.md §"Review the task"). NOTE: `base` feeds `review-package` only, which runs
 // BEFORE the merge-gate's rebase — the ledger's own commit-range completion line uses a DIFFERENT,
 // post-rebase value instead (`m.mergeBase`, on `MERGE` below), precisely because that rebase moves
 // the task branch's history out from under `base` (see the `mergeBase`/`MERGE` comment and the
@@ -1160,7 +1163,7 @@ const completed = new Set()
 // written to a `parkRuling` field on the return value that nothing else in the script read: not
 // `mergePrompt` (interpolates only `id`/`branch`), not the script's own return value, not `log()`
 // — so a PARKed merge was indistinguishable in every report from a task that came back clean on
-// the first pass, exactly the "silent discard" `subagent-driven-development/SKILL.md:377` forbids.
+// the first pass, exactly the "silent discard" `subagent-driven-development/SKILL.md` §"The fix loop" (Minor findings) forbids.
 // `parked` and the ledger note it maps to (I1: the merge gate's `ledger-append` dispatch, below)
 // are what make an overruled finding visible instead. Pushed at the MERGE GATE (integrateOne's
 // `if (m.merged)` branch), not back in `reviewAndFix` at adjudication time — a PARK ruling only
@@ -1187,7 +1190,7 @@ function settle(id, bucket) {
 const pendingRetry = new Set()
 let stalled = false  // I6: set true if a round makes no progress at all — see the guard below
 
-// I1: resume-from-ledger — the skill's stated Core principle (SKILL.md:10) — until this fix, no
+// I1: resume-from-ledger — the skill's stated Core principle (SKILL.md §Overview) — until this fix, no
 // dispatch ever wrote or read this file (see "Workspace and ledger" above): a restarted run had no
 // way to tell a completed task from an untouched one, or a quarantined/pending-retry id from a
 // fresh one, other than re-querying `bd ready` and guessing (upstream calls a controller losing its
@@ -1593,7 +1596,7 @@ while (true) {
       // this task's own (see the `mergeBase`/`MERGE` schema comment above for the full reasoning
       // and the four-task canonical scenario this would otherwise break). The parked variant still
       // also carries `r.finding` alongside the ruling — before that fix a reader learned a finding
-      // was overruled but never what it was, the exact silent discard upstream SKILL.md:377
+      // was overruled but never what it was, the exact silent discard upstream SKILL.md §"The fix loop"
       // forbids. Built through `ledgerLine()` (below), the single writer helper the Resume-phase
       // reader's `LEDGER_LINE_RE` (above) is kept in sync with, which also collapses any embedded
       // newlines in the interpolated free text (`r.parkRuling`/`r.finding` are agent-authored and
@@ -2091,7 +2094,7 @@ function taskBriefPrompt(planPath, n, id, worktree, integrationBranch, briefFile
   //   exactly "the commit you recorded before dispatching the implementer" that SKILL.md's "Handle
   //   the report" section requires review-package's BASE to be, instead of `HEAD~1` (which silently
   //   drops all but the last commit of a multi-commit task —
-  //   subagent-driven-development/SKILL.md:238).
+  //   subagent-driven-development/SKILL.md §"Review the task").
   // - RE-ENTERED worktree/branch (both already exist): HEAD there is a PRIOR attempt's tip, not a
   //   pre-implementer commit — using it as `base` would truncate `scripts/review-package`'s range
   //   (see `taskReviewPrompt`) to only commits made after this restart, silently dropping the prior
@@ -2130,7 +2133,7 @@ function taskReviewPrompt(im, planPath, art) {
   // captured (see taskBriefPrompt for the fresh-vs-re-entered-worktree distinction, Fix 1/2, final
   // fix round) and the coordinator carried forward unchanged since (see the implement pipeline
   // stage) — never `HEAD~1`, which silently drops all but the last commit of a multi-commit task
-  // (subagent-driven-development/SKILL.md:238). HEAD is passed literally: run from inside
+  // (subagent-driven-development/SKILL.md §"Review the task"). HEAD is passed literally: run from inside
   // ${im.branch}, where it resolves to that worktree's current tip. The report contract below asks
   // for only id/status/finding, not n/files/branch/base: `reviewAndFix`'s `carried()` re-stamps
   // those four from `im` on every return regardless of what's reported (see `reviewAndFix` above)
@@ -2239,8 +2242,10 @@ function adjudicatePrompt(rv, planPath) {
   // breaker, autonomous variant" and SKILL.md's Boundary) — so the cap's park-vs-stop call is a
   // DISPATCHED agent following subagent-driven-development/SKILL.md's "The breaker" section
   // verbatim, not a coordinator-side heuristic. Spec §3.2: "adopt upstream's five-round breaker
-  // and its adjudication rules (park with a ruling, or stop on a load-bearing finding)" — both
-  // outcomes, not cap-always-blocks.
+  // and its adjudication rules" — all of its outcomes, not cap-always-blocks. (Upstream 6.3.0
+  // reworded the load-bearing outcome from "stop" to "rule on the smallest unblocking change and
+  // carry it forward, stop only when every path forward is a guess" — this coordinator's BLOCKED
+  // blocker-bead path is that rule-and-continue; see "The breaker, autonomous variant" prose.)
   // Review round 3 (Important): this prompt used to GLOSS the load-bearing test — "a real defect
   // that would bite downstream" vs "contestable... or nothing downstream depends on it" — and that
   // gloss silently dropped SKILL.md's actual criterion (a later task depends on it, OR it reveals a
@@ -2251,7 +2256,7 @@ function adjudicatePrompt(rv, planPath) {
   // the any-finding-is-load-bearing rule below: `rv.finding` may bundle more than one open item
   // (SDD's re-reviewer adjudicates findings individually; this coordinator's schema carries only
   // one string), and a bundle must not round down to PARK just because some items in it are minor.
-  return `Follow subagent-driven-development/SKILL.md's "The breaker" section (inside "The fix loop") to adjudicate task ${rv.id} (n ${rv.n})'s open finding, which survived all 5 fix/re-review rounds: ${rv.finding}. You hold the plan and cross-task context the reviewer lacks — read the "## Task ${rv.n}" section of ${planPath} and the task's report/fix history for that context, and apply SKILL.md's breaker section exactly as written there — do not use any other criterion for load-bearing than the one it states. If the finding text above bundles more than one open item, decide BLOCKED if ANY one of them is load-bearing by that test — never round a mixed bundle down to PARK. Report id ${rv.id}, decision as the BARE TOKEN "PARK" (safe to merge, record a ruling) or "BLOCKED" (do not merge) — no other value, since the coordinator branches on exact string equality against it — and ruling with your reasoning either way (this becomes the ledger's parked-with-a-ruling note on PARK, or the blocker bead's body on BLOCKED).`
+  return `Follow subagent-driven-development/SKILL.md's "The breaker" section (inside "The fix loop") to adjudicate task ${rv.id} (n ${rv.n})'s open finding, which survived all 5 fix/re-review rounds: ${rv.finding}. You hold the plan and cross-task context the reviewer lacks — read the "## Task ${rv.n}" section of ${planPath} and the task's report/fix history for that context, and apply SKILL.md's breaker section exactly as written there — do not use any other criterion for load-bearing than the one it states. If the finding text above bundles more than one open item, decide BLOCKED if ANY one of them is load-bearing by that test — never round a mixed bundle down to PARK. Map the section's outcomes onto two tokens: either park variant (contestable, or real-but-nothing-builds-on-it) is PARK; the load-bearing outcome (which the section resolves by ruling and carrying forward) is BLOCKED — this run's carry-forward is a blocker bead the coordinator files from your ruling, so do not soften a load-bearing verdict to PARK just because the section says to keep going. Report id ${rv.id}, decision as the BARE TOKEN "PARK" (safe to merge, record a ruling) or "BLOCKED" (do not merge) — no other value, since the coordinator branches on exact string equality against it — and ruling with your reasoning either way (this becomes the ledger's parked-with-a-ruling note on PARK, or the blocker bead's body on BLOCKED).`
 }
 
 function breakerBlockerPrompt(rv, planPath, ruling) {
@@ -2488,7 +2493,7 @@ async function reviewAndFix(im, planPath, art) {
     // script's own return value, not any `log()`), and clearing `finding` erased the one piece of
     // evidence that a review finding was overruled rather than genuinely resolved. The result: a
     // task merges with a KNOWN open finding and the run reports it identically to a task that was
-    // clean on the first pass — the exact "silent discard" subagent-driven-development/SKILL.md:377
+    // clean on the first pass — the exact "silent discard" subagent-driven-development/SKILL.md §"The fix loop"
     // forbids ("Every adjudication is a ledger entry"). `finding` is deliberately left INTACT (not
     // cleared) so the merged result still carries what was overruled.
     // Review round 4 (Important): the FIRST fix pushed to `parked` right here, at adjudication

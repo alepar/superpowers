@@ -53,8 +53,8 @@ This is a personal fork ([alepar/superpowers](https://github.com/alepar/superpow
 
 - **`super-roast` — dual-mode adversarial review.** Reviews either a **design doc** before you build it or a **PR/branch/diff** before you merge it. Parallel adversarial scouts hunt for gaps, unverified load-bearing assumptions, and defects; a **seat-differentiated judge panel** (three seats that verify by different *method* — reproduce, refute, ground — not three copies of one judge) verifies each candidate against evidence; and severity is **calibrated to the project's blast radius**, so a prototype and a payments service don't get the same bar. Catch expensive mistakes while they're still cheap to fix.
 - **`super-design` — recursive spec decomposition.** Sits between an approved spec and execution: decomposes it into a task tree, runs a promotion review on each candidate, recursively brainstorms the subepics that earn their own design, and goal-coverage-checks the finished tree before hand-off. All traversal state lives in the tracker (or in the spec's task tables when `bd` isn't available), so a run survives context compaction and session restart.
-- **`super-code` — beads epic execution.** Drives a beads (`bd`) epic to completion: an epic-scoped `bd ready` loop with disjoint-file parallel dispatch, per-task worktrees off an epic integration branch with serial merge-back, a five-round fix breaker that parks or blocks by upstream's own adjudication rules, and blocker beads for anything that can't proceed — autonomous or interactive, same contract either way. Delegates the per-task brief/implement/review pipeline to `subagent-driven-development` rather than reimplementing it. **Status: not yet run against a real epic.** Its coordinator is validated by stubbed dry-runs, which prove dispatch topology only; `coordinator-workflow.md` carries a *Known limitations* section listing what ships unfixed — read it before an unattended run.
-- **`super-auto` — idea to finished code, one invocation.** Sequences `super-design` (which drives `brainstorming` itself, once per slice) → `super-roast` (design) → `super-code` → `super-roast` (PR) → a fix loop → a final report → `finishing-a-development-branch`, threading four flags through every phase without reimplementing any of them. An optional autonomous mode stops asking once `super-design`'s coverage loop passes, parking escalations and beyond-cap findings for the final report instead of auto-adjudicating them. It buys an unattended **run**, not an unattended **merge**: the run drives every bead to a terminal state, writes the report, and then hands back for the integration decision, which stays the human's in every mode. **Status: has never been run end to end** — validated by inspection only. Its `SKILL.md` carries a *Known limitations* section listing what ships unfixed — read it before an unattended run.
+- **`super-code` — beads epic execution.** Drives a beads (`bd`) epic to completion: an epic-scoped `bd ready` loop with disjoint-file parallel dispatch, per-task worktrees off an epic integration branch with serial merge-back, a five-round fix breaker that parks or blocks by upstream's own adjudication rules, and blocker beads for anything that can't proceed — autonomous or interactive, same contract either way. Delegates the per-task brief/implement/review pipeline to `subagent-driven-development` rather than reimplementing it. Hardened against live runs of real ~190-bead epics; a replay harness (`tests/super-code/`) covers the coordinator offline.
+- **`super-auto` — idea to finished code, one invocation.** Sequences `super-design` (which drives `brainstorming` itself, once per slice) → `super-roast` (design) → `super-code` → `super-roast` (PR) → a fix loop → a final report → `finishing-a-development-branch`, threading four flags through every phase without reimplementing any of them. An optional autonomous mode stops asking once `super-design`'s coverage loop passes, parking escalations and beyond-cap findings for the final report instead of auto-adjudicating them. It buys an unattended **run**, not an unattended **merge**: the run drives every bead to a terminal state, writes the report, and then hands back for the integration decision, which stays the human's in every mode.
 
 **Brainstorming & design flow**
 
@@ -74,9 +74,33 @@ This is a personal fork ([alepar/superpowers](https://github.com/alepar/superpow
 
 - **Always-subagent, no prompts.** `writing-plans` no longer asks "subagent or inline?" — subagent-driven execution is the default and `executing-plans` is an automatic fallback used only when the platform has no subagents. One fewer decision per run.
 
-## Quickstart
+## Table of Contents
 
-Give your agent Superpowers: [Claude Code](#claude-code), [Antigravity](#antigravity), [Codex App](#codex-app), [Codex CLI](#codex-cli), [Cursor](#cursor), [Factory Droid](#factory-droid), [Gemini CLI](#gemini-cli), [GitHub Copilot CLI](#github-copilot-cli), [Kimi Code](#kimi-code), [OpenCode](#opencode), [Pi](#pi).
+- [How it works](#how-it-works)
+- [Commercial Services](#commercial-services)
+- [Getting Started](#installation)
+  - [Claude Code](#claude-code)
+  - [Antigravity](#antigravity)
+  - [Codex App](#codex-app)
+  - [Codex CLI](#codex-cli)
+  - [Cursor](#cursor)
+  - [Devin CLI](#devin-cli)
+  - [Factory Droid](#factory-droid)
+  - [Gemini CLI](#gemini-cli)
+  - [GitHub Copilot CLI](#github-copilot-cli)
+  - [Grok Build CLI](#grok-build-cli)
+  - [Kimi Code](#kimi-code)
+  - [OpenCode](#opencode)
+  - [Pi](#pi)
+  - [Hermes Agent](#hermes-agent)
+- [The Basic Workflow](#the-basic-workflow)
+- [Community](#community)
+- [What's Inside](#whats-inside)
+- [Philosophy](#philosophy)
+- [Contributing](#contributing)
+- [Updating](#updating)
+- [License](#license)
+- [Visual companion telemetry](#visual-companion-telemetry)
 
 ## How it works
 
@@ -127,7 +151,7 @@ This fork is published as its own marketplace — the repository itself is the m
 Install Superpowers as a plugin from this repository:
 
 ```bash
-agy plugin install https://github.com/obra/superpowers
+agy plugin install https://github.com/alepar/superpowers
 ```
 
 Antigravity runs the plugin's session-start hook, so Superpowers is active from
@@ -159,6 +183,20 @@ Cursor's `/add-plugin superpowers` installs **upstream** Superpowers from Cursor
 
   ```bash
   git clone https://github.com/alepar/superpowers.git
+  ```
+
+### Devin CLI
+
+- Install the plugin from this repository:
+
+  ```bash
+  devin plugins install alepar/superpowers
+  ```
+
+- Update to the latest version with:
+
+  ```bash
+  devin plugins update superpowers
   ```
 
 ### Factory Droid
@@ -203,6 +241,22 @@ Cursor's `/add-plugin superpowers` installs **upstream** Superpowers from Cursor
   copilot plugin install superpowers@superpowers-alepar
   ```
 
+### Grok Build CLI
+
+Superpowers is available via the [official Grok plugin marketplace](https://github.com/xai-org/plugin-marketplace).
+
+- Install the plugin from xAI's official marketplace:
+
+  ```bash
+  grok plugin install superpowers@xai-official --trust
+  ```
+
+- Or open the marketplace in the TUI, search for Superpowers, and install it:
+
+  ```text
+  /marketplace
+  ```
+
 ### Kimi Code
 
 Superpowers is available in Kimi Code's plugin marketplace.
@@ -218,7 +272,7 @@ Superpowers is available in Kimi Code's plugin marketplace.
 - Or install directly from this repository:
 
   ```text
-  /plugins install https://github.com/obra/superpowers
+  /plugins install https://github.com/alepar/superpowers
   ```
 
 - Detailed docs: [docs/README.kimi.md](docs/README.kimi.md)
@@ -241,7 +295,7 @@ already use it in another harness.
 Install Superpowers as a Pi package from this repository:
 
 ```bash
-pi install git:github.com/obra/superpowers
+pi install git:github.com/alepar/superpowers
 ```
 
 For local development, run Pi with this checkout loaded as a temporary package:
@@ -251,6 +305,18 @@ pi -e /path/to/superpowers
 ```
 
 The Pi package loads the Superpowers skills and a small extension that injects the `using-superpowers` bootstrap at session startup and again after compaction. Pi has native skills, so no compatibility `Skill` tool is required. Subagent and task-list tools remain optional Pi companion packages.
+
+### Hermes Agent
+
+Install Superpowers as a Hermes plugin from this repository:
+
+```bash
+hermes plugins install alepar/superpowers --enable
+```
+
+Restart any active Hermes sessions after installing. Note: Hermes has no
+post-compaction hook, so a very long session that compacts over its first
+turn loses the bootstrap — start a fresh session if skills stop triggering.
 
 ## The Basic Workflow
 
@@ -269,6 +335,14 @@ The Pi package loads the Superpowers skills and a small extension that injects t
 7. **finishing-a-development-branch** - Activates when tasks complete. Verifies tests, presents options (merge/PR/keep/discard), cleans up worktree.
 
 **The agent checks for relevant skills before any task.** Mandatory workflows, not suggestions.
+
+## Community
+
+Superpowers is built by [Jesse Vincent](https://blog.fsck.com) and the rest of the folks at [Prime Radiant](https://primeradiant.com).
+
+- **Discord**: [Join us](https://discord.gg/35wsABTejz) for community support, questions, and sharing what you're building with Superpowers
+- **Issues**: https://github.com/alepar/superpowers/issues
+- **Release announcements**: [Sign up](https://primeradiant.com/superpowers/) to get notified about new versions
 
 ## What's Inside
 
@@ -330,11 +404,3 @@ MIT License - see LICENSE file for details
 ## Visual companion telemetry
 
 Because skills and plugins don't provide any feedback to creators, we have no idea how many of you are using Superpowers. By default, the Prime Radiant logo on brainstorming's optional visual companion feature is loaded from our website. It includes the version of Superpowers in use. It does not include any details about your project, prompt, or coding agent. We don't see your clicks or anything about what you're building. This helps us have a rough idea of how many folks are using Superpowers and which version of Superpowers they're using. It's 100% optional. To disable this, set the environment variable `SUPERPOWERS_DISABLE_TELEMETRY` to any true value. Superpowers also honors Claude Code's `DISABLE_TELEMETRY` and `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC` opt-outs.
-
-## Community
-
-Superpowers is built by [Jesse Vincent](https://blog.fsck.com) and the rest of the folks at [Prime Radiant](https://primeradiant.com).
-
-- **Discord**: [Join us](https://discord.gg/35wsABTejz) for community support, questions, and sharing what you're building with Superpowers
-- **Issues**: https://github.com/alepar/superpowers/issues
-- **Release announcements**: [Sign up](https://primeradiant.com/superpowers/) to get notified about new versions
