@@ -18,7 +18,9 @@ Task tool (general-purpose):
     [SPEC_FILE_PATH — read it]
 
     ## Child task list
-    [for each child task: id/title, short description, files-touched hint]
+    [for each child task: id/title, short description, files-touched hint, and the ids it
+    depends on — deps are required input: the SPLIT test below counts each task's dependents
+    from them]
 
     ## Ancestor goals (root → this spec)
     [chain of ## Goal sections, root first]
@@ -28,12 +30,24 @@ Task tool (general-purpose):
 
     ## Per-task verdict
 
-    For each child task, return `LEAF` or `PROMOTE` with a one-line rationale. Either test
-    triggers `PROMOTE`:
+    For each child task, return `LEAF`, `PROMOTE`, or `SPLIT` with a one-line rationale. Either
+    test triggers `PROMOTE`:
 
     - **Uncertainty test:** implementing this task would force design decisions the spec doesn't
       answer.
     - **Size test:** the task would decompose into ~5+ subtasks or spans multiple subsystems.
+
+    `SPLIT` is narrower and fires only when BOTH hold — do not size-police tasks that gate
+    nothing:
+
+    - **Bottleneck test:** two or more other children list this task in their deps.
+    - **Oversize test:** the task bundles its unblocking artifact (the interface, schema, or
+      mechanism its dependents actually consume) together with separable work — polish, tests
+      beyond the artifact's own acceptance, migration of remaining call sites.
+
+    A `SPLIT` verdict's rationale MUST name both halves: the minimal unblocking artifact, and
+    the deferrable remainder. A task that gates ≥2 dependents but is already minimal is a
+    `LEAF` — gating alone is not a finding.
 
     ## Decomposition verdict
 
@@ -49,7 +63,8 @@ Task tool (general-purpose):
     ## Output format (structured, no prose essay)
 
     ### Per-task verdicts
-    <task-id/title> — LEAF|PROMOTE — <one-line rationale>
+    <task-id/title> — LEAF|PROMOTE|SPLIT — <one-line rationale; for SPLIT: "artifact: <the
+    minimal unblocking piece> / remainder: <what defers>">
     (one line per child task)
 
     ### Decomposition verdict
@@ -57,5 +72,6 @@ Task tool (general-purpose):
     - (if ISSUES) <what's missing/wrong/duplicated> — <evidence>
 ```
 
-**Reviewer returns:** per-task `LEAF`/`PROMOTE` verdicts with rationale, plus a decomposition
-verdict (`COMPLETE`/`ISSUES` with evidence) for the child set as a whole.
+**Reviewer returns:** per-task `LEAF`/`PROMOTE`/`SPLIT` verdicts with rationale (`SPLIT` names
+the unblocking artifact and the deferrable remainder), plus a decomposition verdict
+(`COMPLETE`/`ISSUES` with evidence) for the child set as a whole.

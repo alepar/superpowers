@@ -179,9 +179,13 @@ means the file should be split or assigned to a single bead.
 
 ## Promotion Review
 
-Dispatch `./promotion-reviewer-prompt.md` fresh-context (it must not have authored the spec or task list — countering author bias is the point), giving it the spec, the child task list, the ancestor-goal chain, and the specs of already-designed siblings. It returns per-task `LEAF`/`PROMOTE` verdicts and a decomposition verdict (`COMPLETE`/`ISSUES`).
+Dispatch `./promotion-reviewer-prompt.md` fresh-context (it must not have authored the spec or task list — countering author bias is the point), giving it the spec, the child task list, the ancestor-goal chain, and the specs of already-designed siblings. It returns per-task `LEAF`/`PROMOTE`/`SPLIT` verdicts and a decomposition verdict (`COMPLETE`/`ISSUES`).
 
-Sanity-check the verdicts; you may overrule them. **Overruling a `PROMOTE` back to `LEAF` must be recorded on the task** — flag `sp:demoted-by-session` plus the reason — so coverage and the human can see where session judgment overrode the fresh reviewer. Fix any `ISSUES` in the decomposition verdict before applying any promotion.
+Sanity-check the verdicts; you may overrule them. A `SPLIT` verdict is handled like a
+decomposition `ISSUES`: apply it — shrink the flagged bead to its named unblocking artifact and
+move the remainder into a dependent or a non-gating sibling that depends on it — or overrule it
+with the reason recorded on the task (a comment on the bead; no new flag), the same recording
+discipline as a demotion. **Overruling a `PROMOTE` back to `LEAF` must be recorded on the task** — flag `sp:demoted-by-session` plus the reason — so coverage and the human can see where session judgment overrode the fresh reviewer. Fix any `ISSUES` in the decomposition verdict before applying any promotion.
 
 ## Applying Promotions
 
