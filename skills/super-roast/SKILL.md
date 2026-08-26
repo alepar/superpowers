@@ -246,6 +246,10 @@ grounding means internal/very-new claims often return UNVERIFIED (the honest ans
 pass); profile inference can be wrong — that's why the header states the detected profile
 instead of silently applying it.
 
+## Friction log
+
+When invoked inside a super-auto/super-design/super-code run, append friction events (skill-machinery defects, workarounds, guidance that read wrong) to the enclosing run's friction log per `superpowers:upstream-feedback`'s format, the moment they happen. A standalone roast skips this — its report is already the feedback channel — and never runs that skill's analysis itself.
+
 ## Integration
 
 - **superpowers:brainstorming** — offers `super-roast` (design mode) as an optional gate after

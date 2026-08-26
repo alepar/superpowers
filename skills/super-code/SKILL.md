@@ -138,6 +138,10 @@ Rationale, measured evidence, and counter-evidence for this dispatch model:
 - File a blocker bead with anything besides the bare `blocker` label — an `sp:` label or a `--parent` makes the escalation record reachable as work and starts a self-sustaining blocker-filing loop (one new bead per round, reproduced live).
 - Dispatch a reviewer without [BRIEF_FILE]/[REPORT_FILE]/[DIFF_FILE] filled with absolute, integration-workspace paths — SDD's reviewer templates hard-require all three, and a reviewer without the implementer's report reviews blind.
 
+## Friction log & upstream feedback
+
+Throughout a run, append friction events (defects hit, workarounds, guidance that read wrong, visible stalls) to the enclosing run's friction log — `<workspace>/friction.md` beside the ledger when this skill is the outermost invocation — per `superpowers:upstream-feedback`'s format, the moment they happen. When this skill is the outermost invocation and owns its own Finish, invoke `superpowers:upstream-feedback` after the final review; when a caller owns the finish, only append — the caller's own hook runs the analysis.
+
 ## Reference
 
 - `./coordinator-workflow.md` — full Workflow-coordinated autonomous procedure: coordinator contract, the coordinator loop, plan materialization, per-task pipeline, the breaker's autonomous variant, serial merge-back, the blocker-bead path, finish. Its "Known limitations" section lists real, shipped gaps — read it before assuming any of them already work. Validation is dryRun/replay-based (`tests/super-code/test-coordinator-replay.sh` — replays the recorded scenarios plus null-injection and prompt-text checks no dryRun can express); anything beyond what that harness asserts is live-run territory. Its "Finish" section documents a caller-owned-finish mode: a caller may keep the merge-and-cleanup hand-off for itself, in which case the coordinator stops after its final review and leaves the integration worktree and ledger intact.
