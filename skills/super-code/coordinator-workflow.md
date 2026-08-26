@@ -141,6 +141,7 @@ Two rules, both mandatory in the skeleton below:
 | blocker-filing (`missing-blocker` / `unplanned-blocker` / `breaker-blocker`) | The task proceeds without a bead id; `handleBlocker`'s missing-bead fallback files one, and if **that** also nulls, the task is left unsettled this round. |
 | `close-epics` | **Closed zero epics — never `rootClosed`**: defaulting `rootClosed` true would declare an unfinished epic done. |
 | `bd-ready` | **Not completion.** An explicit `stopReason: 'ready-unavailable'` after the bounded retry below — never the drained exit. |
+| `bd-ready-topup` (the mid-round top-up re-query) | **Opportunistic**: a null skips this top-up — logged, no bounded retry, never a stopReason. The next round's `bd-ready` remains the authority; the missed bead dispatches then. |
 | `plan` | Round abandoned (nothing downstream can run without the mapping); bounded retry, then `stopReason: 'plan-unavailable'`. |
 | `read-ledger` | Resume reconstructs nothing, loudly: `bd ready` remains the authority on closed work, but prior-run `pendingRetry` bounds are lost for this run — logged, not silent. |
 | `final-review` | `review` is an explicit UNAVAILABLE string — **never** "no findings". |
@@ -250,6 +251,10 @@ Round-based with refill (each `bd ready` batch is, by definition, mutually indep
    definition (step 1), so within-round merge order was never load-bearing. A successful merge
    does `bd close <id>` — a leaf-task close; epic closure is the separate step below. Blocked
    tasks and their triage ride the same queue, so `bd` mutations never race a `git merge`.
+   **Each successful merge also fires a mid-round top-up**: a ready re-query whose newly-ready,
+   already-mapped beads dispatch into this same round's scheduler immediately — a bead unblocked
+   by the round's first merge never waits for its last (see the top-up block in the skeleton for
+   the bounds: dedup set, re-entrancy coalescing, mapping-row gate, quiescence before the drain).
 5. **Epic closure** — `bd epic close-eligible` is repo-global: it has no `--label`/`--parent`/
    `--mol` scoping flag (verified via `--help`), so the mutating form is **never** called
    unfiltered — in a repo holding more than one live epic it would close epics belonging to
@@ -271,8 +276,10 @@ Round-based with refill (each `bd ready` batch is, by definition, mutually indep
    manual mode — the coordinator changes *who runs it* (a dispatched agent) and adds the scoping
    filter that a human operator applies implicitly by only ever running the command against their
    own tree.
-6. **Refill** — closing tasks unblocks dependents, so loop back to step 1; the next ready query
-   surfaces them, and their worktrees are cut from the now-updated integration branch.
+6. **Refill** — closing tasks unblocks dependents; most dispatch mid-round via step 4's top-up,
+   and the loop back to step 1 remains the authority for the rest: beads a null top-up missed,
+   and beads with no mapping row yet (created mid-round), which wait for the next round's
+   planner pass. Their worktrees are cut from the now-updated integration branch.
 
 Termination is by the root epic closing, a quarantine drain, the no-progress guard tripping, or a
 bounded infrastructure-outage stop (`ready-unavailable`/`plan-unavailable` — see "Null dispatch
@@ -1411,6 +1418,16 @@ while (true) {
   // (see "The coordinator loop"), so within-round merge order was never load-bearing.
   // This shape was implemented and replay-verified on the live epic's adaptation first
   // (a straggler's siblings observed merging while its implementer still ran), then ported here.
+  // Mid-round top-up hook (see the dispatch section below, where it is assigned): fired
+  // FIRE-AND-FORGET after each successful merge, so a bead the merge just unblocked can dispatch
+  // into this same round's scheduler instead of waiting for the whole merge drain plus the next
+  // round's Close/Ready/Plan head. Declared as a no-op here because unplanned-id integrations can
+  // start riding the queue before the dispatch section assigns the real hook — a merge cannot
+  // happen that early (unplanned entries are BLOCKED by construction), but the call site must
+  // never hit an uninitialized binding. Fire-and-forget is load-bearing: the hook must never be
+  // awaited from inside integrateOne, or the ready re-query would serialize into the single-flight
+  // merge queue it exists to overlap with.
+  let topUpHook = () => {}
   let integrateAnnounced = false
   let mergeChain = Promise.resolve()
   const enqueueIntegration = r => {
@@ -1495,6 +1512,10 @@ while (true) {
             ? ledgerLine(r.n, r.id, `complete (commits ${short(m.mergeBase)}..${short(m.head)}, 1 parked — ruling: ${r.parkRuling} — finding: ${r.finding})`)
             : ledgerLine(r.n, r.id, `complete (commits ${short(m.mergeBase)}..${short(m.head)}, review clean)`)),
         `ledger-append:${r.id}`, { label: `ledger-append:${r.id}`, phase: 'Integrate', model: model('mechanical') })
+      // Mid-round top-up — fired ONLY on a successful merge (never on a null merge, never on the
+      // BLOCKED branch: only a merge that landed can have unblocked a dependent). Fire-and-forget:
+      // see the topUpHook comment above for why this must not be awaited here.
+      topUpHook()
     }
     // `n: r.n` carried forward here so a failed-merge blocker's eventual ledger line (in
     // handleBlocker) can still cite the plan ordinal — `r` already carries it (stamped by
@@ -1617,9 +1638,91 @@ while (true) {
     if (r) await enqueueIntegration(r)
     return r
   }
-  await parallel(plannedIds.map(id => () => runTask(id)))
-  // Drain: every enqueued integration — including the unplanned-id triage enqueued above —
-  // completes before the detector line and the no-progress guard read this round's outcome.
+  // INTER-ROUND BARRIER REMOVAL (measured live: over a 153-minute window at cap 14, mean
+  // concurrency 2.85, median 1, max 8 — 51% of minutes had ≤1 agent running, in a bimodal shape
+  // of implementation bursts followed by a long single-agent merge-drain tail. Max 8 against cap
+  // 14 means the cap was NOT the binding constraint; this barrier was). Previously this section
+  // was `await parallel(all chains)` then `await mergeChain`: a bead unblocked by the round's
+  // FIRST merge waited for its LAST, plus the next round's Close/Ready/Plan head, before
+  // dispatching. Now each successful merge fires a TOP-UP: a ready re-query whose newly-ready,
+  // already-mapped ids dispatch into this same round's scheduler immediately.
+  //
+  // Why a top-up needs no planner pass (verified, load-bearing): planPrompt requires the FIRST
+  // planning round to enumerate every READY AND BLOCKED descendant, and `planned.mapping` is the
+  // FULL CUMULATIVE table — so `ordinalFor(id)`/`artifacts(id)` already resolve for beads that
+  // were blocked when the round started. An id with NO mapping row (created mid-round; or a
+  // refill edge case) is deliberately skipped — it waits for the next round's planner pass
+  // rather than adding a planner call inside the merge path.
+  //
+  // Bounds and safety, stated explicitly:
+  // - RECURSION BOUND: a topped-up bead's own merge fires another top-up, but `dispatched` only
+  //   grows and only ids with mapping rows ever dispatch, so total chains ≤ the mapping size —
+  //   a finite set fixed at Plan time. Top-up queries fire at most once per successful merge
+  //   (coalesced further by the re-entrancy guard), and merges ≤ chains, so queries are bounded
+  //   too. Strictly monotone growth toward a finite ceiling: the round terminates.
+  // - RE-ENTRANCY: one top-up query in flight at a time; a merge landing mid-query sets a flag
+  //   and the query re-runs once after — two merges close together cost one query, not two.
+  // - DEADLOCK ORDERING: a top-up awaits only its own ready dispatch and pushes chains; it
+  //   never awaits mergeChain. Chains await the scheduler and their own integration; the merge
+  //   queue awaits only integrations. No cycle. The hook call inside integrateOne is
+  //   fire-and-forget, so the merge queue never waits on a top-up either.
+  // - NULL top-up query ("Null dispatch policy"): opportunistic, so a null just skips this
+  //   top-up — logged by dispatch(), no bounded retry, never a stopReason. The next ROUND's
+  //   ready query remains the authority; a bead a null top-up missed dispatches then, exactly
+  //   as it would have before this change. It still counts into nullsThisRound, which is
+  //   correct: a no-progress round with a swallowed null takes the bounded null-retry.
+  // - NO-PROGRESS GUARD: unchanged semantics. Top-ups fire only after a successful merge, and a
+  //   successful merge already made the round productive (completed grew) — so a top-up can
+  //   never make an unproductive round look productive. The guard reads the sets only after
+  //   full quiescence + drain below, so it can never make a productive round look unproductive
+  //   either: everything the round did, top-ups included, is settled before it runs.
+  const dispatched = new Set(plannedIds)
+  const chains = plannedIds.map(id => runTask(id).catch(() => null))
+  let topUpActive = false, topUpQueued = false
+  const topUps = []
+  const runTopUp = async () => {
+    if (topUpActive) { topUpQueued = true; return }  // coalesce: the in-flight query re-runs once
+    topUpActive = true
+    try {
+      do {
+        topUpQueued = false
+        // Same prompt as the round query (same blocker-label exclusion, same structural
+        // fallback), DISTINCT stub key/label: a dryRun scenario controls top-up responses
+        // separately from the round-gating query's consumed-per-round array.
+        const more = await dispatch(() => readyPrompt(epicId), 'bd-ready-topup',
+          { label: 'bd-ready-topup', phase: 'Implement', schema: READY, model: model('mechanical') })
+        if (!more) { log('top-up ready query returned null — skipping this top-up; the next round query is the authority'); return }
+        for (const id of (more.ids ?? [])) {
+          if (dispatched.has(id) || escalated.has(id)) continue
+          if (ordinalFor(id) === undefined) continue  // no mapping row: next round's planner pass owns it
+          dispatched.add(id)
+          chains.push(runTask(id).catch(() => null))
+        }
+      } while (topUpQueued)
+    } finally { topUpActive = false }
+  }
+  // A top-up promise created DURING a quiescence await has no handler attached until the next
+  // loop iteration — attach the catch at push time, or a rejection in that window (e.g. a
+  // scenario missing the stub key) is an unhandled rejection that kills the process instead of
+  // failing the round loudly. The first failure is kept and rethrown after quiescence: a top-up
+  // that THROWS (as opposed to a null dispatch, which runTopUp already handles) is a
+  // configuration error, not an outage to swallow.
+  let topUpFailure = null
+  topUpHook = () => { topUps.push(runTopUp().catch(e => { topUpFailure = topUpFailure ?? e })) }
+  // QUIESCENCE, then drain. A chain's promise resolves only after its own integration completed
+  // (runTask awaits enqueueIntegration), and an integration may have fired a top-up that is
+  // still querying — so await chains AND top-ups together, and loop until NEITHER array grew
+  // while awaiting (checking chains alone is not enough: a top-up pushed during the await could
+  // otherwise be left unawaited and its work unaccounted). Terminates by the recursion bound
+  // above. Only then drain mergeChain (which at this point holds at most the unplanned-id
+  // triage entries enqueued before the chains) so the detector line and the no-progress guard
+  // read the round's complete outcome.
+  for (;;) {
+    const chainCount = chains.length, topUpCount = topUps.length
+    await Promise.all([...chains, ...topUps])
+    if (chains.length === chainCount && topUps.length === topUpCount) break
+  }
+  if (topUpFailure) throw topUpFailure
   await mergeChain
 
   // THE DETECTOR the old rule never had. §Parallelism used to tell the operator to "notice"
@@ -1628,7 +1731,7 @@ while (true) {
   // days. Every round now reports effective parallelism against the configured cap and names
   // the suspected cause from the causes §Parallelism already lists.
   const hotDeferrals = Object.entries(sched.stats.hotFileDeferrals)
-  log(`parallelism: ${plannedIds.length} ready · cap ${cap} · peak in-flight ${sched.stats.peak}`
+  log(`parallelism: ${plannedIds.length} ready · topped-up ${dispatched.size - plannedIds.length} · cap ${cap} · peak in-flight ${sched.stats.peak}`
     + (hotDeferrals.length ? ` · hot-file deferrals: ${hotDeferrals.map(([f, n]) => `${f} (${n} task(s) waited)`).join(', ')} — a shared barrel/index/registry to split or assign to one task, or over-declared filesTouched (./planner-prompt.md)` : '')
     + (plannedIds.length < cap ? ` · ready frontier smaller than the cap — if more open beads are waiting on dependencies, check for edges encoding narrative order rather than genuine blocking (super-design §Decomposition)` : ''))
 
@@ -2369,7 +2472,8 @@ narratives that used to accompany each row are in git history; nothing here depe
 | scope fix | `wf_cb63ecb9-492` 31/0 | `wf_caf8953e-374` 24/0 | `wf_f18d307b-83e` 23/0 |
 | limitations fix (Sets, guard, minors, merge range) | `wf_97164f71-a3c` 32/0 | `wf_527ad491-790` 24/0 | `wf_4203efd4-84d` 23/0 |
 | live-run fixes (null-dispatch guard, stopReason, reviewer file plumbing, blocker exclusion, integrationWorktree) | replay 32/0 | replay 24/0 | replay 23/0 |
-| **relax-sequencing (sliding-window scheduler + hot-file cap, single-flight completion-order merge queue, parallelism detector) — CURRENT** | **replay 32/0** | **replay 24/0** | **replay 23/0** |
+| relax-sequencing (sliding-window scheduler + hot-file cap, single-flight completion-order merge queue, parallelism detector) | replay 32/0 | replay 24/0 | replay 23/0 |
+| **mid-round top-up (inter-round barrier removal: ready re-query per successful merge, quiescence loop) — CURRENT** | **replay 34/0** | **replay 24/0** | **replay 24/0** |
 
 The relax-sequencing row is a **structural** edit (dispatch scheduling and merge sequencing both
 changed shape), re-verified by replay: all three recorded scenarios land on identical dispatch
@@ -2606,6 +2710,7 @@ round 1, changing every downstream assertion this scenario makes about bucketing
 | `read-ledger` | `{text:""}` | I1: the one-time Resume-phase read, before the round loop starts — empty text means a fresh epic with no prior ledger, so nothing is reconstructed into `completed`/`escalated`/`parked`/`pendingRetry` (a resumed-run scenario, with non-empty ledger text, is not covered by this scenario — see "What this dryRun still can't prove" additions below) |
 | `close-epics` (array, 2 entries) | `{rootClosed:false,closedThisRun:[]}` then `{rootClosed:false,closedThisRun:["bd-101","bd-102"]}` | root stays open both rounds (quarantined `bd-103` and unresolved `bd-104` block closure) — round 1 doesn't exit early, round 2 doesn't loop forever |
 | `bd-ready` (array, 2 entries) | `{ids:["bd-101","bd-102","bd-103","bd-104"]}` then `{ids:[]}` | round 1 supplies the batch; round 2's empty set drains the loop (a canned value, not real `bd` continuity — see "What this dryRun proves and does not prove" below on why a RESOLVE'd `bd-104` not reappearing in round 2 is not itself an assertion). The **scoping** assertion (`--exclude-type=epic --label sp:<epicId>`) is a property of the dispatched prompt text itself, not of this canned return — verified by reading the prompt, same as `super-roast`'s reporter-arithmetic caveat above |
+| `bd-ready-topup` | `{ids:[]}` (single value, reused) | the mid-round top-up re-query fired after each successful merge (`bd-101`, `bd-102`) — empty here, so no bead tops up; the top-up DISPATCH path itself (a topped-up bead implementing mid-round) is exercised by the replay harness's dedicated scenarios, not by this fixture |
 | `plan` | `{planPath:"...", mapping:[{n:1,id:"bd-101",files:["src/a.js"]},{n:2,id:"bd-102",files:["src/b.js"]},{n:3,id:"bd-103",files:["src/a.js"]},{n:4,id:"bd-104",files:["src/c.js"]}]}` | ordinal↔bead-id↔files mapping that `groupByDisjointFiles` and every `ordinalFor` lookup consumes |
 | `brief:bd-101` / `brief:bd-102` / `brief:bd-103` / `brief:bd-104` | `{id:"bd-1XX",n:<n>,status:"BRIEFED",files:[...],branch:".worktrees/<integrationBranch>--task-bd-1XX",base:"<40-char-sha>"}` | call-site-qualified per id (a single unqualified `brief` key can't return four different ids/branches); `base` here is the pre-implementer commit taskBriefPrompt now captures — this is where `n`/`branch`/`base` originate for the rest of the pipeline |
 | `implement:bd-101` / `implement:bd-102` / `implement:bd-103` | `{id:"bd-1XX",n:<n>,status:"IMPLEMENTED",files:[...],branch:"..."}` | same per-id qualification. This stub's `n`/`branch` are cosmetic only — the pipeline's implement stage re-stamps `n` from `ordinalFor(br.id)` and `branch` from `taskWorktree(br.id)` directly (never trusting the implementer's own echo, nor even the brief agent's — see the runTask chain call site); only `base` is carried from the brief result (`br.base`), since that one genuinely can't be recomputed |
@@ -2683,10 +2788,12 @@ untested by any scenario in this doc — inspection-only, same as C-1/C-3 above.
   by inspection of the runTask chain call site and `reviewAndFix`'s return paths, not by this scenario
   alone, since `bd-104` is the only stubbed BLOCKED case here and this scenario's fix loop never
   reaches the round-5 cap or the adjudicator).
-- Expected dispatch count (I1: `read-ledger` 1 + `close-epics` 2 + `bd-ready` 2 + `plan` 1 +
+- Expected dispatch count (I1: `read-ledger` 1 + `close-epics` 2 + `bd-ready` 2 +
+  `bd-ready-topup` 2 (one per successful merge — `bd-101`, `bd-102`; deterministic under replay,
+  where the re-entrancy guard never coalesces instant stubs) + `plan` 1 +
   `brief` 4 + `implement` 4 + `review` 3 + `fix` 1 + `re-review` 1 + `merge` 3 + `ledger-append` 4
   (`bd-101`, `bd-102`, `bd-103`, `bd-104` — one per terminal outcome) + `triage` 2 + `notify` 1 +
-  `clarify` 1 + `final-review` 1 = **31 agent calls, 0 errors** (`final-review` dispatches because
+  `clarify` 1 + `final-review` 1 = **33 agent calls, 0 errors** (`final-review` dispatches because
   `completed.size` is 2, not 0) — **confirmed by re-run**, see below; this was computed by hand
   before that run and matched exactly. The pre-Task-5 script's confirmed count was 26 (see the
   superseded baseline below) — the +5 is exactly the new `read-ledger` (1) and `ledger-append` (4)
@@ -2824,6 +2931,7 @@ script and this `args` block:
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[\"bd-101\",\"bd-102\",\"bd-103\",\"bd-104\"]}",
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[]}"
       ],
+      "bd-ready-topup": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[]}",
       "plan": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"planPath\":\".worktrees/epic-bd-100-integration/.superpowers/sdd/bd-100-plan/bd-100-plan.md\",\"mapping\":[{\"n\":1,\"id\":\"bd-101\",\"files\":[\"src/a.js\"]},{\"n\":2,\"id\":\"bd-102\",\"files\":[\"src/b.js\"]},{\"n\":3,\"id\":\"bd-103\",\"files\":[\"src/a.js\"]},{\"n\":4,\"id\":\"bd-104\",\"files\":[\"src/c.js\"]}]}",
       "brief:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"BRIEFED\",\"files\":[\"src/a.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-101\",\"base\":\"aaaaaaa1111111111111111111111111111111\"}",
       "brief:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-102\",\"n\":2,\"status\":\"BRIEFED\",\"files\":[\"src/b.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-102\",\"base\":\"bbbbbbb2222222222222222222222222222222\"}",
@@ -2860,8 +2968,8 @@ If a future structural edit changes this script, re-run with these args, confirm
 update it deliberately alongside the edit that changed it), and replace the figures above — same
 discipline as `super-roast`'s "Passing baseline (recorded, not illustrative)" sections. Five structural edits have
 forced exactly that re-run, and each landed on the same count — see the revision table under "dryRun
-policy" for the full sequence. The CURRENT confirmed shape is **32 agent calls, 0 errors, terminal
-stopReason `ready-drained`** — confirmed by the offline replay harness against the current script
+policy" for the full sequence. The CURRENT confirmed shape is **34 agent calls, 0 errors, terminal
+stopReason `ready-drained`** (33 from the dispatch arithmetic above + 1 `ledger-minor:bd-101:1`) — confirmed by the offline replay harness against the current script
 (see the current-row paragraph under "dryRun policy"; `wf_97164f71-a3c` is the last Workflow-hosted
 run, against the previous revision — read that writeup's own caveat before citing either figure for
 anything beyond dispatch-count/topology).
@@ -2899,6 +3007,7 @@ reading `reviewAndFix`'s definition directly (the loop condition is `rv.status !
 | `read-ledger` | `{text:""}` | I1: the one-time Resume-phase read — fresh epic, nothing reconstructed |
 | `close-epics` (array, 2 entries) | `{rootClosed:false,closedThisRun:[]}` twice | root never closes — `bd-201` never merges in this scenario |
 | `bd-ready` (array, 2 entries) | `{ids:["bd-201"]}` then `{ids:[]}` | round 1 supplies the one task; round 2's empty set drains the loop (`bd-201` is excluded from round 2 anyway, via the `escalated` filter, once triage ESCALATEs it below) |
+| `bd-ready-topup` | `{ids:[]}` | present in the args for uniformity; **never dispatched here** — nothing merges, and the top-up fires only on a successful merge (its firing would be a regression this scenario catches) |
 | `plan` | `{planPath:"...", mapping:[{n:1,id:"bd-201",files:["src/x.js"]}]}` | single-task, single-bucket mapping |
 | `brief:bd-201` | `{id:"bd-201",n:1,status:"BRIEFED",files:["src/x.js"],branch:".worktrees/epic-bd-200-integration--task-bd-201",base:"<40-char-sha>"}` | brief stage, unblocked |
 | `implement:bd-201` | `{id:"bd-201",n:1,status:"IMPLEMENTED",files:["src/x.js"],branch:"..."}` | implement stage, unblocked (contrast with the canonical scenario's `bd-104`, which tests the BLOCKED path instead) |
@@ -2937,7 +3046,8 @@ scenario, something regressed: `merge:bd-201` would mean a BLOCKED task reached 
 - Expected dispatch count (I1: `read-ledger` 1 + `close-epics` 2 + `bd-ready` 2 + `plan` 1 +
   `brief` 1 + `implement` 1 + `review` 1 + `fix` 5 + `re-review` 5 + `adjudicate` 1 +
   `breaker-blocker` 1 + `triage` 1 + `notify` 1 + `ledger-append` 1 (`bd-201`) = **24 agent calls,
-  0 errors** — and, distinctly from every other scenario in this doc, **no `final-review`
+  0 errors** — and **no `bd-ready-topup` dispatch**: nothing merges in this scenario, and the
+  top-up fires only on a successful merge; its firing here would itself be a regression — and, distinctly from every other scenario in this doc, **no `final-review`
   dispatch**, since `completed.size` is `0`) — **confirmed by re-run**, see below; this was
   computed by hand before that run and matched exactly. The pre-Task-5 confirmed count was 22
   (below); the +2 is exactly `read-ledger` and `ledger-append:bd-201`.
@@ -2972,6 +3082,7 @@ bead's TEXT — same `pick()` limit as everywhere else in this section.
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[\"bd-201\"]}",
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[]}"
       ],
+      "bd-ready-topup": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[]}",
       "plan": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"planPath\":\".worktrees/epic-bd-200-integration/.superpowers/sdd/bd-200-plan/bd-200-plan.md\",\"mapping\":[{\"n\":1,\"id\":\"bd-201\",\"files\":[\"src/x.js\"]}]}",
       "brief:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"BRIEFED\",\"files\":[\"src/x.js\"],\"branch\":\".worktrees/epic-bd-200-integration--task-bd-201\",\"base\":\"eeeeeee5555555555555555555555555555555\"}",
       "implement:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"IMPLEMENTED\",\"files\":[\"src/x.js\"],\"branch\":\".worktrees/epic-bd-200-integration--task-bd-201\"}",
@@ -3038,6 +3149,7 @@ that; it is, and remains, verified only by reading the `if` statement itself.
 | `read-ledger` | `{text:""}` | I1: the one-time Resume-phase read — fresh epic, nothing reconstructed |
 | `close-epics` (array, 2 entries) | `{rootClosed:false,closedThisRun:[]}` twice | root stays open (this scenario's canned world doesn't bother modeling epic closure after the one child merges — same simplification the other two scenarios make) |
 | `bd-ready` (array, 2 entries) | `{ids:["bd-301"]}` then `{ids:[]}` | round 1 supplies the one task; round 2's empty set drains the loop |
+| `bd-ready-topup` | `{ids:[]}` (reused) | fired once, after `bd-301`'s successful (PARKed) merge — empty, so nothing tops up |
 | `plan` | `{planPath:"...", mapping:[{n:1,id:"bd-301",files:["src/y.js"]}]}` | single-task, single-bucket mapping |
 | `brief:bd-301` | `{id:"bd-301",n:1,status:"BRIEFED",files:["src/y.js"],branch:".worktrees/epic-bd-300-integration--task-bd-301",base:"<40-char-sha>"}` | brief stage, unblocked |
 | `implement:bd-301` | `{id:"bd-301",n:1,status:"IMPLEMENTED",files:["src/y.js"],branch:"..."}` | implement stage, unblocked |
@@ -3068,7 +3180,8 @@ to short-circuit the blocker path.
   earlier than the Finish-phase summary line.
 - Expected dispatch count (I1: `read-ledger` 1 + `close-epics` 2 + `bd-ready` 2 + `plan` 1 +
   `brief` 1 + `implement` 1 + `review` 1 + `fix` 5 + `re-review` 5 + `adjudicate` 1 + `merge` 1 +
-  `ledger-append` 1 (`bd-301`) + `final-review` 1 = **23 agent calls, 0 errors**) — **confirmed by
+  `ledger-append` 1 (`bd-301`) + `bd-ready-topup` 1 (after `bd-301`'s successful merge) +
+  `final-review` 1 = **24 agent calls, 0 errors**) — **confirmed by
   re-run**, see below; this was computed by hand before that run and matched exactly. The
   pre-Task-5 confirmed count was 21 (below); the +2 is exactly `read-ledger` and
   `ledger-append:bd-301`.
@@ -3141,6 +3254,7 @@ question, same structural limit as the other four claims above.
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[\"bd-301\"]}",
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[]}"
       ],
+      "bd-ready-topup": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[]}",
       "plan": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"planPath\":\".worktrees/epic-bd-300-integration/.superpowers/sdd/bd-300-plan/bd-300-plan.md\",\"mapping\":[{\"n\":1,\"id\":\"bd-301\",\"files\":[\"src/y.js\"]}]}",
       "brief:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"BRIEFED\",\"files\":[\"src/y.js\"],\"branch\":\".worktrees/epic-bd-300-integration--task-bd-301\",\"base\":\"fffffff6666666666666666666666666666666\"}",
       "implement:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"IMPLEMENTED\",\"files\":[\"src/y.js\"],\"branch\":\".worktrees/epic-bd-300-integration--task-bd-301\"}",
@@ -3170,7 +3284,7 @@ discipline as the other two scenarios' baselines. Every structural edit so far h
 re-run without moving the count — see the revision table under "dryRun policy". One of those rounds
 touched only this scenario's data (adding `mergeBase` to the `merge:bd-301` stub) and was re-run
 anyway, because "recorded, not illustrative" does not have a too-small-to-matter exemption. The
-CURRENT confirmed shape is **23 agent calls, 0 errors** — confirmed by the offline replay harness
+CURRENT confirmed shape is **24 agent calls, 0 errors** — confirmed by the offline replay harness
 against the current script (see the current-row paragraph under "dryRun policy";
 `wf_4203efd4-84d` is the last Workflow-hosted run, against the previous revision). The 21/0 figure
 above `wf_941e256b-10b` remains pre-Task-5 history, unaffected by this restatement.

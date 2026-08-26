@@ -86,7 +86,7 @@ package, the five-round fix breaker, serial merge-back — is inherited unchange
 agent following this skill's own instruction to run SDD's per-task pipeline reads an absolute
 prohibition on the one thing this skill exists to do, and silently serializes the epic.
 
-**Dispatch is not gated on file overlap.** Every ready task dispatches as soon as a slot frees,
+**Dispatch is not gated on file overlap, and rounds do not gate refill.** Every ready task dispatches as soon as a slot frees,
 bounded by `config.concurrency` (default 16, matching the Workflow runtime's fixed per-workflow
 agent cap of `min(16, cores-2)` — the runtime queues anything over-admitted, so the effective
 default is exactly that formula on every machine) as a **sliding window** — never as batches with
@@ -97,6 +97,9 @@ merge touches the integration branch at any moment, guaranteed by chaining, not 
 most `config.hotFileCap` (default 3) in-flight tasks may declare the same file, which bounds
 worst-case rebase churn on a shared barrel/index/registry without collapsing the frontier. A task
 with no declared files dispatches normally — isolation makes dispatch-time collision impossible.
+Each successful merge fires a **mid-round top-up** — a ready re-query that dispatches
+newly-unblocked, already-mapped beads into the same round's window, so dependents overlap the
+merge drain instead of waiting for the next round.
 A `Seam contract:` bead (super-design's §Coverage) legitimately declares files on **both** sides
 of its boundary — that is its job, not over-declaration; it merges before its dependents by
 construction, so its span never contends with them.

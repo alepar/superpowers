@@ -213,6 +213,7 @@ function oneTaskCanned(overrides = {}) {
     'read-ledger': { text: '' },
     'close-epics': { rootClosed: false, closedThisRun: [] },
     'bd-ready': [{ ids: ['bd-101'] }, { ids: [] }],
+    'bd-ready-topup': { ids: [] },
     'plan': { planPath: PLANPATH, mapping: [{ n: 1, id: 'bd-101', files: ['src/a.js'] }] },
     'brief:bd-101': { id: 'bd-101', n: 1, status: 'BRIEFED', files: ['src/a.js'], branch: 'x', base: SHA('a') },
     'impl:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', files: ['src/a.js'] },
@@ -237,7 +238,7 @@ async function main() {
   {
     const out = await run({ args: canonicalArgs })
     assertNoThrow(out)
-    check(out.trace.length === 32, `32 agent dispatches (got ${out.trace.length})`)
+    check(out.trace.length === 34, `34 agent dispatches (got ${out.trace.length}) — 32 + 2 top-up queries after bd-101/bd-102's merges`)
     const r = out.result
     check(r && JSON.stringify(r.completed.sort()) === '["bd-101","bd-102"]', 'completed = [bd-101, bd-102]', JSON.stringify(r?.completed))
     check(r && JSON.stringify(r.escalated) === '["bd-103"]', 'escalated = [bd-103]', JSON.stringify(r?.escalated))
@@ -266,7 +267,7 @@ async function main() {
   {
     const out = await run({ args: parkArgs })
     assertNoThrow(out)
-    check(out.trace.length === 23, `23 agent dispatches (got ${out.trace.length})`)
+    check(out.trace.length === 24, `24 agent dispatches (got ${out.trace.length}) — 23 + 1 top-up query after bd-301's merge`)
     const r = out.result
     check(r && JSON.stringify(r.completed) === '["bd-301"]' && JSON.stringify(r.parked) === '["bd-301"]', 'bd-301 completed AND parked', JSON.stringify(r))
     check(out.trace.some(t => t.label === 'merge:bd-301'), 'PARK ruling reached the merge gate')
@@ -282,6 +283,7 @@ async function main() {
       'close-epics': { rootClosed: false, closedThisRun: [] },
       'bd-ready': [{ ids: ['bd-101', 'bd-104'] }, { ids: [] }],
       'plan': { planPath: PLANPATH, mapping: [{ n: 1, id: 'bd-101', files: ['src/a.js'] }, { n: 4, id: 'bd-104', files: ['src/c.js'] }] },
+      'bd-ready-topup': { ids: [] },
       'brief:bd-101': { id: 'bd-101', n: 1, status: 'BRIEFED', files: ['src/a.js'], branch: 'x', base: SHA('a') },
       'brief:bd-104': { id: 'bd-104', n: 4, status: 'BRIEFED', files: ['src/c.js'], branch: 'x', base: SHA('d') },
       'impl:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', files: ['src/a.js'] },
@@ -593,6 +595,7 @@ async function main() {
       'read-ledger': { text: '' },
       'close-epics': { rootClosed: false, closedThisRun: [] },
       'bd-ready': [{ ids: [...ids] }, { ids: [] }],
+      'bd-ready-topup': { ids: [] },
       'plan': { planPath: PLANPATH, mapping: ids.map((id, i) => ({ n: i + 1, id, files: [`src/f${i}.js`] })) },
       'final-review': 'fine',
     }
@@ -630,7 +633,7 @@ async function main() {
     check(out.maxOpen.merge === 1, `exactly one merge in flight, ever (maxOpen.merge = ${out.maxOpen.merge})`)
     check((out.maxOpen.impl ?? 0) >= 2, `implementers genuinely concurrent (maxOpen.impl = ${out.maxOpen.impl})`)
     check(ids.every(id => out.counts[`merge:${id}`] === 1), 'every task merged exactly once')
-    check(out.logs.some(l => /parallelism: 13 ready · cap 14 · peak in-flight/.test(l)), 'detector line reports ready/cap/peak', out.logs.find(l => l.startsWith('parallelism')))
+    check(out.logs.some(l => /parallelism: 13 ready · topped-up 0 · cap 14 · peak in-flight/.test(l)), 'detector line reports ready/topped-up/cap/peak', out.logs.find(l => l.startsWith('parallelism')))
     assertBucketsDisjoint(out.result)
   }
 
@@ -689,6 +692,75 @@ async function main() {
     assertNoThrow(out)
     check(JSON.stringify(out.result?.completed) === '["bd-101"]', 'mapped task completed', JSON.stringify(out.result))
     check(JSON.stringify(out.result?.escalated) === '["bd-105"]', 'unmapped id escalated via the queue')
+    assertBucketsDisjoint(out.result)
+  }
+
+  // ===== 5. mid-round top-up scenarios (inter-round barrier removal) =====
+
+  scenario('top-up: a bead unblocked by a merge dispatches in the SAME round')
+  {
+    // bd-102 is blocked on bd-101 at round start (round query returns only bd-101) but the
+    // planner mapped it (READY AND BLOCKED enumeration). After bd-101's merge, the top-up query
+    // surfaces it — it must implement and merge without waiting for round 2.
+    const canned = manyTaskCanned(['bd-101', 'bd-102'], {
+      'bd-ready': [{ ids: ['bd-101'] }, { ids: [] }],
+      'bd-ready-topup': { ids: ['bd-101', 'bd-102'] },  // reused every call: dedup must hold
+    })
+    const out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    check(JSON.stringify(out.result?.completed.sort()) === '["bd-101","bd-102"]', 'both completed', JSON.stringify(out.result))
+    check(out.counts['bd-ready'] === 2, `round query ran twice, not three times (got ${out.counts['bd-ready']}) — bd-102 did NOT wait for a new round`)
+    check((out.counts['bd-ready-topup'] ?? 0) >= 1, 'top-up query fired')
+    const idx = label => out.trace.findIndex(t => t.label === label)
+    check(idx('brief:bd-102') > idx('merge:bd-101'), 'topped-up bead dispatched after the unblocking merge', `brief:bd-102@${idx('brief:bd-102')} merge:bd-101@${idx('merge:bd-101')}`)
+    check(out.counts['brief:bd-102'] === 1 && out.counts['brief:bd-101'] === 1, 'no double dispatch despite the top-up re-listing both ids')
+    check(out.logs.some(l => l.includes('topped-up 1')), 'detector reports the topped-up count', out.logs.find(l => l.startsWith('parallelism')))
+    assertBucketsDisjoint(out.result)
+  }
+
+  scenario('top-up: null query skips opportunistically, next round recovers')
+  {
+    const canned = manyTaskCanned(['bd-101', 'bd-102'], {
+      'bd-ready': [{ ids: ['bd-101'] }, { ids: ['bd-102'] }, { ids: [] }],
+      'bd-ready-topup': null,
+    })
+    const out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    check(JSON.stringify(out.result?.completed.sort()) === '["bd-101","bd-102"]', 'both complete across rounds', JSON.stringify(out.result))
+    check(out.result?.stopReason === 'ready-drained', 'null top-up never affects stopReason', out.result?.stopReason)
+    check(out.logs.some(l => l.includes('skipping this top-up')), 'null top-up logged as opportunistic skip')
+    assertBucketsDisjoint(out.result)
+  }
+
+  scenario('top-up: an unmapped id is skipped (waits for the next planner pass)')
+  {
+    const canned = manyTaskCanned(['bd-101'], {
+      'bd-ready-topup': { ids: ['bd-999'] },  // ready but no mapping row (created mid-round)
+    })
+    const out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    check(!out.trace.some(t => t.label === 'brief:bd-999'), 'unmapped id never dispatched')
+    check(JSON.stringify(out.result?.completed) === '["bd-101"]', 'round completes normally', JSON.stringify(out.result))
+    assertBucketsDisjoint(out.result)
+  }
+
+  scenario('top-up: recursion — a topped-up bead\'s merge tops up the next, bounded by the mapping')
+  {
+    // Dependency chain bd-101 -> bd-102 -> bd-103, all mapped at round start. Each merge's
+    // top-up surfaces the next; the whole chain drains in ONE round, and the quiescence loop
+    // terminates (dispatched-set bound) even though the last top-up re-lists everything.
+    const canned = manyTaskCanned(['bd-101', 'bd-102', 'bd-103'], {
+      'bd-ready': [{ ids: ['bd-101'] }, { ids: [] }],
+      'bd-ready-topup': [{ ids: ['bd-102'] }, { ids: ['bd-103'] }, { ids: ['bd-101', 'bd-102', 'bd-103'] }],
+    })
+    const out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    check(JSON.stringify(out.result?.completed.sort()) === '["bd-101","bd-102","bd-103"]', 'entire chain drained in one round', JSON.stringify(out.result))
+    check(out.counts['bd-ready'] === 2, `no extra rounds needed (got ${out.counts['bd-ready']})`)
+    const idx = label => out.trace.findIndex(t => t.label === label)
+    check(idx('brief:bd-102') > idx('merge:bd-101') && idx('brief:bd-103') > idx('merge:bd-102'), 'each link dispatched after its unblocking merge')
+    check(out.logs.some(l => l.includes('topped-up 2')), 'detector counts both topped-up beads', out.logs.find(l => l.startsWith('parallelism')))
+    check(out.maxOpen.merge === 1, 'single-flight merge invariant held through recursive top-ups')
     assertBucketsDisjoint(out.result)
   }
 
