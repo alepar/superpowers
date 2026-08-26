@@ -36,8 +36,9 @@ Task tool (general-purpose), model: opus:
     this may be summarized to subepic goal/summary sections instead of full spec text.]
 
     ## Task tree
-    [TASK_TREE — every task's id, title, and description for the scope under review.
-    Leaf tasks are dumped from the bd DB, not read from spec files.]
+    [TASK_TREE — every task's id, title, description, and the ids it depends on (its
+    blocking deps), for the scope under review. Leaf tasks and their dependency lists are
+    dumped from the bd DB, not read from spec files.]
 
     ## Flagged tasks
     [FLAGGED_TASKS — task ids carrying flag `sp:frozen-promotion` or
@@ -74,21 +75,38 @@ Task tool (general-purpose), model: opus:
        evidence of independence; the exchange is dataflow, not file overlap. Do not
        report a seam whose boundary a task plainly owns, and do not invent exchanges the
        descriptions don't imply.
-    5. **Flag sweep.** Every id in "Flagged tasks" is an automatic finding — known-
+    5. **Edge audit → NARRATIVE-EDGE.** For every blocking dep in the task tree, name — from
+       the two descriptions — the specific artifact (interface, schema, file, recorded
+       decision) the dependent consumes and the blocker produces. Three failures, one kind:
+       (a) UNNAMEABLE — no artifact connects them; the edge encodes narration or "that area
+       first". (b) MISDIRECTED — the artifact is real but a DIFFERENT task (often earlier in
+       the same sub-epic) produces it; the edge gates the dependent behind work it never
+       consumes; propose repointing at the actual producer. (c) DUPLICATED — a sibling
+       already owns the integration with that sub-epic and carries the same edge; propose
+       consuming the owning sibling's artifact instead. If the edge's only justification is
+       an UNANSWERED design question (neither description decides who owns the exchanged
+       data), report it as `UNOWNED-SEAM` instead — the boundary needs a contract, not an
+       ordering. Do not flag edges onto `Seam contract:` beads (that is the seam mechanism
+       working), and do not flag an edge whose artifact you can name and locate at its
+       producer — a real edge is not a finding.
+    6. **Flag sweep.** Every id in "Flagged tasks" is an automatic finding — known-
        underdesigned work must not sail through silently — *unless* it already has an
        entry in the rejected-findings ledger, which takes precedence over the sweep.
 
     ## Required structured output (do NOT write a prose essay)
 
     One entry per finding:
-    - **type:** `GAP` | `ORPHAN` | `UNOWNED-SEAM` | flag-sweep
+    - **type:** `GAP` | `ORPHAN` | `UNOWNED-SEAM` | `NARRATIVE-EDGE` | flag-sweep
     - **description:** the problem, one sentence
     - **evidence:** the unmapped goal element, the orphaned task id, the seam's two
       participant task ids + the exchanged data/interface + the quoted description text
-      implying the exchange, or the flag and its task id
+      implying the exchange, the edge (dependent ← blocker) + which of unnameable/
+      misdirected/duplicated it is + the quoted description text, or the flag and its
+      task id
     - **proposed fix:** a new leaf task under a named epic, or a new subepic needing
       design; for `UNOWNED-SEAM`, name the boundary to be contracted (arbitration turns an
-      accepted seam into a contract bead + integration bead — see SKILL.md §Coverage)
+      accepted seam into a contract bead + integration bead — see SKILL.md §Coverage); for
+      `NARRATIVE-EDGE`, drop the edge, or name the task it should repoint to
 
     Report only defensible findings. Quality over quantity — but do not soften.
 ```

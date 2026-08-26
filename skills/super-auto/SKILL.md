@@ -186,7 +186,7 @@ condition exists to close.
 > Autonomy begins the moment the design is approved — `super-design`'s coverage loop passing is that moment on a first run, and a replayed approval is that moment on a resume.
 
 Not the settled tree, which precedes that loop's own human arbitration (accepting GAPs, ruling on
-ORPHANs, ruling on UNOWNED-SEAMs) — parking can't serve a decision that hasn't been made yet, so
+ORPHANs, ruling on UNOWNED-SEAMs and NARRATIVE-EDGEs) — parking can't serve a decision that hasn't been made yet, so
 phase 2 (running inside the `super-design` invocation, after coverage passes) is already inside
 the zone.
 
@@ -209,10 +209,12 @@ not asked, and the road not taken is parked (`run-state.md`'s `degraded-verdict`
 
 **Where the zone begins: when the design is approved, not at a phase number.** The design gates
 are the human's — `super-design`'s top-split gate (the child list and its `LEAF`/`PROMOTE` verdicts)
-and its coverage arbitration (accepting `GAP`s, ruling on `ORPHAN`s, ruling on `UNOWNED-SEAM`s).
-None of the three is auto-answerable: an `ORPHAN` asks whether a task is scope creep or the goal
-was underspecified, and an `UNOWNED-SEAM` asks who should own a boundary neither side claimed —
-neither is a question a run can answer about itself; the same replay rules as the other two apply
+and its coverage arbitration (accepting `GAP`s, ruling on `ORPHAN`s, ruling on `UNOWNED-SEAM`s
+and `NARRATIVE-EDGE`s).
+None of the four is auto-answerable: an `ORPHAN` asks whether a task is scope creep or the goal
+was underspecified, an `UNOWNED-SEAM` asks who should own a boundary neither side claimed, and a
+`NARRATIVE-EDGE` asks whether a recorded ordering was ever real —
+none is a question a run can answer about itself; the same replay rules apply
 (a recorded disposition replays, an unrecorded one is asked). **Say this when confirming the flags** — `autonomous` means
 "I will need you at the design gates, then it runs to the end unattended," and a user who reads it
 as "no questions at all" is surprised at the first gate.

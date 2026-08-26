@@ -120,8 +120,36 @@ first. Do not encode the order you happened to describe things in: a decomposer 
 order writes a linear chain by reflex, and a chain of N tasks is N sequential execution rounds no
 matter how disjoint their files are. Execution dispatches every ready task at once, so each
 unnecessary edge is a round of parallelism deleted at design time, invisibly — `super-code` cannot
-tell a decorative edge from a real one. When in doubt, leave it out: two tasks that turn out to
-conflict serialize anyway on their files-touched overlap.
+tell a decorative edge from a real one. When in doubt, leave it out: execution's serial merge gate
+and post-rebase test run catch a genuine conflict at the cost of one rework cycle, while a
+decorative edge costs a full round on every run.
+
+Four edge rules, each the generalization of a measured live failure (the coverage loop's
+`NARRATIVE-EDGE` check audits the first three — §Coverage):
+
+- **Name the consumed artifact or drop the edge.** Every edge is justified by a specific artifact
+  — an interface, schema, file, or recorded decision — that the dependent consumes and the blocker
+  lands. "Depends on that area being done" is narrative. If you cannot name the artifact AND the
+  bead that produces it, there is no edge.
+- **Point the edge at the artifact's earliest producer** — never at the other sub-epic's most
+  prominent bead. A cross-sub-epic edge aimed at the headline bead when the needed artifact lands
+  three beads earlier gates everything behind work the dependent never consumes.
+- **One sibling owns each cross-sub-epic integration** (the same ownership principle as seam
+  contracts). If a sibling already carries the edge into that sub-epic and owns integrating with
+  it, a second edge from another sibling is usually duplicated scaffolding — consume the owning
+  sibling's artifact instead.
+- **An edge you justify with a question instead of an artifact is a seam, not a dependency.**
+  Chaining two tasks because nobody has decided which of them owns a piece of data does not answer
+  the question — it hands the decision, implicitly, to whichever implementer runs first. Decide it
+  in the spec, or extract it as a seam contract (§Coverage's `UNOWNED-SEAM` machinery) and let
+  both tasks run in parallel against the decided boundary.
+
+**Check the graph's shape before moving on.** Execution rounds ≈ the longest dependency chain. A
+wide body with a long thin tail — a finishing layer written as wire-up → verify → polish — is a
+decomposition smell: tails usually re-decompose into per-feature integration beads that run
+abreast. And a tail whose beads all declare the same file serializes on execution's hot-file cap
+regardless of what the graph permits — declared-file overlap inside an intended-parallel layer
+means the file should be split or assigned to a single bead.
 
 - **Beads:** for every child, `bd create ... --parent <id> --no-inherit-labels -l sp:<root-epic-id>` — both flags together, every time. `--no-inherit-labels` alone still strips the wanted root label; without it, parent labels (including `sp:needs-design`) smear onto every leaf. The root invocation creates the epic first, labeled `sp:<its-own-id>`.
 - **No beads:** the same fields as a task-table row — see §No-Beads Mode for the columns it must carry.
@@ -188,7 +216,7 @@ Runs once the tree has settled (§The Process, step 7).
 
 **Rounds are incremental:** round N+1 re-runs only the per-subepic passes whose subtrees changed since round N, plus the root pass (always). **A round's passes are mutually independent — dispatch every pass's reviewers concurrently** (all per-subepic passes and the root pass together, 3 reviewers each): each pass's inputs are assembled before dispatch and no pass reads another's findings — union, dedupe, and arbitration all happen after the fan-out returns. Serializing them buys nothing and multiplies the round's wall-clock by the pass count. The loop ends when a round yields zero accepted findings.
 
-**Arbitration:** present deduped findings to the user — minus any this round already has a recorded disposition for (§Run-State File), which are replayed, not re-asked. Accepted `GAP`: small → leaf task added directly; big → task created → promoted → nested brainstorm → its own super-design subtree (tripwire stays armed). Accepted `ORPHAN`: the user picks delete (scope creep) or add the missing goal element it serves. Accepted `UNOWNED-SEAM`: **before creating either bead, check whether a `Seam contract:` /
+**Arbitration:** present deduped findings to the user — minus any this round already has a recorded disposition for (§Run-State File), which are replayed, not re-asked. Accepted `GAP`: small → leaf task added directly; big → task created → promoted → nested brainstorm → its own super-design subtree (tripwire stays armed). Accepted `ORPHAN`: the user picks delete (scope creep) or add the missing goal element it serves. Accepted `NARRATIVE-EDGE`: drop the edge (`bd dep remove <dependent> <blocker>`) or repoint it (`bd dep remove`, then `bd dep add <dependent> <actual-producer>`), per the finding's proposed fix — question-shaped edges never arrive as this kind (reviewers report those as `UNOWNED-SEAM`, whose contract path replaces the ordering). Accepted `UNOWNED-SEAM`: **before creating either bead, check whether a `Seam contract:` /
 `Seam integration:` bead for this boundary already exists — including via a replayed disposition
 from the run-state file — and adopt it instead of duplicating it and its edges.** Otherwise create
 **two leaf tasks** with the standard flag triple, and wire the tree:
