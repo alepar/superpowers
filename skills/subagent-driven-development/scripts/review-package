@@ -22,6 +22,14 @@ head=$3
 git rev-parse --verify --quiet "$base" >/dev/null || { echo "bad BASE: $base" >&2; exit 2; }
 git rev-parse --verify --quiet "$head" >/dev/null || { echo "bad HEAD: $head" >&2; exit 2; }
 
+# An empty range is a measurement failure, not a package: a reviewer handed a header-only file
+# reviews nothing and reports clean (measured: ~40 such reviews on one run, HEAD resolved in the
+# wrong worktree). Refuse to write it, and say where HEAD was resolved.
+if git diff --quiet "${base}..${head}"; then
+  echo "EMPTY RANGE: ${base}..${head} has no diff (HEAD resolved in $(pwd) as $(git rev-parse --short "$head")) — nothing to review; refusing to write a header-only package. Run this from the task worktree whose tip you mean to review." >&2
+  exit 3
+fi
+
 if [ $# -eq 4 ]; then
   out=$4
 else

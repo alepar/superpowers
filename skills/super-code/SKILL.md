@@ -38,7 +38,9 @@ A caller supplies these — none are inferable from the repo:
 | integration worktree | the checkout of `integrationBranch` this skill works in — passed as `integrationWorktree` in the coordinator contract (optional, additive). A caller that created the worktree itself (`super-auto`'s run worktree, any native-tool worktree) **must pass its path**: when omitted, the coordinator derives `.worktrees/<integrationBranch>` with any `/` in the branch name collapsed to `-`, which only matches worktrees created by this skill's own pre-flight convention — a slashed branch like `super-auto/<slug>` makes the derived path wrong by construction for any externally-created worktree (`./coordinator-workflow.md`'s "Coordinator contract") |
 | mode | autonomous or interactive. Same contract either way — mode changes who answers a blocked task, never what gets reviewed |
 | who owns the finish | **state it explicitly if the caller owns it.** There is no config flag. Left unsaid, this skill runs its own Finish: it merges the integration branch and deletes the worktree — taking the ledger and the per-task reports with it, which is where a caller's report gets its sources |
-| `config.models`, `config.concurrency`, `config.hotFileCap`, `config.topUpQueryCap` | optional; see Model tiering and Parallelism below for what they default to and why an explicit map is preferred |
+| `config.models`, `config.concurrency`, `config.hotFileCap`, `config.topUpQueryCap`, `config.edgeAuditCap` | optional; see Model tiering and Parallelism below for what they default to and why an explicit map is preferred |
+| `config.gate`, `config.sweep` | optional, **but declare them**: the exact per-merge gate command and the exact per-branch sweep command, envelope included (`nice`, thread caps — whatever `AGENTS.md` requires of every command). The gate runs on every serial merge, unchanged; the sweep runs once at Finish against the tip the final review reads. Undeclared, the gate is the full project test command on the serial path — measured at 36–113 minutes per merge when a bead touched one heavy package — and no sweep runs (`./coordinator-workflow.md`'s "Serial merge-back") |
+| standing authorisation | the operation classes every dispatched agent will run — worktree add/remove, rebase, `merge --no-ff`, `bd create`/`close`/`comment`, the declared gate/sweep — must be allowed for the session before launch. A refusal mid-run is not recoverable by any agent: the task is quarantined for the run with a `BLOCKED-AUTH` ledger line and reported as untested scope (`./coordinator-workflow.md`'s Pre-flight step 5) |
 
 It returns six buckets — `completed`, `escalated`, `pendingRetry`, `parked`, `stalled`, `review` —
 covering **the epic's whole tree as of return, not only the tasks this invocation dispatched** (a
@@ -52,11 +54,15 @@ completion), `ready-drained` (empty ready set, root still open: quarantined bloc
 `stalled` (no-progress guard), or `ready-unavailable` / `plan-unavailable` (infrastructure outage:
 the `bd ready` or planner dispatch kept dying on terminal API errors). The last two are **never**
 completion — never treat a stop as "done" without checking `stopReason`
-(`./coordinator-workflow.md`'s "Null dispatch policy").
+(`./coordinator-workflow.md`'s "Null dispatch policy"). Two additive fields: **`authRefused`** —
+tasks quarantined because the harness permission layer refused their commands (also in
+`escalated`); a caller's report lists them as untested scope — and **`sweep`**, the per-branch
+sweep's one-line result when `config.sweep` was declared (`MEASUREMENT INVALID: …` or
+`SWEEP UNAVAILABLE …` mean the branch is unmeasured, not green).
 
 ## Worktree topology
 
-Per-task worktrees branch from the epic integration branch (not from `main`, not from a plan-file branch); on pass, each is merged back into the integration branch through the **single-flight merge queue** — exactly one merge in flight, in completion order, enqueued the instant a task's own chain ends (a `bd ready` batch is mutually independent, so within-round order carries no dependency meaning). New ready tasks branch from the updated integration branch, so dependents inherit prior work. Full three-layer topology (user's worktree / integration worktree / per-task worktrees) and the Workflow-coordinated procedure: `./coordinator-workflow.md`.
+Per-task worktrees branch from the epic integration branch (not from `main`, not from a plan-file branch); on pass, each is merged back into the integration branch through the **single-flight merge queue** — exactly one merge in flight, in completion order, enqueued the instant a task's own chain ends (a `bd ready` batch is mutually independent, so within-round order carries no dependency meaning). New ready tasks branch from the updated integration branch, so dependents inherit prior work. The merge rebases first; when the rebase lands the task on sibling commits that touched the **same files**, one scoped **seam review** of the rebased branch runs before the gate (and at most one fix) — the per-task review approved the task against a base the branch has since left, and the five-round cap is not re-spent on it. A fresh task worktree is not "isolated" until its test runner and the package under test resolve *inside* it: the brief step runs the project's setup there and checks provenance before the implementer is dispatched (a worktree whose entrypoints import another checkout tests the wrong code). Full three-layer topology (user's worktree / integration worktree / per-task worktrees) and the Workflow-coordinated procedure: `./coordinator-workflow.md`.
 
 ## Model tiering
 
@@ -120,6 +126,15 @@ are all closed can still be refused for days (measured: 11.4 days on one leaf). 
 starved, check the open leaves' ancestor epics for blocking deps (`bd show <epic> --json`); a
 whole-epic gate whose dependents really need specific leaves is a design defect — narrow it to
 leaf-level edges (super-design's fifth edge rule) rather than waiting it out.
+The detector line is persisted to the ledger every round (`Detector: round N — …`), so a run's
+parallelism is recoverable after the fact — and a round with no line is *unmeasured*, not clean.
+**Depth, not width, is the usual ceiling** — measured: 1.00 agents per bead in flight over two
+hours, and raising a cap 4 → 14 bought 1.5×, not 3.5× — so when the frontier stays under the cap
+for two consecutive rounds the coordinator dispatches one **report-only edge audit**
+(`config.edgeAuditCap`, default 3 per invocation): remaining critical-path depth, the achievable
+width (open leaves / depth) against the cap, and suspect edges by super-design's edge rules,
+written to the ledger. It removes nothing; three operator-applied audits on one run took the
+critical path 16 → 11 → 9 → 8 rounds, and that reshaping stays the operator's decision.
 Rationale, measured evidence, and counter-evidence for this dispatch model:
 `./coordinator-workflow.md`'s Implement-phase relaxation comment.
 

@@ -29,6 +29,9 @@ args = {
     concurrency: 16,
     hotFileCap: 3,        // optional — see below
     topUpQueryCap: 40,    // optional — see below
+    edgeAuditCap: 3,      // optional — see below
+    gate: '<exact per-merge test command>',    // optional — see below
+    sweep: '<exact per-branch test command>',  // optional — see below
     models: { planner: 'opus', implementer: 'sonnet', reviewer: 'sonnet', mechanical: 'sonnet', triage: 'opus', finalReview: 'opus', fixEscalation: 'opus' },
   },
   prompts: { ... },
@@ -44,6 +47,25 @@ top-up ready re-queries ("The coordinator loop" step 4). The dedup set bounds di
 bounds the queries themselves — a merge that unblocks nothing still costs one mechanical agent.
 Exhaustion degrades to the ordinary round-boundary refill (no work lost), and the detector line
 reports usage so the default can be tuned from evidence; it is an untuned first guess.
+
+`gate` and `sweep` are **optional** — additive (issue #3 doc gap 2, issue #4 defect 5): two
+declared test selections, as exact command strings. `gate` is what the merge agent runs on every
+serial merge, unchanged and unwidened; `sweep` is the wider per-branch selection, run once at
+Finish before the final review and reported to it. Declaring both is how a project stops paying
+the full suite on the serial path (measured: gate wall times bimodal at 6–9 min vs 36–113 min by
+whether a bead touched one heavy package, ~5 h of serial gate time over 199 merges, nothing
+caught) without losing the branch-wide measurement. The strings carry the project's execution
+envelope — `nice`/`ionice`, `OMP_NUM_THREADS`-style caps from `AGENTS.md` — so it is written once
+and reaches every generated invocation (measured: one reporter that inherited the scheduling
+envelope but not the thread caps took six cores for 40 minutes). Absent `gate`, the merge agent
+runs "the project test command" as before; absent `sweep`, none runs and the final reviewer is
+told so. Which selection ran is recoverable from the ledger's `Launch:` line, which records
+`config`.
+
+`edgeAuditCap` is **optional** — additive (issue #3 design question C): how many report-only
+dependency-edge audits one invocation may dispatch, default 3, `0` disables. Armed by two
+consecutive rounds whose dispatched frontier stayed under the cap; see "The coordinator loop"
+step 7.
 
 `integrationWorktree` is **optional** — additive and non-breaking, same tier as `fixEscalation`
 below: the path of the integration branch's checkout. When omitted, the script derives it from
@@ -211,6 +233,21 @@ Done by the main session, not the Workflow:
    the runtime (budget, or a repo where many concurrent worktrees hurt).
 4. Launch the Workflow (background) with the args from "Coordinator contract" above. Progress is
    visible via `/workflows`; the main session is free.
+5. **Standing authorisation** (issue #3 defect 3). Every dispatched agent runs commands under the
+   harness permission layer, and a refusal there is a dead end no pipeline stage can lift: the
+   command never executes, the agent cannot ask anyone, and the run has no human to prompt.
+   Measured: `git merge --no-ff` refused four times across two invocations, the epic's
+   highest-value bead (gating 23 of 30 remaining) unmerged until an operator told the session
+   the class was pre-authorised. Before launching, make sure these operation classes are allowed
+   for the session's permission mode (allowlist, or a mode that does not prompt), by running one
+   of each in the integration worktree if in doubt: `git worktree add`/`remove`, `git rebase`,
+   `git merge --no-ff`, `git branch -D`, `git push` if the project's gate needs it, `bd create`/
+   `bd close`/`bd comment`, the declared `gate`/`sweep` commands, and the project's setup step.
+   Mid-run, the decided policy is *work around once, then accept the loss*: an agent that is
+   refused tries one equivalent form; refused again, it reports `BLOCKED_AUTH`, the coordinator
+   logs it, quarantines that task for the run, and continues (see "Escalation = notify +
+   quarantine + continue"). The coverage loss is reported, not hidden — but it is a loss, and
+   this step is what avoids it.
 
 ### Quiesce before a planned relaunch (decided policy — issue #2 design question C)
 
@@ -232,6 +269,19 @@ a coordinator edit, a config change — quiesce instead of killing:
 
 The waiting is idle time by construction — it converts destroyed work into a bounded delay and
 needs no runtime change.
+
+**Edit-driven relaunches (issue #3 design question A — position stated, not left silent).** The
+measured run paid six mid-run coordinator edits at ~30 minutes of destroyed in-flight work each.
+The two alternatives on the table were a deferred-edit queue and adopting running agents on
+resume. The position: the round boundary above *is* the deferred-edit queue — an edit that can
+wait for the drain window costs nothing; and adopting running agents is a Workflow-runtime
+capability (durable agent handles, reconciliation of half-finished ledger state) this skill
+cannot provide from the script side and will not fake. So an urgent mid-round edit is a
+deliberate trade, taken knowingly: kill, pay the in-flight loss, and record it in the relaunch
+note. What this skill *does* reduce is the number of relaunches: the agent-budget cap is the
+usual reason for one, so the `Launch:` ledger line (issue #2) makes each relaunch cheap to
+compose, and `resumeFromRunId` makes it cheap to replay. A run that expects many relaunches
+should size its budget guard so that the boundary comes at a round end, not mid-round.
 
 ## The coordinator loop
 
@@ -316,6 +366,19 @@ Round-based with refill (each `bd ready` batch is, by definition, mutually indep
    and the loop back to step 1 remains the authority for the rest: beads a null top-up missed,
    and beads with no mapping row yet (created mid-round), which wait for the next round's
    planner pass. Their worktrees are cut from the now-updated integration branch.
+7. **Round end — detector, persisted; edge audit, conditional.** After the drain, the
+   parallelism detector line is both logged and appended to the ledger (`Detector: round N — …`,
+   issue #3 defect 6: a line that lives only in `log()` output is unrecoverable after the fact,
+   and "clean" and "unmeasured" become indistinguishable). When the dispatched frontier has
+   stayed under the cap for **two consecutive rounds**, one **report-only dependency-edge
+   audit** dispatches (`edgeAuditPrompt`, `triage` tier, bounded by `config.edgeAuditCap`): it
+   reads the bulk dump, reports remaining critical-path depth and the achievable width
+   (open leaves / depth) against the cap, and names suspect edges by super-design's edge rules —
+   to the ledger (`Edge audit: …`) and the log. It never removes an edge: reshaping the graph
+   mid-run is the operator's call (issue #3 design question C, decided). Measured: three ad-hoc
+   audits took one run's critical path 16 → 11 → 9 → 8 rounds while width sat at 1.00
+   agent-per-bead-in-flight — depth, not the cap, was the binding constraint, and only an audit
+   showed it.
 
 Termination is by the root epic closing, a quarantine drain, the no-progress guard tripping, or a
 bounded infrastructure-outage stop (`ready-unavailable`/`plan-unavailable` — see "Null dispatch
@@ -515,6 +578,30 @@ This is exactly `subagent-driven-development`'s SKILL.md "The Task Loop" and "Fi
 sections — read those for the review-package/reviewer-inputs/fix-loop mechanics in full; they
 are not repeated here. What follows is only what changes for a bead instead of a plan-file task.
 
+Three rules the dispatched reviewer and implementer carry that SDD's interactive controller
+never needed, all measured on live runs:
+
+- **The review package is built from inside the task worktree, and an empty one is INVALID, not
+  clean** (issue #3 defect 1). `scripts/review-package … HEAD` resolves `HEAD` against the cwd;
+  run from the integration worktree the range is empty and the file is a 104-byte header.
+  Measured: ~40 reviews on one run reviewed exactly that and were recorded "review clean" — an
+  unknown share of 176 clean completion lines. The reviewer dispatch now says `cd <task
+  worktree>` first, the fork's `review-package` exits 3 on an empty range, and a reviewer that
+  gets one reports status `INVALID` — a third status, meaning *the review did not happen*. The
+  coordinator re-dispatches it once fresh; a second `INVALID` becomes `BLOCKED` through the
+  ordinary blocker path, so triage sees a pipeline defect. `INVALID` never enters the fix loop.
+- **A permission refusal is `BLOCKED_AUTH`, not `BLOCKED`** (issue #3 defect 3): one equivalent
+  form is tried, then the agent stops and reports the refused command; no blocker bead. See
+  Pre-flight step 5 and "Escalation = notify + quarantine + continue".
+- **Assertion discipline and reachability are in the reviewer's brief** (issue #3 doc gap 1,
+  issue #4 doc gap 1): an assertion the type makes unfailable is decoration; assertions after a
+  failing one in the same body never ran and are unmeasured, not green; and on boundary,
+  authority, durability, or retirement tasks the reviewer traces one real entrypoint to the new
+  code and searches for sibling call sites still on the superseded form. Measured: ~30
+  structurally unfalsifiable assertions on one run; a fully tested claim wrapper the real CLI
+  never called, and a bounded-retry fix applied to named readers while an `EEXIST` fallback kept
+  the unsafe primitive, on another.
+
 ### Plan materialization
 
 `scripts/sdd-workspace` and `scripts/task-brief` are written against a hand-authored `PLAN_FILE`
@@ -663,15 +750,36 @@ in completion order off the single-flight queue ("The coordinator loop" step 4; 
 is safe because a `bd ready` batch is mutually independent by definition):
 
 1. Update the integration branch; rebase the task branch onto it.
-2. Run the project test command.
-3. If clean → merge (`--no-ff`) into the integration branch, then `bd close <id>` (a leaf-task
+2. **Seam check** (issue #4 design question 1, decided): if the integration branch moved since
+   the task branched *and* the sibling commits it moved onto touched files this task also
+   changed, the merge agent stops before the gate and reports the overlap. The coordinator runs
+   **one scoped seam review** of the rebased branch on exactly those files (the per-task review
+   approved the task against a base the branch has since left; the five-round cap is not
+   re-spent), dispatches at most one fix on `NEEDS_FIX`, then re-dispatches the merge as
+   seam-cleared. No overlap → no extra dispatch. Measured: five capped fix rounds against an
+   original base did not expose a sibling receipt-digest incompatibility that the first
+   post-rebase look did; a rebase that changed a shared fixture signature cost two more rounds
+   before the intended assertions even executed.
+3. Run the **per-merge gate** — `config.gate` exactly as declared, or the project test command.
+4. If clean → merge (`--no-ff`) into the integration branch, then `bd close <id>` (a leaf-task
    close; epic closure is the separate fixpoint step in "The coordinator loop").
-4. If the rebase conflicts **or** tests are red: make **one bounded auto-resolve attempt** (a fix
-   agent). If that fails → the blocker-bead path.
+5. If the rebase conflicts **or** the gate is red: make **one bounded auto-resolve attempt** (a
+   fix agent). If that fails → the blocker-bead path, with the bead's body stating the merge-base
+   SHA the gate ran against and the exact gate command (issue #3 defect 5: with 199 merges the
+   merge-base moves constantly, and a blocker filed against a superseded merge-base must be
+   recognisable as such by whoever reads it next).
 
-**Step 2 means the full project test command by default.** If a project substitutes a scoped
-selection to keep the gate fast, derive the file→test mapping **from the actual import graph —
-grep the imports — never by grouping packages that feel related.** Measured on the live epic that
+**Two declared selections, not one** (issue #3 doc gap 2). The gate sits alone on the serial
+path, so its cost is paid per merge and nothing overlaps it: measured on one run, gate wall times
+were bimodal — 6–9 min vs 36–113 min — split by whether the bead touched one heavy package, over
+199 serial merges; on another, gates of 68, 110, 46 and 63 minutes against a few minutes of
+implementation each, roughly five hours, nothing caught. The skeleton therefore asks a project
+for **two** selections at run start: `config.gate`, a per-merge selection scoped to the test
+files that import what the merge touched plus a fixed cross-cutting core; and `config.sweep`, the
+wider per-branch selection run once at Finish against the tip the final review reads. Absent a
+declared `gate`, step 3 means the full project test command — the safe default, not the fast
+one. If a project derives the gate's file→test mapping to keep it scoped, derive it **from the
+actual import graph — grep the imports — never by grouping packages that feel related.** Measured on the live epic that
 shaped this section: a felt-related bundle ("anything touching training/evaluation/diagnostics
 pulls in all three test trees") was wrong in both directions — the real graph was a star centred
 on `training` (evaluation↔diagnostics: zero import lines, zero shared fixtures, either way),
@@ -692,6 +800,13 @@ Anything that cannot proceed becomes a beads issue, never a silent retry and nev
   adjudication, not inside the implementer or merge agent), or the planner leaving a ready id
   unmapped this round (`unplannedBlockerPrompt` — the coordinator files the bead, closing the
   quarantine-only TODO seam Task 2 left in "Plan materialization").
+- **Not a trigger: a harness permission refusal** (issue #3 defect 3). A refused command never
+  executed and no agent can lift the refusal, so a bead about it only spends a triage pass to
+  learn that (measured: the same blocker re-filed four times across two invocations). The agent
+  reports `BLOCKED_AUTH` instead; `handleAuthRefusal` logs, quarantines the task for this run,
+  and continues — no bead, no triage. Nor is a second `INVALID` review package a trigger in its
+  own right: it becomes an ordinary `BLOCKED` (the missing-bead fallback files the bead), because
+  there a triage agent genuinely has something to decide.
 - **Bead shape:** a `bd create` with **the `blocker` label and NOTHING else — no `sp:` label, no
   `--parent`, no other label** — body stating the task id, what failed, and what was tried.
   Confirm flags with `bd create --help`. The label-only rule is what keeps a blocker bead
@@ -740,6 +855,17 @@ just this paragraph's prose (fix-round-1, review): the Resume phase no longer re
 `escalated` from the ledger's `BLOCKED` lines (see "Resume behavior" under "Workspace and ledger"),
 so a fixed blocker's task is no longer permanently filtered out of every future `bd ready` batch.
 
+**`BLOCKED-AUTH` is quarantine without escalation** (issue #3 defect 3, decided policy: work
+around once, then accept the loss). A task whose agent was refused by the permission layer — the
+porcelain command and one equivalent form both declined, nothing executed — is settled into
+`escalated` for this run (its dependents stay unready), gets a `BLOCKED-AUTH — permission
+refused, coverage lost this run: <command>` ledger line and a loud log line, and is listed in the
+return value's `authRefused`. No blocker bead, no triage, no notification: there is no judgment
+to make and nobody to make it. The run continues with everything else. Resume treats the line
+as a historical `BLOCKED`, so once the operation class is granted (Pre-flight step 5) the next
+invocation simply re-attempts the task. A caller's report lists these ids as **untested scope**,
+never as findings and never as done.
+
 ## Finish
 
 When the loop ends (and at least some work landed), dispatch the **final whole-epic review
@@ -765,6 +891,22 @@ same reason: a minor deferred on a task that never merges is not a deferral — 
 blocked task's open state, which the blocker path already carries. The Finish-phase reviewer reads
 these lines together with the parked-ruling lines, and triages which must be fixed before the branch
 lands. A minor is deferred, not discarded; the ledger is what makes the difference real.
+**Recurring minors are clustered, run-wide** (issue #3 defect 2): the coordinator normalises each
+minor's text (numbers, hashes, paths, quoting stripped) into a signature and counts it across
+tasks; a signature seen ≥5 times or on ≥3 distinct tasks is reported once — a `Recurring minor:
+×N across M task(s) — <sample>` ledger line and a `RECURRING MINOR` log line — and the Finish
+reviewer is told to triage those lines *first* and name the class. Measured: 1,335 individually
+correct deferrals on one run hid a single line recurring ~40 times — the pipeline reporting its
+own empty-review-package defect once per merge, never heard — and ~30 unfalsifiable-assertion
+findings that nobody owned as a class; per-epic triage would not have surfaced either, since the
+distribution was even across nine sub-epics. The threshold is deliberately mechanical (verbatim
+or near-verbatim recurrence); it does not try to cluster paraphrases.
+
+**The per-branch sweep runs here, once, before the final review** — when `config.sweep` is
+declared and work landed. Its one-line summary (or `MEASUREMENT INVALID: <cause>`) is appended
+to the ledger as a `Sweep:` line and handed to the final reviewer as the branch-wide
+measurement; without a declared sweep the reviewer is told the only test evidence is the
+per-merge gate runs. See "Serial merge-back" on why there are two selections.
 
 **Friction capture is the invoking session's job, not the Workflow script's.** The Workflow script
 itself cannot write files — it has no I/O (see "Key constraint: the script does no I/O") — so it
@@ -773,6 +915,11 @@ runs, the INVOKING session is the one with a filesystem: it watches the coordina
 output and appends what it sees to the run's friction log — NULL-dispatch log lines, STALLED /
 stall-guard events, null-retry rounds, detector-line anomalies (peak in-flight far below the
 concurrency cap, exhausted top-up query budgets), and any `stopReason` other than `root-closed`.
+The detector lines themselves no longer depend on that capture: every completed round appends
+its own `Detector: round N — …` line to the ledger (issue #3 defect 6), so the analysis pass
+reads them from the worktree. **Enumerate what should be there, not only what is:** a ledger
+with `complete` lines for round N but no `Detector: round N` line means the round's parallelism
+is *unmeasured*, and the friction log should say so — "absent" reads as clean, "missing" does not.
 When that same invoking session owns the finish (§Finish above, "when the caller owns the finish"
 does not apply — this is the default-finish case), it runs `superpowers:upstream-feedback` **before**
 merging and deleting the integration worktree, since the worktree's ledger and per-task reports are
@@ -781,7 +928,8 @@ inputs the analysis pass needs and cannot recover once they are gone.
 ## Local adaptations (porting this skeleton to a project)
 
 A project run typically adapts this skeleton — extra reporters, project gates, tuned prompts.
-Four rules from a measured 198-bead adaptation (issue #2), for the adapting session:
+Rules from measured adaptations (a 198-bead run, issue #2; its second half, issue #3; a 100-bead
+training-preflight run, issue #4), for the adapting session:
 
 - **A measurement of record needs a validity floor.** Any reporter you add whose numbers feed
   decisions (bisect candidates, baselines, round gates) must assert its own sample validity
@@ -809,6 +957,42 @@ Four rules from a measured 198-bead adaptation (issue #2), for the adapting sess
   underreports blocking edges (verified bd 1.0.5: per-bead `show` returned no usable edges where
   `bd list --json` did) — a `(none)` from `show` is not evidence of absence. Any adaptation that
   reasons about the graph reads edges from `bd list --json`.
+- **A gate that diffs failing sets needs a known-red artifact and a merge-base stamp** (issue #3
+  defects 4 and 5). The skeleton's gate is pass/fail on a command; an adaptation that compares
+  the branch's failing node ids against the merge-base's must also carry (a) a run-scoped
+  `expected-failures` artifact of `{node id, owning bead, ruling}` for tests left red *by
+  ruling* — the gate reports such an id as `known-red (bead X)` rather than blocking, and
+  **errors when the owning bead closes while the entry remains** (never a general mute); and
+  (b) the merge-base SHA on every gate verdict and every blocker it files, with the merge-base
+  failing set measured once per run into an artifact rather than assumed. Measured: a test red
+  by ruling was recorded only in a commit message and bead comments, so a fresh agent re-derived
+  the whole analysis within the hour and filed a blocker against a merge-base already
+  superseded; separately, the recorded standing baseline understated the true one by one
+  failure — the branch had fixed a test nobody knew was failing — until a late ad-hoc check ran
+  the file at the merge-base.
+- **Concurrent test runs need disjoint, pre-created, disk-backed scratch directories** (issue #4
+  defect 2). A generated test command that shares a scratch root across concurrent shards, or
+  points at a nested path whose parent does not exist, fails in ways that look like product
+  defects: measured — 22 setup errors after 555 passes from a missing `--basetemp` parent;
+  timeouts and vanishing fixtures from two shards reusing one `.test-tmp`; false failures from a
+  worktree-local scratch root that changed an authenticated-path fixture's geometry. Allocate
+  one unique scratch directory per command or shard, outside the source root, and never run two
+  collision-sensitive selections against the same one.
+- **A long reporter must publish incrementally or be sharded** (issue #4 defect 4). A single
+  process that finalizes its report only at exit leaves *nothing* when it is terminated at 84%
+  or hangs on one node for 16 minutes (both measured). Bound reporters into shards whose partial
+  results persist as they complete, and make an incomplete run report its node accounting as
+  explicitly incomplete — the same validity floor as the first bullet, applied to duration.
+- **Expensive once-per-branch reporters run after the final adversarial review, against the SHA
+  that lands** (issue #4 defects 7 and 8). A reporter started after the last merge but before
+  the whole-branch roast measures a tree that may not land: measured, one was stopped mid-run
+  because the roast then found Blocking defects. Order: final roast → fix → sweep/reporter,
+  stamp every reporter result with the tip SHA it ran against, and treat a stamp that no longer
+  matches the branch tip as invalid rather than stale-but-fine. When the branch does not land
+  alone (a prerequisite branch lands with it), materialise the combined candidate tree first —
+  measured: two independently reviewed branches produced 13 conflicts plus dead tests and stale
+  runbook policy from *clean* auto-merges — review the conflicts and the relevant clean merges,
+  and run the sweep against that exact SHA.
 
 ## Known limitations
 
@@ -1078,6 +1262,21 @@ const hotFileCap = Math.max(1, Number(config.hotFileCap) || 3)
 // the detector line reports usage so it can be tuned from evidence. Exhausting it degrades to
 // the old round-boundary refill: no work is lost, dependents just wait for the next round.
 const topUpQueryCap = Math.max(0, Number(config.topUpQueryCap) || 40)
+// Declared test selections (optional, additive contract keys — issue #3 doc gap 2, issue #4
+// defect 5). `gate` is the exact per-merge command the merge agent runs, unchanged and
+// unwidened; `sweep` is the exact per-branch command run once at Finish, before the final review.
+// Both are full command strings, so the project's execution envelope (nice/ionice, thread caps
+// from AGENTS.md) lives in ONE place and reaches every generated invocation instead of being
+// re-derived by each agent. Absent `gate`, the merge agent runs "the project test command" — the
+// pre-existing default; absent `sweep`, no sweep runs. Which selection a run declared is on the
+// ledger's `Launch:` line (config is recorded there), so a gate that silently widened is visible.
+const gateCommand = typeof config.gate === 'string' && config.gate.trim() ? config.gate.trim() : null
+const sweepCommand = typeof config.sweep === 'string' && config.sweep.trim() ? config.sweep.trim() : null
+// Conditional edge audit budget (optional, additive — issue #3 design question C): how many
+// report-only dependency-edge audits one invocation may dispatch. 0 disables. Default 3 — the
+// measured run's three ad-hoc audits took the critical path 16 → 11 → 9 → 8 rounds; a fourth
+// bought little, and each audit is an opus-tier read of the whole graph.
+const edgeAuditCap = Math.max(0, Number.isFinite(Number(config.edgeAuditCap)) ? Number(config.edgeAuditCap) : 3)
 
 // Null-dispatch guard (live-run defect: see "Null dispatch policy"). agent() returns null when a
 // dispatched subagent dies on a terminal API error after retries; a single 529 on a merge dispatch
@@ -1179,7 +1378,19 @@ const TRIAGE  = { type: 'object', properties: { decision: {type:'string'}, detai
 // reports `merged:true` includes both `head` and `mergeBase`) and is a real, if narrow, gap: a
 // non-compliant merge dispatch degrades the ledger's commit-range invariant instead of erroring —
 // see "Known limitations" above.
-const MERGE   = { type: 'object', properties: { id:{type:'string'}, merged:{type:'boolean'}, blockerBead:{type:'string'}, head:{type:'string'}, mergeBase:{type:'string'} }, required: ['id','merged'] }
+// `authRefused` (issue #3 defect 3): the exact command the harness permission layer refused —
+// twice, the porcelain form and one equivalent — so the merge never executed. NOT a failed merge
+// and NOT the blocker path: see `handleAuthRefusal`. `seamOverlap` (issue #4 design question 1):
+// files the rebase found changed on BOTH sides (this task's diff and the sibling commits that
+// landed on the integration branch since the task branched) — the merge agent stops before the
+// gate and reports them, so the coordinator can run one scoped seam review before testing and
+// merging (see `integrateOne`'s seam branch). `head`/`mergeBase` accompany it, post-rebase.
+const MERGE   = { type: 'object', properties: { id:{type:'string'}, merged:{type:'boolean'}, blockerBead:{type:'string'}, head:{type:'string'}, mergeBase:{type:'string'}, authRefused:{type:'string'}, seamOverlap:{ type:'array', items:{type:'string'} } }, required: ['id','merged'] }
+// issue #3 design question C: the conditional, report-only dependency-edge audit's return shape
+// — see `edgeAuditPrompt`. `suspectEdges` are named, never removed: reshaping the graph mid-run
+// stays an operator's call (super-design §Splitting a Bead is the precedent for how much a graph
+// edit can break); the coordinator only records what the audit found and the achievable width.
+const EDGE_AUDIT = { type: 'object', properties: { openLeaves:{type:'integer'}, depth:{type:'integer'}, achievableWidth:{type:'integer'}, suspectEdges:{ type:'array', items:{ type:'object', properties:{ from:{type:'string'}, to:{type:'string'}, reason:{type:'string'} }, required:['from','to','reason'] } }, summary:{type:'string'} }, required: ['openLeaves','depth','achievableWidth','suspectEdges','summary'] }
 const CLOSE   = { type: 'object', properties: { rootClosed: {type:'boolean'}, closedThisRun: { type: 'array', items: { type: 'string' } } }, required: ['rootClosed','closedThisRun'] }
 // I-9: the fix-loop breaker's cap adjudication (PARK vs BLOCKED) — a dispatched INVOCATION of
 // SDD's own breaker rubric (see adjudicatePrompt/"The breaker, autonomous variant"), not a
@@ -1246,6 +1457,36 @@ function settle(id, bucket) {
 // round before `handleBlocker` forces it into `escalated` instead.
 const pendingRetry = new Set()
 let stalled = false  // I6: set true if a round makes no progress at all — see the guard below
+// issue #3 defect 3: tasks whose pipeline hit a harness permission refusal (porcelain form AND
+// one equivalent refused; the command never executed). Quarantined for THIS run like an
+// escalation — dependents stay unready — but never a blocker bead and never a triage dispatch:
+// no agent can lift a permission decision, so the only honest outcomes are "log it, accept the
+// coverage loss, keep going" and a pre-flight that grants the operation class up front (see
+// Pre-flight step 5). Returned to the caller so the run's end state names the gap.
+const authRefused = []
+// issue #3 defect 2: run-wide deferred-minor clustering. 1,335 individually-correct deferrals
+// hid one line recurring ~40 times (the pipeline reporting its own defect once per merge) for a
+// fortnight because nothing counted recurrences. Signature = the minor's text with numbers,
+// hashes, paths and quoting normalised away — catches verbatim/near-verbatim recurrence, which
+// is the shape a systemic defect takes; it does not try to cluster paraphrases (an agent could,
+// but a mechanical count that fires is worth more than a fuzzy one nobody trusts). Threshold:
+// ≥5 occurrences OR ≥3 distinct tasks, reported once per signature (a `Recurring minor:` ledger
+// line + log), and the Finish reviewer is told to triage those lines first.
+const minorClusters = new Map()   // signature -> { count, tasks:Set, sample, reported }
+let recurringReported = 0
+const minorSignature = s => String(s).toLowerCase()
+  .replace(/[\x60"'()[\]{}]/g, '')
+  .replace(/\b[0-9a-f]{7,40}\b/g, '#')
+  .replace(/\S+\/\S+/g, '<path>')
+  .replace(/\d+/g, '#')
+  .replace(/\s+/g, ' ').trim().slice(0, 120)
+// issue #3 defect 6 + design question C: round counter for the persisted detector line, and the
+// below-cap streak that arms the conditional edge audit (two consecutive rounds whose dispatched
+// frontier stayed under the cap — the detector's own hint condition, now a dispatch instead of a
+// sentence the operator has to notice).
+let roundNo = 0
+let frontierBelowCapStreak = 0
+let edgeAuditsRun = 0
 
 // I1: resume-from-ledger — the skill's stated Core principle (SKILL.md §Overview) — until this fix, no
 // dispatch ever wrote or read this file (see "Workspace and ledger" above): a restarted run had no
@@ -1349,6 +1590,7 @@ let stopReason = null
 let lastPlanned = null
 while (true) {
   nullsThisRound = 0
+  roundNo++
   // MECHANICAL: bd epic close-eligible is repo-global (no --label/--parent/--mol — see
   // closeEpicsPrompt) and closes only one tree level per call — loop dry-run-preview, filter to
   // this run's tree, close the filtered ids, to a fixpoint. Stop condition is "a pass closes zero
@@ -1604,8 +1846,39 @@ while (true) {
     // no longer exists. Cosmetic only: every dispatch below carries its own opts.phase.
     if (!integrateAnnounced) { integrateAnnounced = true; phase('Integrate') }
     if (r.status === 'BLOCKED') { await handleBlocker(r, planned.planPath, id => resolveRetryHook(id)); return }
-    const m = await dispatch(() => mergePrompt(r, integrationBranch, integrationWorktree), `merge:${r.id}`,
+    if (r.status === 'BLOCKED_AUTH') { await handleAuthRefusal(r, r.finding); return }
+    let m = await dispatch(() => mergePrompt(r, integrationBranch, integrationWorktree, gateCommand), `merge:${r.id}`,
       { label: `merge:${r.id}`, phase: 'Integrate', model: model('reviewer'), schema: MERGE })
+    // issue #4 design question 1 (decided): a rebase that moved the task onto sibling changes
+    // touching the SAME files gets exactly one scoped seam review before the gate — the per-task
+    // review ran pre-rebase against a base the integration branch has since left behind, and the
+    // five-round cap is not re-spent on it. The merge agent reports the overlap and stops short of
+    // the gate (merged:false + seamOverlap); the review runs against the rebased branch's own
+    // diff restricted to those files; a NEEDS_FIX gets ONE fix dispatch; either way the merge is
+    // re-dispatched with `seamCleared` so the agent skips the overlap check, runs the gate, and
+    // merges (a red gate after that is the ordinary blocker path). This holds the single-flight
+    // merge queue for one review (+ one fix) — bounded, and cheaper than the ~30% of five-round
+    // caps the measured run spent discovering sibling incompatibilities only after rebasing.
+    // Tasks whose rebase touched no overlapping file never enter this branch: zero extra cost.
+    if (m && !m.merged && Array.isArray(m.seamOverlap) && m.seamOverlap.length) {
+      log(`seam: ${r.id} rebased onto sibling changes in ${m.seamOverlap.length} overlapping file(s) — one scoped seam review before the gate: ${m.seamOverlap.join(', ')}`)
+      const seam = await dispatch(() => seamReviewPrompt(r, m, integrationBranch, planned.planPath, artifacts(r.id)), `seam-review:${r.id}`,
+        { label: `seam-review:${r.id}`, phase: 'Integrate', model: model('reviewer'), schema: RESULT })
+      // Null seam review ("Null dispatch policy"): no verdict was rendered — do not merge on a
+      // review that never happened, and do not block on it either. Unsettled this round; the
+      // next ready query re-surfaces the id and the whole merge step re-runs.
+      if (!seam) { log(`seam review for ${r.id} unavailable (null dispatch) — leaving ${r.id} unsettled this round`); return }
+      if (seam.status !== 'CLEAN') {
+        const seamFinding = seam.finding || 'seam review reported an unresolved post-rebase incompatibility (no finding text supplied)'
+        log(`seam: ${r.id} NEEDS_FIX after rebase — one bounded fix dispatch: ${seamFinding}`)
+        const fixRes = await dispatch(() => fixPrompt({ ...r, finding: seamFinding }, 'seam', artifacts(r.id)), `fix:${r.id}:seam`,
+          { label: `fix:${r.id}:seam`, phase: 'Integrate', model: model('implementer'), schema: RESULT })
+        if (!fixRes) { log(`seam fix for ${r.id} unavailable (null dispatch) — leaving ${r.id} unsettled this round`); return }
+        if (fixRes.status === 'BLOCKED_AUTH') { await handleAuthRefusal(r, fixRes.finding); return }
+      }
+      m = await dispatch(() => mergePrompt({ ...r, seamCleared: true }, integrationBranch, integrationWorktree, gateCommand), `merge:${r.id}:seam-cleared`,
+        { label: `merge:${r.id}:seam-cleared`, phase: 'Integrate', model: model('reviewer'), schema: MERGE })
+    }
     // Null merge ("Null dispatch policy") — the exact dispatch whose unguarded `m.merged` deref
     // killed the first live run. NO merge happened: no `bd close`, no `complete` ledger line, no
     // bucket — and NOT the blocker path (a transient API error is not blocker-worthy; filing a
@@ -1614,6 +1887,10 @@ while (true) {
     // already-implemented worktree — a re-run no-op review/merge that completes the task exactly
     // once (settle() is a Set write; a second merge of the same id can't double-count).
     if (!m) return
+    // issue #3 defect 3: the merge itself (`git merge --no-ff`, `bd close`, the worktree update)
+    // was refused by the permission layer — the command never ran, so this is neither a failed
+    // merge nor blocker-worthy. Log, quarantine, continue; see handleAuthRefusal.
+    if (!m.merged && m.authRefused) { await handleAuthRefusal(r, m.authRefused); return }
     // Limitation 5: `head` and `mergeBase` are not `required` on `MERGE` (neither can be, since a
     // failed merge legitimately omits both), so a `merged: true` report missing either is
     // schema-valid. Treat it as a non-compliant merge rather than writing a half-formed commit
@@ -1647,6 +1924,21 @@ while (true) {
         await dispatch(() => ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName,
             ledgerLine(r.n, r.id, `minor (deferred): ${taskMinors[mi]}`)),
           `ledger-minor:${r.id}:${mi + 1}`, { label: `ledger-minor:${r.id}:${mi + 1}`, phase: 'Integrate', model: model('mechanical') })
+        // issue #3 defect 2: cluster by normalised signature, run-wide; report each cluster ONCE
+        // when it crosses the threshold. The `Recurring minor:` line is deliberately NOT a
+        // `Task <N> (<id>):` line — it belongs to no single task, and the Resume reader ignores it
+        // the same way it ignores `Launch:`. Stub key qualified by report ordinal (predictable), not
+        // by the signature text (agent-produced, so no dryRun block could ever declare it).
+        const sig = minorSignature(taskMinors[mi])
+        const cl = minorClusters.get(sig) ?? { count: 0, tasks: new Set(), sample: taskMinors[mi], reported: false }
+        cl.count++; cl.tasks.add(r.id); minorClusters.set(sig, cl)
+        if (!cl.reported && (cl.count >= 5 || cl.tasks.size >= 3)) {
+          cl.reported = true; recurringReported++
+          log(`RECURRING MINOR ×${cl.count} across ${cl.tasks.size} task(s) — a cluster at this rate is usually the pipeline reporting its own defect, or one systemic smell, not ${cl.count} independent nits: ${cl.sample}`)
+          await dispatch(() => ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName,
+              `Recurring minor: ×${cl.count} across ${cl.tasks.size} task(s) (${[...cl.tasks].join(', ')}) — ${String(cl.sample).replace(/\s+/g, ' ').trim()}`),
+            `ledger-recurring:${recurringReported}`, { label: `ledger-recurring:${recurringReported}`, phase: 'Integrate', model: model('mechanical') })
+        }
       }
       if (r.parkRuling) { parked.add(r.id); log(`PARKED ${r.id}: ${r.parkRuling} (open finding, merged anyway: ${r.finding})`) }
       // I1: mechanical dispatch appends the completion line — SKILL.md's own line shape
@@ -1784,12 +2076,15 @@ while (true) {
     try {
       const br = await dispatch(() => taskBriefPrompt(planned.planPath, ordinalFor(id), id, taskWorktree(id), integrationBranch, artifacts(id).brief), `brief:${id}`, { label: `brief:${id}`, phase: 'Implement', model: model('mechanical'), schema: RESULT })
       if (!br) return null  // null brief ("Null dispatch policy"): no progress this round — dispatch() already logged it; the next ready query re-surfaces the id
-      if (br.status === 'BLOCKED') r = { ...br, n: ordinalFor(br.id), branch: taskWorktree(br.id) }
+      // BLOCKED_AUTH (issue #3 defect 3) rides the same passthrough as BLOCKED at both stages: it
+      // must never reach review or merge, and `integrateOne` routes it to `handleAuthRefusal`
+      // (log + quarantine + continue), never to `handleBlocker` (no bead, no triage).
+      if (br.status === 'BLOCKED' || br.status === 'BLOCKED_AUTH') r = { ...br, n: ordinalFor(br.id), branch: taskWorktree(br.id) }
       else {
         const im = await dispatch(() => implementPrompt(br, integrationBranch, artifacts(br.id).brief, artifacts(br.id).report), `implement:${br.id}`, { label: `impl:${br.id}`, phase: 'Implement', model: model('implementer'), schema: RESULT })
         if (!im) return null  // null implement: same — not CLEAN, not BLOCKED, re-enters next round
         const done = { ...im, n: ordinalFor(br.id), branch: taskWorktree(br.id), base: br.base }
-        r = done.status === 'BLOCKED' ? done : await reviewAndFix(done, planned.planPath, artifacts(done.id))
+        r = (done.status === 'BLOCKED' || done.status === 'BLOCKED_AUTH') ? done : await reviewAndFix(done, planned.planPath, artifacts(done.id))
       }
     } finally {
       sched.release(id)  // free the dispatch slot BEFORE integration: merges ride their own
@@ -1965,6 +2260,35 @@ while (true) {
   log(`parallelism: ${plannedIds.length} ready · topped-up ${dispatched.size - plannedIds.length} · cap ${cap} · peak in-flight ${sched.stats.peak} · top-up queries ${Math.min(topUpQueriesUsed, topUpQueryCap)}/${topUpQueryCap}`
     + (hotDeferrals.length ? ` · hot-file deferrals: ${hotDeferrals.map(([f, n]) => `${f} (${n} task(s) waited)`).join(', ')} — a shared barrel/index/registry to split or assign to one task, or over-declared filesTouched (./planner-prompt.md)` : '')
     + (dispatched.size < cap ? ` · dispatched frontier smaller than the cap — if more open beads are waiting on dependencies, check for edges encoding narrative order rather than genuine blocking (super-design §Decomposition)` : ''))
+  // issue #3 defect 6: the detector line used to exist only as Workflow `log()` output — retrievable
+  // solely from the invoking session's own capture, which the measured run did not persist, so
+  // after the fact "clean" and "unmeasured" were indistinguishable. Same class as the launch args
+  // (issue #2 defect 6), same fix: a ledger line. `Detector:` is a non-Task line the Resume reader
+  // ignores, like `Launch:`. One mechanical dispatch per completed round.
+  const detectorLine = `Detector: round ${roundNo} — ${plannedIds.length} ready · topped-up ${dispatched.size - plannedIds.length} · cap ${cap} · peak in-flight ${sched.stats.peak} · top-up queries ${Math.min(topUpQueriesUsed, topUpQueryCap)}/${topUpQueryCap}${hotDeferrals.length ? ` · hot-file deferrals: ${hotDeferrals.map(([f, n]) => `${f} (${n})`).join(', ')}` : ''}`
+  await dispatch(() => ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName, detectorLine),
+    'ledger-append:detector', { label: 'ledger-append:detector', phase: 'Integrate', model: model('mechanical') })
+  // issue #3 design question C (decided: conditional, report-only): two consecutive rounds with the
+  // dispatched frontier under the cap arm ONE read-only edge audit — an opus-tier read of the bulk
+  // dump that names suspect edges and the achievable width (open leaves / remaining depth) against
+  // the configured cap, so an over-configured cap reads as a number rather than reassurance. It
+  // never edits the graph: removing an edge mid-run is an operator's call (super-design §Splitting
+  // a Bead shows how much a graph edit can break). Bounded by `edgeAuditCap` per invocation; the
+  // streak resets on each audit so a long tail re-arms it every two rounds, not every round.
+  frontierBelowCapStreak = dispatched.size < cap ? frontierBelowCapStreak + 1 : 0
+  if (frontierBelowCapStreak >= 2 && edgeAuditsRun < edgeAuditCap) {
+    frontierBelowCapStreak = 0; edgeAuditsRun++
+    const audit = await dispatch(() => edgeAuditPrompt(epicId, integrationWorktree, cap, dispatched.size, roundNo), `edge-audit:${edgeAuditsRun}`,
+      { label: `edge-audit:${edgeAuditsRun}`, phase: 'Integrate', model: model('triage'), schema: EDGE_AUDIT })
+    // Null audit ("Null dispatch policy"): opportunistic — nothing gates on it; the streak simply re-arms.
+    if (audit) {
+      const edges = audit.suspectEdges.map(e => `${e.from}→${e.to} (${e.reason})`).join('; ')
+      log(`EDGE AUDIT ${edgeAuditsRun}/${edgeAuditCap} (round ${roundNo}): open leaves ${audit.openLeaves}, remaining depth ${audit.depth}, achievable width ${audit.achievableWidth} vs cap ${cap}${audit.suspectEdges.length ? ` — ${audit.suspectEdges.length} suspect edge(s), report-only, an operator decides: ${edges}` : ' — no suspect edges'}. ${audit.summary}`)
+      await dispatch(() => ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName,
+          `Edge audit: round ${roundNo} — open leaves ${audit.openLeaves}, depth ${audit.depth}, achievable width ${audit.achievableWidth} vs cap ${cap}; suspect edges: ${edges || 'none'}; ${String(audit.summary).replace(/\s+/g, ' ').trim()}`),
+        `ledger-append:edge-audit:${edgeAuditsRun}`, { label: `ledger-append:edge-audit:${edgeAuditsRun}`, phase: 'Integrate', model: model('mechanical') })
+    }
+  }
 
   // I6/C-2: no-progress guard. A round that made no forward progress at all — no task merged, no
   // epic closed, no id newly quarantined, AND no id newly RESOLVEd-pending-retry — stops rather
@@ -2003,16 +2327,32 @@ while (true) {
 }
 
 phase('Finish')
-log(`Completed: ${completed.size}. Escalated: ${escalated.size}. Pending retry: ${pendingRetry.size}. Parked (merged with an overruled finding): ${parked.size}. Stop reason: ${stopReason}.${stalled ? ' Stalled: true — see the STALLED log line above.' : ''}`)
+log(`Completed: ${completed.size}. Escalated: ${escalated.size}. Pending retry: ${pendingRetry.size}. Parked (merged with an overruled finding): ${parked.size}. Auth-refused (coverage lost to permission refusals): ${authRefused.length}. Recurring-minor clusters: ${recurringReported}. Stop reason: ${stopReason}.${stalled ? ' Stalled: true — see the STALLED log line above.' : ''}`)
+// issue #3 doc gap 2: the per-branch sweep — the wider selection the per-merge gate deliberately
+// does not run — runs ONCE here, against the integration tip the final review is about to read,
+// only when the caller declared one. Its summary goes to the ledger (`Sweep:` line) and into the
+// final-review dispatch, so the reviewer reads the measurement rather than assuming the gate's
+// scoped runs covered the branch. The measurement-validity floor applies (Local adaptations).
+let sweepSummary = null
+if (sweepCommand && completed.size) {
+  const sw = await dispatch(() => sweepPrompt(sweepCommand, integrationWorktree, integrationBranch), 'sweep',
+    { label: 'sweep', phase: 'Finish', model: model('mechanical') })
+  sweepSummary = sw ? String(typeof sw === 'string' ? sw : (sw.summary ?? JSON.stringify(sw))).replace(/\s+/g, ' ').trim() : 'SWEEP UNAVAILABLE — the sweep dispatch returned null; the branch has NOT had its per-branch sweep'
+  await dispatch(() => ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName, `Sweep: ${sweepSummary}`),
+    'ledger-append:sweep', { label: 'ledger-append:sweep', phase: 'Finish', model: model('mechanical') })
+}
 const reviewRes = completed.size
-  ? await dispatch(() => `Final whole-epic review of integration branch ${integrationBranch} for epic ${epicId}. Read the ledger at ${ledgerPath} first: its \`minor (deferred)\` lines are findings earlier reviews raised and deliberately did not fix, and its \`parked\` lines are findings an adjudicator overruled to let a task merge. Triage both — say which must be addressed before this branch lands. They are the two categories no per-task review will raise again.`, 'final-review',
+  ? await dispatch(() => `Final whole-epic review of integration branch ${integrationBranch} for epic ${epicId}. Read the ledger at ${ledgerPath} first: its \`minor (deferred)\` lines are findings earlier reviews raised and deliberately did not fix, and its \`parked\` lines are findings an adjudicator overruled to let a task merge. Triage both — say which must be addressed before this branch lands. They are the two categories no per-task review will raise again. Its \`Recurring minor:\` lines are clusters the coordinator detected (one signature ≥5 times or across ≥3 tasks) — triage those FIRST and name the class, not the instances: a cluster at that rate is usually a pipeline defect or one systemic smell, never N independent nits. Its \`BLOCKED-AUTH\` lines are tasks that lost coverage to a harness permission refusal — list them as untested scope, not as findings.${sweepSummary ? ` The per-branch sweep ran against this tip and reported: ${sweepSummary} — read that as the branch-wide measurement (the per-merge gate ran a narrower selection); a MEASUREMENT INVALID or UNAVAILABLE there means the branch is unmeasured, not green.` : ' No per-branch sweep was declared for this run, so the only test evidence is the per-merge gate runs — say so in your verdict rather than treating the branch as swept.'}`, 'final-review',
       { label: 'final-review', phase: 'Finish', model: model('finalReview') })
   : 'no work landed'
 // Null final-review ("Null dispatch policy"): an explicit UNAVAILABLE string — never silence, and
 // never anything a reader could mistake for "reviewed, no findings".
 const review = reviewRes ?? `FINAL REVIEW UNAVAILABLE — the final-review dispatch returned null (terminal API error after retries). The integration branch has had NO whole-epic review; treat this as a missing review, never as "no findings".`
+// `authRefused` (issue #3 defect 3) is additive: the ids whose coverage was lost to a permission
+// refusal, with the refused command — a caller's report lists them as untested scope. They are
+// ALSO in `escalated` (quarantined this run), so the four-bucket invariant is unchanged.
 return { completed: [...completed], escalated: [...escalated], pendingRetry: [...pendingRetry],
-         parked: [...parked], stalled, stopReason, review }
+         parked: [...parked], stalled, stopReason, review, authRefused: [...authRefused], sweep: sweepSummary }
 
 // --- helpers ---
 function treeMembershipTest(epicId) {
@@ -2125,6 +2465,17 @@ PHASE 1 — close any newly-eligible epics (a bead just merged and closed; if it
 PHASE 2 — ready re-query: ${readyPrompt(epicId)}`
 }
 
+function authRefusalRule() {
+  // issue #3 defect 3, shared by every dispatch that runs git/bd commands (brief, implementer,
+  // fixer, merge — the merge agent maps the outcome onto its own report shape, see mergePrompt).
+  // "Refused" means the HARNESS declined the tool call — distinguishable at the tool boundary from
+  // a command that ran and failed (no exit code, no output from the command itself). One
+  // equivalent form is allowed (decided policy: work around if possible); after that, stop and
+  // report — never a blocker bead, never an open-ended retry. The coordinator's handleAuthRefusal
+  // logs it, quarantines the task for this run, and moves on.
+  return `PERMISSION REFUSALS: if the harness permission layer refuses a command (the tool call itself is declined — the command never executed: no exit code, no output from the command; this is different from a command that ran and failed), try ONE equivalent form that achieves the same result (a different flag spelling, or the plumbing command behind the porcelain one). If that is refused too, STOP on this task: do not retry further and do not file a blocker bead (no agent can lift a permission decision; a bead would only spend a triage pass learning that) — report status BLOCKED_AUTH with \`finding\` set to the exact refused command(s), verbatim.`
+}
+
 // The remaining prompt builders are deliberately minimal — the real prompt content lives in
 // ./planner-prompt.md, ./triage-prompt.md, and subagent-driven-development's own templates (see
 // "Per-task pipeline" and "The blocker-bead path" above), which each builder points at by name.
@@ -2207,7 +2558,7 @@ function taskBriefPrompt(planPath, n, id, worktree, integrationBranch, briefFile
   // reviewAndFix) rather than asking any later subagent to re-derive or echo it. This `base` feeds
   // `review-package` only — the ledger's own commit-range line uses a different, post-rebase value
   // captured later at the merge gate (see the `mergeBase`/`MERGE` comment, Fix 3, final fix round).
-  return `Check whether the task worktree at ${worktree} AND a branch for task ${id} already exist (\`git worktree list\` / \`git branch --list\`) — a restart re-dispatching a previously-quarantined or previously-completed id lands here with both already present; that is EXPECTED, not an error. If NEITHER exists: create the task worktree at ${worktree} on a new branch, branched from the epic integration branch ${integrationBranch} (see "Dispatching the implementer") — then, in ${worktree}, run \`git rev-parse HEAD\` and report that as base (the pre-implementer commit). If BOTH already exist: do NOT delete or recreate them — REUSE the existing worktree and branch as-is (do not attempt \`git worktree add\` again, it will fail), and in that worktree run \`git merge-base ${integrationBranch} <the task branch>\` and report that as base instead, since HEAD there is a prior attempt's tip, not a pre-implementer commit. Either way, then run \`scripts/task-brief ${planPath} ${n} ${briefFile}\` (in ${worktree}; the third argument is the explicit OUTFILE — do not omit it, the default would write into this worktree's own git-ignored .superpowers/ copy that no later dispatch reads) to (re-)produce the brief file. Report id ${id}, n ${n}, branch ${worktree}, base <the base commit SHA determined above>, and status BRIEFED (or, on the script's "task not found" failure, status BLOCKED).`
+  return `Check whether the task worktree at ${worktree} AND a branch for task ${id} already exist (\`git worktree list\` / \`git branch --list\`) — a restart re-dispatching a previously-quarantined or previously-completed id lands here with both already present; that is EXPECTED, not an error. If NEITHER exists: create the task worktree at ${worktree} on a new branch, branched from the epic integration branch ${integrationBranch} (see "Dispatching the implementer") — then, in ${worktree}, run \`git rev-parse HEAD\` and report that as base (the pre-implementer commit). If BOTH already exist: do NOT delete or recreate them — REUSE the existing worktree and branch as-is (do not attempt \`git worktree add\` again, it will fail), and in that worktree run \`git merge-base ${integrationBranch} <the task branch>\` and report that as base instead, since HEAD there is a prior attempt's tip, not a pre-implementer commit. Either way, then run \`scripts/task-brief ${planPath} ${n} ${briefFile}\` (in ${worktree}; the third argument is the explicit OUTFILE — do not omit it, the default would write into this worktree's own git-ignored .superpowers/ copy that no later dispatch reads) to (re-)produce the brief file. TOOLCHAIN PROVENANCE (issue #4 defect 1 — a fresh worktree whose test entrypoints import ANOTHER checkout tests the wrong code and reports isolation it does not have): after cutting a FRESH worktree, run the project's setup step in it if it has one (install/sync — the same step the integration worktree was set up with), then verify that the test runner executable and the package under test both resolve INSIDE ${worktree} (e.g. \`which <runner>\` and the interpreter's reported import path for the package must be under ${worktree}); if either resolves elsewhere, rebuild the local environment (for editable Python installs: reinstall/sync in this worktree) before reporting BRIEFED — a worktree that fails this check must not be handed to the implementer as isolated. Report id ${id}, n ${n}, branch ${worktree}, base <the base commit SHA determined above>, and status BRIEFED (or, on the script's "task not found" failure, status BLOCKED). ${authRefusalRule()}`
 }
 
 function implementPrompt(br, integrationBranch, briefFile, reportFile) {
@@ -2222,7 +2573,7 @@ function implementPrompt(br, integrationBranch, briefFile, reportFile) {
   // are already coordinator-known (from `br`) and are re-stamped onto this call's result in the
   // runTask chain call site regardless of what's reported — asking for them here would just invite a
   // second, ignorable source of truth (see the runTask chain call site and RESULT's `base` comment).
-  return `Follow subagent-driven-development/implementer-prompt.md against the brief for task ${br.id} (n ${br.n}), working in ${br.branch}, branched from integration branch ${integrationBranch}. The template's [BRIEF_FILE] is ${briefFile} and its [REPORT_FILE] is ${reportFile} — both absolute paths in the integration worktree's workspace, deliberately not this task worktree's own .superpowers/ (which is git-ignored and not shared across worktrees; only the integration workspace's copy is read downstream). You MUST write your full report to ${reportFile} before finishing — the reviewer's template hard-requires it and reviews blind without it. Before starting, run \`bd comments ${br.id}\` — any clarification recorded there (a triage RESOLVE writes one) is binding context that overrides your own reading of the brief on the point it clarifies. If BLOCKED after 3 no-progress fix-loops, file the blocker bead yourself (see "The blocker-bead path") — there is no human partner to escalate to mid-task; the bead carries ONLY the \`blocker\` label — no \`sp:\` label, no other label, and no \`--parent\` — because either addition makes it reachable as work and starts a self-sustaining blocker-filing loop. Report id, status (IMPLEMENTED or BLOCKED), files touched, and — only on BLOCKED — blockerBead with the id of the bead you just filed (handleBlocker's triage dispatch needs it; see the runTask chain call site's status guard).`
+  return `Follow subagent-driven-development/implementer-prompt.md against the brief for task ${br.id} (n ${br.n}), working in ${br.branch}, branched from integration branch ${integrationBranch}. The template's [BRIEF_FILE] is ${briefFile} and its [REPORT_FILE] is ${reportFile} — both absolute paths in the integration worktree's workspace, deliberately not this task worktree's own .superpowers/ (which is git-ignored and not shared across worktrees; only the integration workspace's copy is read downstream). You MUST write your full report to ${reportFile} before finishing — the reviewer's template hard-requires it and reviews blind without it. Before starting, run \`bd comments ${br.id}\` — any clarification recorded there (a triage RESOLVE writes one) is binding context that overrides your own reading of the brief on the point it clarifies. If BLOCKED after 3 no-progress fix-loops, file the blocker bead yourself (see "The blocker-bead path") — there is no human partner to escalate to mid-task; the bead carries ONLY the \`blocker\` label — no \`sp:\` label, no other label, and no \`--parent\` — because either addition makes it reachable as work and starts a self-sustaining blocker-filing loop. Report id, status (IMPLEMENTED or BLOCKED), files touched, and — only on BLOCKED — blockerBead with the id of the bead you just filed (handleBlocker's triage dispatch needs it; see the runTask chain call site's status guard). ASSERTION DISCIPLINE (issue #3 doc gap 1): for every assertion you add, name a value the code could actually produce that would fail it — if the type or the fixture makes that value impossible (a length check on a fixed-size array, a bound the type already enforces, a digest compared to itself, a negative-length check that an empty result also passes), the assertion is decoration, not a test; and an assertion sequenced after a failing one in the same test body has NOT run — record it as unmeasured in your report, never as green. ${authRefusalRule()}`
 }
 
 function taskReviewPrompt(im, planPath, art) {
@@ -2245,7 +2596,12 @@ function taskReviewPrompt(im, planPath, art) {
   // interpolated as absolute, integration-workspace-rooted paths (see the `artifacts` helper), and
   // review-package gets an explicit OUTFILE so the diff also lands there instead of the task
   // worktree's own unshared .superpowers/ copy.
-  return `In ${im.branch}, run \`scripts/review-package ${planPath} ${im.base} HEAD ${art.diff('initial')}\` for task ${im.id} (n ${im.n}), then follow subagent-driven-development/task-reviewer-prompt.md over the resulting package with its template parameters filled: [BRIEF_FILE] = ${art.brief}, [REPORT_FILE] = ${art.report} (the implementer's report — if it is missing, that is itself a finding: report NEEDS_FIX and say so), [DIFF_FILE] = ${art.diff('initial')}. All three are absolute paths in the integration worktree's workspace. Report id and status CLEAN or NEEDS_FIX — on NEEDS_FIX, put the finding text in the \`finding\` field (fixPrompt builds the fix dispatch from it directly, not from the rest of this result). Separately, list every **Minor** finding as a one-line string in the \`minors\` array — minors never enter the fix loop (SKILL.md defers them), so this array is the only way they survive; an empty array or an omitted field means you found none, which the Finish-phase reviewer will read as a real claim.`
+  // issue #3 defect 1: the working directory is load-bearing and the package must be checked for
+  // content. `HEAD` resolves against the cwd — run from the integration worktree it names the
+  // integration tip and `${im.base}..HEAD` comes back EMPTY (a 104-byte header-only file), which
+  // ~40 reviews on one measured run then "reviewed" and reported clean. INVALID is a third status:
+  // the review did not happen (see reviewAndFix's validReview).
+  return `cd ${im.branch} FIRST — the review package's HEAD resolves against your working directory; run from anywhere else (the integration worktree in particular) the range comes back empty and you would review nothing. Then run \`scripts/review-package ${planPath} ${im.base} HEAD ${art.diff('initial')}\` for task ${im.id} (n ${im.n}). EMPTY-PACKAGE RULE: if that command exits 3 with EMPTY RANGE, or the resulting package's "## Files changed" section lists no files, do NOT review it and do NOT report CLEAN — report status INVALID with \`finding\` = your working directory (\`pwd\`), the exact command you ran, and its output; an empty package is a measurement failure, never a clean review. Otherwise follow subagent-driven-development/task-reviewer-prompt.md over the resulting package with its template parameters filled: [BRIEF_FILE] = ${art.brief}, [REPORT_FILE] = ${art.report} (the implementer's report — if it is missing, that is itself a finding: report NEEDS_FIX and say so), [DIFF_FILE] = ${art.diff('initial')}. All three are absolute paths in the integration worktree's workspace. REACHABILITY (issue #4 doc gap 1) — when the task touches a shared boundary, an authority/permission check, a durability primitive, or retires something: confirm the production entrypoint actually reaches the new code (one caller trace from a real entrypoint, not only from the tests), and search for sibling call sites that still use the superseded or unsafe form (a fallback branch, a hidden loader, an operator input) — a fully tested wrapper nothing calls, or a fix applied to one of two call sites, is NEEDS_FIX. ASSERTION DISCIPLINE (issue #3 doc gap 1): an assertion the type makes unfailable (a length check on a fixed-size array, a bound the type enforces, a value compared to itself, a negative-length check an empty result also passes) is a Minor at least, and a claim that assertions sequenced after a failing one in the same test body are "green" is a finding — they never ran. Report id and status CLEAN, NEEDS_FIX, or INVALID — on NEEDS_FIX, put the finding text in the \`finding\` field (fixPrompt builds the fix dispatch from it directly, not from the rest of this result). Separately, list every **Minor** finding as a one-line string in the \`minors\` array — minors never enter the fix loop (SKILL.md defers them), so this array is the only way they survive; an empty array or an omitted field means you found none, which the Finish-phase reviewer will read as a real claim.`
 }
 
 function fixPrompt(rv, round, art) {
@@ -2261,9 +2617,12 @@ function fixPrompt(rv, round, art) {
   // worktree for task X") is real, not an echo this function has to trust the reviewer for.
   // Report contract: id and status only — n/files/branch/base are re-stamped by `carried()` again
   // after this call, same reasoning as taskReviewPrompt above.
+  // `round === 'seam'` (issue #4 design question 1): the one bounded post-rebase seam fix,
+  // dispatched from integrateOne — outside the five-round cap, against the REBASED branch.
+  if (round === 'seam') return `Resume the implementer in the worktree ${rv.branch} for task ${rv.id} (n ${rv.n}). The branch has been rebased onto the integration branch, and a post-rebase seam review found this incompatibility with sibling changes that landed there meanwhile: ${rv.finding}. Make the smallest change that reconciles the two sides (this is the ONE bounded seam fix — the merge gate's tests run next, and a red gate goes to the blocker path), commit it, and append a "seam fix" entry to ${art.report}. Report id and status FIXED. ${authRefusalRule()}`
   return round <= 3
-    ? `Resume the original implementer in the worktree ${rv.branch} for task ${rv.id} (n ${rv.n}), fix round ${round}/5, and address this review finding: ${rv.finding}. Append your fix-round report to ${art.report} (the implementer's report file — SDD's fix loop appends there; it is the fix history the re-reviewer and any later escalation read). Report id and status FIXED.`
-    : `A prior implementer attempted task ${rv.id} (n ${rv.n}) ${round - 1} time(s) without resolving the open finding. Dispatch a FRESH implementer in the worktree ${rv.branch} — it owns the task now; read the report file at ${art.report} for what was tried, then address this review finding (fix round ${round}/5): ${rv.finding}. Append your fix-round report to that same file. Report id and status FIXED.`
+    ? `Resume the original implementer in the worktree ${rv.branch} for task ${rv.id} (n ${rv.n}), fix round ${round}/5, and address this review finding: ${rv.finding}. Append your fix-round report to ${art.report} (the implementer's report file — SDD's fix loop appends there; it is the fix history the re-reviewer and any later escalation read). Report id and status FIXED. ${authRefusalRule()}`
+    : `A prior implementer attempted task ${rv.id} (n ${rv.n}) ${round - 1} time(s) without resolving the open finding. Dispatch a FRESH implementer in the worktree ${rv.branch} — it owns the task now; read the report file at ${art.report} for what was tried, then address this review finding (fix round ${round}/5): ${rv.finding}. Append your fix-round report to that same file. Report id and status FIXED. ${authRefusalRule()}`
 }
 
 function reReviewPrompt(fixed, planPath, art, round) {
@@ -2291,10 +2650,34 @@ function reReviewPrompt(fixed, planPath, art, round) {
   // exists for — can legitimately report `finding: ""`, and `??` only falls back on null/undefined,
   // not on that empty string) as a second line of defense if a re-reviewer ever omits it, or blanks
   // it, on a genuine NEEDS_FIX-equivalent.
-  return `Follow subagent-driven-development/re-review-prompt.md, scoped to the fix diff for task ${fixed.id} (n ${fixed.n}) in ${fixed.branch}, with its template parameters filled (all absolute paths in the integration worktree's workspace): [BRIEF_FILE] = ${art.brief}, [REPORT_FILE] = ${art.report} (the implementer's report, fix-round entries appended), [DIFF_FILE] = ${art.diff(`fix-${round}`)} — produce that diff first by running \`scripts/review-package ${planPath} FIX_BASE HEAD ${art.diff(`fix-${round}`)}\` in ${fixed.branch}, where FIX_BASE is the commit this fix round started from (the report file's fix-round entry records the pre-fix tip; failing that, it is the tip immediately before this round's fix commits in \`git log\`). That template's own vocabulary is per-finding "ADDRESSED"/"NOT ADDRESSED" with a round verdict — map it to a single BARE TOKEN this round's overall \`status\`: "CLEAN" if every finding is ADDRESSED, "NEEDS_FIX" if any finding remains open — no other value, no colon, no extra text in that field, since the coordinator branches on exact string equality against it and fails CLOSED (treats anything that isn't literally "CLEAN" as still open) on anything else. Report id, that status token, and — whenever status is NEEDS_FIX — finding with the still-open finding text verbatim (fixPrompt and, at the cap, breakerBlockerPrompt/adjudicatePrompt build their dispatch from this field directly; omit or leave it blank only when status is CLEAN). Any NEW Minor finding this fix diff introduced goes in the \`minors\` array, one line each — the coordinator accumulates these across rounds, so do not re-list minors from an earlier round you cannot see.`
+  return `Follow subagent-driven-development/re-review-prompt.md, scoped to the fix diff for task ${fixed.id} (n ${fixed.n}) in ${fixed.branch}, with its template parameters filled (all absolute paths in the integration worktree's workspace): [BRIEF_FILE] = ${art.brief}, [REPORT_FILE] = ${art.report} (the implementer's report, fix-round entries appended), [DIFF_FILE] = ${art.diff(`fix-${round}`)} — produce that diff first: cd ${fixed.branch} FIRST (HEAD resolves against your working directory — from the integration worktree the range comes back empty), then run \`scripts/review-package ${planPath} FIX_BASE HEAD ${art.diff(`fix-${round}`)}\`, where FIX_BASE is the commit this fix round started from (the report file's fix-round entry records the pre-fix tip; failing that, it is the tip immediately before this round's fix commits in \`git log\`). EMPTY-PACKAGE RULE: if that command exits 3 with EMPTY RANGE, or the package's "## Files changed" section lists no files, do NOT review and do NOT report CLEAN — report status INVALID with \`finding\` = your working directory (\`pwd\`), the exact command and its output; an empty package is a measurement failure. That template's own vocabulary is per-finding "ADDRESSED"/"NOT ADDRESSED" with a round verdict — map it to a single BARE TOKEN this round's overall \`status\`: "CLEAN" if every finding is ADDRESSED, "NEEDS_FIX" if any finding remains open — no other value, no colon, no extra text in that field, since the coordinator branches on exact string equality against it and fails CLOSED (treats anything that isn't literally "CLEAN" as still open) on anything else. Report id, that status token, and — whenever status is NEEDS_FIX — finding with the still-open finding text verbatim (fixPrompt and, at the cap, breakerBlockerPrompt/adjudicatePrompt build their dispatch from this field directly; omit or leave it blank only when status is CLEAN). Any NEW Minor finding this fix diff introduced goes in the \`minors\` array, one line each — the coordinator accumulates these across rounds, so do not re-list minors from an earlier round you cannot see.`
 }
 
-function mergePrompt(r, integrationBranch, integrationWorktree) {
+function seamReviewPrompt(r, m, integrationBranch, planPath, art) {
+  // issue #4 design question 1 (decided: scoped review only when the rebase overlapped). The
+  // per-task review approved the task against its ORIGINAL base; this reviews only how the task's
+  // changes compose with the sibling changes the rebase just moved it onto, on the files both
+  // touched — the exact class the measured run found only after its five-round cap was spent
+  // (a sibling receipt-digest incompatibility; a shared fixture signature change). One round,
+  // one fix dispatch on NEEDS_FIX, then the merge proceeds to its gate.
+  return `POST-REBASE SEAM REVIEW for task ${r.id} (n ${r.n}) in ${r.branch}: the branch was just rebased onto ${integrationBranch}, and sibling commits that landed there since this task branched changed the SAME files this task changed: ${m.seamOverlap.join(', ')}. The per-task review already approved this task's logic against its original base — do not re-review that. Review ONLY post-rebase compatibility on those files. cd ${r.branch} FIRST. Read the sibling side (\`git log --oneline ${r.base}..${m.mergeBase} -- <files>\` and \`git diff ${r.base} ${m.mergeBase} -- <files>\`) and this task's side (\`git diff ${m.mergeBase} ${m.head} -- <files>\`; write it to ${art.diff('seam')} for the record), then check for: a changed signature, fixture, contract, export, schema or invariant on the sibling side that this task's code or tests still assume the old form of; duplicated or contradictory edits to the same lines that the rebase auto-resolved; a test on either side that the other side's change makes vacuous. Report id ${r.id} and status as a BARE TOKEN: "CLEAN" (the two sides compose) or "NEEDS_FIX" with \`finding\` naming the incompatibility and the smallest change that reconciles it — the coordinator dispatches exactly one fix from that text and then merges; there is no second seam round, and the merge gate's tests run next either way.`
+}
+
+function edgeAuditPrompt(epicId, integrationWorktree, cap, dispatchedCount, roundNo) {
+  // issue #3 design question C (decided: conditional, report-only). Armed by two consecutive
+  // below-cap rounds; reads the BULK dump (issue #2: `bd show --json` underreports edges); names
+  // suspect edges by super-design §Decomposition's rules and reports achievable width so the
+  // operator sees whether the cap or the graph binds. Never edits anything.
+  return `READ-ONLY dependency-edge audit for epic ${epicId} — round ${roundNo}: the dispatched frontier was ${dispatchedCount} against a cap of ${cap} for the second consecutive round, so either the graph is nearly drained or its depth, not the cap, is bounding throughput. Working directory: ${integrationWorktree}. Do NOT edit any bead, dependency, or file — report only. 1. Read the tree from the BULK dump, never per-bead show (\`bd show --json\` underreports blocking edges): \`bd list --json --limit 2000\` (add \`--label sp:${epicId}\` if the tree is labelled), and keep this epic's OPEN beads (exclude blocker-labelled ones) with their blocking edges in both directions. 2. Compute: openLeaves = open non-epic beads; depth = the longest chain of open beads linked by blocking edges (an epic-typed node's edges count — a leaf blocked by an open epic waits for that epic's whole open subtree); achievableWidth = ceil(openLeaves / depth), the most parallelism this graph can offer regardless of the cap. 3. Suspect edges, per super-design §Decomposition's edge rules: an edge whose consumer reads nothing the producer writes (narrative order, not a data or interface dependency); an epic-level edge where one leaf-to-leaf edge would do (super-design's fifth edge rule); a chain of same-area beads ordered because it reads naturally; an edge into a documentation or cleanup bead. For each, report from (the blocked bead), to (its blocker), and a one-line reason grounded in BOTH beads' text — if you cannot ground it in text, it is not a suspect edge. An empty list is a valid answer. 4. summary: one or two sentences — whether the cap or the graph is the binding constraint right now, and which single edge change would reduce depth most. Report openLeaves, depth, achievableWidth, suspectEdges, summary.`
+}
+
+function sweepPrompt(sweepCommand, integrationWorktree, integrationBranch) {
+  // issue #3 doc gap 2: the per-branch sweep is a declared command, run once at Finish, exactly
+  // as declared — the measurement-validity floor from Local adaptations applies to its report.
+  return `Per-branch sweep for ${integrationBranch}. In ${integrationWorktree}, at the current tip (record \`git rev-parse HEAD\` first), run EXACTLY this command — unchanged, no added or removed selections, no retries of individual tests: \`${sweepCommand}\`. MEASUREMENT-VALIDITY FLOOR: before reporting counts, check that the run actually collected and finished a plausible suite — collection errors, a passed count near zero for a suite known to be large, or a runner that terminated before finalizing its report are NOT results; in any of those cases report the literal prefix "MEASUREMENT INVALID: <cause>" instead of counts. Otherwise report ONE line: "<tip sha7> — <passed> passed, <failed> failed, <errors> errors, <skipped> skipped; failing: <up to 20 failing node ids, or none>; command: <the exact command>". Do not fix anything, do not re-run selectively, do not interpret — the final reviewer reads this line as the branch-wide measurement.`
+}
+
+function mergePrompt(r, integrationBranch, integrationWorktree, gateCommand) {
   // "Serial merge-back": rebase onto the integration branch, run the test command, merge --no-ff
   // and bd close on success; one bounded auto-resolve attempt on conflict/red, else the blocker path.
   // Fix-round-1 (review): also capture `head` — the rebased task branch's tip commit, right before
@@ -2311,7 +2694,21 @@ function mergePrompt(r, integrationBranch, integrationWorktree) {
   // above for the full reasoning. The rebase moves ${r.branch}'s effective base to wherever
   // ${integrationBranch} pointed at when the rebase ran, which is exactly what `git merge-base`
   // recovers.
-  return `In ${integrationWorktree}, update ${integrationBranch} and rebase task ${r.id}'s branch ${r.branch} onto it. Run the project test command. If clean: run \`git merge-base ${integrationBranch} ${r.branch}\` to capture the POST-REBASE merge-base (do this before merging, while ${r.branch}'s rebased-but-not-yet-merged history still lets you distinguish it from ${integrationBranch}'s own tip), then run \`git rev-parse ${r.branch}\` to capture the rebased branch's tip commit, merge --no-ff into ${integrationBranch}, run \`bd close ${r.id}\`, and report merged true with head as the tip commit just captured and mergeBase as the merge-base just captured. If the rebase conflicts or tests are red, make one bounded auto-resolve attempt; if that also fails, file a blocker bead (see "The blocker-bead path") and report merged false with its id as blockerBead.`
+  // issue #3 doc gap 2 / issue #4 defect 5: the gate is the DECLARED per-merge command when the
+  // caller declared one — run exactly, never widened (the measured run's gate wall times were
+  // bimodal, 6–9 min vs 36–113 min, by whether a bead touched one heavy package; ~5 h of serial
+  // gate time caught nothing). issue #4 design question 1: the post-rebase seam check stops
+  // short of the gate when the rebase moved this task onto sibling changes in the same files,
+  // unless the coordinator already ran the seam review (`r.seamCleared`). issue #3 defect 5: a
+  // blocker bead states the merge-base the gate ran against, so a reader can tell a blocker
+  // filed against a superseded merge-base from a current one.
+  const gate = gateCommand
+    ? `run the declared per-merge gate EXACTLY as written — unchanged, unwidened, no extra suites (which selection ran is on the ledger's Launch line): \`${gateCommand}\``
+    : `run the project test command`
+  const seamStep = r.seamCleared
+    ? `This branch is ALREADY rebased and its post-rebase seam has been reviewed by the coordinator (and fixed if needed) — do not repeat the seam check; if new integration commits landed meanwhile, rebase once more and continue straight to the gate.`
+    : `POST-REBASE SEAM CHECK, after a successful rebase and BEFORE the gate: if ${integrationBranch} moved since this task branched (its current tip is not ${r.base}), list the files the sibling commits changed (\`git diff --name-only ${r.base} ${integrationBranch}\`) and the files this task changed (\`git diff --name-only $(git merge-base ${integrationBranch} ${r.branch}) ${r.branch}\`). If the two lists INTERSECT, do NOT run the gate and do NOT merge: capture head and mergeBase exactly as described below and report merged false with seamOverlap as the intersecting file list — the coordinator runs one scoped seam review and re-dispatches this merge. If they do not intersect, or the branch did not move, continue.`
+  return `In ${integrationWorktree}, update ${integrationBranch} and rebase task ${r.id}'s branch ${r.branch} onto it. ${seamStep} Then ${gate}. If clean: run \`git merge-base ${integrationBranch} ${r.branch}\` to capture the POST-REBASE merge-base (do this before merging, while ${r.branch}'s rebased-but-not-yet-merged history still lets you distinguish it from ${integrationBranch}'s own tip), then run \`git rev-parse ${r.branch}\` to capture the rebased branch's tip commit, merge --no-ff into ${integrationBranch}, run \`bd close ${r.id}\`, and report merged true with head as the tip commit just captured and mergeBase as the merge-base just captured. If the rebase conflicts or tests are red, make one bounded auto-resolve attempt; if that also fails, file a blocker bead (see "The blocker-bead path") whose body states the merge-base SHA the gate ran against and the exact gate command run — a later reader must be able to tell a blocker filed against a superseded merge-base from a current one — and report merged false with its id as blockerBead. ${authRefusalRule()} For THIS dispatch, report a refusal as merged false with authRefused set to the exact refused command(s) instead of a status token.`
 }
 
 function missingBlockerBeadPrompt(r) {
@@ -2548,10 +2945,30 @@ async function reviewAndFix(im, planPath, art) {
   // is filtered before Integrate, no bucket is touched, and the next ready query re-surfaces the
   // id (the idempotent brief stage re-enters the existing worktree). carried(null) would throw,
   // so every hop guards before wrapping.
-  const firstReview = await dispatch(() => taskReviewPrompt(im, planPath, art), `review:${im.id}`,
-    { label: `review:${im.id}`, phase: 'Implement', model: model('reviewer'), schema: RESULT })
+  // issue #3 defect 1 (measured: ~40 reviews on one run reviewed an EMPTY 104-byte package —
+  // `scripts/review-package` resolved `HEAD` in the integration worktree — and were recorded
+  // "review clean"): an INVALID verdict means the review never happened. It is neither CLEAN nor
+  // a finding to fix, so it must not enter the fix loop (a fixer would be dispatched against
+  // "the package was empty"). One fresh re-dispatch; a second INVALID becomes BLOCKED — the
+  // blocker path's missing-bead fallback files the bead and triage sees a pipeline defect, which
+  // is what it is. `review-package` itself now exits 3 on an empty range (fork patch), and the
+  // reviewer prompts say to report INVALID rather than review a header-only package.
+  const validReview = async (build, key) => {
+    let res = await dispatch(build, key, { label: key, phase: 'Implement', model: model('reviewer'), schema: RESULT })
+    if (res && res.status === 'INVALID') {
+      log(`review package for ${im.id} INVALID (empty diff / packager failure: ${res.finding ?? 'no detail'}) — the review did not happen; one fresh re-dispatch, never recorded as clean`)
+      res = await dispatch(build, `${key}:retry`, { label: `${key}:retry`, phase: 'Implement', model: model('reviewer'), schema: RESULT })
+      if (res && res.status === 'INVALID') {
+        log(`review package for ${im.id} INVALID twice — treating as BLOCKED (pipeline defect: no reviewer could obtain a non-empty diff)`)
+        return { ...res, status: 'BLOCKED', finding: `review package invalid twice — no reviewer could obtain a non-empty diff for task ${im.id} (${res.finding ?? 'no detail'}); the task was NOT reviewed` }
+      }
+    }
+    return res
+  }
+  const firstReview = await validReview(() => taskReviewPrompt(im, planPath, art), `review:${im.id}`)
   if (!firstReview) return null
   let rv = carried(firstReview)
+  if (rv.status === 'BLOCKED') return rv
   // C-3 fix: fail CLOSED. The pre-fix loop condition was `rv.status === 'NEEDS_FIX'` — so ANY
   // status that isn't the exact literal "NEEDS_FIX" (including upstream re-review-prompt.md's own
   // native vocabulary, "NOT ADDRESSED" — see reReviewPrompt) exits the loop as if the review were
@@ -2567,11 +2984,14 @@ async function reviewAndFix(im, planPath, art) {
     const fixRes = await dispatch(() => fixPrompt(rv, round, art), `fix:${rv.id}:${round}`,
       { label: `fix:${rv.id}:${round}`, phase: 'Implement', model: fixModel, schema: RESULT })
     if (!fixRes) return null  // null fix: no progress this round (see the guard comment above)
+    // issue #3 defect 3: a fixer refused by the permission layer (twice) reports BLOCKED_AUTH —
+    // out of the loop, straight to integrateOne's auth branch (log + quarantine, no bead).
+    if (fixRes.status === 'BLOCKED_AUTH') return { ...carried(fixRes), status: 'BLOCKED_AUTH' }
     const fixed = carried(fixRes)
-    const reReviewRes = await dispatch(() => reReviewPrompt(fixed, planPath, art, round), `re-review:${fixed.id}:${round}`,
-      { label: `re-review:${fixed.id}:${round}`, phase: 'Implement', model: model('reviewer'), schema: RESULT })
+    const reReviewRes = await validReview(() => reReviewPrompt(fixed, planPath, art, round), `re-review:${fixed.id}:${round}`)
     if (!reReviewRes) return null  // null re-review: same — the verdict was never rendered
     rv = carried(reReviewRes)
+    if (rv.status === 'BLOCKED') return rv  // INVALID twice on the re-review package (see validReview)
   }
   if (rv.status === 'CLEAN') return rv
   // Breaker tripped: round 5's re-review still leaves the finding open (or returned something this
@@ -2618,6 +3038,27 @@ async function reviewAndFix(im, planPath, art) {
   // (and leaves the task unsettled if that also nulls). The BLOCKED verdict itself was really
   // rendered by the adjudicator above, so it is kept; only the mechanical filing failed.
   return { ...rv, status: 'BLOCKED', blockerBead: bead?.blockerBead }
+}
+
+async function handleAuthRefusal(r, refused) {
+  // issue #3 defect 3 (decided policy): a harness permission refusal is not a command failure —
+  // the command never executed — and no pipeline stage can lift it: the measured run re-filed the
+  // same blocker four times across two invocations while the epic's highest-value bead (gating
+  // 23 of 30 remaining) sat unmerged, until an operator told the invoking session the operation
+  // class was pre-authorised. The agent already tried one equivalent form (authRefusalRule). So:
+  // log it loudly, quarantine the id for THIS run (its dependents stay unready — the same
+  // `escalated` set, so the ready filter and the buckets need no new case), record it, continue.
+  // No blocker bead, no triage dispatch, no notify: there is no judgment to make. The ledger line
+  // starts with `BLOCKED` so Resume treats it as `blockedHistorically` — a fresh attempt next run,
+  // once Pre-flight step 5's grant is in place. Accepting the coverage loss is the policy, not an
+  // accident: a run that stops for a permission prompt nobody is watching loses everything.
+  const cmd = String(refused || 'command not reported').replace(/\s+/g, ' ').trim()
+  settle(r.id, escalated)
+  authRefused.push({ id: r.id, refused: cmd })
+  log(`AUTH-REFUSED ${r.id}: the harness permission layer refused \`${cmd}\` (porcelain form and one equivalent; the command never executed). No blocker bead, no triage — nothing an agent can lift here. Coverage for ${r.id} is LOST this run and its dependents stay unready; grant the operation class (Pre-flight step 5) and relaunch to recover it.`)
+  await dispatch(() => ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName,
+      ledgerLine(r.n, r.id, `BLOCKED-AUTH — permission refused, coverage lost this run: ${cmd}`)),
+    `ledger-append:${r.id}`, { label: `ledger-append:${r.id}`, phase: 'Integrate', model: model('mechanical') })
 }
 
 async function handleBlocker(r, planPath, onResolve) {
@@ -2745,7 +3186,15 @@ narratives that used to accompany each row are in git history; nothing here depe
 | mid-round top-up (inter-round barrier removal: ready re-query per successful merge, quiescence loop) | replay 34/0 | replay 24/0 | replay 24/0 |
 | top-up corrections (per-round query cap `topUpQueryCap`, frontier hint keyed on dispatched not planned, logged unmapped skips) | replay 34/0 | replay 24/0 | replay 24/0 |
 | round-head parallelism (planner skip on fully-mapped rounds, Close∥Ready + post-closure re-check, same-round RESOLVE retry + `bd comments` clarification plumbing) | replay 40/0 | replay 24/0 | replay 24/0 |
-| **issue #2 batch (ready-query `--limit` + truncation rule, top-up epic-close phase, `ledger-append:launch` args record) — CURRENT** | **replay 41/0** | **replay 25/0** | **replay 25/0** |
+| issue #2 batch (ready-query `--limit` + truncation rule, top-up epic-close phase, `ledger-append:launch` args record) | replay 41/0 | replay 25/0 | replay 25/0 |
+| **issue #3/#4 batch (`ledger-append:detector` per round; INVALID review packages; `BLOCKED_AUTH`; recurring-minor clusters; conditional edge audit; declared `gate`/`sweep`; post-rebase seam review) — CURRENT** | **replay 42/0** | **replay 26/0** | **replay 26/0** |
+
+The issue #3/#4 row's +1 on every scenario is exactly the persisted detector line — one
+`ledger-append:detector` per round that reaches the drain (each scenario's second round exits at
+`ready-drained` before it). Every other new path in that batch (INVALID retry, `BLOCKED_AUTH`,
+recurring minors, edge audit, sweep, seam review) is exercised by dedicated replay-harness
+scenarios, not by these three fixtures, whose stub tables would otherwise have to grow a key per
+path they never take.
 
 The relax-sequencing row is a **structural** edit (dispatch scheduling and merge sequencing both
 changed shape), re-verified by replay: all three recorded scenarios land on identical dispatch
@@ -3005,6 +3454,7 @@ round 1, changing every downstream assertion this scenario makes about bucketing
 |---|---|---|
 | `read-ledger` | `{text:""}` | I1: the one-time Resume-phase read, before the round loop starts — empty text means a fresh epic with no prior ledger, so nothing is reconstructed into `completed`/`escalated`/`parked`/`pendingRetry` (a resumed-run scenario, with non-empty ledger text, is not covered by this scenario — see "What this dryRun still can't prove" additions below) |
 | `ledger-append:launch` | `{appended:true}` | issue #2 defect 6: the launch-args `Launch:` ledger record, written once per launch right after the Resume read |
+| `ledger-append:detector` | `{appended:true}` | issue #3 defect 6: the persisted `Detector: round N — …` ledger line, once per round that reaches the drain (round 1 here; round 2 exits at `ready-drained` first). Keys this scenario never takes and therefore never declares — `review:<id>:retry`, `seam-review:<id>`, `merge:<id>:seam-cleared`, `fix:<id>:seam`, `edge-audit:<k>`, `ledger-append:edge-audit:<k>`, `ledger-recurring:<k>`, `sweep`, `ledger-append:sweep` — are exercised by the replay harness's dedicated issue #3/#4 scenarios; a regression that routed this scenario onto one of them would throw `dryRun: no stub for key …`, which is the point |
 | `close-epics` (array, 2 entries) | `{rootClosed:false,closedThisRun:[]}` then `{rootClosed:false,closedThisRun:["bd-101","bd-102"]}` | root stays open both rounds (quarantined `bd-103` and unresolved `bd-104` block closure) — round 1 doesn't exit early, round 2 doesn't loop forever |
 | `bd-ready` (array, 2 entries) | `{ids:["bd-101","bd-102","bd-103","bd-104"]}` then `{ids:[]}` | round 1 supplies the batch; round 2's empty set drains the loop (a canned value, not real `bd` continuity — see "What this dryRun proves and does not prove" below on why a RESOLVE'd `bd-104` not reappearing in round 2 is not itself an assertion). The **scoping** assertion (`--exclude-type=epic --label sp:<epicId>`) is a property of the dispatched prompt text itself, not of this canned return — verified by reading the prompt, same as `super-roast`'s reporter-arithmetic caveat above |
 | `bd-ready-topup` | `{ids:[]}` (single value, reused) | the mid-round top-up re-query fired after each successful merge (`bd-101`, `bd-102`) — empty here, so no bead tops up; the top-up DISPATCH path itself (a topped-up bead implementing mid-round) is exercised by the replay harness's dedicated scenarios, not by this fixture |
@@ -3099,7 +3549,9 @@ untested by any scenario in this doc — inspection-only, same as C-1/C-3 above.
   `review` 3 + `fix` 1 + `re-review` 1 + `merge` 3 + `ledger-append` 5
   (one per terminal outcome, `bd-104` twice: `pending retry` then the bounced `BLOCKED`) +
   `triage` 3 (`bd-103`, `bd-104` twice) + `notify` 2 (`bd-103`, bounced `bd-104`) +
-  `clarify` 1 + `final-review` 1 = **40 agent calls, 0 errors** (`final-review` dispatches because
+  `clarify` 1 + `ledger-append:detector` 1 (round 1's persisted detector line, issue #3 defect
+  6; round 2 exits at `ready-drained` before the drain) + `final-review` 1 = **41 agent calls, 0
+  errors** (`final-review` dispatches because
   `completed.size` is 2, not 0) — **confirmed by re-run**, see below; this was computed by hand
   before that run and matched exactly. The pre-Task-5 script's confirmed count was 26 (see the
   superseded baseline below) — the +5 is exactly the new `read-ledger` (1) and `ledger-append` (4)
@@ -3230,6 +3682,7 @@ script and this `args` block:
     "stubs": {
       "read-ledger": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"text\":\"\"}",
       "ledger-append:launch": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "ledger-append:detector": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "close-epics": [
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"rootClosed\":false,\"closedThisRun\":[]}",
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"rootClosed\":false,\"closedThisRun\":[\"bd-101\",\"bd-102\"]}"
@@ -3277,7 +3730,7 @@ If a future structural edit changes this script, re-run with these args, confirm
 update it deliberately alongside the edit that changed it), and replace the figures above — same
 discipline as `super-roast`'s "Passing baseline (recorded, not illustrative)" sections. Six structural edits have
 forced exactly that re-run — see the revision table under "dryRun
-policy" for the full sequence. The CURRENT confirmed shape is **41 agent calls, 0 errors, terminal
+policy" for the full sequence. The CURRENT confirmed shape is **42 agent calls, 0 errors, terminal
 stopReason `ready-drained`** (40 from the dispatch arithmetic above + 1 `ledger-minor:bd-101:1`) — confirmed by the offline replay harness against the current script
 (see the current-row paragraph under "dryRun policy"; `wf_97164f71-a3c` is the last Workflow-hosted
 run, against the previous revision — read that writeup's own caveat before citing either figure for
@@ -3315,6 +3768,7 @@ reading `reviewAndFix`'s definition directly (the loop condition is `rv.status !
 |---|---|---|
 | `read-ledger` | `{text:""}` | I1: the one-time Resume-phase read — fresh epic, nothing reconstructed |
 | `ledger-append:launch` | `{appended:true}` | the launch-args `Launch:` ledger record (issue #2 defect 6), once per launch |
+| `ledger-append:detector` | `{appended:true}` | the persisted `Detector: round N — …` ledger line (issue #3 defect 6), once per round that reaches the drain |
 | `close-epics` (array, 2 entries) | `{rootClosed:false,closedThisRun:[]}` twice | root never closes — `bd-201` never merges in this scenario |
 | `bd-ready` (array, 2 entries) | `{ids:["bd-201"]}` then `{ids:[]}` | round 1 supplies the one task; round 2's empty set drains the loop (`bd-201` is excluded from round 2 anyway, via the `escalated` filter, once triage ESCALATEs it below) |
 | `bd-ready-topup` | `{ids:[]}` | present in the args for uniformity; **never dispatched here** — nothing merges, and the top-up fires only on a successful merge (its firing would be a regression this scenario catches) |
@@ -3356,7 +3810,8 @@ scenario, something regressed: `merge:bd-201` would mean a BLOCKED task reached 
 - Expected dispatch count (I1: `read-ledger` 1 + `ledger-append:launch` 1 + `close-epics` 2 +
   `bd-ready` 2 + `plan` 1 +
   `brief` 1 + `implement` 1 + `review` 1 + `fix` 5 + `re-review` 5 + `adjudicate` 1 +
-  `breaker-blocker` 1 + `triage` 1 + `notify` 1 + `ledger-append` 1 (`bd-201`) = **25 agent calls,
+  `breaker-blocker` 1 + `triage` 1 + `notify` 1 + `ledger-append` 1 (`bd-201`) +
+  `ledger-append:detector` 1 (round 1's persisted detector line) = **26 agent calls,
   0 errors** — and **no `bd-ready-topup` dispatch**: nothing merges in this scenario, and the
   top-up fires only on a successful merge; its firing here would itself be a regression — and, distinctly from every other scenario in this doc, **no `final-review`
   dispatch**, since `completed.size` is `0`) — **confirmed by re-run**, see below; this was
@@ -3386,6 +3841,7 @@ bead's TEXT — same `pick()` limit as everywhere else in this section.
     "stubs": {
       "read-ledger": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"text\":\"\"}",
       "ledger-append:launch": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "ledger-append:detector": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "close-epics": [
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"rootClosed\":false,\"closedThisRun\":[]}",
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"rootClosed\":false,\"closedThisRun\":[]}"
@@ -3424,7 +3880,7 @@ If a future structural edit changes this script, re-run with these args, confirm
 update it deliberately alongside the edit that changed it), and replace the figures above — same
 discipline as the canonical scenario's own baseline. Every structural edit so far has forced
 that re-run — see the revision table under "dryRun policy". The CURRENT
-confirmed shape is **25 agent calls, 0 errors** — confirmed by the offline replay harness against
+confirmed shape is **26 agent calls, 0 errors** — confirmed by the offline replay harness against
 the current script (see the current-row paragraph under "dryRun policy"; `wf_527ad491-790` is the
 last Workflow-hosted run, against the previous revision).
 
@@ -3461,6 +3917,7 @@ that; it is, and remains, verified only by reading the `if` statement itself.
 |---|---|---|
 | `read-ledger` | `{text:""}` | I1: the one-time Resume-phase read — fresh epic, nothing reconstructed |
 | `ledger-append:launch` | `{appended:true}` | the launch-args `Launch:` ledger record (issue #2 defect 6), once per launch |
+| `ledger-append:detector` | `{appended:true}` | the persisted `Detector: round N — …` ledger line (issue #3 defect 6), once per round that reaches the drain |
 | `close-epics` (array, 2 entries) | `{rootClosed:false,closedThisRun:[]}` twice | root stays open (this scenario's canned world doesn't bother modeling epic closure after the one child merges — same simplification the other two scenarios make) |
 | `bd-ready` (array, 2 entries) | `{ids:["bd-301"]}` then `{ids:[]}` | round 1 supplies the one task; round 2's empty set drains the loop |
 | `bd-ready-topup` | `{ids:[]}` (reused) | fired once, after `bd-301`'s successful (PARKed) merge — empty, so nothing tops up |
@@ -3496,7 +3953,8 @@ to short-circuit the blocker path.
   `bd-ready` 2 + `plan` 1 +
   `brief` 1 + `implement` 1 + `review` 1 + `fix` 5 + `re-review` 5 + `adjudicate` 1 + `merge` 1 +
   `ledger-append` 1 (`bd-301`) + `bd-ready-topup` 1 (after `bd-301`'s successful merge) +
-  `final-review` 1 = **25 agent calls, 0 errors**) — **confirmed by
+  `ledger-append:detector` 1 (round 1's persisted detector line) +
+  `final-review` 1 = **26 agent calls, 0 errors**) — **confirmed by
   re-run**, see below; this was computed by hand before that run and matched exactly. The
   pre-Task-5 confirmed count was 21 (below); the +2 is exactly `read-ledger` and
   `ledger-append:bd-301`.
@@ -3562,6 +4020,7 @@ question, same structural limit as the other four claims above.
     "stubs": {
       "read-ledger": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"text\":\"\"}",
       "ledger-append:launch": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "ledger-append:detector": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "close-epics": [
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"rootClosed\":false,\"closedThisRun\":[]}",
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"rootClosed\":false,\"closedThisRun\":[]}"
@@ -3601,7 +4060,7 @@ discipline as the other two scenarios' baselines. Every structural edit so far h
 re-run without moving the count — see the revision table under "dryRun policy". One of those rounds
 touched only this scenario's data (adding `mergeBase` to the `merge:bd-301` stub) and was re-run
 anyway, because "recorded, not illustrative" does not have a too-small-to-matter exemption. The
-CURRENT confirmed shape is **25 agent calls, 0 errors** — confirmed by the offline replay harness
+CURRENT confirmed shape is **26 agent calls, 0 errors** — confirmed by the offline replay harness
 against the current script (see the current-row paragraph under "dryRun policy";
 `wf_4203efd4-84d` is the last Workflow-hosted run, against the previous revision). The 21/0 figure
 above `wf_941e256b-10b` remains pre-Task-5 history, unaffected by this restatement.
