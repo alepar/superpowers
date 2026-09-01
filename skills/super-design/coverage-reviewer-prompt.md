@@ -103,37 +103,63 @@ Task tool (general-purpose), model: opus:
        leaf>, and drop the epic-level edge". An epic edge you can fully justify (every leaf
        genuinely consumes the whole epic's output) is not a finding, but say so explicitly
        in one line rather than skipping it.
-    6. **Acceptance satisfiability → UNSATISFIABLE-ACCEPTANCE.** Where a task's
-       description states an acceptance criterion in terms of another deliverable ("the X
-       validator accepts...", "passes the Y suite", "conforms to §N's contract"), resolve
-       that deliverable to the task that produces it and check the graph direction: if the
-       producing task is a transitive DEPENDENT of the task under review (it cannot exist
-       until this task is done), the criterion is unsatisfiable at completion time — the
-       cycle lives across the acceptance-text/dependency-graph boundary, which no
-       single-artifact check spans. Propose either restating the criterion in terms of an
-       artifact that exists when the task completes, or re-pointing the edge so the
-       validator genuinely precedes it. A criterion referencing a dependency (not a
-       dependent) is correct and is not a finding.
-    7. **Flag sweep.** Every id in "Flagged tasks" is an automatic finding — known-
+    6. **Acceptance satisfiability → UNSATISFIABLE-ACCEPTANCE.** Two passes, the
+       mechanical one FIRST. (a) MECHANICAL — for every `(needs: <id>)` citation in a
+       task's acceptance text, look the cited id up in the task tree and walk the blocking
+       edges: the cited bead must be a transitive BLOCKER of the task (it completes first).
+       If it is a transitive DEPENDENT of the task, that is a finding, whatever the prose
+       says — the criterion cannot be met at completion time. If no edge path connects the
+       two in either direction, that is a finding of the `unwired` variant — propose the
+       edge. This pass is a graph walk, not a judgment: do it for every citation, and report
+       each result. (b) PROSE — where an acceptance criterion names another deliverable
+       WITHOUT a citation ("the X validator accepts...", "passes the Y suite", "conforms to
+       §N's contract"), resolve that deliverable to the task that produces it yourself and
+       apply the same direction test; a producing task that is a transitive dependent is
+       unsatisfiable — the cycle lives across the acceptance-text/dependency-graph boundary,
+       which no single-artifact check spans. Propose either restating the criterion in
+       terms of an artifact that exists when the task completes (adding the `(needs: <id>)`
+       citation so the next round checks it mechanically), or re-pointing the edge so the
+       validator genuinely precedes it. A criterion referencing a blocker is correct and is
+       not a finding. (Measured: six prose-only review passes missed one instance of this
+       class; the citation convention exists so that pass (a) cannot.)
+    7. **Configuration coverage → UNEXERCISED-CONFIGURATION.** Where the spec (root or
+       subepic) ENUMERATES runtime configurations — modes, player counts, platforms,
+       feature-flag combinations, a test matrix — check that some task in the tree
+       *exercises* each enumerated configuration (runs it end to end: one decision, one
+       request, one invocation — not merely reads or unit-tests the code behind it), and
+       that this task is not solely the terminal readiness/integration gate. An enumerated
+       configuration that nothing runs before the terminal gate is a finding: evidence is
+       the quoted enumeration and the configurations with no exercising task; the proposed
+       fix is a `Configuration smoke:` leaf (name the entry point or command per
+       configuration if the spec gives one) depending on the beads that make those
+       configurations runnable, or naming the one existing bead that should absorb the
+       exercise. A spec that enumerates nothing yields no finding of this kind — do not
+       invent a configuration space.
+    8. **Flag sweep.** Every id in "Flagged tasks" is an automatic finding — known-
        underdesigned work must not sail through silently — *unless* it already has an
        entry in the rejected-findings ledger, which takes precedence over the sweep.
 
     ## Required structured output (do NOT write a prose essay)
 
     One entry per finding:
-    - **type:** `GAP` | `ORPHAN` | `UNOWNED-SEAM` | `NARRATIVE-EDGE` | `UNSATISFIABLE-ACCEPTANCE` | flag-sweep
+    - **type:** `GAP` | `ORPHAN` | `UNOWNED-SEAM` | `NARRATIVE-EDGE` | `UNSATISFIABLE-ACCEPTANCE` (with `dependent` or `unwired` in the description) | `UNEXERCISED-CONFIGURATION` | flag-sweep
     - **description:** the problem, one sentence
     - **evidence:** the unmapped goal element, the orphaned task id, the seam's two
       participant task ids + the exchanged data/interface + the quoted description text
       implying the exchange, the edge (dependent ← blocker) + which of unnameable/
       misdirected/duplicated it is + the quoted description text, the quoted acceptance
-      criterion + the producing task id + the dependency path proving it is a transitive
-      dependent, or the flag and its task id
+      criterion + the producing (or cited) task id + the dependency path proving it is a
+      transitive dependent (or the absence of any path, for `unwired`), the quoted
+      configuration enumeration + the configurations with no exercising task, or the flag
+      and its task id
     - **proposed fix:** a new leaf task under a named epic, or a new subepic needing
       design; for `UNOWNED-SEAM`, name the boundary to be contracted (arbitration turns an
       accepted seam into a contract bead + integration bead — see SKILL.md §Coverage); for
       `NARRATIVE-EDGE`, drop the edge, or name the task it should repoint to; for
-      `UNSATISFIABLE-ACCEPTANCE`, the restated criterion, or the edge to re-point
+      `UNSATISFIABLE-ACCEPTANCE`, the restated criterion (with its `(needs: <id>)`
+      citation), the edge to re-point, or the edge to add; for `UNEXERCISED-CONFIGURATION`,
+      the `Configuration smoke:` leaf (per-configuration entry point, and the beads it
+      depends on) or the existing bead to extend
 
     Report only defensible findings. Quality over quantity — but do not soften.
 ```

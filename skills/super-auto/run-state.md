@@ -129,6 +129,18 @@ a resume can silently redo work or violate a decision that was already made.
    Persisting `roastDesignRound` / `roastCodeRound` in `run.md` is what makes the
    cap durable across any restart, not just within one session.
 
+   **`roastCodeCapped`** (issue #4 defect 6) — written by the sequencer the moment the
+   code-roast cap trips with Blocking findings still confirmed, before those findings
+   are parked into the punch list: the unresolved finding ids (as the report lists
+   them), the path of the round-3 report, and one line on what authority the next
+   step needs (an operator ruling, a scope decision, a dependency outside the run).
+   Absent when the loop converged or the cap tripped clean. A resume that reads
+   `phase: roast-code` with `roastCodeCapped` present knows the review budget is
+   exhausted and must not start round 4; one that reads the phase without it is
+   mid-loop. A whole-branch roast run after this point — a post-cap audit — is
+   invoked with iteration `post-cap audit` and its report path is appended here,
+   never counted as a fourth round.
+
 6. **`super-code`'s returned buckets** — `completed`, `escalated`, `pendingRetry`,
    `parked`, `stalled`, `review`, recorded verbatim at **every** phase 3→4 transition —
    overwritten on each fix-loop re-entry, not written once. `super-code` runs again

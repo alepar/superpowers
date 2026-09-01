@@ -25,30 +25,53 @@ Severity vocabulary throughout (the only one): **Blocking | Should-fix | Nit | F
 
 - **`Workflow` tool available → dynamic workflow (preferred).** Run the engine script below
   via the tool. Triage → scout fan-out → dedupe → tiered judge panels → reporter, each phase
-  model-tiered per role. Label the report
-  `independence: same-family (Claude) — seat-differentiated panel`.
-- **Subagents but no Workflow → manual fan-out**, same stage order and same prompt files:
+  model-tiered per role.
+- **Subagents but no Workflow → manual fan-out**, same stage order, same prompt files, **same
+  bounds** (issue #4 defect 3 — the manual path used to state none, and one manual roast ran
+  12 scouts and 36 judge seats with the dedupe, the hand-off and the metrics all done by hand):
   1. Dispatch the triage subagent (sonnet); collect lanes/domains.
   2. Dispatch all scouts in parallel (opus) from the resulting roster; collect findings,
      counting non-responses as coverage loss (never silently dropped).
   3. Dispatch one dedupe subagent (fable) with the pooled findings; split its output into
-     severe (Blocking/Should-fix) and the remainder.
-  4. For each severe finding, dispatch the 3-seat panel (reproduce/refute/ground, sonnet) in
-     parallel; re-dispatch any seat that returns nothing, once. For each remaining finding,
-     dispatch a single refute-seat spot check; a spot check that CONFIRMs at Blocking/Should-fix
-     is promoted — dispatch the full 3-seat panel for it.
-  5. Dispatch one reporter subagent (fable) with all judged packets, the profile, and the
-     prior report (if any).
-
-  Same label as the Workflow path: `independence: same-family (Claude) — seat-differentiated panel`.
+     severe (Blocking/Should-fix) and the remainder. `config.remainderCap` applies exactly as
+     in the engine: drop the low-severity tail beyond it and keep the count.
+  4. `config.panelCap` (default 12) applies exactly as in the engine: the top `panelCap` severe
+     findings get the 3-seat panel (reproduce/refute/ground, sonnet) in parallel; severe
+     findings beyond it go to the report's "Not verified (beyond panel cap)" section unjudged,
+     never dropped. Re-dispatch any seat that returns nothing, once. **Moderation-safe retry:**
+     a seat whose provider rejects the dispatch on content-policy grounds (a refusal message,
+     not a null — measured on an OpenAI-only panel judging a local file-validation finding) is
+     re-dispatched once with the static-review wording: present the artifact as text to be
+     analysed for correctness, drop the adversarial verbs ("break", "attack", "exploit") from
+     the seat framing, keep the seat's method and output contract unchanged; a second rejection
+     is a dead seat (coverage loss, reported). For each remaining finding, dispatch a single
+     refute-seat spot check; a spot check that CONFIRMs at Blocking/Should-fix is promoted —
+     dispatch the full 3-seat panel for it.
+  5. Assemble the **coverage object by hand** before the reporter — the same fields
+     `{{COVERAGE_JSON}}` carries on the Workflow path (scouts dispatched/dead, raw → deduped,
+     `beyondCap`, `beyondPanelCap`, panel/spot/promoted counts, `dedupeDead`) — and persist it
+     next to the report; a manual run with no coverage object cannot emit the coverage line or
+     the `[low coverage]` / `[panel-capped]` qualifiers, and the caller reads their absence as
+     a clean run.
+  6. Dispatch one reporter subagent (fable) with all judged packets, the profile, the coverage
+     object, and the prior report (if any).
 - **No subagents → inline degraded (last resort).** Walk the same steps in one context. This
-  is self-review — label the report `independence: none (inline)` so the caller knows the
-  verdict is weak.
+  is self-review — the independence label is `none (inline)` so the caller knows the verdict
+  is weak.
+
+**The independence label is derived from the seats as actually invoked — never a fixed
+string.** The orchestrator renders `{{INDEPENDENCE}}` in the reporter prompt from the roster it
+dispatched (see "Prompt contract"): `same-family (<family>) — seat-differentiated panel` when
+every seat ran on one model family, `cross-family (<families>) — seat-differentiated panel`
+when the three seats span families, `none (inline)` for the degraded path. Measured: a manual
+roast on an OpenAI-only panel shipped a report labelled `same-family (Claude)` because the
+label was a literal in the template. A caller reads this line to weigh the verdict; a wrong
+family is a false claim about how independent the verification was.
 
 **Honest limit:** the three seats differ by *method* (reproduce / refute / ground), which
 reduces correlated error but does not deliver family-level independence — a same-family panel
-carries fewer effective votes than it has members. Use a non-Claude seat for one of the three
-where a harness offers one.
+carries fewer effective votes than it has members. Use a seat from a second model family for
+one of the three where a harness offers one, and label it so.
 
 ## Key constraints
 
@@ -79,7 +102,7 @@ substitutes with a small `fill(template, vars)` helper (plain string replacement
 | `prompts.scoutDomainTemplate` | `{{DOMAIN}}`, `{{PRIOR_REPORT}}` |
 | `prompts.dedupe` | `{{FINDINGS_JSON}}` |
 | `prompts.seats.reproduce` / `.refute` / `.ground` | `{{FINDING_JSON}}` |
-| `prompts.reporter` | `{{PACKETS_JSON}}`, `{{PROFILE}}`, `{{PRIOR_REPORT}}`, `{{COVERAGE_JSON}}`, `{{MODE}}`, `{{ITERATION}}`, `{{INPUTS}}` |
+| `prompts.reporter` | `{{PACKETS_JSON}}`, `{{PROFILE}}`, `{{PRIOR_REPORT}}`, `{{COVERAGE_JSON}}`, `{{MODE}}`, `{{ITERATION}}`, `{{INPUTS}}` — plus `{{INDEPENDENCE}}`, which the **orchestrator** renders before the script runs (the script never sees model families; the orchestrator chose them), from the seat roster as actually configured: `same-family (<family>) — seat-differentiated panel`, `cross-family (<families>) — seat-differentiated panel`, or `none (inline)`. Left unrendered, the literal token reaches the report — visibly wrong, which is the intended failure over a silently wrong family |
 
 **`prompts.scoutDomainTemplate` is why design-mode domain scouts work at all.** Domain names are
 open-ended free text produced by triage **at runtime**, but `args.prompts` is assembled by the
@@ -92,7 +115,10 @@ would both suppress `config.widenLenses` **and** yield undispatchable scouts —
 that found domains strictly weaker than one that found none.
 
 **`{{MODE}}` / `{{ITERATION}}` / `{{INPUTS}}`** carry the three report-header facts the reporter
-cannot derive from packets: `args.mode`, `args.iteration` rendered as `N of <cap>`, and
+cannot derive from packets: `args.mode`, `args.iteration` rendered as `N of <cap>` — or the
+literal `post-cap audit` when a caller runs a whole-branch roast after its fix loop's cap has
+already tripped (issue #4 defect 6: the header used to accept only `N of 3`, so a post-cap
+audit had to invent a label) — and
 `args.inputs` (the spec paths, or `branch@sha vs base@sha [+dirty]`, or `PR#` string the
 pre-flight step recorded).
 

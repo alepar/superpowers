@@ -192,7 +192,13 @@ stop iterating instead of running another round into diminishing returns:
 
 ## Step 5 — Assemble the report
 Render the full report using this template verbatim (fill the bracketed parts; keep every
-heading exactly as written):
+heading exactly as written). The `independence:` line is `{{INDEPENDENCE}}` exactly as the
+orchestrator rendered it from the seats it actually dispatched — **never write a model family
+from assumption**: if the token reached you unrendered (the literal text `{{INDEPENDENCE}}`),
+write `independence: unknown — orchestrator did not render the seat roster`, which a caller
+reads as weak, rather than guessing a family. The `iteration:` value is `{{ITERATION}}` as
+given — `N of <cap>` inside a fix loop, or `post-cap audit` for a whole-branch roast run after
+a caller's cap already tripped.
 
 ---
 super-roast verdict: <Blocking (n confirmed) | Should-fix (n confirmed) | clean (n nits)> [low coverage] [panel-capped: N unverified] [converged]
@@ -201,7 +207,7 @@ profile (assumed): <2–4 sentence inferred profile>
 inputs: <spec paths | branch@sha vs base@sha [+dirty] | PR#>
 delta vs prior: <X> new confirmed (<xB> Blocking) · <Y> carried (<yB> Blocking) · <Z> resolved · <W> regressed (<wB> Blocking)
 coverage: <lanes ran> · <raw → deduped → panel/spot-checked counts> · <judge completion %> · remainder-capped: N
-independence: same-family (Claude) — seat-differentiated panel
+independence: {{INDEPENDENCE}}
 
 ## Confirmed findings            ← consumed by super-design, one task per finding
 - [SEV] <location> — <claim>

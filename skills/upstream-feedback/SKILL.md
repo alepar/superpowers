@@ -50,8 +50,11 @@ append. A standalone run is its own outermost.
    chain, width per round); the installed plugin version (`plugin.json` in the plugin cache).
    Gather what exists; name what was unavailable in the report's `## Not established` section
    rather than silently omitting it.
-2. **Analyze** — dispatch ONE fresh-context subagent, **model: opus**, with `./analyst-prompt.md`
-   and the gathered inputs. It returns candidate findings or none.
+2. **Analyze** — dispatch ONE fresh-context subagent, **model: opus, or the strongest
+   analyst-class model the harness actually offers** (a non-Claude runtime names its own — the
+   requirement is fresh context and the top tier available, not a vendor), with
+   `./analyst-prompt.md` and the gathered inputs. It returns candidate findings or none. Name
+   the model that ran in the report's `## Not established` section when it was not opus.
 3. **Triage** — drop anything failing the worthiness bar (it is in the analyst prompt, but the
    analyst errs toward recall; you err toward precision): generalizes beyond this project,
    actionable upstream, evidence from this run. **Zero survivors → say "no upstream-worthy

@@ -16,11 +16,14 @@ actively try to break the artifact; a seat-differentiated judge panel verifies e
 Scouts and judges are **fresh, isolated agents that never wrote the artifact** — a model
 reviewing its own work shares its blind spots.
 
-**Honest limit:** on Claude Code the panel is same-family Claude, seat-differentiated (three
-seats verify by different *method* — reproduce / refute / ground — not by different model), so
-agreement is **panel agreement, not independent verification** (real jury debiasing needs
-disjoint model families). Use a non-Claude seat where the harness offers one, and for
-high-stakes reviews pair super-roast with a human or cross-family review.
+**Honest limit:** on a single-vendor harness the panel is same-family, seat-differentiated
+(three seats verify by different *method* — reproduce / refute / ground — not by different
+model), so agreement is **panel agreement, not independent verification** (real jury debiasing
+needs disjoint model families). Use a second-family seat where the harness offers one, and for
+high-stakes reviews pair super-roast with a human or cross-family review. The report's
+`independence:` line states which case this run was, derived from the seats actually dispatched
+— never a fixed string (a manual run on a non-Claude panel once shipped a `Claude` label; see
+`./super-roast-workflow.md`'s capability ladder).
 
 ## When to Use
 
@@ -44,7 +47,7 @@ reviewed (a spec file path vs. a diff/branch); if genuinely ambiguous, **ask —
 | mode | `design` or `PR` — see When to Use |
 | the artifact | design mode: a spec file or settled tree; PR mode: `branch@sha` vs `base@sha` — the caller supplies the base to diff against |
 | report-location override | directory the report is written to instead of the default below |
-| iteration `N` | printed in the report header (`iteration: N of 3`); this skill is stateless, so the caller carries the count |
+| iteration `N` | printed in the report header (`iteration: N of 3`); this skill is stateless, so the caller carries the count. A caller running a whole-branch roast *after* its fix loop's cap has tripped passes the literal `post-cap audit` instead of a number — the header accepts it, and the run is never counted as a fourth round |
 | prior report path (rounds ≥ 2) | lets the run skip re-litigating what `## Rejected (with reason)` already settled — and switches the run into its late-round shape: scouts get the iterations-≥2 stance ("no material findings" is a valid, expected outcome; manufacturing marginal findings is the failure mode) instead of round 1's recall pressure, and a `regression` lens/lane joins the roster to review what the fixes themselves touched (see the scout prompt files' "Iteration stance" sections) |
 | autonomous (optional) | see the Handoff exception in The Process step 7 |
 
@@ -151,7 +154,7 @@ profile (assumed): <2–4 sentence inferred profile>
 inputs: <spec paths | branch@sha vs base@sha [+dirty] | PR#>
 delta vs prior: <X> new confirmed (<xB> Blocking) · <Y> carried (<yB> Blocking) · <Z> resolved · <W> regressed (<wB> Blocking)   ← iterations ≥ 2 only
 coverage: <lanes ran> · <raw → deduped → panel/spot-checked counts> · <judge completion %> · remainder-capped: N
-independence: same-family (Claude) — seat-differentiated panel
+independence: <derived from the seats as invoked: same-family (<family>) — seat-differentiated panel | cross-family (<families>) — seat-differentiated panel | none (inline)>
 
 ## Confirmed findings            ← consumed by super-design, one task per finding
 - [SEV] <location> — <claim>

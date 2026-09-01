@@ -1,4 +1,4 @@
-# Analyst prompt (dispatched by upstream-feedback, model: opus)
+# Analyst prompt (dispatched by upstream-feedback, model: opus or the harness's strongest analyst-class model)
 
 The dispatched agent works in isolated context and did not run the run it is analyzing. Fill
 the bracketed sections; the prompt is the agent's entire window — it calls no tools.

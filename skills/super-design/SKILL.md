@@ -99,6 +99,28 @@ named the manifest at all). State the acceptance as: search the repo for the pat
 basename, source and non-source artifacts alike; every manifest-class hit must be owned by a
 named bead.
 
+**An acceptance criterion that depends on another bead's deliverable cites that bead by id**
+(decided policy — issue #3 design question B). Write it as `… (needs: <bead-id>)` — "the
+contract validator accepts the output (needs: proj-42)". The citation is what makes the
+criterion checkable by graph rather than by reading: the coverage reviewer's acceptance check
+resolves every cited id against the blocking edges and flags a cited bead that is a transitive
+*dependent* (unsatisfiable at completion time) or that no edge connects (unwired). Measured: a
+criterion of the form "the §4.8 validator accepts the resulting contract", where the validator
+was a bead blocked by the bead under review, survived a three-round design roast and a
+three-reviewer edge audit — six independent prose reads, zero detections. Prose review stays as
+the net for uncited references; it is not the primary check for this class, because the
+measurement says it does not catch it.
+
+**A spec that enumerates runtime configurations gets a bead that exercises each one, early**
+(decided policy — issue #3 design question D). Modes, player counts, platforms, feature-flag
+combinations, a test matrix: if the spec lists them, some leaf must *run* each — one decision,
+one request, one invocation per configuration — and that leaf must not be only the terminal
+readiness gate. Measured: two release-only defects broke 8 of 12 enumerated modes, survived the
+suite, code review and every per-bead gate, and were found by the terminal gate running the
+modes at the very end. The skill does not know what "a mode" is in a given project — the bead's
+description says how to exercise one — but coverage flags an enumeration with no exercising
+bead (`UNEXERCISED-CONFIGURATION`).
+
 **Decompose in two explicit steps.** **Step A — split:** carve the spec into minimal
 logically-cohesive chunks per the sizing bar below, ignoring narrative/build order while splitting.
 **Step B — connect, as a first approximation:** add blocking deps per the edge rules further
@@ -296,7 +318,7 @@ Never run a third consecutive non-shrinking round. (The human is present at cove
 in every mode — the guard makes the run raise divergence instead of relying on the human to
 notice it.)
 
-**Arbitration:** present deduped findings to the user — minus any this round already has a recorded disposition for (§Run-State File), which are replayed, not re-asked. Accepted `GAP`: small → leaf task added directly; big → task created → promoted → nested brainstorm → its own super-design subtree (tripwire stays armed). Accepted `ORPHAN`: the user picks delete (scope creep) or add the missing goal element it serves. Accepted `NARRATIVE-EDGE`: drop the edge (`bd dep remove <dependent> <blocker>`) or repoint it (`bd dep remove`, then `bd dep add <dependent> <actual-producer>`), per the finding's proposed fix — question-shaped edges never arrive as this kind (reviewers report those as `UNOWNED-SEAM`, whose contract path replaces the ordering). Any accepted finding whose fix splits or shrinks an existing bead — moving scope out of it — follows §Splitting a Bead, dependents re-pointed included. Accepted `UNSATISFIABLE-ACCEPTANCE`: apply the finding's proposed fix — restate the criterion in terms of an artifact that exists when the task completes (`bd update <id> --description` with the full amended text), or re-point the edge so the referenced validator genuinely precedes the task. Accepted `UNOWNED-SEAM`: **before creating either bead, check whether a `Seam contract:` /
+**Arbitration:** present deduped findings to the user — minus any this round already has a recorded disposition for (§Run-State File), which are replayed, not re-asked. Accepted `GAP`: small → leaf task added directly; big → task created → promoted → nested brainstorm → its own super-design subtree (tripwire stays armed). Accepted `ORPHAN`: the user picks delete (scope creep) or add the missing goal element it serves. Accepted `NARRATIVE-EDGE`: drop the edge (`bd dep remove <dependent> <blocker>`) or repoint it (`bd dep remove`, then `bd dep add <dependent> <actual-producer>`), per the finding's proposed fix — question-shaped edges never arrive as this kind (reviewers report those as `UNOWNED-SEAM`, whose contract path replaces the ordering). Any accepted finding whose fix splits or shrinks an existing bead — moving scope out of it — follows §Splitting a Bead, dependents re-pointed included. Accepted `UNSATISFIABLE-ACCEPTANCE`: apply the finding's proposed fix — restate the criterion in terms of an artifact that exists when the task completes (`bd update <id> --description` with the full amended text, keeping or adding the `(needs: <id>)` citation so the next round can check it by graph), or re-point the edge so the referenced validator genuinely precedes the task; an `unwired` variant (a cited bead no edge connects) adds the missing edge (`bd dep add <task> <cited>`). Accepted `UNEXERCISED-CONFIGURATION`: add one leaf with the standard flag triple — **`Configuration smoke: <the enumerated configurations>`** — whose deliverable is a runnable one-step exercise of *each* configuration (the description states the command or entry point per configuration), depending on the beads that make those configurations runnable and wired under the integration sweep like any leaf, so it runs as soon as the configurations exist rather than at the terminal gate; or, when one existing bead can absorb it without becoming a bottleneck, extend that bead's description and acceptance instead. Accepted `UNOWNED-SEAM`: **before creating either bead, check whether a `Seam contract:` /
 `Seam integration:` bead for this boundary already exists — including via a replayed disposition
 from the run-state file — and adopt it instead of duplicating it and its edges.** Otherwise create
 **two leaf tasks** with the standard flag triple, and wire the tree:
