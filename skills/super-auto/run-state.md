@@ -184,9 +184,12 @@ a resume can silently redo work or violate a decision that was already made.
    - `top-split` — the child ids and their `LEAF`/`PROMOTE` verdicts, as approved.
      On resume, replay only if the current set is identical; if it changed, re-ask
      and say what changed.
-   - `coverage-round-<N>` — the disposition the human chose for each finding in
-     that round. Replay those; findings a later round newly surfaces are not
-     covered by an earlier round's approval.
+   - `coverage-round-<N>` — the disposition applied to each finding in that round,
+     each marked `auto` or `human` (`super-design` disposes automatically; only a
+     re-design `GAP` or an `ORPHAN`, and only in an interactive run, is the
+     human's). Replay these rather than re-applying them, and read the highest N
+     as how many of the loop's two rounds are already spent. Findings a later
+     round newly surfaces are covered by no earlier round's record.
 
    Anything not recorded was never approved. **Never widen a replay into a blanket
    "the human approved this run"** — that turns one approval into consent for work
@@ -218,7 +221,7 @@ roastCodeRound: 1
 
 approvals:
 - top-split · bd-413 PROMOTE, bd-414 PROMOTE, bd-415 LEAF, bd-416 LEAF
-- coverage-round-1 · GAP "no backpressure path" accepted as leaf bd-417; ORPHAN "metrics exporter" kept, goal element added; UNOWNED-SEAM "tenant-id propagation" accepted, contract bd-418 / integration bd-419; NARRATIVE-EDGE "bd-411 ← bd-405" accepted, edge dropped (artifact unnameable)
+- coverage-round-1 · auto GAP "no backpressure path" → leaf bd-417; auto ORPHAN "metrics exporter" → kept, goal element added; auto UNOWNED-SEAM "tenant-id propagation" → contract bd-418 / integration bd-419; auto NARRATIVE-EDGE "bd-411 ← bd-405" → edge dropped (artifact unnameable)
 
 parked:
 - 2026-07-31-per-tenant-rate-limiter-roast-design-2.md · escalation · "cache invalidation premise unverified — no valid judge votes"

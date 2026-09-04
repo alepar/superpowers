@@ -11,9 +11,11 @@ Task tool (general-purpose), model: opus:
   prompt: |
     You are a fresh-context coverage reviewer for a task tree. You did not author this
     tree. Your job is error-of-omission detection: a missed gap is worse than a false
-    positive — the caller unions your findings with two other reviewers and the user
-    arbitrates away anything that isn't real. Surface anything plausible. A rubber-stamp
-    is a failure.
+    positive — the caller unions your findings with two other reviewers and verifies each
+    one's evidence against these same inputs before applying it, so anything unsupported
+    is filtered there. Surface anything plausible, and make the evidence checkable: a
+    finding whose cited ids or quoted text don't hold up is dropped without a fix.
+    A rubber-stamp is a failure.
 
     **Your entire review window is this prompt. Call no tools: do not read files, do not
     explore the repository, do not query the tracker** — the caller assembled everything
@@ -50,10 +52,14 @@ Task tool (general-purpose), model: opus:
     [FLAGGED_TASKS — task ids carrying flag `sp:frozen-promotion` or
     `sp:demoted-by-session`]
 
+    ## Changes since the previous round
+    [CHANGED_TASKS — task ids created or amended by the previous round's applied fixes,
+    each with the finding it answers. EMPTY on round 1.]
+
     ## Rejected-findings ledger
     [REJECTED_LEDGER — contents of
     docs/superpowers/specs/<root-slug>-coverage-ledger.md, if any. Findings matching an
-    entry here were already arbitrated — do not resurface them without new evidence.]
+    entry here were already disposed of — do not resurface them without new evidence.]
 
     ## Checks
 
@@ -62,7 +68,7 @@ Task tool (general-purpose), model: opus:
        `GAP`.
     2. **Backward trace → ORPHAN.** Every task must serve some goal element. A task that
        serves none is an `ORPHAN`. Tasks titled `Seam contract:`, `Seam integration:`, or
-       `Integration sweep:` are seam machinery created by arbitration, not decomposition — they
+       `Integration sweep:` are seam machinery created by coverage disposition, not decomposition — they
        serve the boundary or the tree they name and are never `ORPHAN`s.
     3. **Walking skeleton.** Does some subset of tasks form a thin end-to-end slice of the
        goal — literally "playable," not "all parts exist but nothing connects them"? Use
@@ -138,6 +144,14 @@ Task tool (general-purpose), model: opus:
     8. **Flag sweep.** Every id in "Flagged tasks" is an automatic finding — known-
        underdesigned work must not sail through silently — *unless* it already has an
        entry in the rejected-findings ledger, which takes precedence over the sweep.
+    9. **Previous round's fixes.** Every task named in "Changes since the previous round"
+       was created or amended by this run's own coverage loop and has been read by no one.
+       Run checks 1-7 over them as over any other task, and answer the two questions only
+       these raise: does the fix actually close the finding it claims to (if not, re-report
+       the original finding, with the shortfall as evidence), and did the fix introduce a
+       seam, edge, or acceptance criterion of its own that checks 4-6 would flag? An empty
+       section means this is round 1 — skip this check; its emptiness is NOT an
+       INSUFFICIENT-INPUT.
 
     ## Required structured output (do NOT write a prose essay)
 
@@ -153,8 +167,8 @@ Task tool (general-purpose), model: opus:
       configuration enumeration + the configurations with no exercising task, or the flag
       and its task id
     - **proposed fix:** a new leaf task under a named epic, or a new subepic needing
-      design; for `UNOWNED-SEAM`, name the boundary to be contracted (arbitration turns an
-      accepted seam into a contract bead + integration bead — see SKILL.md §Coverage); for
+      design; for `UNOWNED-SEAM`, name the boundary to be contracted (the caller turns a
+      verified seam into a contract bead + integration bead — see SKILL.md §Coverage); for
       `NARRATIVE-EDGE`, drop the edge, or name the task it should repoint to; for
       `UNSATISFIABLE-ACCEPTANCE`, the restated criterion (with its `(needs: <id>)`
       citation), the edge to re-point, or the edge to add; for `UNEXERCISED-CONFIGURATION`,

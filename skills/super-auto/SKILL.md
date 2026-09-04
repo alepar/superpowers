@@ -8,7 +8,7 @@ description: Use when taking a feature from a raw idea all the way to finished c
 Drive a feature from a raw idea to finished, reviewed code in one invocation, by sequencing
 `super-design` → `super-roast` (design) → `super-code` → `super-roast` (PR) → a
 fix loop → report → `finishing-a-development-branch`, with an optional autonomous mode for
-everything from `super-design`'s coverage loop passing onward.
+everything from `super-design`'s top-split gate onward.
 
 **Core principle:** `super-auto` owns sequencing and nothing else. Every phase already has an
 owner; this skill invokes them, threads four flags through them, carries parked escalations, and
@@ -157,7 +157,7 @@ whichever aren't already stated in the invocation.
 | plan one-shot | Stated to `super-design`, which relays it to every `brainstorming` iteration it runs (root spec, each subepic) — Mode B instead of Mode A |
 | skip plan roast | **Stated to `super-design`, either way** — it pre-decides the adversarial-review offer on the settled tree (skip or run), so the user, who already answered here, is never asked again |
 | skip code roast | Omits the final PR-mode roast entirely |
-| autonomous | **Stated to `super-design`** — it owns both design gates and its own roast loop, and its autonomous behavior is conditional on being told. You are needed at the design gates (top split, coverage arbitration); after the design is approved no query interrupts work in flight, and a resume replays those approvals rather than re-asking. The run still hands back for the integration decision when every bead is done (see Autonomous mode) |
+| autonomous | **Stated to `super-design`** — it owns the design gate and its own roast loop, and its autonomous behavior is conditional on being told. You are needed at one design gate, the top split; its coverage loop then runs a fixed two rounds and disposes of every finding itself, escalating nothing while the run is autonomous. After the top split is approved no query interrupts work in flight, and a resume replays that approval rather than re-asking. The run still hands back for the integration decision when every bead is done (see Autonomous mode) |
 
 ## Phase sequence
 
@@ -183,12 +183,12 @@ condition exists to close.
 
 ## Autonomous mode
 
-> Autonomy begins the moment the design is approved — `super-design`'s coverage loop passing is that moment on a first run, and a replayed approval is that moment on a resume.
+> Autonomy begins the moment the design is approved — `super-design`'s top-split gate is that moment on a first run, and a replayed approval is that moment on a resume.
 
-Not the settled tree, which precedes that loop's own human arbitration (accepting GAPs, ruling on
-ORPHANs, ruling on UNOWNED-SEAMs, NARRATIVE-EDGEs, UNSATISFIABLE-ACCEPTANCEs, and UNEXERCISED-CONFIGURATIONs) — parking can't serve a decision that hasn't been made yet, so
-phase 2 (running inside the `super-design` invocation, after coverage passes) is already inside
-the zone.
+That gate is the last one under `autonomous`. Everything after it is already inside the zone: the
+nested brainstorms, the coverage loop (a fixed two rounds that verifies and applies its own
+findings, escalating nothing in an autonomous run), and phase 2's design roast, which runs inside
+the `super-design` invocation once coverage ends.
 
 In the autonomous zone, `super-design`'s and `super-roast`'s own mandated human pauses are answered,
 not asked, and the road not taken is parked (`run-state.md`'s `degraded-verdict` kind):
@@ -207,17 +207,17 @@ not asked, and the road not taken is parked (`run-state.md`'s `degraded-verdict`
   auto-adjudicated and never queried about mid-run.
 - `super-code` runs in its own autonomous mode.
 
-**Where the zone begins: when the design is approved, not at a phase number.** The design gates
-are the human's — `super-design`'s top-split gate (the child list and its `LEAF`/`PROMOTE` verdicts)
-and its coverage arbitration (accepting `GAP`s, ruling on `ORPHAN`s, ruling on `UNOWNED-SEAM`s,
-`NARRATIVE-EDGE`s, `UNSATISFIABLE-ACCEPTANCE`s, and `UNEXERCISED-CONFIGURATION`s).
-None of the four is auto-answerable: an `ORPHAN` asks whether a task is scope creep or the goal
-was underspecified, an `UNOWNED-SEAM` asks who should own a boundary neither side claimed, and a
-`NARRATIVE-EDGE` asks whether a recorded ordering was ever real —
-none is a question a run can answer about itself; the same replay rules apply
-(a recorded disposition replays, an unrecorded one is asked). **Say this when confirming the flags** — `autonomous` means
-"I will need you at the design gates, then it runs to the end unattended," and a user who reads it
-as "no questions at all" is surprised at the first gate.
+**Where the zone begins: when the design is approved, not at a phase number.** One design gate is
+the human's — `super-design`'s top-split gate (the child list and its `LEAF`/`PROMOTE` verdicts).
+It is the decision the run cannot make about itself: every `PROMOTE` below it commits hours of
+designing to a subtree, and getting the split wrong is not recoverable by anything downstream.
+**Coverage is no longer a second gate.** It verifies each finding against the inputs its own pass
+was assembled from and applies the fix; its two escalations — a `GAP` whose fix sends the design
+back for a new subepic, and an `ORPHAN` — ask only in an interactive run, which an autonomous one
+is not. Its dispositions are still recorded per round in `run.md`, so a resume replays them instead
+of re-applying fixes the tree already carries. **Say this when confirming the flags** — `autonomous`
+means "I will need you at the top-split gate, then it runs to the end unattended," and a user who
+reads it as "no questions at all" is surprised at that gate.
 
 **They are the human's once, not once per session.** Every gate answer is recorded in `run.md`
 (`./run-state.md` item 7) with the shape it approved. A resumed run **replays** a matching approval
@@ -317,7 +317,7 @@ a human following that link concludes the run is missing while the run is sittin
 - Auto-adjudicate a roast escalation or a sibling's mandated pause, or fold either into the fix
   queue.
 - Ask a question, or wait on a sibling's mandated pause, **while any bead is still unresolved**,
-  once `super-design`'s coverage loop has passed and `autonomous` is set. Presenting the finished
+  once `super-design`'s top-split gate has been approved and `autonomous` is set. Presenting the finished
   report and the integration decision is not this — that is the run handing back, with no work
   left in flight.
 - Merge the integration branch into the base branch without the human's explicit choice, in any
