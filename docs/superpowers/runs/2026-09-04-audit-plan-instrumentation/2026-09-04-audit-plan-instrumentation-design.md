@@ -65,7 +65,7 @@ Metrics: fix-loop round 1: A1 addressed / E1 entered · round 2: … · round 5:
 Metrics: fix-loop tasks entering round ≥4: K · breaker-tripped: B
 ```
 
-Parsed from SDD's `Task <N>: fix round <R>/5 (<X> addressed, <Y> open …)` lines and the `Merge:` lines. Stub key `ledger-append:metrics`. Returned as a new additive field `metrics` (the three lines) alongside `sweep`.
+Parsed from the `Merge:` lines and from per-round fix-loop ledger lines. **The coordinator does not currently write SDD's per-round line** (`Task <N>: fix round <R>/5 (<X> addressed, <Y> open — …; commits <a7>..<b7>)`) — only `complete`, `minor (deferred)` and `BLOCKED-AUTH` lines; `reviewAndFix` keeps round state in memory. So §4 has a prerequisite: `reviewAndFix` appends that exact SDD line after every re-review, through `ledgerAppendPrompt`, stub key `ledger-append:fix-round:<id>:<r>`. This also closes a gap against SDD's own ledger contract (its resume rule reads "a task whose last line is a fix round is mid-loop"). Stub key for the block: `ledger-append:metrics`. Returned as a new additive field `metrics` (the three lines) alongside `sweep`.
 
 ### 5. super-code — test-changes block (P2a)
 
@@ -148,7 +148,7 @@ Every metric is optional at the consumer: a missing source is `none` plus a `## 
 ## Testing
 
 - `tests/super-code/test-coordinator-replay.sh`: new stub keys `ledger-append:merge:<id>` and `ledger-append:metrics` in the canonical scenario; prompt-text assertions for the `Test changes` block and its NEEDS_FIX rule in the review and seam-review dispatch text; return-shape assertion for `metrics`.
-- Prompt-only changes: each edited prompt file's trigger/probe micro-test where one exists (`trigger-micro-test.md`), and a manual read of the assembled text for the seat-agreement arithmetic worked example.
+- Prompt-only changes: a manual read of the assembled text for the seat-agreement arithmetic worked example. `trigger-micro-test.md` exists only for super-code and upstream-feedback and probes the frontmatter description, which no task here changes — it is re-run only if a task edits a description.
 - No live run is part of this tree; the first live super-auto run after merge is the measurement.
 
 ## Configuration
