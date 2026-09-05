@@ -1,5 +1,5 @@
 status: clean [degraded: panel-capped: 18 unverified (design roast round 1, proceeded), code roast skipped, final review: LAND (1 minor deferred)]
-metrics: docs/superpowers/runs/2026-09-04-audit-plan-instrumentation/upstream-feedback-draft.md (parked draft — proposed, not filed; 9 defects, 3 design questions, 2 doc gaps, Run metrics with the bead graph)
+metrics: https://github.com/alepar/superpowers/issues/5 (filed; body also parked at upstream-feedback-draft.md)
 
 # super-auto run — 2026-09-04-audit-plan-instrumentation
 

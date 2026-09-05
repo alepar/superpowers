@@ -1,9 +1,11 @@
 # super-auto run — 2026-09-04-audit-plan-instrumentation
 
 flags: planOneShot=false skipPlanRoast=false skipCodeRoast=true autonomous=true
-phase: finish
+phase: done
 phaseHistory: design → roast-design → code → roast-code (skipped: skipCodeRoast=true) → fix-loop (skipped: no code roast) → report → finish (gate: report.md exists, phase was report, status line not stalled)
-upstreamFeedbackDraft: upstream-feedback-draft.md (parked, autonomous run — proposal presented at the phase-7 menu; not filed, feedback: field absent by design)
+upstreamFeedbackDraft: upstream-feedback-draft.md (parked at the phase-7 menu; filed on the human's yes)
+feedback: https://github.com/alepar/superpowers/issues/5
+finish: merged into main locally (fast-forward to 534966e), harness 860 passed on the merged tree; menu answered "merge locally + cut a release tag"
 
 idea: Implement items 1–4 of the audit improvement plan in ~/Documents/SuperAuto_Research_Audit_20260904/report.md, plus a fifth: instrument the bead graph super-design produces (per bead: a rough description of what it was; per dependency edge: why it existed) so bottlenecks can be analyzed later. All instrumentation output is delivered as part of upstream-feedback when it files issues against the skill repo.
 spec: 2026-09-04-audit-plan-instrumentation-design.md
