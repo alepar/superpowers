@@ -463,8 +463,10 @@ wrote or read this file — everything below described intent, not behavior. `re
     every trigger converges on (see its opening comment) and writes this line once, for all of
     them, rather than duplicating the write at each trigger site.
   - `Task <N> (<bead id>): fix round <R>/5 (...)` — SKILL.md's own mid-loop bookkeeping line.
-    **Not currently written by this coordinator's script skeleton** (only the four terminal lines
-    above are); see "Resume behavior" below for what that means for a restart mid-fix-loop.
+    **Written per round by `reviewAndFix`** (via `ledgerAppendPrompt`, stub key
+    `ledger-append:fix-round:<id>:<r>`) after every re-review, alongside the four terminal lines
+    above. It does not change how resume reconstruction works, though: see "Resume behavior" below
+    for what that means for a restart mid-fix-loop.
 - **Resume behavior**, on any restart: the script's Resume phase reads `<workspace>/progress.md`
   once, before the round loop starts (see the script skeleton), and reconstructs `completed`,
   `parked`, and `pendingRetry` from the **last** ledger line recorded for each bead id (a bead can
@@ -1365,7 +1367,11 @@ const PLANNED = { type: 'object', properties: { planPath: {type:'string'}, mappi
 // post-rebase value instead (`m.mergeBase`, on `MERGE` below), precisely because that rebase moves
 // the task branch's history out from under `base` (see the `mergeBase`/`MERGE` comment and the
 // merge-gate ledger-append call site — Fix 3, final fix round).
-const RESULT  = { type: 'object', properties: { id: {type:'string'}, n: {type:'integer'}, status: {type:'string'}, files: { type: 'array', items: {type:'string'} }, branch: {type:'string'}, base: {type:'string'}, blockerBead: {type:'string'}, finding: {type:'string'}, minors: { type: 'array', items: {type:'string'} } }, required: ['id','status'] }
+// `head` (Task 4, per-round fix-loop ledger line): the fix round's own commit tip, reported by
+// `fixPrompt` only — never required (every OTHER RESULT-shaped dispatch, brief/implement/review,
+// leaves it out; only a round's fixer is asked for it), since it exists solely to render this
+// round's `commits <a7>..<b7>` ledger fragment in `reviewAndFix` and nothing else reads it.
+const RESULT  = { type: 'object', properties: { id: {type:'string'}, n: {type:'integer'}, status: {type:'string'}, files: { type: 'array', items: {type:'string'} }, branch: {type:'string'}, base: {type:'string'}, blockerBead: {type:'string'}, finding: {type:'string'}, minors: { type: 'array', items: {type:'string'} }, head: {type:'string'} }, required: ['id','status'] }
 const TRIAGE  = { type: 'object', properties: { decision: {type:'string'}, detail: {type:'string'} }, required: ['decision','detail'] } // decision: RESOLVE | ESCALATE
 // `head` (fix-round-1, review): the pre-merge tip commit of the task branch, captured by the merge
 // agent (`git rev-parse <branch>`, same "the coordinator has no shell/git access of its own" reason
@@ -2676,9 +2682,13 @@ function fixPrompt(rv, round, art) {
   // `round === 'seam'` (issue #4 design question 1): the one bounded post-rebase seam fix,
   // dispatched from integrateOne — outside the five-round cap, against the REBASED branch.
   if (round === 'seam') return `Resume the implementer in the worktree ${rv.branch} for task ${rv.id} (n ${rv.n}). The branch has been rebased onto the integration branch, and a post-rebase seam review found this incompatibility with sibling changes that landed there meanwhile: ${rv.finding}. Make the smallest change that reconciles the two sides (this is the ONE bounded seam fix — the merge gate's tests run next, and a red gate goes to the blocker path), commit it, and append a "seam fix" entry to ${art.report}. Report id and status FIXED. ${authRefusalRule()}`
+  // Task 4 (per-round fix-loop ledger line): both branches below now also ask for `head` — the
+  // exact output of `git rev-parse HEAD` in ${rv.branch} after this round's fix commit(s) land —
+  // since `reviewAndFix` needs a real commit tip to render this round's ledger line's
+  // `commits <a7>..<b7>` fragment and has no shell/git access of its own to derive one.
   return round <= 3
-    ? `Resume the original implementer in the worktree ${rv.branch} for task ${rv.id} (n ${rv.n}), fix round ${round}/5, and address this review finding: ${rv.finding}. Append your fix-round report to ${art.report} (the implementer's report file — SDD's fix loop appends there; it is the fix history the re-reviewer and any later escalation read). Report id and status FIXED. ${authRefusalRule()}`
-    : `A prior implementer attempted task ${rv.id} (n ${rv.n}) ${round - 1} time(s) without resolving the open finding. Dispatch a FRESH implementer in the worktree ${rv.branch} — it owns the task now; read the report file at ${art.report} for what was tried, then address this review finding (fix round ${round}/5): ${rv.finding}. Append your fix-round report to that same file. Report id and status FIXED. ${authRefusalRule()}`
+    ? `Resume the original implementer in the worktree ${rv.branch} for task ${rv.id} (n ${rv.n}), fix round ${round}/5, and address this review finding: ${rv.finding}. Append your fix-round report to ${art.report} (the implementer's report file — SDD's fix loop appends there; it is the fix history the re-reviewer and any later escalation read). Report id, status FIXED, and head as the exact output of \`git rev-parse HEAD\` run in ${rv.branch} after your fix commit(s) land (the coordinator records this round on the ledger from it — do not omit it). ${authRefusalRule()}`
+    : `A prior implementer attempted task ${rv.id} (n ${rv.n}) ${round - 1} time(s) without resolving the open finding. Dispatch a FRESH implementer in the worktree ${rv.branch} — it owns the task now; read the report file at ${art.report} for what was tried, then address this review finding (fix round ${round}/5): ${rv.finding}. Append your fix-round report to that same file. Report id, status FIXED, and head as the exact output of \`git rev-parse HEAD\` run in ${rv.branch} after your fix commit(s) land (the coordinator records this round on the ledger from it — do not omit it). ${authRefusalRule()}`
 }
 
 function reReviewPrompt(fixed, planPath, art, round) {
@@ -3034,6 +3044,10 @@ async function reviewAndFix(im, planPath, art) {
   // native vocabulary, "NOT ADDRESSED" — see reReviewPrompt) exits the loop as if the review were
   // clean. Loop on the negative instead: only a literal "CLEAN" exits early; anything else,
   // recognized or not, keeps looping until the round cap forces adjudication.
+  // Task 4: the base of the NEXT round's commit range — starts at the pre-implementer commit
+  // (`im.base`, same value `rv.base` already carries) and advances to each round's own `head`
+  // after that round's ledger line is written, so round 2's range never re-cites round 1's commits.
+  let roundBase = im.base
   for (let round = 1; round <= 5 && rv.status !== 'CLEAN'; round++) {
     // Fix-loop escalation (SDD's Model Selection: "rounds 4-5... a model at least one tier above
     // the implementer that got stuck") is `fixEscalationModel()` — a capability bump, not the
@@ -3041,6 +3055,11 @@ async function reviewAndFix(im, planPath, art) {
     // this used to borrow `model('triage')` directly, which was reverted because it falsified that
     // section, `handleBlocker`'s own comment, and SKILL.md's tiering table all at once — see I-5).
     const fixModel = round <= 3 ? model('implementer') : fixEscalationModel()
+    // Task 4: capture the finding THIS round is addressing before it can be cleared. `carried()`
+    // deliberately blanks `finding` on a CLEAN result (see its own comment above) — reading
+    // `rv.finding` only AFTER the re-review below would report "no finding recorded" on the exact
+    // round that resolved it, the one case the ledger line most needs to name.
+    const roundFinding = rv.finding
     const fixRes = await dispatch(() => fixPrompt(rv, round, art), `fix:${rv.id}:${round}`,
       { label: `fix:${rv.id}:${round}`, phase: 'Implement', model: fixModel, schema: RESULT })
     if (!fixRes) return null  // null fix: no progress this round (see the guard comment above)
@@ -3052,6 +3071,21 @@ async function reviewAndFix(im, planPath, art) {
     if (!reReviewRes) return null  // null re-review: same — the verdict was never rendered
     rv = carried(reReviewRes)
     if (rv.status === 'BLOCKED') return rv  // INVALID twice on the re-review package (see validReview)
+    // Task 4: one ledger line per rendered re-review verdict, in the COORDINATOR's own dialect
+    // (ordinal + bead id in parens, `ledgerLine`'s shape) — SDD's verbatim upstream shape lacks the
+    // bead id `LEDGER_LINE_RE` requires and the Metrics parser groups by (roast round 1, binding).
+    // Deliberately does NOT change resume behavior: this is a plain ledger APPEND, not a new
+    // ledger-driven resume state — a restart still re-enters at the brief stage and re-runs the fix
+    // loop from round 1 regardless of how many fix-round lines already sit in the ledger (see the
+    // three resume-reader comments this task updated, near Setup/Workspace/Resume behavior above),
+    // so this line must never be misread as SDD's own mid-loop resume bookkeeping.
+    const addressed = rv.status === 'CLEAN' ? 1 : 0
+    const open = rv.status === 'CLEAN' ? 0 : 1
+    await dispatch(() => ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName,
+        ledgerLine(im.n, im.id, `fix round ${round}/5 (${addressed} addressed, ${open} open — ${roundFinding ?? 'no finding recorded'}; commits ${short(roundBase)}..${short(fixed.head)})`)),
+      `ledger-append:fix-round:${im.id}:${round}`,
+      { label: `ledger-append:fix-round:${im.id}:${round}`, phase: 'Implement', model: model('mechanical') })
+    roundBase = fixed.head
   }
   if (rv.status === 'CLEAN') return rv
   // Breaker tripped: round 5's re-review still leaves the finding open (or returned something this
@@ -3530,8 +3564,9 @@ round 1, changing every downstream assertion this scenario makes about bucketing
 | `implement:bd-104` | `{id:"bd-104",n:4,status:"BLOCKED",files:["src/c.js"],branch:".worktrees/epic-bd-100-integration--task-bd-104",blockerBead:"bd-109"}` | **C4**: the implementer itself reports BLOCKED and has already self-filed the bead (`blockerBead`), per implementPrompt's report contract — `n`/`branch` are re-stamped by the pipeline as usual, but `status`/`blockerBead` are this stub's own and must survive the runTask chain call site's guard unmodified |
 | `review:bd-101` | `{id:"bd-101",n:1,status:"NEEDS_FIX",files:["src/a.js"],finding:"missing null check on parsed input in src/a.js:42"}` | the one task whose review returns a finding — `finding` is what `fixPrompt` builds the fix dispatch from, not the rest of the result. No `branch`/`base` here by design: `reviewAndFix`'s `carried()` re-stamps both from `im` regardless of what this report contains, which is the C2 fix |
 | `review:bd-102` / `review:bd-103` | `{id:"bd-1XX",n:<n>,status:"CLEAN",files:[...]}` | clean reviews — no fix loop for these two. **No `review:bd-104` key exists** — that dispatch must never fire (see C4 above); its absence from this table is itself part of the test: a regression that dropped the pipeline's status guard would throw `dryRun: no stub for key review:bd-104` |
-| `fix:bd-101:1` | `{id:"bd-101",n:1,status:"FIXED",files:["src/a.js"]}` | round 1 of the fix loop, dispatched only for the flagged task; no `branch` here either, by the same design as `review:bd-101` above. Round-suffixed (`:1`) because `reviewAndFix`'s loop can now run up to 5 rounds and each round is its own stub key |
+| `fix:bd-101:1` | `{id:"bd-101",n:1,status:"FIXED",files:["src/a.js"],head:"<40-char-sha>"}` | round 1 of the fix loop, dispatched only for the flagged task; no `branch` here either, by the same design as `review:bd-101` above. Round-suffixed (`:1`) because `reviewAndFix`'s loop can now run up to 5 rounds and each round is its own stub key. `head` (Task 4) is this round's own commit tip — `reviewAndFix` needs it to render the fix-round ledger line's commit range and has no shell/git access of its own to derive one |
 | `re-review:bd-101:1` | `{id:"bd-101",n:1,status:"CLEAN"}` | finding `ADDRESSED` on round 1 — the loop exits immediately since `rv.status === 'CLEAN'` (C-3's fail-closed condition; this is the ONE way out of the loop besides the round cap), so no `fix:bd-101:2`/`re-review:bd-101:2` stub is needed or dispatched; `reviewAndFix` re-stamps `branch`/`base`/`n`/`files` from `im` onto this before it becomes the task's final result, which is what reaches `mergePrompt`'s `r.branch` |
+| `ledger-append:fix-round:bd-101:1` | `{appended:true}` | Task 4: one ledger line per rendered re-review verdict, in the coordinator's own dialect (`Task <n> (bd-101): fix round 1/5 (1 addressed, 0 open — <finding>; commits <base7>..<head7>)`) — dispatched right after this round's `re-review:bd-101:1` verdict, in ADDITION to (never instead of) the `complete` line the merge gate writes once the task actually merges; does NOT change coordinator resume, which still re-enters at the brief stage on a restart (schema-less, like `ledger-append:bd-101` below) |
 | `merge:bd-101` / `merge:bd-102` | `{id:"bd-1XX",merged:true,head:"<40-char-sha>",mergeBase:"<40-char-sha>"}` | successful serial merges — `head` (fix-round-1) is the rebased branch's tip commit, `mergeBase` (Fix 3, final fix round) is the post-rebase merge-base; both together render the ledger's commit-range completion line below (`mergeBase..head`, never `base..head`) |
 | `ledger-append:bd-101` / `ledger-append:bd-102` | `{appended:true}` | I1: the merge-gate `ledger-append` dispatch — `Task <n> (bd-1XX): complete (commits <mergeBase7>..<head7>, review clean)` (fix-round-1: was `complete (merged, review clean)`, dropping the commit range upstream SKILL.md specifies; Fix 3, final fix round: the range's first half is `mergeBase`, not `base` — see the `mergeBase`/`MERGE` schema comment) (schema-less, like `notify`/`clarify` — the coordinator never reads this return) |
 | `merge:bd-103` | `{id:"bd-103",merged:false,blockerBead:"bd-108"}` | merge fails its bounded auto-resolve attempt → blocker path. **No `merge:bd-104` key exists** — `bd-104` never reaches `mergePrompt` at all, since its BLOCKED status routes it to `handleBlocker` directly at the top of `integrateOne` (see the `if (r.status === 'BLOCKED')` check); its absence is part of the test, same reasoning as `review:bd-104`'s absence above |
@@ -3770,8 +3805,9 @@ script and this `args` block:
       "review:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"NEEDS_FIX\",\"files\":[\"src/a.js\"],\"finding\":\"missing null check on parsed input in src/a.js:42\",\"minors\":[\"variable name x in src/a.js:17 is uninformative\"]}",
       "review:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-102\",\"n\":2,\"status\":\"CLEAN\",\"files\":[\"src/b.js\"]}",
       "review:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-103\",\"n\":3,\"status\":\"CLEAN\",\"files\":[\"src/a.js\"]}",
-      "fix:bd-101:1": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/a.js\"]}",
+      "fix:bd-101:1": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/a.js\"],\"head\":\"fefefef1111111111111111111111111111111\"}",
       "re-review:bd-101:1": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"CLEAN\"}",
+      "ledger-append:fix-round:bd-101:1": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "merge:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"merged\":true,\"head\":\"a1a1a1a1111111111111111111111111111111\",\"mergeBase\":\"aaaaaaa1111111111111111111111111111111\",\"rebaseConflictFiles\":0}",
       "ledger-append:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "ledger-append:merge:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
@@ -3846,8 +3882,9 @@ reading `reviewAndFix`'s definition directly (the loop condition is `rv.status !
 | `brief:bd-201` | `{id:"bd-201",n:1,status:"BRIEFED",files:["src/x.js"],branch:".worktrees/epic-bd-200-integration--task-bd-201",base:"<40-char-sha>"}` | brief stage, unblocked |
 | `implement:bd-201` | `{id:"bd-201",n:1,status:"IMPLEMENTED",files:["src/x.js"],branch:"..."}` | implement stage, unblocked (contrast with the canonical scenario's `bd-104`, which tests the BLOCKED path instead) |
 | `review:bd-201` | `{id:"bd-201",n:1,status:"NEEDS_FIX",files:["src/x.js"],finding:"race condition writing the shared cache in src/x.js:17"}` | the initial review that starts the fix loop |
-| `fix:bd-201:1` … `fix:bd-201:5` | `{id:"bd-201",n:1,status:"FIXED",files:["src/x.js"]}` (all 5 identical in shape) | all 5 rounds of the fix loop dispatch — rounds 1-3 on `implementer`'s tier, rounds 4-5 on `fixEscalationModel()`'s tier (a property of the dispatched prompt/`opts.model`, not of this canned return — verified by reading `reviewAndFix`, same caveat as scoping elsewhere in this doc) |
+| `fix:bd-201:1` … `fix:bd-201:5` | `{id:"bd-201",n:1,status:"FIXED",files:["src/x.js"],head:"<40-char-sha>"}` (all 5, distinct `head`s) | all 5 rounds of the fix loop dispatch — rounds 1-3 on `implementer`'s tier, rounds 4-5 on `fixEscalationModel()`'s tier (a property of the dispatched prompt/`opts.model`, not of this canned return — verified by reading `reviewAndFix`, same caveat as scoping elsewhere in this doc). `head` (Task 4) is each round's own commit tip, feeding that round's ledger line |
 | `re-review:bd-201:1` … `re-review:bd-201:5` | `{id:"bd-201",n:1,status:"NEEDS_FIX",finding:"race condition writing the shared cache in src/x.js:17"}` (all 5) | the verdict that keeps the loop going every round — never `CLEAN`, so the loop runs the full 5 rounds and never exits early |
+| `ledger-append:fix-round:bd-201:1` … `ledger-append:fix-round:bd-201:5` | `{appended:true}` (all 5) | Task 4: one fix-round ledger line dispatched after EACH round's re-review verdict — 5 total, each naming that round's ordinal/round number, `0 addressed, 1 open` (the finding never resolves in this scenario), and that round's own commit range; never a substitute for the `complete`/`BLOCKED` line the blocker path still writes separately |
 | `adjudicate:bd-201` | `{id:"bd-201",decision:"BLOCKED",ruling:"real race condition with no test coverage for the interleaving; must not merge"}` | the cap adjudicator (I-9) — dispatched exactly once, after round 5, never once per round |
 | `breaker-blocker:bd-201` | `{id:"bd-201",status:"BLOCKED",blockerBead:"bd-210"}` | the blocker bead filed on a BLOCKED ruling — `breakerBlockerPrompt` now takes the adjudicator's `ruling` as a third argument (verified by reading the definition, not this canned return) |
 | `triage:bd-201` | `{decision:"ESCALATE",detail:"race condition confirmed load-bearing by the breaker adjudicator; needs a human decision on the caching strategy"}` | `handleBlocker`'s normal triage dispatch, reached via `integrateOne`'s `if (r.status === 'BLOCKED')` branch — same path any other BLOCKED result takes, confirming the breaker's BLOCKED exit isn't a special case downstream |
@@ -3926,16 +3963,21 @@ bead's TEXT — same `pick()` limit as everywhere else in this section.
       "brief:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"BRIEFED\",\"files\":[\"src/x.js\"],\"branch\":\".worktrees/epic-bd-200-integration--task-bd-201\",\"base\":\"eeeeeee5555555555555555555555555555555\"}",
       "implement:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"IMPLEMENTED\",\"files\":[\"src/x.js\"],\"branch\":\".worktrees/epic-bd-200-integration--task-bd-201\"}",
       "review:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"NEEDS_FIX\",\"files\":[\"src/x.js\"],\"finding\":\"race condition writing the shared cache in src/x.js:17\"}",
-      "fix:bd-201:1": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/x.js\"]}",
+      "fix:bd-201:1": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/x.js\"],\"head\":\"cccccc1111111111111111111111111111111c\"}",
       "re-review:bd-201:1": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"NEEDS_FIX\",\"finding\":\"race condition writing the shared cache in src/x.js:17\"}",
-      "fix:bd-201:2": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/x.js\"]}",
+      "ledger-append:fix-round:bd-201:1": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "fix:bd-201:2": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/x.js\"],\"head\":\"cccccc2222222222222222222222222222222c\"}",
       "re-review:bd-201:2": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"NEEDS_FIX\",\"finding\":\"race condition writing the shared cache in src/x.js:17\"}",
-      "fix:bd-201:3": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/x.js\"]}",
+      "ledger-append:fix-round:bd-201:2": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "fix:bd-201:3": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/x.js\"],\"head\":\"cccccc3333333333333333333333333333333c\"}",
       "re-review:bd-201:3": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"NEEDS_FIX\",\"finding\":\"race condition writing the shared cache in src/x.js:17\"}",
-      "fix:bd-201:4": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/x.js\"]}",
+      "ledger-append:fix-round:bd-201:3": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "fix:bd-201:4": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/x.js\"],\"head\":\"cccccc4444444444444444444444444444444c\"}",
       "re-review:bd-201:4": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"NEEDS_FIX\",\"finding\":\"race condition writing the shared cache in src/x.js:17\"}",
-      "fix:bd-201:5": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/x.js\"]}",
+      "ledger-append:fix-round:bd-201:4": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "fix:bd-201:5": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/x.js\"],\"head\":\"cccccc5555555555555555555555555555555c\"}",
       "re-review:bd-201:5": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"NEEDS_FIX\",\"finding\":\"race condition writing the shared cache in src/x.js:17\"}",
+      "ledger-append:fix-round:bd-201:5": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "adjudicate:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"decision\":\"BLOCKED\",\"ruling\":\"real race condition with no test coverage for the interleaving; must not merge\"}",
       "breaker-blocker:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"status\":\"BLOCKED\",\"blockerBead\":\"bd-210\"}",
       "triage:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"decision\":\"ESCALATE\",\"detail\":\"race condition confirmed load-bearing by the breaker adjudicator; needs a human decision on the caching strategy\"}",
@@ -3995,8 +4037,9 @@ that; it is, and remains, verified only by reading the `if` statement itself.
 | `brief:bd-301` | `{id:"bd-301",n:1,status:"BRIEFED",files:["src/y.js"],branch:".worktrees/epic-bd-300-integration--task-bd-301",base:"<40-char-sha>"}` | brief stage, unblocked |
 | `implement:bd-301` | `{id:"bd-301",n:1,status:"IMPLEMENTED",files:["src/y.js"],branch:"..."}` | implement stage, unblocked |
 | `review:bd-301` | `{id:"bd-301",n:1,status:"NEEDS_FIX",files:["src/y.js"],finding:"the retry backoff constant is a magic number instead of a named config value"}` | the initial review — a deliberately contestable, non-load-bearing-flavored finding (unlike the cap scenario's race condition), motivating the PARK outcome below |
-| `fix:bd-301:1` … `fix:bd-301:5` | `{id:"bd-301",n:1,status:"FIXED",files:["src/y.js"]}` (all 5 identical in shape) | all 5 rounds dispatch, same as the cap scenario |
+| `fix:bd-301:1` … `fix:bd-301:5` | `{id:"bd-301",n:1,status:"FIXED",files:["src/y.js"],head:"<40-char-sha>"}` (all 5, distinct `head`s) | all 5 rounds dispatch, same as the cap scenario; `head` (Task 4) is each round's own commit tip |
 | `re-review:bd-301:1` … `re-review:bd-301:5` | `{id:"bd-301",n:1,status:"NEEDS_FIX",finding:"the retry backoff constant is a magic number instead of a named config value"}` (all 5) | never `CLEAN`, so the loop runs the full 5 rounds |
+| `ledger-append:fix-round:bd-301:1` … `ledger-append:fix-round:bd-301:5` | `{appended:true}` (all 5) | Task 4: one fix-round ledger line per round, same as the cap scenario — recorded even though this task ultimately PARKs and merges, since the fix-round line is a plain append, not a resume-governing state |
 | `adjudicate:bd-301` | `{id:"bd-301",decision:"PARK",ruling:"style-only finding, not load-bearing and doesn't reveal a plan defect; safe to merge as-is"}` | **the PARK arm** — the one branch neither other scenario exercises |
 | `merge:bd-301` | `{id:"bd-301",merged:true,head:"<40-char-sha>",mergeBase:"<40-char-sha>"}` | the PARK ruling reaches `mergePrompt` — a task with a known-open finding merging, the ONE legitimate path for that in this script; `head` (fix-round-1) and `mergeBase` (Fix 3, final fix round) together render the ledger's commit-range line below |
 | `ledger-append:bd-301` | `{appended:true}` | I1: the merge-gate `ledger-append` dispatch — `Task 1 (bd-301): complete (commits <mergeBase7>..<head7>, 1 parked — ruling: ... — finding: ...)`, SKILL.md's `<K> parked` completion-line variant (fix-round-1: now also carries `r.finding`, not only the ruling, and the commit range instead of the bare word "merged"; Fix 3, final fix round: the range's first half is `mergeBase`, not `base`) |
@@ -4105,16 +4148,21 @@ question, same structural limit as the other four claims above.
       "brief:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"BRIEFED\",\"files\":[\"src/y.js\"],\"branch\":\".worktrees/epic-bd-300-integration--task-bd-301\",\"base\":\"fffffff6666666666666666666666666666666\"}",
       "implement:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"IMPLEMENTED\",\"files\":[\"src/y.js\"],\"branch\":\".worktrees/epic-bd-300-integration--task-bd-301\"}",
       "review:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"NEEDS_FIX\",\"files\":[\"src/y.js\"],\"finding\":\"the retry backoff constant is a magic number instead of a named config value\"}",
-      "fix:bd-301:1": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/y.js\"]}",
+      "fix:bd-301:1": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/y.js\"],\"head\":\"dddddd1111111111111111111111111111111d\"}",
       "re-review:bd-301:1": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"NEEDS_FIX\",\"finding\":\"the retry backoff constant is a magic number instead of a named config value\"}",
-      "fix:bd-301:2": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/y.js\"]}",
+      "ledger-append:fix-round:bd-301:1": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "fix:bd-301:2": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/y.js\"],\"head\":\"dddddd2222222222222222222222222222222d\"}",
       "re-review:bd-301:2": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"NEEDS_FIX\",\"finding\":\"the retry backoff constant is a magic number instead of a named config value\"}",
-      "fix:bd-301:3": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/y.js\"]}",
+      "ledger-append:fix-round:bd-301:2": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "fix:bd-301:3": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/y.js\"],\"head\":\"dddddd3333333333333333333333333333333d\"}",
       "re-review:bd-301:3": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"NEEDS_FIX\",\"finding\":\"the retry backoff constant is a magic number instead of a named config value\"}",
-      "fix:bd-301:4": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/y.js\"]}",
+      "ledger-append:fix-round:bd-301:3": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "fix:bd-301:4": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/y.js\"],\"head\":\"dddddd4444444444444444444444444444444d\"}",
       "re-review:bd-301:4": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"NEEDS_FIX\",\"finding\":\"the retry backoff constant is a magic number instead of a named config value\"}",
-      "fix:bd-301:5": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/y.js\"]}",
+      "ledger-append:fix-round:bd-301:4": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "fix:bd-301:5": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/y.js\"],\"head\":\"dddddd5555555555555555555555555555555d\"}",
       "re-review:bd-301:5": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"NEEDS_FIX\",\"finding\":\"the retry backoff constant is a magic number instead of a named config value\"}",
+      "ledger-append:fix-round:bd-301:5": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "adjudicate:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"decision\":\"PARK\",\"ruling\":\"style-only finding, not load-bearing and doesn't reveal a plan defect; safe to merge as-is\"}",
       "merge:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"merged\":true,\"head\":\"f6f6f6f6666666666666666666666666666666\",\"mergeBase\":\"eeeeeee5555555555555555555555555555555\",\"rebaseConflictFiles\":0}",
       "ledger-append:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
