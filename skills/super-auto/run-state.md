@@ -190,6 +190,12 @@ a resume can silently redo work or violate a decision that was already made.
      human's). Replay these rather than re-applying them, and read the highest N
      as how many of the loop's two rounds are already spent. Findings a later
      round newly surfaces are covered by no earlier round's record.
+     Round 1's record also carries the canonical requirement list the orchestrator
+     derived for the root pass (R-id + text; any `R-new` a reviewer proposed is
+     appended here for round 2) and the `requirements: N · mapped: M · unmapped: K
+     (…)` line unioned by id from the three reviewers. Round 2 reads the R-list
+     back from round 1's record rather than re-deriving it, appending only new
+     `R-new` ids — existing ones are never renumbered.
    - `scopeFilter-round-<N>` — one line per confirmed roast finding from that fix-loop
      round, keyed on the finding's `[SEV] <location>` prefix carried verbatim (the roast
      report defines no finding id; this prefix is its stable key), each marked
@@ -205,13 +211,6 @@ a resume can silently redo work or violate a decision that was already made.
      punch-listed`, written by `super-auto` in the same phase-5 step — not by the scope-filter
      pass itself. A resume matches each round's findings against this record exactly on the
      `[SEV] <location>` key and replays the disposition rather than re-dispatching the filter.
-
-     Round 1's record also carries the canonical requirement list the orchestrator
-     derived for the root pass (R-id + text; any `R-new` a reviewer proposed is
-     appended here for round 2) and the `requirements: N · mapped: M · unmapped: K
-     (…)` line unioned by id from the three reviewers. Round 2 reads the R-list
-     back from round 1's record rather than re-deriving it, appending only new
-     `R-new` ids — existing ones are never renumbered.
 
    Anything not recorded was never approved. **Never widen a replay into a blanket
    "the human approved this run"** — that turns one approval into consent for work
