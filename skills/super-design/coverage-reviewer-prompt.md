@@ -102,10 +102,16 @@ Task tool (general-purpose), model: opus:
        evidence of independence; the exchange is dataflow, not file overlap. Do not
        report a seam whose boundary a task plainly owns, and do not invent exchanges the
        descriptions don't imply.
-    5. **Edge audit → NARRATIVE-EDGE.** For every blocking dep in the task tree, name — from
-       the two descriptions — the specific artifact (interface, schema, file, recorded
-       decision) the dependent consumes and the blocker produces. Three failures, one kind:
-       (a) UNNAMEABLE — no artifact connects them; the edge encodes narration or "that area
+    5. **Edge audit → NARRATIVE-EDGE.** For every blocking dep in the task tree, first read the
+       dependent's description for its `blocked-by <blocker-id>: consumes <artifact>` line
+       matching this edge's blocker id. No such line — or a line whose `<artifact>` cannot be
+       resolved to something the blocker actually delivers (its own description, acceptance, or
+       fixed token: `all leaves (integration sweep)` for a sweep edge, `boundary contract` for a
+       seam-contract edge) — is a finding on its own: report it with `unstated` in the evidence,
+       naming the edge (dependent ← blocker) and the missing or unresolvable line. When the line
+       is present and resolves, use it (plus the two descriptions) to name the specific artifact
+       the dependent consumes and the blocker produces, and check for three further failures, one
+       kind: (a) UNNAMEABLE — no artifact connects them; the edge encodes narration or "that area
        first". (b) MISDIRECTED — the artifact is real but a DIFFERENT task (often earlier in
        the same sub-epic) produces it; the edge gates the dependent behind work it never
        consumes; propose repointing at the actual producer. (c) DUPLICATED — a sibling
@@ -186,8 +192,9 @@ Task tool (general-purpose), model: opus:
     - **description:** the problem, one sentence
     - **evidence:** the unmapped goal element, the orphaned task id, the seam's two
       participant task ids + the exchanged data/interface + the quoted description text
-      implying the exchange, the edge (dependent ← blocker) + which of unnameable/
-      misdirected/duplicated it is + the quoted description text, the quoted acceptance
+      implying the exchange, the edge (dependent ← blocker) + which of unstated/unnameable/
+      misdirected/duplicated it is + the quoted description text (or the absence of a
+      `blocked-by` line, for `unstated`), the quoted acceptance
       criterion + the producing (or cited) task id + the dependency path proving it is a
       transitive dependent (or the absence of any path, for `unwired`), the quoted
       configuration enumeration + the configurations with no exercising task, or the flag
