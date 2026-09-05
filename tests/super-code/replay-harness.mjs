@@ -227,8 +227,9 @@ function oneTaskCanned(overrides = {}) {
     'brief:bd-101': { id: 'bd-101', n: 1, status: 'BRIEFED', files: ['src/a.js'], branch: 'x', base: SHA('a') },
     'impl:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', files: ['src/a.js'] },
     'review:bd-101': { id: 'bd-101', status: 'CLEAN' },
-    'merge:bd-101': { id: 'bd-101', merged: true, head: SHA('b'), mergeBase: SHA('a') },
+    'merge:bd-101': { id: 'bd-101', merged: true, head: SHA('b'), mergeBase: SHA('a'), rebaseConflictFiles: 0 },
     'ledger-append:bd-101': { appended: true },
+    'ledger-append:merge:bd-101': { appended: true },
     'final-review': 'looks fine',
     ...overrides,
   }
@@ -300,8 +301,8 @@ async function main() {
   {
     const scan = scanTemplateSpans(scriptBody)
     check(scan.clean, 'scanner ends in code state (no unterminated literal, string, or ${})')
-    check(scan.spans.length === 150,
-      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 150; was 107 before the issue #3/#4 batch added the auth-refusal rule, seam review, edge audit, sweep, recurring-minor and detector-persistence literals) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
+    check(scan.spans.length === 156,
+      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 156; was 107 before the issue #3/#4 batch added the auth-refusal rule, seam review, edge audit, sweep, recurring-minor and detector-persistence literals, then 150, then +6 for Task 3's two \`Merge:\` ledger-line dispatch call sites — each contributes 3 template literals: the line text and the stub-key template literal used twice, once as the dispatch key and once as opts.label) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
     // self-test: inject a raw backtick mid-way through the first literal's content and assert
     // the detector actually fires — a detector that cannot catch the known failure is decoration
     const [s, e] = scan.spans[0]
@@ -321,7 +322,7 @@ async function main() {
   {
     const out = await run({ args: canonicalArgs })
     assertNoThrow(out)
-    check(out.trace.length === 42, `42 agent dispatches (got ${out.trace.length}) — 32 + 1 launch-args ledger record + 1 detector ledger record (round 1; round 2 exits at ready-drained before the detector) + 2 top-up queries + 1 post-closure re-check (round 2's Close reports closures) + bd-104's same-round RESOLVE retry wave (brief, implement, bounced triage, notify, BLOCKED ledger line)`)
+    check(out.trace.length === 45, `45 agent dispatches (got ${out.trace.length}) — 32 + 1 launch-args ledger record + 1 detector ledger record (round 1; round 2 exits at ready-drained before the detector) + 2 top-up queries + 1 post-closure re-check (round 2's Close reports closures) + bd-104's same-round RESOLVE retry wave (brief, implement, bounced triage, notify, BLOCKED ledger line) + 3 Task-3 \`Merge:\` ledger lines (bd-101, bd-102 success; bd-103 failure)`)
     const r = out.result
     check(r && JSON.stringify(r.completed.sort()) === '["bd-101","bd-102"]', 'completed = [bd-101, bd-102]', JSON.stringify(r?.completed))
     check(r && JSON.stringify(r.escalated.sort()) === '["bd-103","bd-104"]', 'escalated = [bd-103, bd-104] — bd-104 spent its C-2 retry same-round (stub implementer stays BLOCKED) and bounced', JSON.stringify(r?.escalated))
@@ -329,6 +330,17 @@ async function main() {
     check(r && r.parked.length === 0 && r.stalled === false, 'parked empty, stalled false')
     check(r && r.stopReason === 'ready-drained', "stopReason = 'ready-drained'", r?.stopReason)
     check(!out.trace.some(t => ['review:bd-104', 'merge:bd-104'].includes(t.label)), 'bd-104 never reviewed or merged (C4 guard held)')
+    // Task 3: exactly one `Merge:` ledger append per merged task (bd-101, bd-102) — dryRun mode
+    // swaps `pick()`'s prompt for the raw stub string (see "dryRun policy": `pick` returns the
+    // canned stub UNCONDITIONALLY on the dryRun branch, never calling `buildReal`), so the dispatch
+    // COUNT is what dryRun can prove here; the rendered line TEXT is asserted in the live-sim
+    // scenario below, where the real `ledgerAppendPrompt`/merge-line builder actually runs.
+    for (const id of ['bd-101', 'bd-102']) {
+      check(out.trace.filter(t => t.label === `ledger-append:merge:${id}`).length === 1, `exactly one ledger-append:merge:${id} dispatch`)
+    }
+    // Task 3: the blocker/failure path appends exactly one `Merge:` line for the failed merge.
+    check(out.trace.filter(t => t.label === 'ledger-append:merge-failed:bd-103').length === 1, 'exactly one ledger-append:merge-failed:bd-103 dispatch')
+    check(!out.trace.some(t => t.label === 'ledger-append:merge:bd-103' || t.label === 'ledger-append:merge-failed:bd-101'), 'success/failure Merge: keys never cross tasks')
     assertBucketsDisjoint(r)
   }
 
@@ -350,11 +362,12 @@ async function main() {
   {
     const out = await run({ args: parkArgs })
     assertNoThrow(out)
-    check(out.trace.length === 26, `26 agent dispatches (got ${out.trace.length}) — 23 + 1 launch-args ledger record + 1 detector ledger record + 1 top-up query after bd-301's merge`)
+    check(out.trace.length === 27, `27 agent dispatches (got ${out.trace.length}) — 23 + 1 launch-args ledger record + 1 detector ledger record + 1 top-up query after bd-301's merge + 1 Task-3 \`Merge:\` ledger line`)
     const r = out.result
     check(r && JSON.stringify(r.completed) === '["bd-301"]' && JSON.stringify(r.parked) === '["bd-301"]', 'bd-301 completed AND parked', JSON.stringify(r))
     check(out.trace.some(t => t.label === 'merge:bd-301'), 'PARK ruling reached the merge gate')
     check(!out.trace.some(t => ['breaker-blocker:bd-301', 'triage:bd-301', 'notify:bd-301'].includes(t.label)), 'no blocker-path dispatch fired on PARK')
+    check(out.trace.filter(t => t.label === 'ledger-append:merge:bd-301').length === 1, 'exactly one ledger-append:merge:bd-301 dispatch on the PARK-then-merge path')
     assertBucketsDisjoint(r)
   }
 
@@ -386,6 +399,7 @@ async function main() {
       're-review:bd-101:1': { id: 'bd-101', status: 'CLEAN' },
       'merge:bd-101': { id: 'bd-101', merged: true, head: SHA('b'), mergeBase: SHA('a') },
       'ledger-append:bd-101': { appended: true },
+      'ledger-append:merge:bd-101': { appended: true },
       'ledger-append:bd-104': { appended: true },
       'triage:bd-104': { decision: 'RESOLVE', detail: 'name the constant' },
       'clarify:bd-104': { recorded: true },
@@ -712,6 +726,7 @@ async function main() {
       c[`review:${id}`] = { id, status: 'CLEAN' }
       c[`merge:${id}`] = tick({ id, merged: true, head: SHA('b'), mergeBase: SHA('a') })
       c[`ledger-append:${id}`] = { appended: true }
+      c[`ledger-append:merge:${id}`] = { appended: true }
     }
     return { ...c, ...overrides }
   }
@@ -1224,6 +1239,40 @@ async function main() {
     check(!!fix && fix.includes('parseInput()') && fix.includes('ONE bounded seam fix'), 'seam fix dispatch carries the finding')
     check(JSON.stringify(out.result?.completed) === '["bd-101"]', 'merged after the fix', JSON.stringify(out.result))
     assertBucketsDisjoint(out.result)
+  }
+
+  scenario('Task 3: Merge: ledger line renders the declared shape on both the success and blocker paths')
+  {
+    // Success path: a merge that itself resolved rebase conflicts (rebaseConflictFiles > 0) and
+    // never entered the seam branch — text should read `rebase conflict: 2 files · seam-review
+    // none · gate pass`.
+    const okCanned = oneTaskCanned({
+      'merge:bd-101': { id: 'bd-101', merged: true, head: SHA('b'), mergeBase: SHA('a'), rebaseConflictFiles: 2 },
+    })
+    const ok = await run({ args: liveArgs(), canned: okCanned })
+    assertNoThrow(ok)
+    const okLine = promptOf(ok.trace, 'ledger-append:merge:bd-101')
+    check(!!okLine && okLine.includes('Merge: bd-101 — rebase conflict: 2 files · seam-review none · gate pass'),
+      'success-path line renders id, conflict count, no seam review, and gate pass', okLine)
+    check(!okLine?.includes('→ blocker'), 'success-path line never carries the blocker suffix')
+
+    // Blocker path: a merge that failed its bounded auto-resolve, with a clean rebase this time —
+    // text should read `rebase clean · seam-review none · gate fail → blocker`.
+    const failCanned = oneTaskCanned({
+      'merge:bd-101': { id: 'bd-101', merged: false, blockerBead: 'bd-108', rebaseConflictFiles: 0 },
+      'ledger-append:merge-failed:bd-101': { appended: true },
+      'triage:bd-101': { decision: 'ESCALATE', detail: 'gate stayed red after the bounded auto-resolve attempt' },
+      'notify:bd-101': { sent: true },
+      'ledger-append:bd-101': { appended: true },
+    })
+    const fail = await run({ args: liveArgs(), canned: failCanned })
+    assertNoThrow(fail)
+    const failLine = promptOf(fail.trace, 'ledger-append:merge-failed:bd-101')
+    check(!!failLine && failLine.includes('Merge: bd-101 — rebase clean · seam-review none · gate fail'),
+      'failure-path line renders id, clean rebase, no seam review, and gate fail', failLine)
+    check(!!failLine && /Merge: bd-101 — rebase clean · seam-review none · gate fail → blocker/.test(failLine),
+      'failure-path line ends in → blocker, immediately after "gate fail"', failLine)
+    check(JSON.stringify(fail.result?.escalated) === '["bd-101"]', 'the blocked task still reaches the ordinary ESCALATE bucket', JSON.stringify(fail.result))
   }
 
   // ===== summary =====
