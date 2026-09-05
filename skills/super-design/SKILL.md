@@ -124,7 +124,9 @@ bead (`UNEXERCISED-CONFIGURATION`).
 **Decompose in two explicit steps.** **Step A — split:** carve the spec into minimal
 logically-cohesive chunks per the sizing bar below, ignoring narrative/build order while splitting.
 **Step B — connect, as a first approximation:** add blocking deps per the edge rules further
-down, sparse by the standing "when in doubt, leave it out" policy. When connecting reveals a bead
+down, sparse by the standing "when in doubt, leave it out" policy. Every `bd dep add` you run
+here is paired with a `blocked-by <blocker-id>: consumes <artifact>` line in the dependent's
+description (below, "Every blocking edge is paired with a reason line"). When connecting reveals a bead
 that gates two or more others, re-apply the bottleneck rule to it before moving on — dependent
 counts only exist once edges do. The deps you write are a
 first approximation by design — the promotion review runs next, and coverage's edge audit
@@ -208,6 +210,29 @@ Five edge rules, each the generalization of a measured live failure (the coverag
   rare case where every leaf genuinely consumes the whole predecessor epic, and say why in the
   dependent epic's description.
 
+**Every blocking edge is paired with a reason line in the dependent's description.** Whenever you
+`bd dep add <dependent> <blocker>` — here, in a split re-point, in a coverage repoint or wiring, or
+in a sweep — write (or amend, via the existing wholesale `bd update --description` rule)
+`blocked-by <blocker-id>: consumes <artifact>` into the **dependent's** description, naming the
+same artifact the edge rules above required you to name to justify the edge in the first place.
+Remove or re-point the edge and the line goes with it — the same wholesale-description-replace
+step that adds the line also updates or deletes it. Four worked examples, one per edge kind:
+
+| Edge kind | `bd dep add` | Dependent's description gains |
+|---|---|---|
+| Decomposition | `bd dep add proj-42 proj-40` | `blocked-by proj-40: consumes TrainingConfig schema field` |
+| Split re-point | `bd dep add proj-51 proj-49` | `blocked-by proj-49: consumes regime entry-point signature` |
+| Coverage repoint (`NARRATIVE-EDGE`) | `bd dep add proj-51 proj-45` | `blocked-by proj-45: consumes parser output schema` |
+| Sweep | `bd dep add proj-99 proj-52` | `blocked-by proj-52: consumes all leaves (integration sweep)` |
+
+A seam-contract edge (§Coverage's `UNOWNED-SEAM` wiring) uses the fixed artifact token
+`boundary contract`: `blocked-by proj-60: consumes boundary contract`. A sweep edge — the root
+integration sweep depending on every leaf, or a post-round fix task wired under an
+already-existing sweep — always uses the fixed token `all leaves (integration sweep)`, as above,
+regardless of which specific leaf produced the edge. Every other edge kind names the actual
+artifact the dependent consumes, the same one the edge rules above require you to be able to
+name before writing the edge at all.
+
 **Check the graph's shape before moving on.** Execution rounds ≈ the longest dependency chain. A
 wide body with a long thin tail — a finishing layer written as wire-up → verify → polish — is a
 decomposition smell: tails usually re-decompose into per-feature integration beads that run
@@ -246,7 +271,9 @@ until its dependents are re-pointed:
    (the edge rules above) decides; "unchanged" is an explicit answer you record, never the
    default you fall into.
 3. **Apply the re-points** (`bd dep remove <dependent> <original>`, `bd dep add <dependent>
-   <fragment>`) for every dependent whose answer wasn't "unchanged".
+   <fragment>`) for every dependent whose answer wasn't "unchanged", updating that dependent's
+   `blocked-by <blocker-id>: consumes <artifact>` line (§Decomposition) to name the fragment
+   through the existing wholesale `bd update --description` rule.
 
 ## Applying Promotions
 
@@ -385,13 +412,13 @@ inside the same round; a second `INSUFFICIENT-INPUT` from the re-dispatched pass
 **degraded** (the recall floor below) rather than spending a third dispatch on it.
 
 **The fixes, by type.** Verified `GAP`: small → leaf task added directly; big → the escalation
-above. Verified `NARRATIVE-EDGE`: drop the edge (`bd dep remove <dependent> <blocker>`) or repoint it (`bd dep remove`, then `bd dep add <dependent> <actual-producer>`), per the finding's proposed fix — question-shaped edges never arrive as this kind (reviewers report those as `UNOWNED-SEAM`, whose contract path replaces the ordering). Any verified finding whose fix splits or shrinks an existing bead — moving scope out of it — follows §Splitting a Bead, dependents re-pointed included. Verified `UNSATISFIABLE-ACCEPTANCE`: apply the finding's proposed fix — restate the criterion in terms of an artifact that exists when the task completes (`bd update <id> --description` with the full amended text, keeping or adding the `(needs: <id>)` citation so the next round can check it by graph), or re-point the edge so the referenced validator genuinely precedes the task; an `unwired` variant (a cited bead no edge connects) adds the missing edge (`bd dep add <task> <cited>`). Verified `UNEXERCISED-CONFIGURATION`: add one leaf with the standard flag triple — **`Configuration smoke: <the enumerated configurations>`** — whose deliverable is a runnable one-step exercise of *each* configuration (the description states the command or entry point per configuration), depending on the beads that make those configurations runnable and wired under the integration sweep like any leaf, so it runs as soon as the configurations exist rather than at the terminal gate; or, when one existing bead can absorb it without becoming a bottleneck, extend that bead's description and acceptance instead. Verified `UNOWNED-SEAM`: **before creating either bead, check whether a `Seam contract:` /
+above. Verified `NARRATIVE-EDGE`: drop the edge (`bd dep remove <dependent> <blocker>`) or repoint it (`bd dep remove`, then `bd dep add <dependent> <actual-producer>`), per the finding's proposed fix — question-shaped edges never arrive as this kind (reviewers report those as `UNOWNED-SEAM`, whose contract path replaces the ordering); a repoint updates the dependent's `blocked-by <blocker-id>: consumes <artifact>` line to name the new producer and artifact, through the existing wholesale `bd update --description` rule (dropping the edge drops the line the same way). Any verified finding whose fix splits or shrinks an existing bead — moving scope out of it — follows §Splitting a Bead, dependents re-pointed included. Verified `UNSATISFIABLE-ACCEPTANCE`: apply the finding's proposed fix — restate the criterion in terms of an artifact that exists when the task completes (`bd update <id> --description` with the full amended text, keeping or adding the `(needs: <id>)` citation so the next round can check it by graph), or re-point the edge so the referenced validator genuinely precedes the task; an `unwired` variant (a cited bead no edge connects) adds the missing edge (`bd dep add <task> <cited>`) and, in the same `bd update --description`, the `blocked-by <cited>: consumes <artifact>` line naming what the citation resolves to. Verified `UNEXERCISED-CONFIGURATION`: add one leaf with the standard flag triple — **`Configuration smoke: <the enumerated configurations>`** — whose deliverable is a runnable one-step exercise of *each* configuration (the description states the command or entry point per configuration), depending on the beads that make those configurations runnable and wired under the integration sweep like any leaf, so it runs as soon as the configurations exist rather than at the terminal gate; or, when one existing bead can absorb it without becoming a bottleneck, extend that bead's description and acceptance instead. Verified `UNOWNED-SEAM`: **before creating either bead, check whether a `Seam contract:` /
 `Seam integration:` bead for this boundary already exists — including via a replayed disposition
 from the run-state file — and adopt it instead of duplicating it and its edges.** Otherwise create
 **two leaf tasks** with the standard flag triple, and wire the tree:
 
-- **`Seam contract: <boundary>`** — delivers **compilable boundary code**, not prose: the interface/types/signatures, the schema fields, and the wiring itself plumbed end-to-end as stubs or defaults (the value must flow even if inert-by-default). Acceptance: compiles, suite green, wiring present. Add a dependency edge from **every participant onto the contract bead** (`bd dep add <participant> <contract>`) — a genuine blocking edge by §Decomposition's own rule (the interface must exist first), not narrative order. Its files-touched hint deliberately spans both sides of the seam; execution merges it before its dependents by construction, so the overlap is expected.
-- **`Seam integration: <boundary>`** — depends on that seam's participants only (`bd dep add <integration> <participant>` for each). Delivers: verify the wiring end-to-end, write integration test(s) crossing the seam, see them pass. Small fixes inline; anything larger goes through execution's normal blocker path.
+- **`Seam contract: <boundary>`** — delivers **compilable boundary code**, not prose: the interface/types/signatures, the schema fields, and the wiring itself plumbed end-to-end as stubs or defaults (the value must flow even if inert-by-default). Acceptance: compiles, suite green, wiring present. Add a dependency edge from **every participant onto the contract bead** (`bd dep add <participant> <contract>`) — a genuine blocking edge by §Decomposition's own rule (the interface must exist first), not narrative order — and write `blocked-by <contract-id>: consumes boundary contract` into each participant's description (the fixed artifact token for this edge kind; see "Every blocking edge is paired with a reason line" above). Its files-touched hint deliberately spans both sides of the seam; execution merges it before its dependents by construction, so the overlap is expected.
+- **`Seam integration: <boundary>`** — depends on that seam's participants only (`bd dep add <integration> <participant>` for each), with `blocked-by <participant-id>: consumes <that participant's owned boundary>` written into the integration bead's own description for each one. Delivers: verify the wiring end-to-end, write integration test(s) crossing the seam, see them pass. Small fixes inline; anything larger goes through execution's normal blocker path.
 - Append one line to **each participant's** bead description: `boundary contract: <contract-bead-id>`. **`bd update --description` replaces the description wholesale — there is no `--append-description`.** First `bd show <participant>` to read the current description, then re-send the full existing text with the pointer line appended; sending only the pointer line destroys the `owns:`/`consumes:` declarations the coverage reviewers and execution briefs depend on. The pointer flows into execution briefs through the planner with zero execution-side changes.
 
 **Recall floor & fallback net:** if a pass stays degraded or a round otherwise can't be trusted, downgrade coverage to **advisory** and make the gate a **mandatory human read-through of the goal against the full task tree** — disclose this in the round summary, never silently. **In a non-interactive run there is no one to read it through:** record the downgrade as a parked qualifier in the run-state file and hand it back verbatim, the way a degraded roast verdict is parked — surfaced by the caller, never waited on here.
@@ -401,7 +428,9 @@ clean, or round 2's fixes applied (§Two rounds, fixed) — and the tree has ≥
 bead's own edge onto the sweep would be transitively implied through its dependents anyway, so
 counting it here is redundant but harmless), create one final leaf with the standard
 flag triple — **`Integration sweep: <root goal, short>`** — depending on **every leaf task
-and every `Seam integration:` bead** (its "tests no per-seam bead covers" scope is only
+and every `Seam integration:` bead** (each such `bd dep add <sweep> <leaf>` paired with a
+`blocked-by <leaf-id>: consumes all leaves (integration sweep)` line in the sweep's own
+description — the fixed artifact token for every sweep edge, per-leaf id aside) (its "tests no per-seam bead covers" scope is only
 decidable once those exist). Scope-bounded deliverable: verify the goal's main flow(s) end to
 end, add integration tests no per-seam bead covers, and sweep for unwired config values,
 parameters, and interfaces; fix small gaps inline, file blockers for big ones. Unlike the
@@ -438,7 +467,7 @@ report. The report file is the only cross-iteration state. **Three of its sectio
 | `## Escalations (need human)` | **Surface every entry to the human before starting fix work.** These are findings with a dead panel seat, an unresolved external premise, or material dissent between seats — in the recorded PR run, findings with **zero** valid judge votes landed here. They need a human by definition: no verdict was reached, so there is nothing to auto-fix and nothing to auto-dismiss. Never fold them into the fix queue, and never let a `clean` verdict elsewhere in the report imply they were resolved. |
 | `## Not verified (beyond panel cap)` | Severe candidates the panel cap left unjudged. Present them next to the escalations and ask whether to re-roast with a raised `config.panelCap` before fixing anything — an unverified Blocking candidate is not a cleared one. |
 
-1. **Create one task per confirmed finding**, with §Decomposition's full `bd create` flag triple (`--parent <root-epic-id> --no-inherit-labels -l sp:<root-epic-id>`) — a fix task outside the epic's descendant tree lets `bd epic close-eligible` close the epic mid-fix. **When an `Integration sweep:` bead already exists for this root, also `bd dep add <sweep> <fix-task>` for each fix task created here** — so the sweep still runs last.
+1. **Create one task per confirmed finding**, with §Decomposition's full `bd create` flag triple (`--parent <root-epic-id> --no-inherit-labels -l sp:<root-epic-id>`) — a fix task outside the epic's descendant tree lets `bd epic close-eligible` close the epic mid-fix. **When an `Integration sweep:` bead already exists for this root, also `bd dep add <sweep> <fix-task>` for each fix task created here** — so the sweep still runs last — pairing each with `blocked-by <fix-task-id>: consumes all leaves (integration sweep)` in the sweep's description, the same fixed artifact token every sweep edge uses.
 2. **Fix per the normal ladder** — inline for small fixes, interactive design work for large ones
    (may itself promote/nest), subagent-driven implementation for delegable work.
 3. **Auto-decide re-roast by fix scope:**
@@ -624,6 +653,9 @@ skill's work instead of re-running all of it.
   instructed to over-report; the verify step is the only thing standing in for the human who used
   to arbitrate.
 - Overrule a `PROMOTE` verdict without recording `sp:demoted-by-session` and the reason.
+- Add a blocking edge (`bd dep add`, any site) without pairing it with a `blocked-by <blocker-id>:
+  consumes <artifact>` line in the dependent's description — coverage's `NARRATIVE-EDGE` check
+  cannot audit an edge whose reason isn't written down.
 
 ## Integration
 
