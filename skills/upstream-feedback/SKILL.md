@@ -48,8 +48,23 @@ append. A standalone run is its own outermost.
    `coordinator-workflow.md`'s Finish note, never from a file); roast verdict/`delta vs prior`
    lines; `run.md`; a graph-shape summary when a bead tree exists (open count, rounds ≈ longest
    chain, width per round); the installed plugin version (`plugin.json` in the plugin cache).
+   Also gather, for `## Run metrics`:
+   - every roast report's `seat-agreement:` line, together with that report's mode, iteration,
+     and its `independence:` line (the main confounder when comparing agreement across runs);
+   - the ledger's `Merge:` lines (both the success path and the `→ blocker` failure path) and
+     the four-line `Metrics:` block;
+   - each coverage round's `requirements:` line and each fix round's `scope-filter:` line from
+     `run.md`;
+   - a bead-graph dump: `bd list --label sp:<root> --json --status all --limit 0` —
+     **`--limit 0` is required**, since `bd list` defaults to 50 rows and would silently
+     truncate a larger tree. Edges for the graph's dependent/blocker table come from the dump's
+     `dependencies` array (type `blocks`); the reason for each edge comes from the dependent's
+     `blocked-by <id>:` description line, or `unstated` when that line is absent.
+
    Gather what exists; name what was unavailable in the report's `## Not established` section
-   rather than silently omitting it.
+   rather than silently omitting it. A subsection of `## Run metrics` with no source renders
+   `none`, with the absent source named in `## Not established` — a missing source never blocks
+   filing. A standalone super-design run (no ledger) renders Fix loop and Merge-back as `none`.
 2. **Analyze** — dispatch ONE fresh-context subagent, **model: opus, or the strongest
    analyst-class model the harness actually offers** (a non-Claude runtime names its own — the
    requirement is fresh context and the top tier available, not a vendor), with
@@ -69,8 +84,10 @@ append. A standalone run is its own outermost.
 6. **Scrub** (only if the user opted in): replace project/repo names, domain nouns, file paths,
    bead ids, and human names with role-generic equivalents ("a shared adapter file four tail
    beads touch"). Keep counts, timings, graph shapes, percentages, skill/mechanism/config names,
-   and error messages (paths inside them scrubbed). If scrubbing a detail would make a finding
-   unactionable, flag that finding to the user instead of silently weakening it.
+   and error messages (paths inside them scrubbed). This applies to the `## Run metrics` bead-graph
+   tables the same as any other content: titles and descriptions are project nouns to scrub, ids
+   are bead ids to scrub. If scrubbing a detail would make a finding unactionable, flag that
+   finding to the user instead of silently weakening it.
 7. **Confirm** — show the user the final issue body verbatim (scrubbed or not). Only after
    their yes:
 8. **File** — check `gh label list -R <owner/repo>` for `upstream-feedback` first, and pass

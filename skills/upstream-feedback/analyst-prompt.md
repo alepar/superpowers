@@ -31,6 +31,9 @@ entire output is the findings list below.
 ## Graph shape (if a bead tree exists)
 [GRAPH_SUMMARY]
 
+## Run metrics
+[RUN_METRICS]
+
 ## Your three lenses
 
 1. **Completeness** — what did the skills' machinery or guidance not cover that this run
