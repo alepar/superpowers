@@ -40,7 +40,10 @@ drop or silently confirm anything uncertain.
 Each packet has the finding's own fields (`claim, location, category, external, evidence,
 suggestedSeverity`, optionally `kind`/`spike`), plus:
 - `votes`: an array of seat verdicts, each `{verdict: "CONFIRM"|"REJECT"|"UNVERIFIED",
-  severity, evidence}`. A seat that failed to return appears as `null` in this array.
+  severity, evidence}`. A seat that failed to return appears as `null` in this array. For
+  `panel` and `promoted` tier packets, `votes[]` is positional and matches the engine's
+  `panel()` dispatch order: index 0 is the **reproduce** seat, index 1 is the **refute**
+  seat, index 2 is the **ground** seat.
 - `tier`: `"panel"` (3 seats, for a Blocking/Should-fix candidate), `"spot"` (1 refute-seat
   check of a Nit/FYI candidate), `"promoted"` (a spot-checked finding whose spot-check
   escalated it to a full panel), or `"beyond-cap"` (a severe candidate the panel cap left
@@ -66,7 +69,7 @@ inputs: {{INPUTS}}
 
 **Packets with `tier: "beyond-cap"` are exempt from this entire step.** They were never
 dispatched to a judge — there is no verdict to assign and no arithmetic to apply. List each
-one directly under "## Not verified (beyond panel cap)" in Step 5, by its `suggestedSeverity`
+one directly under "## Not verified (beyond panel cap)" in Step 6, by its `suggestedSeverity`
 and `claim`/`location` — do not attempt to verify it, do not move it to Confirmed or
 Escalations, and do not drop it.
 
@@ -148,7 +151,7 @@ If `{{PRIOR_REPORT}}` is non-empty:
   rejection stands; do not reopen it. This exception exists because a fix can legitimately
   turn a previously-immaterial claim into a real one — it is NOT a licence to re-argue
   rejections you simply disagree with.
-Then compute the **delta counts** this iteration's header reports (see Step 5's
+Then compute the **delta counts** this iteration's header reports (see Step 6's
 `delta vs prior:` line) — they are what lets the caller's loop decide convergence without
 re-parsing prose:
 - `new`: confirmed findings in THIS report that the prior report does not list in any
@@ -190,7 +193,71 @@ stop iterating instead of running another round into diminishing returns:
 - neither `[low coverage]` nor `[panel-capped]` applies — a degraded round finding nothing
   new is absence of evidence, not convergence; never emit `[converged]` alongside either.
 
-## Step 5 — Assemble the report
+## Step 5 — Seat-agreement line
+Compute this over the population of packets whose `tier` is `panel` or `promoted` **and**
+whose `valid == 3` (all three seats returned). Call this population's size `N` — it is the
+`panels N` value in the emitted line. **When `N == 0`, omit the entire `seat-agreement:` line
+from the report** — no placeholder, no zeros line, nothing between `independence:` and
+`## Confirmed findings`.
+
+Within that population, for each packet look at the three seats' verdicts positionally
+(`votes[0]` = reproduce, `votes[1]` = refute, `votes[2]` = ground, per the packet-contract
+note above), collapsing each seat's verdict to agree/disagree pairwise:
+
+- `rr` = fraction of the N panels where the **reproduce** and **refute** seats' verdicts
+  agree with each other.
+- `rg` = fraction where the **reproduce** and **ground** seats' verdicts agree with each
+  other.
+- `fg` = fraction where the **refute** and **ground** seats' verdicts agree with each other.
+- `unanimous` = fraction where all three seats' verdicts agree.
+- `ground-loo` (leave-one-out): **restrict to the subset of the N panels where reproduce and
+  refute agree with each other.** Within that subset, compute the fraction where ground's
+  verdict matches what reproduce and refute agreed on. Report the subset's size as `(n=<subset
+  size>)` alongside the fraction. When that subset is empty, render `ground-loo n/a (n=0)`
+  instead of a fraction.
+- Per-seat verdict counts, rendered `C/R/U` (CONFIRM / REJECT / UNVERIFIED) — for each of the
+  three seats independently, count how many of the N panels had that seat vote CONFIRM, how
+  many voted REJECT, and how many voted UNVERIFIED. Render one triple per seat, in the order
+  reproduce, refute, ground.
+
+Round every fraction (`rr`, `rg`, `fg`, `unanimous`, `ground-loo`) to two decimal places.
+
+Emit exactly this line, immediately after the `independence:` line and before `## Confirmed
+findings`:
+
+```
+seat-agreement: panels N · rr <rr> · rg <rg> · fg <fg> · unanimous <unanimous> · ground-loo <ground-loo> (n=<subset size>) · reproduce <C>/<R>/<U> · refute <C>/<R>/<U> · ground <C>/<R>/<U>
+```
+
+**Worked example.** Take three panel packets (N=3) with these `votes[]` triples
+(verdict-only, in `[reproduce, refute, ground]` order):
+
+- Packet A: `[CONFIRM, CONFIRM, CONFIRM]`
+- Packet B: `[CONFIRM, REJECT, CONFIRM]`
+- Packet C: `[REJECT, REJECT, CONFIRM]`
+
+Pairwise agreement per packet (agree = same verdict):
+- reproduce vs refute: A agrees (CONFIRM/CONFIRM), B disagrees (CONFIRM/REJECT), C agrees
+  (REJECT/REJECT) → 2/3 → `rr 0.67`.
+- reproduce vs ground: A agrees, B agrees (CONFIRM/CONFIRM), C disagrees
+  (REJECT/CONFIRM) → 2/3 → `rg 0.67`.
+- refute vs ground: A agrees, B disagrees (REJECT/CONFIRM), C disagrees
+  (REJECT/CONFIRM) → 1/3 → `fg 0.33`.
+- unanimous (all three agree): only A → 1/3 → `unanimous 0.33`.
+- ground-loo: the reproduce/refute-agree subset is {A, C} (B disagrees, excluded), size 2.
+  Within {A, C}, does ground match the reproduce/refute pair's shared verdict? A: pair is
+  CONFIRM, ground is CONFIRM → match. C: pair is REJECT, ground is CONFIRM → no match. 1/2 →
+  `ground-loo 0.50 (n=2)`.
+- Per-seat C/R/U: reproduce has 2 CONFIRM, 1 REJECT, 0 UNVERIFIED → `2/1/0`. refute has 1
+  CONFIRM, 2 REJECT, 0 UNVERIFIED → `1/2/0`. ground has 3 CONFIRM, 0 REJECT, 0 UNVERIFIED →
+  `3/0/0`.
+
+Expected line:
+```
+seat-agreement: panels 3 · rr 0.67 · rg 0.67 · fg 0.33 · unanimous 0.33 · ground-loo 0.50 (n=2) · reproduce 2/1/0 · refute 1/2/0 · ground 3/0/0
+```
+
+## Step 6 — Assemble the report
 Render the full report using this template verbatim (fill the bracketed parts; keep every
 heading exactly as written). The `independence:` line is `{{INDEPENDENCE}}` exactly as the
 orchestrator rendered it from the seats it actually dispatched — **never write a model family
@@ -208,6 +275,7 @@ inputs: <spec paths | branch@sha vs base@sha [+dirty] | PR#>
 delta vs prior: <X> new confirmed (<xB> Blocking) · <Y> carried (<yB> Blocking) · <Z> resolved · <W> regressed (<wB> Blocking)
 coverage: <lanes ran> · <raw → deduped → panel/spot-checked counts> · <judge completion %> · remainder-capped: N
 independence: {{INDEPENDENCE}}
+seat-agreement: panels N · rr <rr> · rg <rg> · fg <fg> · unanimous <unanimous> · ground-loo <ground-loo> (n=<subset size>) · reproduce <C>/<R>/<U> · refute <C>/<R>/<U> · ground <C>/<R>/<U>   ← omit this line entirely when N == 0 (Step 5)
 
 ## Confirmed findings            ← consumed by super-design, one task per finding
 - [SEV] <location> — <claim>
@@ -275,7 +343,7 @@ Notes on filling it in:
   (e.g. `"Blocking (2 confirmed)"`, `"clean (3 nits)"`, `"Should-fix (1 confirmed) [low
   coverage]"`, `"Blocking (2 confirmed) [panel-capped: 3 unverified]"`,
   `"Should-fix (2 confirmed) [converged]"`).
-- `reportMarkdown`: the entire rendered report from Step 5, as one markdown string.
+- `reportMarkdown`: the entire rendered report from Step 6, as one markdown string.
 - `confirmedCount`: integer count of entries under "## Confirmed findings".
 - `escalations`: array of one-line strings, one per entry under "## Escalations (need
   human)" — the same reasons that appear in the report, so callers can act on them without

@@ -73,6 +73,13 @@ reduces correlated error but does not deliver family-level independence — a sa
 carries fewer effective votes than it has members. Use a seat from a second model family for
 one of the three where a harness offers one, and label it so.
 
+**Report header lines, in order:** `verdict:`, `mode:`/`iteration:`, `profile (assumed):`,
+`inputs:`, `delta vs prior:` (iterations ≥ 2 only), `coverage:`, `independence:`, and
+`seat-agreement:` — a panel-agreement summary (pairwise seat agreement, unanimity,
+leave-one-out ground vs. the reproduce/refute pair, and per-seat C/R/U counts) that the
+reporter computes over the panel/promoted-tier packets and prints immediately after
+`independence:`, omitted entirely when there are none.
+
 ## Key constraints
 
 - **The script does no I/O.** It calls only its hooks (`agent()`, `parallel()`, `log()`,

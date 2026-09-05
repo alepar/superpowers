@@ -155,6 +155,7 @@ inputs: <spec paths | branch@sha vs base@sha [+dirty] | PR#>
 delta vs prior: <X> new confirmed (<xB> Blocking) · <Y> carried (<yB> Blocking) · <Z> resolved · <W> regressed (<wB> Blocking)   ← iterations ≥ 2 only
 coverage: <lanes ran> · <raw → deduped → panel/spot-checked counts> · <judge completion %> · remainder-capped: N
 independence: <derived from the seats as invoked: same-family (<family>) — seat-differentiated panel | cross-family (<families>) — seat-differentiated panel | none (inline)>
+seat-agreement: panels N · rr 0.78 · rg 0.89 · fg 0.67 · unanimous 0.56 · ground-loo 0.83 (n=6) · reproduce 7/2/0 · refute 5/4/0 · ground 6/3/0   ← omitted entirely when N == 0
 
 ## Confirmed findings            ← consumed by super-design, one task per finding
 - [SEV] <location> — <claim>
