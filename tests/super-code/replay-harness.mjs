@@ -18,9 +18,11 @@
 //
 // No dependencies. Run: node tests/super-code/replay-harness.mjs
 
-import { readFileSync } from 'node:fs'
+import { readFileSync, mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
+import os from 'node:os'
+import { execFileSync } from 'node:child_process'
 
 const here = path.dirname(fileURLToPath(import.meta.url))
 const docPath = path.join(here, '..', '..', 'skills', 'super-code', 'coordinator-workflow.md')
@@ -207,6 +209,18 @@ function extractLedgerLine(promptText) {
   const m = /~~~LEDGER_LINE~~~\n([\s\S]*?)\n~~~LEDGER_LINE~~~/.exec(promptText ?? '')
   return m ? m[1] : null
 }
+// Mirrors the coordinator script's own `defaultTestPathspecs` (spec §5) — kept here, not
+// imported from the script, since the script has no module exports of its own (it's an
+// AsyncFunction body extracted from the doc's fence, see `extractScript`). The prompt-text
+// assertions above already prove the SAME array appears in a real dispatch; this copy is only
+// for the fixture-repo scenario below, which needs the literal list to hand to a real
+// subprocess `git diff` — a change to the script's list without updating this copy would show
+// up there as a spurious pass/fail, not silently.
+const defaultTestPathspecsForFixtureTest = [
+  'tests/**', 'test/**', 'spec/**', '**/tests/**', '**/test/**', '**/spec/**',
+  '*_test.*', '*.test.*', 'test_*.*', '*_spec.*', '*.spec.*',
+  '**/*_test.*', '**/*.test.*', '**/test_*.*', '**/*_spec.*', '**/*.spec.*',
+]
 
 const MODELS = { planner: 'opus', implementer: 'sonnet', reviewer: 'sonnet', mechanical: 'sonnet', triage: 'opus', finalReview: 'opus', fixEscalation: 'opus' }
 const cfg = (extra = {}) => ({ concurrency: 4, models: MODELS, ...extra })
@@ -316,8 +330,8 @@ async function main() {
   {
     const scan = scanTemplateSpans(scriptBody)
     check(scan.clean, 'scanner ends in code state (no unterminated literal, string, or ${})')
-    check(scan.spans.length === 159,
-      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 159; was 107 before the issue #3/#4 batch added the auth-refusal rule, seam review, edge audit, sweep, recurring-minor and detector-persistence literals, then 150, then +6 for Task 3's two \`Merge:\` ledger-line dispatch call sites — each contributes 3 template literals: the line text and the stub-key template literal used twice, once as the dispatch key and once as opts.label — then +3 for Task 4's fix-round ledger-line literal in reviewAndFix and both fixPrompt branches' literals extended to ask for head) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
+    check(scan.spans.length === 164,
+      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 164; was 107 before the issue #3/#4 batch added the auth-refusal rule, seam review, edge audit, sweep, recurring-minor and detector-persistence literals, then 150, then +6 for Task 3's two \`Merge:\` ledger-line dispatch call sites — each contributes 3 template literals: the line text and the stub-key template literal used twice, once as the dispatch key and once as opts.label — then +3 for Task 4's fix-round ledger-line literal in reviewAndFix and both fixPrompt branches' literals extended to ask for head, then 159, then +5 for task super-plan-qfy.9's testChangesBlock and its call-site interpolations) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
     // self-test: inject a raw backtick mid-way through the first literal's content and assert
     // the detector actually fires — a detector that cannot catch the known failure is decoration
     const [s, e] = scan.spans[0]
@@ -456,9 +470,15 @@ async function main() {
       check(review?.includes(`[${param}] = ${val}`), `task-review prompt fills [${param}]`, review)
     }
     check(review?.includes(`scripts/review-package ${PLANPATH} ${SHA('a')} HEAD ${PLANDIR}/task-1-review-initial.diff`), 'task-review prompt passes review-package an explicit OUTFILE')
+    check(review?.includes('## Test changes') && review?.includes(`${SHA('a')}..HEAD`) && review?.includes("'tests/**'"), 'initial-review dispatch carries the Test changes instruction over its own base..HEAD range with the default pathspecs', review)
+    check(/deleted, skipped, loosened, or whose expected values were edited/.test(review ?? ''), 'initial-review dispatch states the NEEDS_FIX rule for test changes')
+    check(/"Test changes: none" is valid ONLY when you state the exact diff command/.test(review ?? ''), 'initial-review dispatch states the command-stated validity rule for "none"')
 
     const rere = promptOf(out.trace, 're-review:bd-101:1')
     check(rere?.includes(`[REPORT_FILE] = ${PLANDIR}/task-1-report.md`) && rere?.includes(`[DIFF_FILE] = ${PLANDIR}/task-1-review-fix-1.diff`), 're-review prompt fills [REPORT_FILE]/[DIFF_FILE] per round', rere)
+    check(rere?.includes('## Test changes') && rere?.includes('FIX_BASE..HEAD'), 're-review dispatch carries the Test changes instruction over the fix-diff range', rere)
+    check(/deleted, skipped, loosened, or whose expected values were edited/.test(rere ?? ''), 're-review dispatch states the NEEDS_FIX rule for test changes')
+    check(/"Test changes: none" is valid ONLY when you state the exact diff command/.test(rere ?? ''), 're-review dispatch states the command-stated validity rule for "none"')
 
     const fix = promptOf(out.trace, 'fix:bd-101:1')
     check(fix?.includes(`${PLANDIR}/task-1-report.md`), 'fix prompt names the report file to append to', fix)
@@ -1301,6 +1321,57 @@ async function main() {
     check(promptOf(plain.trace, 'final-review')?.includes('No per-branch sweep was declared'), 'final reviewer is told no sweep ran')
   }
 
+  scenario('config.testPaths (spec §5): a declared override replaces the defaults; an empty array keeps them')
+  {
+    const override = ['pkg/**/*.spec.ts']
+    const out = await run({ args: liveArgs({ config: cfg({ testPaths: override }) }), canned: oneTaskCanned() })
+    assertNoThrow(out)
+    const review = promptOf(out.trace, 'review:bd-101')
+    check(review?.includes("'pkg/**/*.spec.ts'"), 'override pathspec appears in the initial-review dispatch', review)
+    check(!review?.includes("'tests/**'") && !review?.includes("'**/*_test.*'"), 'no default pathspec appears once an override is declared', review)
+
+    const empty = await run({ args: liveArgs({ config: cfg({ testPaths: [] }) }), canned: oneTaskCanned() })
+    assertNoThrow(empty)
+    const review2 = promptOf(empty.trace, 'review:bd-101')
+    check(review2?.includes("'tests/**'") && review2?.includes("'**/*_test.*'"), 'an empty config.testPaths keeps the default pathspecs', review2)
+    check(empty.logs.some(l => l.includes('config.testPaths is an empty array') && l.includes('rejected at pre-flight')), 'an empty config.testPaths logs a pre-flight rejection warning')
+  }
+
+  scenario('config.testPaths default pathspecs (spec §5): a real git fixture proves the defaults actually match')
+  {
+    // Guard against the exact roast findings this pathspec list was built against: `'**/tests/**'`
+    // never matches a top-level `tests/` tree under git pathspec rules, and `'**/*_test.*'` never
+    // matches a root-level file like `main_test.go` — only a real subprocess `git diff` against a
+    // real fixture repo proves the list actually matches all three shapes; a string comparison
+    // against the pathspec list itself would not catch either gap.
+    const dir = mkdtempSync(path.join(os.tmpdir(), 'testpaths-fixture-'))
+    try {
+      const git = (...args) => execFileSync('git', args, { cwd: dir, encoding: 'utf8', env: { ...process.env, GIT_AUTHOR_NAME: 'x', GIT_AUTHOR_EMAIL: 'x@x', GIT_COMMITTER_NAME: 'x', GIT_COMMITTER_EMAIL: 'x@x' } })
+      git('init', '-q')
+      mkdirSync(path.join(dir, 'tests', 'x'), { recursive: true })
+      mkdirSync(path.join(dir, 'src'), { recursive: true })
+      writeFileSync(path.join(dir, 'tests', 'x', 'y.sh'), '#!/bin/sh\ntrue\n')
+      writeFileSync(path.join(dir, 'src', 'foo_test.go'), 'package src\n')
+      writeFileSync(path.join(dir, 'main_test.go'), 'package main\n')
+      writeFileSync(path.join(dir, 'README.md'), 'not a test\n')
+      git('add', '-A')
+      git('commit', '-q', '-m', 'add files')
+      git('rm', '-q', 'tests/x/y.sh', 'src/foo_test.go', 'main_test.go')
+      git('commit', '-q', '-m', 'delete files')
+
+      const specs = defaultTestPathspecsForFixtureTest
+      const stat = execFileSync('git', ['diff', '--stat', 'HEAD~1..HEAD', '--', ...specs], { cwd: dir, encoding: 'utf8' })
+      const full = execFileSync('git', ['diff', 'HEAD~1..HEAD', '--', ...specs], { cwd: dir, encoding: 'utf8' })
+      check(stat.includes('tests/x/y.sh'), 'stat diff over the default pathspecs lists the deleted nested tests/x/y.sh', stat)
+      check(stat.includes('src/foo_test.go'), 'stat diff over the default pathspecs lists the deleted nested src/foo_test.go', stat)
+      check(stat.includes('main_test.go'), 'stat diff over the default pathspecs lists the deleted root-level main_test.go', stat)
+      check(!stat.includes('README.md'), 'stat diff over the default pathspecs does not list the non-test README.md', stat)
+      check(full.includes('tests/x/y.sh') && full.includes('src/foo_test.go') && full.includes('main_test.go'), 'full diff over the default pathspecs also lists all three deletions', full)
+    } finally {
+      rmSync(dir, { recursive: true, force: true })
+    }
+  }
+
   scenario('post-rebase seam (issue #4 DQ1): overlap → one scoped review → merge re-dispatched seam-cleared')
   {
     const canned = oneTaskCanned({
@@ -1314,6 +1385,9 @@ async function main() {
     check(JSON.stringify(out.result?.completed) === '["bd-101"]', 'merged after the seam review', JSON.stringify(out.result))
     const seam = promptOf(out.trace, 'seam-review:bd-101')
     check(!!seam && seam.includes('src/a.js') && seam.includes('do not re-review that') && seam.includes(SHA('b')), 'seam review is scoped to the overlapping files and the post-rebase range')
+    check(!!seam && seam.includes('## Test changes') && seam.includes(`${SHA('b')}..HEAD`), 'seam review dispatch carries the Test changes instruction over the post-rebase merge-base..HEAD range', seam)
+    check(/deleted, skipped, loosened, or whose expected values were edited/.test(seam ?? ''), 'seam review dispatch states the NEEDS_FIX rule for test changes')
+    check(/"Test changes: none" is valid ONLY when you state the exact diff command/.test(seam ?? ''), 'seam review dispatch states the command-stated validity rule for "none"')
     const m2 = promptOf(out.trace, 'merge:bd-101:seam-cleared')
     check(!!m2 && m2.includes('ALREADY rebased') && !m2.includes('POST-REBASE SEAM CHECK'), 'second merge skips the seam check')
     const m1 = promptOf(out.trace, 'merge:bd-101')

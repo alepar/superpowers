@@ -32,6 +32,7 @@ args = {
     edgeAuditCap: 3,      // optional — see below
     gate: '<exact per-merge test command>',    // optional — see below
     sweep: '<exact per-branch test command>',  // optional — see below
+    testPaths: ['tests/**', '...'],  // optional — REPLACES the default test pathspecs, see below
     models: { planner: 'opus', implementer: 'sonnet', reviewer: 'sonnet', mechanical: 'sonnet', triage: 'opus', finalReview: 'opus', fixEscalation: 'opus' },
   },
   prompts: { ... },
@@ -66,6 +67,15 @@ told so. Which selection ran is recoverable from the ledger's `Launch:` line, wh
 dependency-edge audits one invocation may dispatch, default 3, `0` disables. Armed by two
 consecutive rounds whose dispatched frontier stayed under the cap; see "The coordinator loop"
 step 7.
+
+`testPaths` is **optional** — additive (spec §5): an array of git pathspecs that **replaces**
+the built-in default list wholesale (it is not merged with the defaults). Every reviewing
+dispatch on a task — the initial review, each fix-loop re-review, and the post-rebase seam
+review — runs a stat diff and a full diff of its range restricted to these pathspecs and reads
+the result as a `## Test changes` block (see "Per-task pipeline" below and `taskReviewPrompt` /
+`reReviewPrompt` / `seamReviewPrompt`). An empty array (`testPaths: []`) is rejected at
+pre-flight: the defaults are retained and a warning is logged, since an empty pathspec list
+would silently turn off the Test-changes check rather than widen it.
 
 `integrationWorktree` is **optional** — additive and non-breaking, same tier as `fixEscalation`
 below: the path of the integration branch's checkout. When omitted, the script derives it from
@@ -603,6 +613,17 @@ never needed, all measured on live runs:
   structurally unfalsifiable assertions on one run; a fully tested claim wrapper the real CLI
   never called, and a bounded-retry fix applied to named readers while an `EEXIST` fallback kept
   the unsafe primitive, on another.
+- **Every reviewing dispatch also runs a `## Test changes` check** (spec §5): the initial review,
+  each fix-loop re-review, and the post-rebase seam review each run a stat diff (always) and a
+  full diff capped at 400 lines (with a truncation note) of their own range, restricted to
+  `config.testPaths` or, absent that, a built-in default pathspec list covering `tests/**`,
+  `test/**`, `spec/**`, nested `**/tests/**` etc., and bare/nested `*_test.*`/`*.test.*`/
+  `test_*.*`/`*_spec.*`/`*.spec.*` filename patterns (bare patterns catch a root-level file like
+  `main_test.go`, which `**/*_test.*` alone never matches). A test deleted, skipped, loosened, or
+  whose expected values were edited to match the implementation, with no justification in the
+  brief, is `NEEDS_FIX`. `Test changes: none` is valid only when the reviewer states the diff
+  command it ran; a bare `none`, or a diff-command error, is `INVALID` — the same handling as an
+  empty review package.
 
 ### Plan materialization
 
@@ -1300,6 +1321,26 @@ const sweepCommand = typeof config.sweep === 'string' && config.sweep.trim() ? c
 // measured run's three ad-hoc audits took the critical path 16 → 11 → 9 → 8 rounds; a fourth
 // bought little, and each audit is an opus-tier read of the whole graph.
 const edgeAuditCap = Math.max(0, Number.isFinite(Number(config.edgeAuditCap)) ? Number(config.edgeAuditCap) : 3)
+// Test-changes pathspecs (optional, additive contract key — spec §5): every reviewing dispatch
+// (initial review, each re-review, the seam review) restricts its stat/full diff to these
+// pathspecs and reads the result as a `## Test changes` block (see taskReviewPrompt /
+// reReviewPrompt / seamReviewPrompt below, and testChangesBlock's shared text). The bare
+// (non-`**/`-prefixed) alternates exist because a root-level file (`main_test.go`) matches
+// neither a `**/`-prefixed glob nor `'**/test*'` (which also matches prose, not just tests) under
+// git pathspec rules — both gaps were roast findings against an earlier draft of this list.
+const defaultTestPathspecs = [
+  'tests/**', 'test/**', 'spec/**', '**/tests/**', '**/test/**', '**/spec/**',
+  '*_test.*', '*.test.*', 'test_*.*', '*_spec.*', '*.spec.*',
+  '**/*_test.*', '**/*.test.*', '**/test_*.*', '**/*_spec.*', '**/*.spec.*',
+]
+// `config.testPaths` REPLACES the defaults wholesale (it is not merged with them) — a caller
+// whose test layout the defaults miss entirely can still get the check. An empty array is
+// rejected at pre-flight: silently accepting `[]` would turn the Test-changes check off, which
+// is a scope-narrowing surprise no caller asked for by naming an empty list — the defaults are
+// kept and a warning logged instead.
+let testPathspecs = defaultTestPathspecs
+if (Array.isArray(config.testPaths) && config.testPaths.length > 0) testPathspecs = config.testPaths
+else if (Array.isArray(config.testPaths) && config.testPaths.length === 0) log(`config.testPaths is an empty array — rejected at pre-flight, defaults retained: ${defaultTestPathspecs.join(' ')}`)
 
 // Null-dispatch guard (live-run defect: see "Null dispatch policy"). agent() returns null when a
 // dispatched subagent dies on a terminal API error after retries; a single 529 on a merge dispatch
@@ -2638,6 +2679,19 @@ function implementPrompt(br, integrationBranch, briefFile, reportFile) {
   return `Follow subagent-driven-development/implementer-prompt.md against the brief for task ${br.id} (n ${br.n}), working in ${br.branch}, branched from integration branch ${integrationBranch}. The template's [BRIEF_FILE] is ${briefFile} and its [REPORT_FILE] is ${reportFile} — both absolute paths in the integration worktree's workspace, deliberately not this task worktree's own .superpowers/ (which is git-ignored and not shared across worktrees; only the integration workspace's copy is read downstream). You MUST write your full report to ${reportFile} before finishing — the reviewer's template hard-requires it and reviews blind without it. Before starting, run \`bd comments ${br.id}\` — any clarification recorded there (a triage RESOLVE writes one) is binding context that overrides your own reading of the brief on the point it clarifies. If BLOCKED after 3 no-progress fix-loops, file the blocker bead yourself (see "The blocker-bead path") — there is no human partner to escalate to mid-task; the bead carries ONLY the \`blocker\` label — no \`sp:\` label, no other label, and no \`--parent\` — because either addition makes it reachable as work and starts a self-sustaining blocker-filing loop. Report id, status (IMPLEMENTED or BLOCKED), files touched, and — only on BLOCKED — blockerBead with the id of the bead you just filed (handleBlocker's triage dispatch needs it; see the runTask chain call site's status guard). ASSERTION DISCIPLINE (issue #3 doc gap 1): for every assertion you add, name a value the code could actually produce that would fail it — if the type or the fixture makes that value impossible (a length check on a fixed-size array, a bound the type already enforces, a digest compared to itself, a negative-length check that an empty result also passes), the assertion is decoration, not a test; and an assertion sequenced after a failing one in the same test body has NOT run — record it as unmeasured in your report, never as green. ${authRefusalRule()}`
 }
 
+// Shared `## Test changes` instruction (spec §5), reused verbatim by all three reviewing
+// dispatches — initial review, each re-review, and the seam review — so the NEEDS_FIX rule and
+// the command-stated validity rule for "none" are worded identically everywhere a reviewer sees
+// them. `range` is the exact git range each call site already computes for its own diff (e.g.
+// `${im.base}..HEAD`, `FIX_BASE..HEAD`, or the seam's post-rebase `${m.mergeBase}..HEAD`); this
+// function does not derive it, so a dispatch that changes its own range keeps this block in sync
+// automatically. `pathspecs` is `testPathspecs` (module-level, from `config.testPaths` or the
+// default list) formatted as quoted `git diff` arguments.
+function testChangesBlock(range, pathspecs) {
+  const specs = pathspecs.map(p => `'${p}'`).join(' ')
+  return ` ## Test changes: in the task worktree, run \`git diff --stat ${range} -- ${specs}\` (always) and \`git diff ${range} -- ${specs}\` (full diff, restricted to these test pathspecs) and read the output as this report's "## Test changes" block. Cap the full diff you quote at 400 lines; past that, quote the first 400 and add "truncated at 400 lines". RULE: a test deleted, skipped, loosened, or whose expected values were edited to match the implementation, with no justification in the brief, is NEEDS_FIX — put it in \`finding\`. "Test changes: none" is valid ONLY when you state the exact diff command you ran and it produced no output; a "none" with no command stated, or a diff-command error, is INVALID — the same handling as an empty review package.`
+}
+
 function taskReviewPrompt(im, planPath, art) {
   // scripts/review-package PLAN_FILE BASE HEAD -> subagent-driven-development/task-reviewer-prompt.md
   // (single reviewer, spec-compliance + quality in one dispatch — the retired two-stage split
@@ -2663,7 +2717,7 @@ function taskReviewPrompt(im, planPath, art) {
   // integration tip and `${im.base}..HEAD` comes back EMPTY (a 104-byte header-only file), which
   // ~40 reviews on one measured run then "reviewed" and reported clean. INVALID is a third status:
   // the review did not happen (see reviewAndFix's validReview).
-  return `cd ${im.branch} FIRST — the review package's HEAD resolves against your working directory; run from anywhere else (the integration worktree in particular) the range comes back empty and you would review nothing. Then run \`scripts/review-package ${planPath} ${im.base} HEAD ${art.diff('initial')}\` for task ${im.id} (n ${im.n}). EMPTY-PACKAGE RULE: if that command exits 3 with EMPTY RANGE, or the resulting package's "## Files changed" section lists no files, do NOT review it and do NOT report CLEAN — report status INVALID with \`finding\` = your working directory (\`pwd\`), the exact command you ran, and its output; an empty package is a measurement failure, never a clean review. Otherwise follow subagent-driven-development/task-reviewer-prompt.md over the resulting package with its template parameters filled: [BRIEF_FILE] = ${art.brief}, [REPORT_FILE] = ${art.report} (the implementer's report — if it is missing, that is itself a finding: report NEEDS_FIX and say so), [DIFF_FILE] = ${art.diff('initial')}. All three are absolute paths in the integration worktree's workspace. REACHABILITY (issue #4 doc gap 1) — when the task touches a shared boundary, an authority/permission check, a durability primitive, or retires something: confirm the production entrypoint actually reaches the new code (one caller trace from a real entrypoint, not only from the tests), and search for sibling call sites that still use the superseded or unsafe form (a fallback branch, a hidden loader, an operator input) — a fully tested wrapper nothing calls, or a fix applied to one of two call sites, is NEEDS_FIX. ASSERTION DISCIPLINE (issue #3 doc gap 1): an assertion the type makes unfailable (a length check on a fixed-size array, a bound the type enforces, a value compared to itself, a negative-length check an empty result also passes) is a Minor at least, and a claim that assertions sequenced after a failing one in the same test body are "green" is a finding — they never ran. Report id and status CLEAN, NEEDS_FIX, or INVALID — on NEEDS_FIX, put the finding text in the \`finding\` field (fixPrompt builds the fix dispatch from it directly, not from the rest of this result). Separately, list every **Minor** finding as a one-line string in the \`minors\` array — minors never enter the fix loop (SKILL.md defers them), so this array is the only way they survive; an empty array or an omitted field means you found none, which the Finish-phase reviewer will read as a real claim.`
+  return `cd ${im.branch} FIRST — the review package's HEAD resolves against your working directory; run from anywhere else (the integration worktree in particular) the range comes back empty and you would review nothing. Then run \`scripts/review-package ${planPath} ${im.base} HEAD ${art.diff('initial')}\` for task ${im.id} (n ${im.n}). EMPTY-PACKAGE RULE: if that command exits 3 with EMPTY RANGE, or the resulting package's "## Files changed" section lists no files, do NOT review it and do NOT report CLEAN — report status INVALID with \`finding\` = your working directory (\`pwd\`), the exact command you ran, and its output; an empty package is a measurement failure, never a clean review. Otherwise follow subagent-driven-development/task-reviewer-prompt.md over the resulting package with its template parameters filled: [BRIEF_FILE] = ${art.brief}, [REPORT_FILE] = ${art.report} (the implementer's report — if it is missing, that is itself a finding: report NEEDS_FIX and say so), [DIFF_FILE] = ${art.diff('initial')}. All three are absolute paths in the integration worktree's workspace. REACHABILITY (issue #4 doc gap 1) — when the task touches a shared boundary, an authority/permission check, a durability primitive, or retires something: confirm the production entrypoint actually reaches the new code (one caller trace from a real entrypoint, not only from the tests), and search for sibling call sites that still use the superseded or unsafe form (a fallback branch, a hidden loader, an operator input) — a fully tested wrapper nothing calls, or a fix applied to one of two call sites, is NEEDS_FIX. ASSERTION DISCIPLINE (issue #3 doc gap 1): an assertion the type makes unfailable (a length check on a fixed-size array, a bound the type enforces, a value compared to itself, a negative-length check an empty result also passes) is a Minor at least, and a claim that assertions sequenced after a failing one in the same test body are "green" is a finding — they never ran.${testChangesBlock(`${im.base}..HEAD`, testPathspecs)} Report id and status CLEAN, NEEDS_FIX, or INVALID — on NEEDS_FIX, put the finding text in the \`finding\` field (fixPrompt builds the fix dispatch from it directly, not from the rest of this result). Separately, list every **Minor** finding as a one-line string in the \`minors\` array — minors never enter the fix loop (SKILL.md defers them), so this array is the only way they survive; an empty array or an omitted field means you found none, which the Finish-phase reviewer will read as a real claim.`
 }
 
 function fixPrompt(rv, round, art) {
@@ -2716,7 +2770,7 @@ function reReviewPrompt(fixed, planPath, art, round) {
   // exists for — can legitimately report `finding: ""`, and `??` only falls back on null/undefined,
   // not on that empty string) as a second line of defense if a re-reviewer ever omits it, or blanks
   // it, on a genuine NEEDS_FIX-equivalent.
-  return `Follow subagent-driven-development/re-review-prompt.md, scoped to the fix diff for task ${fixed.id} (n ${fixed.n}) in ${fixed.branch}, with its template parameters filled (all absolute paths in the integration worktree's workspace): [BRIEF_FILE] = ${art.brief}, [REPORT_FILE] = ${art.report} (the implementer's report, fix-round entries appended), [DIFF_FILE] = ${art.diff(`fix-${round}`)} — produce that diff first: cd ${fixed.branch} FIRST (HEAD resolves against your working directory — from the integration worktree the range comes back empty), then run \`scripts/review-package ${planPath} FIX_BASE HEAD ${art.diff(`fix-${round}`)}\`, where FIX_BASE is the commit this fix round started from (the report file's fix-round entry records the pre-fix tip; failing that, it is the tip immediately before this round's fix commits in \`git log\`). EMPTY-PACKAGE RULE: if that command exits 3 with EMPTY RANGE, or the package's "## Files changed" section lists no files, do NOT review and do NOT report CLEAN — report status INVALID with \`finding\` = your working directory (\`pwd\`), the exact command and its output; an empty package is a measurement failure. That template's own vocabulary is per-finding "ADDRESSED"/"NOT ADDRESSED" with a round verdict — map it to a single BARE TOKEN this round's overall \`status\`: "CLEAN" if every finding is ADDRESSED, "NEEDS_FIX" if any finding remains open — no other value, no colon, no extra text in that field, since the coordinator branches on exact string equality against it and fails CLOSED (treats anything that isn't literally "CLEAN" as still open) on anything else. Report id, that status token, and — whenever status is NEEDS_FIX — finding with the still-open finding text verbatim (fixPrompt and, at the cap, breakerBlockerPrompt/adjudicatePrompt build their dispatch from this field directly; omit or leave it blank only when status is CLEAN). Any NEW Minor finding this fix diff introduced goes in the \`minors\` array, one line each — the coordinator accumulates these across rounds, so do not re-list minors from an earlier round you cannot see.`
+  return `Follow subagent-driven-development/re-review-prompt.md, scoped to the fix diff for task ${fixed.id} (n ${fixed.n}) in ${fixed.branch}, with its template parameters filled (all absolute paths in the integration worktree's workspace): [BRIEF_FILE] = ${art.brief}, [REPORT_FILE] = ${art.report} (the implementer's report, fix-round entries appended), [DIFF_FILE] = ${art.diff(`fix-${round}`)} — produce that diff first: cd ${fixed.branch} FIRST (HEAD resolves against your working directory — from the integration worktree the range comes back empty), then run \`scripts/review-package ${planPath} FIX_BASE HEAD ${art.diff(`fix-${round}`)}\`, where FIX_BASE is the commit this fix round started from (the report file's fix-round entry records the pre-fix tip; failing that, it is the tip immediately before this round's fix commits in \`git log\`). EMPTY-PACKAGE RULE: if that command exits 3 with EMPTY RANGE, or the package's "## Files changed" section lists no files, do NOT review and do NOT report CLEAN — report status INVALID with \`finding\` = your working directory (\`pwd\`), the exact command and its output; an empty package is a measurement failure. That template's own vocabulary is per-finding "ADDRESSED"/"NOT ADDRESSED" with a round verdict — map it to a single BARE TOKEN this round's overall \`status\`: "CLEAN" if every finding is ADDRESSED, "NEEDS_FIX" if any finding remains open — no other value, no colon, no extra text in that field, since the coordinator branches on exact string equality against it and fails CLOSED (treats anything that isn't literally "CLEAN" as still open) on anything else.${testChangesBlock('FIX_BASE..HEAD', testPathspecs)} Report id, that status token, and — whenever status is NEEDS_FIX — finding with the still-open finding text verbatim (fixPrompt and, at the cap, breakerBlockerPrompt/adjudicatePrompt build their dispatch from this field directly; omit or leave it blank only when status is CLEAN). Any NEW Minor finding this fix diff introduced goes in the \`minors\` array, one line each — the coordinator accumulates these across rounds, so do not re-list minors from an earlier round you cannot see.`
 }
 
 function seamReviewPrompt(r, m, integrationBranch, planPath, art) {
@@ -2726,7 +2780,7 @@ function seamReviewPrompt(r, m, integrationBranch, planPath, art) {
   // touched — the exact class the measured run found only after its five-round cap was spent
   // (a sibling receipt-digest incompatibility; a shared fixture signature change). One round,
   // one fix dispatch on NEEDS_FIX, then the merge proceeds to its gate.
-  return `POST-REBASE SEAM REVIEW for task ${r.id} (n ${r.n}) in ${r.branch}: the branch was just rebased onto ${integrationBranch}, and sibling commits that landed there since this task branched changed the SAME files this task changed: ${m.seamOverlap.join(', ')}. The per-task review already approved this task's logic against its original base — do not re-review that. Review ONLY post-rebase compatibility on those files. cd ${r.branch} FIRST. Read the sibling side (\`git log --oneline ${r.base}..${m.mergeBase} -- <files>\` and \`git diff ${r.base} ${m.mergeBase} -- <files>\`) and this task's side (\`git diff ${m.mergeBase} ${m.head} -- <files>\`; write it to ${art.diff('seam')} for the record), then check for: a changed signature, fixture, contract, export, schema or invariant on the sibling side that this task's code or tests still assume the old form of; duplicated or contradictory edits to the same lines that the rebase auto-resolved; a test on either side that the other side's change makes vacuous. Report id ${r.id} and status as a BARE TOKEN: "CLEAN" (the two sides compose) or "NEEDS_FIX" with \`finding\` naming the incompatibility and the smallest change that reconciles it — the coordinator dispatches exactly one fix from that text and then merges; there is no second seam round, and the merge gate's tests run next either way.`
+  return `POST-REBASE SEAM REVIEW for task ${r.id} (n ${r.n}) in ${r.branch}: the branch was just rebased onto ${integrationBranch}, and sibling commits that landed there since this task branched changed the SAME files this task changed: ${m.seamOverlap.join(', ')}. The per-task review already approved this task's logic against its original base — do not re-review that. Review ONLY post-rebase compatibility on those files. cd ${r.branch} FIRST. Read the sibling side (\`git log --oneline ${r.base}..${m.mergeBase} -- <files>\` and \`git diff ${r.base} ${m.mergeBase} -- <files>\`) and this task's side (\`git diff ${m.mergeBase} ${m.head} -- <files>\`; write it to ${art.diff('seam')} for the record), then check for: a changed signature, fixture, contract, export, schema or invariant on the sibling side that this task's code or tests still assume the old form of; duplicated or contradictory edits to the same lines that the rebase auto-resolved; a test on either side that the other side's change makes vacuous.${testChangesBlock(`${m.mergeBase}..HEAD`, testPathspecs)} Report id ${r.id} and status as a BARE TOKEN: "CLEAN" (the two sides compose) or "NEEDS_FIX" with \`finding\` naming the incompatibility and the smallest change that reconciles it — the coordinator dispatches exactly one fix from that text and then merges; there is no second seam round, and the merge gate's tests run next either way.`
 }
 
 function edgeAuditPrompt(epicId, integrationWorktree, cap, dispatchedCount, roundNo) {
