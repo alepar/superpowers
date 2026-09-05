@@ -14,6 +14,18 @@ roastDesignExit: converged at round 2 — Should-fix (8 confirmed) [converged]; 
 
 roastDesignRound: 2
 
+codeBuckets:
+  completed: super-plan-qfy.1, super-plan-qfy.3, super-plan-qfy.4, super-plan-qfy.5, super-plan-qfy.6, super-plan-qfy.7, super-plan-qfy.8, super-plan-qfy.9, super-plan-qfy.10
+  escalated: super-plan-qfy.2
+  pendingRetry:
+  parked:
+  stalled: false
+  stopReason: ready-drained (root open — .2 escalated, .11 sweep never ready)
+  review: Blocking (1 confirmed) — Task 2 (.2) missing from the branch; everything else clean; sweep cf90104 860 passed
+  authRefused:
+  sweep: cf90104 — 860 passed, 0 failed, 0 errors, 0 skipped; command: bash tests/super-code/test-coordinator-replay.sh
+  ledger: .superpowers/sdd/super-plan-qfy-plan/progress.md
+
 codeLaunch: workflow wf_2612e115-caf (2026-09-05) · epic super-plan-qfy · 11 leaves · concurrency 16 · gate/sweep tests/super-code/test-coordinator-replay.sh · ledger .superpowers/sdd/super-plan-qfy-plan/progress.md (git-ignored, inside this worktree)
 
 parked:
