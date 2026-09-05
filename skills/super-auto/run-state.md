@@ -191,6 +191,13 @@ a resume can silently redo work or violate a decision that was already made.
      as how many of the loop's two rounds are already spent. Findings a later
      round newly surfaces are covered by no earlier round's record.
 
+     Round 1's record also carries the canonical requirement list the orchestrator
+     derived for the root pass (R-id + text; any `R-new` a reviewer proposed is
+     appended here for round 2) and the `requirements: N · mapped: M · unmapped: K
+     (…)` line unioned by id from the three reviewers. Round 2 reads the R-list
+     back from round 1's record rather than re-deriving it, appending only new
+     `R-new` ids — existing ones are never renumbered.
+
    Anything not recorded was never approved. **Never widen a replay into a blanket
    "the human approved this run"** — that turns one approval into consent for work
    they never saw, which is the failure mode this record exists to prevent, arrived
@@ -221,7 +228,7 @@ roastCodeRound: 1
 
 approvals:
 - top-split · bd-413 PROMOTE, bd-414 PROMOTE, bd-415 LEAF, bd-416 LEAF
-- coverage-round-1 · auto GAP "no backpressure path" → leaf bd-417; auto ORPHAN "metrics exporter" → kept, goal element added; auto UNOWNED-SEAM "tenant-id propagation" → contract bd-418 / integration bd-419; auto NARRATIVE-EDGE "bd-411 ← bd-405" → edge dropped (artifact unnameable)
+- coverage-round-1 · canonical R-list: R1 "enforce per-tenant request quota", R2 "reject over-quota requests with 429", R3 "expose current quota usage to callers" · requirements: 3 · mapped: 2 · unmapped: 1 (R3) · auto GAP "no backpressure path" → leaf bd-417; auto ORPHAN "metrics exporter" → kept, goal element added; auto UNOWNED-SEAM "tenant-id propagation" → contract bd-418 / integration bd-419; auto NARRATIVE-EDGE "bd-411 ← bd-405" → edge dropped (artifact unnameable); auto GAP "R3 unmapped — usage exposure" → leaf bd-420
 
 parked:
 - 2026-07-31-per-tenant-rate-limiter-roast-design-2.md · escalation · "cache invalidation premise unverified — no valid judge votes"

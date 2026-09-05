@@ -298,6 +298,28 @@ Runs once the tree has settled (§The Process, step 7).
 - **Per-subepic pass:** that subepic's spec + children + parent goal chain, checked against its local `## Goal`.
 - **Root pass:** root spec + subepic specs + the full task tree, checked against the root `## Goal`. Beads: dump the tree with `bd list --label sp:<root-epic-id> --json --status all` (not `--parent` — one level only in JSON mode). Above ~15 specs in the tree, subepic spec prose may be summarized to goal/summary sections for scale; the task tree itself is never summarized.
 
+**Canonical requirement list (root pass only).** Before dispatch, the orchestrator — not
+any reviewer — derives the canonical requirement list once per round: decompose the root
+`## Goal` and root spec into one observable outcome per requirement, numbered R1…Rn. Pass
+this same list to all three root-pass reviewers as the `## Requirements (canonical)` input
+(§`coverage-reviewer-prompt.md`); per-subepic passes do not enumerate and get this section
+empty. **R-ids are stable across rounds and resumes:** round 1 derives R1…Rn and writes them
+into `run.md`'s `coverage-round-1` record; round 2 (or a resume) **reads that list back**
+rather than re-deriving it, appending any `R-new: <text>` a round-1 reviewer proposed as the
+next free id — an existing id is never renumbered or reused. After the three reviewers
+return, union their unmapped-requirement sets **by canonical id** (a requirement unmapped by
+any reviewer counts as unmapped) and write one line into the round summary and into the
+`coverage-round-<N>` record:
+
+```
+requirements: N · mapped: M · unmapped: K (R3, R7)
+```
+
+where N is the canonical list's size, M the number mapped by at least one reviewer, and K
+the unioned-unmapped count with their ids. Each unmapped requirement was already reported by
+its reviewer(s) as a `GAP` (§`coverage-reviewer-prompt.md` check 0) — this line summarizes,
+it does not itself create new findings.
+
 **Each pass runs 3 independent reviewers** (`./coverage-reviewer-prompt.md`, fresh context, model opus) — **input-bounded**: the prompt carries a reviewer's entire window and forbids it tools, so assemble the inputs completely; an `INSUFFICIENT-INPUT` finding means the pass was mis-assembled, not that the reviewer should have roamed; findings are unioned and deduped before disposition (union, not majority — a miss costs more than a false positive, and the verify step below removes false positives anyway). A pass returning fewer than 3 valid reviews is marked **degraded** in the round summary, never silently accepted.
 
 **Ledger:** every disposed finding — applied, rejected, escalated, and flag-sweep — is appended (stable id + one-line description) to the coverage ledger in the artifact directory (§Artifact Location) and committed. Pass its contents to every reviewer; the ledger takes precedence over the flag sweep (an already-disposed flagged task is not re-surfaced).

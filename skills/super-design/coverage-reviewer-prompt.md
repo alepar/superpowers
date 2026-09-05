@@ -61,7 +61,22 @@ Task tool (general-purpose), model: opus:
     docs/superpowers/specs/<root-slug>-coverage-ledger.md, if any. Findings matching an
     entry here were already disposed of — do not resurface them without new evidence.]
 
+    ## Requirements (canonical)
+    [REQUIREMENTS_CANONICAL — the orchestrator's R1…Rn list (root pass only; EMPTY for a
+    per-subepic pass — skip check 0 entirely when this is empty), derived once per round
+    from the root `## Goal` and root spec, one observable outcome per id. Stable across
+    rounds and resumes: never renumber an existing id.]
+
     ## Checks
+
+    0. **Requirement mapping (root pass only).** For each canonical requirement, list the
+       task ids that deliver it. You may propose a new requirement the canonical list
+       missed as `R-new: <text>` — the orchestrator appends it to next round's list; never
+       renumber or reuse an existing id yourself. Every canonical requirement with no
+       mapped task is **also** reported as a `GAP` in the findings list below (check 1
+       still applies as before; this makes the omission explicit rather than folding it
+       silently into the forward trace). Emit this mapping as the `requirements` output
+       block, **before** the findings list.
 
     1. **Forward trace → GAP.** Decompose the goal into its necessary elements. Every
        element must map to at least one task or spec section. An unmapped element is a
@@ -155,7 +170,18 @@ Task tool (general-purpose), model: opus:
 
     ## Required structured output (do NOT write a prose essay)
 
-    One entry per finding:
+    **Root pass only:** first, a `requirements` block mapping every canonical id to the
+    task ids that deliver it (`R-new: <text>` entries appended for any you propose) —
+    this comes **before** the findings list, one line per requirement:
+
+    ```
+    requirements:
+    R1 → bd-101, bd-104
+    R2 → (unmapped)
+    R-new: <text> → bd-107
+    ```
+
+    Then, one entry per finding:
     - **type:** `GAP` | `ORPHAN` | `UNOWNED-SEAM` | `NARRATIVE-EDGE` | `UNSATISFIABLE-ACCEPTANCE` (with `dependent` or `unwired` in the description) | `UNEXERCISED-CONFIGURATION` | flag-sweep
     - **description:** the problem, one sentence
     - **evidence:** the unmapped goal element, the orphaned task id, the seam's two
