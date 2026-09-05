@@ -18,3 +18,15 @@ Root pass, 3 reviewers (opus), union then verify then dispose. All dispositions 
 - CR1-12 · GAP · .10 leaves the SDD "trailing fix round = mid-loop" divergence unstated (1/3) — **applied**: .10 acceptance requires the explicit statement in coordinator-workflow.md.
 
 Round 1 summary: 12 deduped findings · 6 applied · 2 accepted without tree change (CR1-01, CR1-04 → sweep) · 4 rejected. Tree changed (5 descriptions amended) → round 2 runs.
+
+## Round 2
+
+Divergence observation: round 1 deduped 12 → round 2 deduped 4 (all novel identities, all reviewer-marked low confidence). Count shrank by two-thirds: converging, not widening.
+
+- CR2-01 · GAP · .8 names no source for dependency edges in the graph table (1/3) — **verified** partially: `bd list --json` does return a `dependencies` array (this run's own coverage dumps used it), but .8's text did not say so; **applied**: .8 states edges come from the dump's `dependencies` array and reasons from `blocked-by` lines.
+- CR2-02 · UNOWNED-SEAM · .5's "parked-draft path" has no named owner (1/3) — **verified** pre-existing: upstream-feedback SKILL.md step 5 parks the draft in the run's friction-log directory; **applied**: .5 qualifies it and adds the `metrics: none` fallback.
+- CR2-03 · UNSATISFIABLE-ACCEPTANCE prose · .2 description edits the Pragmatism filter while its acceptance forbids changes to it (1/3) — **verified**; **applied**: .2 acceptance restated (Scope unchanged; Pragmatism gains exactly one sentence).
+- CR2-04 · UNOWNED-SEAM · fix-loop line keyed by SDD task ordinal N, Merge: line by bead id, no stated correspondence (1/3) — **verified**; **applied**: .10 `owns:` states N is the SDD ordinal already paired with the bead id by the ledger's completion lines; .4 `consumes:` states the two aggregations need no join.
+- Check 9: all five round-1 amendments confirmed to close their findings by 3/3 reviewers; introduced items are CR2-02 and CR2-04 above, both applied.
+
+Round 2 summary: 4 deduped · 4 applied · 0 rejected. Loop ends (fixed two rounds; round-2 fixes are not re-reviewed). Root Integration sweep created next, depending on every leaf, carrying CR1-04.
