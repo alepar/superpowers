@@ -193,6 +193,21 @@ const PLANPATH = `${PLANDIR}/${EPIC}-plan.md`
 
 const SHA = c => c.repeat(40)
 
+// Mirrors the coordinator script's own `LEDGER_LINE_RE` (see coordinator-workflow.md) — kept as a
+// literal copy, not extracted from the doc, because this harness already extracts and RUNS the
+// script itself (extractScript) and a self-referential extraction of one more regex out of that
+// same text would just move the sync risk, not remove it; a drift here is caught the same way any
+// other doc/harness mismatch is, by a failing assertion.
+const LEDGER_LINE_RE = /^Task\s+(\S+)\s+\(([^)]+)\):\s*(.*)$/
+// Pulls the actual ledger payload out of a real ledgerAppendPrompt dispatch's prompt text — the
+// text between the `~~~LEDGER_LINE~~~` fences that prompt wraps every line in (see
+// `ledgerAppendPrompt` in coordinator-workflow.md) — so assertions check the LINE, not the
+// surrounding fence/instruction prose.
+function extractLedgerLine(promptText) {
+  const m = /~~~LEDGER_LINE~~~\n([\s\S]*?)\n~~~LEDGER_LINE~~~/.exec(promptText ?? '')
+  return m ? m[1] : null
+}
+
 const MODELS = { planner: 'opus', implementer: 'sonnet', reviewer: 'sonnet', mechanical: 'sonnet', triage: 'opus', finalReview: 'opus', fixEscalation: 'opus' }
 const cfg = (extra = {}) => ({ concurrency: 4, models: MODELS, ...extra })
 
@@ -301,8 +316,8 @@ async function main() {
   {
     const scan = scanTemplateSpans(scriptBody)
     check(scan.clean, 'scanner ends in code state (no unterminated literal, string, or ${})')
-    check(scan.spans.length === 156,
-      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 156; was 107 before the issue #3/#4 batch added the auth-refusal rule, seam review, edge audit, sweep, recurring-minor and detector-persistence literals, then 150, then +6 for Task 3's two \`Merge:\` ledger-line dispatch call sites — each contributes 3 template literals: the line text and the stub-key template literal used twice, once as the dispatch key and once as opts.label) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
+    check(scan.spans.length === 159,
+      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 159; was 107 before the issue #3/#4 batch added the auth-refusal rule, seam review, edge audit, sweep, recurring-minor and detector-persistence literals, then 150, then +6 for Task 3's two \`Merge:\` ledger-line dispatch call sites — each contributes 3 template literals: the line text and the stub-key template literal used twice, once as the dispatch key and once as opts.label — then +3 for Task 4's fix-round ledger-line literal in reviewAndFix and both fixPrompt branches' literals extended to ask for head) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
     // self-test: inject a raw backtick mid-way through the first literal's content and assert
     // the detector actually fires — a detector that cannot catch the known failure is decoration
     const [s, e] = scan.spans[0]
@@ -322,7 +337,7 @@ async function main() {
   {
     const out = await run({ args: canonicalArgs })
     assertNoThrow(out)
-    check(out.trace.length === 45, `45 agent dispatches (got ${out.trace.length}) — 32 + 1 launch-args ledger record + 1 detector ledger record (round 1; round 2 exits at ready-drained before the detector) + 2 top-up queries + 1 post-closure re-check (round 2's Close reports closures) + bd-104's same-round RESOLVE retry wave (brief, implement, bounced triage, notify, BLOCKED ledger line) + 3 Task-3 \`Merge:\` ledger lines (bd-101, bd-102 success; bd-103 failure)`)
+    check(out.trace.length === 46, `46 agent dispatches (got ${out.trace.length}) — 32 + 1 launch-args ledger record + 1 detector ledger record (round 1; round 2 exits at ready-drained before the detector) + 2 top-up queries + 1 post-closure re-check (round 2's Close reports closures) + bd-104's same-round RESOLVE retry wave (brief, implement, bounced triage, notify, BLOCKED ledger line) + 3 Task-3 \`Merge:\` ledger lines (bd-101, bd-102 success; bd-103 failure) + bd-101's one fix-round ledger line (Task 4)`)
     const r = out.result
     check(r && JSON.stringify(r.completed.sort()) === '["bd-101","bd-102"]', 'completed = [bd-101, bd-102]', JSON.stringify(r?.completed))
     check(r && JSON.stringify(r.escalated.sort()) === '["bd-103","bd-104"]', 'escalated = [bd-103, bd-104] — bd-104 spent its C-2 retry same-round (stub implementer stays BLOCKED) and bounced', JSON.stringify(r?.escalated))
@@ -341,6 +356,12 @@ async function main() {
     // Task 3: the blocker/failure path appends exactly one `Merge:` line for the failed merge.
     check(out.trace.filter(t => t.label === 'ledger-append:merge-failed:bd-103').length === 1, 'exactly one ledger-append:merge-failed:bd-103 dispatch')
     check(!out.trace.some(t => t.label === 'ledger-append:merge:bd-103' || t.label === 'ledger-append:merge-failed:bd-101'), 'success/failure Merge: keys never cross tasks')
+    // Task 4: exactly one fix-round ledger line dispatched for bd-101 (round 1, the only round it
+    // needs) — the STUB KEY, not the prompt text, is checkable under dryRun (the real
+    // ledgerAppendPrompt/ledgerLine text is swapped for the canned stub, same limit as every other
+    // prompt-TEXT claim in this doc's dryRun policy — see the live-sim scenario below for the text
+    // shape assertion this key alone can't make).
+    check(out.trace.filter(t => t.label === 'ledger-append:fix-round:bd-101:1').length === 1, 'exactly one ledger-append:fix-round:bd-101:1 dispatch')
     assertBucketsDisjoint(r)
   }
 
@@ -348,13 +369,18 @@ async function main() {
   {
     const out = await run({ args: capArgs })
     assertNoThrow(out)
-    check(out.trace.length === 26, `26 agent dispatches (got ${out.trace.length}) — 24 + 1 launch-args ledger record + 1 detector ledger record`)
+    check(out.trace.length === 31, `31 agent dispatches (got ${out.trace.length}) — 24 + 1 launch-args ledger record + 1 detector ledger record + bd-201's five fix-round ledger lines (Task 4)`)
     const r = out.result
     check(r && r.completed.length === 0 && JSON.stringify(r.escalated) === '["bd-201"]', 'completed empty, escalated = [bd-201]', JSON.stringify(r))
     check(r && r.review === 'no work landed', "review = 'no work landed'", r?.review)
     check(!out.trace.some(t => t.label === 'merge:bd-201' || t.label === 'final-review'), 'no merge and no final-review dispatched')
     check(out.trace.filter(t => t.label.startsWith('fix:bd-201:')).length === 5, 'exactly 5 fix rounds')
     check(out.trace.filter(t => t.label === 'adjudicate:bd-201').length === 1, 'adjudicator dispatched exactly once')
+    // Task 4: exactly five fix-round ledger lines dispatched for bd-201 (rounds 1-5) — stub KEYS
+    // only, same dryRun-text limit as the canonical scenario above; see the live-sim scenario below
+    // for the text shape assertion.
+    const fixRoundLabels201 = ['1', '2', '3', '4', '5'].map(n => `ledger-append:fix-round:bd-201:${n}`)
+    check(fixRoundLabels201.every(l => out.trace.filter(t => t.label === l).length === 1), 'exactly one ledger-append:fix-round:bd-201:<r> dispatch per round 1-5', JSON.stringify(fixRoundLabels201.map(l => [l, out.trace.filter(t => t.label === l).length])))
     assertBucketsDisjoint(r)
   }
 
@@ -362,7 +388,7 @@ async function main() {
   {
     const out = await run({ args: parkArgs })
     assertNoThrow(out)
-    check(out.trace.length === 27, `27 agent dispatches (got ${out.trace.length}) — 23 + 1 launch-args ledger record + 1 detector ledger record + 1 top-up query after bd-301's merge + 1 Task-3 \`Merge:\` ledger line`)
+    check(out.trace.length === 32, `32 agent dispatches (got ${out.trace.length}) — 23 + 1 launch-args ledger record + 1 detector ledger record + 1 top-up query after bd-301's merge + 1 Task-3 \`Merge:\` ledger line + bd-301's five fix-round ledger lines (Task 4)`)
     const r = out.result
     check(r && JSON.stringify(r.completed) === '["bd-301"]' && JSON.stringify(r.parked) === '["bd-301"]', 'bd-301 completed AND parked', JSON.stringify(r))
     check(out.trace.some(t => t.label === 'merge:bd-301'), 'PARK ruling reached the merge gate')
@@ -395,8 +421,9 @@ async function main() {
       'impl:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', files: ['src/a.js'] },
       'impl:bd-104': { id: 'bd-104', status: 'BLOCKED', files: ['src/c.js'], blockerBead: 'bd-109' },
       'review:bd-101': { id: 'bd-101', status: 'NEEDS_FIX', finding: 'missing null check' },
-      'fix:bd-101:1': { id: 'bd-101', status: 'FIXED' },
+      'fix:bd-101:1': { id: 'bd-101', status: 'FIXED', head: SHA('f') },
       're-review:bd-101:1': { id: 'bd-101', status: 'CLEAN' },
+      'ledger-append:fix-round:bd-101:1': { appended: true },
       'merge:bd-101': { id: 'bd-101', merged: true, head: SHA('b'), mergeBase: SHA('a') },
       'ledger-append:bd-101': { appended: true },
       'ledger-append:merge:bd-101': { appended: true },
@@ -435,6 +462,19 @@ async function main() {
 
     const fix = promptOf(out.trace, 'fix:bd-101:1')
     check(fix?.includes(`${PLANDIR}/task-1-report.md`), 'fix prompt names the report file to append to', fix)
+    check(/Report id, status FIXED, and head/.test(fix ?? ''), 'fix prompt now also asks for `head` (Task 4: the ledger needs a real commit tip)', fix)
+
+    // Task 4: the fix-round ledger line reReviewPrompt/reviewAndFix build, in the coordinator's
+    // own dialect (ordinal + bead id in parens, LEDGER_LINE_RE-compatible), asserted on the REAL
+    // prompt text — only reachable under live-sim, since dryRun swaps this text for a stub.
+    const fixRound = promptOf(out.trace, 'ledger-append:fix-round:bd-101:1')
+    check(fixRound !== null, 'ledger-append:fix-round:bd-101:1 dispatched exactly once for round 1')
+    const ledgerLineText = extractLedgerLine(fixRound)
+    check(/^Task 1 \(bd-101\): fix round 1\/5 \(/.test(ledgerLineText ?? ''), 'fix-round line opens with the coordinator ordinal+bead-id+round shape', ledgerLineText)
+    check(/1 addressed, 0 open/.test(ledgerLineText ?? ''), 'fix-round line reports 1 addressed/0 open on the round that resolved CLEAN', ledgerLineText)
+    check(/missing null check/.test(ledgerLineText ?? ''), 'fix-round line carries the finding one-liner', ledgerLineText)
+    check(new RegExp(`commits ${SHA('a').slice(0,7)}\\.\\.${SHA('f').slice(0,7)}`).test(ledgerLineText ?? ''), 'fix-round line carries this round\'s commit range (base..this round\'s head)', ledgerLineText)
+    check(LEDGER_LINE_RE.test(ledgerLineText ?? ''), "fix-round line matches the coordinator's own LEDGER_LINE_RE", ledgerLineText)
 
     const missing = promptOf(out.trace, 'missing-blocker:bd-104')
     check(missing === null, 'self-filed bead present, so no missing-blocker fallback fired')
@@ -443,6 +483,64 @@ async function main() {
 
     const r = out.result
     check(JSON.stringify(r?.completed) === '["bd-101"]' && JSON.stringify(r?.escalated) === '["bd-104"]' && r?.pendingRetry.length === 0, 'terminal buckets correct (bd-104 retried same-round and bounced to escalated)', JSON.stringify(r))
+    assertBucketsDisjoint(r)
+  }
+
+  scenario('live-sim: fix-round ledger lines — breaker bd-201 runs all 5 rounds (Task 4)')
+  {
+    const needsFix = { id: 'bd-201', status: 'NEEDS_FIX', finding: 'race condition writing the shared cache' }
+    const canned = oneTaskCanned({
+      'bd-ready': [{ ids: ['bd-201'] }, { ids: [] }],
+      'plan': { planPath: PLANPATH, mapping: [{ n: 1, id: 'bd-201', files: ['src/x.js'] }] },
+      'brief:bd-201': { id: 'bd-201', n: 1, status: 'BRIEFED', files: ['src/x.js'], branch: 'x', base: SHA('a') },
+      'impl:bd-201': { id: 'bd-201', status: 'IMPLEMENTED', files: ['src/x.js'] },
+      'review:bd-201': needsFix,
+      'fix:bd-201:1': { id: 'bd-201', status: 'FIXED', head: SHA('1') },
+      're-review:bd-201:1': needsFix,
+      'ledger-append:fix-round:bd-201:1': { appended: true },
+      'fix:bd-201:2': { id: 'bd-201', status: 'FIXED', head: SHA('2') },
+      're-review:bd-201:2': needsFix,
+      'ledger-append:fix-round:bd-201:2': { appended: true },
+      'fix:bd-201:3': { id: 'bd-201', status: 'FIXED', head: SHA('3') },
+      're-review:bd-201:3': needsFix,
+      'ledger-append:fix-round:bd-201:3': { appended: true },
+      'fix:bd-201:4': { id: 'bd-201', status: 'FIXED', head: SHA('4') },
+      're-review:bd-201:4': needsFix,
+      'ledger-append:fix-round:bd-201:4': { appended: true },
+      'fix:bd-201:5': { id: 'bd-201', status: 'FIXED', head: SHA('5') },
+      're-review:bd-201:5': needsFix,
+      'ledger-append:fix-round:bd-201:5': { appended: true },
+      'adjudicate:bd-201': { id: 'bd-201', decision: 'BLOCKED', ruling: 'real race condition; must not merge' },
+      'breaker-blocker:bd-201': { id: 'bd-201', status: 'BLOCKED', blockerBead: 'bd-210' },
+      'triage:bd-201': { decision: 'ESCALATE', detail: 'needs a human decision' },
+      'notify:bd-201': { sent: true },
+      'ledger-append:bd-201': { appended: true },
+    })
+    const out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+
+    // Exactly one ledger-append:fix-round dispatch per round, rounds 1 through 5 — each round's
+    // text carries THAT round's ordinal, an open verdict (this scenario's finding never resolves),
+    // and a commit range that advances round over round (round R's base is round R-1's head, per
+    // `roundBase` in `reviewAndFix` — never all five rounds citing the original `base`).
+    let priorHead7 = SHA('a').slice(0, 7)
+    for (let round = 1; round <= 5; round++) {
+      const label = `ledger-append:fix-round:bd-201:${round}`
+      const p = promptOf(out.trace, label)
+      check(p !== null, `${label} dispatched`)
+      const line = extractLedgerLine(p)
+      check(new RegExp(`^Task 1 \\(bd-201\\): fix round ${round}/5 \\(`).test(line ?? ''), `${label} line opens with round ${round}'s own ordinal`, line)
+      check(/0 addressed, 1 open/.test(line ?? ''), `${label} line reports 0 addressed/1 open (finding never resolves)`, line)
+      check(/race condition writing the shared cache/.test(line ?? ''), `${label} line carries the finding one-liner`, line)
+      const thisHead7 = SHA(String(round)).slice(0, 7)
+      check(new RegExp(`commits ${priorHead7}\\.\\.${thisHead7}`).test(line ?? ''), `${label} line's commit range starts where round ${round - 1} left off`, line)
+      check(LEDGER_LINE_RE.test(line ?? ''), `${label} line matches the coordinator's own LEDGER_LINE_RE`, line)
+      priorHead7 = thisHead7
+    }
+    check(out.trace.filter(t => t.label.startsWith('ledger-append:fix-round:bd-201:')).length === 5, 'exactly 5 fix-round ledger dispatches total, not more')
+
+    const r = out.result
+    check(r && r.completed.length === 0 && JSON.stringify(r.escalated) === '["bd-201"]', 'bd-201 never completes (breaker BLOCKED -> ESCALATE)', JSON.stringify(r))
     assertBucketsDisjoint(r)
   }
 
@@ -573,7 +671,7 @@ async function main() {
   for (const [label, extra] of [
     ['review:bd-101', {}],
     ['fix:bd-101:1', { 'review:bd-101': { id: 'bd-101', status: 'NEEDS_FIX', finding: 'f' } }],
-    ['re-review:bd-101:1', { 'review:bd-101': { id: 'bd-101', status: 'NEEDS_FIX', finding: 'f' }, 'fix:bd-101:1': { id: 'bd-101', status: 'FIXED' } }],
+    ['re-review:bd-101:1', { 'review:bd-101': { id: 'bd-101', status: 'NEEDS_FIX', finding: 'f' }, 'fix:bd-101:1': { id: 'bd-101', status: 'FIXED', head: SHA('f') } }],
   ]) {
     scenario(`null ${label.split(':')[0]}: not CLEAN, not BLOCKED — no bucket, no merge, no throw`)
     {
@@ -611,11 +709,11 @@ async function main() {
     const needsFix = { id: 'bd-101', status: 'NEEDS_FIX', finding: 'race' }
     const canned = oneTaskCanned({
       'review:bd-101': needsFix,
-      'fix:bd-101:1': { id: 'bd-101', status: 'FIXED' }, 're-review:bd-101:1': needsFix,
-      'fix:bd-101:2': { id: 'bd-101', status: 'FIXED' }, 're-review:bd-101:2': needsFix,
-      'fix:bd-101:3': { id: 'bd-101', status: 'FIXED' }, 're-review:bd-101:3': needsFix,
-      'fix:bd-101:4': { id: 'bd-101', status: 'FIXED' }, 're-review:bd-101:4': needsFix,
-      'fix:bd-101:5': { id: 'bd-101', status: 'FIXED' }, 're-review:bd-101:5': needsFix,
+      'fix:bd-101:1': { id: 'bd-101', status: 'FIXED', head: SHA('1') }, 're-review:bd-101:1': needsFix, 'ledger-append:fix-round:bd-101:1': { appended: true },
+      'fix:bd-101:2': { id: 'bd-101', status: 'FIXED', head: SHA('2') }, 're-review:bd-101:2': needsFix, 'ledger-append:fix-round:bd-101:2': { appended: true },
+      'fix:bd-101:3': { id: 'bd-101', status: 'FIXED', head: SHA('3') }, 're-review:bd-101:3': needsFix, 'ledger-append:fix-round:bd-101:3': { appended: true },
+      'fix:bd-101:4': { id: 'bd-101', status: 'FIXED', head: SHA('4') }, 're-review:bd-101:4': needsFix, 'ledger-append:fix-round:bd-101:4': { appended: true },
+      'fix:bd-101:5': { id: 'bd-101', status: 'FIXED', head: SHA('5') }, 're-review:bd-101:5': needsFix, 'ledger-append:fix-round:bd-101:5': { appended: true },
       'adjudicate:bd-101': null,
     })
     const out = await run({ args: liveArgs(), canned })
