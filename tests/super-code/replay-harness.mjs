@@ -94,7 +94,16 @@ async function run({ args, canned = {}, nullLabels = new Set(), nullAll = false,
         if (i === -1) throw new Error(`dryrun stub prompt without JSON payload for ${label}`)
         return JSON.parse(prompt.slice(i + marker.length))
       }
-      if (!(label in canned)) throw new Error(`no canned answer for label ${label}`)
+      if (!(label in canned)) {
+        // Task 6's Finish-phase Metrics block dispatches unconditionally in every live-sim
+        // scenario, whether or not that scenario's own point has anything to do with metrics —
+        // default it to an empty-ledger/no-op answer here, once, rather than hand-adding these
+        // five keys to every pre-Task-6 scenario's canned object; a scenario that cares about the
+        // actual Metrics text overrides these keys explicitly (see the dedicated Task 6 scenario).
+        if (label === 'read-ledger:finish') return { text: '' }
+        if (label.startsWith('ledger-append:metrics:')) return { appended: true }
+        throw new Error(`no canned answer for label ${label}`)
+      }
       let v = canned[label]
       if (Array.isArray(v)) v = v[Math.min(counts[label] - 1, v.length - 1)]
       return typeof v === 'function' ? await v({ waitFor, counts, trace }) : v
@@ -182,6 +191,9 @@ function assertBucketsDisjoint(result) {
   }
   check(typeof result.stalled === 'boolean', "return carries boolean 'stalled'")
   check(typeof result.stopReason === 'string', "return carries 'stopReason'", JSON.stringify(result.stopReason))
+  // Task 6: additive — an array of exactly four strings, alongside `sweep`, never replacing it.
+  check(Array.isArray(result.metrics) && result.metrics.length === 4 && result.metrics.every(l => typeof l === 'string'),
+    "return carries 'metrics' as an array of exactly four strings", JSON.stringify(result.metrics))
 }
 
 // ---------- shared live-sim fixtures ----------
@@ -259,6 +271,11 @@ function oneTaskCanned(overrides = {}) {
     'merge:bd-101': { id: 'bd-101', merged: true, head: SHA('b'), mergeBase: SHA('a'), rebaseConflictFiles: 0 },
     'ledger-append:bd-101': { appended: true },
     'ledger-append:merge:bd-101': { appended: true },
+    'read-ledger:finish': { text: '' },
+    'ledger-append:metrics:1': { appended: true },
+    'ledger-append:metrics:2': { appended: true },
+    'ledger-append:metrics:3': { appended: true },
+    'ledger-append:metrics:check': { appended: true },
     'final-review': 'looks fine',
     ...overrides,
   }
@@ -330,8 +347,8 @@ async function main() {
   {
     const scan = scanTemplateSpans(scriptBody)
     check(scan.clean, 'scanner ends in code state (no unterminated literal, string, or ${})')
-    check(scan.spans.length === 164,
-      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 164; was 107 before the issue #3/#4 batch added the auth-refusal rule, seam review, edge audit, sweep, recurring-minor and detector-persistence literals, then 150, then +6 for Task 3's two \`Merge:\` ledger-line dispatch call sites — each contributes 3 template literals: the line text and the stub-key template literal used twice, once as the dispatch key and once as opts.label — then +3 for Task 4's fix-round ledger-line literal in reviewAndFix and both fixPrompt branches' literals extended to ask for head, then 159, then +5 for task super-plan-qfy.9's testChangesBlock and its call-site interpolations) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
+    check(scan.spans.length === 170,
+      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 170; was 107 before the issue #3/#4 batch added the auth-refusal rule, seam review, edge audit, sweep, recurring-minor and detector-persistence literals, then 150, then +6 for Task 3's two \`Merge:\` ledger-line dispatch call sites — each contributes 3 template literals: the line text and the stub-key template literal used twice, once as the dispatch key and once as opts.label — then +3 for Task 4's fix-round ledger-line literal in reviewAndFix and both fixPrompt branches' literals extended to ask for head, then 159, then +5 for task super-plan-qfy.9's testChangesBlock and its call-site interpolations, then 164, then +6 for Task 6's Finish-phase Metrics block: the four \`Metrics:\` line-text template literals plus the nested per-round template literal inside \`metricsLine2\`'s \`.map()\` callback, plus one more from the block's own supporting code) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
     // self-test: inject a raw backtick mid-way through the first literal's content and assert
     // the detector actually fires — a detector that cannot catch the known failure is decoration
     const [s, e] = scan.spans[0]
@@ -351,7 +368,7 @@ async function main() {
   {
     const out = await run({ args: canonicalArgs })
     assertNoThrow(out)
-    check(out.trace.length === 46, `46 agent dispatches (got ${out.trace.length}) — 32 + 1 launch-args ledger record + 1 detector ledger record (round 1; round 2 exits at ready-drained before the detector) + 2 top-up queries + 1 post-closure re-check (round 2's Close reports closures) + bd-104's same-round RESOLVE retry wave (brief, implement, bounced triage, notify, BLOCKED ledger line) + 3 Task-3 \`Merge:\` ledger lines (bd-101, bd-102 success; bd-103 failure) + bd-101's one fix-round ledger line (Task 4)`)
+    check(out.trace.length === 51, `51 agent dispatches (got ${out.trace.length}) — 32 + 1 launch-args ledger record + 1 detector ledger record (round 1; round 2 exits at ready-drained before the detector) + 2 top-up queries + 1 post-closure re-check (round 2's Close reports closures) + bd-104's same-round RESOLVE retry wave (brief, implement, bounced triage, notify, BLOCKED ledger line) + 3 Task-3 \`Merge:\` ledger lines (bd-101, bd-102 success; bd-103 failure) + bd-101's one fix-round ledger line (Task 4) + Task 6's Finish-phase Metrics block (1 \`read-ledger:finish\` + 4 \`ledger-append:metrics:*\`)`)
     const r = out.result
     check(r && JSON.stringify(r.completed.sort()) === '["bd-101","bd-102"]', 'completed = [bd-101, bd-102]', JSON.stringify(r?.completed))
     check(r && JSON.stringify(r.escalated.sort()) === '["bd-103","bd-104"]', 'escalated = [bd-103, bd-104] — bd-104 spent its C-2 retry same-round (stub implementer stays BLOCKED) and bounced', JSON.stringify(r?.escalated))
@@ -383,7 +400,7 @@ async function main() {
   {
     const out = await run({ args: capArgs })
     assertNoThrow(out)
-    check(out.trace.length === 31, `31 agent dispatches (got ${out.trace.length}) — 24 + 1 launch-args ledger record + 1 detector ledger record + bd-201's five fix-round ledger lines (Task 4)`)
+    check(out.trace.length === 36, `36 agent dispatches (got ${out.trace.length}) — 24 + 1 launch-args ledger record + 1 detector ledger record + bd-201's five fix-round ledger lines (Task 4) + Task 6's Finish-phase Metrics block (1 \`read-ledger:finish\` + 4 \`ledger-append:metrics:*\`, dispatched unconditionally even though nothing merged)`)
     const r = out.result
     check(r && r.completed.length === 0 && JSON.stringify(r.escalated) === '["bd-201"]', 'completed empty, escalated = [bd-201]', JSON.stringify(r))
     check(r && r.review === 'no work landed', "review = 'no work landed'", r?.review)
@@ -402,7 +419,7 @@ async function main() {
   {
     const out = await run({ args: parkArgs })
     assertNoThrow(out)
-    check(out.trace.length === 32, `32 agent dispatches (got ${out.trace.length}) — 23 + 1 launch-args ledger record + 1 detector ledger record + 1 top-up query after bd-301's merge + 1 Task-3 \`Merge:\` ledger line + bd-301's five fix-round ledger lines (Task 4)`)
+    check(out.trace.length === 37, `37 agent dispatches (got ${out.trace.length}) — 23 + 1 launch-args ledger record + 1 detector ledger record + 1 top-up query after bd-301's merge + 1 Task-3 \`Merge:\` ledger line + bd-301's five fix-round ledger lines (Task 4) + Task 6's Finish-phase Metrics block (1 \`read-ledger:finish\` + 4 \`ledger-append:metrics:*\`)`)
     const r = out.result
     check(r && JSON.stringify(r.completed) === '["bd-301"]' && JSON.stringify(r.parked) === '["bd-301"]', 'bd-301 completed AND parked', JSON.stringify(r))
     check(out.trace.some(t => t.label === 'merge:bd-301'), 'PARK ruling reached the merge gate')
@@ -1445,6 +1462,73 @@ async function main() {
     check(!!failLine && /Merge: bd-101 — rebase clean · seam-review none · gate fail → blocker/.test(failLine),
       'failure-path line ends in → blocker, immediately after "gate fail"', failLine)
     check(JSON.stringify(fail.result?.escalated) === '["bd-101"]', 'the blocked task still reaches the ordinary ESCALATE bucket', JSON.stringify(fail.result))
+  }
+
+  scenario('Task 6: Metrics block dispatches the four ledger-append:metrics:* stubs once each, before final-review')
+  {
+    const canned = manyTaskCanned(['bd-101', 'bd-102'])
+    const out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    for (const key of ['read-ledger:finish', 'ledger-append:metrics:1', 'ledger-append:metrics:2', 'ledger-append:metrics:3', 'ledger-append:metrics:check']) {
+      check(out.trace.filter(t => t.label === key).length === 1, `exactly one ${key} dispatch`, JSON.stringify(out.trace.filter(t => t.label === key)))
+    }
+    const idx = label => out.trace.findIndex(t => t.label === label)
+    const finalReviewIdx = idx('final-review')
+    check(finalReviewIdx !== -1, 'final-review dispatched (completed.size is 2, not 0)')
+    for (const key of ['read-ledger:finish', 'ledger-append:metrics:1', 'ledger-append:metrics:2', 'ledger-append:metrics:3', 'ledger-append:metrics:check']) {
+      check(idx(key) !== -1 && idx(key) < finalReviewIdx, `${key} precedes final-review in the trace`, JSON.stringify({ [key]: idx(key), 'final-review': finalReviewIdx }))
+    }
+    assertBucketsDisjoint(out.result)
+  }
+
+  scenario('Task 6: Metrics arithmetic against a known ledger — two merges, one failed merge, a 3-round fix loop, and a resumed task deduped by series')
+  {
+    // A synthetic ledger, fed directly to the Finish-phase re-read (`read-ledger:finish`) —
+    // independent of what THIS run's own dispatches append, same "known ledger" fixture shape the
+    // spec calls for. `completed.size` for THIS run is still driven by the real bd-101/bd-102
+    // merges below (via `manyTaskCanned`), which is what makes `ledger-check` read `ok`: M (2, from
+    // this synthetic text) matches completed.size (2, from this run's own buckets) by construction.
+    const knownLedger = [
+      `# SDD ledger — plan: ${EPIC}-plan.md`,
+      'Merge: bd-101 — rebase clean · seam-review none · gate pass',
+      'Merge: bd-102 — rebase conflict: 3 files · seam-review fixed · gate pass',
+      'Merge: bd-103 — rebase conflict: 2 files · seam-review cleared · gate fail → blocker',
+      // bd-104: three fix rounds, no resume — resolves on round 3. Deduping leaves all three lines
+      // untouched (only one `fix round 1/5` line exists for this id).
+      'Task 3 (bd-104): fix round 1/5 (0 addressed, 1 open — finding A; commits aaa0000..aaa0001)',
+      'Task 3 (bd-104): fix round 2/5 (0 addressed, 1 open — finding A; commits aaa0001..aaa0002)',
+      'Task 3 (bd-104): fix round 3/5 (1 addressed, 0 open — finding A; commits aaa0002..aaa0003)',
+      // bd-105: RESUMED — attempt 1 reached round 3 without resolving, attempt 2 resolved at
+      // round 1. The dedupe-by-series rule (roast round 1, corrected round 2) must drop attempt
+      // 1's three lines (they precede the LAST `fix round 1/5` line for this id) and count only
+      // the surviving round-1 line — so this id contributes to E1 alone, never E2/E3.
+      'Task 4 (bd-105): fix round 1/5 (0 addressed, 1 open — finding B; commits bbb0000..bbb0001)',
+      'Task 4 (bd-105): fix round 2/5 (0 addressed, 1 open — finding B; commits bbb0001..bbb0002)',
+      'Task 4 (bd-105): fix round 3/5 (0 addressed, 1 open — finding B; commits bbb0002..bbb0003)',
+      'Task 4 (bd-105): fix round 1/5 (1 addressed, 0 open — finding B; commits bbb0003..bbb0004)',
+    ].join('\n')
+    const canned = manyTaskCanned(['bd-101', 'bd-102'], { 'read-ledger:finish': { text: knownLedger } })
+    const out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    check(out.result?.completed?.length === 2, 'this run itself completes exactly 2 tasks (bd-101, bd-102) — what ledger-check cross-checks M against', JSON.stringify(out.result?.completed))
+    const line1 = extractLedgerLine(promptOf(out.trace, 'ledger-append:metrics:1'))
+    const line2 = extractLedgerLine(promptOf(out.trace, 'ledger-append:metrics:2'))
+    const line3 = extractLedgerLine(promptOf(out.trace, 'ledger-append:metrics:3'))
+    const line4 = extractLedgerLine(promptOf(out.trace, 'ledger-append:metrics:check'))
+    // M=2 (bd-101, bd-102 success-path only — bd-103's `→ blocker` line is excluded), Mf=1
+    // (bd-103), rebase-conflicts=2 (bd-102, bd-103), seam-reviews=2 (bd-102 fixed, bd-103
+    // cleared), of those fixed=1 (bd-102), gate-fails=1 (bd-103).
+    check(line1 === 'Metrics: merges 2 · merge-failed 1 · rebase-conflicts 2 · seam-reviews 2 (fixed 1) · gate-fails 1',
+      'line 1: merges 2 · merge-failed 1, exact', line1)
+    // Post-dedupe: bd-104 contributes round1/2/3 (0,0,1 addressed); bd-105 contributes ONLY its
+    // final round-1 line (1 addressed) — its attempt-1 rounds 2 and 3 are dropped, so round 2 and
+    // round 3 entered/addressed come from bd-104 alone (E2=E3=1, never 2 — the count that would
+    // appear if the series dedupe had failed to strip the resumed task's abandoned attempt).
+    check(line2 === 'Metrics: fix-loop round 1: 1 addressed / 2 entered · round 2: 0 addressed / 1 entered · round 3: 1 addressed / 1 entered · round 4: 0 addressed / 0 entered · round 5: 0 addressed / 0 entered',
+      'line 2: E2 == E3 == 1 (bd-104 only) — the resumed task bd-105 contributes ZERO to round 2 and round 3, proving the series dedupe stripped its abandoned attempt-1 rounds', line2)
+    check(line3 === 'Metrics: fix-loop breaker-tripped: 0', 'line 3: no parked-completion or breaker-cap-BLOCKED lines in this fixture', line3)
+    check(line4 === 'Metrics: ledger-check ok', 'line 4: M (2) matches this run\'s own completed.size (2)', line4)
+    check(JSON.stringify(out.result?.metrics) === JSON.stringify([line1, line2, line3, line4]), 'the four rendered lines are exactly what the return\'s metrics array carries, in order', JSON.stringify(out.result?.metrics))
   }
 
   // ===== summary =====

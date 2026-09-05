@@ -55,11 +55,15 @@ completion), `ready-drained` (empty ready set, root still open: quarantined bloc
 `stalled` (no-progress guard), or `ready-unavailable` / `plan-unavailable` (infrastructure outage:
 the `bd ready` or planner dispatch kept dying on terminal API errors). The last two are **never**
 completion — never treat a stop as "done" without checking `stopReason`
-(`./coordinator-workflow.md`'s "Null dispatch policy"). Two additive fields: **`authRefused`** —
+(`./coordinator-workflow.md`'s "Null dispatch policy"). Three additive fields: **`authRefused`** —
 tasks quarantined because the harness permission layer refused their commands (also in
-`escalated`); a caller's report lists them as untested scope — and **`sweep`**, the per-branch
+`escalated`); a caller's report lists them as untested scope — **`sweep`**, the per-branch
 sweep's one-line result when `config.sweep` was declared (`MEASUREMENT INVALID: …` or
-`SWEEP UNAVAILABLE …` mean the branch is unmeasured, not green).
+`SWEEP UNAVAILABLE …` mean the branch is unmeasured, not green) — and **`metrics`**, an array of
+exactly four `Metrics:` ledger-line strings (merge/rebase/seam/gate counts; per-round fix-loop
+addressed/entered tallies; the breaker-tripped count; and a ledger-check cross-checking the
+merge count against `completed.size`), dispatched unconditionally at Finish, before the final
+review (`./coordinator-workflow.md`'s "Finish").
 
 ## Worktree topology
 
