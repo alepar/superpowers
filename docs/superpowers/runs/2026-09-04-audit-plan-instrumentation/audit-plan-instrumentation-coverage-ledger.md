@@ -49,3 +49,18 @@ Applied opportunistically from the 18 unjudged (beyond panel cap) candidates, wh
 Not applied from the unjudged list (left for the re-roast to judge or already disposed): .5/.6/.7 and .3/.9/.10 shared-file edges (coverage CR1-02/03/09 rejected these); .8 producer edges (CR1-05 rejected; the sweep covers drift); acceptance-only tests for prose components (inherent to prompt-file changes; live run is the measurement, stated in §Testing); edge-reason grandfathering (super-auto phase-5 fix beads and blocker beads render `unstated` by design — §10 says so); scrub opt-in (step 7 already shows the body before filing).
 
 Re-roast decision: design decisions changed and a Blocking was resolved → round 2 with the prior report.
+
+## Design roast round 2 — converged exit (report: 2026-09-04-audit-plan-instrumentation-roast-design-2.md)
+
+Verdict: Should-fix (8 confirmed) [converged]. delta vs prior: 6 new (0 Blocking) · 0 carried · 6 resolved · 2 regressed (0 Blocking). 8 lenses (regression added), 33 raw → 11 deduped → 9 panels / 2 spot, judge completion 100%, no panel cap hit, escalations none. Converged exit fires (zero Blocking of any provenance on a non-degraded round ≥ 2): loop ends, no round 3. The 8 confirmed sub-Blocking findings are the punch list; every one is a text-consistency defect the round-1 fixes introduced or left, so they were applied inline (spec + bead descriptions) rather than filed as tasks — no re-roast, per the converged rule.
+
+- RD2-01 Should-fix · ledger-check compares a both-paths M against `completed` — **applied**: M = success-path lines only, new `merge-failed Mf` count, fixture expects `ledger-check ok` (§4, .4).
+- RD2-02 Should-fix · "three lines" vs "four lines" — **applied**: §4 lead + fence + return field say four; .4 and .11 updated.
+- RD2-03 Should-fix · .4 `consumes:` still keyed on ordinal N — **applied**: rewritten to bead-id keying, four lines.
+- RD2-04 Should-fix · .11 sweep pins superseded literals — **applied**: literals updated; sweep reads current formats from producers' `owns:` lines at sweep time.
+- RD2-05 Should-fix · `scope-filter:` aggregate line has no producer — **applied**: super-auto writes it at the end of each `scopeFilter-round-N` block; .5 owns, .8 consumes (§6, .5, .8).
+- RD2-06 Should-fix · per-round dedupe keeps abandoned attempts' later rounds — **applied**: dedupe by series (drop lines before the bead's last round-1 line); fixture with attempt 1 → r3, attempt 2 → r1 (§4, .4).
+- RD2-07 Should-fix (regressed from RD1-01) · root-level test files still unmatched — **applied**: bare-filename alternates; root-level `main_test.go` in the fixture (§5, .9).
+- RD2-08 Nit · canonical R-list not persisted across rounds/resume — **applied**: orchestrator writes the R-list into `coverage-round-<N>`, reads it back (§8, .6).
+
+Prior findings status: RD1-01 resolved then regressed (root-level residue, fixed above); RD1-02..08 resolved; RD1-04 regressed (per-round vs per-series, fixed above).
