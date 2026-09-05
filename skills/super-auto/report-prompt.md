@@ -13,7 +13,20 @@ is never mistaken for "everything's fine." A report that reads clean when a
 Blocking finding was parked, or an escalation left unresolved, is the exact
 failure this contract exists to prevent.
 
-## The status line
+## The status block
+
+`report.md` opens with a status block: the one status line below, followed by one
+`metrics:` line.
+
+**The `metrics:` line** points at whatever `superpowers:upstream-feedback`'s phase-6 analysis
+pass produced, and takes exactly one of three values: an issue URL (something was filed), the
+parked-draft path (proposed but not filed — sourced from `run.md`'s `feedback:` field when
+present, otherwise the parked-draft path in the run's friction-log directory), or `metrics: none
+(clean run, nothing filed)` when neither exists. Phase 6 writes `report.md` **before**
+`upstream-feedback` runs, so the first write reads `metrics: pending (upstream-feedback not yet
+run)`; after it returns, that one line is rewritten in place — nothing else in the file. No
+metrics content itself belongs in `report.md`: this is a pointer, exactly like the other
+sections' sourcing, never the analysis inline.
 
 `report.md` opens with exactly one status line, and it MUST be exactly one of:
 
@@ -103,7 +116,7 @@ edit that lets `super-code` run its own Finish (worktree removal included) befor
 | Section | Content | Sourced from |
 |---|---|---|
 | Implemented | What landed, task by task | beads closed under the run's epic; `super-code`'s `completed` bucket, recorded in `run.md`'s `codeBuckets` (item 6) at the phase 3→4 transition — not session memory; ledger completion lines, each with its commit range (the ledger path is part of `super-code`'s return) |
-| Remaining | What did not land, and why each didn't | `codeBuckets`' `escalated` and `pendingRetry`; parked escalations carried in `run.md`; unresolved Blocking findings still open at panel cap-out |
+| Remaining | What did not land, and why each didn't | `codeBuckets`' `escalated` and `pendingRetry`; parked escalations carried in `run.md`; unresolved Blocking findings still open at panel cap-out; every `punch-list` finding from `run.md`'s `scopeFilter-round-<N>` records, each tagged `out of scope (filtered)` with its recorded reason — these never became beads, so `codeBuckets` never sees them |
 | Gotchas & surprises | Where reality diverged from the design | roast findings that changed a design decision; blocker beads that were triaged; plan-defect findings; anything that forced a nested brainstorm |
 | Entrypoints | Where to start reading, in order | the task tree's dependency order: root-most module first, then its public interface, then the primary caller |
 | Smells | Code the run is uneasy about, each with a one-line "the smell" | parked findings; parked `degraded-verdict` records (a road not taken because autonomous mode answered a sibling's gate itself); `DONE_WITH_CONCERNS` implementer reports; tasks that needed 4-5 fix rounds; tasks that tripped the fix-loop breaker |
