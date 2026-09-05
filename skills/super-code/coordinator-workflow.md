@@ -463,8 +463,10 @@ wrote or read this file — everything below described intent, not behavior. `re
     every trigger converges on (see its opening comment) and writes this line once, for all of
     them, rather than duplicating the write at each trigger site.
   - `Task <N> (<bead id>): fix round <R>/5 (...)` — SKILL.md's own mid-loop bookkeeping line.
-    **Not currently written by this coordinator's script skeleton** (only the four terminal lines
-    above are); see "Resume behavior" below for what that means for a restart mid-fix-loop.
+    **Written per round by `reviewAndFix`** (via `ledgerAppendPrompt`, stub key
+    `ledger-append:fix-round:<id>:<r>`) after every re-review, alongside the four terminal lines
+    above. It does not change how resume reconstruction works, though: see "Resume behavior" below
+    for what that means for a restart mid-fix-loop.
 - **Resume behavior**, on any restart: the script's Resume phase reads `<workspace>/progress.md`
   once, before the round loop starts (see the script skeleton), and reconstructs `completed`,
   `parked`, and `pendingRetry` from the **last** ledger line recorded for each bead id (a bead can
