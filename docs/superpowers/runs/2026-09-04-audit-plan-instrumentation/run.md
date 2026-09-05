@@ -14,6 +14,8 @@ roastDesignExit: converged at round 2 — Should-fix (8 confirmed) [converged]; 
 
 roastDesignRound: 2
 
+codeLaunch: workflow wf_2612e115-caf (2026-09-05) · epic super-plan-qfy · 11 leaves · concurrency 16 · gate/sweep tests/super-code/test-coordinator-replay.sh · ledger .superpowers/sdd/super-plan-qfy-plan/progress.md (git-ignored, inside this worktree)
+
 parked:
 - 2026-09-04-audit-plan-instrumentation-roast-design-1.md · degraded-verdict · "Blocking (8 confirmed) [panel-capped: 18 unverified] — re-roast at raised config.panelCap declined (autonomous), proceeded with the 8 confirmed; the 18 unjudged candidates listed in the report; plainly-true ones touching amended sections applied as applied-unverified (coverage ledger, roast round 1 section)"
 
