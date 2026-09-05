@@ -769,6 +769,27 @@ is safe because a `bd ready` batch is mutually independent by definition):
    merge-base moves constantly, and a blocker filed against a superseded merge-base must be
    recognisable as such by whoever reads it next).
 
+**A `Merge:` ledger line records every merge attempt** (Task 3, roast round 1 Should-fix,
+binding — without the failure-path line, `gate fail` was unreachable and rebase conflicts that
+ended in a blocker never appeared on the ledger):
+
+```
+Merge: <bead-id> — rebase <clean | conflict: N files> · seam-review <none | cleared | fixed> · gate <pass | fail>
+```
+
+with a trailing ` → blocker` on the failure path. Both the success path (step 4 above) and the
+blocker-bead failure path (step 5) append it, through the same `ledgerAppendPrompt` every other
+mechanical ledger write goes through — never through `ledgerLine()` (that helper's `Task <N>
+(<id>):` prefix names a task outcome; this line names a merge attempt, the same reasoning that
+keeps `Sweep:` and `Recurring minor:` raw). Field sources: `rebase` is the merge agent's own
+`rebaseConflictFiles` report (0 → `clean`, otherwise `conflict: N files`) — collected on every
+merge attempt, success or failure, since the failure-path line needs it too; `seam-review` is
+`none` unless step 2's scoped review ran (`cleared` if it came back CLEAN outright, `fixed` if
+its one bounded fix dispatch ran first); `gate` is the declared gate's result — `pass` on the
+success path, `fail` on the failure path (a merge that reaches the blocker-bead branch never got
+past the gate). Stub keys: `ledger-append:merge:<id>` (success) and
+`ledger-append:merge-failed:<id>` (blocker path).
+
 **Two declared selections, not one** (issue #3 doc gap 2). The gate sits alone on the serial
 path, so its cost is paid per merge and nothing overlaps it: measured on one run, gate wall times
 were bimodal — 6–9 min vs 36–113 min — split by whether the bead touched one heavy package, over
@@ -1385,7 +1406,10 @@ const TRIAGE  = { type: 'object', properties: { decision: {type:'string'}, detai
 // landed on the integration branch since the task branched) — the merge agent stops before the
 // gate and reports them, so the coordinator can run one scoped seam review before testing and
 // merging (see `integrateOne`'s seam branch). `head`/`mergeBase` accompany it, post-rebase.
-const MERGE   = { type: 'object', properties: { id:{type:'string'}, merged:{type:'boolean'}, blockerBead:{type:'string'}, head:{type:'string'}, mergeBase:{type:'string'}, authRefused:{type:'string'}, seamOverlap:{ type:'array', items:{type:'string'} } }, required: ['id','merged'] }
+// Task 3 (`Merge:` ledger line): `rebaseConflictFiles` — the number of files the rebase reported
+// as conflicting (0 for a clean rebase) — reported on EVERY merge attempt, success or failure,
+// so the per-merge ledger line's `rebase <clean | conflict: N files>` field always has a source.
+const MERGE   = { type: 'object', properties: { id:{type:'string'}, merged:{type:'boolean'}, blockerBead:{type:'string'}, head:{type:'string'}, mergeBase:{type:'string'}, authRefused:{type:'string'}, seamOverlap:{ type:'array', items:{type:'string'} }, rebaseConflictFiles:{type:'number'} }, required: ['id','merged'] }
 // issue #3 design question C: the conditional, report-only dependency-edge audit's return shape
 // — see `edgeAuditPrompt`. `suspectEdges` are named, never removed: reshaping the graph mid-run
 // stays an operator's call (super-design §Splitting a Bead is the precedent for how much a graph
@@ -1847,6 +1871,12 @@ while (true) {
     if (!integrateAnnounced) { integrateAnnounced = true; phase('Integrate') }
     if (r.status === 'BLOCKED') { await handleBlocker(r, planned.planPath, id => resolveRetryHook(id)); return }
     if (r.status === 'BLOCKED_AUTH') { await handleAuthRefusal(r, r.finding); return }
+    // Task 3 (`Merge:` ledger line): `seamOutcome` tracks whether/how the post-rebase seam check
+    // ran, for the ledger line's `seam-review` field — `none` unless the seam branch below runs,
+    // `cleared` if the scoped review came back CLEAN with no fix dispatch needed, `fixed` if a
+    // bounded fix dispatch was needed first. Declared here (not inside the seam `if` block) so both
+    // the success line below AND a failure line built from THIS merge attempt see it.
+    let seamOutcome = 'none'
     let m = await dispatch(() => mergePrompt(r, integrationBranch, integrationWorktree, gateCommand), `merge:${r.id}`,
       { label: `merge:${r.id}`, phase: 'Integrate', model: model('reviewer'), schema: MERGE })
     // issue #4 design question 1 (decided): a rebase that moved the task onto sibling changes
@@ -1875,6 +1905,9 @@ while (true) {
           { label: `fix:${r.id}:seam`, phase: 'Integrate', model: model('implementer'), schema: RESULT })
         if (!fixRes) { log(`seam fix for ${r.id} unavailable (null dispatch) — leaving ${r.id} unsettled this round`); return }
         if (fixRes.status === 'BLOCKED_AUTH') { await handleAuthRefusal(r, fixRes.finding); return }
+        seamOutcome = 'fixed'
+      } else {
+        seamOutcome = 'cleared'
       }
       m = await dispatch(() => mergePrompt({ ...r, seamCleared: true }, integrationBranch, integrationWorktree, gateCommand), `merge:${r.id}:seam-cleared`,
         { label: `merge:${r.id}:seam-cleared`, phase: 'Integrate', model: model('reviewer'), schema: MERGE })
@@ -1903,6 +1936,15 @@ while (true) {
     }
     if (m.merged) {
       settle(r.id, completed)  // also clears a stale escalated/pendingRetry mark from a prior run (C-2)
+      // Task 3 (`Merge:` ledger line, roast round 1 Should-fix): one line per serial merge attempt,
+      // success path. NOT built through `ledgerLine()` — like `Sweep:`/`Recurring minor:` above,
+      // this line names no single "## Task <N>" section (it's a merge-mechanics record, not a task
+      // outcome line) so it skips that helper's `Task <N> (<id>):` prefix and is written raw, the
+      // same convention those two lines already use.
+      const rebaseText1 = m.rebaseConflictFiles ? ('conflict: ' + m.rebaseConflictFiles + ' files') : 'clean'
+      await dispatch(() => ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName,
+          `Merge: ${r.id} — rebase ${rebaseText1} · seam-review ${seamOutcome} · gate pass`),
+        `ledger-append:merge:${r.id}`, { label: `ledger-append:merge:${r.id}`, phase: 'Integrate', model: model('mechanical') })
       // Review round 4 (Important): `parked` is recorded HERE, alongside the completed settle, not
       // back in `reviewAndFix` at adjudication time — `r.parkRuling` (set by the PARK branch there)
       // is only a carried-forward INTENT until the merge that just succeeded confirms it. Had this
@@ -1975,7 +2017,21 @@ while (true) {
     // `n: r.n` carried forward here so a failed-merge blocker's eventual ledger line (in
     // handleBlocker) can still cite the plan ordinal — `r` already carries it (stamped by
     // reviewAndFix/the chain call site); the bare object built here previously dropped it.
-    else await handleBlocker({ id: r.id, n: r.n, blockerBead: m.blockerBead }, planned.planPath, id => resolveRetryHook(id))
+    else {
+      // Task 3 (`Merge:` ledger line, roast round 1 Should-fix, binding): the failure-path line —
+      // without it, `gate fail` is unreachable and rebase conflicts that end in a blocker never
+      // appear on the ledger. Every field renders whatever was determined before the failure
+      // (`gate fail` always, since a merge that reaches this branch never got past the gate; the
+      // rebase/seam-review fields carry whatever this same merge attempt's report and this round's
+      // seam branch determined). Dispatched BEFORE `handleBlocker` so it lands even if the blocker
+      // path's own dispatches (missing-bead filing, triage) are later left unsettled by a null
+      // dispatch — this line only depends on `m`, already in hand.
+      const rebaseText2 = m.rebaseConflictFiles ? ('conflict: ' + m.rebaseConflictFiles + ' files') : 'clean'
+      await dispatch(() => ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName,
+          `Merge: ${r.id} — rebase ${rebaseText2} · seam-review ${seamOutcome} · gate fail → blocker`),
+        `ledger-append:merge-failed:${r.id}`, { label: `ledger-append:merge-failed:${r.id}`, phase: 'Integrate', model: model('mechanical') })
+      await handleBlocker({ id: r.id, n: r.n, blockerBead: m.blockerBead }, planned.planPath, id => resolveRetryHook(id))
+    }
   }
 
   // planner-prompt.md permits leaving a genuinely unplannable bead unmapped (its "Your Job" step
@@ -2702,13 +2758,17 @@ function mergePrompt(r, integrationBranch, integrationWorktree, gateCommand) {
   // unless the coordinator already ran the seam review (`r.seamCleared`). issue #3 defect 5: a
   // blocker bead states the merge-base the gate ran against, so a reader can tell a blocker
   // filed against a superseded merge-base from a current one.
+  // Task 3 (`Merge:` ledger line): also capture `rebaseConflictFiles` — the number of files the
+  // rebase step itself reported as conflicting (0 if it applied cleanly) — on BOTH the success
+  // report and the blocker-bead failure report, since the per-merge ledger line renders that field
+  // on every merge attempt, not only the ones that go on to merge.
   const gate = gateCommand
     ? `run the declared per-merge gate EXACTLY as written — unchanged, unwidened, no extra suites (which selection ran is on the ledger's Launch line): \`${gateCommand}\``
     : `run the project test command`
   const seamStep = r.seamCleared
     ? `This branch is ALREADY rebased and its post-rebase seam has been reviewed by the coordinator (and fixed if needed) — do not repeat the seam check; if new integration commits landed meanwhile, rebase once more and continue straight to the gate.`
     : `POST-REBASE SEAM CHECK, after a successful rebase and BEFORE the gate: if ${integrationBranch} moved since this task branched (its current tip is not ${r.base}), list the files the sibling commits changed (\`git diff --name-only ${r.base} ${integrationBranch}\`) and the files this task changed (\`git diff --name-only $(git merge-base ${integrationBranch} ${r.branch}) ${r.branch}\`). If the two lists INTERSECT, do NOT run the gate and do NOT merge: capture head and mergeBase exactly as described below and report merged false with seamOverlap as the intersecting file list — the coordinator runs one scoped seam review and re-dispatches this merge. If they do not intersect, or the branch did not move, continue.`
-  return `In ${integrationWorktree}, update ${integrationBranch} and rebase task ${r.id}'s branch ${r.branch} onto it. ${seamStep} Then ${gate}. If clean: run \`git merge-base ${integrationBranch} ${r.branch}\` to capture the POST-REBASE merge-base (do this before merging, while ${r.branch}'s rebased-but-not-yet-merged history still lets you distinguish it from ${integrationBranch}'s own tip), then run \`git rev-parse ${r.branch}\` to capture the rebased branch's tip commit, merge --no-ff into ${integrationBranch}, run \`bd close ${r.id}\`, and report merged true with head as the tip commit just captured and mergeBase as the merge-base just captured. If the rebase conflicts or tests are red, make one bounded auto-resolve attempt; if that also fails, file a blocker bead (see "The blocker-bead path") whose body states the merge-base SHA the gate ran against and the exact gate command run — a later reader must be able to tell a blocker filed against a superseded merge-base from a current one — and report merged false with its id as blockerBead. ${authRefusalRule()} For THIS dispatch, report a refusal as merged false with authRefused set to the exact refused command(s) instead of a status token.`
+  return `In ${integrationWorktree}, update ${integrationBranch} and rebase task ${r.id}'s branch ${r.branch} onto it. Count the files the rebase reported as conflicting (0 if it applied cleanly) — this is rebaseConflictFiles, reported below no matter how the merge attempt ends. ${seamStep} Then ${gate}. If clean: run \`git merge-base ${integrationBranch} ${r.branch}\` to capture the POST-REBASE merge-base (do this before merging, while ${r.branch}'s rebased-but-not-yet-merged history still lets you distinguish it from ${integrationBranch}'s own tip), then run \`git rev-parse ${r.branch}\` to capture the rebased branch's tip commit, merge --no-ff into ${integrationBranch}, run \`bd close ${r.id}\`, and report merged true with head as the tip commit just captured, mergeBase as the merge-base just captured, and rebaseConflictFiles as counted above. If the rebase conflicts or tests are red, make one bounded auto-resolve attempt; if that also fails, file a blocker bead (see "The blocker-bead path") whose body states the merge-base SHA the gate ran against and the exact gate command run — a later reader must be able to tell a blocker filed against a superseded merge-base from a current one — and report merged false with its id as blockerBead and rebaseConflictFiles as counted above (from whichever rebase attempt — initial or auto-resolve — the failure occurred on). ${authRefusalRule()} For THIS dispatch, report a refusal as merged false with authRefused set to the exact refused command(s) instead of a status token.`
 }
 
 function missingBlockerBeadPrompt(r) {
@@ -3187,7 +3247,8 @@ narratives that used to accompany each row are in git history; nothing here depe
 | top-up corrections (per-round query cap `topUpQueryCap`, frontier hint keyed on dispatched not planned, logged unmapped skips) | replay 34/0 | replay 24/0 | replay 24/0 |
 | round-head parallelism (planner skip on fully-mapped rounds, Close∥Ready + post-closure re-check, same-round RESOLVE retry + `bd comments` clarification plumbing) | replay 40/0 | replay 24/0 | replay 24/0 |
 | issue #2 batch (ready-query `--limit` + truncation rule, top-up epic-close phase, `ledger-append:launch` args record) | replay 41/0 | replay 25/0 | replay 25/0 |
-| **issue #3/#4 batch (`ledger-append:detector` per round; INVALID review packages; `BLOCKED_AUTH`; recurring-minor clusters; conditional edge audit; declared `gate`/`sweep`; post-rebase seam review) — CURRENT** | **replay 42/0** | **replay 26/0** | **replay 26/0** |
+| issue #3/#4 batch (`ledger-append:detector` per round; INVALID review packages; `BLOCKED_AUTH`; recurring-minor clusters; conditional edge audit; declared `gate`/`sweep`; post-rebase seam review) | replay 42/0 | replay 26/0 | replay 26/0 |
+| **Task 3 (per-merge `Merge:` ledger line, success and blocker-bead failure paths) — CURRENT** | **replay 45/0** | **replay 26/0** | **replay 27/0** |
 
 The issue #3/#4 row's +1 on every scenario is exactly the persisted detector line — one
 `ledger-append:detector` per round that reaches the drain (each scenario's second round exits at
@@ -3195,6 +3256,10 @@ The issue #3/#4 row's +1 on every scenario is exactly the persisted detector lin
 recurring minors, edge audit, sweep, seam review) is exercised by dedicated replay-harness
 scenarios, not by these three fixtures, whose stub tables would otherwise have to grow a key per
 path they never take.
+
+**Task 3's row** adds one `Merge:` ledger line per merge attempt: canonical +3 (`bd-101`,
+`bd-102` success; `bd-103` failure), cap-tripping +0 (its one task never reaches `mergePrompt` —
+BLOCKED before the merge gate), PARK +1 (`bd-301`'s single successful merge).
 
 The relax-sequencing row is a **structural** edit (dispatch scheduling and merge sequencing both
 changed shape), re-verified by replay: all three recorded scenarios land on identical dispatch
@@ -3707,12 +3772,15 @@ script and this `args` block:
       "review:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-103\",\"n\":3,\"status\":\"CLEAN\",\"files\":[\"src/a.js\"]}",
       "fix:bd-101:1": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/a.js\"]}",
       "re-review:bd-101:1": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"CLEAN\"}",
-      "merge:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"merged\":true,\"head\":\"a1a1a1a1111111111111111111111111111111\",\"mergeBase\":\"aaaaaaa1111111111111111111111111111111\"}",
+      "merge:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"merged\":true,\"head\":\"a1a1a1a1111111111111111111111111111111\",\"mergeBase\":\"aaaaaaa1111111111111111111111111111111\",\"rebaseConflictFiles\":0}",
       "ledger-append:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "ledger-append:merge:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "ledger-minor:bd-101:1": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
-      "merge:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-102\",\"merged\":true,\"head\":\"b2b2b2b2222222222222222222222222222222\",\"mergeBase\":\"bbbbbbb2222222222222222222222222222222\"}",
+      "merge:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-102\",\"merged\":true,\"head\":\"b2b2b2b2222222222222222222222222222222\",\"mergeBase\":\"bbbbbbb2222222222222222222222222222222\",\"rebaseConflictFiles\":0}",
       "ledger-append:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
-      "merge:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-103\",\"merged\":false,\"blockerBead\":\"bd-108\"}",
+      "ledger-append:merge:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "merge:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-103\",\"merged\":false,\"blockerBead\":\"bd-108\",\"rebaseConflictFiles\":2}",
+      "ledger-append:merge-failed:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "triage:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"decision\":\"ESCALATE\",\"detail\":\"rebase conflict on src/a.js survived one auto-resolve attempt\"}",
       "triage:bd-104": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"decision\":\"RESOLVE\",\"detail\":\"implementer needs the missing config constant named explicitly; re-plan and re-attempt\"}",
       "notify:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"sent\":true}",
@@ -3728,10 +3796,12 @@ script and this `args` block:
 
 If a future structural edit changes this script, re-run with these args, confirm the same shape (or
 update it deliberately alongside the edit that changed it), and replace the figures above — same
-discipline as `super-roast`'s "Passing baseline (recorded, not illustrative)" sections. Six structural edits have
+discipline as `super-roast`'s "Passing baseline (recorded, not illustrative)" sections. Seven structural edits have
 forced exactly that re-run — see the revision table under "dryRun
-policy" for the full sequence. The CURRENT confirmed shape is **42 agent calls, 0 errors, terminal
-stopReason `ready-drained`** (40 from the dispatch arithmetic above + 1 `ledger-minor:bd-101:1`) — confirmed by the offline replay harness against the current script
+policy" for the full sequence. The CURRENT confirmed shape is **45 agent calls, 0 errors, terminal
+stopReason `ready-drained`** (40 from the dispatch arithmetic above + 1 `ledger-minor:bd-101:1` + 3
+Task 3 `Merge:` ledger lines — `ledger-append:merge:bd-101`, `ledger-append:merge:bd-102`,
+`ledger-append:merge-failed:bd-103`, one per merge attempt) — confirmed by the offline replay harness against the current script
 (see the current-row paragraph under "dryRun policy"; `wf_97164f71-a3c` is the last Workflow-hosted
 run, against the previous revision — read that writeup's own caveat before citing either figure for
 anything beyond dispatch-count/topology).
@@ -4046,8 +4116,9 @@ question, same structural limit as the other four claims above.
       "fix:bd-301:5": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/y.js\"]}",
       "re-review:bd-301:5": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"NEEDS_FIX\",\"finding\":\"the retry backoff constant is a magic number instead of a named config value\"}",
       "adjudicate:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"decision\":\"PARK\",\"ruling\":\"style-only finding, not load-bearing and doesn't reveal a plan defect; safe to merge as-is\"}",
-      "merge:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"merged\":true,\"head\":\"f6f6f6f6666666666666666666666666666666\",\"mergeBase\":\"eeeeeee5555555555555555555555555555555\"}",
+      "merge:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"merged\":true,\"head\":\"f6f6f6f6666666666666666666666666666666\",\"mergeBase\":\"eeeeeee5555555555555555555555555555555\",\"rebaseConflictFiles\":0}",
       "ledger-append:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "ledger-append:merge:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "final-review": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"summary\":\"stub: 1/1 task merged; bd-301 parked with a ruling\",\"verdict\":\"conditional-pass\"}"
     }
   }
@@ -4056,11 +4127,12 @@ question, same structural limit as the other four claims above.
 
 If a future structural edit changes this script, re-run with these args, confirm the same shape (or
 update it deliberately alongside the edit that changed it), and replace the figures above — same
-discipline as the other two scenarios' baselines. Every structural edit so far has forced that
+discipline as the other two scenarios' baselines. Most structural edits so far forced that
 re-run without moving the count — see the revision table under "dryRun policy". One of those rounds
 touched only this scenario's data (adding `mergeBase` to the `merge:bd-301` stub) and was re-run
-anyway, because "recorded, not illustrative" does not have a too-small-to-matter exemption. The
-CURRENT confirmed shape is **26 agent calls, 0 errors** — confirmed by the offline replay harness
+anyway, because "recorded, not illustrative" does not have a too-small-to-matter exemption. Task 3
+adds one more: `ledger-append:merge:bd-301`, the `Merge:` ledger line for the one task's successful
+(PARK-then-)merge. The CURRENT confirmed shape is **27 agent calls, 0 errors** — confirmed by the offline replay harness
 against the current script (see the current-row paragraph under "dryRun policy";
 `wf_4203efd4-84d` is the last Workflow-hosted run, against the previous revision). The 21/0 figure
 above `wf_941e256b-10b` remains pre-Task-5 history, unaffected by this restatement.
