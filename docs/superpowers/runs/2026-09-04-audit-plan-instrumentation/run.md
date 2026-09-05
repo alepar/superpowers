@@ -9,6 +9,13 @@ epic: super-plan-qfy
 branch: super-auto/audit-plan-instrumentation
 base: main
 
+roast-design: 2026-09-04-audit-plan-instrumentation-roast-design-1.md
+
+roastDesignRound: 2
+
+parked:
+- 2026-09-04-audit-plan-instrumentation-roast-design-1.md · degraded-verdict · "Blocking (8 confirmed) [panel-capped: 18 unverified] — re-roast at raised config.panelCap declined (autonomous), proceeded with the 8 confirmed; the 18 unjudged candidates listed in the report; plainly-true ones touching amended sections applied as applied-unverified (coverage ledger, roast round 1 section)"
+
 approvals:
 - top-split · super-plan-qfy.1 LEAF, super-plan-qfy.2 LEAF, super-plan-qfy.3 LEAF, super-plan-qfy.4 LEAF (reviewer PROMOTE overruled, sp:demoted-by-session), super-plan-qfy.5 LEAF, super-plan-qfy.6 LEAF, super-plan-qfy.7 LEAF, super-plan-qfy.8 LEAF, super-plan-qfy.9 LEAF, super-plan-qfy.10 LEAF
 - coverage-round-1 · auto flag-sweep .4 → demotion stands; auto UNOWNED-SEAM ".5/.6 run-state item 7" → rejected (file overlap, not dataflow); auto UNOWNED-SEAM ".6/.7 coverage prompt" → rejected (same); auto GAP "format consistency producers↔upstream-feedback" → satisfied by root Integration sweep; auto UNSATISFIABLE-ACCEPTANCE unwired ".8→producers" → rejected (spec-mediated); auto GAP ".8 none/Not-established rule" → .8 acceptance amended; auto GAP ".9 files lack replay-harness.mjs" → amended; auto UNOWNED-SEAM ".5 reads feedback: field" → verified pre-existing, .5 consumes: line added; auto UNOWNED-SEAM ".3/.4/.9/.10 share coordinator file" → rejected (file overlap); auto GAP ".7 worked example" → .7 acceptance amended; auto GAP ".5 resume replay" → amended; auto GAP ".10 SDD mid-loop divergence" → amended. Ledger: audit-plan-instrumentation-coverage-ledger.md

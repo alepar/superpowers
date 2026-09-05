@@ -30,3 +30,22 @@ Divergence observation: round 1 deduped 12 → round 2 deduped 4 (all novel iden
 - Check 9: all five round-1 amendments confirmed to close their findings by 3/3 reviewers; introduced items are CR2-02 and CR2-04 above, both applied.
 
 Round 2 summary: 4 deduped · 4 applied · 0 rejected. Loop ends (fixed two rounds; round-2 fixes are not re-reviewed). Root Integration sweep created next, depending on every leaf, carrying CR1-04.
+
+## Design roast round 1 — fixes applied (report: 2026-09-04-audit-plan-instrumentation-roast-design-1.md)
+
+Verdict: Blocking (8 confirmed) [panel-capped: 18 unverified]. Autonomous run: the raised-panelCap re-roast was answered no and parked in run.md as a degraded-verdict record. Escalations: none. All eight confirmed findings map onto existing beads' scope, so the fix rung is inline (spec + bead descriptions); no fix beads created.
+
+- RD1-01 Blocking · §5 default pathspecs never match top-level tests/ — **applied**: new defaults with non-`**/` alternates, bare `**/test*` dropped, fixture-repo assertion added (spec §5, bead .9).
+- RD1-02 Should-fix · §8 three reviewers number their own R-lists — **applied**: orchestrator writes the canonical list once, reviewers map by id, `R-new` proposal rule (spec §8, bead .6).
+- RD1-03 Should-fix · §1 ground-alone parity is a function of rr/rg/fg — **applied**: replaced by leave-one-out `ground-loo (n=…)` (spec §1, bead .1).
+- RD1-04 Should-fix · §4 resumed tasks duplicate fix-round lines — **applied**: parser groups by (bead id, round), keeps last (spec §4, bead .4).
+- RD1-05 Should-fix · §3 Merge: line only on success path — **applied**: failure-path line with ` → blocker`, second stub key (spec §3, beads .3, .4).
+- RD1-06 Nit · §1 raw agreement without marginals — **applied**: per-seat C/R/U counts on the line (spec §1, bead .1).
+- RD1-07 Nit · §1 votes[] positional convention undocumented — **applied**: reporter packet-contract states it (spec §1, bead .1).
+- RD1-08 Nit · ledger-append lossiness unstated — **applied**: Error handling caveat + `Metrics: ledger-check` line (spec §4, §Error handling, beads .4, .8).
+
+Applied opportunistically from the 18 unjudged (beyond panel cap) candidates, where plainly true and touching a section already being amended — recorded as applied-unverified, the qualifier itself stays parked: fix-round line uses the coordinator's shape with bead id (LEDGER_LINE_RE); Metrics block is four single-line appends; breaker-tripped/entered sources stated and `K` dropped; every reviewing dispatch (incl. re-reviews) computes its own Test changes block, command-stated, size-capped, post-rebase range for seam review, empty testPaths rejected; `metrics:` pointer written as pending then rewritten after upstream-feedback; scopeFilter key = `[SEV] <location>` prefix, demotion rate on a `scope-filter:` line; `bd list --limit 0`; independence in the Judge panel subsection; arithmetic pinned by a known-ledger replay scenario.
+
+Not applied from the unjudged list (left for the re-roast to judge or already disposed): .5/.6/.7 and .3/.9/.10 shared-file edges (coverage CR1-02/03/09 rejected these); .8 producer edges (CR1-05 rejected; the sweep covers drift); acceptance-only tests for prose components (inherent to prompt-file changes; live run is the measurement, stated in §Testing); edge-reason grandfathering (super-auto phase-5 fix beads and blocker beads render `unstated` by design — §10 says so); scrub opt-in (step 7 already shows the body before filing).
+
+Re-roast decision: design decisions changed and a Blocking was resolved → round 2 with the prior report.
