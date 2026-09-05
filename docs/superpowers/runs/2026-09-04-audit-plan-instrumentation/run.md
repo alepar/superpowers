@@ -1,7 +1,8 @@
 # super-auto run — 2026-09-04-audit-plan-instrumentation
 
 flags: planOneShot=false skipPlanRoast=false skipCodeRoast=true autonomous=true
-phase: code
+phase: report
+phaseHistory: design → roast-design → code → roast-code (skipped: skipCodeRoast=true) → fix-loop (skipped: no code roast) → report
 
 idea: Implement items 1–4 of the audit improvement plan in ~/Documents/SuperAuto_Research_Audit_20260904/report.md, plus a fifth: instrument the bead graph super-design produces (per bead: a rough description of what it was; per dependency edge: why it existed) so bottlenecks can be analyzed later. All instrumentation output is delivered as part of upstream-feedback when it files issues against the skill repo.
 spec: 2026-09-04-audit-plan-instrumentation-design.md
@@ -15,16 +16,17 @@ roastDesignExit: converged at round 2 — Should-fix (8 confirmed) [converged]; 
 roastDesignRound: 2
 
 codeBuckets:
-  completed: super-plan-qfy.1, super-plan-qfy.3, super-plan-qfy.4, super-plan-qfy.5, super-plan-qfy.6, super-plan-qfy.7, super-plan-qfy.8, super-plan-qfy.9, super-plan-qfy.10
-  escalated: super-plan-qfy.2
+  completed: super-plan-qfy.1, super-plan-qfy.2, super-plan-qfy.3, super-plan-qfy.4, super-plan-qfy.5, super-plan-qfy.6, super-plan-qfy.7, super-plan-qfy.8, super-plan-qfy.9, super-plan-qfy.10, super-plan-qfy.11
+  escalated:
   pendingRetry:
   parked:
   stalled: false
-  stopReason: ready-drained (root open — .2 escalated, .11 sweep never ready)
-  review: Blocking (1 confirmed) — Task 2 (.2) missing from the branch; everything else clean; sweep cf90104 860 passed
+  stopReason: ready-drained on both invocations; root closed by the sequencer after verifying every leaf closed and the tree's merges all ancestors of tip 7fb4cd0 (the coordinator's own return listed .3/.9/.11 as escalated and `task-9` as pendingRetry — false-premise blocker bookkeeping, not tracker state; see friction.md and the final review)
+  review: LAND — no blocking finding; 1 minor deferred (replay-harness fallback string unexercised); parked none; BLOCKED-AUTH none; six false-premise blocker beads flagged as a systemic super-code defect to file upstream
   authRefused:
-  sweep: cf90104 — 860 passed, 0 failed, 0 errors, 0 skipped; command: bash tests/super-code/test-coordinator-replay.sh
+  sweep: 7fb4cd0 — 860 passed, 0 failed, 0 errors, 0 skipped; command: bash tests/super-code/test-coordinator-replay.sh (re-run by the final reviewer at the tip; stamp matches)
   ledger: .superpowers/sdd/super-plan-qfy-plan/progress.md
+  invocations: wf_2612e115-caf (round 1: 9 merged, 121 agents, 74 min) + resume (2 remaining beads, 107 agents, 7.8 h — see friction)
 
 codeLaunch: workflow wf_2612e115-caf (2026-09-05) · epic super-plan-qfy · 11 leaves · concurrency 16 · gate/sweep tests/super-code/test-coordinator-replay.sh · ledger .superpowers/sdd/super-plan-qfy-plan/progress.md (git-ignored, inside this worktree)
 
