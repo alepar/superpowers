@@ -497,11 +497,16 @@ branches, determinism — rather than naming or line-count theater?
 7. Mutation-worthiness: would the test actually fail if the logic were wrong?
 8. Copy-pasted setup that should be a fixture; near-duplicate cases that should be
    parameterized.
+9. Expected values hardcoded to match the visible test inputs.
+10. Assertions weakened, loosened, or removed in the diff.
+11. Test files deleted, renamed out of the runner's glob, or marked `skip`/`xfail` without a
+    stated reason.
 
 **Pragmatism filter:** always report missing tests on a risky path, and report flakiness risk —
 it erodes the signal of the whole suite. Coverage on low-risk code has diminishing returns —
 don't demand it, and don't report its absence. Tests are code too; don't accept complexity in
-them you wouldn't accept elsewhere.
+them you wouldn't accept elsewhere. A test refactor documented in the PR description is not a
+finding.
 ```
 
 ## Lane: dependency
