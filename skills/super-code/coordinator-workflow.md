@@ -184,6 +184,7 @@ Two rules, both mandatory in the skeleton below:
 | `bd-ready-recheck` (the post-closure re-query when Close reported in-tree closures) | **Opportunistic**: a null keeps the original concurrent ready result — logged, never a stopReason. |
 | `plan` | Round abandoned (nothing downstream can run without the mapping); bounded retry, then `stopReason: 'plan-unavailable'`. |
 | `read-ledger` | Resume reconstructs nothing, loudly: `bd ready` remains the authority on closed work, but prior-run `pendingRetry` bounds are lost for this run — logged, not silent. |
+| `read-ledger:finish` (Task 6's Metrics re-read) | Logged as a NULL dispatch, same as `read-ledger` — `metricsLines` then parses an empty string, so every derived count reads zero and `ledger-check` reads `ok` only by coincidence if `completed.size` also happens to be zero; the four `Metrics:` lines still get appended, silently wrong rather than absent, the same trade-off `sweep`'s `MEASUREMENT INVALID`/`UNAVAILABLE` strings exist to avoid for a run's test evidence — the Metrics block has no such explicit-invalid variant today. |
 | `final-review` | `review` is an explicit UNAVAILABLE string — **never** "no findings". |
 | `ledger-append` / `notify` / `clarify` / `ledger-minor` | Fire-and-forget mechanical writes: log and continue (the pre-existing "silent ledger loss" limitation under "Workspace and ledger" applies; the log line is what makes it non-silent now). |
 
@@ -951,6 +952,54 @@ declared and work landed. Its one-line summary (or `MEASUREMENT INVALID: <cause>
 to the ledger as a `Sweep:` line and handed to the final reviewer as the branch-wide
 measurement; without a declared sweep the reviewer is told the only test evidence is the
 per-merge gate runs. See "Serial merge-back" on why there are two selections.
+
+**Metrics: a run-wide tally, dispatched right before the final review, unconditionally** (Task 6).
+One mechanical dispatch re-reads the ledger fresh — this run's own `Merge:`/fix-round appends since
+Resume's one-time read are not reflected in that variable — then four `ledgerAppendPrompt` calls
+each append one physical line, in this exact order:
+
+```
+Metrics: merges M · merge-failed Mf · rebase-conflicts C · seam-reviews S (fixed F) · gate-fails G
+Metrics: fix-loop round 1: A1 addressed / E1 entered · round 2: … · round 5: …
+Metrics: fix-loop breaker-tripped: B
+Metrics: ledger-check <ok | M≠completed: M vs N>
+```
+
+Stub keys: `read-ledger:finish` (the fresh read; distinct from the Resume-phase `read-ledger` key
+above) and `ledger-append:metrics:1`, `:2`, `:3`, `:check` (the four lines, one dispatch each). No
+gate on `completed.size` — unlike `sweep`/`final-review`, this block runs even on a run that merged
+nothing, since a breaker-cap BLOCKED or a stalled fix loop still has history worth reporting.
+
+Field sources, every one settled by a roast round; nothing here is re-derived from scratch:
+
+- `M` counts **SUCCESS-PATH** `Merge:` lines only (no trailing ` → blocker`); `Mf` counts the
+  ` → blocker` lines. Roast round 2, binding: a both-paths `M` compared against `completed.size`
+  below would mismatch on every run with a failed merge, since `completed` never holds one.
+- `C` (rebase-conflicts), `S`/`F` (seam-reviews / of those, fixed), and `G` (gate-fails) all come
+  from `Merge:` lines on **both** paths (Task 3's line shape: `rebase <clean | conflict: N files>
+  · seam-review <none | cleared | fixed> · gate <pass | fail>`).
+- `E_r` = the count of **distinct bead ids** with a surviving fix-round line for round `r` (Task
+  4's `Task <N> (<id>): fix round <R>/5 (<A> addressed, <O> open — …)` shape); `A_r` = the sum of
+  each surviving line's `<A>` value for that round.
+- **Resume dedupe rule, BY SERIES** (roast round 1; the operation corrected in round 2): for each
+  bead id, drop every fix-round line preceding that id's **last** `fix round 1/5` line, keeping
+  only the final attempt's own series. A restart re-enters the fix loop at round 1 (see "Resume
+  behavior" above — this coordinator cannot resume mid-round), so an abandoned first attempt's
+  rounds 2-3 sitting just before a fresh round 1 must not survive into `E_2`/`E_3`; a per-round
+  last-occurrence dedupe would wrongly keep them. Grouping is by bead id (the fix-round line's own
+  parenthesized field), never by round number alone.
+- `B` (breaker-tripped) counts `complete (… parked)` lines (the cap adjudicator's PARK ruling
+  reaching the merge gate) plus `BLOCKED` lines whose reason is the breaker cap — recognized by the
+  same id's ledger history carrying a `fix round 5/5` line, the only way `handleBlocker` is reached
+  FROM the cap (via `adjudicatePrompt`'s BLOCKED ruling) rather than a self-filed, failed-merge, or
+  unmapped-planner-id trigger, none of which run a fix loop at all.
+- `ledger-check` cross-checks `M` against the coordinator's own in-memory `completed.size` rather
+  than asserting the ledger is authoritative — the ledger-append path is lossy (a null dispatch
+  drops a write silently, "Null dispatch policy"), so a discrepancy is reported (`M≠completed: M
+  vs N`), never papered over as `ok`.
+
+The coordinator's return gains an **additive** field, `metrics` — an array of exactly those four
+line strings, in order, alongside `sweep`; no existing return field changes shape.
 
 **Friction capture is the invoking session's job, not the Workflow script's.** The Workflow script
 itself cannot write files — it has no I/O (see "Key constraint: the script does no I/O") — so it
@@ -2444,6 +2493,88 @@ if (sweepCommand && completed.size) {
   await dispatch(() => ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName, `Sweep: ${sweepSummary}`),
     'ledger-append:sweep', { label: 'ledger-append:sweep', phase: 'Finish', model: model('mechanical') })
 }
+// Task 6: the Metrics block — one mechanical dispatch re-reads the ledger (this run's own
+// `Merge:`/fix-round appends since Resume's one-time read are not reflected in that variable —
+// see the Resume-phase `read-ledger` comment) and four ledgerAppendPrompt calls append the derived
+// counts, purely mechanical: every judgment already happened at the write site (the merge gate,
+// reviewAndFix, handleBlocker); this only tallies what is already on the ledger. Dispatched
+// UNCONDITIONALLY — unlike `sweep`/`final-review`, it does not gate on `completed.size`, since a
+// run that merged nothing still has fix-loop/merge-failure history worth reporting — and always
+// before the final review, so the whole-epic reviewer could in principle read it too (it does not
+// today; the four lines are ledger-only).
+const metricsLedger = await dispatch(() => readLedgerPrompt(integrationWorktree, ledgerPath), 'read-ledger:finish',
+  { label: 'read-ledger:finish', phase: 'Finish', model: model('mechanical') })
+const metricsLines = (metricsLedger?.text || '').split('\n').map(l => l.trim()).filter(Boolean)
+// `Merge:` lines (Task 3) — raw, never through `ledgerLine()`, on BOTH paths. Success-path-only
+// `M` (roast round 2, binding): a both-paths count compared against `completed.size` below would
+// mismatch on every run with a failed merge, since `completed` never holds a failed merge's id.
+const MERGE_METRICS_RE = /^Merge:\s+\S+\s+—\s+rebase\s+(clean|conflict:\s*\d+\s*files?)\s+·\s+seam-review\s+(none|cleared|fixed)\s+·\s+gate\s+(pass|fail)(\s+→\s+blocker)?$/
+let mMerges = 0, mMergeFailed = 0, mConflicts = 0, mSeamReviews = 0, mSeamFixed = 0, mGateFails = 0
+for (const line of metricsLines) {
+  const mm = MERGE_METRICS_RE.exec(line)
+  if (!mm) continue
+  const [, rebase, seam, gate, blocker] = mm
+  if (blocker) mMergeFailed++; else mMerges++
+  if (rebase.startsWith('conflict')) mConflicts++
+  if (seam !== 'none') { mSeamReviews++; if (seam === 'fixed') mSeamFixed++ }
+  if (gate === 'fail') mGateFails++
+}
+// Fix-round lines (Task 4), deduped BY SERIES, by bead id (roast round 1; operation corrected
+// round 2): for each id, drop every fix-round line preceding that id's LAST `fix round 1/5` line,
+// keeping only the final attempt's series — a per-round last-occurrence dedupe would wrongly keep
+// rounds 2-3 of an earlier, abandoned attempt sitting right before a fresh round 1.
+const FIXROUND_METRICS_RE = /^Task\s+\S+\s+\(([^)]+)\):\s*fix round (\d)\/5 \((\d+) addressed/
+const fixRoundsById = new Map()
+metricsLines.forEach((line, idx) => {
+  const fm = FIXROUND_METRICS_RE.exec(line)
+  if (!fm) return
+  const [, id, round, addressed] = fm
+  if (!fixRoundsById.has(id)) fixRoundsById.set(id, [])
+  fixRoundsById.get(id).push({ round: Number(round), addressed: Number(addressed), idx })
+})
+const mEntered = [0, 0, 0, 0, 0, 0]   // 1-indexed by round
+const mAddressed = [0, 0, 0, 0, 0, 0]
+const idsThatSawRound5 = new Set()
+for (const [id, entries] of fixRoundsById) {
+  let lastRound1 = 0
+  for (let i = entries.length - 1; i >= 0; i--) if (entries[i].round === 1) { lastRound1 = i; break }
+  for (let i = lastRound1; i < entries.length; i++) {
+    mEntered[entries[i].round]++
+    mAddressed[entries[i].round] += entries[i].addressed
+    if (entries[i].round === 5) idsThatSawRound5.add(id)
+  }
+}
+// Breaker-tripped (`B`): a `complete (... parked)` line (the cap adjudicator's PARK ruling
+// reaching the merge gate) plus a `BLOCKED` line whose reason is the breaker cap — recognized by
+// the surviving id's own ledger history carrying a `fix round 5/5` line, the only way
+// `handleBlocker` is reached FROM the cap (via `adjudicatePrompt`'s BLOCKED ruling) rather than a
+// self-filed, failed-merge, or unmapped-planner-id trigger, none of which run a fix loop at all.
+let mBreakerTripped = 0
+for (const line of metricsLines) {
+  const lm = LEDGER_LINE_RE.exec(line)
+  if (!lm) continue
+  const [, , id, rest] = lm
+  if (rest.startsWith('complete') && rest.includes('parked')) mBreakerTripped++
+  else if (rest.startsWith('BLOCKED') && idsThatSawRound5.has(id)) mBreakerTripped++
+}
+// `ledger-check`: the ledger-append path is lossy (a null dispatch drops a write silently — "Null
+// dispatch policy"), so this cross-checks `M` against the coordinator's own in-memory
+// `completed.size` (which never counts a failed merge either) rather than asserting the ledger is
+// authoritative.
+const mLedgerCheck = mMerges === completed.size ? 'ok' : `M≠completed: ${mMerges} vs ${completed.size}`
+const metricsLine1 = `Metrics: merges ${mMerges} · merge-failed ${mMergeFailed} · rebase-conflicts ${mConflicts} · seam-reviews ${mSeamReviews} (fixed ${mSeamFixed}) · gate-fails ${mGateFails}`
+const metricsLine2 = `Metrics: fix-loop ${[1, 2, 3, 4, 5].map(r => `round ${r}: ${mAddressed[r]} addressed / ${mEntered[r]} entered`).join(' · ')}`
+const metricsLine3 = `Metrics: fix-loop breaker-tripped: ${mBreakerTripped}`
+const metricsLine4 = `Metrics: ledger-check ${mLedgerCheck}`
+await dispatch(() => ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName, metricsLine1),
+  'ledger-append:metrics:1', { label: 'ledger-append:metrics:1', phase: 'Finish', model: model('mechanical') })
+await dispatch(() => ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName, metricsLine2),
+  'ledger-append:metrics:2', { label: 'ledger-append:metrics:2', phase: 'Finish', model: model('mechanical') })
+await dispatch(() => ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName, metricsLine3),
+  'ledger-append:metrics:3', { label: 'ledger-append:metrics:3', phase: 'Finish', model: model('mechanical') })
+await dispatch(() => ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName, metricsLine4),
+  'ledger-append:metrics:check', { label: 'ledger-append:metrics:check', phase: 'Finish', model: model('mechanical') })
+const metrics = [metricsLine1, metricsLine2, metricsLine3, metricsLine4]
 const reviewRes = completed.size
   ? await dispatch(() => `Final whole-epic review of integration branch ${integrationBranch} for epic ${epicId}. Read the ledger at ${ledgerPath} first: its \`minor (deferred)\` lines are findings earlier reviews raised and deliberately did not fix, and its \`parked\` lines are findings an adjudicator overruled to let a task merge. Triage both — say which must be addressed before this branch lands. They are the two categories no per-task review will raise again. Its \`Recurring minor:\` lines are clusters the coordinator detected (one signature ≥5 times or across ≥3 tasks) — triage those FIRST and name the class, not the instances: a cluster at that rate is usually a pipeline defect or one systemic smell, never N independent nits. Its \`BLOCKED-AUTH\` lines are tasks that lost coverage to a harness permission refusal — list them as untested scope, not as findings.${sweepSummary ? ` The per-branch sweep ran against this tip and reported: ${sweepSummary} — read that as the branch-wide measurement (the per-merge gate ran a narrower selection); a MEASUREMENT INVALID or UNAVAILABLE there means the branch is unmeasured, not green.` : ' No per-branch sweep was declared for this run, so the only test evidence is the per-merge gate runs — say so in your verdict rather than treating the branch as swept.'}`, 'final-review',
       { label: 'final-review', phase: 'Finish', model: model('finalReview') })
@@ -2455,7 +2586,8 @@ const review = reviewRes ?? `FINAL REVIEW UNAVAILABLE — the final-review dispa
 // refusal, with the refused command — a caller's report lists them as untested scope. They are
 // ALSO in `escalated` (quarantined this run), so the four-bucket invariant is unchanged.
 return { completed: [...completed], escalated: [...escalated], pendingRetry: [...pendingRetry],
-         parked: [...parked], stalled, stopReason, review, authRefused: [...authRefused], sweep: sweepSummary }
+         parked: [...parked], stalled, stopReason, review, authRefused: [...authRefused], sweep: sweepSummary,
+         metrics }
 
 // --- helpers ---
 function treeMembershipTest(epicId) {
@@ -3631,6 +3763,8 @@ round 1, changing every downstream assertion this scenario makes about bucketing
 | `ledger-append:bd-103` | `{appended:true}` | I1: `handleBlocker`'s ESCALATE branch appends `Task 3 (bd-103): BLOCKED — <detail>` so a resumed run reconstructs `escalated` for this id |
 | `clarify:bd-104` | `{recorded:true}` | fixed-clarification-recording mechanical dispatch on the RESOLVE branch (schema-less, like `notify` — see "Schema-less dispatches" below); this is also what makes `pendingRetry` grow, which the no-progress guard reads as this round's progress signal (C-2) |
 | `ledger-append:bd-104` | `{appended:true}` | I1: called twice (single value, reused) — the RESOLVE branch's `pending retry` line, then the bounced visit's `BLOCKED` line |
+| `read-ledger:finish` | `{text:""}` | Task 6: the Finish-phase Metrics dispatch's own fresh ledger read — distinct from the Resume-phase `read-ledger` key above (that one's text was captured before this run's own appends landed; Finish needs the current file) — empty here, so every derived count is zero |
+| `ledger-append:metrics:1` / `:2` / `:3` / `:check` | `{appended:true}` (all four) | Task 6: the four `Metrics:` ledger lines, dispatched once each, mechanically, before `final-review` — the rendered line TEXT (arithmetic against a non-empty ledger) is asserted in the dedicated Task 6 live-sim scenario below, since `read-ledger:finish` returning empty text here makes every count trivially zero |
 | `final-review` | `{summary:"stub: 2/4 tasks merged; bd-103 quarantined, bd-104 resolved pending re-attempt",verdict:"conditional-pass"}` | whole-epic review dispatched once at least one task landed |
 
 **Stub keys are call-site qualified** (`brief:<id>`, `review:<id>`, `merge:<id>`, `triage:<id>`,
@@ -3704,12 +3838,15 @@ untested by any scenario in this doc — inspection-only, same as C-1/C-3 above.
   (one per terminal outcome, `bd-104` twice: `pending retry` then the bounced `BLOCKED`) +
   `triage` 3 (`bd-103`, `bd-104` twice) + `notify` 2 (`bd-103`, bounced `bd-104`) +
   `clarify` 1 + `ledger-append:detector` 1 (round 1's persisted detector line, issue #3 defect
-  6; round 2 exits at `ready-drained` before the drain) + `final-review` 1 = **41 agent calls, 0
+  6; round 2 exits at `ready-drained` before the drain) + `read-ledger:finish` 1 + `ledger-append:metrics:*` 4
+  (Task 6's Finish-phase Metrics block: one fresh ledger re-read plus the four `Metrics:` lines,
+  dispatched unconditionally, before `final-review`) + `final-review` 1 = **51 agent calls, 0
   errors** (`final-review` dispatches because
   `completed.size` is 2, not 0) — **confirmed by re-run**, see below; this was computed by hand
   before that run and matched exactly. The pre-Task-5 script's confirmed count was 26 (see the
-  superseded baseline below) — the +5 is exactly the new `read-ledger` (1) and `ledger-append` (4)
-  dispatches; nothing else in this scenario's topology changed.
+  superseded baseline below); Task 3/4 brought it to 46 (the new `read-ledger` (1) and
+  `ledger-append` (4) dispatches for the `Merge:`/fix-round ledger lines); Task 6 adds a further
+  +5 on top of that (the Finish-phase re-read plus its four `Metrics:` appends), for **51** total.
 - `r.branch` reaching `mergePrompt`'s dispatch text and `im.base` reaching `taskReviewPrompt`'s
   (C2/C6) is verified only by reading `mergePrompt`'s and `taskReviewPrompt`'s definitions — never
   by this or any dryRun's output, for the identical reason the scoping and finding-rendering
@@ -3878,6 +4015,11 @@ script and this `args` block:
       "ledger-append:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "clarify:bd-104": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"recorded\":true}",
       "ledger-append:bd-104": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "read-ledger:finish": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"text\":\"\"}",
+      "ledger-append:metrics:1": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "ledger-append:metrics:2": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "ledger-append:metrics:3": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "ledger-append:metrics:check": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "final-review": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"summary\":\"stub: 2/4 tasks merged; bd-103 quarantined, bd-104 resolved pending re-attempt\",\"verdict\":\"conditional-pass\"}"
     }
   }
@@ -3944,13 +4086,16 @@ reading `reviewAndFix`'s definition directly (the loop condition is `rv.status !
 | `triage:bd-201` | `{decision:"ESCALATE",detail:"race condition confirmed load-bearing by the breaker adjudicator; needs a human decision on the caching strategy"}` | `handleBlocker`'s normal triage dispatch, reached via `integrateOne`'s `if (r.status === 'BLOCKED')` branch — same path any other BLOCKED result takes, confirming the breaker's BLOCKED exit isn't a special case downstream |
 | `notify:bd-201` | `{sent:true}` | fixed-notification mechanical dispatch on the ESCALATE branch |
 | `ledger-append:bd-201` | `{appended:true}` | I1: `handleBlocker`'s ESCALATE branch appends `Task 1 (bd-201): BLOCKED — <detail>` — the breaker-cap BLOCKED case reaches the ledger through the SAME `handleBlocker` write every other blocker trigger uses, not a special-cased write inside `reviewAndFix` |
+| `read-ledger:finish` / `ledger-append:metrics:1` / `:2` / `:3` / `:check` | `{text:""}` then `{appended:true}` (all four) | Task 6: the Finish-phase Metrics block dispatches **unconditionally** — unlike `sweep`/`final-review`, it does not gate on `completed.size`, so it still fires here even though nothing merged (every derived count is zero against the empty stubbed ledger text; `ledger-check` reads `ok` since `M` (0) matches `completed.size` (0)) |
 
 **No `merge:bd-201` and no `final-review` key exist in this scenario's args** — both are part of
 the test. `bd-201` never reaches `mergePrompt` (it's BLOCKED, never CLEAN); `completed.size` stays
 `0` for the whole run, so the `? ... : 'no work landed'` ternary in the Finish phase takes its
 `false` branch and `final-review` is never dispatched. If either key is ever requested under this
 scenario, something regressed: `merge:bd-201` would mean a BLOCKED task reached the merge gate;
-`final-review` would mean `completed.size` was nonzero despite nothing merging.
+`final-review` would mean `completed.size` was nonzero despite nothing merging. The Task 6 Metrics
+block dispatches regardless — its four `ledger-append:metrics:*` keys ARE expected here, still
+strictly before where `final-review` would sit if it ran.
 
 **Assertions:**
 - Exactly 5 `fix:bd-201:<round>` / `re-review:bd-201:<round>` pairs dispatch, rounds 1 through 5 —
@@ -3972,12 +4117,15 @@ scenario, something regressed: `merge:bd-201` would mean a BLOCKED task reached 
   `bd-ready` 2 + `plan` 1 +
   `brief` 1 + `implement` 1 + `review` 1 + `fix` 5 + `re-review` 5 + `adjudicate` 1 +
   `breaker-blocker` 1 + `triage` 1 + `notify` 1 + `ledger-append` 1 (`bd-201`) +
-  `ledger-append:detector` 1 (round 1's persisted detector line) = **26 agent calls,
+  `ledger-append:detector` 1 (round 1's persisted detector line) + `read-ledger:finish` 1 +
+  `ledger-append:metrics:*` 4 (Task 6's Finish-phase Metrics block — dispatched unconditionally,
+  even though nothing merged) = **31 agent calls,
   0 errors** — and **no `bd-ready-topup` dispatch**: nothing merges in this scenario, and the
   top-up fires only on a successful merge; its firing here would itself be a regression — and, distinctly from every other scenario in this doc, **no `final-review`
   dispatch**, since `completed.size` is `0`) — **confirmed by re-run**, see below; this was
   computed by hand before that run and matched exactly. The pre-Task-5 confirmed count was 22
-  (below); the +2 is exactly `read-ledger` and `ledger-append:bd-201`.
+  (below); Task 3/4 brought it to 26 (`read-ledger` and `ledger-append:bd-201`); Task 6 adds a
+  further +5 (the Finish-phase re-read plus its four `Metrics:` appends), for **31** total.
 
 **Confirmed against the current script.** Run `wf_527ad491-790`: **24 agents dispatched, 0 errors**
 — unchanged, as expected: `bd-201` never merges, so neither the deferred-minor writer nor the
@@ -4036,7 +4184,12 @@ bead's TEXT — same `pick()` limit as everywhere else in this section.
       "breaker-blocker:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"status\":\"BLOCKED\",\"blockerBead\":\"bd-210\"}",
       "triage:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"decision\":\"ESCALATE\",\"detail\":\"race condition confirmed load-bearing by the breaker adjudicator; needs a human decision on the caching strategy\"}",
       "notify:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"sent\":true}",
-      "ledger-append:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}"
+      "ledger-append:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "read-ledger:finish": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"text\":\"\"}",
+      "ledger-append:metrics:1": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "ledger-append:metrics:2": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "ledger-append:metrics:3": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "ledger-append:metrics:check": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}"
     }
   }
 }
@@ -4097,6 +4250,8 @@ that; it is, and remains, verified only by reading the `if` statement itself.
 | `adjudicate:bd-301` | `{id:"bd-301",decision:"PARK",ruling:"style-only finding, not load-bearing and doesn't reveal a plan defect; safe to merge as-is"}` | **the PARK arm** — the one branch neither other scenario exercises |
 | `merge:bd-301` | `{id:"bd-301",merged:true,head:"<40-char-sha>",mergeBase:"<40-char-sha>"}` | the PARK ruling reaches `mergePrompt` — a task with a known-open finding merging, the ONE legitimate path for that in this script; `head` (fix-round-1) and `mergeBase` (Fix 3, final fix round) together render the ledger's commit-range line below |
 | `ledger-append:bd-301` | `{appended:true}` | I1: the merge-gate `ledger-append` dispatch — `Task 1 (bd-301): complete (commits <mergeBase7>..<head7>, 1 parked — ruling: ... — finding: ...)`, SKILL.md's `<K> parked` completion-line variant (fix-round-1: now also carries `r.finding`, not only the ruling, and the commit range instead of the bare word "merged"; Fix 3, final fix round: the range's first half is `mergeBase`, not `base`) |
+| `read-ledger:finish` | `{text:""}` | Task 6: the Finish-phase Metrics dispatch's own fresh ledger read, distinct from the Resume-phase `read-ledger` above |
+| `ledger-append:metrics:1` / `:2` / `:3` / `:check` | `{appended:true}` (all four) | Task 6: the four `Metrics:` lines, dispatched before `final-review`; every derived count is zero against the empty stubbed ledger text (`ledger-check` reads `ok` since `M` (0) matches `completed.size` (1)? — no: `read-ledger:finish` here returns empty text, so `M` parses as 0 while `completed.size` is 1, so this scenario's `ledger-check` line reads `M≠completed: 0 vs 1`, a deliberate reminder that the empty-stub `read-ledger:finish` text is disconnected from this scenario's own real merge) |
 | `final-review` | `{summary:"stub: 1/1 task merged; bd-301 parked with a ruling",verdict:"conditional-pass"}` | dispatched because `completed.size` is 1, not 0 |
 
 **No `breaker-blocker:bd-301`, `triage:bd-301`, or `notify:bd-301` key exists in this scenario's
@@ -4121,10 +4276,12 @@ to short-circuit the blocker path.
   `brief` 1 + `implement` 1 + `review` 1 + `fix` 5 + `re-review` 5 + `adjudicate` 1 + `merge` 1 +
   `ledger-append` 1 (`bd-301`) + `bd-ready-topup` 1 (after `bd-301`'s successful merge) +
   `ledger-append:detector` 1 (round 1's persisted detector line) +
-  `final-review` 1 = **26 agent calls, 0 errors**) — **confirmed by
+  `read-ledger:finish` 1 + `ledger-append:metrics:*` 4 (Task 6's Finish-phase Metrics block) +
+  `final-review` 1 = **32 agent calls, 0 errors**) — **confirmed by
   re-run**, see below; this was computed by hand before that run and matched exactly. The
-  pre-Task-5 confirmed count was 21 (below); the +2 is exactly `read-ledger` and
-  `ledger-append:bd-301`.
+  pre-Task-5 confirmed count was 21 (below); Task 3/4 brought it to 27 (`read-ledger` and
+  `ledger-append:bd-301`); Task 6 adds a further +5 (the Finish-phase re-read plus its four
+  `Metrics:` appends), for **32** total.
 
 **Confirmed against the current script.** Run `wf_4203efd4-84d`: **23 agents dispatched, 0 errors**
 — unchanged, and this run newly confirms the finish log reads `Parked (merged with an overruled
@@ -4221,6 +4378,11 @@ question, same structural limit as the other four claims above.
       "merge:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"merged\":true,\"head\":\"f6f6f6f6666666666666666666666666666666\",\"mergeBase\":\"eeeeeee5555555555555555555555555555555\",\"rebaseConflictFiles\":0}",
       "ledger-append:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "ledger-append:merge:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "read-ledger:finish": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"text\":\"\"}",
+      "ledger-append:metrics:1": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "ledger-append:metrics:2": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "ledger-append:metrics:3": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "ledger-append:metrics:check": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "final-review": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"summary\":\"stub: 1/1 task merged; bd-301 parked with a ruling\",\"verdict\":\"conditional-pass\"}"
     }
   }
