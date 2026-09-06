@@ -35,8 +35,32 @@ exists, the second proves this repo has a tracker initialized. If either fails, 
 > drive it by hand with `superpowers:super-design`, which in no-beads mode plans and executes the
 > tree itself.
 
-Once `bd` is confirmed, work in this order — it matters, because two of these steps write to the
-repo and the other two decide whether they should:
+**Then check that the superpowers skills this session loaded are current.** The skill text you
+are following right now came from the plugin cache, and the cache lags the marketplace source
+whenever a release landed since the last update (measured: a run followed a cache four releases
+behind the fix it was supposed to exercise). Do this once, before Resume, with three commands:
+
+1. **Loaded version:** the base directory the Skill tool printed for this skill is
+   `<cache>/<marketplace>/superpowers/<version>/skills/super-auto` — take `<marketplace>` and
+   `<version>` from that path (`~/.claude/plugins/installed_plugins.json` records the same pair
+   under `superpowers@<marketplace>`).
+2. **Latest version:** the marketplace's source repo is in `~/.claude/plugins/known_marketplaces.json`
+   (`<marketplace>.source.repo`). Read `.claude-plugin/plugin.json` from that repo's default
+   branch — `gh api repos/<owner>/<repo>/contents/.claude-plugin/plugin.json --jq .content | base64 -d`
+   (or the raw GitHub URL) — and take its `version`. Never consult a local checkout of the
+   plugin repo: it exists on one machine only and says nothing about what this session loaded.
+3. **Compare.** Equal: say so in one line and go on. Different: the cache is behind. Run
+   `claude plugin marketplace update <marketplace>` then `claude plugin update superpowers@<marketplace> -y`,
+   then **stop** — the CLI applies an update only on restart, and the skill text already in this
+   session is the stale one. Tell the user which version was loaded, which was installed, and
+   to start a new session and re-invoke `super-auto`. This happens before the run directory
+   exists, so nothing is left half-written; in autonomous mode it is the one pre-flight stop
+   that needs no answer, only a restart. Lookup failed (offline, no `gh`): warn with both
+   commands' errors and continue on the loaded version — a stale skill is a degraded run, not a
+   blocked one.
+
+Once `bd` and the skill version are confirmed, work in this order — it matters, because two of
+these steps write to the repo and the other two decide whether they should:
 
 1. **Resume glob** (§Resume). A run already in flight is resumed, and everything below is skipped.
 2. **Flags** (§Inputs) — fresh runs only; a resume never re-asks.
