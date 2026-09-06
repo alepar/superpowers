@@ -35,10 +35,10 @@ Severity vocabulary throughout (the only one): **Blocking | Should-fix | Nit | F
   3. Dispatch one dedupe subagent (fable) with the pooled findings; split its output into
      severe (Blocking/Should-fix) and the remainder. `config.remainderCap` applies exactly as
      in the engine: drop the low-severity tail beyond it and keep the count.
-  4. `config.panelCap` (default 12) applies exactly as in the engine: the top `panelCap` severe
-     findings get the 3-seat panel (reproduce/refute/ground, sonnet) in parallel; severe
-     findings beyond it go to the report's "Not verified (beyond panel cap)" section unjudged,
-     never dropped. Re-dispatch any seat that returns nothing, once. **Moderation-safe retry:**
+  4. Every severe finding gets the 3-seat panel (reproduce/refute/ground, sonnet) in parallel —
+     uncapped by default in both modes. Only when `config.panelCap` is set does it apply exactly
+     as in the engine: the top `panelCap` severe findings get panels and the rest go to the
+     report's "Not verified (beyond panel cap)" section unjudged, never dropped. Re-dispatch any seat that returns nothing, once. **Moderation-safe retry:**
      a seat whose provider rejects the dispatch on content-policy grounds (a refusal message,
      not a null — measured on an OpenAI-only panel judging a local file-validation finding) is
      re-dispatched once with the static-review wording: present the artifact as text to be
@@ -240,11 +240,15 @@ const deduped = dd?.findings ?? []
 // dedupe died/truncated on both tries, not that the artifact is actually clean.
 const dedupeDead = raw.length > 0 && deduped.length === 0
 
-// Panel cap — bounds cost: only the top config.panelCap (default 12) severe candidates, in the
-// deduper's own rank order, get a full 3-seat panel. Excess is never silently dropped — it
-// carries through to the reporter as 'beyond-cap' packets (suggested severity, no votes) for
-// the "## Not verified (beyond panel cap)" section.
-const panelCap = config.panelCap ?? 12
+// Panel cap — UNCAPPED by default (issue #5 design question b, decided 2026-09-05): every
+// Blocking/Should-fix candidate gets a full 3-seat panel, in both modes. The measured design
+// roast (run 2026-09-04-audit-plan-instrumentation, round 1) deduped to 30 severe candidates and
+// the old default of 12 left 18 unjudged — an unverified Blocking candidate is not a cleared one,
+// and a panel is three parallel sonnet seats, cheap next to the roast it caps. `config.panelCap`
+// remains as an explicit cost bound when a caller wants one; only then does the excess carry
+// through to the reporter as 'beyond-cap' packets (suggested severity, no votes) for the
+// "## Not verified (beyond panel cap)" section — never silently dropped.
+const panelCap = config.panelCap ?? Infinity
 const severeAll = deduped.filter(f => SEVERE.includes(f.suggestedSeverity))
 const severe = severeAll.slice(0, panelCap)
 const beyondPanelCap = severeAll.slice(panelCap)
@@ -391,8 +395,10 @@ promotes.
 - reporter: 1 call.
 - Return value: `coverage.beyondCap === 2`, `coverage.promotedCount === 3`,
   `coverage.judgeCompletionPct === 100`, `verdict` non-empty.
-- Since this stub table's dedupe returns only 2 severe findings (1 Blocking + 1 Should-fix),
-  well under the default `config.panelCap: 12`, both new coverage fields are non-firing here:
+- Since this stub table's dedupe returns only 2 severe findings (1 Blocking + 1 Should-fix)
+  and no `config.panelCap` is set (uncapped by default since 2026-09-05; the recorded baselines
+  below predate that and ran under the old default of 12, which they never reached), both new
+  coverage fields are non-firing here:
   `coverage.dedupeDead === false` (dedupe returned findings normally) and
   `coverage.beyondPanelCap === 0` (nothing exceeds the cap). Exercising the panel-cap-firing
   and dedupe-dead paths themselves is a separate dryRun (small `panelCap`, a dedupe stub

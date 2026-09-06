@@ -75,10 +75,11 @@ engine script: **`./super-roast-workflow.md`**.
 4. **Dedupe-and-rank (fable, 1)** — merges overlapping findings (same location + root claim),
    suggests a severity, and applies the remainder cap (`config.remainderCap`): all severe
    findings survive uncapped; the rest are capped and the overflow count reported, never
-   silently dropped. See `./dedupe-prompt.md`. A second cap, `config.panelCap` (default 12),
-   applies at the next stage: it bounds how many of the surviving severe findings actually get
-   a full judge panel — the rest are listed under "## Not verified (beyond panel cap)" with
-   their suggested severity, never dropped.
+   silently dropped. See `./dedupe-prompt.md`. Severe findings are NOT capped at the next
+   stage by default: every one gets a full judge panel, in both modes (a measured design roast
+   left 18 of 30 severe candidates unjudged under the old default of 12). An optional
+   `config.panelCap` bounds that cost when a caller wants it — the rest are then listed under
+   "## Not verified (beyond panel cap)" with their suggested severity, never dropped.
 5. **Judges (sonnet, tiered)** — see "Tiered verification" below. See `./judge-seat-prompts.md`.
 6. **Reporter (fable, 1)** — issues final verdicts, applies the environment-aware severity
    floors, and writes the report. See `./reporter-prompt.md` and Output below.
