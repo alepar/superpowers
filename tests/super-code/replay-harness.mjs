@@ -102,6 +102,10 @@ async function run({ args, canned = {}, nullLabels = new Set(), nullAll = false,
         // actual Metrics text overrides these keys explicitly (see the dedicated Task 6 scenario).
         if (label === 'read-ledger:finish') return { text: '' }
         if (label.startsWith('ledger-append:metrics:')) return { appended: true }
+        // issue #5 defect 5: the Finish-phase bucket reconciliation dispatches whenever a run ends
+        // with anything in escalated/pendingRetry — default it to "nothing closed" so pre-existing
+        // scenarios keep their recorded buckets; the dedicated issue #5 scenario overrides it.
+        if (label === 'reconcile-buckets') return { closed: [] }
         throw new Error(`no canned answer for label ${label}`)
       }
       let v = canned[label]
@@ -347,8 +351,8 @@ async function main() {
   {
     const scan = scanTemplateSpans(scriptBody)
     check(scan.clean, 'scanner ends in code state (no unterminated literal, string, or ${})')
-    check(scan.spans.length === 170,
-      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 170; was 107 before the issue #3/#4 batch added the auth-refusal rule, seam review, edge audit, sweep, recurring-minor and detector-persistence literals, then 150, then +6 for Task 3's two \`Merge:\` ledger-line dispatch call sites — each contributes 3 template literals: the line text and the stub-key template literal used twice, once as the dispatch key and once as opts.label — then +3 for Task 4's fix-round ledger-line literal in reviewAndFix and both fixPrompt branches' literals extended to ask for head, then 159, then +5 for task super-plan-qfy.9's testChangesBlock and its call-site interpolations, then 164, then +6 for Task 6's Finish-phase Metrics block: the four \`Metrics:\` line-text template literals plus the nested per-round template literal inside \`metricsLine2\`'s \`.map()\` callback, plus one more from the block's own supporting code) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
+    check(scan.spans.length === 191,
+      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 191 — was 170 before issue #5 added: taskWorktree/taskBranch derivations (2), the runTask re-entry and commit-nudge branches' log/finding literals and the commit-nudge dispatch key+label (5), the close-only dispatch key+label, its ledger line and the already-merged log line (4), the three new prompt builders and their inner literals (6), the reconcile dispatch key+label and its two log lines (3), and mergePrompt's bead-close literal (1); was 107 before the issue #3/#4 batch added the auth-refusal rule, seam review, edge audit, sweep, recurring-minor and detector-persistence literals, then 150, then +6 for Task 3's two \`Merge:\` ledger-line dispatch call sites — each contributes 3 template literals: the line text and the stub-key template literal used twice, once as the dispatch key and once as opts.label — then +3 for Task 4's fix-round ledger-line literal in reviewAndFix and both fixPrompt branches' literals extended to ask for head, then 159, then +5 for task super-plan-qfy.9's testChangesBlock and its call-site interpolations, then 164, then +6 for Task 6's Finish-phase Metrics block: the four \`Metrics:\` line-text template literals plus the nested per-round template literal inside \`metricsLine2\`'s \`.map()\` callback, plus one more from the block's own supporting code) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
     // self-test: inject a raw backtick mid-way through the first literal's content and assert
     // the detector actually fires — a detector that cannot catch the known failure is decoration
     const [s, e] = scan.spans[0]
@@ -368,7 +372,7 @@ async function main() {
   {
     const out = await run({ args: canonicalArgs })
     assertNoThrow(out)
-    check(out.trace.length === 51, `51 agent dispatches (got ${out.trace.length}) — 32 + 1 launch-args ledger record + 1 detector ledger record (round 1; round 2 exits at ready-drained before the detector) + 2 top-up queries + 1 post-closure re-check (round 2's Close reports closures) + bd-104's same-round RESOLVE retry wave (brief, implement, bounced triage, notify, BLOCKED ledger line) + 3 Task-3 \`Merge:\` ledger lines (bd-101, bd-102 success; bd-103 failure) + bd-101's one fix-round ledger line (Task 4) + Task 6's Finish-phase Metrics block (1 \`read-ledger:finish\` + 4 \`ledger-append:metrics:*\`)`)
+    check(out.trace.length === 52, `52 agent dispatches (got ${out.trace.length}) — issue #5's Finish-phase \`reconcile-buckets\` (bd-103/bd-104 are unsettled) + 32 + 1 launch-args ledger record + 1 detector ledger record (round 1; round 2 exits at ready-drained before the detector) + 2 top-up queries + 1 post-closure re-check (round 2's Close reports closures) + bd-104's same-round RESOLVE retry wave (brief, implement, bounced triage, notify, BLOCKED ledger line) + 3 Task-3 \`Merge:\` ledger lines (bd-101, bd-102 success; bd-103 failure) + bd-101's one fix-round ledger line (Task 4) + Task 6's Finish-phase Metrics block (1 \`read-ledger:finish\` + 4 \`ledger-append:metrics:*\`)`)
     const r = out.result
     check(r && JSON.stringify(r.completed.sort()) === '["bd-101","bd-102"]', 'completed = [bd-101, bd-102]', JSON.stringify(r?.completed))
     check(r && JSON.stringify(r.escalated.sort()) === '["bd-103","bd-104"]', 'escalated = [bd-103, bd-104] — bd-104 spent its C-2 retry same-round (stub implementer stays BLOCKED) and bounced', JSON.stringify(r?.escalated))
@@ -400,7 +404,7 @@ async function main() {
   {
     const out = await run({ args: capArgs })
     assertNoThrow(out)
-    check(out.trace.length === 36, `36 agent dispatches (got ${out.trace.length}) — 24 + 1 launch-args ledger record + 1 detector ledger record + bd-201's five fix-round ledger lines (Task 4) + Task 6's Finish-phase Metrics block (1 \`read-ledger:finish\` + 4 \`ledger-append:metrics:*\`, dispatched unconditionally even though nothing merged)`)
+    check(out.trace.length === 37, `37 agent dispatches (got ${out.trace.length}) — issue #5's Finish-phase \`reconcile-buckets\` (bd-201 is escalated) + 24 + 1 launch-args ledger record + 1 detector ledger record + bd-201's five fix-round ledger lines (Task 4) + Task 6's Finish-phase Metrics block (1 \`read-ledger:finish\` + 4 \`ledger-append:metrics:*\`, dispatched unconditionally even though nothing merged)`)
     const r = out.result
     check(r && r.completed.length === 0 && JSON.stringify(r.escalated) === '["bd-201"]', 'completed empty, escalated = [bd-201]', JSON.stringify(r))
     check(r && r.review === 'no work landed', "review = 'no work landed'", r?.review)
@@ -628,6 +632,124 @@ async function main() {
     // worktree derivation is overridden by the explicit path.
     check(merge?.includes('.worktrees/super-auto-my-slug--task-bd-101'), 'task worktree still follows the collapsed convention', merge)
     check(JSON.stringify(out.result?.completed) === '["bd-101"]', 'run completes normally', JSON.stringify(out.result))
+  }
+
+  // ===== 2b. issue #5: coordinator-owned identities; empty-range distinctions; blocker close;
+  // bucket reconciliation. Measured (run 2026-09-04-audit-plan-instrumentation): eleven
+  // false-premise blocker beads, three done tasks escalated, a 7.8 h resume for two beads — all
+  // from agent-derived identities (relative worktree path, free branch name, trusted `id`) and
+  // two legitimate empty-range cases the review stage could not tell from a defect.
+  scenario('live-sim: issue #5 — absolute task worktree, pinned branch name, id re-stamp, no reconcile when buckets are clean')
+  {
+    const explicit = '/somewhere/native-tool/run-worktree'
+    const pd = `${explicit}/.superpowers/sdd/${EPIC}-plan`
+    const canned = oneTaskCanned({
+      'plan': { planPath: `${pd}/${EPIC}-plan.md`, mapping: [{ n: 1, id: 'bd-101', files: ['src/a.js'] }] },
+      'brief:bd-101': { id: 'bd-101', n: 1, status: 'BRIEFED', files: ['src/a.js'], branch: 'x', base: SHA('a') },
+      // the implementer reports a WRONG id (a plan ordinal, as one live agent did) — the
+      // coordinator must not let it reach any bucket
+      'impl:bd-101': { id: 'task-1', status: 'IMPLEMENTED', files: ['src/a.js'], head: SHA('c') },
+    })
+    const out = await run({ args: liveArgs({ integrationBranch: 'super-auto/my-slug', integrationWorktree: explicit }), canned })
+    assertNoThrow(out)
+    const brief = promptOf(out.trace, 'brief:bd-101')
+    check(brief?.includes(`${explicit}/.worktrees/super-auto-my-slug--task-bd-101`), 'brief names the task worktree as an ABSOLUTE path under the integration worktree', brief)
+    check(/named exactly `task-bd-101`/.test(brief ?? ''), 'brief pins the task branch name', brief)
+    check(/rev-list --parents --merges/.test(brief ?? '') && /alreadyMerged/.test(brief ?? ''), 'brief asks for the already-merged check (second parent of a merge on the integration branch)', brief)
+    const impl = promptOf(out.trace, 'impl:bd-101')
+    check(/commit/.test(impl ?? '') && /head/.test(impl ?? '') && /git status --short/.test(impl ?? ''), 'implementer is told to commit, verify a clean tree, and report head', impl)
+    const merge = promptOf(out.trace, 'merge:bd-101')
+    check(merge?.includes(`${explicit}/.worktrees/super-auto-my-slug--task-bd-101`), 'merge dispatch uses the same absolute task worktree', merge)
+    const r = out.result
+    check(JSON.stringify(r?.completed) === '["bd-101"]', 'completed carries the dispatched bead id, not the id the implementer reported', JSON.stringify(r))
+    check(!JSON.stringify(r).includes('task-1'), 'no bucket carries the mis-reported id')
+    check(!out.trace.some(t => t.label === 'reconcile-buckets'), 'no reconciliation dispatch when escalated/pendingRetry are empty')
+    check(!out.trace.some(t => t.label.startsWith('missing-blocker:') || t.label.startsWith('triage:')), 'a wrong reported id never reaches the blocker path')
+  }
+
+  scenario('live-sim: issue #5 — a re-entered task whose branch is already merged closes the bead without implement/review')
+  {
+    const canned = oneTaskCanned({
+      'brief:bd-101': { id: 'bd-101', n: 1, status: 'BRIEFED', files: ['src/a.js'], branch: 'x', base: SHA('a'), alreadyMerged: true },
+      'close-only:bd-101': { id: 'bd-101', status: 'CLOSED' },
+    })
+    const out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    check(!out.trace.some(t => t.label === 'impl:bd-101' || t.label === 'review:bd-101' || t.label === 'merge:bd-101'), 'no implementer, reviewer, or merge dispatched for an already-merged branch')
+    const closeOnly = promptOf(out.trace, 'close-only:bd-101')
+    check(/bd close bd-101/.test(closeOnly ?? ''), 'close-only dispatch closes the task bead', closeOnly)
+    const line = extractLedgerLine(promptOf(out.trace, 'ledger-append:bd-101'))
+    check(/^Task 1 \(bd-101\): complete \(already merged/.test(line ?? ''), 'ledger records an already-merged completion line', line)
+    check(JSON.stringify(out.result?.completed) === '["bd-101"]' && out.result?.escalated.length === 0, 'already-merged re-entry lands in completed, never escalated', JSON.stringify(out.result))
+    check(!out.trace.some(t => t.label.startsWith('missing-blocker:') || t.label.startsWith('triage:')), 'already-merged re-entry never enters the blocker path')
+  }
+
+  scenario('live-sim: issue #5 — an implementer that did not commit is nudged once, then reviewed; twice uncommitted is a diagnosed BLOCKED')
+  {
+    const nudged = oneTaskCanned({
+      'impl:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', files: ['src/a.js'], head: SHA('a') }, // head == base: nothing committed
+      'commit-nudge:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', files: ['src/a.js'], head: SHA('c') },
+    })
+    const out = await run({ args: liveArgs(), canned: nudged })
+    assertNoThrow(out)
+    const nudge = promptOf(out.trace, 'commit-nudge:bd-101')
+    check(/uncommitted/.test(nudge ?? '') && /commit/.test(nudge ?? '') && nudge?.includes(SHA('a')), 'commit-nudge names the uncommitted state and the base it equals', nudge)
+    check(out.trace.some(t => t.label === 'review:bd-101'), 'review proceeds after the nudge produced a commit')
+    check(JSON.stringify(out.result?.completed) === '["bd-101"]', 'nudged task completes', JSON.stringify(out.result))
+
+    const stillUncommitted = oneTaskCanned({
+      'bd-ready': [{ ids: ['bd-101'] }, { ids: [] }],
+      'impl:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', files: ['src/a.js'], head: SHA('a') },
+      'commit-nudge:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', files: ['src/a.js'], head: SHA('a') },
+      'missing-blocker:bd-101': { id: 'bd-101', status: 'BLOCKED', blockerBead: 'bd-190' },
+      'triage:bd-101': { decision: 'ESCALATE', detail: 'no commit on the task branch' },
+      'notify:bd-101': { sent: true },
+      'ledger-append:bd-101': { appended: true },
+    })
+    const out2 = await run({ args: liveArgs(), canned: stillUncommitted })
+    assertNoThrow(out2)
+    check(!out2.trace.some(t => t.label === 'review:bd-101'), 'no review dispatched against an empty range')
+    const missing = promptOf(out2.trace, 'missing-blocker:bd-101')
+    check(/uncommitted|no commit/.test(missing ?? ''), 'the blocker filing names the diagnosed cause (uncommitted), not a generic "reported BLOCKED"', missing)
+    check(JSON.stringify(out2.result?.escalated) === '["bd-101"]', 'twice-uncommitted task is escalated with a precise cause', JSON.stringify(out2.result))
+  }
+
+  scenario('live-sim: issue #5 — a RESOLVEd blocker bead is closed by the merge that lands the retry')
+  {
+    const canned = oneTaskCanned({
+      'bd-ready': [{ ids: ['bd-101'] }, { ids: [] }],
+      'impl:bd-101': [{ id: 'bd-101', status: 'BLOCKED', files: ['src/a.js'], blockerBead: 'bd-109' }, { id: 'bd-101', status: 'IMPLEMENTED', files: ['src/a.js'], head: SHA('c') }],
+      'triage:bd-101': { decision: 'RESOLVE', detail: 'the constant is named in the spec' },
+      'clarify:bd-101': { recorded: true },
+      'ledger-append:bd-101': { appended: true },
+    })
+    const out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    const merge = promptOf(out.trace, 'merge:bd-101')
+    check(/bd close bd-109/.test(merge ?? ''), 'merge dispatch closes the RESOLVEd blocker bead alongside the task bead', merge)
+    check(JSON.stringify(out.result?.completed) === '["bd-101"]' && out.result?.pendingRetry.length === 0, 'retried task completes and leaves pendingRetry', JSON.stringify(out.result))
+  }
+
+  scenario('live-sim: issue #5 — Finish reconciles escalated/pendingRetry against tracker status')
+  {
+    const canned = oneTaskCanned({
+      'bd-ready': [{ ids: ['bd-101', 'bd-104'] }, { ids: [] }],
+      'plan': { planPath: PLANPATH, mapping: [{ n: 1, id: 'bd-101', files: ['src/a.js'] }, { n: 4, id: 'bd-104', files: ['src/c.js'] }] },
+      'brief:bd-104': { id: 'bd-104', n: 4, status: 'BRIEFED', files: ['src/c.js'], branch: 'x', base: SHA('d') },
+      'impl:bd-104': { id: 'bd-104', status: 'BLOCKED', files: ['src/c.js'], blockerBead: 'bd-109' },
+      'triage:bd-104': { decision: 'ESCALATE', detail: 'needs a decision' },
+      'notify:bd-104': { sent: true },
+      'ledger-append:bd-104': { appended: true },
+      // the tracker says bd-104 is closed (a stale BLOCKED bookkeeping line, as measured live)
+      'reconcile-buckets': { closed: ['bd-104'] },
+    })
+    const out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    const rec = promptOf(out.trace, 'reconcile-buckets')
+    check(rec?.includes('bd-104') && /bd show/.test(rec ?? ''), 'reconciliation asks the tracker about every escalated/pendingRetry id', rec)
+    check(JSON.stringify([...(out.result?.completed ?? [])].sort()) === '["bd-101","bd-104"]' && out.result?.escalated.length === 0, 'a tracker-closed id moves from escalated to completed', JSON.stringify(out.result))
+    check(out.logs.some(l => /reconcil/i.test(l) && l.includes('bd-104')), 'reconciliation is logged by id')
+    assertBucketsDisjoint(out.result)
   }
 
   // ===== 3. null-injection scenarios (defect 1 & 2) =====

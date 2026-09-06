@@ -416,9 +416,13 @@ wrote or read this file — everything below described intent, not behavior. `re
   `.superpowers/sdd/<epicId>-plan/`, home to that epic's `plan.md`, every task's
   brief/report/review-package files, and the ledger.
 - **Which worktree owns the ledger:** the **integration worktree** (`.worktrees/<integrationBranch>`),
-  never a per-task worktree. Per-task worktrees (`.worktrees/<integrationBranch>--task-<bead id>`,
+  never a per-task worktree. Per-task worktrees (`<integrationWorktree>/.worktrees/<integrationBranch>--task-<bead id>`,
   with any `/` in the branch name collapsed to `-` — same slash rule as the integration worktree
-  derivation)
+  derivation — on the branch named exactly `task-<bead id>`; issue #5: the path is rooted under the
+  integration worktree and is absolute whenever the caller passed an absolute `integrationWorktree`,
+  and the branch name is the coordinator's, because a relative path resolved against each agent's own
+  cwd and an agent-chosen branch name produced two worktrees for one task and probes that could not
+  find finished work)
   are where implementer/reviewer/merge agents do one task's own git/bd work and can be quarantined
   or torn down independently of every other task; the integration worktree is the one long-lived,
   single-writer location the whole epic's outcomes converge on — the serial merge gate and the
@@ -540,7 +544,12 @@ wrote or read this file — everything below described intent, not behavior. `re
   implementer context to hand back into) — the next `bd ready` simply surfaces the id again and it
   re-enters the pipeline from the brief stage, re-running any fix loop from round 1. This is a
   known, coarser-grained resume than SKILL.md's own, and is the current, honest behavior — not an
-  aspiration. This is a different case from "Escalation = notify + quarantine + continue" below:
+  aspiration. **One re-entry case no longer re-runs anything (issue #5 defect 6):** when the brief
+  stage finds the task branch already merged into the integration branch (its tip is the second
+  parent of a merge there — the "merge landed, `bd close` lost" case the `completed` relaxation
+  below describes as wasteful-but-self-healing), the coordinator skips implement/review/merge and
+  dispatches a close-only step; before this, that re-entry reviewed an EMPTY diff, the INVALID-twice
+  rule reported BLOCKED, and a blocker bead was filed against finished work. This is a different case from "Escalation = notify + quarantine + continue" below:
   that section's re-invoke covers a *clean drain* where the ready set emptied because of
   quarantined blockers; this section covers resuming a run that stopped mid-flight for any reason
   (crash, restart, manual interruption) while ready work still remained. Both converge on the same
@@ -697,12 +706,21 @@ itself is unmodified:
 
 - **Worktree:** branch the task's worktree from the **epic integration branch**, not from
   `main`/`master` and not from a plan-file branch — this is what "own worktree branched from the
-  integration branch" means throughout this doc. The coordinator names the target path by
-  convention rather than inventing a fresh one per dispatch or threading it through `args`:
-  `.worktrees/<integrationBranch>--task-<bead id>`, with any `/` in the branch name collapsed to
+  integration branch" means throughout this doc. The coordinator names the target path AND the
+  branch by convention rather than inventing a fresh one per dispatch or threading it through `args`:
+  `<integrationWorktree>/.worktrees/<integrationBranch>--task-<bead id>`, with any `/` in the branch name collapsed to
   `-` (bead id, not the plan ordinal — ordinals are plan-file bookkeeping; the worktree name
-  should stay meaningful and stable even if `plan.md` is ever regenerated). This is pure string derivation from `integrationBranch` + the task id,
-  the same convention the script skeleton uses for the integration worktree itself.
+  should stay meaningful and stable even if `plan.md` is ever regenerated), on the branch named
+  exactly `task-<bead id>`. This is pure string derivation from `integrationWorktree` + `integrationBranch` + the task id,
+  the same convention the script skeleton uses for the integration worktree itself. Every dispatch
+  that names the path states it is never to be resolved against the agent's own cwd (issue #5: a
+  relative path was, against two different roots, and one task grew two worktrees).
+- **Commit is the implementer's last step:** the implementer reports `head` (`git rev-parse HEAD`
+  after its commit, with `git status --short` empty); a `head` equal to the brief's `base` means
+  nothing was committed, and the coordinator sends one bounded commit nudge before treating the
+  task as BLOCKED with a finding that names the cause (issue #5 defect 3 — an uncommitted
+  implementer used to surface only as an empty review package, "INVALID twice", and a blocker bead
+  triage had to diagnose from scratch).
 - **Self-filing blocker beads:** if the implementer reports BLOCKED after 3 no-progress
   fix-loops, it files the blocker bead itself (see "The blocker-bead path") rather than escalating
   to a human partner mid-task — there is no human in the loop to escalate to inside a dispatched
@@ -1108,8 +1126,25 @@ something the code did not do, and the risk a maintainer reintroduces it outlive
    first-time RESOLVE candidate even though it already got a full triage verdict in the prior run.
    Seeding `pendingRetry` from `BLOCKED` lines would fix it; not attempted here because the same
    restart path is being reworked by the blocked-task redesign (item 1).
+3. **`alreadyMerged` is answered by the brief agent from git, not verified by the coordinator.**
+   The check (branch tip is the second parent of a merge on the integration branch) is mechanical
+   and stated in the dispatch, but the script cannot run git itself; a wrong `true` closes a bead
+   whose work never merged. The replay harness asserts the instruction text and the short-circuit
+   routing, not the git answer — a live run is the only check of the latter.
 
 ## Resolved in this branch (kept as guardrails)
+
+- **issue #5 (measured on run 2026-09-04-audit-plan-instrumentation: eleven false-premise blocker
+  beads, three merged tasks escalated, a 7.8 h resume for two beads).** One root: the coordinator let
+  agents derive identities it owns. The task worktree path was relative and resolved against
+  different roots; the branch name was the brief agent's to pick; the reported `id` was trusted into
+  buckets. Two legitimate empty-range cases (an uncommitted implementer; a re-entered, already-merged
+  task) were then indistinguishable from a defect at the review stage's INVALID-twice rule. Fixed by:
+  `taskWorktree`/`taskBranch` pinned by the coordinator; `id` re-stamped at every hop; the brief stage's
+  `alreadyMerged` short-circuit to a close-only dispatch; the implementer's `head` report plus one
+  commit nudge; `blockerBeadOf` closing a RESOLVEd bead at the merge that lands the retry; and a
+  Finish-phase `reconcile-buckets` dispatch that moves tracker-closed ids out of
+  `escalated`/`pendingRetry`. Harness: five `live-sim: issue #5` scenarios.
 
 These were real contradictions between this document and its own script, corrected in place. They
 are recorded — not deleted — because each names a specific wrong belief a future editor could
@@ -1295,7 +1330,17 @@ function pick(buildReal, stubKey) {
 // field exists to fix.
 const branchSlug = String(integrationBranch).replace(/\//g, '-')
 const integrationWorktree = A.integrationWorktree || `.worktrees/${branchSlug}`
-const taskWorktree = id => `.worktrees/${branchSlug}--task-${id}`
+// issue #5 defects 1–2 (measured: eleven false-premise blocker beads, three merged tasks
+// escalated, a 7.8 h resume for two beads): the task worktree used to be a RELATIVE path that
+// each dispatched agent resolved against its own cwd — the repo root for some, the integration
+// worktree for others — so one task ended up with two worktrees, reviewers reported "directory
+// does not exist", and completion probes looked in the wrong place. Rooted under the
+// integration worktree now (absolute whenever the caller passed an absolute
+// `integrationWorktree`, which super-auto always does), and the branch NAME is pinned here too:
+// the brief agent used to pick it ("on a new branch"), and picked both `task-<id>` and
+// `task/<id>` in one run, so any probe that checked one form concluded the work was missing.
+const taskWorktree = id => `${integrationWorktree}/.worktrees/${branchSlug}--task-${id}`
+const taskBranch = id => `task-${id}`
 // I7: per-epic plan filename + workspace pinned to the INTEGRATION worktree. Every epic used to
 // name its plan file literally "plan.md", so scripts/sdd-workspace's basename-derived directory
 // (".superpowers/sdd/plan/") was the SAME path for every epic in the repo — every epic's ledger
@@ -1461,7 +1506,10 @@ const PLANNED = { type: 'object', properties: { planPath: {type:'string'}, mappi
 // `fixPrompt` only — never required (every OTHER RESULT-shaped dispatch, brief/implement/review,
 // leaves it out; only a round's fixer is asked for it), since it exists solely to render this
 // round's `commits <a7>..<b7>` ledger fragment in `reviewAndFix` and nothing else reads it.
-const RESULT  = { type: 'object', properties: { id: {type:'string'}, n: {type:'integer'}, status: {type:'string'}, files: { type: 'array', items: {type:'string'} }, branch: {type:'string'}, base: {type:'string'}, blockerBead: {type:'string'}, finding: {type:'string'}, minors: { type: 'array', items: {type:'string'} }, head: {type:'string'} }, required: ['id','status'] }
+const RESULT  = { type: 'object', properties: { id: {type:'string'}, n: {type:'integer'}, status: {type:'string'}, files: { type: 'array', items: {type:'string'} }, branch: {type:'string'}, base: {type:'string'}, blockerBead: {type:'string'}, finding: {type:'string'}, minors: { type: 'array', items: {type:'string'} }, head: {type:'string'}, alreadyMerged: {type:'boolean'} }, required: ['id','status'] }
+// issue #5 defect 5: the Finish-phase reconciliation's answer — which of the ids the coordinator
+// still holds in escalated/pendingRetry the tracker reports CLOSED.
+const RECONCILE = { type: 'object', properties: { closed: { type: 'array', items: {type:'string'} } }, required: ['closed'] }
 const TRIAGE  = { type: 'object', properties: { decision: {type:'string'}, detail: {type:'string'} }, required: ['decision','detail'] } // decision: RESOLVE | ESCALATE
 // `head` (fix-round-1, review): the pre-merge tip commit of the task branch, captured by the merge
 // agent (`git rev-parse <branch>`, same "the coordinator has no shell/git access of its own" reason
@@ -1584,6 +1632,11 @@ let stalled = false  // I6: set true if a round makes no progress at all — see
 // coverage loss, keep going" and a pre-flight that grants the operation class up front (see
 // Pre-flight step 5). Returned to the caller so the run's end state names the gap.
 const authRefused = []
+// issue #5 defect 4: the blocker bead a RESOLVE verdict leaves open for its retry. The contract
+// always said the coordinator closes it when the retry lands; nothing ever did — eleven stayed
+// open on the measured run. Recorded here on RESOLVE, handed to the merge (or close-only)
+// dispatch that lands the task, and forgotten once that dispatch succeeds.
+const blockerBeadOf = new Map()
 // issue #3 defect 2: run-wide deferred-minor clustering. 1,335 individually-correct deferrals
 // hid one line recurring ~40 times (the pipeline reporting its own defect once per merge) for a
 // fortnight because nothing counted recurrences. Signature = the minor's text with numbers,
@@ -1967,13 +2020,30 @@ while (true) {
     if (!integrateAnnounced) { integrateAnnounced = true; phase('Integrate') }
     if (r.status === 'BLOCKED') { await handleBlocker(r, planned.planPath, id => resolveRetryHook(id)); return }
     if (r.status === 'BLOCKED_AUTH') { await handleAuthRefusal(r, r.finding); return }
+    // issue #5 defect 6: the already-merged re-entry (see runTask) — nothing to merge; close the
+    // task bead (and the RESOLVEd blocker bead, if this id has one), settle completed, write the
+    // completion line with its own marker so a reader can tell a re-entry close from a merge.
+    if (r.status === 'ALREADY_MERGED') {
+      const closed = await dispatch(() => closeOnlyPrompt(r.id, integrationWorktree, integrationBranch, blockerBeadOf.get(r.id)), `close-only:${r.id}`,
+        { label: `close-only:${r.id}`, phase: 'Integrate', model: model('mechanical'), schema: RESULT })
+      // Null close ("Null dispatch policy"): the bead stays open; the next ready query
+      // re-surfaces it and this same short-circuit runs again — no bucket, no ledger line.
+      if (!closed) { log(`close-only for ${r.id} unavailable (null dispatch) — leaving ${r.id} unsettled this round`); return }
+      settle(r.id, completed)
+      blockerBeadOf.delete(r.id)
+      await dispatch(() => ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName,
+          ledgerLine(r.n, r.id, `complete (already merged into ${integrationBranch} before this re-entry — bead closed, no new review)`)),
+        `ledger-append:${r.id}`, { label: `ledger-append:${r.id}`, phase: 'Integrate', model: model('mechanical') })
+      topUpHook()
+      return
+    }
     // Task 3 (`Merge:` ledger line): `seamOutcome` tracks whether/how the post-rebase seam check
     // ran, for the ledger line's `seam-review` field — `none` unless the seam branch below runs,
     // `cleared` if the scoped review came back CLEAN with no fix dispatch needed, `fixed` if a
     // bounded fix dispatch was needed first. Declared here (not inside the seam `if` block) so both
     // the success line below AND a failure line built from THIS merge attempt see it.
     let seamOutcome = 'none'
-    let m = await dispatch(() => mergePrompt(r, integrationBranch, integrationWorktree, gateCommand), `merge:${r.id}`,
+    let m = await dispatch(() => mergePrompt(r, integrationBranch, integrationWorktree, gateCommand, blockerBeadOf.get(r.id)), `merge:${r.id}`,
       { label: `merge:${r.id}`, phase: 'Integrate', model: model('reviewer'), schema: MERGE })
     // issue #4 design question 1 (decided): a rebase that moved the task onto sibling changes
     // touching the SAME files gets exactly one scoped seam review before the gate — the per-task
@@ -2005,7 +2075,7 @@ while (true) {
       } else {
         seamOutcome = 'cleared'
       }
-      m = await dispatch(() => mergePrompt({ ...r, seamCleared: true }, integrationBranch, integrationWorktree, gateCommand), `merge:${r.id}:seam-cleared`,
+      m = await dispatch(() => mergePrompt({ ...r, seamCleared: true }, integrationBranch, integrationWorktree, gateCommand, blockerBeadOf.get(r.id)), `merge:${r.id}:seam-cleared`,
         { label: `merge:${r.id}:seam-cleared`, phase: 'Integrate', model: model('reviewer'), schema: MERGE })
     }
     // Null merge ("Null dispatch policy") — the exact dispatch whose unguarded `m.merged` deref
@@ -2032,6 +2102,7 @@ while (true) {
     }
     if (m.merged) {
       settle(r.id, completed)  // also clears a stale escalated/pendingRetry mark from a prior run (C-2)
+      blockerBeadOf.delete(r.id)  // issue #5 defect 4: the merge dispatch closed the RESOLVEd bead
       // Task 3 (`Merge:` ledger line, roast round 1 Should-fix): one line per serial merge attempt,
       // success path. NOT built through `ledgerLine()` — like `Sweep:`/`Recurring minor:` above,
       // this line names no single "## Task <N>" section (it's a merge-mechanics record, not a task
@@ -2226,17 +2297,50 @@ while (true) {
     await sched.acquire(id)
     let r = null
     try {
-      const br = await dispatch(() => taskBriefPrompt(planned.planPath, ordinalFor(id), id, taskWorktree(id), integrationBranch, artifacts(id).brief), `brief:${id}`, { label: `brief:${id}`, phase: 'Implement', model: model('mechanical'), schema: RESULT })
+      let br = await dispatch(() => taskBriefPrompt(planned.planPath, ordinalFor(id), id, taskWorktree(id), taskBranch(id), integrationBranch, artifacts(id).brief), `brief:${id}`, { label: `brief:${id}`, phase: 'Implement', model: model('mechanical'), schema: RESULT })
       if (!br) return null  // null brief ("Null dispatch policy"): no progress this round — dispatch() already logged it; the next ready query re-surfaces the id
+      // issue #5 (id re-stamp): the coordinator dispatched `id`; whatever id the agent echoes back
+      // is discarded. One live agent reported its plan ordinal (`task-9`) as the id, and that
+      // string went on to be filed against, ledgered, and returned in a bucket. Identity is the
+      // coordinator's, never the agent's — same rule `carried()` applies inside reviewAndFix.
+      br = { ...br, id }
       // BLOCKED_AUTH (issue #3 defect 3) rides the same passthrough as BLOCKED at both stages: it
       // must never reach review or merge, and `integrateOne` routes it to `handleAuthRefusal`
       // (log + quarantine + continue), never to `handleBlocker` (no bead, no triage).
-      if (br.status === 'BLOCKED' || br.status === 'BLOCKED_AUTH') r = { ...br, n: ordinalFor(br.id), branch: taskWorktree(br.id) }
+      if (br.status === 'BLOCKED' || br.status === 'BLOCKED_AUTH') r = { ...br, n: ordinalFor(id), branch: taskWorktree(id) }
+      // issue #5 defect 6: a re-entered task whose branch is ALREADY merged into the integration
+      // branch (the resume relaxation's "wasteful but self-healing" case: merge landed, `bd close`
+      // did not) has nothing to implement and an EMPTY diff to review — which the review stage's
+      // INVALID-twice rule then reported as BLOCKED, filing a blocker bead against finished work
+      // (three of the measured run's six). The brief stage answers `alreadyMerged` from git (the
+      // branch tip is the second parent of a merge on the integration branch); the coordinator
+      // skips implement/review/merge and goes straight to closing the bead.
+      else if (br.alreadyMerged === true) {
+        log(`${id}: task branch is already merged into ${integrationBranch} (re-entry after a lost bd close) — closing the bead, no implement/review/merge`)
+        r = { id, n: ordinalFor(id), branch: taskWorktree(id), base: br.base, status: 'ALREADY_MERGED' }
+      }
       else {
-        const im = await dispatch(() => implementPrompt(br, integrationBranch, artifacts(br.id).brief, artifacts(br.id).report), `implement:${br.id}`, { label: `impl:${br.id}`, phase: 'Implement', model: model('implementer'), schema: RESULT })
+        let im = await dispatch(() => implementPrompt(br, integrationBranch, artifacts(id).brief, artifacts(id).report), `implement:${id}`, { label: `impl:${id}`, phase: 'Implement', model: model('implementer'), schema: RESULT })
         if (!im) return null  // null implement: same — not CLEAN, not BLOCKED, re-enters next round
-        const done = { ...im, n: ordinalFor(br.id), branch: taskWorktree(br.id), base: br.base }
-        r = (done.status === 'BLOCKED' || done.status === 'BLOCKED_AUTH') ? done : await reviewAndFix(done, planned.planPath, artifacts(done.id))
+        im = { ...im, id }
+        // issue #5 defect 3: an implementer that reports IMPLEMENTED with its edits UNCOMMITTED
+        // (two on the measured run, one whose report even claimed a commit) leaves the task
+        // branch at `base`, so the review package's base..HEAD range is empty and the review
+        // stage's INVALID-twice rule filed a blocker bead against correct, unreviewed work. The
+        // implementer now reports `head`; a head equal to the brief's base means nothing was
+        // committed. One bounded nudge — commit what is there — then a diagnosed BLOCKED whose
+        // finding names the cause, so triage reads "uncommitted", not "reported BLOCKED".
+        if (im.status === 'IMPLEMENTED' && im.head && br.base && im.head === br.base) {
+          log(`${id}: implementer reported IMPLEMENTED but head == base (${short(br.base)}) — nothing committed on the task branch; one commit nudge`)
+          const nudged = await dispatch(() => commitNudgePrompt(id, ordinalFor(id), taskWorktree(id), taskBranch(id), br.base, artifacts(id).report), `commit-nudge:${id}`, { label: `commit-nudge:${id}`, phase: 'Implement', model: model('implementer'), schema: RESULT })
+          if (!nudged) return null  // null nudge: unsettled this round, re-enters via the next ready batch
+          im = { ...im, ...nudged, id }
+          if (!im.head || im.head === br.base) {
+            im = { ...im, status: 'BLOCKED', finding: `no commit on the task branch after the implementer reported IMPLEMENTED twice — the branch ${taskBranch(id)} is still at base ${short(br.base)}; the work is uncommitted in ${taskWorktree(id)} or was never made. The task was NOT reviewed.` }
+          }
+        }
+        const done = { ...im, n: ordinalFor(id), branch: taskWorktree(id), base: br.base }
+        r = (done.status === 'BLOCKED' || done.status === 'BLOCKED_AUTH') ? done : await reviewAndFix(done, planned.planPath, artifacts(id))
       }
     } finally {
       sched.release(id)  // free the dispatch slot BEFORE integration: merges ride their own
@@ -2585,6 +2689,21 @@ const review = reviewRes ?? `FINAL REVIEW UNAVAILABLE — the final-review dispa
 // `authRefused` (issue #3 defect 3) is additive: the ids whose coverage was lost to a permission
 // refusal, with the refused command — a caller's report lists them as untested scope. They are
 // ALSO in `escalated` (quarantined this run), so the four-bucket invariant is unchanged.
+// issue #5 defect 5: reconcile against the tracker before returning. A bead the tracker reports
+// closed is `completed` whatever the ledger's BLOCKED history says — a caller records these
+// buckets verbatim, and the measured run's caller would have reported three finished tasks as
+// quarantined. Mechanical (`bd show` per id); null → buckets returned as-is, logged.
+const unsettledIds = [...new Set([...escalated, ...pendingRetry])]
+if (unsettledIds.length) {
+  const rec = await dispatch(() => reconcileBucketsPrompt(unsettledIds), 'reconcile-buckets',
+    { label: 'reconcile-buckets', phase: 'Finish', model: model('mechanical'), schema: RECONCILE })
+  if (!rec) log(`bucket reconciliation unavailable (null dispatch) — returning the in-memory buckets unreconciled; ${unsettledIds.length} escalated/pendingRetry id(s) were NOT checked against the tracker`)
+  else for (const id of (rec.closed ?? [])) {
+    if (!unsettledIds.includes(id)) continue  // never admit an id this run did not ask about
+    log(`reconciled ${id}: tracker reports closed — moved from ${escalated.has(id) ? 'escalated' : 'pendingRetry'} to completed`)
+    settle(id, completed)
+  }
+}
 return { completed: [...completed], escalated: [...escalated], pendingRetry: [...pendingRetry],
          parked: [...parked], stalled, stopReason, review, authRefused: [...authRefused], sweep: sweepSummary,
          metrics }
@@ -2750,7 +2869,15 @@ function planPrompt(epicId, ids, planFileName) {
   return `Working directory: the integration worktree (see "Workspace and ledger" — the same worktree that owns the ledger; do not plan from a task's own worktree). Follow ./planner-prompt.md for epic ${epicId}. Plan file name (the template's "Plan file name" parameter — use this exact name everywhere the template says \`[plan file name]\`, including inside its \`mkdir -p\`/initial-file-write/\`sdd-workspace\` shell-command steps; never the literal \`plan.md\`): \`${planFileName}\` — every epic must use its own plan filename so \`scripts/sdd-workspace ${planFileName}\` resolves to a workspace directory distinct from every other epic's (a shared \`plan.md\` name collides every epic's workspace, including its ledger, on one path; this coordinator also asserts the planner's reported \`planPath\` actually landed in that directory — see the Plan-phase call site). On the FIRST planning round (${planFileName} has no mapping rows yet), independently enumerate every READY AND BLOCKED descendant bead of ${epicId} and plan all of them: run \`bd children ${epicId} --json\` for its direct children, then run \`bd children <id> --json\` on every one of those children whose \`issue_type\` is "epic" to get its children in turn, repeating until no unexpanded epic-typed child remains (\`bd children\` returns direct children of one level only — do NOT use \`bd show ${epicId} --json\`, which reports only dependent/dependency counts, no child ids, since parent-child edges point upward and it cannot read the downward direction). Do not limit round-1 planning to ready ids only, since \`bd ready\` structurally excludes blocked beads. On a REFILL round, plan only newly-ready beads that don't already have a mapping row — never a blocker bead: a blocker bead is an escalation record about a task, not a work item, and is never planned or given a mapping row (see "The blocker-bead path"). This round's confirmed-ready ids (a subset of the planning scope above, not the full scope): ${JSON.stringify(ids)}. Run \`bd show <id> --json\` for every bead you plan this round, for "Beads to plan this round". Report per that template's Report Format: planPath — as an ABSOLUTE path (\`scripts/sdd-workspace\` prints the absolute canonical workspace directory; report the plan file inside it, never a relative path: the coordinator derives every task's brief/report/diff file path from this value and hands those paths to agents running in OTHER worktrees, where a relative path resolves to the wrong root) — and mapping as the FULL CUMULATIVE table (every row assigned so far in ${planFileName}, including earlier rounds' rows — never only this round's new ones).`
 }
 
-function taskBriefPrompt(planPath, n, id, worktree, integrationBranch, briefFile) {
+function taskBriefPrompt(planPath, n, id, worktree, branchName, integrationBranch, briefFile) {
+  // issue #5 defects 1, 2, 6: `worktree` is now the coordinator's absolute path and `branchName`
+  // its pinned name (`task-<id>`) — the agent creates or reuses exactly these, never a path
+  // resolved against its own cwd and never a branch name of its own choosing. It also answers
+  // `alreadyMerged`: whether that branch's tip is already the SECOND parent of a merge commit on
+  // the integration branch (a merged task branch is; a fresh branch at the integration tip and a
+  // stale unmerged branch at an old integration commit — the first parent of a later merge —
+  // are not), so a re-entry after a lost `bd close` short-circuits to closing the bead instead
+  // of reviewing an empty diff.
   // MECHANICAL: scripts/task-brief owns the awk extraction (see "Plan materialization" — do not
   // hand-roll this from the mapping table). n must be the plan ordinal, never the bead id
   // (task-brief's heading regex requires a leading digit). `briefFile` (defect 3) is passed as
@@ -2793,7 +2920,7 @@ function taskBriefPrompt(planPath, n, id, worktree, integrationBranch, briefFile
   // reviewAndFix) rather than asking any later subagent to re-derive or echo it. This `base` feeds
   // `review-package` only — the ledger's own commit-range line uses a different, post-rebase value
   // captured later at the merge gate (see the `mergeBase`/`MERGE` comment, Fix 3, final fix round).
-  return `Check whether the task worktree at ${worktree} AND a branch for task ${id} already exist (\`git worktree list\` / \`git branch --list\`) — a restart re-dispatching a previously-quarantined or previously-completed id lands here with both already present; that is EXPECTED, not an error. If NEITHER exists: create the task worktree at ${worktree} on a new branch, branched from the epic integration branch ${integrationBranch} (see "Dispatching the implementer") — then, in ${worktree}, run \`git rev-parse HEAD\` and report that as base (the pre-implementer commit). If BOTH already exist: do NOT delete or recreate them — REUSE the existing worktree and branch as-is (do not attempt \`git worktree add\` again, it will fail), and in that worktree run \`git merge-base ${integrationBranch} <the task branch>\` and report that as base instead, since HEAD there is a prior attempt's tip, not a pre-implementer commit. Either way, then run \`scripts/task-brief ${planPath} ${n} ${briefFile}\` (in ${worktree}; the third argument is the explicit OUTFILE — do not omit it, the default would write into this worktree's own git-ignored .superpowers/ copy that no later dispatch reads) to (re-)produce the brief file. TOOLCHAIN PROVENANCE (issue #4 defect 1 — a fresh worktree whose test entrypoints import ANOTHER checkout tests the wrong code and reports isolation it does not have): after cutting a FRESH worktree, run the project's setup step in it if it has one (install/sync — the same step the integration worktree was set up with), then verify that the test runner executable and the package under test both resolve INSIDE ${worktree} (e.g. \`which <runner>\` and the interpreter's reported import path for the package must be under ${worktree}); if either resolves elsewhere, rebuild the local environment (for editable Python installs: reinstall/sync in this worktree) before reporting BRIEFED — a worktree that fails this check must not be handed to the implementer as isolated. Report id ${id}, n ${n}, branch ${worktree}, base <the base commit SHA determined above>, and status BRIEFED (or, on the script's "task not found" failure, status BLOCKED). ${authRefusalRule()}`
+  return `PATHS AND NAMES ARE FIXED BY THE COORDINATOR — use them verbatim: the task worktree is ${worktree} (an absolute path when the integration worktree is one; otherwise relative to the REPOSITORY ROOT, never to your own working directory — do not resolve \`.worktrees/\` against wherever you happen to be) and the task branch is named exactly \`${branchName}\`. Check whether ${worktree} AND the branch \`${branchName}\` already exist (\`git worktree list\` / \`git branch --list ${branchName}\`) — a restart re-dispatching a previously-quarantined or previously-completed id lands here with both already present; that is EXPECTED, not an error. If NEITHER exists: create the task worktree at ${worktree} on the new branch \`${branchName}\` (\`git worktree add ${worktree} -b ${branchName} ${integrationBranch}\`), branched from the epic integration branch ${integrationBranch} (see "Dispatching the implementer") — then, in ${worktree}, run \`git rev-parse HEAD\` and report that as base (the pre-implementer commit), and report alreadyMerged false. If BOTH already exist: do NOT delete or recreate them — REUSE the existing worktree and branch as-is (do not attempt \`git worktree add\` again, it will fail), and in that worktree run \`git merge-base ${integrationBranch} ${branchName}\` and report that as base instead, since HEAD there is a prior attempt's tip, not a pre-implementer commit. ALREADY-MERGED CHECK (only when the branch already existed): run \`git rev-parse ${branchName}\` for the branch tip, then \`git rev-list --parents --merges ${integrationBranch}\`; report alreadyMerged true iff some line of that output lists the branch tip as its SECOND parent (a merged-in task branch) — a tip equal to the integration tip, or appearing only as a FIRST parent, is NOT merged: report alreadyMerged false. Either way, then run \`scripts/task-brief ${planPath} ${n} ${briefFile}\` (in ${worktree}; the third argument is the explicit OUTFILE — do not omit it, the default would write into this worktree's own git-ignored .superpowers/ copy that no later dispatch reads) to (re-)produce the brief file. TOOLCHAIN PROVENANCE (issue #4 defect 1 — a fresh worktree whose test entrypoints import ANOTHER checkout tests the wrong code and reports isolation it does not have): after cutting a FRESH worktree, run the project's setup step in it if it has one (install/sync — the same step the integration worktree was set up with), then verify that the test runner executable and the package under test both resolve INSIDE ${worktree} (e.g. \`which <runner>\` and the interpreter's reported import path for the package must be under ${worktree}); if either resolves elsewhere, rebuild the local environment (for editable Python installs: reinstall/sync in this worktree) before reporting BRIEFED — a worktree that fails this check must not be handed to the implementer as isolated. Report id ${id}, n ${n}, branch ${worktree}, base <the base commit SHA determined above>, and status BRIEFED (or, on the script's "task not found" failure, status BLOCKED). ${authRefusalRule()}`
 }
 
 function implementPrompt(br, integrationBranch, briefFile, reportFile) {
@@ -2808,7 +2935,7 @@ function implementPrompt(br, integrationBranch, briefFile, reportFile) {
   // are already coordinator-known (from `br`) and are re-stamped onto this call's result in the
   // runTask chain call site regardless of what's reported — asking for them here would just invite a
   // second, ignorable source of truth (see the runTask chain call site and RESULT's `base` comment).
-  return `Follow subagent-driven-development/implementer-prompt.md against the brief for task ${br.id} (n ${br.n}), working in ${br.branch}, branched from integration branch ${integrationBranch}. The template's [BRIEF_FILE] is ${briefFile} and its [REPORT_FILE] is ${reportFile} — both absolute paths in the integration worktree's workspace, deliberately not this task worktree's own .superpowers/ (which is git-ignored and not shared across worktrees; only the integration workspace's copy is read downstream). You MUST write your full report to ${reportFile} before finishing — the reviewer's template hard-requires it and reviews blind without it. Before starting, run \`bd comments ${br.id}\` — any clarification recorded there (a triage RESOLVE writes one) is binding context that overrides your own reading of the brief on the point it clarifies. If BLOCKED after 3 no-progress fix-loops, file the blocker bead yourself (see "The blocker-bead path") — there is no human partner to escalate to mid-task; the bead carries ONLY the \`blocker\` label — no \`sp:\` label, no other label, and no \`--parent\` — because either addition makes it reachable as work and starts a self-sustaining blocker-filing loop. Report id, status (IMPLEMENTED or BLOCKED), files touched, and — only on BLOCKED — blockerBead with the id of the bead you just filed (handleBlocker's triage dispatch needs it; see the runTask chain call site's status guard). ASSERTION DISCIPLINE (issue #3 doc gap 1): for every assertion you add, name a value the code could actually produce that would fail it — if the type or the fixture makes that value impossible (a length check on a fixed-size array, a bound the type already enforces, a digest compared to itself, a negative-length check that an empty result also passes), the assertion is decoration, not a test; and an assertion sequenced after a failing one in the same test body has NOT run — record it as unmeasured in your report, never as green. ${authRefusalRule()}`
+  return `Follow subagent-driven-development/implementer-prompt.md against the brief for task ${br.id} (n ${br.n}), working in ${br.branch}, branched from integration branch ${integrationBranch}. The template's [BRIEF_FILE] is ${briefFile} and its [REPORT_FILE] is ${reportFile} — both absolute paths in the integration worktree's workspace, deliberately not this task worktree's own .superpowers/ (which is git-ignored and not shared across worktrees; only the integration workspace's copy is read downstream). You MUST write your full report to ${reportFile} before finishing — the reviewer's template hard-requires it and reviews blind without it. Before starting, run \`bd comments ${br.id}\` — any clarification recorded there (a triage RESOLVE writes one) is binding context that overrides your own reading of the brief on the point it clarifies. If BLOCKED after 3 no-progress fix-loops, file the blocker bead yourself (see "The blocker-bead path") — there is no human partner to escalate to mid-task; the bead carries ONLY the \`blocker\` label — no \`sp:\` label, no other label, and no \`--parent\` — because either addition makes it reachable as work and starts a self-sustaining blocker-filing loop. COMMIT IS THE LAST STEP, NOT OPTIONAL (issue #5 defect 3 — two implementers on one run reported IMPLEMENTED with every edit still uncommitted, one claiming a commit it never made): before reporting IMPLEMENTED, commit your work on the task branch in ${br.branch}, run \`git status --short\` (it must be empty — commit anything it lists that belongs to this task), then \`git rev-parse HEAD\` and report that SHA as head; a head equal to the base you were briefed with means you have not committed and the coordinator will send you back once, then file a blocker naming the cause. Report id, status (IMPLEMENTED or BLOCKED), files touched, head, and — only on BLOCKED — blockerBead with the id of the bead you just filed (handleBlocker's triage dispatch needs it; see the runTask chain call site's status guard). ASSERTION DISCIPLINE (issue #3 doc gap 1): for every assertion you add, name a value the code could actually produce that would fail it — if the type or the fixture makes that value impossible (a length check on a fixed-size array, a bound the type already enforces, a digest compared to itself, a negative-length check that an empty result also passes), the assertion is decoration, not a test; and an assertion sequenced after a failing one in the same test body has NOT run — record it as unmeasured in your report, never as green. ${authRefusalRule()}`
 }
 
 // Shared `## Test changes` instruction (spec §5), reused verbatim by all three reviewing
@@ -2929,7 +3056,11 @@ function sweepPrompt(sweepCommand, integrationWorktree, integrationBranch) {
   return `Per-branch sweep for ${integrationBranch}. In ${integrationWorktree}, at the current tip (record \`git rev-parse HEAD\` first), run EXACTLY this command — unchanged, no added or removed selections, no retries of individual tests: \`${sweepCommand}\`. MEASUREMENT-VALIDITY FLOOR: before reporting counts, check that the run actually collected and finished a plausible suite — collection errors, a passed count near zero for a suite known to be large, or a runner that terminated before finalizing its report are NOT results; in any of those cases report the literal prefix "MEASUREMENT INVALID: <cause>" instead of counts. Otherwise report ONE line: "<tip sha7> — <passed> passed, <failed> failed, <errors> errors, <skipped> skipped; failing: <up to 20 failing node ids, or none>; command: <the exact command>". Do not fix anything, do not re-run selectively, do not interpret — the final reviewer reads this line as the branch-wide measurement.`
 }
 
-function mergePrompt(r, integrationBranch, integrationWorktree, gateCommand) {
+function mergePrompt(r, integrationBranch, integrationWorktree, gateCommand, resolvedBead) {
+  // issue #5 defect 4: `resolvedBead` is the blocker bead a RESOLVE verdict left open for this
+  // task's retry (see `blockerBeadOf`); the merge that lands the retry closes it, or it stays open
+  // forever — eleven did on the measured run.
+  const beadClose = resolvedBead ? ` and \`bd close ${resolvedBead} --reason "resolved: task ${r.id} merged"\` (the blocker bead whose RESOLVE this retry answered)` : ''
   // "Serial merge-back": rebase onto the integration branch, run the test command, merge --no-ff
   // and bd close on success; one bounded auto-resolve attempt on conflict/red, else the blocker path.
   // Fix-round-1 (review): also capture `head` — the rebased task branch's tip commit, right before
@@ -2964,7 +3095,7 @@ function mergePrompt(r, integrationBranch, integrationWorktree, gateCommand) {
   const seamStep = r.seamCleared
     ? `This branch is ALREADY rebased and its post-rebase seam has been reviewed by the coordinator (and fixed if needed) — do not repeat the seam check; if new integration commits landed meanwhile, rebase once more and continue straight to the gate.`
     : `POST-REBASE SEAM CHECK, after a successful rebase and BEFORE the gate: if ${integrationBranch} moved since this task branched (its current tip is not ${r.base}), list the files the sibling commits changed (\`git diff --name-only ${r.base} ${integrationBranch}\`) and the files this task changed (\`git diff --name-only $(git merge-base ${integrationBranch} ${r.branch}) ${r.branch}\`). If the two lists INTERSECT, do NOT run the gate and do NOT merge: capture head and mergeBase exactly as described below and report merged false with seamOverlap as the intersecting file list — the coordinator runs one scoped seam review and re-dispatches this merge. If they do not intersect, or the branch did not move, continue.`
-  return `In ${integrationWorktree}, update ${integrationBranch} and rebase task ${r.id}'s branch ${r.branch} onto it. Count the files the rebase reported as conflicting (0 if it applied cleanly) — this is rebaseConflictFiles, reported below no matter how the merge attempt ends. ${seamStep} Then ${gate}. If clean: run \`git merge-base ${integrationBranch} ${r.branch}\` to capture the POST-REBASE merge-base (do this before merging, while ${r.branch}'s rebased-but-not-yet-merged history still lets you distinguish it from ${integrationBranch}'s own tip), then run \`git rev-parse ${r.branch}\` to capture the rebased branch's tip commit, merge --no-ff into ${integrationBranch}, run \`bd close ${r.id}\`, and report merged true with head as the tip commit just captured, mergeBase as the merge-base just captured, and rebaseConflictFiles as counted above. If the rebase conflicts or tests are red, make one bounded auto-resolve attempt; if that also fails, file a blocker bead (see "The blocker-bead path") whose body states the merge-base SHA the gate ran against and the exact gate command run — a later reader must be able to tell a blocker filed against a superseded merge-base from a current one — and report merged false with its id as blockerBead and rebaseConflictFiles as counted above (from whichever rebase attempt — initial or auto-resolve — the failure occurred on). ${authRefusalRule()} For THIS dispatch, report a refusal as merged false with authRefused set to the exact refused command(s) instead of a status token.`
+  return `In ${integrationWorktree}, update ${integrationBranch} and rebase task ${r.id}'s branch ${r.branch} onto it. Count the files the rebase reported as conflicting (0 if it applied cleanly) — this is rebaseConflictFiles, reported below no matter how the merge attempt ends. ${seamStep} Then ${gate}. If clean: run \`git merge-base ${integrationBranch} ${r.branch}\` to capture the POST-REBASE merge-base (do this before merging, while ${r.branch}'s rebased-but-not-yet-merged history still lets you distinguish it from ${integrationBranch}'s own tip), then run \`git rev-parse ${r.branch}\` to capture the rebased branch's tip commit, merge --no-ff into ${integrationBranch}, run \`bd close ${r.id}\`${beadClose}, and report merged true with head as the tip commit just captured, mergeBase as the merge-base just captured, and rebaseConflictFiles as counted above. If the rebase conflicts or tests are red, make one bounded auto-resolve attempt; if that also fails, file a blocker bead (see "The blocker-bead path") whose body states the merge-base SHA the gate ran against and the exact gate command run — a later reader must be able to tell a blocker filed against a superseded merge-base from a current one — and report merged false with its id as blockerBead and rebaseConflictFiles as counted above (from whichever rebase attempt — initial or auto-resolve — the failure occurred on). ${authRefusalRule()} For THIS dispatch, report a refusal as merged false with authRefused set to the exact refused command(s) instead of a status token.`
 }
 
 function missingBlockerBeadPrompt(r) {
@@ -2977,7 +3108,11 @@ function missingBlockerBeadPrompt(r) {
   // otherwise reach `triagePrompt(r.id, r.blockerBead)` reading "the blocker bead undefined". File
   // one coordinator-side here instead. `r` may or may not carry `n` (some call sites build a bare
   // `{id, blockerBead}` object) — the dispatch text below tolerates either.
-  return `Task ${r.id}${r.n !== undefined ? ` (n ${r.n})` : ''} was reported BLOCKED, but no blocker bead id is available. File one now: run \`bd create\` with ONLY the \`blocker\` label — no \`sp:\` label, no other label, and no \`--parent\`: either addition makes the bead reachable as work (the ready query excludes blocker beads by label, and the planner's tree walk only finds parented beads) and starts a self-sustaining blocker-filing loop (confirm flags with \`bd create --help\`) — and a body stating the task id, that it was reported BLOCKED without a bead, and — if the task's report file exists — what was tried. Report id ${r.id}, status BLOCKED, and blockerBead as the newly created bead's id.`
+  // issue #5: when the coordinator itself diagnosed the cause (an uncommitted implementer, a
+  // review package invalid twice), that cause goes into the bead verbatim — triage on the
+  // measured run had to rediscover "the work is uncommitted" from scratch, five times.
+  const cause = r.finding ? ` Cause recorded by the coordinator (state it verbatim in the body): ${String(r.finding).replace(/\s+/g, ' ').trim()}.` : ''
+  return `Task ${r.id}${r.n !== undefined ? ` (n ${r.n})` : ''} was reported BLOCKED, but no blocker bead id is available.${cause} File one now: run \`bd create\` with ONLY the \`blocker\` label — no \`sp:\` label, no other label, and no \`--parent\`: either addition makes the bead reachable as work (the ready query excludes blocker beads by label, and the planner's tree walk only finds parented beads) and starts a self-sustaining blocker-filing loop (confirm flags with \`bd create --help\`) — and a body stating the task id, that it was reported BLOCKED without a bead, the recorded cause if one is given above, and — if the task's report file at the coordinator-named path exists — what was tried. Do NOT derive the report path yourself: it is \`${r.reportPath ?? '(not supplied for this call site)'}\`; a report that is not at that exact path does not exist. Report id ${r.id}, status BLOCKED, and blockerBead as the newly created bead's id.`
 }
 
 function unplannedBlockerPrompt(id, epicId) {
@@ -3038,6 +3173,27 @@ function triagePrompt(id, blockerBead, planPath) {
   // so a literal `plan.md` reference here would send a real triage agent looking for a file that
   // does not exist.
   return `Follow ./triage-prompt.md for the blocker bead ${blockerBead} filed against task ${id}. Run \`bd show ${blockerBead} --json\` for that template's "Blocker bead" section. Look up task ${id}'s ordinal via ${planPath}'s mapping table and paste its "## Task <N>" section for "Originating task plan". Include the relevant spec excerpt. Report per that template's Output Contract: \`decision\` must be the BARE TOKEN "RESOLVE" or "ESCALATE" ONLY — no colon, no clarification text in that field, since the coordinator branches on exact string equality against it — with the clarification (RESOLVE) or summary + decision needed (ESCALATE) in \`detail\`.`
+}
+
+function commitNudgePrompt(id, n, worktree, branchName, base, reportFile) {
+  // issue #5 defect 3: one bounded nudge for an implementer whose reported head equals the brief's
+  // base — its edits are sitting uncommitted in the task worktree (or were never made). Same
+  // implementer tier: it must judge whether the working tree holds the finished work.
+  return `Task ${id} (n ${n}) was reported IMPLEMENTED, but its branch ${branchName} in ${worktree} is still at base ${base} — nothing has been committed, so the work is uncommitted in that worktree or absent. In ${worktree}: run \`git status --short\`; if it lists the task's files, verify they are the finished work (read ${reportFile}), \`git add\` exactly those files and commit on ${branchName}; if the tree is clean and the branch is still at ${base}, the work was never made — report that plainly. Then run \`git rev-parse HEAD\` and report id ${id}, status IMPLEMENTED, files touched, and head as that SHA (it must differ from ${base} if you committed). ${authRefusalRule()}`
+}
+
+function closeOnlyPrompt(id, integrationWorktree, integrationBranch, resolvedBead) {
+  // issue #5 defect 6: the already-merged re-entry — close what a lost `bd close` left open.
+  const bead = resolvedBead ? ` Then run \`bd close ${resolvedBead} --reason "resolved: task ${id} merged"\` — the blocker bead a RESOLVE verdict left open for this task's retry.` : ''
+  return `In ${integrationWorktree}: task ${id}'s branch is already merged into ${integrationBranch} (a prior attempt merged it but its bead close was lost). Run \`bd close ${id}\`.${bead} Report id ${id} and status CLOSED.`
+}
+
+function reconcileBucketsPrompt(ids) {
+  // issue #5 defect 5 — MECHANICAL: a fixed query per id, no judgment. The return buckets used to
+  // be the coordinator's in-memory sets alone; after a resume they reported beads the tracker
+  // had closed as `escalated`/`pendingRetry` (three on the measured run), because a ledger BLOCKED
+  // line from a false-premise blocker outlived the merge that closed the bead.
+  return `For each of these bead ids run \`bd show <id> --json\` and read its status: ${ids.join(', ')}. Return closed as the list of ids whose status is exactly "closed" (any other status, or a lookup error, is NOT closed — leave it out). Do not modify anything.`
 }
 
 function recordClarificationPrompt(id, detail) {
@@ -3194,7 +3350,8 @@ async function reviewAndFix(im, planPath, art) {
     // survive on every clean-after-fix task, which nothing currently reads but would silently
     // corrupt the ledger writer (below) if it ever keyed "parked" off "finding is non-empty"
     // instead of the explicit `parked` list.
-    return { ...result, n: im.n, files: im.files, branch: im.branch, base: im.base, minors, finding: result.status === 'CLEAN' ? undefined : lastFinding }
+    // issue #5 (id re-stamp): `id` is the coordinator's, never the reviewer's/fixer's echo.
+    return { ...result, id: im.id, n: im.n, files: im.files, branch: im.branch, base: im.base, minors, finding: result.status === 'CLEAN' ? undefined : lastFinding }
   }
   // Null review/fix/re-review ("Null dispatch policy"): returning null from this function — not
   // CLEAN, not BLOCKED — is what "no progress this round" means mechanically: the pipeline result
@@ -3356,7 +3513,11 @@ async function handleBlocker(r, planPath, onResolve) {
   // not visible to this top-level function, so it must be passed in) — see `triagePrompt`'s own
   // comment for why the prior "plan.md" literal was wrong after I7's per-epic rename.
   if (!r.blockerBead) {
-    const bead = await dispatch(() => missingBlockerBeadPrompt(r), `missing-blocker:${r.id}`,
+    // issue #5 defect 1: hand the filing agent the coordinator-resolved report path (integration
+    // workspace, ordinal-named) — `artifacts()` is round-scoped, so derive it from the same
+    // module-level workspace convention here; an unmapped id (no ordinal) has no report to name.
+    const reportPath = r.n !== undefined ? `${integrationWorktree}/${workspace}/task-${r.n}-report.md` : undefined
+    const bead = await dispatch(() => missingBlockerBeadPrompt({ ...r, reportPath }), `missing-blocker:${r.id}`,
       { label: `missing-blocker:${r.id}`, phase: 'Triage', model: model('mechanical'), schema: RESULT })
     // Null fallback filing ("Null dispatch policy"): with no bead there is nothing for triage to
     // read — leave the task UNSETTLED this round (no bucket, no ledger line) rather than triaging
@@ -3392,6 +3553,7 @@ async function handleBlocker(r, planPath, onResolve) {
   // meaningful: without a bound, RESOLVE growth could recur forever without ever converging.
   if (t.decision === 'RESOLVE' && !pendingRetry.has(r.id)) {
     settle(r.id, pendingRetry)
+    blockerBeadOf.set(r.id, r.blockerBead)  // issue #5 defect 4: closed by the dispatch that lands the retry
     // re-dispatch next round with clarification recorded on the bead; do NOT mark escalated.
     // Recording a clarification is a mechanical write, not a judgment call.
     await dispatch(() => recordClarificationPrompt(r.id, t.detail), `clarify:${r.id}`, { label: `clarify:${r.id}`, phase: 'Triage', model: model('mechanical') })
@@ -3468,7 +3630,9 @@ narratives that used to accompany each row are in git history; nothing here depe
 | round-head parallelism (planner skip on fully-mapped rounds, Close∥Ready + post-closure re-check, same-round RESOLVE retry + `bd comments` clarification plumbing) | replay 40/0 | replay 24/0 | replay 24/0 |
 | issue #2 batch (ready-query `--limit` + truncation rule, top-up epic-close phase, `ledger-append:launch` args record) | replay 41/0 | replay 25/0 | replay 25/0 |
 | issue #3/#4 batch (`ledger-append:detector` per round; INVALID review packages; `BLOCKED_AUTH`; recurring-minor clusters; conditional edge audit; declared `gate`/`sweep`; post-rebase seam review) | replay 42/0 | replay 26/0 | replay 26/0 |
-| **Task 3 (per-merge `Merge:` ledger line, success and blocker-bead failure paths) — CURRENT** | **replay 45/0** | **replay 26/0** | **replay 27/0** |
+| Task 3 (per-merge `Merge:` ledger line, success and blocker-bead failure paths) | replay 45/0 | replay 26/0 | replay 27/0 |
+| Tasks 4–6 (per-round fix-loop line, `Test changes` block, Finish `Metrics:` block) | replay 51/0 | replay 36/0 | replay 37/0 |
+| **issue #5 (coordinator-owned identities: absolute task worktree + pinned branch + id re-stamp; already-merged short-circuit; commit nudge; blocker-bead close; Finish bucket reconciliation) — CURRENT** | **replay 52/0** | **replay 37/0** | **replay 37/0** |
 
 The issue #3/#4 row's +1 on every scenario is exactly the persisted detector line — one
 `ledger-append:detector` per round that reaches the drain (each scenario's second round exits at
@@ -4020,6 +4184,7 @@ script and this `args` block:
       "ledger-append:metrics:2": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "ledger-append:metrics:3": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "ledger-append:metrics:check": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "reconcile-buckets": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"closed\":[]}",
       "final-review": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"summary\":\"stub: 2/4 tasks merged; bd-103 quarantined, bd-104 resolved pending re-attempt\",\"verdict\":\"conditional-pass\"}"
     }
   }
@@ -4030,7 +4195,7 @@ If a future structural edit changes this script, re-run with these args, confirm
 update it deliberately alongside the edit that changed it), and replace the figures above — same
 discipline as `super-roast`'s "Passing baseline (recorded, not illustrative)" sections. Seven structural edits have
 forced exactly that re-run — see the revision table under "dryRun
-policy" for the full sequence. The CURRENT confirmed shape is **45 agent calls, 0 errors, terminal
+policy" for the full sequence. The CURRENT confirmed shape is **52 agent calls (45 at Task 3, +6 for Tasks 4–6's fix-round line and Metrics block, +1 for issue #5's Finish-phase `reconcile-buckets` — bd-103/bd-104 are unsettled at Finish), 0 errors, terminal
 stopReason `ready-drained`** (40 from the dispatch arithmetic above + 1 `ledger-minor:bd-101:1` + 3
 Task 3 `Merge:` ledger lines — `ledger-append:merge:bd-101`, `ledger-append:merge:bd-102`,
 `ledger-append:merge-failed:bd-103`, one per merge attempt) — confirmed by the offline replay harness against the current script
@@ -4183,6 +4348,7 @@ bead's TEXT — same `pick()` limit as everywhere else in this section.
       "adjudicate:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"decision\":\"BLOCKED\",\"ruling\":\"real race condition with no test coverage for the interleaving; must not merge\"}",
       "breaker-blocker:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"status\":\"BLOCKED\",\"blockerBead\":\"bd-210\"}",
       "triage:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"decision\":\"ESCALATE\",\"detail\":\"race condition confirmed load-bearing by the breaker adjudicator; needs a human decision on the caching strategy\"}",
+      "reconcile-buckets": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"closed\":[]}",
       "notify:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"sent\":true}",
       "ledger-append:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "read-ledger:finish": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"text\":\"\"}",
@@ -4199,7 +4365,7 @@ If a future structural edit changes this script, re-run with these args, confirm
 update it deliberately alongside the edit that changed it), and replace the figures above — same
 discipline as the canonical scenario's own baseline. Every structural edit so far has forced
 that re-run — see the revision table under "dryRun policy". The CURRENT
-confirmed shape is **26 agent calls, 0 errors** — confirmed by the offline replay harness against
+confirmed shape is **37 agent calls (26 at Task 3, +10 for Tasks 4–6, +1 for issue #5's Finish-phase `reconcile-buckets` — bd-201 is escalated at Finish), 0 errors** — confirmed by the offline replay harness against
 the current script (see the current-row paragraph under "dryRun policy"; `wf_527ad491-790` is the
 last Workflow-hosted run, against the previous revision).
 
@@ -4396,7 +4562,7 @@ re-run without moving the count — see the revision table under "dryRun policy"
 touched only this scenario's data (adding `mergeBase` to the `merge:bd-301` stub) and was re-run
 anyway, because "recorded, not illustrative" does not have a too-small-to-matter exemption. Task 3
 adds one more: `ledger-append:merge:bd-301`, the `Merge:` ledger line for the one task's successful
-(PARK-then-)merge. The CURRENT confirmed shape is **27 agent calls, 0 errors** — confirmed by the offline replay harness
+(PARK-then-)merge. The CURRENT confirmed shape is **37 agent calls (27 at Task 3, +10 for Tasks 4–6; issue #5 adds nothing here — nothing is escalated or pending at Finish, so no `reconcile-buckets` dispatch), 0 errors** — confirmed by the offline replay harness
 against the current script (see the current-row paragraph under "dryRun policy";
 `wf_4203efd4-84d` is the last Workflow-hosted run, against the previous revision). The 21/0 figure
 above `wf_941e256b-10b` remains pre-Task-5 history, unaffected by this restatement.
