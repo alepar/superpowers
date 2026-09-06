@@ -979,7 +979,10 @@ detector only saw review minors.
 declared and work landed. Its one-line summary (or `MEASUREMENT INVALID: <cause>`) is appended
 to the ledger as a `Sweep:` line and handed to the final reviewer as the branch-wide
 measurement; without a declared sweep the reviewer is told the only test evidence is the
-per-merge gate runs. See "Serial merge-back" on why there are two selections.
+per-merge gate runs. See "Serial merge-back" on why there are two selections. **The sweep
+measures the landed subset** (issue #5 design question a): an escalated or pending-retry leaf's
+code is not in the tip, so the summary names those ids as `not in this measurement` — a green
+sweep is evidence for what merged, never for the epic.
 
 **Metrics: a run-wide tally, dispatched right before the final review, unconditionally** (Task 6).
 One mechanical dispatch re-reads the ledger fresh — this run's own `Merge:`/fix-round appends since
@@ -2645,6 +2648,12 @@ if (sweepCommand && completed.size) {
   const sw = await dispatch(() => sweepPrompt(sweepCommand, integrationWorktree, integrationBranch), 'sweep',
     { label: 'sweep', phase: 'Finish', model: model('mechanical') })
   sweepSummary = sw ? String(typeof sw === 'string' ? sw : (sw.summary ?? JSON.stringify(sw))).replace(/\s+/g, ' ').trim() : 'SWEEP UNAVAILABLE — the sweep dispatch returned null; the branch has NOT had its per-branch sweep'
+  // issue #5 design question a (decided 2026-09-05: sweep the landed subset, name the rest): the
+  // sweep measured the tip, and an escalated or pending-retry leaf's code is not in it — so its
+  // tests never ran. Name those ids on the same summary (ledger line, final-review prompt and
+  // return value all carry it) so "100 passed" is read as "of what landed", never as the epic.
+  const unswept = [...new Set([...escalated, ...pendingRetry])].filter(id => !completed.has(id))
+  if (unswept.length) sweepSummary += ` — not in this measurement (escalated or pending retry, never merged): ${unswept.join(', ')}`
   await appendLedger(`Sweep: ${sweepSummary}`,
     'ledger-append:sweep', { label: 'ledger-append:sweep', phase: 'Finish', model: model('mechanical') },
     'Sweep: summary elided — see the sweep dispatch\'s own report')

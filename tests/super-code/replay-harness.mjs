@@ -351,8 +351,8 @@ async function main() {
   {
     const scan = scanTemplateSpans(scriptBody)
     check(scan.clean, 'scanner ends in code state (no unterminated literal, string, or ${})')
-    check(scan.spans.length === 206,
-      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 206 — was 191 before issue #5 defects 7–9 added: appendLedger's retry label and its two log lines (3), noteRecurrence's signature/spread/log/line/key/label/elided-line literals replacing the minors loop's four (+3 net), the elided retry lines at the parked-completion, minor, fix-round, pending-retry, BLOCKED and edge-audit call sites (6), and the notify retry's key+label+elided detail (3); was 170 before issue #5 defects 1–6 added: taskWorktree/taskBranch derivations (2), the runTask re-entry and commit-nudge branches' log/finding literals and the commit-nudge dispatch key+label (5), the close-only dispatch key+label, its ledger line and the already-merged log line (4), the three new prompt builders and their inner literals (6), the reconcile dispatch key+label and its two log lines (3), and mergePrompt's bead-close literal (1); was 107 before the issue #3/#4 batch added the auth-refusal rule, seam review, edge audit, sweep, recurring-minor and detector-persistence literals, then 150, then +6 for Task 3's two \`Merge:\` ledger-line dispatch call sites — each contributes 3 template literals: the line text and the stub-key template literal used twice, once as the dispatch key and once as opts.label — then +3 for Task 4's fix-round ledger-line literal in reviewAndFix and both fixPrompt branches' literals extended to ask for head, then 159, then +5 for task super-plan-qfy.9's testChangesBlock and its call-site interpolations, then 164, then +6 for Task 6's Finish-phase Metrics block: the four \`Metrics:\` line-text template literals plus the nested per-round template literal inside \`metricsLine2\`'s \`.map()\` callback, plus one more from the block's own supporting code) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
+    check(scan.spans.length === 207,
+      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 207 — was 206 before issue #5 design question a added the sweep summary's unswept-ids clause (1); was 191 before issue #5 defects 7–9 added: appendLedger's retry label and its two log lines (3), noteRecurrence's signature/spread/log/line/key/label/elided-line literals replacing the minors loop's four (+3 net), the elided retry lines at the parked-completion, minor, fix-round, pending-retry, BLOCKED and edge-audit call sites (6), and the notify retry's key+label+elided detail (3); was 170 before issue #5 defects 1–6 added: taskWorktree/taskBranch derivations (2), the runTask re-entry and commit-nudge branches' log/finding literals and the commit-nudge dispatch key+label (5), the close-only dispatch key+label, its ledger line and the already-merged log line (4), the three new prompt builders and their inner literals (6), the reconcile dispatch key+label and its two log lines (3), and mergePrompt's bead-close literal (1); was 107 before the issue #3/#4 batch added the auth-refusal rule, seam review, edge audit, sweep, recurring-minor and detector-persistence literals, then 150, then +6 for Task 3's two \`Merge:\` ledger-line dispatch call sites — each contributes 3 template literals: the line text and the stub-key template literal used twice, once as the dispatch key and once as opts.label — then +3 for Task 4's fix-round ledger-line literal in reviewAndFix and both fixPrompt branches' literals extended to ask for head, then 159, then +5 for task super-plan-qfy.9's testChangesBlock and its call-site interpolations, then 164, then +6 for Task 6's Finish-phase Metrics block: the four \`Metrics:\` line-text template literals plus the nested per-round template literal inside \`metricsLine2\`'s \`.map()\` callback, plus one more from the block's own supporting code) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
     // self-test: inject a raw backtick mid-way through the first literal's content and assert
     // the detector actually fires — a detector that cannot catch the known failure is decoration
     const [s, e] = scan.spans[0]
@@ -1563,6 +1563,26 @@ async function main() {
     check(!plain.trace.some(t => t.label === 'sweep'), 'no sweep dispatched when none is declared')
     check(promptOf(plain.trace, 'merge:bd-101')?.includes('run the project test command'), 'undeclared gate keeps the default wording')
     check(promptOf(plain.trace, 'final-review')?.includes('No per-branch sweep was declared'), 'final reviewer is told no sweep ran')
+    // issue #5 design question a (decided 2026-09-05): the sweep measures the landed tip, so an
+    // escalated leaf's code was never exercised — name it as unswept scope on the Sweep line, in
+    // the final-review prompt, and in the returned summary.
+    const esc = oneTaskCanned({
+      'bd-ready': [{ ids: ['bd-101', 'bd-104'] }, { ids: [] }],
+      'plan': { planPath: PLANPATH, mapping: [{ n: 1, id: 'bd-101', files: ['src/a.js'] }, { n: 4, id: 'bd-104', files: ['src/c.js'] }] },
+      'brief:bd-104': { id: 'bd-104', n: 4, status: 'BRIEFED', files: ['src/c.js'], branch: 'x', base: SHA('d') },
+      'impl:bd-104': { id: 'bd-104', status: 'BLOCKED', files: ['src/c.js'], blockerBead: 'bd-109' },
+      'triage:bd-104': { decision: 'ESCALATE', detail: 'needs a decision' },
+      'notify:bd-104': { sent: true },
+      'ledger-append:bd-104': { appended: true },
+      'sweep': 'abc1234 — 100 passed, 0 failed, 0 errors, 1 skipped; failing: none; command: nice -n 10 pytest -q',
+      'ledger-append:sweep': { appended: true },
+    })
+    const eo = await run({ args: liveArgs({ config: cfg({ sweep: 'nice -n 10 pytest -q' }) }), canned: esc })
+    assertNoThrow(eo)
+    check(promptOf(eo.trace, 'ledger-append:sweep')?.includes('not in this measurement') && promptOf(eo.trace, 'ledger-append:sweep')?.includes('bd-104'), 'Sweep ledger line names the escalated leaf as unswept scope', promptOf(eo.trace, 'ledger-append:sweep'))
+    check(promptOf(eo.trace, 'final-review')?.includes('not in this measurement') && promptOf(eo.trace, 'final-review')?.includes('bd-104'), 'final reviewer is told which leaves the sweep never covered')
+    check(eo.result?.sweep?.includes('bd-104') && !eo.result?.sweep?.includes('bd-101'), 'returned sweep summary names only the unswept ids', eo.result?.sweep)
+    check(!out.result?.sweep?.includes('not in this measurement'), 'a run with nothing escalated carries no unswept clause', out.result?.sweep)
   }
 
   scenario('config.testPaths (spec §5): a declared override replaces the defaults; an empty array keeps them')
