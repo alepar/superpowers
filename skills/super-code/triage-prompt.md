@@ -58,7 +58,7 @@ Task tool (general-purpose), model: opus:
 
     ## Output Contract (exact)
 
-    Return structured output with exactly two fields, `decision` and `detail`:
+    Return structured output with three fields, `decision`, `detail` and `cause`:
 
     - `decision`: the **bare token** `RESOLVE` or `ESCALATE` and nothing else — no colon, no
       appended text. The coordinator branches on exact string equality against this field; any
@@ -69,4 +69,12 @@ Task tool (general-purpose), model: opus:
         re-dispatch.
       - when `decision` is `ESCALATE`: a one-paragraph summary for the user + the specific
         decision needed.
+    - `cause`: a short root-cause phrase (under 12 words) naming WHY the task blocked, in terms
+      that would match the same thing happening on another task — e.g. "report looked up under
+      the bead id instead of the plan ordinal", "finished work left uncommitted on the task
+      branch", "already-merged task re-dispatched", "spec does not settle the caching strategy" —
+      never this task's specifics. The coordinator clusters blocker entries on this field across
+      the run (≥5 occurrences or ≥3 distinct tasks is reported as a `Recurring blocker:` ledger
+      line), which is how a pipeline defect that files one false blocker per task gets noticed as
+      one pattern rather than N incidents.
 ```

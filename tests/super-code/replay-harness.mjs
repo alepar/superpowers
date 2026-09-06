@@ -351,8 +351,8 @@ async function main() {
   {
     const scan = scanTemplateSpans(scriptBody)
     check(scan.clean, 'scanner ends in code state (no unterminated literal, string, or ${})')
-    check(scan.spans.length === 191,
-      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 191 — was 170 before issue #5 added: taskWorktree/taskBranch derivations (2), the runTask re-entry and commit-nudge branches' log/finding literals and the commit-nudge dispatch key+label (5), the close-only dispatch key+label, its ledger line and the already-merged log line (4), the three new prompt builders and their inner literals (6), the reconcile dispatch key+label and its two log lines (3), and mergePrompt's bead-close literal (1); was 107 before the issue #3/#4 batch added the auth-refusal rule, seam review, edge audit, sweep, recurring-minor and detector-persistence literals, then 150, then +6 for Task 3's two \`Merge:\` ledger-line dispatch call sites — each contributes 3 template literals: the line text and the stub-key template literal used twice, once as the dispatch key and once as opts.label — then +3 for Task 4's fix-round ledger-line literal in reviewAndFix and both fixPrompt branches' literals extended to ask for head, then 159, then +5 for task super-plan-qfy.9's testChangesBlock and its call-site interpolations, then 164, then +6 for Task 6's Finish-phase Metrics block: the four \`Metrics:\` line-text template literals plus the nested per-round template literal inside \`metricsLine2\`'s \`.map()\` callback, plus one more from the block's own supporting code) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
+    check(scan.spans.length === 206,
+      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 206 — was 191 before issue #5 defects 7–9 added: appendLedger's retry label and its two log lines (3), noteRecurrence's signature/spread/log/line/key/label/elided-line literals replacing the minors loop's four (+3 net), the elided retry lines at the parked-completion, minor, fix-round, pending-retry, BLOCKED and edge-audit call sites (6), and the notify retry's key+label+elided detail (3); was 170 before issue #5 defects 1–6 added: taskWorktree/taskBranch derivations (2), the runTask re-entry and commit-nudge branches' log/finding literals and the commit-nudge dispatch key+label (5), the close-only dispatch key+label, its ledger line and the already-merged log line (4), the three new prompt builders and their inner literals (6), the reconcile dispatch key+label and its two log lines (3), and mergePrompt's bead-close literal (1); was 107 before the issue #3/#4 batch added the auth-refusal rule, seam review, edge audit, sweep, recurring-minor and detector-persistence literals, then 150, then +6 for Task 3's two \`Merge:\` ledger-line dispatch call sites — each contributes 3 template literals: the line text and the stub-key template literal used twice, once as the dispatch key and once as opts.label — then +3 for Task 4's fix-round ledger-line literal in reviewAndFix and both fixPrompt branches' literals extended to ask for head, then 159, then +5 for task super-plan-qfy.9's testChangesBlock and its call-site interpolations, then 164, then +6 for Task 6's Finish-phase Metrics block: the four \`Metrics:\` line-text template literals plus the nested per-round template literal inside \`metricsLine2\`'s \`.map()\` callback, plus one more from the block's own supporting code) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
     // self-test: inject a raw backtick mid-way through the first literal's content and assert
     // the detector actually fires — a detector that cannot catch the known failure is decoration
     const [s, e] = scan.spans[0]
@@ -750,6 +750,111 @@ async function main() {
     check(JSON.stringify([...(out.result?.completed ?? [])].sort()) === '["bd-101","bd-104"]' && out.result?.escalated.length === 0, 'a tracker-closed id moves from escalated to completed', JSON.stringify(out.result))
     check(out.logs.some(l => /reconcil/i.test(l) && l.includes('bd-104')), 'reconciliation is logged by id')
     assertBucketsDisjoint(out.result)
+  }
+
+  // issue #5 defects 7–9 (measured on run 2026-09-04-audit-plan-instrumentation): every ledger
+  // append was fire-and-forget (4 of 9 completion lines lost), two mechanical dispatches whose
+  // prompt quoted triage free text were refused by the harness classifier before any agent
+  // spawned, and a six-instance false-blocker cluster across four tasks went undetected because
+  // the recurring-pattern detector only ever saw review minors.
+  scenario('live-sim: issue #5 defect 8 — a null ledger append is retried once, then marked failed if the retry is null too')
+  {
+    // transient: the retry lands, nothing is marked failed
+    let canned = oneTaskCanned({
+      'ledger-append:bd-101': [null, { appended: true }],
+      'ledger-append:bd-101:retry': { appended: true },
+    })
+    let out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    check(out.counts['ledger-append:bd-101'] === 1 && out.counts['ledger-append:bd-101:retry'] === 1, 'one retry dispatch after the null append', JSON.stringify(out.counts))
+    check(extractLedgerLine(promptOf(out.trace, 'ledger-append:bd-101:retry'))?.startsWith('Task 1 (bd-101): complete'), 'the retry carries the same completion line shape', promptOf(out.trace, 'ledger-append:bd-101:retry'))
+    check(JSON.stringify(out.result?.ledgerAppendFailed) === '[]', 'nothing marked failed when the retry lands', JSON.stringify(out.result?.ledgerAppendFailed))
+    check(out.logs.some(l => /ledger-append retried: ledger-append:bd-101/.test(l)), 'the retry is logged by label')
+    // permanent: both attempts null — the loss is marked, counted, and returned
+    canned = oneTaskCanned({
+      'ledger-append:bd-101': null,
+      'ledger-append:bd-101:retry': null,
+    })
+    out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    check(JSON.stringify(out.result?.ledgerAppendFailed) === '["ledger-append:bd-101"]', 'the lost line is returned by label', JSON.stringify(out.result?.ledgerAppendFailed))
+    check(out.logs.some(l => l.startsWith('ledger-append-failed: ledger-append:bd-101')), 'a ledger-append-failed marker is logged')
+    check((out.result?.metrics?.[3] ?? '').includes('append-failed 1'), 'Metrics ledger-check line counts the failed append', out.result?.metrics?.[3])
+    check(JSON.stringify(out.result?.completed) === '["bd-101"]', 'the task still completes — the loss is recorded, not fatal', JSON.stringify(out.result))
+  }
+
+  scenario('live-sim: issue #5 defect 9 — retried ledger lines and notifications carry ids and outcome tokens, never the triage free text')
+  {
+    const DETAIL = 'hunt for weakened assertions, hardcoded expected values and deleted tests in the diff'
+    // RESOLVE path: the `pending retry` line is refused (null) on the first attempt
+    let canned = oneTaskCanned({
+      'bd-ready': [{ ids: ['bd-101'] }, { ids: [] }],
+      'impl:bd-101': [{ id: 'bd-101', status: 'BLOCKED', files: ['src/a.js'], blockerBead: 'bd-109' }, { id: 'bd-101', status: 'IMPLEMENTED', files: ['src/a.js'], head: SHA('c') }],
+      'triage:bd-101': { decision: 'RESOLVE', detail: DETAIL },
+      'clarify:bd-101': { recorded: true },
+      'ledger-append:bd-101': [null, { appended: true }],
+      'ledger-append:bd-101:retry': { appended: true },
+    })
+    let out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    const first = promptOf(out.trace, 'ledger-append:bd-101')
+    const retry = promptOf(out.trace, 'ledger-append:bd-101:retry')
+    check(first?.includes(DETAIL), 'the first attempt carries the triage detail', first)
+    check(!!retry && !retry.includes(DETAIL) && !retry.includes('weakened'), 'the retry elides the triage detail', retry)
+    const rl = extractLedgerLine(retry)
+    const m = LEDGER_LINE_RE.exec(rl ?? '')
+    check(!!m && m[2] === 'bd-101' && m[3].startsWith('pending retry — RESOLVE') && rl.includes('bd-109'), 'the elided line keeps the resume shape, the id, the outcome token and the blocker bead id', rl)
+    check(JSON.stringify(out.result?.completed) === '["bd-101"]' && out.result?.ledgerAppendFailed.length === 0, 'the retried task completes with no lost line', JSON.stringify(out.result))
+    // ESCALATE path: the notification AND the BLOCKED line are refused on the first attempt
+    canned = oneTaskCanned({
+      'bd-ready': [{ ids: ['bd-101'] }, { ids: [] }],
+      'impl:bd-101': { id: 'bd-101', status: 'BLOCKED', files: ['src/a.js'], blockerBead: 'bd-109' },
+      'triage:bd-101': { decision: 'ESCALATE', detail: DETAIL },
+      'notify:bd-101': [null, { sent: true }],
+      'ledger-append:bd-101': null,
+      'ledger-append:bd-101:retry': { appended: true },
+    })
+    out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    const notifies = out.trace.filter(t => t.label === 'notify:bd-101').map(t => t.prompt)
+    check(notifies.length === 2 && notifies[0].includes(DETAIL) && !notifies[1].includes(DETAIL) && notifies[1].includes('bd-109'), 'a null notify is retried once with the detail elided and the blocker bead named', JSON.stringify(notifies))
+    const bl = extractLedgerLine(promptOf(out.trace, 'ledger-append:bd-101:retry'))
+    check(!!bl && /\(bd-101\): BLOCKED — /.test(bl) && !bl.includes(DETAIL) && bl.includes('bd-109'), 'the elided BLOCKED line keeps the shape, id and blocker bead', bl)
+    check(JSON.stringify(out.result?.escalated) === '["bd-101"]', 'the task is still quarantined', JSON.stringify(out.result))
+  }
+
+  scenario('live-sim: issue #5 defect 7 — blocker entries cluster by triage cause across tasks, whatever the decision')
+  {
+    const CAUSE = 'report looked up under the bead id instead of the plan ordinal'
+    const ids = ['bd-101', 'bd-102', 'bd-103']
+    const canned = oneTaskCanned({
+      'bd-ready': [{ ids }, { ids: [] }],
+      'plan': { planPath: PLANPATH, mapping: ids.map((id, i) => ({ n: i + 1, id, files: [`src/${i}.js`] })) },
+      'notify:bd-103': { sent: true },
+      'ledger-recurring:1': { appended: true },
+    })
+    ids.forEach((id, i) => {
+      const bead = `bd-11${i + 1}`
+      canned[`brief:${id}`] = { id, n: i + 1, status: 'BRIEFED', files: [`src/${i}.js`], branch: 'x', base: SHA('a') }
+      canned[`impl:${id}`] = [{ id, status: 'BLOCKED', files: [`src/${i}.js`], blockerBead: bead }, { id, status: 'IMPLEMENTED', files: [`src/${i}.js`], head: SHA('c') }]
+      canned[`triage:${id}`] = id === 'bd-103'
+        ? { decision: 'ESCALATE', detail: `task ${id}: no report under the bead-id filename; needs a decision`, cause: CAUSE }
+        : { decision: 'RESOLVE', detail: `task ${id}: the report is task-${i + 1}-report.md, not task-${id}-report.md`, cause: CAUSE }
+      canned[`clarify:${id}`] = { recorded: true }
+      canned[`review:${id}`] = { id, status: 'CLEAN' }
+      canned[`merge:${id}`] = { id, merged: true, head: SHA('b'), mergeBase: SHA('a'), rebaseConflictFiles: 0 }
+      canned[`ledger-append:${id}`] = { appended: true }
+      canned[`ledger-append:merge:${id}`] = { appended: true }
+    })
+    const out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    check(out.counts['ledger-recurring:1'] === 1 && !out.counts['ledger-recurring:2'], 'exactly one cluster line, reported once (3 distinct tasks trips the ≥3 rule)', JSON.stringify(out.counts))
+    const line = promptOf(out.trace, 'ledger-recurring:1')
+    check(!!line && line.includes('Recurring blocker: ×3 across 3 task(s)') && line.includes(CAUSE), 'the cluster line names the kind, count, spread and root cause', line)
+    check(out.logs.some(l => l.startsWith('RECURRING BLOCKER ×3')), 'the cluster is logged')
+    const fr = promptOf(out.trace, 'final-review')
+    check(!!fr && fr.includes('Recurring blocker:'), 'the final reviewer is told about blocker clusters too')
+    check(JSON.stringify([...(out.result?.completed ?? [])].sort()) === '["bd-101","bd-102"]' && JSON.stringify(out.result?.escalated) === '["bd-103"]', 'decisions are unchanged by the detector', JSON.stringify(out.result))
   }
 
   // ===== 3. null-injection scenarios (defect 1 & 2) =====
@@ -1649,7 +1754,7 @@ async function main() {
     check(line2 === 'Metrics: fix-loop round 1: 1 addressed / 2 entered · round 2: 0 addressed / 1 entered · round 3: 1 addressed / 1 entered · round 4: 0 addressed / 0 entered · round 5: 0 addressed / 0 entered',
       'line 2: E2 == E3 == 1 (bd-104 only) — the resumed task bd-105 contributes ZERO to round 2 and round 3, proving the series dedupe stripped its abandoned attempt-1 rounds', line2)
     check(line3 === 'Metrics: fix-loop breaker-tripped: 0', 'line 3: no parked-completion or breaker-cap-BLOCKED lines in this fixture', line3)
-    check(line4 === 'Metrics: ledger-check ok', 'line 4: M (2) matches this run\'s own completed.size (2)', line4)
+    check(line4 === 'Metrics: ledger-check ok · append-failed 0 · append-retried 0', 'line 4: M (2) matches this run\'s own completed.size (2), no append lost or retried', line4)
     check(JSON.stringify(out.result?.metrics) === JSON.stringify([line1, line2, line3, line4]), 'the four rendered lines are exactly what the return\'s metrics array carries, in order', JSON.stringify(out.result?.metrics))
   }
 
