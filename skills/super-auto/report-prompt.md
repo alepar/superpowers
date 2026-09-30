@@ -50,9 +50,10 @@ number of parked roast escalations **plus every id in `run.md`'s
 `codeBuckets.escalated`** — a task `super-code` quarantined is an unresolved
 escalation in exactly the sense this line reports, and it is the single most
 likely thing a reader needs to know. A non-empty `codeBuckets.parked` adds
-`code findings parked` to the degraded list: a parked ruling is code merged over
-a live review finding, which is a decision made on the human's behalf, the same
-class as a `degraded-verdict`. Without this rule the counters read only roast
+`code findings parked` to the degraded list: a parked finding is one the task's
+fix pass declined with a reason (judged wrong, or mandated by the plan), and the task
+merged anyway, which is a decision made on the human's behalf, the same class as a
+`degraded-verdict`. Without this rule the counters read only roast
 output, so a run that skipped both roasts, quarantined a task, and merged over a
 review finding still opens `clean [degraded: plan roast skipped, code roast
 skipped]` — the exact "everything's fine" misreading named at the top of this
@@ -84,14 +85,22 @@ skipped]`, never bare `clean` — and in that configuration the roast-sourced
 counters are zero by construction, so the `codeBuckets` rule above is the only
 thing left that can tell the truth.
 
-**Two more `codeBuckets` fields reach the status line, or nothing does.** A non-empty
+**Three more `codeBuckets` fields reach the status line, or nothing does.** A non-empty
 `pendingRetry` is work that did **not** land — it forces the `completed with …` form and adds
 `tasks pending retry` to the degraded list; "every bead terminal" was never true of a pending
 retry. A `review` other than `CLEAN` adds `final review: <verdict>` to the degraded list — the
-whole-epic reviewer's doubt must not be silently outvoted by empty counters.
+whole-epic reviewer's doubt must not be silently outvoted by empty counters. A `sweep` that is
+not a pass, or whose SHA is not the tip the report describes, adds `sweep: <result>` to the
+degraded list; `MEASUREMENT INVALID`, `SWEEP UNAVAILABLE` and a leftover `SWEEP DEFERRED` mean
+unmeasured, not green.
 
 **`codeBuckets.stalled: true` maps to `status: stalled at phase code`** — a stalled `super-code`
 is a stalled run, and no other rule would put it on the status line.
+
+**A capped design roast reaches the status line first.** When `run.md` records
+`roastDesignCapped: … · proceeded`, its unresolved Blocking findings count toward `<N>`, and
+`design roast capped-blocking` leads the degraded list; list those findings in Remaining. A run
+stopped at `phase: capped-blocking` writes `status: stalled at phase capped-blocking`.
 
 The prohibition: never a bare "done." "Done" says nothing about which of the four
 states above actually happened, and a run that parked Blocking findings, or left
@@ -117,18 +126,18 @@ edit that lets `super-code` run its own Finish (worktree removal included) befor
 |---|---|---|
 | Implemented | What landed, task by task | beads closed under the run's epic; `super-code`'s `completed` bucket, recorded in `run.md`'s `codeBuckets` (item 6) at the phase 3→4 transition — not session memory; ledger completion lines, each with its commit range (the ledger path is part of `super-code`'s return) |
 | Remaining | What did not land, and why each didn't | `codeBuckets`' `escalated` and `pendingRetry`; parked escalations carried in `run.md`; unresolved Blocking findings still open at panel cap-out; every `punch-list` finding from `run.md`'s `scopeFilter-round-<N>` records, each tagged `out of scope (filtered)` with its recorded reason — these never became beads, so `codeBuckets` never sees them |
-| Gotchas & surprises | Where reality diverged from the design | roast findings that changed a design decision; blocker beads that were triaged; plan-defect findings; anything that forced a nested brainstorm |
+| Gotchas & surprises | Where reality diverged from the design | roast findings that changed a design decision; blocker beads that were triaged; plan-defect findings; anything that forced a nested brainstorm; `stepBack-round-<N>` redesigns, applied or proposed |
 | Entrypoints | Where to start reading, in order | the task tree's dependency order: root-most module first, then its public interface, then the primary caller |
-| Smells | Code the run is uneasy about, each with a one-line "the smell" | parked findings; parked `degraded-verdict` records (a road not taken because autonomous mode answered a sibling's gate itself); `DONE_WITH_CONCERNS` implementer reports; tasks that needed 4-5 fix rounds; tasks that tripped the fix-loop breaker |
+| Smells | Code the run is uneasy about, each with a one-line "the smell" | parked findings; parked `degraded-verdict` records (a road not taken because autonomous mode answered a sibling's gate itself); `DONE_WITH_CONCERNS` implementer reports; tasks whose one review needed a fix pass, which merged without re-review |
 
 ## Smells: the section that surfaces what passed
 
 Two properties of the Smells section are load-bearing and easy to lose in a rewrite:
 
 > Smells are **derived, not guessed**. `super-code` already tracks every signal
-> that means "this was hard": a parked ruling is by definition code that was merged
-> over a live review finding, and a task that burned four fix rounds is one the
-> implementer could not see its way through cleanly. Populating this section means
+> that means "this was hard": a parked finding is a review finding the fix pass
+> declined with a reason before the task merged, and a task whose review needed a
+> fix pass merged that fix without a second review. Populating this section means
 > reading those signals back, not re-judging the code from scratch.
 
 > This is the one section that deliberately surfaces work that **passed** review:

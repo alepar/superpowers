@@ -27,11 +27,17 @@ a resume can silently redo work or violate a decision that was already made.
    resumed run never re-asks — re-asking mid-run would let a resume flip a
    decision the run is already partway through acting on.
 
+   A resume message that itself changes a flag or amends the goal is recorded, never
+   dropped: one `resumeChange: YYYY-MM-DD · "<the ask, verbatim>" · <what it changes>` line
+   per change, appended below `flags:`. The `flags:` line is updated for a flag change, and
+   `idea:` is never rewritten (`SKILL.md` §Resume says how each kind applies).
+
 2. **Current phase** — one of `design | roast-design | capped-blocking | code | roast-code
    | fix-loop | report | finish | done`, matching `SKILL.md`'s seven phases plus
    `done` and the design-roast stop state: `capped-blocking` means the design roast's
-   extension round still ended Blocking and the run hard-stopped before code (see
-   `SKILL.md`'s roast-cap note) — it is terminal for the run like a stall, and a later
+   extension round still ended Blocking and a run without `autonomous` stopped before code
+   (see `SKILL.md`'s roast-cap note; an autonomous run records `roastDesignCapped` and never
+   enters this phase). It is terminal for the run like a stall, and a later
    human-relaunched run that chooses to execute the tree anyway must first append an
    acknowledgment line (`capped-blocking acknowledged: <human's reason>`) to its own
    ledger before entering phase 3. A phase that does not run — skipped by flag, or with no work to do
@@ -97,6 +103,8 @@ a resume can silently redo work or violate a decision that was already made.
      re-roast-at-raised-`config.panelCap` offer, or a `clean [low coverage]` /
      `clean [panel-capped: N unverified]` verdict autonomous mode proceeded past.
      Recorded with which branch was taken, e.g. `"clean [low coverage] — proceeded"`.
+     A goal- or scope-changing redesign the phase-5 step-back proposed and autonomous mode
+     did not apply is this kind too: `"redesign proposed, not applied — <one line>"`.
 
    **Parking is mode-independent.** A `beyond-cap` or `degraded-verdict` item is
    recorded the same way whether autonomous mode answered the question or a human
@@ -129,7 +137,12 @@ a resume can silently redo work or violate a decision that was already made.
    Persisting `roastDesignRound` / `roastCodeRound` in `run.md` is what makes the
    cap durable across any restart, not just within one session.
 
-   **`roastCodeCapped`** (issue #4 defect 6) — written by the sequencer the moment the
+   **`roastDesignCapped`** — written by `super-design` when the design roast's extension round
+   still ends Blocking: `roastDesignCapped: <unresolved finding ids> · <extension report path> ·
+   stopped | proceeded`. `stopped` is a run without `autonomous` (phase `capped-blocking`);
+   `proceeded` is an autonomous run that parked each of those findings and went on to phase 3.
+
+   **`roastCodeCapped`** — written by the sequencer the moment the
    code-roast cap trips with Blocking findings still confirmed, before those findings
    are parked into the punch list: the unresolved finding ids (as the report lists
    them), the path of the round-3 report, and one line on what authority the next
@@ -142,7 +155,7 @@ a resume can silently redo work or violate a decision that was already made.
    never counted as a fourth round.
 
 6. **`super-code`'s returned buckets** — `completed`, `escalated`, `pendingRetry`,
-   `parked`, `stalled`, `review`, recorded verbatim at **every** phase 3→4 transition —
+   `parked`, `stalled`, `review`, `sweep`, recorded verbatim at **every** phase 3→4 transition —
    overwritten on each fix-loop re-entry, not written once. `super-code` runs again
    for every fix round, and the buckets it returns then are the current truth; keeping
    only the first run's would leave every fix bead out of the report's Implemented
@@ -171,23 +184,30 @@ a resume can silently redo work or violate a decision that was already made.
    leaves no beads is invisible to the tree, to `codeBuckets`, and to the report,
    which then describes a run that reviewed clean.
 
-7. **Human approvals already granted, and what each one approved.** The design
-   gates are the human's — but they are the human's **once**. A resumed run replays
-   a recorded approval instead of re-soliciting it; without this, a session that
-   ends after the design was approved comes back and asks for the same approval
-   again, which is the "unattended run stops and re-approves a design it already
-   approved" failure in its purest form.
+   **`sweep` is the run's one full-suite result**, verbatim with the SHA it measured.
+   `super-code` runs with `deferSweep: true`, so until phase 6 this field reads
+   `SWEEP DEFERRED (caller-owned)`. Phase 6 runs the sweep after phase 5 exits and overwrites
+   it; the report cites it only when that SHA is the tip it describes (`SKILL.md`'s phase 6).
+
+7. **Design decisions already made, and what each one covered.** Each is made
+   **once**, by the human or by the run per `super-design` §Gates by Mode. A resumed
+   run replays a recorded decision instead of re-making it; without this, a session
+   that ends after the design was approved comes back and asks for the same approval
+   again.
 
    **An approval is bound to what it approved, and a record that cannot be checked
    is not an approval.** Record enough to tell whether the thing changed:
 
-   - `top-split` — the child ids and their `LEAF`/`PROMOTE` verdicts, as approved.
-     On resume, replay only if the current set is identical; if it changed, re-ask
+   - `top-split · human | auto` — the child ids and their `LEAF`/`PROMOTE` verdicts,
+     as approved (`human`) or applied (`auto`). On resume, replay only if the current
+     set is identical; if it changed, decide again per `super-design` §Gates by Mode
      and say what changed.
+   - `design-review · pending | approved` — a one-shot run's stop at the end of phase 2
+     (`SKILL.md` §Autonomous mode): `pending` when it stops, `approved` on the human's
+     go-ahead.
    - `coverage-round-<N>` — the disposition applied to each finding in that round,
-     each marked `auto` or `human` (`super-design` disposes automatically; only a
-     re-design `GAP` or an `ORPHAN`, and only in an interactive run, is the
-     human's). Replay these rather than re-applying them, and read the highest N
+     each marked `auto` or `human` (`super-design` disposes automatically; only an
+     `ORPHAN`, and only in an interactive run, is the human's). Replay these rather than re-applying them, and read the highest N
      as how many of the loop's two rounds are already spent. Findings a later
      round newly surfaces are covered by no earlier round's record.
      Round 1's record also carries the canonical requirement list the orchestrator
@@ -196,9 +216,21 @@ a resume can silently redo work or violate a decision that was already made.
      (…)` line unioned by id from the three reviewers. Round 2 reads the R-list
      back from round 1's record rather than re-deriving it, appending only new
      `R-new` ids — existing ones are never renumbered.
+   - `stepBack-round-<N>` — the phase-5 step-back decision for that code-roast round, one
+     line in the format `super-design/step-back-prompt.md` defines, written before the scope
+     filter runs. The full output sits beside that round's report as
+     `…-roast-pr-<N>-step-back.md`, and every fix bead of the round links it:
+
+     ```
+     stepBack-round-2: redesign — applied: token refresh in each handler → one refresh middleware (dissolves 3)
+     ```
+
+     A resume replays it: a recorded step-back is not re-dispatched, and an `applied`
+     redesign's spec amendment is applied from the record if it is not yet committed.
    - `scopeFilter-round-<N>` — one line per confirmed roast finding from that fix-loop
-     round, keyed on the finding's `[SEV] <location>` prefix carried verbatim (the roast
-     report defines no finding id; this prefix is its stable key), each marked
+     round that the step-back did not dissolve, keyed on the finding's `[SEV] <location>`
+     prefix carried verbatim (the roast report defines no finding id; this prefix is its
+     stable key), each marked
      `in-scope` or `punch-list` with a one-line reason:
 
      ```
@@ -241,7 +273,7 @@ roastDesignRound: 2
 roastCodeRound: 1
 
 approvals:
-- top-split · bd-413 PROMOTE, bd-414 PROMOTE, bd-415 LEAF, bd-416 LEAF
+- top-split · auto · bd-413 PROMOTE, bd-414 PROMOTE, bd-415 LEAF, bd-416 LEAF
 - coverage-round-1 · canonical R-list: R1 "enforce per-tenant request quota", R2 "reject over-quota requests with 429", R3 "expose current quota usage to callers" · requirements: 3 · mapped: 2 · unmapped: 1 (R3) · auto GAP "no backpressure path" → leaf bd-417; auto ORPHAN "metrics exporter" → kept, goal element added; auto UNOWNED-SEAM "tenant-id propagation" → contract bd-418 / integration bd-419; auto NARRATIVE-EDGE "bd-411 ← bd-405" → edge dropped (artifact unnameable); auto GAP "R3 unmapped — usage exposure" → leaf bd-420
 
 parked:
@@ -256,6 +288,7 @@ codeBuckets:
   parked: bd-415
   stalled: false
   review: CLEAN
+  sweep: PASS 412 tests @ 3f9c2e1
 ```
 
 ## The resume rule

@@ -14,6 +14,10 @@ Task tool (general-purpose):
     You are a fresh-context promotion reviewer. You did not write this spec or its task list —
     your job is to judge them with no attachment to the author's choices.
 
+    You are read-only. Read only the spec files named below and judge from them and the
+    sections that follow; do not explore the repository or query the tracker. If the input
+    is insufficient to judge a task, say so in that task's rationale instead of guessing.
+
     ## Spec being decomposed
     [SPEC_FILE_PATH — read it]
 

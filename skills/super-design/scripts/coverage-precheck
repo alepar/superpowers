@@ -1,0 +1,116 @@
+#!/usr/bin/env bash
+# The coverage loop's mechanical checks over a design tree, computed once per round before the
+# reviewers are dispatched. Every line it prints is already a finding; the reviewers only judge.
+#   flag-sweep  — a bead flagged sp:frozen-promotion or sp:demoted-by-session that the coverage
+#                 ledger has no flag-sweep entry for.
+#   unstated    — a blocking edge whose dependent's description has no
+#                 `blocked-by <blocker-id>:` line for that blocker.
+#   citation    — each `(needs: <id>)` citation in a bead's description or acceptance text,
+#                 resolved against the blocking edges: `blocker` (the cited bead finishes first —
+#                 fine), `dependent` (the cited bead waits on this one — unsatisfiable),
+#                 `unwired` (no blocking path either way), `unknown` (the id is not in the tree).
+#                 A bead inherits the blocking edges of its ancestor epics.
+#
+# Usage: bash coverage-precheck [--from DUMP_FILE] ROOT_EPIC_ID LEDGER_FILE
+#   --from reads a saved `bd list --label sp:ROOT_EPIC_ID --all --json --limit 0` dump instead of
+#   running bd. LEDGER_FILE may not exist yet (round 1): then nothing is excluded. Ledger lines are
+#   `<ledger-id> · r<N> · <TYPE> · <subject> · <disposition> — <one line>`.
+# Output, one fact per line, then a summary line:
+#   flag-sweep: <id> <flag>
+#   unstated: <dependent> <- <blocker>
+#   citation: <id> needs <cited-id> blocker|dependent|unwired|unknown
+#   summary: flag-sweep <n> · unstated <n> · citations <n> (dependent <n>, unwired <n>, unknown <n>)
+# Exit 0 ok, 2 bad input, 4 jq unavailable (prints a JQ_UNAVAILABLE: line on stdout).
+set -euo pipefail
+
+usage() { echo "usage: coverage-precheck [--from DUMP_FILE] ROOT_EPIC_ID LEDGER_FILE" >&2; exit 2; }
+
+dump_file=
+if [ "${1:-}" = "--from" ]; then
+  [ $# -ge 2 ] || usage
+  dump_file=$2
+  shift 2
+  [ -f "$dump_file" ] || { echo "no such dump file: $dump_file" >&2; exit 2; }
+fi
+[ $# -eq 2 ] || usage
+root=$1
+ledger=$2
+
+command -v jq >/dev/null 2>&1 || {
+  echo "JQ_UNAVAILABLE: jq is not installed, so run these checks by hand over \`bd list --label sp:${root} --all --json --limit 0\`. A bead's blocking edges are its \`dependencies\` entries with \`type\` \"blocks\" (the bead waits on \`depends_on_id\`); its parent is the \`parent\` field. (1) For each bead labelled sp:frozen-promotion or sp:demoted-by-session, print \`flag-sweep: <id> <flag>\` unless ${ledger} has a line whose third \` · \`-separated field is flag-sweep and fourth is that id. (2) For each blocking edge, print \`unstated: <dependent> <- <blocker>\` when the dependent's description does not contain the text \`blocked-by <blocker>:\`. (3) For each \`(needs: <id>)\` in a bead's description or acceptance_criteria, print \`citation: <bead> needs <cited> <result>\`, where result is unknown if the cited id is not in the dump; blocker if following blocking edges from the bead (a bead also inherits its ancestor epics' blocking edges) reaches the cited id; dependent if following them from the cited id reaches the bead; else unwired. End with \`summary: flag-sweep <n> · unstated <n> · citations <n> (dependent <n>, unwired <n>, unknown <n>)\`."
+  exit 4
+}
+
+if [ -n "$dump_file" ]; then
+  dump=$(cat "$dump_file")
+else
+  dump=$(bd list --label "sp:${root}" --all --json --limit 0)
+fi
+
+# Rows: N id | P child parent | B dependent blocker stated(1/0) | F id flag | C id cited
+rows=$(printf '%s' "$dump" | jq -r '
+  .[] | .id as $id | (.description // "") as $desc |
+  "N\t\($id)",
+  ( .parent // empty | "P\t\($id)\t\(.)" ),
+  ( (.dependencies // [])[] | select(.type == "parent-child") | "P\t\($id)\t\(.depends_on_id)" ),
+  ( (.dependencies // [])[] | select(.type == "blocks") | .depends_on_id as $b |
+    "B\t\($id)\t\($b)\t\(if ($desc | index("blocked-by " + $b + ":")) then 1 else 0 end)" ),
+  ( (.labels // [])[] | select(. == "sp:frozen-promotion" or . == "sp:demoted-by-session") | "F\t\($id)\t\(.)" ),
+  ( [$desc, (.acceptance_criteria // "")] | join("\n") | [scan("\\(needs:\\s*([^)]*)\\)")] | .[][0]
+    | split(",")[] | gsub("\\s"; "") | select(. != "") | "C\t\($id)\t\(.)" )
+') || { echo "could not parse the bd list dump" >&2; exit 2; }
+
+grep -q "^N	${root}\$" <<<"$rows" || { echo "root epic not in the dump: $root" >&2; exit 2; }
+
+ledger_keys=
+if [ -f "$ledger" ]; then
+  ledger_keys=$(awk -F ' · ' 'NF >= 4 && $3 == "flag-sweep" { gsub(/^ +| +$/, "", $4); print $4 }' "$ledger")
+fi
+
+printf '%s\n' "$rows" | awk -F '\t' -v ledgerKeys="$ledger_keys" '
+  BEGIN { n = split(ledgerKeys, lk, "\n"); for (i = 1; i <= n; i++) if (lk[i] != "") swept[lk[i]] = 1 }
+  $1 == "N" { known[$2] = 1; next }
+  $1 == "P" { if (!(($2, $3) in seenP)) { seenP[$2, $3] = 1; np[$2]++; par[$2, np[$2]] = $3 }; next }
+  $1 == "B" { nb[$2]++; blk[$2, nb[$2]] = $3; nE++; eDep[nE] = $2; eBlk[nE] = $3; eOk[nE] = $4; next }
+  $1 == "F" { nF++; fId[nF] = $2; fFlag[nF] = $3; next }
+  $1 == "C" { nC++; cId[nC] = $2; cTo[nC] = $3; next }
+  # Does following blocking edges from x (its own and its ancestors) reach target? Iterative DFS.
+  function reaches(x, target,   stack, top, seen, cur, i, a, anc, nAnc) {
+    delete seen; top = 0; stack[++top] = x
+    while (top > 0) {
+      cur = stack[top--]
+      if (cur in seen) continue
+      seen[cur] = 1
+      # cur and its ancestors all contribute blockers.
+      nAnc = 0; anc[++nAnc] = cur
+      for (a = 1; a <= nAnc && a <= 60; a++)
+        for (i = 1; i <= np[anc[a]]; i++) anc[++nAnc] = par[anc[a], i]
+      for (a = 1; a <= nAnc; a++)
+        for (i = 1; i <= nb[anc[a]]; i++) {
+          if (blk[anc[a], i] == target) return 1
+          stack[++top] = blk[anc[a], i]
+        }
+    }
+    return 0
+  }
+  END {
+    for (i = 1; i <= nF; i++)
+      if (!(fId[i] in swept) && !((fId[i], fFlag[i]) in doneF)) {
+        doneF[fId[i], fFlag[i]] = 1; flags++
+        print "flag-sweep: " fId[i] " " fFlag[i]
+      }
+    for (i = 1; i <= nE; i++)
+      if (eOk[i] == 0) { unst++; print "unstated: " eDep[i] " <- " eBlk[i] }
+    for (i = 1; i <= nC; i++) {
+      if ((cId[i], cTo[i]) in doneC) continue
+      doneC[cId[i], cTo[i]] = 1; cits++
+      if (!(cTo[i] in known)) r = "unknown"
+      else if (reaches(cId[i], cTo[i])) r = "blocker"
+      else if (reaches(cTo[i], cId[i])) r = "dependent"
+      else r = "unwired"
+      cnt[r]++
+      print "citation: " cId[i] " needs " cTo[i] " " r
+    }
+    printf "summary: flag-sweep %d · unstated %d · citations %d (dependent %d, unwired %d, unknown %d)\n", \
+      flags, unst, cits, cnt["dependent"], cnt["unwired"], cnt["unknown"]
+  }'

@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+# Union the root-pass coverage reviewers' `requirements:` blocks by canonical id and print the
+# round's requirements line. A requirement counts as mapped when at least one reviewer mapped it,
+# and as unmapped when any reviewer left it unmapped (or did not list it) — both counts are kept,
+# so mapped + unmapped can exceed the total.
+#
+# Usage: bash requirements-tally CANONICAL_FILE REVIEW_FILE...
+#   CANONICAL_FILE: the canonical list, one requirement per line starting with its id (`R3 ...`).
+#   REVIEW_FILE:    one reviewer's saved output; its block starts at a line `requirements:` and
+#                   holds lines `R<n> → <ids>` / `R<n> → (unmapped)` / `R-new: <text> → <ids>`
+#                   (`->` also accepted), ending at the first blank or non-matching line.
+# Output:
+#   requirements: <N> · mapped: <M> · unmapped: <K> (<ids>, ...)
+#   r-new: <text>                 one per distinct proposed requirement, in first-seen order
+#   no-block: <file>              a review with no requirements block (counted for nothing)
+# Exit 0 ok, 2 bad input.
+set -euo pipefail
+
+[ $# -ge 2 ] || { echo "usage: requirements-tally CANONICAL_FILE REVIEW_FILE..." >&2; exit 2; }
+canon=$1
+shift
+[ -f "$canon" ] || { echo "no such canonical file: $canon" >&2; exit 2; }
+for f in "$@"; do [ -f "$f" ] || { echo "no such review file: $f" >&2; exit 2; }; done
+
+awk '
+  function trim(s) { gsub(/^[ \t*`-]+|[ \t`]+$/, "", s); return s }
+  # Split a block line at its arrow; lhs/rhs are returned via globals.
+  function splitArrow(line,   p, w) {
+    p = index(line, "→"); w = length("→")
+    if (p == 0) { p = index(line, "->"); w = 2 }
+    if (p == 0) { lhs = trim(line); rhs = ""; return }
+    lhs = trim(substr(line, 1, p - 1)); rhs = trim(substr(line, p + w))
+  }
+  FNR == 1 { fileNo++; inBlock = 0; if (fileNo > 1) { files[fileNo] = FILENAME; hasBlock[fileNo] = 0 } }
+  fileNo == 1 {
+    if (match($0, /^[ \t]*R[0-9]+/)) {
+      id = substr($0, RSTART, RLENGTH); gsub(/[ \t]/, "", id)
+      if (!(id in isCanon)) { isCanon[id] = 1; canonOrder[++nCanon] = id }
+    }
+    next
+  }
+  {
+    line = $0
+    if (!inBlock) {
+      if (trim(line) ~ /^requirements:[ \t]*$/) { inBlock = 1; hasBlock[fileNo] = 1 }
+      next
+    }
+    t = trim(line)
+    if (t == "" || t ~ /^```/) { if (t == "") inBlock = 0; next }
+    if (t ~ /^R-new:/) {
+      splitArrow(t); txt = lhs; sub(/^R-new:[ \t]*/, "", txt)
+      key = tolower(txt)
+      if (txt != "" && !(key in seenNew)) { seenNew[key] = 1; newOrder[++nNew] = txt }
+      next
+    }
+    if (t ~ /^R[0-9]+/) {
+      splitArrow(t); id = lhs; sub(/[^R0-9].*$/, "", id)
+      listed[fileNo, id] = 1
+      if (rhs == "" || rhs ~ /unmapped|^\(?none\)?$/) unmappedBy[id] = 1
+      else mappedBy[id] = 1
+      next
+    }
+    inBlock = 0
+  }
+  END {
+    if (nCanon == 0) { print "no requirement ids in the canonical file" > "/dev/stderr"; exit 2 }
+    valid = 0
+    for (f = 2; f <= fileNo; f++) if (hasBlock[f]) valid++
+    for (i = 1; i <= nCanon; i++) {
+      id = canonOrder[i]
+      if (id in mappedBy) m++
+      miss = (id in unmappedBy)
+      for (f = 2; f <= fileNo; f++) if (hasBlock[f] && !((f, id) in listed)) miss = 1
+      if (valid == 0) miss = 1
+      if (miss) { k++; ids = ids (ids == "" ? "" : ", ") id }
+    }
+    printf "requirements: %d · mapped: %d · unmapped: %d", nCanon, m, k
+    if (k > 0) printf " (%s)", ids
+    printf "\n"
+    for (i = 1; i <= nNew; i++) print "r-new: " newOrder[i]
+    for (f = 2; f <= fileNo; f++) if (!hasBlock[f]) print "no-block: " files[f]
+  }' "$canon" "$@"

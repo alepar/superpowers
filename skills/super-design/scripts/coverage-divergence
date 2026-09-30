@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# Compare two coverage rounds' deduped findings by identity (type + subject) and say whether the
+# later round was converging or widening. Widening: the finding count did not shrink AND more
+# than half of the later round's findings are identities the earlier round never raised.
+#
+# Usage: bash coverage-divergence PREV_FINDINGS_FILE THIS_FINDINGS_FILE
+#   Each file holds one finding per line: `<TYPE> · <subject> · <one line>`. The identity is
+#   TYPE (case-insensitive) + subject; blank lines and lines starting with `#` are skipped, and a
+#   repeated identity within one file counts once.
+# Output:
+#   findings: <prev> → <this>
+#   novel: <n>/<this> (<pct>%)
+#   widening: yes|no
+# Exit 0 ok, 2 bad input.
+set -euo pipefail
+
+[ $# -eq 2 ] || { echo "usage: coverage-divergence PREV_FINDINGS_FILE THIS_FINDINGS_FILE" >&2; exit 2; }
+for f in "$1" "$2"; do [ -f "$f" ] || { echo "no such findings file: $f" >&2; exit 2; }; done
+
+awk -F ' · ' '
+  function trim(s) { gsub(/^[ \t]+|[ \t]+$/, "", s); return s }
+  FNR == 1 { fileNo++ }
+  /^[ \t]*(#|$)/ { next }
+  {
+    if (NF < 2) { printf "malformed line %d in %s: %s\n", FNR, FILENAME, $0 > "/dev/stderr"; bad = 1; exit 2 }
+    key = tolower(trim($1)) SUBSEP trim($2)
+    if (fileNo == 1) { if (!(key in prev)) { prev[key] = 1; nPrev++ } }
+    else if (!(key in cur)) { cur[key] = 1; nCur++; if (!(key in prev)) novel++ }
+  }
+  END {
+    if (bad) exit 2
+    pct = nCur ? int(novel * 100 / nCur + 0.5) : 0
+    printf "findings: %d → %d\n", nPrev, nCur
+    printf "novel: %d/%d (%d%%)\n", novel, nCur, pct
+    print ((nCur >= nPrev && nCur > 0 && novel * 2 > nCur) ? "widening: yes" : "widening: no")
+  }' "$1" "$2"

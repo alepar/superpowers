@@ -2,7 +2,8 @@
 
 Use this template for a `super-design` coverage reviewer. **Model: opus.** The same
 template serves both per-subepic passes and the root pass — the caller fills in
-the inputs below; nothing in the template branches on which pass it is. The
+the inputs below; the only pass-specific part is the canonical requirements section,
+which is empty for per-subepic passes and turns off check 0. The
 reviewer works in isolated context and must never have authored the tree.
 
 ```
@@ -15,7 +16,6 @@ Task tool (general-purpose), model: opus:
     one's evidence against these same inputs before applying it, so anything unsupported
     is filtered there. Surface anything plausible, and make the evidence checkable: a
     finding whose cited ids or quoted text don't hold up is dropped without a fix.
-    A rubber-stamp is a failure.
 
     **Your entire review window is this prompt. Call no tools: do not read files, do not
     explore the repository, do not query the tracker** — the caller assembled everything
@@ -48,18 +48,21 @@ Task tool (general-purpose), model: opus:
     underreports blocking edges (verified bd 1.0.5: `show` returned no usable edges where
     the bulk dump did), so a `(none)` from `show` is not evidence of absence.]
 
-    ## Flagged tasks
-    [FLAGGED_TASKS — task ids carrying flag `sp:frozen-promotion` or
-    `sp:demoted-by-session`]
+    ## Precomputed graph checks
+    [PRECHECK — the `coverage-precheck` output for this round: `flag-sweep:`,
+    `unstated:` and `citation:` lines over the whole tree.] Every `flag-sweep`, `unstated`,
+    and `citation` line other than `blocker` is already a finding the caller filed; do not
+    re-report it. Use the `citation:` lines as resolved facts.
 
     ## Changes since the previous round
     [CHANGED_TASKS — task ids created or amended by the previous round's applied fixes,
     each with the finding it answers. EMPTY on round 1.]
 
-    ## Rejected-findings ledger
-    [REJECTED_LEDGER — contents of
-    docs/superpowers/specs/<root-slug>-coverage-ledger.md, if any. Findings matching an
-    entry here were already disposed of — do not resurface them without new evidence.]
+    ## Coverage ledger (every previously disposed finding, applied or rejected)
+    [COVERAGE_LEDGER — contents of the coverage ledger in the run's artifact directory,
+    if any.] If a finding of yours matches an entry here, still report it, tagged
+    `ledger: <entry id>`, and say what evidence is new, if any — the caller drops true
+    duplicates.
 
     ## Requirements (canonical)
     [REQUIREMENTS_CANONICAL — the orchestrator's R1…Rn list (root pass only; EMPTY for a
@@ -69,14 +72,15 @@ Task tool (general-purpose), model: opus:
 
     ## Checks
 
-    0. **Requirement mapping (root pass only).** For each canonical requirement, list the
-       task ids that deliver it. You may propose a new requirement the canonical list
-       missed as `R-new: <text>` — the orchestrator appends it to next round's list; never
-       renumber or reuse an existing id yourself. Every canonical requirement with no
-       mapped task is **also** reported as a `GAP` in the findings list below (check 1
-       still applies as before; this makes the omission explicit rather than folding it
-       silently into the forward trace). Emit this mapping as the `requirements` output
-       block, **before** the findings list.
+    0. **Requirement mapping (root pass only).** Do check 1's decomposition of the goal
+       first, from the Goal and Spec alone, before reading the canonical list. Then, for
+       each canonical requirement, list the task ids that deliver it, and propose every
+       element of your own decomposition the list lacks as `R-new: <text>` — the
+       orchestrator appends it to next round's list; never renumber or reuse an existing
+       id yourself. Every canonical requirement with no mapped task is **also** reported
+       as a `GAP` in the findings list below (check 1 still applies; this makes the
+       omission explicit rather than folding it silently into the forward trace). Emit
+       this mapping as the `requirements` output block, **before** the findings list.
 
     1. **Forward trace → GAP.** Decompose the goal into its necessary elements. Every
        element must map to at least one task or spec section. An unmapped element is a
@@ -102,14 +106,14 @@ Task tool (general-purpose), model: opus:
        evidence of independence; the exchange is dataflow, not file overlap. Do not
        report a seam whose boundary a task plainly owns, and do not invent exchanges the
        descriptions don't imply.
-    5. **Edge audit → NARRATIVE-EDGE.** For every blocking dep in the task tree, first read the
-       dependent's description for its `blocked-by <blocker-id>: consumes <artifact>` line
-       matching this edge's blocker id. No such line — or a line whose `<artifact>` cannot be
-       resolved to something the blocker actually delivers (its own description, acceptance, or
-       fixed token: `all leaves (integration sweep)` for a sweep edge, `boundary contract` for a
-       seam-contract edge) — is a finding on its own: report it with `unstated` in the evidence,
-       naming the edge (dependent ← blocker) and the missing or unresolvable line. When the line
-       is present and resolves, use it (plus the two descriptions) to name the specific artifact
+    5. **Edge audit → NARRATIVE-EDGE.** For every blocking dep in the task tree, read the
+       dependent's `blocked-by <blocker-id>: consumes <artifact>` line for this edge's blocker
+       (an edge with no such line is an `unstated:` line under Precomputed graph checks). A line
+       whose `<artifact>` cannot be resolved to something the blocker actually delivers (its own
+       description, acceptance, or fixed token: `all leaves (integration sweep)` for a sweep
+       edge, `boundary contract` for a seam-contract edge) is a finding: report it with
+       `unstated` in the evidence, naming the edge (dependent ← blocker) and the unresolvable
+       line. When the line resolves, use it (plus the two descriptions) to name the specific artifact
        the dependent consumes and the blocker produces, and check for three further failures, one
        kind: (a) UNNAMEABLE — no artifact connects them; the edge encodes narration or "that area
        first". (b) MISDIRECTED — the artifact is real but a DIFFERENT task (often earlier in
@@ -130,25 +134,18 @@ Task tool (general-purpose), model: opus:
        leaf>, and drop the epic-level edge". An epic edge you can fully justify (every leaf
        genuinely consumes the whole epic's output) is not a finding, but say so explicitly
        in one line rather than skipping it.
-    6. **Acceptance satisfiability → UNSATISFIABLE-ACCEPTANCE.** Two passes, the
-       mechanical one FIRST. (a) MECHANICAL — for every `(needs: <id>)` citation in a
-       task's acceptance text, look the cited id up in the task tree and walk the blocking
-       edges: the cited bead must be a transitive BLOCKER of the task (it completes first).
-       If it is a transitive DEPENDENT of the task, that is a finding, whatever the prose
-       says — the criterion cannot be met at completion time. If no edge path connects the
-       two in either direction, that is a finding of the `unwired` variant — propose the
-       edge. This pass is a graph walk, not a judgment: do it for every citation, and report
-       each result. (b) PROSE — where an acceptance criterion names another deliverable
-       WITHOUT a citation ("the X validator accepts...", "passes the Y suite", "conforms to
-       §N's contract"), resolve that deliverable to the task that produces it yourself and
-       apply the same direction test; a producing task that is a transitive dependent is
-       unsatisfiable — the cycle lives across the acceptance-text/dependency-graph boundary,
-       which no single-artifact check spans. Propose either restating the criterion in
-       terms of an artifact that exists when the task completes (adding the `(needs: <id>)`
-       citation so the next round checks it mechanically), or re-pointing the edge so the
-       validator genuinely precedes it. A criterion referencing a blocker is correct and is
-       not a finding. (Measured: six prose-only review passes missed one instance of this
-       class; the citation convention exists so that pass (a) cannot.)
+    6. **Acceptance satisfiability → UNSATISFIABLE-ACCEPTANCE.** `(needs: <id>)` citations
+       are already resolved (Precomputed graph checks). Your pass covers the uncited ones:
+       where an acceptance criterion names another deliverable WITHOUT a citation ("the X
+       validator accepts...", "passes the Y suite", "conforms to §N's contract"), resolve
+       that deliverable to the task that produces it and walk the blocking edges: the
+       producer must be a transitive BLOCKER of the task (it completes first). A producer
+       that is a transitive DEPENDENT makes the criterion unsatisfiable at completion time,
+       whatever the prose says; one no edge path connects is the `unwired` variant. Propose
+       either restating the criterion in terms of an artifact that exists when the task
+       completes (adding the `(needs: <id>)` citation so the next round's precheck resolves
+       it), re-pointing the edge so the validator genuinely precedes it, or adding the
+       missing edge. A criterion referencing a blocker is correct and is not a finding.
     7. **Configuration coverage → UNEXERCISED-CONFIGURATION.** Where the spec (root or
        subepic) ENUMERATES runtime configurations — modes, player counts, platforms,
        feature-flag combinations, a test matrix — check that some task in the tree
@@ -162,10 +159,7 @@ Task tool (general-purpose), model: opus:
        configurations runnable, or naming the one existing bead that should absorb the
        exercise. A spec that enumerates nothing yields no finding of this kind — do not
        invent a configuration space.
-    8. **Flag sweep.** Every id in "Flagged tasks" is an automatic finding — known-
-       underdesigned work must not sail through silently — *unless* it already has an
-       entry in the rejected-findings ledger, which takes precedence over the sweep.
-    9. **Previous round's fixes.** Every task named in "Changes since the previous round"
+    8. **Previous round's fixes.** Every task named in "Changes since the previous round"
        was created or amended by this run's own coverage loop and has been read by no one.
        Run checks 1-7 over them as over any other task, and answer the two questions only
        these raise: does the fix actually close the finding it claims to (if not, re-report
@@ -188,7 +182,7 @@ Task tool (general-purpose), model: opus:
     ```
 
     Then, one entry per finding:
-    - **type:** `GAP` | `ORPHAN` | `UNOWNED-SEAM` | `NARRATIVE-EDGE` | `UNSATISFIABLE-ACCEPTANCE` (with `dependent` or `unwired` in the description) | `UNEXERCISED-CONFIGURATION` | flag-sweep
+    - **type:** `GAP` | `ORPHAN` | `UNOWNED-SEAM` | `NARRATIVE-EDGE` | `UNSATISFIABLE-ACCEPTANCE` (with `dependent` or `unwired` in the description) | `UNEXERCISED-CONFIGURATION` | `INSUFFICIENT-INPUT`
     - **description:** the problem, one sentence
     - **evidence:** the unmapped goal element, the orphaned task id, the seam's two
       participant task ids + the exchanged data/interface + the quoted description text
@@ -197,16 +191,18 @@ Task tool (general-purpose), model: opus:
       `blocked-by` line, for `unstated`), the quoted acceptance
       criterion + the producing (or cited) task id + the dependency path proving it is a
       transitive dependent (or the absence of any path, for `unwired`), the quoted
-      configuration enumeration + the configurations with no exercising task, or the flag
-      and its task id
+      configuration enumeration + the configurations with no exercising task, or what
+      input is missing (`INSUFFICIENT-INPUT`)
     - **proposed fix:** a new leaf task under a named epic, or a new subepic needing
-      design; for `UNOWNED-SEAM`, name the boundary to be contracted (the caller turns a
-      verified seam into a contract bead + integration bead — see SKILL.md §Coverage); for
+      design; for `ORPHAN`, delete the task or name the goal element to add that it
+      serves; for `UNOWNED-SEAM`, name the boundary to be contracted; for
       `NARRATIVE-EDGE`, drop the edge, or name the task it should repoint to; for
       `UNSATISFIABLE-ACCEPTANCE`, the restated criterion (with its `(needs: <id>)`
       citation), the edge to re-point, or the edge to add; for `UNEXERCISED-CONFIGURATION`,
       the `Configuration smoke:` leaf (per-configuration entry point, and the beads it
       depends on) or the existing bead to extend
 
-    Report only defensible findings. Quality over quantity — but do not soften.
+    State each finding at full strength and do not soften it. Filtering happens downstream:
+    the caller verifies every finding against these inputs, so do not pre-filter by
+    importance or certainty.
 ```

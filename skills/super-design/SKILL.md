@@ -25,11 +25,58 @@ where it lands:
 | artifact-directory override | §Artifact Location — everything this skill produces goes there |
 | run-state file path | §Run-State File — record each fact as it becomes true |
 | phase token(s) | §Run-State File — written into the run-state file when the named stage begins |
-| design mode (A/B) | relayed to every `brainstorming` invocation, root and nested; with `autonomous`, decides whether coverage's two escalations ask — §Coverage |
-| autonomous | the loop-exit and qualifier exceptions (§Adversarial Review Loop) fire; coverage's two escalations stop asking (§Coverage); the top-split gate still asks unless a recorded approval replays (§Run-State File) |
+| design mode (A/B) | relayed to every `brainstorming` invocation, root and nested (`autonomous` forces Mode B); with `autonomous`, it sets the design gates — §Gates by Mode |
+| autonomous | no stops after launch — §Gates by Mode, §Unattended Runs |
 | roast preference (on/off) | §Adversarial Review Loop's offer is pre-decided either way — never re-asked |
 | starting roast round | §Hand-off — resume the cap-3 loop from it rather than from 1 |
-| hand-off ownership | §Hand-off's caller-owned branch, and half the precondition of both autonomous exceptions — "the caller owns the hand-off **and** stated the run is autonomous" |
+| hand-off ownership | §Hand-off's caller-owned branch |
+
+## Gates by Mode
+
+This is the one statement of the design gates; other sections point here.
+
+| Run | Top-split gate (§The Process step 5) | Once the design is ready |
+|---|---|---|
+| Interactive: Mode A, not `autonomous` | **asks**: the human approves the child list and its `LEAF`/`PROMOTE` verdicts | hand-off (§Hand-off) |
+| One-shot: Mode B, not `autonomous` | **applied**: the recommended child list and verdicts are taken as they stand | **stop** for the human's design review, then hand-off |
+| `autonomous` (implies Mode B for every brainstorm, root and nested) | **applied**, as above | hand-off, no stop |
+
+An applied top split is recorded like an approval, marked `auto` (§Run-State File), and named
+in the next summary. The design is ready when the coverage loop and the roast loop have both
+exited. At the one-shot stop, present the settled tree, the roast loop's exit summary, and
+everything parked; hand-off waits for the human's go-ahead. When a caller owns the hand-off,
+report the settled tree and return; the caller owns the stop (`super-auto`: end of phase 2,
+before code).
+
+## Unattended Runs
+
+A run told `autonomous` has no one watching, and neither does a one-shot run before its
+design-ready stop (§Gates by Mode); both are **unattended** below. A message with no tool call
+ends your turn, and in an unattended run the work stops there. So none of these end a turn while
+work is owed: a summary that closes by announcing the next step; the return of a skill you
+invoked (`brainstorming`, `super-roast`, a nested `super-design`), which is your cue to take the
+next step; a finished milestone (a subtree designed, a coverage round summarized, a roast round read); an offer to carry
+on unless told otherwise; a list of decisions none of which blocks the rest. Put status notes and
+recommendations in the same message as your next tool call. All state lives in the tracker and the
+run-state file, so context compaction loses nothing.
+
+The only stops, a closed list:
+
+1. a handed-in root this run cannot legitimately close — a launch check, made before any design
+   work (§The run's root epic);
+2. a one-shot run's design-ready stop (§Gates by Mode), which ends the unattended stretch.
+
+Every other ask in this skill is answered by its documented unattended default, **recorded** in
+the run-state file (a parked escalation, beyond-cap item, qualifier, or step-back redesign; with
+no run-state file, in the round summaries), and surfaced in the final summary — never waited on:
+the top split (§Gates by Mode), coverage's `ORPHAN` escalation (§Coverage), the tripwire
+(§Tripwire), the recall-floor read-through (§Coverage), roast escalations, beyond-cap items,
+verdict qualifiers, step-back redesigns, loop exits and Capped Blocking (§Adversarial Review
+Loop). A protected resource you cannot reach, or a risky or destructive action that would need
+confirmation, is not taken: skip that work, record it, and surface it. Large fix work runs as a
+Mode B nested brainstorm. The run then proceeds to §Hand-off — to the caller when one owns it,
+otherwise to execution, with everything still open restated in the final summary. That is
+completion, not a stop.
 
 ## The Process
 
@@ -37,7 +84,7 @@ where it lands:
 2. **Decompose** the spec into rough child tasks (title, short description, files-touched hint, blocking deps) — §Decomposition.
 3. **Promotion review** — dispatch a fresh-context reviewer, sanity-check its verdicts, fix any decomposition-verdict `ISSUES` — §Promotion Review.
 4. **Apply promotions** — §Applying Promotions.
-5. **Top-split gate** (root only, both modes) — before any descent, the user approves the top-level split (child list + promotion verdicts). One gate, at the most expensive level. If a caller supplied a run-state file and it already records a matching approval, replay it — §Run-State File.
+5. **Top-split gate** (root only) — before any descent, the top-level split (child list + promotion verdicts) is decided at one gate, at the most expensive level: asked or applied per §Gates by Mode, and replayed when the run-state file records a matching decision (§Run-State File).
 6. For each promoted child, **in dependency order, depth-first** (a child's entire subtree completes before the next sibling starts, so later siblings can read earlier siblings' finished specs): check the tripwire (§Tripwire), then run its nested brainstorm — §Nested Brainstorms — then invoke `superpowers:super-design` on the spec it wrote; that is the recursion.
 7. **Root only**, once the tree has settled (every subepic designed, every leaf decomposed, no pending promotions): run the coverage loop — §Coverage.
 8. **Root only, optional:** offer `superpowers:super-roast` on the settled tree; on a confirmed-findings verdict, run the fix + auto-re-roast loop — §Adversarial Review Loop.
@@ -55,7 +102,7 @@ is done-vs-not: check for the artifact a step would produce before producing it.
 | §Decomposition, root | an epic already labelled `sp:<its-own-id>` for this goal (or named by the run-state file's epic pointer) — adopt it; **never `bd create` a second root epic** |
 | §Decomposition, children | children already under that epic — decompose only what has none |
 | §Promotion Review | verdicts already applied (`-t epic` + `sp:needs-design`, or `sp:demoted-by-session`) — re-review only undecided children |
-| §The Process step 5 / §Coverage | a recorded gate answer, and the coverage rounds already spent — see §Run-State File |
+| §The Process step 5 / §Coverage | a recorded top-split decision, and the coverage rounds already spent — see §Run-State File |
 | §Coverage, root integration sweep | an existing `Integration sweep:` bead for this root — adopt it; **never create a second** (two sweeps each fanning in on every leaf split the join) |
 
 **A partially-written artifact is not an adoptable one.** Adopt a spec only if it is committed, and
@@ -82,10 +129,11 @@ and expensive: the tree builds correctly, execution runs correctly, and completi
 on the inserted layer while the real root stays open forever. The tell is a top split whose ids are
 two levels down (`<root>.2.1`, `<root>.2.2`) instead of one (`<root>.1`, `<root>.2`).
 
-The rule has one checkable form: **the root must be an epic this run can legitimately close.** If it
-genuinely is not — it holds unrelated work, or is a standing tracker meant to outlive this run —
-that is a scoping problem to raise with the user before decomposing, not something to route around
-by rooting lower on your own.
+The rule has one checkable form: **the root must be an epic this run can legitimately close.**
+Check a handed-in root at launch, before any design work. If it genuinely is not closable — it
+holds unrelated work, or is a standing tracker meant to outlive this run — that is a scoping
+problem to raise with the user before starting, not something to route around by rooting lower
+on your own.
 
 ## Decomposition
 
@@ -99,17 +147,13 @@ named the manifest at all). State the acceptance as: search the repo for the pat
 basename, source and non-source artifacts alike; every manifest-class hit must be owned by a
 named bead.
 
-**An acceptance criterion that depends on another bead's deliverable cites that bead by id**
-(decided policy — issue #3 design question B). Write it as `… (needs: <bead-id>)` — "the
-contract validator accepts the output (needs: proj-42)". The citation is what makes the
-criterion checkable by graph rather than by reading: the coverage reviewer's acceptance check
-resolves every cited id against the blocking edges and flags a cited bead that is a transitive
-*dependent* (unsatisfiable at completion time) or that no edge connects (unwired). Measured: a
-criterion of the form "the §4.8 validator accepts the resulting contract", where the validator
-was a bead blocked by the bead under review, survived a three-round design roast and a
-three-reviewer edge audit — six independent prose reads, zero detections. Prose review stays as
-the net for uncited references; it is not the primary check for this class, because the
-measurement says it does not catch it.
+**An acceptance criterion that depends on another bead's deliverable cites that bead by id.**
+Write it as `… (needs: <bead-id>)` — "the contract validator accepts the output (needs:
+proj-42)". The citation makes the criterion checkable by graph rather than by reading:
+coverage's precheck script resolves every cited id against the blocking edges and flags a cited
+bead that is a transitive *dependent* (unsatisfiable at completion time) or that no edge
+connects (unwired). Prose review is the net for uncited references only, because prose reads
+reliably miss this class.
 
 **A spec that enumerates runtime configurations gets a bead that exercises each one, early**
 (decided policy — issue #3 design question D). Modes, player counts, platforms, feature-flag
@@ -286,9 +330,9 @@ Then run the nested brainstorm on the promoted child.
 
 Run in the main session (interactive Mode A can't run in a subagent). Context handed in: the parent spec, the ancestor-goal chain, and the specs of already-designed siblings.
 
-- Inherits the session's design mode; the user can override per-subepic with an explicit request.
+- Inherits the session's design mode (always Mode B under `autonomous`); in an interactive run the user can override per-subepic with an explicit request.
 - Opens with its own local `## Goal`, seeded from the promotion rationale.
-- Does not re-offer the visual companion or super-roast (super-roast is offered once, at the root, after coverage passes) and skips Mode B's per-spec review gate — a Mode B tree's checkpoints are the root spec review, the top-split gate, and the tripwire — coverage disposes automatically in Mode B (§Coverage).
+- Does not re-offer the visual companion or super-roast (super-roast is offered once, at the root, after coverage passes) and skips Mode B's per-spec review gate — a Mode B tree's human checkpoint is the design-ready stop (§Gates by Mode). Coverage disposes automatically in every mode, and in Mode B even its `ORPHAN` escalation applies without asking (§Coverage).
 - Does not create a new worktree; `using-git-worktrees` idempotently verifies the existing one.
 - Once it returns with a written, committed spec, invoke `superpowers:super-design` on that spec — §The Process, step 6; that is the recursion.
 
@@ -317,13 +361,16 @@ On fire, show the epic tree — beads: `bd list --parent <root> --pretty --statu
 - **stop** — remaining would-be promotions freeze into leaf tasks flagged `sp:frozen-promotion` (coverage auto-surfaces every one).
 - **prune** — drop branches, or demote an epic back to a task. Demotion requires the demotion guard: `bd children <id> --json` must return empty before `bd update <id> -t task` — bd allows demoting an epic that still has children, silently corrupting the tree.
 
+Unattended (§Unattended Runs): take **continue** on the first fire and **stop** on the next, parking
+each choice with the tree snapshot as a qualifier.
+
 ## Coverage / Gap Loop (root only)
 
 Runs once the tree has settled (§The Process, step 7).
 
 **Hierarchical:**
 - **Per-subepic pass:** that subepic's spec + children + parent goal chain, checked against its local `## Goal`.
-- **Root pass:** root spec + subepic specs + the full task tree, checked against the root `## Goal`. Beads: dump the tree with `bd list --label sp:<root-epic-id> --json --status all` (not `--parent` — one level only in JSON mode). Above ~15 specs in the tree, subepic spec prose may be summarized to goal/summary sections for scale; the task tree itself is never summarized.
+- **Root pass:** root spec + subepic specs + the full task tree, checked against the root `## Goal`. Beads: dump the tree to a file with `bd list --label sp:<root-epic-id> --all --json --limit 0` (not `--parent` — one level only in JSON mode; without `--limit 0` bd stops at 50). Above ~15 specs in the tree, subepic spec prose may be summarized to goal/summary sections for scale; the task tree itself is never summarized.
 
 **Canonical requirement list (root pass only).** Before dispatch, the orchestrator — not
 any reviewer — derives the canonical requirement list once per round: decompose the root
@@ -331,25 +378,35 @@ any reviewer — derives the canonical requirement list once per round: decompos
 this same list to all three root-pass reviewers as the `## Requirements (canonical)` input
 (§`coverage-reviewer-prompt.md`); per-subepic passes do not enumerate and get this section
 empty. **R-ids are stable across rounds and resumes:** round 1 derives R1…Rn and writes them
-into `run.md`'s `coverage-round-1` record; round 2 (or a resume) **reads that list back**
-rather than re-deriving it, appending any `R-new: <text>` a round-1 reviewer proposed as the
+into the run-state file's `coverage-round-1` record (no run-state file: into the coverage ledger's
+round-1 header); round 2 (or a resume) **reads that list back** rather than re-deriving it, appending any `R-new: <text>` a round-1 reviewer proposed as the
 next free id — an existing id is never renumbered or reused. After the three reviewers
-return, union their unmapped-requirement sets **by canonical id** (a requirement unmapped by
-any reviewer counts as unmapped) and write one line into the round summary and into the
-`coverage-round-<N>` record:
+return, save the canonical list (one `R<n> <text>` per line) and each root-pass reviewer's
+output to files in the artifact directory (`coverage-round-<N>-requirements.md`,
+`coverage-round-<N>-root-<k>.md`) and run `bash <base>/scripts/requirements-tally
+<canonical> <review-1> <review-2> <review-3>`. Its first line (`requirements: N · mapped: M ·
+unmapped: K (R3, R7)`) goes into the round summary and the `coverage-round-<N>` record; its
+`r-new:` lines are the proposals to append; a `no-block:` line means that review is not valid
+for this pass. The line summarizes: each unmapped requirement was already reported as a `GAP`
+(§`coverage-reviewer-prompt.md` check 0).
 
-```
-requirements: N · mapped: M · unmapped: K (R3, R7)
-```
-
-where N is the canonical list's size, M the number mapped by at least one reviewer, and K
-the unioned-unmapped count with their ids. Each unmapped requirement was already reported by
-its reviewer(s) as a `GAP` (§`coverage-reviewer-prompt.md` check 0) — this line summarizes,
-it does not itself create new findings.
+**Mechanical checks run before dispatch, once per round.** Run `bash <base>/scripts/coverage-precheck
+--from <the tree dump> <root-epic-id> <coverage ledger>` (`<base>` is this skill's base
+directory; if it prints a line starting `JQ_UNAVAILABLE:`, follow its instruction and produce
+the same output format). Every line it prints
+other than `citation: … blocker` and the summary is a finding you file yourself, already
+verified: `flag-sweep:` (a flagged task the ledger has not disposed — the fix is yours to
+choose: promote and design it, keep it as a leaf with a rationale, or split it), `unstated:`
+(a `NARRATIVE-EDGE` — write the missing `blocked-by` line naming the artifact, or drop the
+edge), and `citation: … dependent|unwired|unknown` (an `UNSATISFIABLE-ACCEPTANCE`; `unknown`
+means the cited id is not in the tree — correct the citation). Pass the output to every
+reviewer as its `## Precomputed graph checks` input.
 
 **Each pass runs 3 independent reviewers** (`./coverage-reviewer-prompt.md`, fresh context, model opus) — **input-bounded**: the prompt carries a reviewer's entire window and forbids it tools, so assemble the inputs completely; an `INSUFFICIENT-INPUT` finding means the pass was mis-assembled, not that the reviewer should have roamed; findings are unioned and deduped before disposition (union, not majority — a miss costs more than a false positive, and the verify step below removes false positives anyway). A pass returning fewer than 3 valid reviews is marked **degraded** in the round summary, never silently accepted.
 
-**Ledger:** every disposed finding — applied, rejected, escalated, and flag-sweep — is appended (stable id + one-line description) to the coverage ledger in the artifact directory (§Artifact Location) and committed. Pass its contents to every reviewer; the ledger takes precedence over the flag sweep (an already-disposed flagged task is not re-surfaced).
+**Ledger:** every disposed finding — applied, rejected, escalated, and flag-sweep — is appended to the coverage ledger in the artifact directory (§Artifact Location) and committed, one line each: `<ledger-id> · r<N> · <TYPE> · <subject> · <disposition> — <one line>` (the precheck skips a flagged task that has an entry with TYPE `flag-sweep` and the task id as its subject). Pass its contents to every reviewer.
+
+**Findings file.** After a round's union and dedupe (precheck findings included), write `coverage-findings-round-<N>.md` to the artifact directory, one deduped finding per line: `<TYPE> · <subject> · <one line>`. The subject is the finding's identity: the task id; `<dependent><-<blocker>` for an edge; the boundary name for a seam; the R-id for a `GAP` that has one, else the goal element in a few words. Choosing the subject is the judgment; the comparison below is mechanical.
 
 **Rounds are incremental:** round N+1 re-runs only the per-subepic passes whose subtrees changed since round N, plus the root pass (always). **A round's passes are mutually independent — dispatch every pass's reviewers concurrently** (all per-subepic passes and the root pass together, 3 reviewers each): each pass's inputs are assembled before dispatch and no pass reads another's findings — union, dedupe, and disposition all happen after the fan-out returns. Serializing them buys nothing and multiplies the round's wall-clock by the pass count. The loop runs **at most two rounds** — see below.
 
@@ -359,7 +416,7 @@ that changed the tree — a round 1 with nothing to apply is the loop's clean ex
 re-reviewed.** That is the priced cost of a fixed cap, and it is what the changed-since input
 below and the root integration sweep exist to absorb — the sweep implements what the reviewers
 missed, and it runs regardless. **Round 2 dispatches only once every round-1 fix is fully
-applied** — a re-design `GAP`'s nested subtree included, which means waiting for that subtree to
+applied** — a new-subepic `GAP`'s nested subtree included, which means waiting for that subtree to
 finish designing; dispatching earlier reviews a tree with a known hole in it and spends the run's
 last round on findings that describe the hole.
 
@@ -370,49 +427,48 @@ each with the finding it answers. The reviewers check those as they check any ta
 questions only this section can ask: does the fix close the finding it claims to, and did it
 introduce a seam, edge, or acceptance criterion of its own?
 
-**Divergence observation (decided policy — issue #2 design question B).** A loop can refine
-instead of converge, and its only brake used to be a human noticing (measured live: ~45 → ~180
-findings round-over-round, ended by human arbitration). The two-round cap is that brake now, so
-this is a report rather than a question. On round 2, before disposition, compare the round's
-deduped findings against round 1's by identity (type + subject: the task id, edge pair, or
-boundary). A converging round shrinks and re-litigates; a round whose finding count did not shrink
-AND whose findings are mostly novel identities was widening scope, not closing it. Put the count
-trajectory and the novel fraction in the round summary either way — a widening round 2 is the
-strongest evidence the tree needs a look the cap will not give it, and nothing else in the loop
-will say so.
+**Divergence observation.** A loop can refine instead of converge; the two-round cap is the
+brake, so this is a report rather than a question. On round 2, before disposition, run `bash
+<base>/scripts/coverage-divergence <round-1 findings file> <round-2 findings file>` and put its
+three lines (count trajectory, novel fraction, `widening: yes|no`) in the round summary either
+way. A widening round 2 is the strongest evidence the tree needs a look the cap will not give
+it, and nothing else in the loop will say so.
 
 **Disposition is automatic — there is no arbitration prompt.** Every deduped finding is verified,
 then applied; a finding this round already has a recorded disposition for (§Run-State File) is
 replayed, not re-applied.
 
-**Verify, then apply.** The reviewer prompt tells reviewers to surface anything plausible *because*
-a human used to filter the false positives out. With no prompt, that filter runs here: check each
-finding's evidence against the very inputs its pass was assembled from — the ids it cites resolve
-in the task tree, the description text it quotes is really there, the dependency path it claims
-exists, no ledger entry already covers it. A finding whose evidence does not hold is **rejected to
-the ledger with the one-line reason**, never applied and never escalated. This is a check against
+**Verify, then apply.** The reviewer prompt tells reviewers to surface anything plausible; the
+false-positive filter runs here: check each finding's evidence against the very inputs its pass
+was assembled from — the ids it cites resolve in the task tree, the description text it quotes is
+really there, the dependency path it claims exists, no ledger entry already covers it (a
+`ledger:`-tagged finding with no new evidence is a duplicate: drop it without a new entry). A
+finding whose evidence does not hold is **rejected to the ledger with the one-line reason**, never
+applied and never escalated. This is a check against
 the assembled inputs, not a re-review: do not go read the repo to adjudicate one, and never reject
 a finding for being expensive to fix.
 
-**Two escalations, and only in an interactive run.** A run is interactive iff its design mode is A
-**and** it was not told the run is autonomous (§Inputs); anything else — Mode B, or autonomous in
-either mode — applies the fix and records what it did. The two:
+**Splits and promotions apply without confirmation, in every mode.** A verified finding whose fix
+splits a bead or promotes work into a new subepic is applied as the reviewer recommended — no
+human confirmation, interactive runs included — recorded in the coverage ledger and the round's
+run-state record, and named in the round summary. A new subepic is created → promoted → nested
+brainstorm in the run's design mode (Mode B when unattended) → its own super-design subtree
+(tripwire stays armed). If the recommendation is ambiguous, take the reviewer's stated preference;
+if it states none, keep the tree as-is and record that.
 
-- a `GAP` whose fix is a **new subepic needing its own brainstorm**: that sends the run back to the
-  design step, which is a scope decision rather than a tree repair. Non-interactive: task created →
-  promoted → nested brainstorm in Mode B → its own super-design subtree (tripwire stays armed),
-  named in the round summary.
-- an `ORPHAN`: delete-as-scope-creep vs. add the missing goal element it serves is a question about
-  the goal, not the tree. Non-interactive: apply the reviewer's proposed fix, deletion included,
-  and name it in the round summary.
+**One escalation, and only in an interactive run.** A run is interactive iff its design mode is A
+**and** it was not told the run is autonomous (§Inputs). The escalation is an `ORPHAN`:
+delete-as-scope-creep vs. add the missing goal element it serves is a question about the goal, not
+the tree. Non-interactive: apply the reviewer's proposed fix, deletion included, and name it in
+the round summary.
 
 Every other type applies silently, in every mode. `INSUFFICIENT-INPUT` is neither applied nor
 escalated — it says the pass was mis-assembled: fix the assembly and re-dispatch that one pass
 inside the same round; a second `INSUFFICIENT-INPUT` from the re-dispatched pass marks the round
 **degraded** (the recall floor below) rather than spending a third dispatch on it.
 
-**The fixes, by type.** Verified `GAP`: small → leaf task added directly; big → the escalation
-above. Verified `NARRATIVE-EDGE`: drop the edge (`bd dep remove <dependent> <blocker>`) or repoint it (`bd dep remove`, then `bd dep add <dependent> <actual-producer>`), per the finding's proposed fix — question-shaped edges never arrive as this kind (reviewers report those as `UNOWNED-SEAM`, whose contract path replaces the ordering); a repoint updates the dependent's `blocked-by <blocker-id>: consumes <artifact>` line to name the new producer and artifact, through the existing wholesale `bd update --description` rule (dropping the edge drops the line the same way). Any verified finding whose fix splits or shrinks an existing bead — moving scope out of it — follows §Splitting a Bead, dependents re-pointed included. Verified `UNSATISFIABLE-ACCEPTANCE`: apply the finding's proposed fix — restate the criterion in terms of an artifact that exists when the task completes (`bd update <id> --description` with the full amended text, keeping or adding the `(needs: <id>)` citation so the next round can check it by graph), or re-point the edge so the referenced validator genuinely precedes the task; an `unwired` variant (a cited bead no edge connects) adds the missing edge (`bd dep add <task> <cited>`) and, in the same `bd update --description`, the `blocked-by <cited>: consumes <artifact>` line naming what the citation resolves to. Verified `UNEXERCISED-CONFIGURATION`: add one leaf with the standard flag triple — **`Configuration smoke: <the enumerated configurations>`** — whose deliverable is a runnable one-step exercise of *each* configuration (the description states the command or entry point per configuration), depending on the beads that make those configurations runnable and wired under the integration sweep like any leaf, so it runs as soon as the configurations exist rather than at the terminal gate; or, when one existing bead can absorb it without becoming a bottleneck, extend that bead's description and acceptance instead. Verified `UNOWNED-SEAM`: **before creating either bead, check whether a `Seam contract:` /
+**The fixes, by type.** Verified `GAP`: small → leaf task added directly; big → a new subepic,
+as above. Verified `NARRATIVE-EDGE`: drop the edge (`bd dep remove <dependent> <blocker>`) or repoint it (`bd dep remove`, then `bd dep add <dependent> <actual-producer>`), per the finding's proposed fix — question-shaped edges never arrive as this kind (reviewers report those as `UNOWNED-SEAM`, whose contract path replaces the ordering); a repoint updates the dependent's `blocked-by <blocker-id>: consumes <artifact>` line to name the new producer and artifact, through the existing wholesale `bd update --description` rule (dropping the edge drops the line the same way). Any verified finding whose fix splits or shrinks an existing bead — moving scope out of it — follows §Splitting a Bead, dependents re-pointed included. Verified `UNSATISFIABLE-ACCEPTANCE`: apply the finding's proposed fix — restate the criterion in terms of an artifact that exists when the task completes (`bd update <id> --description` with the full amended text, keeping or adding the `(needs: <id>)` citation so the next round can check it by graph), or re-point the edge so the referenced validator genuinely precedes the task; an `unwired` variant (a cited bead no edge connects) adds the missing edge (`bd dep add <task> <cited>`) and, in the same `bd update --description`, the `blocked-by <cited>: consumes <artifact>` line naming what the citation resolves to. Verified `UNEXERCISED-CONFIGURATION`: add one leaf with the standard flag triple — **`Configuration smoke: <the enumerated configurations>`** — whose deliverable is a runnable one-step exercise of *each* configuration (the description states the command or entry point per configuration), depending on the beads that make those configurations runnable and wired under the integration sweep like any leaf, so it runs as soon as the configurations exist rather than at the terminal gate; or, when one existing bead can absorb it without becoming a bottleneck, extend that bead's description and acceptance instead. Verified `UNOWNED-SEAM`: **before creating either bead, check whether a `Seam contract:` /
 `Seam integration:` bead for this boundary already exists — including via a replayed disposition
 from the run-state file — and adopt it instead of duplicating it and its edges.** Otherwise create
 **two leaf tasks** with the standard flag triple, and wire the tree:
@@ -421,7 +477,7 @@ from the run-state file — and adopt it instead of duplicating it and its edges
 - **`Seam integration: <boundary>`** — depends on that seam's participants only (`bd dep add <integration> <participant>` for each), with `blocked-by <participant-id>: consumes <that participant's owned boundary>` written into the integration bead's own description for each one. Delivers: verify the wiring end-to-end, write integration test(s) crossing the seam, see them pass. Small fixes inline; anything larger goes through execution's normal blocker path.
 - Append one line to **each participant's** bead description: `boundary contract: <contract-bead-id>`. **`bd update --description` replaces the description wholesale — there is no `--append-description`.** First `bd show <participant>` to read the current description, then re-send the full existing text with the pointer line appended; sending only the pointer line destroys the `owns:`/`consumes:` declarations the coverage reviewers and execution briefs depend on. The pointer flows into execution briefs through the planner with zero execution-side changes.
 
-**Recall floor & fallback net:** if a pass stays degraded or a round otherwise can't be trusted, downgrade coverage to **advisory** and make the gate a **mandatory human read-through of the goal against the full task tree** — disclose this in the round summary, never silently. **In a non-interactive run there is no one to read it through:** record the downgrade as a parked qualifier in the run-state file and hand it back verbatim, the way a degraded roast verdict is parked — surfaced by the caller, never waited on here.
+**Recall floor & fallback net:** if a pass stays degraded or a round otherwise can't be trusted, downgrade coverage to **advisory** and make the gate a **mandatory human read-through of the goal against the full task tree** — disclose this in the round summary, never silently. In a non-interactive run (above) there is no one to read it through: record the downgrade as a parked qualifier and hand it back verbatim, the way a degraded roast verdict is parked.
 
 **Root integration sweep (after the loop ends):** once the coverage loop has ended — round 1
 clean, or round 2's fixes applied (§Two rounds, fixed) — and the tree has ≥2 leaf tasks (seam beads count as leaf tasks too — a `Seam contract:`
@@ -456,20 +512,35 @@ offerer's question asked — the caller's user already answered it once.
 On accept, invoke `superpowers:super-roast` (design mode) on the settled tree, passing per its
 Inputs table: the artifact-directory override as its report-location override (so the report lands
 beside the specs it is about), **the iteration number from the round count** (without it a later
-round's report overwrites an earlier one's file), **`autonomous` when this invocation was told the
-run is** (without it super-roast pauses for a human at its loop exits), and on rounds ≥2 the prior
+round's report overwrites an earlier one's file), **`autonomous` when the run is unattended**
+(§Unattended Runs; without it super-roast pauses for a human at its loop exits), and on rounds ≥2 the prior
 report. The report file is the only cross-iteration state. **Three of its sections drive this loop — reading only
 `## Confirmed findings` silently discards the two that most need a human:**
 
 | Report section | What this loop does with it |
 |---|---|
 | `## Confirmed findings` | One task per finding — the fix queue (steps 1–4 below). |
-| `## Escalations (need human)` | **Surface every entry to the human before starting fix work.** These are findings with a dead panel seat, an unresolved external premise, or material dissent between seats — in the recorded PR run, findings with **zero** valid judge votes landed here. They need a human by definition: no verdict was reached, so there is nothing to auto-fix and nothing to auto-dismiss. Never fold them into the fix queue, and never let a `clean` verdict elsewhere in the report imply they were resolved. |
-| `## Not verified (beyond panel cap)` | Severe candidates the panel cap left unjudged. Present them next to the escalations and ask whether to re-roast with a raised `config.panelCap` before fixing anything — an unverified Blocking candidate is not a cleared one. |
+| `## Escalations (need human)` | **Surface every entry to the human before starting fix work**; unattended, park each entry and go on with the fix queue (§Unattended Runs). These are findings with a dead panel seat, an unresolved external premise, or material dissent between seats. They need a human by definition: no verdict was reached, so there is nothing to auto-fix and nothing to auto-dismiss. Never fold them into the fix queue, and never let a `clean` verdict elsewhere in the report imply they were resolved. |
+| `## Not verified (beyond panel cap)` | Severe candidates the panel cap left unjudged. Present them next to the escalations and ask whether to re-roast with a raised `config.panelCap` before fixing anything — an unverified Blocking candidate is not a cleared one. Unattended, the answer is no: park them and fix the confirmed queue. |
+
+**Step back before fixing.** Every round whose report has confirmed findings, before step 1,
+dispatch `./step-back-prompt.md` (mode `design`, model opus, fresh context, never an agent that
+does the fixes) with every roast report of this loop so far, the settled tree, and every prior
+step-back record. Save its output beside the report and record `stepBack-round-<N>` in the
+run-state file, both as the template specifies. On `patch`, continue with step 1. On `redesign`:
+interactive (§Gates by Mode), present it with its recommendation and let the human choose;
+unattended, apply it when its `scope` is `inside`, and when it is `outside` record it as `parked`,
+patch this round's findings, and surface it at the loop exit. Applying a redesign means amending
+the spec(s) where the changed decision is stated and restructuring the affected tasks through
+step 2; its `dissolves` findings get no fix task (the step-back file records why), its `remains`
+findings go through step 1, and step 3 re-roasts, since a design decision changed.
 
 1. **Create one task per confirmed finding**, with §Decomposition's full `bd create` flag triple (`--parent <root-epic-id> --no-inherit-labels -l sp:<root-epic-id>`) — a fix task outside the epic's descendant tree lets `bd epic close-eligible` close the epic mid-fix. **When an `Integration sweep:` bead already exists for this root, also `bd dep add <sweep> <fix-task>` for each fix task created here** — so the sweep still runs last — pairing each with `blocked-by <fix-task-id>: consumes all leaves (integration sweep)` in the sweep's description, the same fixed artifact token every sweep edge uses.
-2. **Fix per the normal ladder** — inline for small fixes, interactive design work for large ones
-   (may itself promote/nest), subagent-driven implementation for delegable work.
+2. **Fix per the normal ladder** — inline for small fixes; design work in the run's mode for large
+   ones (a Mode B nested brainstorm when unattended; may itself promote/nest); a dispatched fixer
+   (Sonnet-class is fine) for delegable work. Whoever fixes gets every round's report path and
+   every applied redesign, not just this round's, so a patch does not reopen what an earlier round
+   closed or undo a chosen redesign.
 3. **Auto-decide re-roast by fix scope:**
    - Mechanical, single-file fixes with no design change → done, no re-roast.
    - Fixes that changed a design decision, changed data handling, or resolved multiple Blocking
@@ -482,7 +553,7 @@ report. The report file is the only cross-iteration state. **Three of its sectio
      super-roast's Report format / `reporter-prompt.md` Steps 3–4). The roast has nothing
      Blocking left to find; another fix + re-roast round is diminishing returns by
      construction. Exit the loop, and hand the remaining sub-Blocking confirmations to the
-     human (or the exit summary, when autonomous) as a **punch list** — file the ones worth
+     human (or the exit summary, when unattended) as a **punch list** — file the ones worth
      doing as ordinary tasks with the §Decomposition flag triple, or decline them explicitly;
      do not re-roast to chase them. This exit exists because, without it, a run that has
      genuinely converged still spends round 3 manufacturing marginal findings a human then has
@@ -494,14 +565,15 @@ report. The report file is the only cross-iteration state. **Three of its sectio
    **Capped Blocking — the cap is a cost control, not a clearance.** When round 3 (the cap)
    still ends with a confirmed-Blocking verdict, extend the cap by exactly ONE round — one more
    fix + re-roast — and require that extension to come back clean or `[converged]`. If the
-   extension round still ends Blocking, the design does not proceed to execution: three-plus
-   independent rounds called the same kernel defective and the latest fixes are unverified, and
-   spending implementer agents on that kernel is the expensive failure. Interactive: the pause
-   below is the stop — the human owns what happens next. Autonomous / caller-owned hand-off:
-   record `capped-blocking` in the run-state file with the exit summary and return **without
-   handing off to execution** — this is the one exit that overrides the autonomous
-   record-and-proceed exception below. A later, human-relaunched run that chooses to execute the
-   tree anyway must first acknowledge the recorded `capped-blocking` state in its own ledger.
+   extension still ends Blocking, three-plus independent rounds called the same kernel
+   defective and the latest fixes are unverified. Record `capped-blocking` in the run-state
+   file with the unresolved Blocking finding ids and the extension round's report path, then:
+   - Interactive or one-shot: the design does not proceed to execution. The exit pause (in a
+     one-shot run, the design-ready stop) is where it stops, and the human owns what happens
+     next. A later, human-relaunched run that executes the tree anyway first acknowledges the
+     recorded `capped-blocking` in its own ledger.
+   - `autonomous`: record it as proceeded, park each unresolved Blocking finding, and hand
+     off. The final summary opens with it.
 
 **Verdict qualifiers gate the exits** — the same rule `brainstorming` applies at its own gate:
 
@@ -510,30 +582,27 @@ report. The report file is the only cross-iteration state. **Three of its sectio
   qualifier says the run itself was degraded (dead triage, dead scout, dead dedupe, incomplete
   judging, or zero findings on a non-trivial artifact) or that N severe candidates were never
   judged. Do not auto-proceed: surface the qualifier verbatim and let the user choose to proceed
-  anyway, re-roast, or dig in. **Exception when the caller owns the hand-off and stated the run is
-  autonomous** (§Run-State File): proceed, record the qualifier, and hand it back verbatim — the
-  caller already answered this.
+  anyway, re-roast, or dig in. Unattended (§Unattended Runs): proceed, record the qualifier, and hand it back verbatim — the caller already answered this.
 - A confirmed-findings verdict carrying either qualifier → fix as normal, but carry the qualifier
   into the exit summary: a shrinking Blocking count under low coverage is weaker evidence of
   progress than it looks, and the early-stop test above can be fooled by it.
 
-Every exit — cap-out, clean, converged, and thrash — **pauses and summarizes for the human**,
-restating any open
-escalations, any beyond-panel-cap candidates, the converged exit's punch list (when that exit
-fired), and any qualifier still on the verdict; this loop
-never declares itself finished, mirroring `super-roast`'s own handoff contract. **Exception when the
-caller owns the hand-off and stated the run is autonomous** (§Run-State File): record that same
-summary into the run-state file and return it in the hand-off instead of pausing — the caller
-surfaces it — **except the Capped Blocking exit above, which returns a stopped run, not a
-hand-off**. The loop still never declares itself finished; it just reports to a caller rather than
-a human.
+Every exit — cap-out, clean, converged, and thrash — **summarizes for the human**, restating any
+open escalations, any beyond-panel-cap candidates, any parked redesign, the converged exit's punch
+list (when that exit fired), and any qualifier still on the verdict. An unqualified `clean`
+proceeds to hand-off after its summary; every other exit **pauses** there. This loop never
+declares itself finished, mirroring `super-roast`'s own handoff contract. Unattended (§Unattended
+Runs): no exit pauses — record the summary into the run-state file (or the final summary, when
+there is none) and proceed to the design-ready point (§Gates by Mode); Capped Blocking follows
+its own rule above.
 
 ## Hand-off (root only)
 
-What happens once the tree has settled is **conditional on who owns the hand-off**. By default:
+What happens once the tree has settled is **conditional on who owns the hand-off**; in a one-shot
+run the design-ready stop (§Gates by Mode) comes first. By default:
 
 - **Beads:** hand off the root epic to `superpowers:super-code`, which owns the epic-scoped `bd ready` loop and the `bd epic close-eligible` fixpoint. Run completion = the root epic is closed.
-- **No beads:** run `superpowers:writing-plans` once per epic (a mixed epic still gets a plan for its own leaf tasks); invoke `superpowers:subagent-driven-development`'s plan-file mode once per plan, serially, in dependency order.
+- **No beads:** run `superpowers:writing-plans` once per epic (a mixed epic still gets a plan for its own leaf tasks); invoke `superpowers:subagent-driven-development` on each plan, serially, in dependency order.
 
 **When the caller owns the hand-off** (e.g. an outer sequencer such as `super-auto`, which needs to thread its own flags and hand-off decisions into the next phase), `super-design` still completes the coverage loop (§Coverage) and the adversarial-review offer (§Adversarial Review Loop), then reports the settled tree and stops. **The report back to a caller that owns the hand-off
 carries four things beyond the tree**: the root epic id, the roast report paths in order, the number
@@ -541,7 +610,7 @@ of roast rounds run, and any verdict qualifier left unresolved. These were alrea
 run-state file as they happened (§Run-State File); hand them back as well so the caller need not
 re-read the file to proceed. Symmetrically, **a caller may hand in a starting round number**; resume from it
 rather than from 1, or the cap-3 loop silently restarts on every resumed run. The onward invocation
-is the caller's to make: `super-code` in beads mode, or, in no-beads mode, `writing-plans` per epic **followed by** `subagent-driven-development`'s plan-file mode (the plan file is not optional — SDD extracts each task's brief from it).
+is the caller's to make: `super-code` in beads mode, or, in no-beads mode, `writing-plans` per epic **followed by** `subagent-driven-development` on each plan (the plan file is not optional — SDD extracts each task's brief from it).
 
 ## No-Beads Mode
 
@@ -578,28 +647,24 @@ Write these, each as it happens:
 | each roast report path | `super-roast` returns it |
 | the roast round count | incremented **per round**, before the next round starts |
 | a parked escalation, beyond-cap item, or verdict qualifier | the round that produced it |
+| `stepBack-round-<N>: patch \| redesign — <one line>` (format: `./step-back-prompt.md`), one line per round, appended | that round's step-back decision is made |
 | the caller's phase token, if it supplied one for this stage | entering that stage |
-| **each human gate answer, with the shape it approved** | the moment it is given |
+| **each top-split decision, asked or applied, with the shape it covers** | the moment it is made |
+| `capped-blocking`, with the unresolved Blocking ids, the extension report, and stopped or proceeded | the extension round ends Blocking |
 | **each coverage round's dispositions, under that round's number** | that round's fixes are applied |
 
 **A caller that hands in a run-state file hands in its format contract too** — follow that file's
 field names, entry shapes, and relative-path rule exactly; the caller reads these fields back, and
 a co-writer that invents its own shapes produces a state file the caller cannot parse.
 
-**When the caller owns the hand-off and stated the run is autonomous**, this skill does not pause
-for the human at its own loop exits. Both exits — cap-out and clean-with-a-qualifier — are satisfied
-by **recording** what was open into the run-state file and returning it in the hand-off, not by
-waiting. The caller surfaces it in its own report. Without this, a run its caller was told to drive
-unattended stops inside this invocation, which is the one place the caller holds no control and
-cannot rescue it.
+**Gate decisions are recorded, and replayed rather than re-made.** Before deciding the top split
+(§The Process step 5) or running a coverage round (§Coverage), check the run-state file for what
+is already recorded:
 
-**Gate answers are recorded, and replayed rather than re-asked.** Before presenting the top-split
-gate (§The Process step 5) or running a coverage round (§Coverage), check the run-state file for
-what is already recorded:
-
-- **Top-split:** record the approved child ids with their `LEAF`/`PROMOTE` verdicts. On re-entry,
-  replay only if the current set matches exactly; if a child was added, removed, or re-verdicted,
-  the approval is stale — ask again and say what changed.
+- **Top-split:** record the child ids with their `LEAF`/`PROMOTE` verdicts, marked `human` or
+  `auto`. On re-entry, replay only if the current set matches exactly; if a child was added,
+  removed, or re-verdicted, the record is stale — decide again per §Gates by Mode and say what
+  changed.
 - **Coverage:** record each round's dispositions against that round, each marked auto or human —
   disposition is automatic now (§Coverage), and the record is what stops a resume re-applying a fix
   the tree already carries. **The highest recorded round number is how many of the two rounds are
@@ -638,21 +703,25 @@ skill's work instead of re-running all of it.
 - Create a child without both `--no-inherit-labels` and an explicit `-l sp:<root-epic-id>` on the same `bd create` call.
 - Demote an epic to a task without first confirming `bd children <id> --json` is empty.
 - Read only `## Confirmed findings` out of a super-roast report — `## Escalations (need human)`
-  and `## Not verified (beyond panel cap)` must reach the human too.
+  and `## Not verified (beyond panel cap)` must reach the human too (unattended: parked and handed
+  back, §Unattended Runs).
 - Treat a `clean` verdict carrying `[low coverage]` or `[panel-capped: N unverified]` as a
-  clearance — that's a degraded run, and the user decides whether to proceed. **Exception, when a
-  caller owns the hand-off and told you it is running autonomously:** the caller already answered
-  this — proceed, and hand the qualifier back verbatim for the caller to park. Never drop it, and
-  never ask.
+  clearance — that's a degraded run, and the user decides whether to proceed (unattended: proceed
+  and hand the qualifier back verbatim; never drop it).
+- Start a roast round's fix work before its step-back pass has decided `patch` or `redesign`, or
+  hand a fixer only the latest round's report.
 - Summarize the task tree for the root coverage pass — only spec prose may be summarized.
 - Run a third coverage round, or spend a fresh pair of rounds on a resume — the cap is two per run
   and the run-state file says how many are left (§Coverage, §Run-State File).
-- Ask the user to dispose of a coverage finding. Exactly two escalations exist — a re-design `GAP`
-  and an `ORPHAN` — and only in an interactive run; every other type applies without asking.
+- Ask the user to dispose of a coverage finding, or to confirm a recommended split or promotion.
+  Exactly one escalation exists — an `ORPHAN` — and only in an interactive run; every other type
+  applies without asking.
 - Apply a coverage finding without checking its evidence against the pass inputs. The reviewers are
   instructed to over-report; the verify step is the only thing standing in for the human who used
   to arbitrate.
 - Overrule a `PROMOTE` verdict without recording `sp:demoted-by-session` and the reason.
+- Ask the human to approve the top split in a one-shot or `autonomous` run, or stop an
+  `autonomous` run anywhere after launch — §Gates by Mode.
 - Add a blocking edge (`bd dep add`, any site) without pairing it with a `blocked-by <blocker-id>:
   consumes <artifact>` line in the dependent's description — coverage's `NARRATIVE-EDGE` check
   cannot audit an edge whose reason isn't written down.
@@ -661,6 +730,7 @@ skill's work instead of re-running all of it.
 
 - Entered at the root with a goal or idea — by a user directly, or by an outer caller (e.g. `super-auto`); recurses into itself, nested, once each promoted subepic's brainstorm returns a spec.
 - Invokes `superpowers:brainstorming` — once at the root to produce the root spec (§Root Brainstorm), then once per promoted subepic (§Nested Brainstorms).
-- Dispatches `./promotion-reviewer-prompt.md` and `./coverage-reviewer-prompt.md`.
+- Dispatches `./promotion-reviewer-prompt.md`, `./coverage-reviewer-prompt.md`, and `./step-back-prompt.md` (which `super-auto`'s phase-5 fix loop also dispatches, in code mode).
+- Runs `./scripts/coverage-precheck`, `./scripts/requirements-tally`, and `./scripts/coverage-divergence` in the coverage loop (§Coverage).
 - Offers `superpowers:super-roast` (root only, optional) once the coverage loop passes; consumes its report to drive the fix + auto-re-roast loop — §Adversarial Review Loop.
-- Hands off to `superpowers:super-code` (beads mode) or `superpowers:subagent-driven-development` (plan-file mode once per epic in no-beads mode); no-beads mode also uses `superpowers:writing-plans`.
+- Hands off to `superpowers:super-code` (beads mode) or `superpowers:subagent-driven-development` (once per epic's plan in no-beads mode); no-beads mode also uses `superpowers:writing-plans`.

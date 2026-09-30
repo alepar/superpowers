@@ -7,8 +7,8 @@ description: Use when taking a feature from a raw idea all the way to finished c
 
 Drive a feature from a raw idea to finished, reviewed code in one invocation, by sequencing
 `super-design` → `super-roast` (design) → `super-code` → `super-roast` (PR) → a
-fix loop → report → `finishing-a-development-branch`, with an optional autonomous mode for
-everything from `super-design`'s top-split gate onward.
+fix loop → report → `finishing-a-development-branch`, with an optional autonomous mode that runs
+from launch to the finished report without stopping.
 
 **Core principle:** `super-auto` owns sequencing and nothing else. Every phase already has an
 owner; this skill invokes them, threads four flags through them, carries parked escalations, and
@@ -25,6 +25,41 @@ Never:
 - Decide a finding's severity, or adjudicate a roast finding.
 - Copy an artifact another skill owns — hold pointers, per `./run-state.md`.
 
+## Ending turns in an autonomous run
+
+This is the one statement of the rule; other sections point here. With `autonomous` set, from
+launch (once pre-flight passes) until the phase-7 hand-back, nobody is there to answer; with
+`planOneShot` alone, the same holds from launch until the design-ready stop (§Autonomous mode). A
+message with no tool call ends your turn, and the run stops until someone notices. In that zone,
+don't end a turn in any of these ways:
+
+- A summary that announces the next phase instead of starting it. This includes a sibling skill
+  returning with its own closing summary or hand-off step. A return is a transition, not a stop:
+  record it in `run.md` and start the next phase in the same message.
+- An offer to continue, or an invitation to redirect you.
+- A list of decisions when none of them blocks the work. Take the best-supported option, record
+  the assumption in `run.md` or park it (§Autonomous mode), and carry on.
+- A pause because a phase or milestone finished, or because the turn has run long.
+
+Status notes are welcome. Put them in the same message as your next tool call. Context compaction
+is automatic, and `run.md` is the state: after one, re-read it and continue from its `phase`.
+
+The stops you want form a closed list; under `autonomous` none of them is mid-run:
+
+1. The pre-flight hard stops (no tracker, a stale skill cache) and an ambiguous resume. All of
+   these happen before any work is in flight.
+2. The phase-7 hand-back. The report is written, every bead is terminal, and the merge into
+   `base` is the human's call.
+3. With `planOneShot` and without `autonomous`: the design-ready stop at the end of phase 2
+   (§Autonomous mode).
+
+Something deliberately protected from you (a refused permission, a protected branch), or a risky
+or destructive action outside the run's own branch, never stops the run: don't take it; skip
+that work, record it, and report it as uncovered scope. Never edit permission settings yourself.
+If nothing at all can move, write `report.md` as `stalled at phase <phase>` and hand back; the
+run has ended, not paused. Everything else that would pause the run is answered or parked per
+§Autonomous mode.
+
 ## Pre-flight
 
 **A beads (`bd`) tracker is required. Check before anything else — before the flags, before the run
@@ -37,8 +72,7 @@ exists, the second proves this repo has a tracker initialized. If either fails, 
 
 **Then check that the superpowers skills this session loaded are current.** The skill text you
 are following right now came from the plugin cache, and the cache lags the marketplace source
-whenever a release landed since the last update (measured: a run followed a cache four releases
-behind the fix it was supposed to exercise). Do this once, before Resume, with three commands:
+whenever a release landed since the last update. Do this once, before Resume, with three commands:
 
 1. **Loaded version:** the base directory the Skill tool printed for this skill is
    `<cache>/<marketplace>/superpowers/<version>/skills/super-auto` — take `<marketplace>` and
@@ -55,7 +89,9 @@ behind the fix it was supposed to exercise). Do this once, before Resume, with t
    session is the stale one. Tell the user which version was loaded, which was installed, and
    to start a new session and re-invoke `super-auto`. This happens before the run directory
    exists, so nothing is left half-written; in autonomous mode it is the one pre-flight stop
-   that needs no answer, only a restart. Lookup failed (offline, no `gh`): warn with both
+   that needs no answer, only a restart. Degrade-don't-stop governs the run from launch onward;
+   pre-flight checks are the deliberate exception, because a human is present at launch and
+   continuing would run the whole job on known-stale instructions. Lookup failed (offline, no `gh`): warn with both
    commands' errors and continue on the loaded version — a stale skill is a degraded run, not a
    blocked one.
 
@@ -128,12 +164,24 @@ on the default branch, where phase 7 will not merge it.
 as a resume ("keep going on the X work"); passing that verbatim points the root brainstorm at a
 meta-instruction instead of the goal.
 
+**A resume message that changes something is recorded, not dropped.** If it sets a flag differently
+or amends the goal ("…and run it unattended", "skip the code roast", "also cover the admin API"),
+append a `resumeChange:` line to `run.md` (`./run-state.md` item 1) and say in one line what it
+changes. A flag change applies from the resumed phase onward. A phase already done is not redone,
+so when the flag only mattered there (`planOneShot` after design), say that it changes nothing. A
+goal change never rewrites `idea:`. At `phase: design`, hand it to `super-design` with the recorded
+idea as the human's amendment. From `code` onward, it goes to the report's Remaining as follow-up
+scope unless the human asks for a redesign.
+
 A resume at `phase: fix-loop` re-queries the open fix beads under the epic and re-enters
 `super-code` with them; findings recorded in the latest `roast-code` report but missing as beads
-are re-filed first — the report is durable, the filing may not have finished. **An existing
-`scopeFilter-round-<N>` record for the round is replayed, never re-dispatched:** match each
+are re-filed first — the report is durable, the filing may not have finished. **Existing
+`stepBack-round-<N>` and `scopeFilter-round-<N>` records for the round are replayed, never
+re-dispatched.** A recorded redesign whose spec amendment is not yet committed is applied from its
+record. For the scope filter, match each
 report finding on its `[SEV] <location>` key exactly against the recorded entries and route by
-the recorded disposition; only findings with no matching record go through the scope-filter pass.
+the recorded disposition. Findings the recorded step-back dissolved are skipped; only findings
+with no matching record go through the scope-filter pass.
 
 A resume at `phase: code` whose epic is already closed has nothing to dispatch — `bd ready` comes
 back empty by construction. Skip to phase 4 and source Implemented from the closed beads; do not
@@ -150,14 +198,15 @@ them.** `super-auto` holds no control between invoking it and its return — whi
 most expensive stretch of a run, and the likeliest place for a session to end. Rather than leave that
 window unrecorded, **hand `super-design` the `run.md` path** along with the artifact-directory
 override; its §Run-State File contract has it record the spec path, the epic id, each
-roast report, the roast round count and each gate answer **as each becomes true**, plus the
+roast report, the roast round count and each gate decision **as each becomes true**, plus the
 `roast-design` phase token when that stage begins. (`branch` and `base` are already recorded — you
 created the workspace in pre-flight.)
 
 Field ownership is split and does not overlap: `super-design` writes what phases 1–2 produce;
 `super-auto` writes everything from phase 3 on (`codeBuckets`, `roast-code`, `roastCodeRound`, and
 every phase token from `code` onward) — plus `roast-design (skipped)` when `skipPlanRoast` is set,
-since a stage that never begins is one `super-design` never writes a token for. Neither rewrites
+since a stage that never begins is one `super-design` never writes a token for, and
+`capped-blocking` when `super-design` returns stopped on it. Neither rewrites
 the other's fields.
 
 **This makes the state durable; it does not make re-entry idempotent.** A resumed run still re-enters
@@ -171,9 +220,7 @@ is a query over that rather than session memory.
 
 **All four default to `false`.** Ask only for the ones the invocation leaves genuinely open, and
 take the default for anything the user shows no interest in rather than turning a start into a quiz.
-Note what `autonomous=false` on its own does *not* mean: with `planOneShot=false` the design phase is
-collaborative regardless, so "run it autonomously" still buys an interactive design and an unattended
-everything-after — say so when confirming, since the opposite is the natural reading.
+When confirming, say what the pair means (§Autonomous mode).
 
 Four flags, collected once, before any phase runs (and skipped entirely on a resume — see
 Resume above), in **one batched question** — never four sequential ones — and only asked for
@@ -181,10 +228,10 @@ whichever aren't already stated in the invocation.
 
 | Flag | Effect |
 |---|---|
-| plan one-shot | Stated to `super-design`, which relays it to every `brainstorming` iteration it runs (root spec, each subepic) — Mode B instead of Mode A |
+| plan one-shot | Stated to `super-design`, which relays it to every `brainstorming` iteration it runs (root spec, each subepic) — Mode B instead of Mode A (`autonomous` forces Mode B regardless). Without `autonomous`, the top split is applied without asking and the run stops after phase 2 for design review (§Autonomous mode) |
 | skip plan roast | **Stated to `super-design`, either way** — it pre-decides the adversarial-review offer on the settled tree (skip or run), so the user, who already answered here, is never asked again |
 | skip code roast | Omits the final PR-mode roast entirely |
-| autonomous | **Stated to `super-design`** — it owns the design gate and its own roast loop, and its autonomous behavior is conditional on being told. You are needed at one design gate, the top split; its coverage loop then runs a fixed two rounds and disposes of every finding itself, escalating nothing while the run is autonomous. After the top split is approved no query interrupts work in flight, and a resume replays that approval rather than re-asking. The run still hands back for the integration decision when every bead is done (see Autonomous mode) |
+| autonomous | **Stated to `super-design`** — it owns the design gates and its own roast loop, and its unattended behavior is conditional on being told. No stop from launch to the phase-7 hand-back; the top split is applied, not asked (§Autonomous mode) |
 
 ## Phase sequence
 
@@ -194,12 +241,12 @@ own, or the flags strand and the sequence is lost. Each row's parenthetical is t
 
 | # | Phase (`run.md` token) | Skill | Note |
 |---|---|---|---|
-| 1 | Design (`design`) | `super-design` | Pass all seven: the goal (**on a resume, `run.md`'s recorded `idea:`**), the artifact-directory override, the `run.md` path **together with `./run-state.md`, whose field names and formats govern every write** (a co-writer that never sees the contract invents an incompatible one), the `roast-design` phase token to write when that stage begins, the design mode from `planOneShot`, `autonomous` and `skipPlanRoast`, and — resuming mid-roast — the starting round. **Say the hand-off is `super-auto`'s.** It drives the root brainstorm, decomposition, every subepic brainstorm, the coverage loop and the design roast, recording into `run.md` as it goes. |
-| 2 | Design roast (`roast-design`) | `super-roast` (design) | Runs **inside** phase 1's `super-design` invocation, via its own offer; cap-3 fix loop with the capped-Blocking extension: a still-Blocking round 3 gets exactly one extension round, and a still-Blocking extension hard-stops the run as `capped-blocking` instead of proceeding to phase 3 (see the roast-cap note under Phase 7, and `run-state.md`). `super-auto` holds no control while it runs, so `super-design` writes `phase: roast-design`, the report paths and `roastDesignRound` into `run.md` itself, per its §Run-State File contract — see above. |
-| 3 | Code (`code`) | `super-code` | The integration branch **is this run's branch**, and its integration worktree **is this run's worktree** — both exist already, from pre-flight (§Run directory). Create nothing; pass them — **the worktree's real path explicitly, as `integrationWorktree`**, never left for `super-code` to derive: the run branch `super-auto/<slug>` contains a slash, and `super-code`'s no-arg fallback derives a slash-collapsed `.worktrees/` path that matches no worktree this run ever created (mismatched by construction on every handoff before this field existed). (`branch` was recorded at run-directory creation.) Autonomous or interactive per flag. **Say in the invocation that `super-auto` owns the finish** — there is no config flag, and without it `super-code` merges and deletes the worktree the report still needs. Also pass the friction-log path (`<run-dir>/friction.md`) so phase 3 can append to it. |
+| 1 | Design (`design`) | `super-design` | Pass all seven: the goal (**on a resume, `run.md`'s recorded `idea:`**), the artifact-directory override, the `run.md` path **together with `./run-state.md`, whose field names and formats govern every write** (a co-writer that never sees the contract invents an incompatible one), the `roast-design` phase token to write when that stage begins, the design mode (Mode B when `planOneShot` or `autonomous` is set), `autonomous` and `skipPlanRoast`, and — resuming mid-roast — the starting round. **Say the hand-off is `super-auto`'s.** It drives the root brainstorm, decomposition, every subepic brainstorm, the coverage loop and the design roast, recording into `run.md` as it goes. |
+| 2 | Design roast (`roast-design`) | `super-roast` (design) | Runs **inside** phase 1's `super-design` invocation, via its own offer; cap-3 fix loop with the capped-Blocking extension (the roast-cap note under §Autonomous mode). In a one-shot run without `autonomous`, the run stops after this phase for design review (§Autonomous mode). `super-auto` holds no control while it runs, so `super-design` writes `phase: roast-design`, the report paths and `roastDesignRound` into `run.md` itself, per its §Run-State File contract — see above. |
+| 3 | Code (`code`) | `super-code` | The integration branch **is this run's branch**, and its integration worktree **is this run's worktree** — both exist already, from pre-flight (§Run directory). Create nothing; pass them — **the worktree's real path explicitly, as `integrationWorktree`**, never left for `super-code` to derive: the run branch `super-auto/<slug>` contains a slash, and `super-code`'s no-arg fallback derives a slash-collapsed `.worktrees/` path that matches no worktree this run ever created (mismatched by construction on every handoff before this field existed). (`branch` was recorded at run-directory creation.) Autonomous or interactive per flag. **Say in the invocation that `super-auto` owns the finish** — there is no config flag, and without it `super-code` merges and deletes the worktree the report still needs. Also pass the friction-log path (`<run-dir>/friction.md`) so phase 3 can append to it, and `deferSweep: true` on this and every fix-loop re-entry: the one full-suite sweep runs in phase 6. |
 | 4 | Code roast (`roast-code`) | `super-roast` (PR) | Against the live integration branch, diffed against `run.md`'s `base`. Pass the run directory as the report-location override, **the iteration number from `roastCodeRound`** (without it round 2's report overwrites round 1's file), **`autonomous` when the run is** (without it super-roast pauses for a human at its loop exits), and on rounds ≥2 the prior report — without which the round re-litigates what the last one already cleared |
-| 5 | Fix loop (`fix-loop`) | — | **Before filing anything**, dispatch one fresh-context sonnet pass per `./scope-filter-prompt.md` over the round's `## Confirmed findings`, against the root spec's `## Goal` and stated scope/non-goals. Blocking is always in-scope — this filter never overrules severity; Should-fix/Nit/FYI is in-scope only if the goal as stated requires the fix. Record the result to `run.md` as `scopeFilter-round-<N>` (one line per finding, keyed on its `[SEV] <location>` prefix verbatim, `in-scope | punch-list — <reason>`), ending with the aggregate line `scope-filter: <in-scope> in-scope · <punch> punch-listed` — `super-auto` writes both in this same step. Route: in-scope findings file as beads below; punch-list findings go to `report.md`'s Remaining, tagged `out of scope (filtered)`, and are never filed. Reopen the epic (`bd update <epicId> --status open`), file confirmed **in-scope** findings as beads — `super-design`'s §Decomposition four fields (title, short description, **files-touched hint**, blocking deps; without the files hint every fix bead runs alone) with Red Flags' flag triple — re-enter `super-code`, loop to phase 4; cap 3, stop early if Blocking count doesn't shrink (thrash), **or when the roast verdict carries `[converged]`** (zero Blocking of any provenance on a non-degraded round — the roast's own convergence signal; park remaining sub-Blocking findings into `report.md` as a punch list instead of another fix round). **When the cap trips with Blocking findings still confirmed**, record the disposition before parking: write `roastCodeCapped:` to `run.md` — the unresolved finding ids, the round-3 report path, and what authority the next step needs (`./run-state.md` item 5) — so a resume and the operator can tell "cap exhausted with Blocking open" from "converged" without reading prose (issue #4 defect 6: a run sat at `phase: roast-code`, `stalled: false` with seven confirmed findings and nothing machine-readable said why). Any later whole-branch roast run outside this loop — a post-cap audit, a re-review after an operator ruling — is invoked with iteration `post-cap audit`, which `super-roast`'s header accepts, never with a fabricated `N of 3` |
-| 6 | Report (`report`) | — | **Ordering (issue #4 defects 7–8):** any expensive once-per-branch verification — `super-code`'s declared sweep, a project's full-suite reporter, a readiness gate — runs *after* phase 5 has exited, against the tip the roast cleared, and its result is stamped with that SHA; a stamp that no longer matches the tip is invalid, not stale-but-fine (measured: a full-suite reporter started after the last merge was stopped mid-run because the roast then found Blocking defects — its result would have described a tree that could not land). When this branch does not land alone — a prerequisite branch lands with it, or the base moved materially — materialise the combined candidate tree first, review its conflicts *and* the relevant clean auto-merges (measured: 13 conflicts plus dead tests and stale runbook policy from clean merges between two independently reviewed branches), and run the sweep against that exact SHA. Then write `report.md` per `./report-prompt.md`, before anything is torn down — its status block's `metrics:` line reads `metrics: pending (upstream-feedback not yet run)` on this first write, because upstream-feedback has not run yet. Then invoke `superpowers:upstream-feedback` (this run is the outermost invocation — its analysis pass runs here, once; in an autonomous run the proposal parks and surfaces at the phase-7 menu, never mid-run; an attended run is asked directly). **After it returns, rewrite `report.md`'s `metrics:` line in place** — nothing else in the file — to the issue URL, the parked-draft path, or `metrics: none (clean run, nothing filed)`, sourced from `run.md`'s `feedback:` field or the parked-draft path per `./report-prompt.md`. Throughout all phases: append friction events to `<run-dir>/friction.md` the moment they happen, per that skill's format, and commit it with the run.md writes |
+| 5 | Fix loop (`fix-loop`) | — | Per round: step-back, scope filter, file fix beads, re-enter `super-code`, loop to phase 4. Cap 3, with early exits and a recorded cap disposition. See §Phase 5 — the code fix loop below. |
+| 6 | Report (`report`) | — | **Sweep first:** every `super-code` invocation ran with `deferSweep: true` (its `sweep` reads `SWEEP DEFERRED (caller-owned)`), so the run's one full-suite sweep happens here, after phase 5 exits, against the tip the roast cleared. Use the command `super-code`'s ledger `Launch:` line records (the declared `config.sweep`, else the project's full test command under its `AGENTS.md` envelope), so both agree. Stamp the one-line result with that SHA and record it as `codeBuckets.sweep`. A stamp that no longer matches the tip is invalid, not stale-but-fine. Any other expensive once-per-branch verification, such as a readiness gate, likewise runs after phase 5 exits, against that tip. When this branch does not land alone (a prerequisite branch lands with it, or the base moved materially), materialise the combined candidate tree first, review its conflicts *and* the relevant clean auto-merges, which can carry dead tests and stale policy between independently reviewed branches, and run the sweep against that exact SHA. Then write `report.md` per `./report-prompt.md`, before anything is torn down — its status block's `metrics:` line reads `metrics: pending (upstream-feedback not yet run)` on this first write, because upstream-feedback has not run yet. Then invoke `superpowers:upstream-feedback` (this run is the outermost invocation — its analysis pass runs here, once; in an autonomous run the proposal parks and surfaces at the phase-7 menu, never mid-run; an attended run is asked directly). **After it returns, rewrite `report.md`'s `metrics:` line in place** — nothing else in the file — to the issue URL, the parked-draft path, or `metrics: none (clean run, nothing filed)`, sourced from `run.md`'s `feedback:` field or the parked-draft path per `./report-prompt.md`. Throughout all phases: append friction events to `<run-dir>/friction.md` the moment they happen, per that skill's format, and commit it with the run.md writes |
 | 7 | Finish (`finish`→`done`) | `finishing-a-development-branch` | Merge + clean up, once, gated per below. Invoke it **from this run's worktree**, supplying `run.md`'s `branch` as the feature branch to merge and `base` as its destination, so neither is asked nor inferred from the cwd. Present `report.md` alongside the menu, and, if phase 6 parked an upstream-feedback draft, present it at the same menu. **The menu itself is always the human's, autonomous or not** — see "Where the zone ends". If the suite fails there, rewrite `report.md`'s status line to `stalled at phase finish` before stopping — the report already on disk says otherwise. |
 
 Phase 7's gate is three conditions, not one: `report.md` exists, `run.md`'s `phase` reads `report`,
@@ -208,14 +255,81 @@ still writes `report.md` (`status: stalled at phase X`) but never advances `phas
 `./run-state.md`'s phase-2 entry for the one remaining case (a stall at phase 6 itself) the third
 condition exists to close.
 
+### Phase 5 — the code fix loop
+
+Each round starts from the round's roast report. **Exit first:** the loop ends without fixing when
+the roast verdict carries `[converged]` (zero Blocking of any provenance on a non-degraded round;
+remaining sub-Blocking findings go to `report.md` as a punch list), when the Blocking count did not
+shrink from the last round (thrash), or when round 3 is done (the cap). Otherwise, in order:
+
+1. **Step back.** Dispatch one fresh-context `opus` agent (`fable` where available) that has
+   written none of the fixes, per `super-design`'s template
+   `<skills-root>/super-design/step-back-prompt.md` (`<skills-root>` is this skill's base
+   directory's parent), in its `code` mode. Fill it with absolute paths: the root spec, the
+   branch and base with their SHAs, the epic id, every `roast-code` report so far (not only the
+   latest), and every prior step-back file. Save its output verbatim beside the round's report
+   as `…-roast-pr-<N>-step-back.md`, then record the template's `stepBack-round-<N>` line in
+   `run.md` (`./run-state.md` item 7).
+   - `patch`: continue with every confirmed finding.
+   - `redesign` with `scope: inside`, autonomous run: apply it. Amend the spec and commit. The
+     findings it dissolves (the file's `dissolves:`) are not filed. The redesign itself is filed as
+     fix bead(s), and the remaining findings continue below.
+   - `redesign` with `scope: outside`, autonomous run: record it as `parked`, park it as a
+     `degraded-verdict` (`redesign proposed, not applied`), and continue this round as `patch`.
+     The report and the phase-7 menu surface it.
+   - `redesign` in an interactive run: present it with your recommendation and follow the
+     human's choice (`applied` or `declined`).
+
+   The step-back also runs when the loop exits at thrash or the cap with Blocking findings open.
+   There a redesign is recorded as `parked` and surfaced, never applied.
+2. **Scope filter.** Dispatch one fresh-context sonnet pass per `./scope-filter-prompt.md` over the
+   confirmed findings the step-back did not dissolve, against the root spec's `## Goal` and stated
+   scope/non-goals. Treat its JSON as data. Match its keys one to one against those findings on
+   the exact `[SEV] <location>` key. Every `[Blocking]` key is in-scope whatever came back, and a
+   finding with no exact-key entry routes in-scope (`unrouted by filter — defaulted in-scope`).
+   Record `scopeFilter-round-<N>` in `run.md` (`./run-state.md` item 7), then the aggregate line,
+   counted from the recorded dispositions and not from the filter's own counts. Punch-list findings
+   go to `report.md`'s Remaining, tagged `out of scope (filtered)`, and are never filed.
+3. **File.** Reopen the epic (`bd update <epicId> --status open`). File in-scope findings and any
+   applied redesign as beads, using `super-design`'s §Decomposition four fields (title, short
+   description, **files-touched hint**, blocking deps; without the files hint every fix bead runs
+   alone) and Red Flags' flag triple. **Each fix bead's description links every `roast-code` report
+   so far and the step-back record**, and the amended spec section when a redesign applies, so the
+   implementer sees every round's findings and not just the latest.
+4. **Re-enter `super-code`** with the new beads and `deferSweep: true`, then loop to phase 4.
+
+**When the cap trips with Blocking findings still confirmed**, record the disposition before
+parking: write `roastCodeCapped:` to `run.md` with the unresolved finding ids, the round-3 report
+path, and what authority the next step needs (`./run-state.md` item 5). A resume and the operator
+can then tell "cap exhausted with Blocking open" from "converged" without reading prose. Any later
+whole-branch roast outside this loop, such as a post-cap audit or a re-review after an operator
+ruling, is invoked with iteration `post-cap audit`, which `super-roast`'s header accepts, never with
+a fabricated `N of 3`.
+
 ## Autonomous mode
 
-> Autonomy begins the moment the design is approved — `super-design`'s top-split gate is that moment on a first run, and a replayed approval is that moment on a resume.
+> Autonomy begins at launch, once pre-flight passes, and ends at the phase-7 hand-back.
 
-That gate is the last one under `autonomous`. Everything after it is already inside the zone: the
-nested brainstorms, the coverage loop (a fixed two rounds that verifies and applies its own
-findings, escalating nothing in an autonomous run), and phase 2's design roast, which runs inside
-the `super-design` invocation once coverage ends.
+**The design gates are `super-design`'s (its §Gates by Mode); the flags pick the row.**
+
+- `autonomous`: the top split is applied as recommended, recorded, and named in the next
+  summary, and the run goes straight on into phase 3.
+- `planOneShot` without `autonomous`: the top split is applied the same way, and the run **stops
+  at the end of phase 2**, before phase 3, for the human's design review. Present the root spec,
+  the settled tree, the design roast's exit summary and everything parked, and record
+  `design-review · pending` under `approvals:`. The human's go-ahead is recorded as
+  `design-review · approved` and phase 3 starts; changes they ask for go to `super-design` as an
+  amendment. A resume that finds `design-review · pending` skips `super-design` and takes the
+  resume message as the answer: go-ahead, unless it asks for changes.
+- Neither flag: the human approves the top split when `super-design` asks.
+
+**Say this when confirming the flags.** `autonomous` means no questions from launch to the
+finished report; it implies one-shot (Mode B) design. `planOneShot` alone means no questions until the design is ready, then a
+stop for review.
+
+Everything in phases 1 and 2 runs inside the `super-design` invocation: the nested brainstorms,
+the coverage loop (a fixed two rounds that verifies and applies its own findings), and the design
+roast.
 
 In the autonomous zone, `super-design`'s and `super-roast`'s own mandated human pauses are answered,
 not asked, and the road not taken is parked (`run-state.md`'s `degraded-verdict` kind):
@@ -225,33 +339,24 @@ not asked, and the road not taken is parked (`run-state.md`'s `degraded-verdict`
   with the findings in hand; the unexplored raise is parked, not silently dropped.
 - **The `clean [low coverage]` / `clean [panel-capped: N unverified]` three-way gate**, at both
   roasts: answered **proceed**; the qualifier is parked.
-- **"Both exits pause and summarize for the human"** (both loops): satisfied by recording whatever
-  was open in `run.md` and surfacing it in the report, not by pausing.
+- **Loop-exit pauses** (both loops): `super-design`'s §Unattended Runs already records and hands
+  back instead of pausing when the caller owns the hand-off; whatever was open lands in `run.md` and
+  the report.
 - Fix designs are applied without asking or waiting — the request to run autonomously *is* the
   approval.
 - Nested brainstorms triggered by a fix run in Mode B.
 - Escalations and beyond-cap items are parked and surfaced **in the final report**, never
   auto-adjudicated and never queried about mid-run.
+- **Capped Blocking** (phase 2): parked, not a stop — the roast-cap note below.
 - `super-code` runs in its own autonomous mode.
 
-**Where the zone begins: when the design is approved, not at a phase number.** One design gate is
-the human's — `super-design`'s top-split gate (the child list and its `LEAF`/`PROMOTE` verdicts).
-It is the decision the run cannot make about itself: every `PROMOTE` below it commits hours of
-designing to a subtree, and getting the split wrong is not recoverable by anything downstream.
-**Coverage is no longer a second gate.** It verifies each finding against the inputs its own pass
-was assembled from and applies the fix; its two escalations — a `GAP` whose fix sends the design
-back for a new subepic, and an `ORPHAN` — ask only in an interactive run, which an autonomous one
-is not. Its dispositions are still recorded per round in `run.md`, so a resume replays them instead
-of re-applying fixes the tree already carries. **Say this when confirming the flags** — `autonomous`
-means "I will need you at the top-split gate, then it runs to the end unattended," and a user who
-reads it as "no questions at all" is surprised at that gate.
-
-**They are the human's once, not once per session.** Every gate answer is recorded in `run.md`
-(`./run-state.md` item 7) with the shape it approved. A resumed run **replays** a matching approval
-rather than re-asking — a session that ends after the design was approved must not come back and
-re-solicit it. Replay only on an exact match: if the child set or the verdicts changed since, the
-approval is stale, so ask again and say what changed. Anything unrecorded was never approved, and a
-replay is never widened into "the human approved this run."
+**Recorded decisions replay.** Every top-split decision (human or applied) and design-review
+answer is recorded in `run.md` (`./run-state.md` item 7) with the shape it covers. A resumed run
+**replays** a matching record rather than re-deciding; a session that ends after the design was
+approved must not come back and re-solicit it. Replay only on an exact match: if the child set or
+the verdicts changed since, decide again per `super-design` §Gates by Mode and say what changed.
+Anything unrecorded was never approved, and a replay is never widened into "the human approved
+this run."
 
 **Where the zone ends: when the work is done, not at a phase number.** Autonomy means no question
 interrupts work that is still in progress. It does **not** mean the run merges itself. Once every
@@ -259,22 +364,22 @@ bead under the epic has reached a terminal state and `report.md` is written, the
 what it was asked to do — it presents the report and hands control back, and the merge of the
 integration branch into the base branch is the human's call like any other.
 
-That hand-back is **not** a violation of "no questions," because there is no work left to
-interrupt: a run sitting at the integration decision is *done*, not blocked. Read it the other way
-round and the rule is sharper — **never stop for a question while a bead is still unresolved.**
-Every bullet above exists to keep a mid-run pause from happening; none of them licenses merging to
-the base branch unattended, which is the one action in this pipeline a human cannot cheaply undo.
+That hand-back is the last wanted stop in §Ending turns in an autonomous run. A run sitting at the
+integration decision is *done*, not blocked. None of the bullets above licenses merging to the
+base branch unattended, which is the one action in this pipeline a human cannot cheaply undo.
 
 Merges *into* the run's own integration branch are a different thing and need no confirmation:
 `super-code` performs them itself, serially, and never presents a menu for them.
 
-> The two roasts cap out differently, by decided policy (issue #2 design question A). The
-> **design roast** (phase 2): a still-Blocking round 3 extends the cap by exactly one round; a
-> still-Blocking extension hard-stops the run as `capped-blocking` — no code phase runs on a
-> kernel three-plus rounds called defective with unverified last fixes (super-design's
-> §Adversarial Review Loop owns the mechanics; a later human-relaunched run that executes anyway
-> first acknowledges the recorded state in its ledger). The **code roast** (phase 5): capping at
-> 3 with Blocking findings unresolved parks them rather than halting — the code exists and was
+> The two roasts cap out differently. The **design roast** (phase 2): a still-Blocking round 3
+> extends the cap by exactly one round, and a still-Blocking extension records
+> `roastDesignCapped:` (`./run-state.md` item 5). Without `autonomous` the run stops there as
+> `phase: capped-blocking`, and no code phase runs on a kernel three-plus rounds called defective
+> with unverified last fixes (super-design's §Adversarial Review Loop owns the mechanics; a later
+> human-relaunched run that executes anyway first acknowledges the recorded state in its ledger).
+> Under `autonomous` it is recorded as `proceeded`, each unresolved Blocking finding is parked,
+> phase 3 starts, and the report's status line leads with it (`./report-prompt.md`). The **code
+> roast** (phase 5): capping at 3 with Blocking findings unresolved parks them rather than halting — the code exists and was
 > reviewed; a run can finish having merged code with known Blocking findings, which is why the
 > report leads with status. Parking is recorded, not implied: `run.md` gets `roastCodeCapped:`
 > with the unresolved ids (`./run-state.md` item 5), the report's status line names the count,
@@ -343,10 +448,7 @@ a human following that link concludes the run is missing while the run is sittin
 - Re-implement a phase's behavior instead of invoking it.
 - Auto-adjudicate a roast escalation or a sibling's mandated pause, or fold either into the fix
   queue.
-- Ask a question, or wait on a sibling's mandated pause, **while any bead is still unresolved**,
-  once `super-design`'s top-split gate has been approved and `autonomous` is set. Presenting the finished
-  report and the integration decision is not this — that is the run handing back, with no work
-  left in flight.
+- End a turn in the autonomous zone other than at a wanted stop — §Ending turns in an autonomous run.
 - Merge the integration branch into the base branch without the human's explicit choice, in any
   mode. `autonomous` buys an unattended *run*, never an unattended *merge*.
 - Re-ask the four flags, or reset an iteration count, when a resumable `run.md` already exists —
