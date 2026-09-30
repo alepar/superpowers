@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+# Which beads belong to an epic's tree? Membership is structural: a bead is IN-TREE when it is the
+# epic itself or its recorded parent-child links lead up to the epic, however many levels (nested
+# sub-epics included). The id-prefix convention (EPIC.N) is never consulted — a hand-created bead
+# can break the naming but not the recorded link.
+#
+# Usage: bash epic-tree [--from DUMP_FILE] EPIC_ID [CANDIDATE_ID ...]
+#   With no candidates: prints every in-tree id (open and closed), EPIC_ID first, one per line.
+#   With candidates:    prints the in-tree candidates, one per line, in the order given.
+#   --from reads a saved `bd list --all --json --limit 0` dump instead of running bd.
+# Exit 0 ok (an empty result is ok), 2 bad input or unknown EPIC_ID, 4 jq unavailable (prints
+# a JQ_UNAVAILABLE: line on stdout).
+set -euo pipefail
+
+usage() { echo "usage: epic-tree [--from DUMP_FILE] EPIC_ID [CANDIDATE_ID ...]" >&2; exit 2; }
+
+dump_file=
+if [ "${1:-}" = "--from" ]; then
+  [ $# -ge 2 ] || usage
+  dump_file=$2
+  shift 2
+  [ -f "$dump_file" ] || { echo "no such dump file: $dump_file" >&2; exit 2; }
+fi
+[ $# -ge 1 ] || usage
+epic=$1
+shift
+
+command -v jq >/dev/null 2>&1 || {
+  echo "JQ_UNAVAILABLE: jq is not installed, so classify by hand. Run \`bd list --all --json --limit 0\`. Each entry has an \`id\`; its parent is the \`depends_on_id\` of the \`dependencies\` entry whose \`type\` is \"parent-child\" (or the entry's \`parent\` field). A bead is IN-TREE when its id is ${epic}, or when following parent links upward reaches ${epic}; it is OUT-OF-TREE when the chain ends (no parent, or an id not in the dump) without reaching ${epic}, or runs past 50 hops. Never judge by the id's prefix. $( [ $# -gt 0 ] && echo "Classify these candidates: $*. Output the IN-TREE candidates, one id per line, in that order." || echo "Output every IN-TREE id, one per line, ${epic} first." )"
+  exit 4
+}
+
+if [ -n "$dump_file" ]; then
+  dump=$(cat "$dump_file")
+else
+  dump=$(bd list --all --json --limit 0)
+fi
+
+# N<TAB>id for every bead; P<TAB>child<TAB>parent for every parent-child link.
+edges=$(printf '%s' "$dump" | jq -r '
+  .[] | .id as $c |
+  "N\t\($c)",
+  ( [ (.dependencies // [])[] | select(.type == "parent-child") | .depends_on_id ] + [ .parent // empty ]
+    | unique | .[] | "P\t\($c)\t\(.)" )') || { echo "could not parse the bd list dump" >&2; exit 2; }
+
+printf '%s\n' "$edges" | awk -F '\t' -v epic="$epic" -v cands="$*" '
+  $1 == "N" { order[++n] = $2; known[$2] = 1; next }
+  $1 == "P" { np[$2]++; par[$2, np[$2]] = $3; next }
+  # memo: 1 in-tree, 0 out; depth guards cycles and runaway chains.
+  function inTree(id, depth,   i, r) {
+    if (id == epic) return 1
+    if (id in memo) return memo[id]
+    if (depth > 50) return 0
+    r = 0
+    for (i = 1; i <= np[id]; i++) if (inTree(par[id, i], depth + 1)) { r = 1; break }
+    memo[id] = r
+    return r
+  }
+  END {
+    if (!(epic in known)) { print "unknown epic: " epic > "/dev/stderr"; exit 2 }
+    if (cands != "") {
+      k = split(cands, c, " ")
+      for (i = 1; i <= k; i++) if (inTree(c[i], 0)) print c[i]
+    } else {
+      print epic
+      for (i = 1; i <= n; i++) if (order[i] != epic && inTree(order[i], 0)) print order[i]
+    }
+  }'

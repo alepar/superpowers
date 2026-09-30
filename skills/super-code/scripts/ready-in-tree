@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+# Ready work in one epic's tree: non-epic, non-blocker beads `bd ready` reports as claimable.
+# Fast path: the `sp:EPIC_ID` label super-design stamps on every bead it creates. Only when that
+# comes back empty (a hand-made epic, or a sub-epic whose members carry the root's label) does it
+# fall back to the repo-global ready set filtered through epic-tree's structural membership test.
+# `bd ready` silently caps its output at --limit, so a result that fills the limit is re-run with
+# the limit doubled (at most 3 re-runs).
+#
+# Usage: bash ready-in-tree EPIC_ID
+# Prints one JSON object {"ids":[...]} (bd's priority order) on stdout; notes go to stderr.
+# Exit 0 ok (an empty list is ok), 2 bad input or unknown EPIC_ID, 4 jq unavailable (prints a
+# JQ_UNAVAILABLE: line on stdout).
+set -euo pipefail
+
+if [ $# -ne 1 ]; then
+  echo "usage: ready-in-tree EPIC_ID" >&2
+  exit 2
+fi
+epic=$1
+here=$(cd "$(dirname "$0")" && pwd)
+
+command -v jq >/dev/null 2>&1 || {
+  echo "JQ_UNAVAILABLE: jq is not installed, so compute this by hand. 1. Run \`bd ready --exclude-type=epic --exclude-label blocker --label sp:${epic} --limit 500\` (plain output; do not filter or re-judge readiness). If it lists exactly as many ids as the limit, it was truncated: re-run with the limit doubled, at most 3 times. If it lists at least one id, those ids are the answer. 2. Only if it listed none: run \`bd ready --exclude-type=epic --exclude-label blocker --limit 500\` (same truncation rule) and keep only the ids IN-TREE for ${epic}: an id is IN-TREE when it is ${epic} or its parent chain reaches ${epic}, where a bead's parent is the \`depends_on_id\` of its \`dependencies\` entry with \`type\` \"parent-child\" in \`bd list --all --json --limit 0\`; never judge by the id's prefix. Output one JSON object {\"ids\":[...]} with the ids in the order bd listed them."
+  exit 4
+}
+
+# ready_ids [extra bd flags...] — ids from bd ready, re-run with a doubled limit while truncated.
+ready_ids() {
+  local limit=500 rerun=0 out count
+  while :; do
+    out=$(bd ready --exclude-type=epic --exclude-label blocker "$@" --limit "$limit" --json | jq -r '.[].id')
+    count=$(printf '%s' "$out" | grep -c . || true)
+    if [ "$count" -lt "$limit" ]; then break; fi
+    if [ "$rerun" -ge 3 ]; then
+      echo "bd ready still returned a full page of $limit after 3 re-runs; the list may be truncated" >&2
+      break
+    fi
+    limit=$((limit * 2)); rerun=$((rerun + 1))
+  done
+  printf '%s' "$out"
+}
+
+ids=$(ready_ids --label "sp:${epic}")
+if [ -n "$ids" ]; then
+  echo "fast path: sp:${epic} label" >&2
+else
+  echo "fast path empty; filtering the repo-global ready set by tree membership" >&2
+  all=$(ready_ids)
+  if [ -n "$all" ]; then
+    # shellcheck disable=SC2086  # ids are whitespace-free tokens
+    ids=$(bash "$here/epic-tree" "$epic" $all)
+  else
+    bash "$here/epic-tree" "$epic" >/dev/null   # still reject an unknown EPIC_ID
+  fi
+fi
+
+# shellcheck disable=SC2086
+jq -nc '{ids: $ARGS.positional}' --args $ids

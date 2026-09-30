@@ -23,10 +23,11 @@ Plugin: <version>. Run: <scale — bead count / rounds / duration if known>, <da
 ### Judge panel
 <!-- one line per roast report: mode, iteration, independence, seat-agreement line -->
 ### Fix loop
-<!-- the `Metrics: fix-loop` lines -->
+<!-- the `Metrics: completions` line (review clean / after fix pass / parked / re-entry closes)
+     and the `Metrics: fix-pass` line (entered / FIXED / BLOCKED) -->
 ### Merge-back
 <!-- the `Metrics: merges` line and the `ledger-check` line; count of `Merge:` lines with
-     conflict / seam-review fired / gate fail / → blocker -->
+     conflict / seam-review fired / → blocker -->
 ### Coverage
 <!-- the `requirements:` line per coverage round and the `scope-filter:` line per fix round -->
 ### Bead graph

@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# Is a task branch already merged into the integration branch?
+# "Merged" means the task branch's tip is the SECOND parent of a merge commit on the integration
+# branch (what `git merge --no-ff <task>` produces). A task tip equal to the integration tip, or one
+# that appears only as a first parent, is not merged.
+#
+# Usage: bash already-merged INTEGRATION_BRANCH TASK_BRANCH
+# Prints "true" or "false" and exits 0 either way; exits 2 on a bad argument or unknown ref.
+set -euo pipefail
+
+if [ $# -ne 2 ]; then
+  echo "usage: already-merged INTEGRATION_BRANCH TASK_BRANCH" >&2
+  exit 2
+fi
+
+integ=$1
+task=$2
+integ_sha=$(git rev-parse --verify --quiet "${integ}^{commit}") || { echo "unknown ref: $integ" >&2; exit 2; }
+tip=$(git rev-parse --verify --quiet "${task}^{commit}") || { echo "unknown ref: $task" >&2; exit 2; }
+
+# Each line: <merge sha> <parent1> <parent2> [...]; field 3 is the second parent.
+if git rev-list --parents --merges "$integ_sha" | awk -v t="$tip" '$3 == t { found = 1; exit } END { exit !found }'; then
+  echo true
+else
+  echo false
+fi

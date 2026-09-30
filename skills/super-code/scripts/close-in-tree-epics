@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+# Close every close-eligible epic in one epic's tree, to a fixpoint. `bd epic close-eligible` is
+# repo-global (no --label/--parent scoping) and closes one tree level per call, so this loops:
+# preview with --dry-run --json, keep the candidates epic-tree says are IN-TREE, `bd close` each
+# one individually, repeat. It stops on a pass that closes zero ids — not on an empty preview,
+# because an out-of-tree epic that is permanently eligible reappears in every preview. The
+# unfiltered mutating form is never called: it would close other trees' epics.
+#
+# Usage: bash close-in-tree-epics EPIC_ID
+# Prints one JSON object {"rootClosed":true|false,"closedThisRun":[...]} on stdout; a failed
+# `bd close` is noted on stderr and not counted. Exit 0 ok, 2 bad input or unknown EPIC_ID,
+# 4 jq unavailable (prints a JQ_UNAVAILABLE: line on stdout).
+set -euo pipefail
+
+if [ $# -ne 1 ]; then
+  echo "usage: close-in-tree-epics EPIC_ID" >&2
+  exit 2
+fi
+epic=$1
+here=$(cd "$(dirname "$0")" && pwd)
+
+command -v jq >/dev/null 2>&1 || {
+  echo "JQ_UNAVAILABLE: jq is not installed, so run the loop by hand. Repeat: (1) run \`bd epic close-eligible --dry-run --json\`; each element's \`epic.id\` is a candidate. (2) Keep only candidates IN-TREE for ${epic}: the id is ${epic}, or its parent chain reaches ${epic}, where a bead's parent is the \`depends_on_id\` of its \`dependencies\` entry with \`type\` \"parent-child\" in \`bd list --all --json --limit 0\`; never judge by the id's prefix. (3) Run \`bd close <id>\` once per kept id — never the unfiltered \`bd epic close-eligible\` without --dry-run. (4) If this pass closed zero ids, stop (an out-of-tree candidate that keeps reappearing is expected); otherwise repeat from (1). Then run \`bd show ${epic} --json\` and output one JSON object {\"rootClosed\":<true iff its status is closed>,\"closedThisRun\":[<every id you closed, in order>]}."
+  exit 4
+}
+
+closed=()
+pass=0
+while [ "$pass" -lt 50 ]; do
+  pass=$((pass + 1))
+  candidates=$(bd epic close-eligible --dry-run --json |
+    jq -r '.[] | if type == "string" then . elif has("epic") then .epic.id else .id end')
+  inTree=
+  if [ -n "$candidates" ]; then
+    # shellcheck disable=SC2086  # ids are whitespace-free tokens
+    inTree=$(bash "$here/epic-tree" "$epic" $candidates)
+  fi
+  closedThisPass=0
+  for id in $inTree; do
+    if bd close "$id" >/dev/null; then
+      closed+=("$id"); closedThisPass=$((closedThisPass + 1))
+    else
+      echo "bd close $id failed; not counted" >&2
+    fi
+  done
+  [ "$closedThisPass" -gt 0 ] || break
+done
+[ "$pass" -lt 50 ] || echo "stopped after 50 passes without reaching a fixpoint" >&2
+
+status=$(bd show "$epic" --json | jq -r 'if type == "array" then .[0].status else .status end') ||
+  { echo "unknown epic: $epic" >&2; exit 2; }
+jq -nc --arg s "$status" '{rootClosed: ($s == "closed"), closedThisRun: $ARGS.positional}' --args ${closed[@]+"${closed[@]}"}
