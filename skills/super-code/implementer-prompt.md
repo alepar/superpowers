@@ -26,6 +26,15 @@ finished the work but doubt part of it, report IMPLEMENTED and put the doubt und
 Before starting, run `bd comments [TASK_ID]`. A clarification recorded there by blocker triage
 settles the point it addresses, even where your own reading of the brief differs.
 
+## Where you write
+
+Every file you create or change — code, tests, evidence, logs, scratch output — goes inside
+[WORKTREE]. The one file you write outside it is [REPORT_FILE], in the git-ignored plan workspace.
+Never write into the integration worktree or the user's checkout, even when a path in the brief, a
+clarification, or your dispatch points there: any path outside [WORKTREE] that you were not given
+as a write target is read-only. A stray file in the integration worktree blocks every later merge.
+This applies to the fix pass too.
+
 ## Your job
 
 Work in [WORKTREE] (branch `[BRANCH]`, cut from `[INTEGRATION_BRANCH]` at [BASE]).

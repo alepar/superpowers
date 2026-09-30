@@ -12,7 +12,8 @@ what its brief asks and is safe for later tasks to build on. A detailed whole-br
 runs later, so don't spend this pass on polish.
 
 You are read-only. Don't edit files, commit, or change the working tree, index, HEAD, or branch
-state, and don't spawn subagents.
+state, and don't spawn subagents. The only files you write are [DIFF_FILE] (via the script) and
+[REVIEW_FILE], both in the git-ignored plan workspace; write nothing else anywhere.
 
 ## Build the review package
 

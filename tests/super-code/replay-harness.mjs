@@ -280,7 +280,7 @@ function oneTaskCanned(overrides = {}) {
     'impl:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', files: ['src/a.js'] },
     'review:bd-101': { id: 'bd-101', status: 'CLEAN' },
     'fix:bd-101': { id: 'bd-101', status: 'FIXED', head: SHA('f') },
-    'merge:bd-101': { id: 'bd-101', merged: true, head: SHA('b'), mergeBase: SHA('a'), rebaseConflictFiles: 0 },
+    'merge:bd-101': { id: 'bd-101', merged: true, mergeExit: 0, mergeHead: true, head: SHA('b'), mergeBase: SHA('a'), rebaseConflictFiles: 0 },
     'ledger-append:bd-101': { appended: true },
     'ledger-append:merge:bd-101': { appended: true },
     'read-ledger:finish': { text: '' },
@@ -356,8 +356,8 @@ async function main() {
   {
     const scan = scanTemplateSpans(scriptBody)
     check(scan.clean, 'scanner ends in code state (no unterminated literal, string, or ${})')
-    check(scan.spans.length === 236,
-      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 236 — 215 after the D4 loop rewrite, +17 for the failing-mergeCheck seam route (the check-fix and fix-review dispatch keys/labels, their logs and blocker findings, the re-merge, fixPrompt's check branch, checkFixReviewPrompt), +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log; update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
+    check(scan.spans.length === 246,
+      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 246 — 215 after the D4 loop rewrite, +10 for the merge-evidence contract (clean-check and merge steps, mergeEvidence's diagnoses and logs, the Merge-cleanup line) and writeFence(), +17 for the failing-mergeCheck seam route (the check-fix and fix-review dispatch keys/labels, their logs and blocker findings, the re-merge, fixPrompt's check branch, checkFixReviewPrompt), +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log; update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
     // self-test: inject a raw backtick mid-way through the first literal's content and assert
     // the detector actually fires — a detector that cannot catch the known failure is decoration
     const [s, e] = scan.spans[0]
@@ -483,7 +483,7 @@ async function main() {
 
     const merge = promptOf(out.trace, 'merge:bd-101')
     check(/Run no tests in this dispatch/.test(merge ?? '') && !/project test command/.test(merge ?? ''), 'merge dispatch runs no tests (no per-merge gate)', merge)
-    check(merge?.includes('rebase `task-bd-101`') && merge?.includes('git merge --no-ff task-bd-101'), 'merge dispatch rebases and merges the task BRANCH ref, not the worktree path', merge)
+    check(merge?.includes('rebase `task-bd-101`') && merge?.includes('git merge --no-ff --no-commit task-bd-101'), 'merge dispatch rebases and merges the task BRANCH ref, not the worktree path', merge)
     check(/resolves the conflicted hunks only/.test(merge ?? '') && /do not run, add, delete, skip, or loosen any test/.test(merge ?? ''), 'merge dispatch fences conflict resolution to the conflicted hunks', merge)
 
     check(promptOf(out.trace, 'missing-blocker:bd-104') === null, 'self-filed bead present, so no missing-blocker fallback fired')
@@ -631,7 +631,7 @@ async function main() {
     assertNoThrow(out)
     check(promptOf(out.trace, 'read-ledger')?.includes(explicit), 'ledger read runs in the caller-supplied worktree')
     const merge = promptOf(out.trace, 'merge:bd-101')
-    check(merge?.includes(`is checked out in ${explicit}.`) && merge?.includes(`\`git merge --no-ff task-bd-101\` in ${explicit}`), 'merge runs in the caller-supplied integration worktree', merge)
+    check(merge?.includes(`is checked out in ${explicit}.`) && merge?.includes(`in ${explicit}, run \`git merge --no-ff --no-commit task-bd-101\``), 'merge runs in the caller-supplied integration worktree', merge)
     check(merge?.includes(`${explicit}/.worktrees/super-auto-my-slug--task-bd-101`), 'task worktree still follows the collapsed convention, rooted under it', merge)
     check(JSON.stringify(out.result?.completed) === '["bd-101"]', 'run completes normally', JSON.stringify(out.result))
   }
@@ -803,7 +803,7 @@ async function main() {
         : { decision: 'RESOLVE', detail: `task ${id}: the report is task-${i + 1}-report.md`, cause: CAUSE }
       canned[`clarify:${id}`] = { recorded: true }
       canned[`review:${id}`] = { id, status: 'CLEAN' }
-      canned[`merge:${id}`] = { id, merged: true, head: SHA('b'), mergeBase: SHA('a'), rebaseConflictFiles: 0 }
+      canned[`merge:${id}`] = { id, merged: true, mergeExit: 0, mergeHead: true, head: SHA('b'), mergeBase: SHA('a'), rebaseConflictFiles: 0 }
       canned[`ledger-append:${id}`] = { appended: true }
       canned[`ledger-append:merge:${id}`] = { appended: true }
     })
@@ -822,7 +822,7 @@ async function main() {
   {
     const canned = oneTaskCanned({
       'bd-ready': [{ ids: ['bd-101'] }, { ids: ['bd-101'] }, { ids: [] }],
-      'merge:bd-101': [null, { id: 'bd-101', merged: true, head: SHA('b'), mergeBase: SHA('a') }],
+      'merge:bd-101': [null, { id: 'bd-101', merged: true, mergeExit: 0, mergeHead: true, head: SHA('b'), mergeBase: SHA('a') }],
     })
     const out = await run({ args: liveArgs(), canned })
     assertNoThrow(out)
@@ -1069,7 +1069,7 @@ async function main() {
       // queue) is OBSERVABLE as overlapping in-flight dispatches
       c[`impl:${id}`] = tick({ id, status: 'IMPLEMENTED', files: [] })
       c[`review:${id}`] = { id, status: 'CLEAN' }
-      c[`merge:${id}`] = tick({ id, merged: true, head: SHA('b'), mergeBase: SHA('a') })
+      c[`merge:${id}`] = tick({ id, merged: true, mergeExit: 0, mergeHead: true, head: SHA('b'), mergeBase: SHA('a') })
       c[`ledger-append:${id}`] = { appended: true }
       c[`ledger-append:merge:${id}`] = { appended: true }
     }
@@ -1536,7 +1536,7 @@ async function main() {
     const canned = oneTaskCanned({
       'merge:bd-101': { id: 'bd-101', merged: false, seamOverlap: ['src/a.js'], head: SHA('c'), mergeBase: SHA('b') },
       'seam-review:bd-101': { id: 'bd-101', status: 'CLEAN' },
-      'merge:bd-101:seam-cleared': { id: 'bd-101', merged: true, head: SHA('c'), mergeBase: SHA('b') },
+      'merge:bd-101:seam-cleared': { id: 'bd-101', merged: true, mergeExit: 0, mergeHead: true, head: SHA('c'), mergeBase: SHA('b') },
     })
     const out = await run({ args: liveArgs(), canned })
     assertNoThrow(out)
@@ -1556,7 +1556,7 @@ async function main() {
       'merge:bd-101': { id: 'bd-101', merged: false, seamOverlap: ['src/a.js'], head: SHA('c'), mergeBase: SHA('b') },
       'seam-review:bd-101': { id: 'bd-101', status: 'NEEDS_FIX', finding: 'sibling renamed parse() to parseInput()' },
       'fix:bd-101:seam': { id: 'bd-101', status: 'FIXED' },
-      'merge:bd-101:seam-cleared': { id: 'bd-101', merged: true, head: SHA('d'), mergeBase: SHA('b') },
+      'merge:bd-101:seam-cleared': { id: 'bd-101', merged: true, mergeExit: 0, mergeHead: true, head: SHA('d'), mergeBase: SHA('b') },
     })
     const out = await run({ args: liveArgs(), canned })
     assertNoThrow(out)
@@ -1586,10 +1586,10 @@ async function main() {
   scenario('mergeCheck: a build-only check on the merged tree at every merge — pass, fail → blocker, none')
   {
     const CHECK = 'nice -n 10 cargo check --all-targets'
-    const ok = await run({ args: liveArgs({ config: cfg({ mergeCheck: CHECK }) }), canned: oneTaskCanned({ 'merge:bd-101': { id: 'bd-101', merged: true, head: SHA('b'), mergeBase: SHA('a'), rebaseConflictFiles: 0, check: 'pass' } }) })
+    const ok = await run({ args: liveArgs({ config: cfg({ mergeCheck: CHECK }) }), canned: oneTaskCanned({ 'merge:bd-101': { id: 'bd-101', merged: true, mergeExit: 0, mergeHead: true, head: SHA('b'), mergeBase: SHA('a'), rebaseConflictFiles: 0, check: 'pass' } }) })
     assertNoThrow(ok)
     const merge = promptOf(ok.trace, 'merge:bd-101')
-    check(!!merge && merge.includes(`EXACTLY this command on the merged tree, unchanged: \`${CHECK}\``) && /build only, never tests/.test(merge) && /Run no tests in this dispatch/.test(merge), 'merge dispatch runs the declared build-only check on the merged tree, and no tests', merge)
+    check(!!merge && merge.includes(`EXACTLY this command on the merged tree in .worktrees/${BRANCH}, unchanged: \`${CHECK}\``) && /build only, never tests/.test(merge) && /Run no tests in this dispatch/.test(merge), 'merge dispatch runs the declared build-only check on the merged tree, and no tests', merge)
     check(!!merge && merge.indexOf('POST-REBASE SEAM CHECK') < merge.indexOf('MERGE CHECK') && /git merge --no-ff --no-commit task-bd-101/.test(merge), 'the check runs after the rebase and seam check, on an uncommitted merge')
     check(!!merge && /do not edit any code or test to make it pass/.test(merge) && /git merge --abort/.test(merge), 'a failing check is fenced: no in-place fixes, the merge is aborted')
     check(extractLedgerLine(promptOf(ok.trace, 'ledger-append:merge:bd-101')) === 'Merge: bd-101 — rebase clean · seam-review none · check pass', 'Merge: line records check pass')
@@ -1599,14 +1599,14 @@ async function main() {
       'merge:bd-101': { id: 'bd-101', merged: false, seamOverlap: ['src/a.js'], head: SHA('c'), mergeBase: SHA('b') },
       'seam-review:bd-101': { id: 'bd-101', status: 'NEEDS_FIX', finding: 'stale closure signature' },
       'fix:bd-101:seam': { id: 'bd-101', status: 'FIXED' },
-      'merge:bd-101:seam-cleared': { id: 'bd-101', merged: true, head: SHA('d'), mergeBase: SHA('b'), check: 'pass' },
+      'merge:bd-101:seam-cleared': { id: 'bd-101', merged: true, mergeExit: 0, mergeHead: true, head: SHA('d'), mergeBase: SHA('b'), check: 'pass' },
     }) })
     assertNoThrow(seamed)
     check(promptOf(seamed.trace, 'merge:bd-101:seam-cleared')?.includes(CHECK), 'the seam-cleared merge re-runs the check after the seam fix')
 
     // A failing check routes to one merge-check fix + one scoped review, then the check re-runs.
     const ERR = "error[E0061]: this function takes 2 arguments but 1 argument was supplied\n  --> crates/other/tests/provider.rs:41:9"
-    const failMerge = { id: 'bd-101', merged: false, rebaseConflictFiles: 0, check: 'fail', head: SHA('c'), mergeBase: SHA('b'), checkOutput: `${CHECK}\n${ERR}` }
+    const failMerge = { id: 'bd-101', merged: false, mergeExit: 0, mergeHead: true, rebaseConflictFiles: 0, check: 'fail', head: SHA('c'), mergeBase: SHA('b'), checkOutput: `${CHECK}\n${ERR}` }
     const blockerTail = {
       'ledger-append:merge-failed:bd-101': { appended: true },
       'missing-blocker:bd-101': { id: 'bd-101', status: 'BLOCKED', blockerBead: 'bd-190' },
@@ -1618,7 +1618,7 @@ async function main() {
       'merge:bd-101': failMerge,
       'fix:bd-101:check': { id: 'bd-101', status: 'FIXED', head: SHA('e') },
       'seam-review:bd-101:check': { id: 'bd-101', status: 'CLEAN' },
-      'merge:bd-101:check-fixed': { id: 'bd-101', merged: true, head: SHA('e'), mergeBase: SHA('b'), check: 'pass' },
+      'merge:bd-101:check-fixed': { id: 'bd-101', merged: true, mergeExit: 0, mergeHead: true, head: SHA('e'), mergeBase: SHA('b'), check: 'pass' },
     }) })
     assertNoThrow(fixed)
     const cfix = promptOf(fixed.trace, 'fix:bd-101:check')
@@ -1674,7 +1674,7 @@ async function main() {
     check(extractLedgerLine(promptOf(spent.trace, 'ledger-append:merge-failed:bd-101')) === 'Merge: bd-101 — rebase clean · seam-review fixed · check fail → blocker', 'same-file seam fix already used: seam-review fixed · check fail → blocker')
     check(JSON.stringify(spent.result?.escalated) === '["bd-101"]' && /failed on the merged tree/.test(promptOf(spent.trace, 'missing-blocker:bd-101') ?? ''), 'same-file seam fix already used: straight to the blocker path with the check output')
 
-    const none = await run({ args: liveArgs(), canned: oneTaskCanned({ 'merge:bd-101': { id: 'bd-101', merged: true, head: SHA('b'), mergeBase: SHA('a'), check: 'pass' } }) })
+    const none = await run({ args: liveArgs(), canned: oneTaskCanned({ 'merge:bd-101': { id: 'bd-101', merged: true, mergeExit: 0, mergeHead: true, head: SHA('b'), mergeBase: SHA('a'), check: 'pass' } }) })
     assertNoThrow(none)
     check(/No merge check is declared/.test(promptOf(none.trace, 'merge:bd-101') ?? '') && !/MERGE CHECK/.test(promptOf(none.trace, 'merge:bd-101') ?? ''), 'undeclared: no check step in the merge dispatch')
     check(extractLedgerLine(promptOf(none.trace, 'ledger-append:merge:bd-101'))?.endsWith('· check none'), 'undeclared: the Merge: line says check none, whatever the agent reported')
@@ -1684,9 +1684,74 @@ async function main() {
     check(/No merge check is declared/.test(promptOf(explicitNone.trace, 'merge:bd-101') ?? ''), 'pre-flight\'s explicit "none" (no build step in the project) runs no check')
   }
 
+  scenario('merge evidence: a dirty integration worktree, a refused merge, or no MERGE_HEAD is a merge failure — never check pass')
+  {
+    const CHECK = 'cargo check --all-targets'
+    const tail = {
+      'ledger-append:merge-failed:bd-101': { appended: true },
+      'missing-blocker:bd-101': { id: 'bd-101', status: 'BLOCKED', blockerBead: 'bd-190' },
+      'triage:bd-101': { decision: 'ESCALATE', detail: 'merge failure' },
+      'notify:bd-101': { sent: true },
+    }
+    const dirty = await run({ args: liveArgs({ config: cfg({ mergeCheck: CHECK }) }), canned: oneTaskCanned({
+      'merge:bd-101': { id: 'bd-101', merged: false, check: 'none', dirty: ['?? evidence/host-recovery-validation/report.md'] }, ...tail }) })
+    assertNoThrow(dirty)
+    check(JSON.stringify(dirty.result?.escalated) === '["bd-101"]' && !dirty.result?.completed.length, 'dirty worktree: no merge, blocker path', JSON.stringify(dirty.result))
+    check(/is dirty/.test(promptOf(dirty.trace, 'missing-blocker:bd-101') ?? '') && (promptOf(dirty.trace, 'missing-blocker:bd-101') ?? '').includes('evidence/host-recovery-validation/report.md'), 'dirty worktree: the bead names the stray paths', promptOf(dirty.trace, 'missing-blocker:bd-101'))
+    check(extractLedgerLine(promptOf(dirty.trace, 'ledger-append:merge-failed:bd-101'))?.endsWith('check none → blocker'), 'dirty worktree: Merge: line says check none → blocker')
+    check(!dirty.trace.some(t => t.label === 'fix:bd-101:check'), 'dirty worktree: never routed to a merge-check fix')
+
+    const refused = await run({ args: liveArgs({ config: cfg({ mergeCheck: CHECK }) }), canned: oneTaskCanned({
+      'merge:bd-101': { id: 'bd-101', merged: false, mergeExit: 128, mergeHead: false, check: 'none' }, ...tail }) })
+    assertNoThrow(refused)
+    check(JSON.stringify(refused.result?.escalated) === '["bd-101"]' && /exit 128/.test(promptOf(refused.trace, 'missing-blocker:bd-101') ?? ''), 'merge exit non-zero: failure with the exit code in the diagnosis')
+
+    const lying = await run({ args: liveArgs({ config: cfg({ mergeCheck: CHECK }) }), canned: oneTaskCanned({
+      'merge:bd-101': { id: 'bd-101', merged: true, head: SHA('b'), mergeBase: SHA('a'), check: 'pass', mergeExit: 0, mergeHead: false }, ...tail }) })
+    assertNoThrow(lying)
+    check(!lying.result?.completed.length && JSON.stringify(lying.result?.escalated) === '["bd-101"]', 'no MERGE_HEAD: a reported merged/check pass is rejected (fail closed)', JSON.stringify(lying.result))
+    check(/MERGE_HEAD absent/.test(promptOf(lying.trace, 'missing-blocker:bd-101') ?? '') && extractLedgerLine(promptOf(lying.trace, 'ledger-append:merge-failed:bd-101'))?.endsWith('check none → blocker'), 'no MERGE_HEAD: diagnosis names it; the check result is voided on the ledger')
+
+    const unreported = await run({ args: liveArgs(), canned: oneTaskCanned({
+      'merge:bd-101': { id: 'bd-101', merged: true, head: SHA('b'), mergeBase: SHA('a') }, ...tail }) })
+    assertNoThrow(unreported)
+    check(!unreported.result?.completed.length && /not reported/.test(promptOf(unreported.trace, 'missing-blocker:bd-101') ?? ''), 'merged without any merge evidence: rejected')
+
+    const cleaned = await run({ args: liveArgs(), canned: oneTaskCanned({
+      'merge:bd-101': { id: 'bd-101', merged: true, head: SHA('b'), mergeBase: SHA('a'), mergeExit: 0, mergeHead: true, check: 'none', removedIdentical: ['evidence/report.md'] } }) })
+    assertNoThrow(cleaned)
+    const lines = extractLedgerLines(promptOf(cleaned.trace, 'ledger-append:merge:bd-101'))
+    check(lines.length === 2 && lines[1] === 'Merge-cleanup: bd-101 — removed byte-identical untracked copies from the integration worktree before merging: evidence/report.md', 'identical-copy removals are listed on a Merge-cleanup line', JSON.stringify(lines))
+    check(JSON.stringify(cleaned.result?.completed) === '["bd-101"]', 'merged after removing only identical copies')
+
+    const merge = promptOf(cleaned.trace, 'merge:bd-101') ?? ''
+    check(/git status --porcelain --untracked-files=all/.test(merge) && /cmp -s/.test(merge) && /Delete nothing else/.test(merge), 'merge prompt: strict clean check; only byte-identical copies may be removed')
+    check(/git rev-parse -q --verify MERGE_HEAD/.test(merge) && /do NOT run any check and do NOT commit/.test(merge), 'merge prompt: exit code and MERGE_HEAD gate the check and the commit')
+    check(merge.indexOf('PRE-MERGE CLEAN CHECK') < merge.indexOf('MERGE: in') && merge.indexOf('MERGE: in') < merge.indexOf('No merge check is declared'), 'merge prompt order: clean check → merge → check')
+  }
+
+  scenario('write fence: task agents write only inside their task worktree (plus named plan-workspace files)')
+  {
+    const out = await run({ args: liveArgs(), canned: oneTaskCanned({
+      'review:bd-101': { id: 'bd-101', status: 'NEEDS_FIX', finding: 'f' },
+      'merge:bd-101': { id: 'bd-101', merged: false, seamOverlap: ['src/a.js'], head: SHA('c'), mergeBase: SHA('b') },
+      'seam-review:bd-101': { id: 'bd-101', status: 'NEEDS_FIX', finding: 'g' },
+      'fix:bd-101:seam': { id: 'bd-101', status: 'FIXED' },
+      'merge:bd-101:seam-cleared': { id: 'bd-101', merged: true, head: SHA('d'), mergeBase: SHA('b'), mergeExit: 0, mergeHead: true },
+    }) })
+    assertNoThrow(out)
+    const TW = `.worktrees/${BRANCH}/.worktrees/${BRANCH}--task-bd-101`
+    for (const label of ['impl:bd-101', 'fix:bd-101', 'fix:bd-101:seam']) {
+      const p = promptOf(out.trace, label) ?? ''
+      check(p.includes(`WRITE TARGETS: every file you create or change (code, tests, evidence, logs, scratch) goes inside ${TW}`) && p.includes(`The integration worktree .worktrees/${BRANCH} and the user's checkout are READ-ONLY for you`), `${label}: write fence names the task worktree and marks the integration worktree read-only`, p.slice(-500))
+    }
+    check(/## Where you write/.test(implementerTemplate) && /Never write into the integration worktree or the user's checkout/.test(implementerTemplate) && /This applies to the fix pass too/.test(implementerTemplate), 'implementer template carries the write fence, fix pass included')
+    check(/The only files you write are \[DIFF_FILE\]/.test(reviewerTemplate), 'reviewer template limits its writes to the package and review files')
+  }
+
   scenario('Merge: ledger line renders the gate-less shape on both the success and blocker paths')
   {
-    const ok = await run({ args: liveArgs(), canned: oneTaskCanned({ 'merge:bd-101': { id: 'bd-101', merged: true, head: SHA('b'), mergeBase: SHA('a'), rebaseConflictFiles: 2 } }) })
+    const ok = await run({ args: liveArgs(), canned: oneTaskCanned({ 'merge:bd-101': { id: 'bd-101', merged: true, mergeExit: 0, mergeHead: true, head: SHA('b'), mergeBase: SHA('a'), rebaseConflictFiles: 2 } }) })
     assertNoThrow(ok)
     const okLine = extractLedgerLine(promptOf(ok.trace, 'ledger-append:merge:bd-101'))
     check(okLine === 'Merge: bd-101 — rebase conflict: 2 files · seam-review none · check none', 'success line: id, conflict count, no seam review, no gate field', okLine)
