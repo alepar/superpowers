@@ -117,8 +117,8 @@ the task gets; it merges after you, without another review.
   it. List it under "Declined" with a technical reason. Declined findings go to the ledger and the
   final whole-epic review.
 - Run the tests covering what you changed and keep the command and output.
-- Append a section to [REPORT_FILE], headed "## Fix pass" (or "## Seam fix" when your dispatch says
-  this is the post-rebase seam fix): what you changed for each finding, declined findings with their
+- Append a section to [REPORT_FILE], headed "## Fix pass", or the heading your dispatch names
+  ("## Seam fix", "## Merge-check fix"): what you changed for each finding, declined findings with their
   reasons, and the test command and output.
 - Commit as in "Commit". If you declined everything and changed nothing, there is nothing to commit.
 

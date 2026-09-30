@@ -356,8 +356,8 @@ async function main() {
   {
     const scan = scanTemplateSpans(scriptBody)
     check(scan.clean, 'scanner ends in code state (no unterminated literal, string, or ${})')
-    check(scan.spans.length === 219,
-      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 219 — 215 after the D4 loop rewrite, +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log; update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
+    check(scan.spans.length === 236,
+      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 236 — 215 after the D4 loop rewrite, +17 for the failing-mergeCheck seam route (the check-fix and fix-review dispatch keys/labels, their logs and blocker findings, the re-merge, fixPrompt's check branch, checkFixReviewPrompt), +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log; update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
     // self-test: inject a raw backtick mid-way through the first literal's content and assert
     // the detector actually fires — a detector that cannot catch the known failure is decoration
     const [s, e] = scan.spans[0]
@@ -1604,15 +1604,75 @@ async function main() {
     assertNoThrow(seamed)
     check(promptOf(seamed.trace, 'merge:bd-101:seam-cleared')?.includes(CHECK), 'the seam-cleared merge re-runs the check after the seam fix')
 
-    const fail = await run({ args: liveArgs({ config: cfg({ mergeCheck: CHECK }) }), canned: oneTaskCanned({
-      'merge:bd-101': { id: 'bd-101', merged: false, blockerBead: 'bd-108', rebaseConflictFiles: 0, check: 'fail' },
+    // A failing check routes to one merge-check fix + one scoped review, then the check re-runs.
+    const ERR = "error[E0061]: this function takes 2 arguments but 1 argument was supplied\n  --> crates/other/tests/provider.rs:41:9"
+    const failMerge = { id: 'bd-101', merged: false, rebaseConflictFiles: 0, check: 'fail', head: SHA('c'), mergeBase: SHA('b'), checkOutput: `${CHECK}\n${ERR}` }
+    const blockerTail = {
       'ledger-append:merge-failed:bd-101': { appended: true },
-      'triage:bd-101': { decision: 'ESCALATE', detail: 'sibling changed the provider API' },
+      'missing-blocker:bd-101': { id: 'bd-101', status: 'BLOCKED', blockerBead: 'bd-190' },
+      'triage:bd-101': { decision: 'ESCALATE', detail: 'cross-lane compile seam' },
       'notify:bd-101': { sent: true },
+    }
+
+    const fixed = await run({ args: liveArgs({ config: cfg({ mergeCheck: CHECK }) }), canned: oneTaskCanned({
+      'merge:bd-101': failMerge,
+      'fix:bd-101:check': { id: 'bd-101', status: 'FIXED', head: SHA('e') },
+      'seam-review:bd-101:check': { id: 'bd-101', status: 'CLEAN' },
+      'merge:bd-101:check-fixed': { id: 'bd-101', merged: true, head: SHA('e'), mergeBase: SHA('b'), check: 'pass' },
     }) })
-    assertNoThrow(fail)
-    check(extractLedgerLine(promptOf(fail.trace, 'ledger-append:merge-failed:bd-101')) === 'Merge: bd-101 — rebase clean · seam-review none · check fail → blocker', 'Merge: line records check fail → blocker')
-    check(JSON.stringify(fail.result?.escalated) === '["bd-101"]' && fail.counts['triage:bd-101'] === 1 && !fail.result?.completed.length, 'a failed check takes the merge-failure blocker path', JSON.stringify(fail.result))
+    assertNoThrow(fixed)
+    const cfix = promptOf(fixed.trace, 'fix:bd-101:check')
+    check(!!cfix && cfix.includes(ERR) && cfix.includes(CHECK) && cfix.includes(`[BRIEF_FILE] = ${PLANDIR}/task-1-brief.md`) && cfix.includes(`[REPORT_FILE] = ${PLANDIR}/task-1-report.md`), 'merge-check fix gets the command, the error output, and the brief/report paths', cfix)
+    check(!!cfix && /edit whatever files the errors name/.test(cfix) && /do not delete, skip, or loosen any test assertion/.test(cfix) && /smallest change/.test(cfix), 'merge-check fix is fenced: any named file, smallest change, no weakened tests')
+    const crev = promptOf(fixed.trace, 'seam-review:bd-101:check')
+    check(!!crev && /READ-ONLY/.test(crev) && crev.includes(`${SHA('c')}..HEAD`) && crev.includes('<build-errors>'), 'one scoped read-only review of the fix diff')
+    check(promptOf(fixed.trace, 'merge:bd-101:check-fixed')?.includes(CHECK), 'the check re-runs on the re-dispatched merge')
+    check(extractLedgerLine(promptOf(fixed.trace, 'ledger-append:merge:bd-101')) === 'Merge: bd-101 — rebase clean · seam-review none · check fail→fixed', 'Merge: line records check fail→fixed')
+    check(JSON.stringify(fixed.result?.completed) === '["bd-101"]' && !fixed.trace.some(t => t.label.startsWith('triage:')), 'merged without the blocker path', JSON.stringify(fixed.result))
+    check(!/file a blocker bead \(as below\) whose body also carries the command/.test(promptOf(fixed.trace, 'merge:bd-101') ?? '') && /do not file a blocker bead/.test(promptOf(fixed.trace, 'merge:bd-101') ?? ''), 'the merge agent reports the failure instead of filing a bead')
+
+    const fixBlocked = await run({ args: liveArgs({ config: cfg({ mergeCheck: CHECK }) }), canned: oneTaskCanned({
+      'merge:bd-101': failMerge,
+      'fix:bd-101:check': { id: 'bd-101', status: 'BLOCKED', blockerBead: 'bd-191' },
+      ...blockerTail,
+    }) })
+    assertNoThrow(fixBlocked)
+    check(extractLedgerLine(promptOf(fixBlocked.trace, 'ledger-append:merge-failed:bd-101')) === 'Merge: bd-101 — rebase clean · seam-review none · check fail → blocker', 'fix BLOCKED: Merge: line records check fail → blocker')
+    check(/bd-191/.test(promptOf(fixBlocked.trace, 'triage:bd-101') ?? '') && !fixBlocked.trace.some(t => t.label === 'seam-review:bd-101:check'), 'fix BLOCKED: triage reads the fixer\'s bead; no review')
+    check(JSON.stringify(fixBlocked.result?.escalated) === '["bd-101"]', 'fix BLOCKED: escalated')
+
+    const still = await run({ args: liveArgs({ config: cfg({ mergeCheck: CHECK }) }), canned: oneTaskCanned({
+      'merge:bd-101': failMerge,
+      'fix:bd-101:check': { id: 'bd-101', status: 'FIXED', head: SHA('e') },
+      'seam-review:bd-101:check': { id: 'bd-101', status: 'CLEAN' },
+      'merge:bd-101:check-fixed': { ...failMerge, checkOutput: `${CHECK}\nerror: still broken` },
+      ...blockerTail,
+    }) })
+    assertNoThrow(still)
+    check(extractLedgerLine(promptOf(still.trace, 'ledger-append:merge-failed:bd-101'))?.endsWith('check fail → blocker'), 'still failing: check fail → blocker')
+    check(/still fails after the merge-check fix/.test(promptOf(still.trace, 'missing-blocker:bd-101') ?? '') && still.counts['fix:bd-101:check'] === 1, 'still failing: blocker bead carries the diagnosis; no second fix')
+    check(JSON.stringify(still.result?.escalated) === '["bd-101"]', 'still failing: escalated')
+
+    const rejected = await run({ args: liveArgs({ config: cfg({ mergeCheck: CHECK }) }), canned: oneTaskCanned({
+      'merge:bd-101': failMerge,
+      'fix:bd-101:check': { id: 'bd-101', status: 'FIXED', head: SHA('e') },
+      'seam-review:bd-101:check': { id: 'bd-101', status: 'NEEDS_FIX', finding: 'loosened an assertion' },
+      ...blockerTail,
+    }) })
+    assertNoThrow(rejected)
+    check(!rejected.trace.some(t => t.label === 'merge:bd-101:check-fixed') && /rejected by its review: loosened an assertion/.test(promptOf(rejected.trace, 'missing-blocker:bd-101') ?? ''), 'review rejects: no re-merge; blocker path with the review finding')
+
+    const spent = await run({ args: liveArgs({ config: cfg({ mergeCheck: CHECK }) }), canned: oneTaskCanned({
+      'merge:bd-101': { id: 'bd-101', merged: false, seamOverlap: ['src/a.js'], head: SHA('c'), mergeBase: SHA('b') },
+      'seam-review:bd-101': { id: 'bd-101', status: 'NEEDS_FIX', finding: 'renamed parse()' },
+      'fix:bd-101:seam': { id: 'bd-101', status: 'FIXED' },
+      'merge:bd-101:seam-cleared': failMerge,
+      ...blockerTail,
+    }) })
+    assertNoThrow(spent)
+    check(!spent.trace.some(t => t.label === 'fix:bd-101:check'), 'same-file seam fix already used: no merge-check fix')
+    check(extractLedgerLine(promptOf(spent.trace, 'ledger-append:merge-failed:bd-101')) === 'Merge: bd-101 — rebase clean · seam-review fixed · check fail → blocker', 'same-file seam fix already used: seam-review fixed · check fail → blocker')
+    check(JSON.stringify(spent.result?.escalated) === '["bd-101"]' && /failed on the merged tree/.test(promptOf(spent.trace, 'missing-blocker:bd-101') ?? ''), 'same-file seam fix already used: straight to the blocker path with the check output')
 
     const none = await run({ args: liveArgs(), canned: oneTaskCanned({ 'merge:bd-101': { id: 'bd-101', merged: true, head: SHA('b'), mergeBase: SHA('a'), check: 'pass' } }) })
     assertNoThrow(none)
@@ -1658,7 +1718,7 @@ async function main() {
   {
     const knownLedger = [
       `# SDD ledger — plan: ${EPIC}-plan.md`,
-      'Merge: bd-101 — rebase clean · seam-review none · check pass',
+      'Merge: bd-101 — rebase clean · seam-review none · check fail→fixed',
       'Merge: bd-102 — rebase conflict: 3 files · seam-review fixed · check pass',
       'Merge: bd-103 — rebase conflict: 2 files · seam-review cleared · check fail → blocker',
       'Task 1 (bd-101): complete (commits aaaaaaa..bbbbbbb, review clean)',
@@ -1675,7 +1735,7 @@ async function main() {
     const out = await run({ args: liveArgs(), canned: manyTaskCanned(['bd-101', 'bd-102'], { 'read-ledger:finish': { text: knownLedger } }) })
     assertNoThrow(out)
     const lines = extractLedgerLines(promptOf(out.trace, 'ledger-append:metrics'))
-    check(lines[0] === 'Metrics: merges 2 · merge-failed 1 · rebase-conflicts 2 · seam-reviews 2 (fixed 1) · check-fails 1', 'line 1: success-path merges only; conflicts, seam reviews and check failures on both paths', lines[0])
+    check(lines[0] === 'Metrics: merges 2 · merge-failed 1 · rebase-conflicts 2 · seam-reviews 2 (fixed 1) · check-fails 2 (fixed 1)', 'line 1: success-path merges only; conflicts, seam reviews and check failures on both paths', lines[0])
     check(lines[1] === 'Metrics: completions — review clean 1 · after fix pass 2 · parked 1 · re-entry closes 1', 'line 2: completion kinds (parked counted within fix pass)', lines[1])
     check(lines[2] === 'Metrics: fix-pass — entered 4 · FIXED 3 · BLOCKED 1', 'line 3: every fix-pass line counted, a retried task twice', lines[2])
     check(lines[3] === 'Metrics: ledger-check ok · append-failed 0 · append-retried 0', "line 4: M (2) matches this run's completed.size (2)", lines[3])
