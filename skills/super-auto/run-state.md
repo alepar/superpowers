@@ -72,7 +72,9 @@ a resume can silently redo work or violate a decision that was already made.
    and a run whose session dies during phase 1 has no spec to match on yet. There is
    no `plan` pointer at all — a tracker is required, so the epic and its beads are
    the plan, and a `plan:` line would only send a resume looking for a file that was
-   never meant to exist.
+   never meant to exist. Optional `skillSource: <abs skills path> @ <sha>[+dirty:<hash>] (<version>)`
+   appears only after a mid-run definitions switch (`SKILL.md` §Pre-flight); a resume
+   reads skills from it, and `migrated:` lines beside it map fields the new contract dropped.
 
    All path-valued pointers are given **relative to the run directory**
    (`docs/superpowers/runs/YYYY-MM-DD-<slug>/`) — never bare filenames, never full

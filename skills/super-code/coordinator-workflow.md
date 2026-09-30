@@ -32,6 +32,7 @@ args = {
     hotFileCap: 3,        // optional — see below
     topUpQueryCap: 40,    // optional — see below
     edgeAuditCap: 3,      // optional — see below
+    mergeCheck: '<exact build-only command>',  // optional — see below; never a test command
     sweep: '<exact full-suite test command>',  // optional — see below
     testPaths: ['tests/**', '...'],  // optional — REPLACES the default test pathspecs, see below
     models: { planner: 'opus', implementer: 'sonnet', reviewer: 'sonnet', mechanical: 'sonnet', triage: 'opus', finalReview: 'opus' },
@@ -60,8 +61,16 @@ agent finding the command itself. The sweep is mandatory whenever work landed, u
 
 `deferSweep` is **optional**: `true` means the caller runs the full-suite sweep itself (super-auto
 runs one after its fix loop exits). Finish then skips the sweep, tells the final reviewer it was
-deferred, and returns `sweep: "SWEEP DEFERRED (caller-owned)"`. There is no per-merge test run: a `config.gate` from an
-older caller is ignored with a log line. Which command ran is on the ledger's `Launch:` and
+deferred, and returns `sweep: "SWEEP DEFERRED (caller-owned)"`.
+
+`mergeCheck` is **optional**: the exact BUILD-ONLY command — compile or typecheck, envelope
+included (`cargo check --all-targets`, `tsc --noEmit`, `go build ./...`) — the merge agent runs on
+the merged tree at every serial merge. It is never a test command: no tests run per merge. It
+catches cross-branch compile seams no task's own tests can see (a sibling changed an API this task
+still calls; a fixture lacks a column a parallel task added) before more merges stack on top. When
+a caller doesn't declare it, pre-flight resolves the project's build/typecheck command; a project
+with none gets `'none'`, and no check runs. The `Launch:` line records the resolved command or
+`none`. A `config.gate` from an older caller is ignored with a log line. Which command ran is on the ledger's `Launch:` and
 `Sweep:` lines.
 
 `edgeAuditCap` is **optional** — additive (issue #3 design question C): how many report-only
@@ -114,10 +123,11 @@ this skill's script are a later task's concern; this doc only reserves the field
 
 ```
 task-brief → implementer (task-relevant tests, once) → review-package → task review (one, light)
-  → [Critical/Important: one fix pass] → serial merge (no tests) → ledger
+  → [Critical/Important: one fix pass] → serial merge (build-only mergeCheck, no tests) → ledger
 ```
 
-One review per task, at most one fix pass, no re-review, and no per-merge tests; Finish runs the
+One review per task, at most one fix pass, no re-review, and no per-merge tests (only the build-only
+`mergeCheck`); Finish runs the
 full suite once (the sweep) and the final whole-epic review. See SKILL.md's "Review and test
 policy" and "Review and fix pass" below.
 
@@ -216,7 +226,9 @@ Done by the main session, not the Workflow:
    **confirm scope with the user** before launching. Resolve `skillsRoot` (the parent of this
    skill's base directory) for the launch args, and — when the caller declared no `config.sweep`
    and no `deferSweep` — the project's full test command (from `AGENTS.md`, the README, or CI
-   config, with its execution envelope) as `config.sweep`.
+   config, with its execution envelope) as `config.sweep`; and, when no `config.mergeCheck` was
+   declared, the project's build-only compile/typecheck command (never a test command) as
+   `config.mergeCheck`, or `'none'` when the project has no such step.
 2. Create the **epic integration branch on its own worktree**, following
    `superpowers:using-git-worktrees` (project-local `.worktrees/`, verified git-ignored), **at the
    path `.worktrees/<integrationBranch>`, with any `/` in the branch name replaced by `-`** —
@@ -252,7 +264,7 @@ Done by the main session, not the Workflow:
      `git rebase <integrationBranch>` and `git merge --no-ff --no-edit <integrationBranch>` (both
      no-ops against its own base);
    - `bd create` / `bd close` / `bd comment`: each with `--help`;
-   - the project's setup step and the sweep command (or the project's test runner): the runner
+   - the project's setup step, the `mergeCheck` build command, and the sweep command (or the project's test runner): each tool
      with `--help` or a collect-only flag.
    Never probe with a real push, delete, or close. If a class is refused, ask the user to allow it
    before launching; never edit permission settings yourself. Mid-run, the decided policy is *work
@@ -713,25 +725,30 @@ is safe because a `bd ready` batch is mutually independent by definition):
    overlap → no extra dispatch. The seam review is an integration check, not a second task review:
    it looks only at how the task composes with what landed meanwhile. A rebase whose conflicts the
    merge agent resolved always overlaps, so the resolution itself gets this review.
-3. **No tests run at merge.** The implementer ran the task's tests; the sweep at Finish runs the
-   full suite once against the tip.
-4. Merge (`--no-ff`) into the integration branch, then `bd close <id>` (a leaf-task close; epic
-   closure is the separate fixpoint step in "The coordinator loop").
-5. If the conflict resolution fails: the merge agent files a blocker bead (label-only rule, as in
-   every filing prompt) whose body states the merge-base SHA and the conflicted files, so a reader
-   can tell a blocker filed against a superseded merge-base from a current one.
+3. **Build-only merge check, no tests.** After the rebase (and any conflict resolution or seam
+   fix), the merge agent stages the merge (`--no-ff --no-commit`) and runs `config.mergeCheck`
+   exactly as declared on the merged tree. It compiles or typechecks; it never runs tests (the
+   implementer ran the task's tests; the sweep at Finish runs the full suite). No declared check →
+   nothing runs.
+4. On a passing check (or none), commit the merge into the integration branch, then `bd close <id>`
+   (a leaf-task close; epic closure is the separate fixpoint step in "The coordinator loop").
+5. If the conflict resolution or the merge check fails: the merge agent aborts, edits no code or
+   test to go green, and files a blocker bead (label-only rule, as in every filing prompt) whose
+   body states the merge-base SHA and the conflicted files or the check command and its error
+   output, so a reader can tell a blocker filed against a superseded merge-base from a current one.
 
 **A `Merge:` ledger line records every merge attempt:**
 
 ```
-Merge: <bead-id> — rebase <clean | conflict: N files> · seam-review <none | cleared | fixed>
+Merge: <bead-id> — rebase <clean | conflict: N files> · seam-review <none | cleared | fixed> · check <pass | fail | none>
 ```
 
 with a trailing ` → blocker` on the failure path. Both paths append it through `ledgerAppendPrompt`,
 raw rather than through `ledgerLine()` (that helper's `Task <N> (<id>):` prefix names a task
 outcome; this line names a merge attempt). `rebase` is the merge agent's `rebaseConflictFiles`
 report (0 → `clean`); `seam-review` is `none` unless step 2 ran (`cleared` when it came back CLEAN,
-`fixed` when its one fix ran). Stub keys: `ledger-append:merge:<id>` (success) and
+`fixed` when its one fix ran); `check` is the merge check's result (`none` when no check is
+declared or the attempt failed before reaching it). Stub keys: `ledger-append:merge:<id>` (success) and
 `ledger-append:merge-failed:<id>` (blocker path).
 
 ## The blocker-bead path (the escalation currency)
@@ -861,7 +878,7 @@ are not in that variable); the script computes four lines from it and one `ledge
 dispatch appends them, in this order:
 
 ```
-Metrics: merges M · merge-failed Mf · rebase-conflicts C · seam-reviews S (fixed F)
+Metrics: merges M · merge-failed Mf · rebase-conflicts C · seam-reviews S (fixed F) · check-fails G
 Metrics: completions — review clean A · after fix pass B · parked P · re-entry closes R
 Metrics: fix-pass — entered E · FIXED X · BLOCKED Y
 Metrics: ledger-check <ok | M≠completed: M vs N> · append-failed K · append-retried J
@@ -871,7 +888,7 @@ Stub keys: `read-ledger:finish` and `ledger-append:metrics`. It runs even on a r
 nothing. A null re-read writes `Metrics: UNAVAILABLE …` lines instead of zero counts.
 
 - `M` counts success-path `Merge:` lines (no trailing ` → blocker`); `Mf` counts the ` → blocker`
-  lines. `C`, `S`, `F` come from `Merge:` lines on both paths.
+  lines. `C`, `S`, `F`, `G` come from `Merge:` lines on both paths.
 - `A`/`B`/`P`/`R` count `complete` lines by variant: `review clean`, `fix pass` (parked included),
   `parked`, `already merged`.
 - `E`/`X`/`Y` count `fix pass` lines, all of them (a retried task's second fix pass is a real
@@ -1107,7 +1124,7 @@ re-adopt from a stale reading. None of them is an open gap.
 ## What autonomous mode changes (summary)
 
 super-code runs its own per-task pipeline (one light review, at most one fix pass, no per-merge
-tests, a full-suite sweep at Finish) with prompts it owns, on top of SDD's brief, review-package
+tests beyond a build-only merged-tree check, a full-suite sweep at Finish) with prompts it owns, on top of SDD's brief, review-package
 and workspace scripts. Kept from this skill's predecessor:
 
 - Per-task worktrees branched off the **epic integration branch** (not off `main` and not off a
@@ -1281,6 +1298,10 @@ const topUpQueryCap = Math.max(0, Number(config.topUpQueryCap) || 40)
 // (nice/ionice, thread caps from AGENTS.md) in one place.
 if (typeof config.gate === 'string' && config.gate.trim()) log(`config.gate is ignored — no tests run per merge; the full suite runs once at Finish (config.sweep or the project's full test command)`)
 const sweepCommand = typeof config.sweep === 'string' && config.sweep.trim() ? config.sweep.trim() : null
+// mergeCheck (optional): a BUILD-ONLY command (compile/typecheck, never tests) the merge agent runs
+// on the merged tree at every serial merge. Pre-flight resolves the project's default when
+// undeclared; `'none'` (or absent) means the project has no such step and none runs.
+const mergeCheckCommand = typeof config.mergeCheck === 'string' && config.mergeCheck.trim() && config.mergeCheck.trim().toLowerCase() !== 'none' ? config.mergeCheck.trim() : null
 // deferSweep (optional caller arg): the caller runs the full-suite sweep itself (super-auto runs
 // one after its fix loop exits), so Finish skips it and says so.
 const deferSweep = A.deferSweep === true
@@ -1468,7 +1489,7 @@ const TRIAGE  = { type: 'object', properties: { decision: {type:'string', enum: 
 // Task 3 (`Merge:` ledger line): `rebaseConflictFiles` — the number of files the rebase reported
 // as conflicting (0 for a clean rebase) — reported on EVERY merge attempt, success or failure,
 // so the per-merge ledger line's `rebase <clean | conflict: N files>` field always has a source.
-const MERGE   = { type: 'object', properties: { id:{type:'string'}, merged:{type:'boolean'}, blockerBead:{type:'string'}, head:{type:'string'}, mergeBase:{type:'string'}, authRefused:{type:'string'}, seamOverlap:{ type:'array', items:{type:'string'} }, rebaseConflictFiles:{type:'number'} }, required: ['id','merged'] }
+const MERGE   = { type: 'object', properties: { id:{type:'string'}, merged:{type:'boolean'}, blockerBead:{type:'string'}, head:{type:'string'}, mergeBase:{type:'string'}, authRefused:{type:'string'}, seamOverlap:{ type:'array', items:{type:'string'} }, rebaseConflictFiles:{type:'number'}, check:{type:'string', enum:['pass','fail','none']} }, required: ['id','merged'] }
 // issue #3 design question C: the conditional, report-only dependency-edge audit's return shape
 // — see `edgeAuditPrompt`. `suspectEdges` are named, never removed: reshaping the graph mid-run
 // stays an operator's call (super-design §Splitting a Bead is the precedent for how much a graph
@@ -1613,7 +1634,7 @@ if (!ledger) log('resume: ledger read unavailable (null dispatch) — proceeding
 // `Launch:` line's JSON back into the Workflow invocation verbatim instead of reconstructing it.
 // `prompts` (the dryRun stub tables) is deliberately omitted — it can run to many KB and a live
 // relaunch never needs it; `dryRun` itself is recorded so a stub-table omission is self-evident.
-await appendLedger(`Launch: args ${JSON.stringify({ epicId, integrationBranch, integrationWorktree, skillsRoot, deferSweep, config, dryRun: !!dryRun })}`,
+await appendLedger(`Launch: args ${JSON.stringify({ epicId, integrationBranch, integrationWorktree, skillsRoot, deferSweep, mergeCheck: mergeCheckCommand ?? 'none (no build/typecheck step declared)', config, dryRun: !!dryRun })}`,
   'ledger-append:launch', { label: 'ledger-append:launch', phase: 'Resume', model: model('mechanical') })
 // Pure JS parse — no judgment, no further I/O (the text is already fetched above). Ledger lines are
 // append-only, so a bead id can have MORE THAN ONE line over a run's history (e.g. a "pending retry"
@@ -1951,7 +1972,7 @@ while (true) {
     // `seamOutcome` feeds the `Merge:` ledger line's `seam-review` field — `none` unless the seam
     // branch below runs, `cleared` if the scoped review came back CLEAN, `fixed` if its one fix ran.
     let seamOutcome = 'none'
-    let m = await dispatch(() => mergePrompt(r, integrationBranch, integrationWorktree, blockerBeadOf.get(r.id)), `merge:${r.id}`,
+    let m = await dispatch(() => mergePrompt(r, integrationBranch, integrationWorktree, blockerBeadOf.get(r.id), mergeCheckCommand), `merge:${r.id}`,
       { label: `merge:${r.id}`, phase: 'Integrate', model: model('reviewer'), schema: MERGE })
     // Post-rebase seam check: a rebase that moved the task onto sibling changes touching the SAME
     // files gets exactly one scoped seam review before merging — the task review ran pre-rebase
@@ -1979,7 +2000,7 @@ while (true) {
       } else {
         seamOutcome = 'cleared'
       }
-      m = await dispatch(() => mergePrompt({ ...r, seamCleared: true }, integrationBranch, integrationWorktree, blockerBeadOf.get(r.id)), `merge:${r.id}:seam-cleared`,
+      m = await dispatch(() => mergePrompt({ ...r, seamCleared: true }, integrationBranch, integrationWorktree, blockerBeadOf.get(r.id), mergeCheckCommand), `merge:${r.id}:seam-cleared`,
         { label: `merge:${r.id}:seam-cleared`, phase: 'Integrate', model: model('reviewer'), schema: MERGE })
     }
     // Null merge ("Null dispatch policy"): NO merge happened — no `bd close`, no `complete` ledger
@@ -1999,12 +2020,15 @@ while (true) {
       return
     }
     const rebaseText = m.rebaseConflictFiles ? ('conflict: ' + m.rebaseConflictFiles + ' files') : 'clean'
+    // `check`: the build-only mergeCheck result on the merged tree — `none` when no command is
+    // declared or the attempt failed before reaching it.
+    const checkText = ['pass', 'fail'].includes(m.check) && mergeCheckCommand ? m.check : 'none'
     if (m.merged) {
       settle(r.id, completed)  // also clears a stale escalated/pendingRetry mark from a prior run
       blockerBeadOf.delete(r.id)  // the merge dispatch closed the RESOLVEd bead
       // `Merge:` ledger line, success path — raw, not through ledgerLine(): it names a merge
       // attempt, not a task outcome.
-      await appendLedger(`Merge: ${r.id} — rebase ${rebaseText} · seam-review ${seamOutcome}`,
+      await appendLedger(`Merge: ${r.id} — rebase ${rebaseText} · seam-review ${seamOutcome} · check ${checkText}`,
         `ledger-append:merge:${r.id}`, { label: `ledger-append:merge:${r.id}`, phase: 'Integrate', model: model('mechanical') })
       // Minors are written HERE, at the merge gate — a minor deferred on a task that never merges
       // is part of a blocked task's open state, which the blocker path already carries. One line
@@ -2037,7 +2061,7 @@ while (true) {
       // `Merge:` ledger line, failure path — dispatched BEFORE handleBlocker so it lands even if the
       // blocker path's own dispatches are left unsettled by a null. `n: r.n` is carried so the
       // blocker's eventual ledger line can cite the plan ordinal.
-      await appendLedger(`Merge: ${r.id} — rebase ${rebaseText} · seam-review ${seamOutcome} → blocker`,
+      await appendLedger(`Merge: ${r.id} — rebase ${rebaseText} · seam-review ${seamOutcome} · check ${checkText} → blocker`,
         `ledger-append:merge-failed:${r.id}`, { label: `ledger-append:merge-failed:${r.id}`, phase: 'Integrate', model: model('mechanical') })
       await handleBlocker({ id: r.id, n: r.n, blockerBead: m.blockerBead }, planned.planPath, id => resolveRetryHook(id))
     }
@@ -2427,7 +2451,7 @@ while (true) {
 phase('Finish')
 log(`Completed: ${completed.size}. Escalated: ${escalated.size}. Pending retry: ${pendingRetry.size}. Parked (merged with fix-pass-declined findings): ${parked.size}. Auth-refused (coverage lost to permission refusals): ${authRefused.length}. Recurring clusters (minor + blocker): ${recurringReported}. Ledger appends failed: ${ledgerAppendFailed.length} (retried and saved: ${ledgerAppendRetried}). Stop reason: ${stopReason}.${stalled ? ' Stalled: true — see the STALLED log line above.' : ''}`)
 // The sweep: the full test suite, run ONCE here against the integration tip the final review is
-// about to read — mandatory whenever work landed (nothing runs per merge). `config.sweep` when
+// about to read — mandatory whenever work landed (only the build-only mergeCheck runs per merge). `config.sweep` when
 // declared, else the project's full test command. Its summary goes to the ledger (`Sweep:` line),
 // the final-review dispatch, and the return value. The measurement-validity floor applies (Local
 // adaptations).
@@ -2457,17 +2481,18 @@ if (!metricsLedger) {
   const metricsLines = (metricsLedger.text || '').split('\n').map(l => l.trim()).filter(Boolean)
   // `Merge:` lines, raw, on BOTH paths. `M` counts success-path lines only: `completed` never holds
   // a failed merge's id, so a both-paths count would mismatch ledger-check on every failed merge.
-  const MERGE_METRICS_RE = /^Merge:\s+\S+\s+—\s+rebase\s+(clean|conflict:\s*\d+\s*files?)\s+·\s+seam-review\s+(none|cleared|fixed)(\s+→\s+blocker)?$/
-  let mMerges = 0, mMergeFailed = 0, mConflicts = 0, mSeamReviews = 0, mSeamFixed = 0
+  const MERGE_METRICS_RE = /^Merge:\s+\S+\s+—\s+rebase\s+(clean|conflict:\s*\d+\s*files?)\s+·\s+seam-review\s+(none|cleared|fixed)\s+·\s+check\s+(pass|fail|none)(\s+→\s+blocker)?$/
+  let mMerges = 0, mMergeFailed = 0, mConflicts = 0, mSeamReviews = 0, mSeamFixed = 0, mCheckFails = 0
   let cClean = 0, cFixPass = 0, cParked = 0, cReentry = 0
   let fEntered = 0, fFixed = 0, fBlocked = 0
   for (const line of metricsLines) {
     const mm = MERGE_METRICS_RE.exec(line)
     if (mm) {
-      const [, rebase, seam, blocker] = mm
+      const [, rebase, seam, chk, blocker] = mm
       if (blocker) mMergeFailed++; else mMerges++
       if (rebase.startsWith('conflict')) mConflicts++
       if (seam !== 'none') { mSeamReviews++; if (seam === 'fixed') mSeamFixed++ }
+      if (chk === 'fail') mCheckFails++
       continue
     }
     const lm = LEDGER_LINE_RE.exec(line)
@@ -2488,7 +2513,7 @@ if (!metricsLedger) {
   // tallies are counted at this point; the Metrics append itself cannot count itself.
   const mLedgerCheck = mMerges === completed.size ? 'ok' : `M≠completed: ${mMerges} vs ${completed.size}`
   metrics = [
-    `Metrics: merges ${mMerges} · merge-failed ${mMergeFailed} · rebase-conflicts ${mConflicts} · seam-reviews ${mSeamReviews} (fixed ${mSeamFixed})`,
+    `Metrics: merges ${mMerges} · merge-failed ${mMergeFailed} · rebase-conflicts ${mConflicts} · seam-reviews ${mSeamReviews} (fixed ${mSeamFixed}) · check-fails ${mCheckFails}`,
     `Metrics: completions — review clean ${cClean} · after fix pass ${cFixPass} · parked ${cParked} · re-entry closes ${cReentry}`,
     `Metrics: fix-pass — entered ${fEntered} · FIXED ${fFixed} · BLOCKED ${fBlocked}`,
     `Metrics: ledger-check ${mLedgerCheck} · append-failed ${ledgerAppendFailed.length} · append-retried ${ledgerAppendRetried}`,
@@ -2665,7 +2690,7 @@ function sweepPrompt(sweepCommand, integrationWorktree, integrationBranch) {
   return `Full-suite sweep for ${integrationBranch}. In ${integrationWorktree}, at the current tip (record \`git rev-parse HEAD\` first), ${what}. MEASUREMENT-VALIDITY FLOOR: before reporting counts, check that the run actually collected and finished a plausible suite — collection errors, a passed count near zero for a suite known to be large, or a runner that terminated before finalizing its report are NOT results; in any of those cases report the literal prefix "MEASUREMENT INVALID: <cause>" instead of counts. Otherwise report ONE line: "<tip sha7> — <passed> passed, <failed> failed, <errors> errors, <skipped> skipped; failing: <up to 20 failing node ids, or none>; command: <the exact command>". Do not fix anything, do not re-run selectively, do not interpret — the final reviewer reads this line as the branch's full-suite measurement.`
 }
 
-function mergePrompt(r, integrationBranch, integrationWorktree, resolvedBead) {
+function mergePrompt(r, integrationBranch, integrationWorktree, resolvedBead, mergeCheck) {
   // Serial merge-back: rebase onto the integration branch, bounded conflict resolution (conflicted
   // hunks only), the post-rebase seam check, merge --no-ff and bd close. NO tests: the implementer
   // ran the task's tests and the sweep runs the full suite at Finish. `head` and `mergeBase` are
@@ -2675,10 +2700,16 @@ function mergePrompt(r, integrationBranch, integrationWorktree, resolvedBead) {
   const beadClose = resolvedBead ? ` and \`bd close ${resolvedBead} --reason "resolved: task ${r.id} merged"\` (the blocker bead whose RESOLVE this retry answered)` : ''
   // `r.branch` is the task WORKTREE path; the git ref is taskBranch(r.id).
   const br = taskBranch(r.id)
+  // The build-only merged-tree check: compile/typecheck only, never tests. It catches cross-branch
+  // compile seams (a sibling changed an API this task still calls) that each task's own tests
+  // cannot see. A failure is the ordinary merge-failure blocker path, never an in-place fix.
+  const checkStep = mergeCheck
+    ? `MERGE CHECK (build only, never tests): in ${integrationWorktree}, run \`git merge --no-ff --no-commit ${br}\` and then EXACTLY this command on the merged tree, unchanged: \`${mergeCheck}\`. If it succeeds, \`git commit --no-edit\` the merge and report check pass. If it fails, do not edit any code or test to make it pass: \`git merge --abort\`, file a blocker bead (as below) whose body also carries the command and the first 40 lines of its error output, and report merged false with check fail.`
+    : `No merge check is declared for this project: \`git merge --no-ff ${br}\` in ${integrationWorktree} and report check none.`
   const seamStep = r.seamCleared
     ? `This branch is ALREADY rebased and its post-rebase seam has been reviewed (and fixed if needed) — do not repeat the seam check; if new integration commits landed meanwhile, rebase once more and continue straight to the merge.`
     : `POST-REBASE SEAM CHECK, after a successful rebase and BEFORE merging: if ${integrationBranch} moved since this task branched (its current tip is not ${r.base}), list the files the sibling commits changed (\`git diff --name-only ${r.base} ${integrationBranch}\`) and the files this task changed (\`git diff --name-only $(git merge-base ${integrationBranch} ${br}) ${br}\`). If the two lists INTERSECT, do NOT merge: capture head and mergeBase as described below and report merged false with seamOverlap as the intersecting file list — a seam review runs and this merge is re-dispatched. If they do not intersect, or the branch did not move, continue.`
-  return `Task ${r.id}'s branch \`${br}\` is checked out in its worktree ${r.branch}; the integration branch ${integrationBranch} is checked out in ${integrationWorktree}. In ${r.branch}, rebase \`${br}\` onto ${integrationBranch}. Count the files the rebase reported as conflicting (0 if it applied cleanly): that is rebaseConflictFiles, reported however the attempt ends. CONFLICTS: make ONE bounded attempt that resolves the conflicted hunks only, keeping both sides' intent; edit nothing outside the conflicted hunks, and do not run, add, delete, skip, or loosen any test. ${seamStep} Then run \`git merge-base ${integrationBranch} ${br}\` (the POST-REBASE merge-base, captured before merging) and \`git rev-parse ${br}\` (the rebased tip); in ${integrationWorktree}, \`git merge --no-ff ${br}\` into ${integrationBranch}; run \`bd close ${r.id}\`${beadClose}, and report merged true with head, mergeBase, and rebaseConflictFiles. Run no tests in this dispatch. If the conflict resolution fails, abort the rebase and file a blocker bead: ${blockerBeadRule()}, with a body stating the task id, the merge-base SHA of the failed attempt, and the conflicted files, so a later reader can tell a blocker filed against a superseded merge-base from a current one; report merged false with its id as blockerBead and rebaseConflictFiles. ${authRefusalRule()} For THIS dispatch, report a refusal as merged false with authRefused set to the exact refused command(s) instead of a status token.`
+  return `Task ${r.id}'s branch \`${br}\` is checked out in its worktree ${r.branch}; the integration branch ${integrationBranch} is checked out in ${integrationWorktree}. In ${r.branch}, rebase \`${br}\` onto ${integrationBranch}. Count the files the rebase reported as conflicting (0 if it applied cleanly): that is rebaseConflictFiles, reported however the attempt ends. CONFLICTS: make ONE bounded attempt that resolves the conflicted hunks only, keeping both sides' intent; edit nothing outside the conflicted hunks, and do not run, add, delete, skip, or loosen any test. ${seamStep} Then run \`git merge-base ${integrationBranch} ${br}\` (the POST-REBASE merge-base, captured before merging) and \`git rev-parse ${br}\` (the rebased tip). ${checkStep} Once the merge is committed, run \`bd close ${r.id}\`${beadClose}, and report merged true with head, mergeBase, rebaseConflictFiles, and check. Run no tests in this dispatch. If the conflict resolution fails, abort the rebase, report check none, and file a blocker bead: ${blockerBeadRule()}, with a body stating the task id, the merge-base SHA of the failed attempt, and the conflicted files, so a later reader can tell a blocker filed against a superseded merge-base from a current one; report merged false with its id as blockerBead, rebaseConflictFiles, and check. ${authRefusalRule()} For THIS dispatch, report a refusal as merged false with authRefused set to the exact refused command(s) instead of a status token.`
 }
 
 function missingBlockerBeadPrompt(r) {
@@ -3043,12 +3074,13 @@ narratives that used to accompany each row are in git history; nothing here depe
 | Tasks 4–6 (per-round fix-loop line, `Test changes` block, Finish `Metrics:` block) | replay 51/0 | replay 36/0 | replay 37/0 |
 | issue #5 defects 1–6 (coordinator-owned identities: absolute task worktree + pinned branch + id re-stamp; already-merged short-circuit; commit nudge; blocker-bead close; Finish bucket reconciliation) | replay 52/0 | replay 37/0 | replay 37/0 |
 | issue #5 defects 7–9 (`appendLedger` retry-then-mark; elided retries for free-text lines and `notify`; `noteRecurrence` over minors AND triaged blockers via TRIAGE `cause`) | replay 52/0 | replay 37/0 | replay 37/0 |
-| **D4 loop (one review, one fix pass, no re-review/round cap/adjudicator, no per-merge gate, mandatory sweep with `deferSweep` opt-out, batched ledger appends, `skillsRoot`) — CURRENT; columns 2–3 are now fix-pass-blocked / parked** | **replay 50/0** | **replay 19/0** | **replay 22/0** |
+| **D4 loop (one review, one fix pass, no re-review/round cap/adjudicator, no per-merge tests (build-only `mergeCheck`), mandatory sweep with `deferSweep` opt-out, batched ledger appends, `skillsRoot`) — CURRENT; columns 2–3 are now fix-pass-blocked / parked** | **replay 50/0** | **replay 19/0** | **replay 22/0** |
 
 The D4 row's figures come from the offline replay harness (`tests/super-code/`), updated to the
 D4 loop: it replays the three `args` blocks below and runs the live-sim, null-injection,
-parallelism, seam, sweep and Metrics scenarios against this script (882 checks, 0 failures at the
-D4 revision). Every paragraph below that describes fix rounds, the round cap, re-review, the adjudicator, or a
+parallelism, seam, merge-check, sweep and Metrics scenarios against this script (968 checks, 0
+failures at the D4 + `mergeCheck` revision; the dispatch counts are unchanged by `mergeCheck`,
+which adds no dispatch). Every paragraph below that describes fix rounds, the round cap, re-review, the adjudicator, or a
 per-merge gate describes a superseded revision.
 
 The issue #3/#4 row's +1 on every scenario is exactly the persisted detector line — one
@@ -3299,7 +3331,9 @@ the merge agent) → triage ESCALATE → notify → quarantine, and the run **co
 **implementer self-reports BLOCKED**: no `review:bd-104` key exists, because that dispatch must
 never happen; triage RESOLVEs it, the same-round retry re-runs brief + implement, the retry reports
 BLOCKED again, and the second RESOLVE is bounced into ESCALATE by the one-retry bound. Two tasks
-land, so the mandatory sweep and the final review both dispatch.
+land, so the mandatory sweep and the final review both dispatch. The args declare no
+`mergeCheck`, so every `Merge:` line reads `check none`; the check's pass / fail / none paths are
+exercised by the replay harness's live-sim scenarios.
 
 | Stub key | Canned output (`<json>` content) | Exercises |
 |---|---|---|

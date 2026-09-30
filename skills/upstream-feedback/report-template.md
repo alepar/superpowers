@@ -26,8 +26,8 @@ Plugin: <version>. Run: <scale — bead count / rounds / duration if known>, <da
 <!-- the `Metrics: completions` line (review clean / after fix pass / parked / re-entry closes)
      and the `Metrics: fix-pass` line (entered / FIXED / BLOCKED) -->
 ### Merge-back
-<!-- the `Metrics: merges` line and the `ledger-check` line; count of `Merge:` lines with
-     conflict / seam-review fired / → blocker -->
+<!-- the `Metrics: merges` line (including check-fails) and the `ledger-check` line; count of
+     `Merge:` lines with conflict / seam-review fired / check fail / → blocker -->
 ### Coverage
 <!-- the `requirements:` line per coverage round and the `scope-filter:` line per fix round -->
 ### Bead graph
