@@ -39,6 +39,9 @@ high-stakes reviews pair super-roast with a human or cross-family review. The re
 
 **Mode selection:** caller-stated mode wins; otherwise infer from what's obviously being
 reviewed (a spec file path vs. a diff/branch); if genuinely ambiguous, **ask — never guess.**
+When the caller states the run is autonomous, there is no one to ask: take the mode best
+supported by the artifact's form, proceed, and mark the assumption on the report's `mode:`
+line when writing the report file (e.g. `mode: PR (assumed — input is a branch diff)`).
 
 ## Inputs (from a caller)
 
@@ -48,8 +51,8 @@ reviewed (a spec file path vs. a diff/branch); if genuinely ambiguous, **ask —
 | the artifact | design mode: a spec file or settled tree; PR mode: `branch@sha` vs `base@sha` — the caller supplies the base to diff against |
 | report-location override | directory the report is written to instead of the default below |
 | iteration `N` | printed in the report header (`iteration: N of 3`); this skill is stateless, so the caller carries the count. A caller running a whole-branch roast *after* its fix loop's cap has tripped passes the literal `post-cap audit` instead of a number — the header accepts it, and the run is never counted as a fourth round |
-| prior report path (rounds ≥ 2) | lets the run skip re-litigating what `## Rejected (with reason)` already settled — and switches the run into its late-round shape: scouts get the iterations-≥2 stance ("no material findings" is a valid, expected outcome; manufacturing marginal findings is the failure mode) instead of round 1's recall pressure, and a `regression` lens/lane joins the roster to review what the fixes themselves touched (see the scout prompt files' "Iteration stance" sections) |
-| autonomous (optional) | see the Handoff exception in The Process step 7 |
+| prior report path (rounds ≥ 2) | lets the run skip re-litigating what `## Rejected (with reason)` already settled — and switches the run into its late-round shape: scouts get the iterations-≥2 materiality bar ("no material findings" is a valid, expected outcome; manufacturing marginal findings is the failure mode) in place of round 1's high-recall section, and a `regression` lens/lane joins the roster to review what the fixes themselves touched (see the scout prompt files' "Iteration stance" sections) |
+| autonomous (optional) | see Mode selection above and the Handoff exception in The Process step 7 |
 
 Only mode and the artifact are required; a bare invocation gets defaults for the rest.
 
@@ -73,16 +76,18 @@ engine script: **`./super-roast-workflow.md`**.
    WebSearch/WebFetch, return structured findings. See `./scout-prompts-design.md` /
    `./scout-prompts-pr.md`.
 4. **Dedupe-and-rank (fable, 1)** — merges overlapping findings (same location + root claim),
-   suggests a severity, and applies the remainder cap (`config.remainderCap`): all severe
-   findings survive uncapped; the rest are capped and the overflow count reported, never
-   silently dropped. See `./dedupe-prompt.md`. Severe findings are NOT capped at the next
-   stage by default: every one gets a full judge panel, in both modes (a measured design roast
-   left 18 of 30 severe candidates unjudged under the old default of 12). An optional
-   `config.panelCap` bounds that cost when a caller wants it — the rest are then listed under
-   "## Not verified (beyond panel cap)" with their suggested severity, never dropped.
+   suggests a severity, and ranks the Nit/FYI tail. See `./dedupe-prompt.md`. The engine then
+   applies the remainder cap (`config.remainderCap`, default 50): all severe findings survive
+   uncapped; the Nit/FYI tail beyond the cap survives as a count, never silently dropped.
+   Severe findings are NOT capped at the next stage by default: every one gets a full judge
+   panel, in both modes, because an unverified Blocking candidate is not a cleared one. An
+   optional `config.panelCap` bounds that cost when a caller wants it — the rest are then
+   listed under "## Not verified (beyond panel cap)" with their suggested severity, never
+   dropped.
 5. **Judges (sonnet, tiered)** — see "Tiered verification" below. See `./judge-seat-prompts.md`.
-6. **Reporter (fable, 1)** — issues final verdicts, applies the environment-aware severity
-   floors, and writes the report. See `./reporter-prompt.md` and Output below.
+6. **Reporter (fable, 1)** — overrules the engine's default routes only with cited seat
+   evidence, applies the environment-aware severity floors, and writes the report. See
+   `./reporter-prompt.md` and Output below.
 7. **Handoff** — report only; the caller (e.g. `super-design`) decides whether to loop a fix pass
    and re-roast. A re-roast reviews the full artifact each round — under the late-round stance,
    with the `regression` lens covering what the fixes themselves touched (step 3) — capped at 3
@@ -133,7 +138,9 @@ appear anywhere in this pipeline — those are `roast`'s vocabulary, not this sk
 - Violation of the artifact's own stated core purpose.
 
 Any of these → **Blocking**, regardless of what the environment profile would otherwise permit.
-A profile may soften everything else; it may never soften a floor.
+A profile may soften everything else; it may never soften a floor. Floors apply to what the
+change introduces or worsens: in PR mode a defect already present on the base branch is
+confirmed at **FYI** (flagged `preExisting`) — reported, never a fix-round driver.
 
 ### Tiered verification (replaces `roast`'s shallow/medium/deep depth levels)
 
@@ -145,6 +152,11 @@ budget:
 - **Nit / FYI candidates** get a **single refute-seat spot check.**
 - A spot check that returns **CONFIRM at Blocking/Should-fix** is under-graded — it's
   **promoted** to the full three-seat panel.
+- Judges never see the suggested severity — they rate blind.
+- The engine computes each packet's default route: a full panel with 2+ CONFIRM is confirmed,
+  2+ REJECT rejected; a dead seat, an external claim with an UNVERIFIED vote, or a panel whose
+  UNVERIFIED votes leave no 2-vote majority escalates to a human. The reporter may overrule
+  confirmed/rejected only by citing seat evidence, and never un-escalates.
 
 ### Report format
 
@@ -172,7 +184,7 @@ seat-agreement: panels N · rr 0.78 · rg 0.89 · fg 0.67 · unanimous 0.56 · g
 
 ## Rejected (with reason)        ← so re-roasts don't re-litigate
 ## Unverified nits (spot-checked)
-## Escalations (need human)      ← UNVERIFIED externals, incomplete panels, material dissent
+## Escalations (need human)      ← UNVERIFIED externals, incomplete panels, unsettled panels, material dissent
 ```
 
 The report is written to `docs/superpowers/reviews/YYYY-MM-DD-<topic>-roast-<mode>-N.md`
@@ -197,9 +209,9 @@ Full semantics: `./reporter-prompt.md` Steps 3–4.
 
 **The two caps lose findings differently, and the report says so differently.** `beyondPanelCap`
 (severe candidates the judge panel never reached) are listed individually under "## Not verified
-(beyond panel cap)". `beyondCap` (the deduper's remainder overflow) survives only as a count —
-the deduper returns `beyondCapCount`, not the claims — so it gets the "## Beyond remainder cap"
-count line and the `remainder-capped: N` term on the coverage line. Neither is ever silently
+(beyond panel cap)". `beyondCap` (the Nit/FYI overflow past the remainder cap) survives only
+as a count the engine keeps — so it gets the "## Beyond remainder cap" count line and the
+`remainder-capped: N` term on the coverage line. Neither is ever silently
 dropped; they are just recoverable to different depths.
 
 Full template and field semantics: `./reporter-prompt.md`.
@@ -228,7 +240,7 @@ Full template and field semantics: `./reporter-prompt.md`.
   reconsideration explicitly cites that specific new evidence. No new evidence, no reopening.
 - Edit the artifact or create tasks — super-roast is **report-only**; the caller (human or
   `super-design`) decides what happens next.
-- Guess the mode on ambiguous input — ask.
+- Guess the mode on ambiguous input — ask (autonomous runs: assume and state it, per Mode selection).
 - Report a clean verdict when scouts or judges failed to complete — that's
   `clean (n nits) [low coverage]`, not a clearance.
 - Run a round ≥ 2 with round-1 scout framing — the late-round stance ("no material findings"

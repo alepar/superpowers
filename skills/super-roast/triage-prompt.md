@@ -24,7 +24,8 @@ assumptions most apply. These pick the domain-expert scouts.
   surfaced (a silent gap), whereas a wrong domain is cheaply rejected later. If a domain is
   plausibly relevant, name it. Only output `none` when the design is genuinely generic — this
   widens the core lenses (adds `security` and `maintainer`) instead of narrowing to a domain.
-- One short line of rationale per label.
+- Think through a one-line rationale per label before choosing, but return only the bare
+  labels (e.g. `"auth"`) in `domains`: each label is substituted into a scout prompt verbatim.
 - Populate `domains`; leave `lanes` empty (`[]`).
 
 ## PR mode: activate conditional lanes
