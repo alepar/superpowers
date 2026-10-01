@@ -1,0 +1,8 @@
+[
+ {"id":"q","title":"Per-tenant rate limiter","issue_type":"epic","status":"open","labels":["sp:q"],"description":"Root epic for the limiter.","dependencies":[]},
+ {"id":"q.1","title":"Quota store","issue_type":"epic","status":"open","labels":["sp:q"],"parent":"q","description":"Persist per-tenant quotas. Promoted because it needs a schema decision.","dependencies":[]},
+ {"id":"q.1.1","title":"Quota schema","issue_type":"task","status":"open","labels":["sp:q"],"parent":"q.1","description":"Define the quota table and its migration.\nowns: quota table schema\nMore detail that must not appear.","dependencies":[]},
+ {"id":"q.1.2","title":"Quota reads","issue_type":"task","status":"open","labels":["sp:q"],"parent":"q.1","description":"Read the current quota for a tenant. Second sentence.\nconsumes: quota table schema\nblocked-by q.1.1: consumes quota table schema","dependencies":[{"issue_id":"q.1.2","depends_on_id":"q.1.1","type":"blocks"}]},
+ {"id":"q.2","title":"Enforcement","issue_type":"task","status":"open","labels":["sp:q"],"parent":"q","description":"Reject over-quota requests with 429.\nboundary contract: q.3","dependencies":[{"issue_id":"q.2","depends_on_id":"q.1","type":"blocks"},{"issue_id":"q.2","depends_on_id":"q.9","type":"parent-child"}]},
+ {"id":"q.10","title":"Usage endpoint","issue_type":"task","status":"open","labels":["sp:q"],"parent":"q","description":"","dependencies":[]}
+]

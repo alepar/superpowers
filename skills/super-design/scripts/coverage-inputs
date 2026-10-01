@@ -1,0 +1,128 @@
+#!/usr/bin/env bash
+# Assemble the coverage reviewer's compact inputs: every goal in the tree and the task tree as one
+# line per bead. Specs contribute only their `## Goal` sections; full spec text reaches a reviewer
+# only through a NEEDS-SPEC re-run.
+#
+# Usage: bash coverage-inputs [--from DUMP_FILE] ROOT_EPIC_ID ROOT_SPEC [SUBEPIC_SPEC...]
+#   --from reads a saved `bd list --label sp:ROOT_EPIC_ID --all --json --limit 0` dump instead of
+#   running bd. A subepic spec is matched to its epic by the bead id named in its first 15 lines
+#   (§Conventions: each nested spec's header links its bead id).
+# Output (stdout), two sections ready to paste into the reviewer prompt:
+#   ## Goals         root goal, then per epic: `### <id> — <title>`, its spec's Goal section (or
+#                    `(no spec)`), and `summary:` — the first sentence of the epic bead's description
+#   ## Task tree     one line per bead in tree order, indented by depth:
+#                    `- <id> · <title> · <first sentence> · deps: <blocking ids>|none`, epics marked
+#                    `(epic)`; under it, the bead's `owns:` / `consumes:` / `boundary contract:` lines
+# stderr: `coverage-inputs: <bytes> bytes (target ≤ 60000)`, plus `over-target:` when above it,
+#         and `unmatched-spec: <file>` for a subepic spec that names no bead in the tree.
+# Exit 0 ok, 2 bad input, 4 jq unavailable (prints a JQ_UNAVAILABLE: line on stdout).
+set -euo pipefail
+
+usage() { echo "usage: coverage-inputs [--from DUMP_FILE] ROOT_EPIC_ID ROOT_SPEC [SUBEPIC_SPEC...]" >&2; exit 2; }
+
+dump_file=
+if [ "${1:-}" = "--from" ]; then
+  [ $# -ge 2 ] || usage
+  dump_file=$2
+  shift 2
+  [ -f "$dump_file" ] || { echo "no such dump file: $dump_file" >&2; exit 2; }
+fi
+[ $# -ge 2 ] || usage
+root=$1
+root_spec=$2
+shift 2
+for f in "$root_spec" "$@"; do [ -f "$f" ] || { echo "no such spec file: $f" >&2; exit 2; }; done
+
+command -v jq >/dev/null 2>&1 || {
+  echo "JQ_UNAVAILABLE: jq is not installed, so assemble the two sections by hand from \`bd list --label sp:${root} --all --json --limit 0\`. (1) \`## Goals\`: the \`## Goal\` section of ${root_spec} under \`### ${root} (root)\`; then for each epic bead other than ${root}, \`### <id> — <title>\`, the \`## Goal\` section of the spec file whose first 15 lines name that id (else \`(no spec)\`), and \`summary: <first sentence of the epic's description>\`. (2) \`## Task tree\`: every bead in tree order (children under their \`parent\`, indented two spaces per level), one line each: \`- <id> · <title> · <first sentence of description, at most 160 chars> · deps: <ids of its dependencies whose type is blocks, comma-separated, or none>\`, with \` (epic)\` after the title for epics; under a bead, copy its description lines that start with \`owns:\`, \`consumes:\` or \`boundary contract:\`. Keep the whole output near 60 KB."
+  exit 4
+}
+
+if [ -n "$dump_file" ]; then
+  dump=$(cat "$dump_file")
+else
+  dump=$(bd list --label "sp:${root}" --all --json --limit 0)
+fi
+echo "$dump" | jq -e 'type == "array"' >/dev/null 2>&1 || { echo "bead dump is not a JSON array" >&2; exit 2; }
+echo "$dump" | jq -e --arg r "$root" 'any(.[]; .id == $r)' >/dev/null || { echo "root epic $root not in the dump" >&2; exit 2; }
+
+# The `## Goal` section of a spec file: from its heading to the next `## ` heading.
+goal_section() {
+  awk '/^## Goal[[:space:]]*$/ { on = 1; next } on && /^## / { exit } on { print }' "$1" |
+    sed -e '/./,$!d' | awk '{ lines[NR] = $0 } END { n = NR; while (n > 0 && lines[n] ~ /^[[:space:]]*$/) n--; for (i = 1; i <= n; i++) print lines[i] }'
+}
+
+out=$(mktemp)
+map=$(mktemp)
+trap 'rm -f "$out" "$map"' EXIT
+
+ids=$(echo "$dump" | jq -r '.[].id')
+
+{
+  echo "## Goals"
+  echo
+  echo "### ${root} (root)"
+  g=$(goal_section "$root_spec")
+  if [ -n "$g" ]; then echo "$g"; else echo "(root spec has no ## Goal section)"; fi
+
+  # Match each subepic spec to the first tree id its header names; longest ids first, so
+  # `r.10` is not read as `r.1`.
+  sorted_ids=$(echo "$ids" | awk '{ print length, $0 }' | sort -rn | cut -d' ' -f2-)
+  for f in "$@"; do
+    hdr=$(head -n 15 "$f")
+    hit=
+    while IFS= read -r id; do
+      [ -n "$id" ] || continue
+      [ "$id" = "$root" ] && continue
+      if printf '%s\n' "$hdr" | grep -qE "(^|[^A-Za-z0-9._-])$(printf '%s' "$id" | sed 's/[.]/\\./g')([^A-Za-z0-9_-]|\\.[^0-9]|\\.?$)"; then hit=$id; break; fi
+    done <<< "$sorted_ids"
+    if [ -n "$hit" ]; then printf '%s\t%s\n' "$hit" "$f" >> "$map"; else echo "unmatched-spec: $f" >&2; fi
+  done
+
+  while IFS=$'\t' read -r id title summary; do
+    echo
+    echo "### ${id} — ${title}"
+    spec=$(awk -F '\t' -v id="$id" '$1 == id { print $2; exit }' "$map")
+    if [ -n "$spec" ]; then
+      g=$(goal_section "$spec")
+      if [ -n "$g" ]; then echo "$g"; else echo "(spec has no ## Goal section)"; fi
+    else
+      echo "(no spec)"
+    fi
+    [ -n "$summary" ] && echo "summary: $summary"
+  done < <(echo "$dump" | jq -r --arg r "$root" '
+    def first_sentence: (. // "") | split("\n") | map(select(test("^\\s*(-\\s*)?(blocked-by|owns:|consumes:|boundary contract:)") | not))
+      | map(select(test("\\S"))) | (.[0] // "") | sub("^\\s+"; "") | (capture("^(?<s>.*?[.!?])(\\s|$)").s // .) | .[0:160] | if . == "" then "(no description)" else . end;
+    def idkey: split(".") | map(tonumber? // .);
+    [.[] | select(.issue_type == "epic" and .id != $r)] | sort_by(.id | idkey)[]
+    | [.id, (.title // ""), (.description | first_sentence)] | @tsv')
+
+  echo
+  echo "## Task tree"
+  echo
+  echo "$dump" | jq -r --arg r "$root" '
+    def first_sentence: (. // "") | split("\n") | map(select(test("^\\s*(-\\s*)?(blocked-by|owns:|consumes:|boundary contract:)") | not))
+      | map(select(test("\\S"))) | (.[0] // "") | sub("^\\s+"; "") | (capture("^(?<s>.*?[.!?])(\\s|$)").s // .) | .[0:160] | if . == "" then "(no description)" else . end;
+    def decls: (. // "") | split("\n") | map(select(test("^\\s*(-\\s*)?(owns:|consumes:|boundary contract:)")))
+      | map(sub("^\\s*(-\\s*)?"; "") | .[0:160]);
+    def idkey: split(".") | map(tonumber? // .);
+    . as $all
+    | (reduce $all[] as $b ({}; .[$b.id] = $b)) as $byid
+    | def kids($p): [$all[] | select(.parent == $p)] | sort_by(.id | idkey);
+      def line($b; $d):
+        ("  " * $d) as $ind
+        | ([($b.dependencies // [])[] | select(.type == "blocks") | (.depends_on_id // .id)] | unique) as $deps
+        | ($ind + "- " + $b.id + " · " + ($b.title // "")
+            + (if $b.issue_type == "epic" then " (epic)" else "" end)
+            + " · " + ($b.description | first_sentence)
+            + " · deps: " + (if ($deps | length) == 0 then "none" else ($deps | join(", ")) end)),
+          ($b.description | decls[] | ($ind + "    " + .));
+      def walk($b; $d): line($b; $d), (kids($b.id)[] | walk(.; $d + 1));
+      walk($byid[$r]; 0),
+      ([$all[] | select(.id != $r and ((.parent // "") as $p | $byid[$p] == null))] | sort_by(.id | idkey)[] | line(.; 0) | "(outside the root) " + .)'
+} > "$out"
+
+cat "$out"
+bytes=$(wc -c < "$out" | tr -d ' ')
+echo "coverage-inputs: ${bytes} bytes (target ≤ 60000)" >&2
+[ "$bytes" -le 60000 ] || echo "over-target: ${bytes} bytes — shorten the longest goal sections or titles, never drop beads" >&2

@@ -160,15 +160,13 @@ bead that is a transitive *dependent* (unsatisfiable at completion time) or that
 connects (unwired). Prose review is the net for uncited references only, because prose reads
 reliably miss this class.
 
-**A spec that enumerates runtime configurations gets a bead that exercises each one, early**
-(decided policy — issue #3 design question D). Modes, player counts, platforms, feature-flag
-combinations, a test matrix: if the spec lists them, some leaf must *run* each — one decision,
-one request, one invocation per configuration — and that leaf must not be only the terminal
-readiness gate. Measured: two release-only defects broke 8 of 12 enumerated modes, survived the
-suite, code review and every per-bead gate, and were found by the terminal gate running the
-modes at the very end. The skill does not know what "a mode" is in a given project — the bead's
-description says how to exercise one — but coverage flags an enumeration with no exercising
-bead (`UNEXERCISED-CONFIGURATION`).
+**A spec that enumerates runtime configurations gets a bead that exercises each one, early.**
+Modes, player counts, platforms, feature-flag combinations, a test matrix: if the spec lists
+them, some leaf — titled **`Configuration smoke: <the enumerated configurations>`** — must *run*
+each (one decision, one request, one invocation per configuration, its description stating the
+command or entry point for each), and that leaf must not be only the terminal readiness gate:
+release-only defects in unexercised modes otherwise survive every per-bead gate. When one
+existing bead can absorb the exercise without becoming a bottleneck, extend it instead.
 
 **Decompose in two explicit steps.** **Step A — split:** carve the spec into minimal
 logically-cohesive chunks per the sizing bar below, ignoring narrative/build order while splitting.
@@ -178,9 +176,9 @@ here is paired with a `blocked-by <blocker-id>: consumes <artifact>` line in the
 description (below, "Every blocking edge is paired with a reason line"). When connecting reveals a bead
 that gates two or more others, re-apply the bottleneck rule to it before moving on — dependent
 counts only exist once edges do. The deps you write are a
-first approximation by design — the promotion review runs next, and coverage's edge audit
-(`NARRATIVE-EDGE`) and seam check (`UNOWNED-SEAM`) refine edges after the tree settles — so do
-not agonize over edges; a dedicated audit owns edge quality. Missed work is recoverable — coverage's
+first approximation by design — the promotion review runs next, coverage's seam check
+(`UNOWNED-SEAM`) and the parallelism pass refine edges after the tree settles — so do not
+agonize over edges; a dedicated audit owns edge quality. Missed work is recoverable — coverage's
 `GAP` exists for it. Fused work is what nothing downstream un-fuses: the promotion review's `SPLIT`
 catches only the bottleneck case, so Step A's job is to not fuse work that could run apart.
 
@@ -232,8 +230,8 @@ tell a decorative edge from a real one. When in doubt, leave it out: execution's
 and post-rebase test run catch a genuine conflict at the cost of one rework cycle, while a
 decorative edge costs a full round on every run.
 
-Five edge rules, each the generalization of a measured live failure (the coverage loop's
-`NARRATIVE-EDGE` check audits the first three and the fifth — §Coverage):
+Five edge rules, each the generalization of a measured live failure (the parallelism pass
+audits them — §Parallelism Pass):
 
 - **Name the consumed artifact or drop the edge.** Every edge is justified by a specific artifact
   — an interface, schema, file, or recorded decision — that the dependent consumes and the blocker
@@ -271,7 +269,7 @@ step that adds the line also updates or deletes it. Four worked examples, one pe
 |---|---|---|
 | Decomposition | `bd dep add proj-42 proj-40` | `blocked-by proj-40: consumes TrainingConfig schema field` |
 | Split re-point | `bd dep add proj-51 proj-49` | `blocked-by proj-49: consumes regime entry-point signature` |
-| Coverage repoint (`NARRATIVE-EDGE`) | `bd dep add proj-51 proj-45` | `blocked-by proj-45: consumes parser output schema` |
+| Parallelism-pass repoint | `bd dep add proj-51 proj-45` | `blocked-by proj-45: consumes parser output schema` |
 | Sweep | `bd dep add proj-99 proj-52` | `blocked-by proj-52: consumes all leaves (integration sweep)` |
 
 A seam-contract edge (§Coverage's `UNOWNED-SEAM` wiring) uses the fixed artifact token
@@ -374,85 +372,92 @@ each choice with the tree snapshot as a qualifier.
 
 Runs once the tree has settled (§The Process, step 7).
 
-**Hierarchical:**
-- **Per-subepic pass:** that subepic's spec + children + parent goal chain, checked against its local `## Goal`.
-- **Root pass:** root spec + subepic specs + the full task tree, checked against the root `## Goal`. Beads: dump the tree to a file with `bd list --label sp:<root-epic-id> --all --json --limit 0` (not `--parent` — one level only in JSON mode; without `--limit 0` bd stops at 50). Above ~15 specs in the tree, subepic spec prose may be summarized to goal/summary sections for scale; the task tree itself is never summarized.
+**One root pass per round, two reviewers.** Coverage asks a high-level question — did the tree
+miss anything the goal needs, and does anything in it serve no goal — so it reads goals and a
+compact tree, not spec prose. Detail-level defects are covered elsewhere: an unsatisfiable
+criterion by the precheck's `(needs: <id>)` resolution, an unexercised configuration by
+§Decomposition's `Configuration smoke:` rule, both by `super-roast`'s design review, and edge
+quality by the parallelism pass (§Parallelism Pass).
 
-**Canonical requirement list (root pass only).** Before dispatch, the orchestrator — not
-any reviewer — derives the canonical requirement list once per round: decompose the root
-`## Goal` and root spec into one observable outcome per requirement, numbered R1…Rn. Pass
-this same list to all three root-pass reviewers as the `## Requirements (canonical)` input
-(§`coverage-reviewer-prompt.md`); per-subepic passes do not enumerate and get this section
-empty. **R-ids are stable across rounds and resumes:** round 1 derives R1…Rn and writes them
-into the run-state file's `coverage-round-1` record (no run-state file: into the coverage ledger's
-round-1 header); round 2 (or a resume) **reads that list back** rather than re-deriving it, appending any `R-new: <text>` a round-1 reviewer proposed as the
-next free id — an existing id is never renumbered or reused. After the three reviewers
-return, save the canonical list (one `R<n> <text>` per line) and each root-pass reviewer's
-output to files in the artifact directory (`coverage-round-<N>-requirements.md`,
-`coverage-round-<N>-root-<k>.md`) and run `bash <base>/scripts/requirements-tally
-<canonical> <review-1> <review-2> <review-3>`. Its first line (`requirements: N · mapped: M ·
-unmapped: K (R3, R7)`) goes into the round summary and the `coverage-round-<N>` record; its
-`r-new:` lines are the proposals to append; a `no-block:` line means that review is not valid
-for this pass. The line summarizes: each unmapped requirement was already reported as a `GAP`
-(§`coverage-reviewer-prompt.md` check 0).
+**Assemble the inputs with the script.** Dump the tree to a file with `bd list --label
+sp:<root-epic-id> --all --json --limit 0` (not `--parent` — one level only in JSON mode; without
+`--limit 0` bd stops at 50), then run `bash <base>/scripts/coverage-inputs --from <dump>
+<root-epic-id> <root spec> <every subepic spec>` (`<base>` is this skill's base directory). It
+prints the `## Goals` section (root goal; each epic's Goal section and one-sentence summary) and
+the `## Task tree` section (one line per bead with its blocking deps, plus its `owns:` /
+`consumes:` / `boundary contract:` lines), and reports its byte count on stderr against a 60 KB
+target. Paste both sections verbatim. An `unmatched-spec:` line means a spec header does not name
+its bead id — fix the header (§Conventions). If the script prints a line starting
+`JQ_UNAVAILABLE:`, follow its instruction and produce the same output format; this holds for
+every script below.
 
-**Mechanical checks run before dispatch, once per round.** Run `bash <base>/scripts/coverage-precheck
---from <the tree dump> <root-epic-id> <coverage ledger>` (`<base>` is this skill's base
-directory; if it prints a line starting `JQ_UNAVAILABLE:`, follow its instruction and produce
-the same output format). Every line it prints
-other than `citation: … blocker` and the summary is a finding you file yourself, already
-verified: `flag-sweep:` (a flagged task the ledger has not disposed — the fix is yours to
-choose: promote and design it, keep it as a leaf with a rationale, or split it), `unstated:`
-(a `NARRATIVE-EDGE` — write the missing `blocked-by` line naming the artifact, or drop the
-edge), and `citation: … dependent|unwired|unknown` (an `UNSATISFIABLE-ACCEPTANCE`; `unknown`
-means the cited id is not in the tree — correct the citation). Pass the output to every
-reviewer as its `## Precomputed graph checks` input.
+**Canonical requirement list.** Before dispatch, the orchestrator — not any reviewer — derives
+the canonical requirement list: decompose the root `## Goal` and root spec into one observable
+outcome per requirement, numbered R1…Rn, and pass the same list to both reviewers. **R-ids are
+stable across rounds and resumes:** round 1 writes them into the run-state file's
+`coverage-round-1` record (no run-state file: the coverage ledger's round-1 header); round 2 (or
+a resume) **reads that list back** rather than re-deriving it, appending any `R-new: <text>` a
+round-1 reviewer proposed as the next free id. An existing id is never renumbered or reused.
+After the reviewers return, save the canonical list (one `R<n> <text>` per line) and each
+review to the artifact directory (`coverage-round-<N>-requirements.md`,
+`coverage-round-<N>-review-<k>.md`) and run `bash <base>/scripts/requirements-tally <canonical>
+<review-1> <review-2>`. Its first line (`requirements: N · mapped: M · unmapped: K (R3, R7)`)
+goes into the round summary and the `coverage-round-<N>` record; its `r-new:` lines are the
+proposals to append; a `no-block:` line means that review is not valid.
 
-**Each pass runs 3 independent reviewers** (`./coverage-reviewer-prompt.md`, fresh context, model opus) — **input-bounded**: the prompt carries a reviewer's entire window and forbids it tools, so assemble the inputs completely; an `INSUFFICIENT-INPUT` finding means the pass was mis-assembled, not that the reviewer should have roamed; findings are unioned and deduped before disposition (union, not majority — a miss costs more than a false positive, and the verify step below removes false positives anyway). A pass returning fewer than 3 valid reviews is marked **degraded** in the round summary, never silently accepted.
+**Mechanical checks run before dispatch, once per round.** Run `bash
+<base>/scripts/coverage-precheck --from <dump> <root-epic-id> <coverage ledger>`. Every line it
+prints other than `citation: … blocker` and the summary is a finding you file yourself, already
+verified, with the line's kind as its type: `flag-sweep` (a flagged task the ledger has not
+disposed — promote and design it, keep it as a leaf with a rationale, or split it), `unstated`
+(write the missing `blocked-by` line naming the artifact, or drop the edge), and `citation`
+`dependent|unwired|unknown` (fixed below; `unknown` means the cited id is not in the tree —
+correct the citation). Pass the output to both reviewers as `## Precomputed graph checks`.
 
-**Ledger:** every disposed finding — applied, rejected, escalated, and flag-sweep — is appended to the coverage ledger in the artifact directory (§Artifact Location) and committed, one line each: `<ledger-id> · r<N> · <TYPE> · <subject> · <disposition> — <one line>` (the precheck skips a flagged task that has an entry with TYPE `flag-sweep` and the task id as its subject). Pass its contents to every reviewer.
+**Dispatch.** Two reviewers (`./coverage-reviewer-prompt.md`, fresh context, model opus,
+dispatched concurrently), each given the same assembled inputs. Findings are unioned and
+deduped before disposition — union, not majority: a miss costs more than a false positive, and
+the verify step below removes false positives. A round with fewer than two valid reviews is
+marked **degraded** in the round summary, never silently accepted.
+
+**Full spec on request.** A review may end with up to two `NEEDS-SPEC: <subepic id> — <reason>`
+lines. Re-dispatch that one reviewer once, inside the same round, with each named subepic's full
+spec appended under `## Full spec: <id>`; the re-run's output replaces the original review. A
+`NEEDS-SPEC` in the re-run is noted in the round summary and not honored again.
+
+**Ledger:** every disposed finding — applied, rejected, escalated, and flag-sweep — is appended to the coverage ledger in the artifact directory (§Artifact Location) and committed, one line each: `<ledger-id> · r<N> · <TYPE> · <subject> · <disposition> — <one line>` (the precheck skips a flagged task that has an entry with TYPE `flag-sweep` and the task id as its subject). Pass its contents to both reviewers.
 
 **Findings file.** After a round's union and dedupe (precheck findings included), write `coverage-findings-round-<N>.md` to the artifact directory, one deduped finding per line: `<TYPE> · <subject> · <one line>`. The subject is the finding's identity: the task id; `<dependent><-<blocker>` for an edge; the boundary name for a seam; the R-id for a `GAP` that has one, else the goal element in a few words. Choosing the subject is the judgment; the comparison below is mechanical.
 
-**Rounds are incremental:** round N+1 re-runs only the per-subepic passes whose subtrees changed since round N, plus the root pass (always). **A round's passes are mutually independent — dispatch every pass's reviewers concurrently** (all per-subepic passes and the root pass together, 3 reviewers each): each pass's inputs are assembled before dispatch and no pass reads another's findings — union, dedupe, and disposition all happen after the fan-out returns. Serializing them buys nothing and multiplies the round's wall-clock by the pass count. The loop runs **at most two rounds** — see below.
-
 **Two rounds, fixed.** Round 1 always runs. Round 2 runs iff round 1 applied at least one fix
-that changed the tree — a round 1 with nothing to apply is the loop's clean exit. Once round
-2's fixes are applied the loop ends: **there is no round 3, and round 2's own fixes are never
-re-reviewed.** That is the priced cost of a fixed cap, and it is what the changed-since input
-below and the root integration sweep exist to absorb — the sweep implements what the reviewers
-missed, and it runs regardless. **Round 2 dispatches only once every round-1 fix is fully
-applied** — a new-subepic `GAP`'s nested subtree included, which means waiting for that subtree to
-finish designing; dispatching earlier reviews a tree with a known hole in it and spends the run's
-last round on findings that describe the hole.
+that changed the tree — a round 1 with nothing to apply is the loop's clean exit. Round 2
+re-runs the root pass on the updated tree with the changed ids. Once round 2's fixes are applied
+the loop ends: **there is no round 3, and round 2's own fixes are never re-reviewed.** That is
+the priced cost of a fixed cap, and the root integration sweep below absorbs it. **Round 2
+dispatches only once every round-1 fix is fully applied** — a new-subepic `GAP`'s nested subtree
+included, which means waiting for that subtree to finish designing.
 
 **The changed-since input.** Round 1's fixes are applied with no human in the path, and round 2
 is the only thing that will ever see them. Assemble round 2's `## Changes since the previous
 round` section (empty on round 1) naming every task round 1's applied fixes created or amended,
-each with the finding it answers. The reviewers check those as they check any task, plus the two
-questions only this section can ask: does the fix close the finding it claims to, and did it
-introduce a seam, edge, or acceptance criterion of its own?
+each with the finding it answers.
 
-**Divergence observation.** A loop can refine instead of converge; the two-round cap is the
-brake, so this is a report rather than a question. On round 2, before disposition, run `bash
+**Divergence observation.** On round 2, before disposition, run `bash
 <base>/scripts/coverage-divergence <round-1 findings file> <round-2 findings file>` and put its
 three lines (count trajectory, novel fraction, `widening: yes|no`) in the round summary either
-way. A widening round 2 is the strongest evidence the tree needs a look the cap will not give
-it, and nothing else in the loop will say so.
+way. A widening round 2 is the strongest evidence the tree needs a look the cap will not give it.
 
 **Disposition is automatic — there is no arbitration prompt.** Every deduped finding is verified,
 then applied; a finding this round already has a recorded disposition for (§Run-State File) is
 replayed, not re-applied.
 
-**Verify, then apply.** The reviewer prompt tells reviewers to surface anything plausible; the
-false-positive filter runs here: check each finding's evidence against the very inputs its pass
-was assembled from — the ids it cites resolve in the task tree, the description text it quotes is
-really there, the dependency path it claims exists, no ledger entry already covers it (a
-`ledger:`-tagged finding with no new evidence is a duplicate: drop it without a new entry). A
-finding whose evidence does not hold is **rejected to the ledger with the one-line reason**, never
-applied and never escalated. This is a check against
-the assembled inputs, not a re-review: do not go read the repo to adjudicate one, and never reject
-a finding for being expensive to fix.
+**Verify, then apply.** Check each finding's evidence against the inputs the reviewers were
+given: the ids it cites resolve in the task tree, the text it quotes is really there, no ledger
+entry already covers it (a `ledger:`-tagged finding with no new evidence is a duplicate: drop it
+without a new entry). A finding whose evidence does not hold is **rejected to the ledger with
+the one-line reason**, never applied and never escalated. This is a check against the assembled
+inputs, not a re-review: do not go read the repo to adjudicate one, and never reject a finding
+for being expensive to fix.
 
 **Splits and promotions apply without confirmation, in every mode.** A verified finding whose fix
 splits a bead or promotes work into a new subepic is applied as the reviewer recommended — no
@@ -466,15 +471,17 @@ if it states none, keep the tree as-is and record that.
 **and** it was not told the run is autonomous (§Inputs). The escalation is an `ORPHAN`:
 delete-as-scope-creep vs. add the missing goal element it serves is a question about the goal, not
 the tree. Non-interactive: apply the reviewer's proposed fix, deletion included, and name it in
-the round summary.
+the round summary. Every other type applies silently, in every mode.
 
-Every other type applies silently, in every mode. `INSUFFICIENT-INPUT` is neither applied nor
-escalated — it says the pass was mis-assembled: fix the assembly and re-dispatch that one pass
-inside the same round; a second `INSUFFICIENT-INPUT` from the re-dispatched pass marks the round
-**degraded** (the recall floor below) rather than spending a third dispatch on it.
-
-**The fixes, by type.** Verified `GAP`: small → leaf task added directly; big → a new subepic,
-as above. Verified `NARRATIVE-EDGE`: drop the edge (`bd dep remove <dependent> <blocker>`) or repoint it (`bd dep remove`, then `bd dep add <dependent> <actual-producer>`), per the finding's proposed fix — question-shaped edges never arrive as this kind (reviewers report those as `UNOWNED-SEAM`, whose contract path replaces the ordering); a repoint updates the dependent's `blocked-by <blocker-id>: consumes <artifact>` line to name the new producer and artifact, through the existing wholesale `bd update --description` rule (dropping the edge drops the line the same way). Any verified finding whose fix splits or shrinks an existing bead — moving scope out of it — follows §Splitting a Bead, dependents re-pointed included. Verified `UNSATISFIABLE-ACCEPTANCE`: apply the finding's proposed fix — restate the criterion in terms of an artifact that exists when the task completes (`bd update <id> --description` with the full amended text, keeping or adding the `(needs: <id>)` citation so the next round can check it by graph), or re-point the edge so the referenced validator genuinely precedes the task; an `unwired` variant (a cited bead no edge connects) adds the missing edge (`bd dep add <task> <cited>`) and, in the same `bd update --description`, the `blocked-by <cited>: consumes <artifact>` line naming what the citation resolves to. Verified `UNEXERCISED-CONFIGURATION`: add one leaf with the standard flag triple — **`Configuration smoke: <the enumerated configurations>`** — whose deliverable is a runnable one-step exercise of *each* configuration (the description states the command or entry point per configuration), depending on the beads that make those configurations runnable and wired under the integration sweep like any leaf, so it runs as soon as the configurations exist rather than at the terminal gate; or, when one existing bead can absorb it without becoming a bottleneck, extend that bead's description and acceptance instead. Verified `UNOWNED-SEAM`: **before creating either bead, check whether a `Seam contract:` /
+**The fixes, by type.** Verified `GAP`: small → leaf task added directly; big → a new subepic, as
+above. Any verified finding whose fix splits or shrinks an existing bead — moving scope out of it
+— follows §Splitting a Bead, dependents re-pointed included. Precheck `citation` `dependent` or
+`unwired`: restate the criterion in terms of an artifact that exists when the task completes
+(`bd update <id> --description` with the full amended text, keeping or adding the `(needs: <id>)`
+citation so the next round's precheck resolves it), or re-point the edge so the cited producer
+genuinely precedes the task; for `unwired`, add the missing edge (`bd dep add <task> <cited>`)
+and, in the same `bd update --description`, the `blocked-by <cited>: consumes <artifact>` line.
+Verified `UNOWNED-SEAM`: **before creating either bead, check whether a `Seam contract:` /
 `Seam integration:` bead for this boundary already exists — including via a replayed disposition
 from the run-state file — and adopt it instead of duplicating it and its edges.** Otherwise create
 **two leaf tasks** with the standard flag triple, and wire the tree:
@@ -483,7 +490,7 @@ from the run-state file — and adopt it instead of duplicating it and its edges
 - **`Seam integration: <boundary>`** — depends on that seam's participants only (`bd dep add <integration> <participant>` for each), with `blocked-by <participant-id>: consumes <that participant's owned boundary>` written into the integration bead's own description for each one. Delivers: verify the wiring end-to-end, write integration test(s) crossing the seam, see them pass. Small fixes inline; anything larger goes through execution's normal blocker path.
 - Append one line to **each participant's** bead description: `boundary contract: <contract-bead-id>`. **`bd update --description` replaces the description wholesale — there is no `--append-description`.** First `bd show <participant>` to read the current description, then re-send the full existing text with the pointer line appended; sending only the pointer line destroys the `owns:`/`consumes:` declarations the coverage reviewers and execution briefs depend on. The pointer flows into execution briefs through the planner with zero execution-side changes.
 
-**Recall floor & fallback net:** if a pass stays degraded or a round otherwise can't be trusted, downgrade coverage to **advisory** and make the gate a **mandatory human read-through of the goal against the full task tree** — disclose this in the round summary, never silently. In a non-interactive run (above) there is no one to read it through: record the downgrade as a parked qualifier and hand it back verbatim, the way a degraded roast verdict is parked.
+**Recall floor & fallback net:** if a round stays degraded or otherwise can't be trusted, downgrade coverage to **advisory** and make the gate a **mandatory human read-through of the goal against the full task tree** — disclose this in the round summary, never silently. In a non-interactive run (above) there is no one to read it through: record the downgrade as a parked qualifier and hand it back verbatim, the way a degraded roast verdict is parked.
 
 **Root integration sweep (after the loop ends):** once the coverage loop has ended — round 1
 clean, or round 2's fixes applied (§Two rounds, fixed) — and the tree has ≥2 leaf tasks (seam beads count as leaf tasks too — a `Seam contract:`
@@ -606,7 +613,7 @@ its own rule above.
 ## Parallelism Pass (root only)
 
 Runs once, after the roast loop exits or is declined, and before the design-ready point (§Gates
-by Mode). The coverage loop audited each edge on its own; this pass looks at the whole graph:
+by Mode). Coverage's precheck only checks that each edge states a reason; this pass looks at the whole graph:
 execution spends one round per bead along the longest chain, so an edge on that chain that
 carries no real artifact costs a round on every run. Low-hanging fruit only: it changes edges,
 never scope, and creates no beads.
@@ -758,7 +765,9 @@ skill's work instead of re-running all of it.
   and hand the qualifier back verbatim; never drop it).
 - Start a roast round's fix work before its step-back pass has decided `patch` or `redesign`, or
   hand a fixer only the latest round's report.
-- Summarize the task tree for the root coverage pass — only spec prose may be summarized.
+- Hand-assemble the coverage inputs, paste full spec prose into a coverage review, or drop beads
+  to fit the byte target — `scripts/coverage-inputs` builds the compact inputs, and full specs
+  reach a reviewer only through a `NEEDS-SPEC` re-run.
 - Apply a parallelism-pass change marked `safe no`, or any proposal, in an unattended run — park
   it; or touch a seam-contract or integration-sweep edge in that pass.
 - Run a third coverage round, or spend a fresh pair of rounds on a resume — the cap is two per run
@@ -766,21 +775,21 @@ skill's work instead of re-running all of it.
 - Ask the user to dispose of a coverage finding, or to confirm a recommended split or promotion.
   Exactly one escalation exists — an `ORPHAN` — and only in an interactive run; every other type
   applies without asking.
-- Apply a coverage finding without checking its evidence against the pass inputs. The reviewers are
+- Apply a coverage finding without checking its evidence against the reviewers' inputs. The reviewers are
   instructed to over-report; the verify step is the only thing standing in for the human who used
   to arbitrate.
 - Overrule a `PROMOTE` verdict without recording `sp:demoted-by-session` and the reason.
 - Ask the human to approve the top split in a one-shot or `autonomous` run, or stop an
   `autonomous` run anywhere after launch — §Gates by Mode.
 - Add a blocking edge (`bd dep add`, any site) without pairing it with a `blocked-by <blocker-id>:
-  consumes <artifact>` line in the dependent's description — coverage's `NARRATIVE-EDGE` check
-  cannot audit an edge whose reason isn't written down.
+  consumes <artifact>` line in the dependent's description — the precheck and the parallelism
+  pass cannot audit an edge whose reason isn't written down.
 
 ## Integration
 
 - Entered at the root with a goal or idea — by a user directly, or by an outer caller (e.g. `super-auto`); recurses into itself, nested, once each promoted subepic's brainstorm returns a spec.
 - Invokes `superpowers:brainstorming` — once at the root to produce the root spec (§Root Brainstorm), then once per promoted subepic (§Nested Brainstorms).
 - Dispatches `./promotion-reviewer-prompt.md`, `./coverage-reviewer-prompt.md`, `./step-back-prompt.md` (which `super-auto`'s phase-5 fix loop also dispatches, in code mode), and `./graph-pass-prompt.md`.
-- Runs `./scripts/coverage-precheck`, `./scripts/requirements-tally`, and `./scripts/coverage-divergence` in the coverage loop (§Coverage), and `./scripts/graph-shape` in §Parallelism Pass.
+- Runs `./scripts/coverage-inputs`, `./scripts/coverage-precheck`, `./scripts/requirements-tally`, and `./scripts/coverage-divergence` in the coverage loop (§Coverage), and `./scripts/graph-shape` in §Parallelism Pass.
 - Offers `superpowers:super-roast` (root only, optional) once the coverage loop passes; consumes its report to drive the fix + auto-re-roast loop — §Adversarial Review Loop.
 - Hands off to `superpowers:super-code` (beads mode) or `superpowers:subagent-driven-development` (once per epic's plan in no-beads mode); no-beads mode also uses `superpowers:writing-plans`.

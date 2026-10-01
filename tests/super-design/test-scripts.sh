@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Tests for skills/super-design/scripts/: coverage-precheck, requirements-tally,
-# coverage-divergence, graph-shape. Runs against the fixtures beside this file; no bd tracker needed.
+# coverage-divergence, graph-shape, coverage-inputs. Runs against the fixtures beside this file; no bd tracker needed.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -107,6 +107,49 @@ summary: edges 11 · exempt 7 · candidates 3 (critical 3, epic-level 1)" \
   assert_eq "$code" 2 "unknown root exits 2"
 fi
 run env PATH="$nojq" bash "$S/graph-shape" --from "$F/graph.json" r
+assert_eq "$code" 4 "no jq exits 4"
+case "$out" in JQ_UNAVAILABLE:*) pass "no jq prints a JQ_UNAVAILABLE: instruction" ;;
+  *) fail "no jq prints a JQ_UNAVAILABLE: instruction"; echo "    got: $out" ;; esac
+
+echo "coverage-inputs"
+C="$F/cov-specs"
+if command -v jq >/dev/null 2>&1; then
+  run bash "$S/coverage-inputs" --from "$F/cov-tree.json" q "$C/root.md" "$C/q1.md"
+  assert_eq "$out" "## Goals
+
+### q (root)
+Enforce a per-tenant request quota and tell callers how much remains.
+
+### q.1 — Quota store
+Store each tenant's quota durably.
+summary: Persist per-tenant quotas.
+
+## Task tree
+
+- q · Per-tenant rate limiter (epic) · Root epic for the limiter. · deps: none
+  - q.1 · Quota store (epic) · Persist per-tenant quotas. · deps: none
+    - q.1.1 · Quota schema · Define the quota table and its migration. · deps: none
+        owns: quota table schema
+    - q.1.2 · Quota reads · Read the current quota for a tenant. · deps: q.1.1
+        consumes: quota table schema
+  - q.2 · Enforcement · Reject over-quota requests with 429. · deps: q.1
+      boundary contract: q.3
+  - q.10 · Usage endpoint · (no description) · deps: none" \
+    "goal sections only, one line per bead in numeric tree order, declarations kept, blocks deps only"
+  assert_eq "$code" 0 "exit 0"
+  case "$out" in *"must not reach"*|*"must not appear"*) fail "spec prose and description detail stay out" ;;
+    *) pass "spec prose and description detail stay out" ;; esac
+
+  set +e; err=$(bash "$S/coverage-inputs" --from "$F/cov-tree.json" q "$C/root.md" "$C/q1.md" "$C/stray.md" 2>&1 >/dev/null); set -e
+  assert_eq "$(printf '%s\n' "$err" | grep -c '^unmatched-spec: .*stray.md$')" 1 "a spec naming no tree bead is reported"
+  assert_eq "$(printf '%s\n' "$err" | grep -c '^coverage-inputs: [0-9]* bytes (target ≤ 60000)$')" 1 "byte count reported on stderr"
+
+  run bash "$S/coverage-inputs" --from "$F/cov-tree.json" nope "$C/root.md"
+  assert_eq "$code" 2 "unknown root exits 2"
+fi
+run bash "$S/coverage-inputs" --from "$F/cov-tree.json" q
+assert_eq "$code" 2 "missing root spec exits 2"
+run env PATH="$nojq" bash "$S/coverage-inputs" --from "$F/cov-tree.json" q "$C/root.md"
 assert_eq "$code" 4 "no jq exits 4"
 case "$out" in JQ_UNAVAILABLE:*) pass "no jq prints a JQ_UNAVAILABLE: instruction" ;;
   *) fail "no jq prints a JQ_UNAVAILABLE: instruction"; echo "    got: $out" ;; esac
