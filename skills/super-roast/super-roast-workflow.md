@@ -25,9 +25,13 @@ Severity vocabulary throughout (the only one): **Blocking | Should-fix | Nit | F
 
 - **`Workflow` tool available → dynamic workflow (preferred).** Run the engine script below
   via the tool. Triage → scout fan-out → dedupe → tiered judge panels → reporter, each phase
-  model-tiered per role.
-- **Subagents but no Workflow → manual fan-out**, same stage order, same prompt files, **same
-  bounds** as the engine:
+  model-tiered per role. Build its `args` with `bash <this skill's dir>/scripts/assemble-args`
+  (mode, inputs, iteration, the prior report on rounds ≥ 2, the spec or diff range; `--help` for
+  the rest): it assembles every prompt from this skill's files by round and fills the
+  orchestrator-rendered markers. `--script <file>` writes the engine with those args embedded, to
+  run as `Workflow({scriptPath: <file>})`; `--report-dir`/`--topic` print the report path.
+- **Subagents but no Workflow → manual fan-out**, same stage order, same prompts (dispatch the
+  strings `assemble-args` puts in `args.prompts`), **same bounds** as the engine:
   1. Dispatch the triage subagent (sonnet) and the core scouts (opus) together; when triage
      returns, dispatch the scouts it adds (activated lanes, or domain/widened lenses). Drop a
      lane name with no prompt and record it as an unknown lane (not a dead scout). Count scout
@@ -112,7 +116,8 @@ missing), so a miscopied header line cannot reach the caller.
 
 ## Prompt contract: `args` is pure JSON
 
-The Workflow tool's `args` must be plain JSON — **every prompt is a STRING, never a
+`scripts/assemble-args` produces this shape; the contract below is what it implements. The
+Workflow tool's `args` must be plain JSON — **every prompt is a STRING, never a
 function.** Prompts that need runtime data (the raw findings, a single finding, the judged
 packets, the profile, the prior report) carry placeholder tokens instead, which the script
 substitutes with a small `fill(template, vars)` helper (a single pass over all tokens, so an
@@ -152,7 +157,8 @@ or dedupe set `lowCoverage`; a lost Nit spot check is counted (`spotLost`) and d
 engine-rendered header lines (the latter empty when no full panel exists). Each packet in
 `{{PACKETS_JSON}}` is `{finding, votes, tier, valid, preExisting, defaultRoute}` (`preExisting`
 only on judged packets). `tier` is `panel`, `spot`, `promoted`, `beyond-cap`, `dedupe-failed` or
-`judge-lost`. `defaultRoute` is one of `confirmed`, `rejected`, `unverified-nit`,
+`judge-lost`. A merged finding also carries `lanes` (every member's `category`), which the
+engine strips before the seats see it. `defaultRoute` is one of `confirmed`, `rejected`, `unverified-nit`,
 `not-verified` (beyond the panel cap), `not-verified:dedupe-failed` (dedupe died; the raw finding
 passes through unjudged), `not-verified:judge-lost` (its judge dispatch threw),
 `not-verified:dead-spot` (its spot check returned nothing twice), `escalate:dead-seat`,
@@ -310,6 +316,7 @@ function mergeGroup(g) {
     claim: g.mergedClaim || members[0].claim,
     location: locations.join('; '),
     category: members[0].category,
+    lanes: uniq(members.map(m => m.category)),
     external: members.some(m => m.external === true),
     evidence: members.length === 1 ? members[0].evidence : members.map(m => `[${m.location}] ${m.evidence}`).join('\n---\n'),
   }
@@ -360,9 +367,13 @@ const beyondCap = restAll.length - rest.length
 log(`dedupe: raw ${raw.length} → ${dedupeDead ? 'FAILED (raw passed through unverified)' : `deduped ${deduped.length}`} · panels ${severe.length} · spot checks ${rest.length}` +
   (beyondPanelCap.length ? ` · beyond panel cap ${beyondPanelCap.length}` : '') + (beyondCap ? ` · beyond remainder cap ${beyondCap}` : ''))
 
-// Judges rate blind: the deduper's suggestedSeverity and the scouts' previouslyRejected tag are
-// stripped so neither anchors a seat's verdict.
-const blind = f => omit(f, 'suggestedSeverity', 'previouslyRejected')
+// Judges rate blind: the deduper's suggestedSeverity, the scouts' previouslyRejected tag and the
+// merged lane list are stripped so none anchors a seat's verdict.
+const blind = f => omit(f, 'suggestedSeverity', 'previouslyRejected', 'lanes')
+// Fix-regression provenance: a finding any `regression` scout raised (rounds ≥ 2) is damage the
+// previous round's fixes did. The engine tags its report entries `[fix-regression]` so a caller's
+// fix loop can tell it apart mechanically.
+const isFixRegression = f => (f.lanes ?? [f.category]).includes('regression')
 
 // site: 'panel' | 'spot' — stub keys are call-site qualified (seat:<name>:<site>) so one canned
 // value per key stays deterministic. The re-dispatch uses `prompts.seatsSafe[name]` when supplied
@@ -516,7 +527,7 @@ function fallbackReport() {
   const confirmed = of('confirmed'), nits = of('unverified-nit'), lostSpots = of('not-verified:dead-spot')
   const top = confirmed.length ? SEV[Math.min(...confirmed.map(p => SEV.indexOf(seatSev(p))))] : null
   const verdict = qualify(`${top ? `${top} (${confirmed.length} confirmed)` : `clean (${nits.length} nits)`} [low coverage]`, false)
-  const line = (p, sev) => `- [${sev}] ${p.finding.location} — ${p.finding.claim}`
+  const line = (p, sev) => `- [${sev}] ${p.finding.location} — ${p.finding.claim}${isFixRegression(p.finding) ? ' [fix-regression]' : ''}`
   const section = (heading, lines) => ['', heading, ...(lines.length ? lines : ['- none'])]
   const escalations = engineEscalated.map(escalationLine)
   const reportMarkdown = [
@@ -560,6 +571,13 @@ function enforce(rep) {
     const top = sevs.length ? SEV[Math.min(...sevs.map(s => SEV.indexOf(s)))] : null
     if (top) verdict = verdict.replace(/^(Blocking|Should-fix|Nit|FYI)(?= \()/, top)
   }
+  // Fix-regression tag, matched on the same `- [SEV] <location> — ` entry line.
+  let tagged = 0
+  for (const p of packets.filter(p => isFixRegression(p.finding))) {
+    const re = new RegExp(`^\\s*- \\[[^\\]]+\\] ${p.finding.location.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')} — `)
+    lines = lines.map(l => re.test(l) && !l.includes('[fix-regression]') ? (tagged++, `${l} [fix-regression]`) : l)
+  }
+  if (tagged) enforcement.push(`fix-regression: ${tagged} entr${tagged === 1 ? 'y' : 'ies'} tagged`)
   // Header lines live above the first `## ` section.
   const headEnd = () => { const i = lines.findIndex(l => l.startsWith('## ')); return i < 0 ? lines.length : i }
   const find = key => lines.slice(0, headEnd()).findIndex(l => l.startsWith(key))
@@ -598,6 +616,7 @@ return {
   escalations: out.escalations,
   reporterFailed: !rep,
   enforcement,
+  fixRegressions: packets.filter(p => isFixRegression(p.finding)).map(p => ({ location: p.finding.location, claim: p.finding.claim, defaultRoute: p.defaultRoute })),
   coverage, routeCounts, seatAgreement,
 }
 ```
@@ -732,6 +751,11 @@ should cover, beyond the canonical topology and the two variants above:
 | real path | `dryRun: false`, `prompts.seatsSafe`, first seat dispatch returns null | retry uses the safe wording; seat prompt has no `suggestedSeverity`; dedupe prompt carries numbered ids; effort `low`/`medium`/`high` on triage/spot/reporter; lanes enum from `prompts.scouts` |
 | design domains | triage returns `q, q, r, s, t` | 3 domain scouts (Set-deduped), `domainsDropped` `["t"]`, no widening; dryRun effort `low` on every call |
 | triage overlap | triage resolves only after a core scout is dispatched | core scouts dispatched before the activated lane |
+| fix-regression | round 2: a `regression` scout finding and a core finding, both confirmed; the reporter returns plain entry lines | only the regression entry ends `[fix-regression]`; `fixRegressions` names it; seat prompts carry no `lanes` |
+
+`tests/super-roast/test-assemble-args.sh` runs the assembled round-1/round-2 PR and round-1
+design scripts through such a mock (`tests/super-roast/engine-mock.mjs`), including the
+fix-regression case.
 
 ### Passing baseline (recorded, not illustrative)
 

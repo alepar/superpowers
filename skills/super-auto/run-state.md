@@ -252,6 +252,16 @@ a resume can silently redo work or violate a decision that was already made.
      punch-listed`, written by `super-auto` in the same phase-5 step — not by the scope-filter
      pass itself. A resume matches each round's findings against this record exactly on the
      `[SEV] <location>` key and replays the disposition rather than re-dispatching the filter.
+   - `regressionPass-round-<N>` — the one regression-only fix pass a `[converged]` round with
+     `[fix-regression]` findings gets (`SKILL.md` §Phase 5): the count filed, each finding's
+     `[SEV] <location>` key verbatim, and `no re-roast`:
+
+     ```
+     regressionPass-round-2: 2 filed · [Should-fix] src/client/seat.ts:41, [Should-fix] src/rejections.ts:88 · no re-roast
+     ```
+
+     Written when the beads are filed. A resume that finds it does not file again; the beads'
+     own state says whether the `super-code` re-entry finished.
 
    Anything not recorded was never approved. **Never widen a replay into a blanket
    "the human approved this run"** — that turns one approval into consent for work

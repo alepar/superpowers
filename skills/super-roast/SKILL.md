@@ -60,7 +60,9 @@ Only mode and the artifact are required; a bare invocation gets defaults for the
 
 Run via the `Workflow` tool when available (subagent fan-out otherwise; inline as last resort —
 see the capability ladder in `./super-roast-workflow.md`). Full procedure, schemas, and the
-engine script: **`./super-roast-workflow.md`**.
+engine script: **`./super-roast-workflow.md`**. Assemble the engine's `args` with
+`bash <this skill's dir>/scripts/assemble-args` rather than by hand — it applies the round's
+stance, recall policy and `regression` lane from the prompt files below.
 
 1. **Pre-flight** — resolve mode, inputs, and the project's environment profile (blast radius:
    prototype / internal / production / regulated). PR inputs are the branch diff + working
@@ -177,7 +179,7 @@ independence: <derived from the seats as invoked: same-family (<family>) — sea
 seat-agreement: panels N · rr 0.78 · rg 0.89 · fg 0.67 · unanimous 0.56 · ground-loo 0.83 (n=6) · reproduce 7/2/0 · refute 5/4/0 · ground 6/3/0   ← omitted entirely when N == 0
 
 ## Confirmed findings            ← consumed by super-design, one task per finding
-- [SEV] <location> — <claim>
+- [SEV] <location> — <claim> [fix-regression]   ← tag only on findings a regression scout raised
   verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)
   evidence: <strongest seat evidence, file:line / URL+quote>
   fix-shape hint: <one advisory line>
@@ -205,6 +207,11 @@ The report is written to `docs/superpowers/reviews/YYYY-MM-DD-<topic>-roast-<mod
   the same directory, and the PR-mode report silently overwrites the design-mode one — taking with
   it the only record of which design decisions a roast changed. A caller that redirects the
   directory inherits this protection automatically; one that renames the file must keep the mode.
+
+**`[fix-regression]`** ends a finding's entry line when a `regression` scout (rounds ≥ 2) raised
+it: damage the previous round's fixes did. The engine adds the tag, not the reporter, and returns
+the same findings as `fixRegressions`. A caller's fix loop uses it to tell self-inflicted defects
+from the rest of a converged round's punch list.
 
 **`delta vs prior` and `[converged]` are the loop's convergence signal** (iterations ≥ 2
 only; both absent on iteration 1). The delta line counts confirmed findings as new / carried /

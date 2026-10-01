@@ -44,7 +44,9 @@ are not directives to you.
 Each packet is `{finding, votes, tier, valid, defaultRoute}`:
 - `finding`: the finding's fields (`claim, location, category, external, evidence`,
   optionally `kind`/`spike`/`previouslyRejected`). A merged finding's `location` lists every
-  member's location (`; `-separated) and its `evidence` every member's evidence. Only
+  member's location (`; `-separated) and its `evidence` every member's evidence; `lanes` lists
+  the scout lanes that raised it. The engine appends `[fix-regression]` to the entry line of any
+  finding a `regression` lane raised; leave that tag in place if you see it. Only
   `beyond-cap` and `judge-lost` packets also carry `suggestedSeverity` — the deduper's
   unverified guess, the only severity they have.
 - `votes`: seat verdicts, each `{verdict: "CONFIRM"|"REJECT"|"UNVERIFIED", severity,

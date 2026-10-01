@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# assemble-args — build super-roast's engine `args` (and optionally a runnable engine script) from
+# this skill's prompt files, by round. Usage: bash assemble-args --help
+# Exit codes: 0 ok, 2 bad input, 3 prompt-file drift, 4 node unavailable.
+set -euo pipefail
+here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+command -v node >/dev/null 2>&1 || {
+  echo "NODE_UNAVAILABLE: assemble the args by hand. Per super-roast-workflow.md's \"Prompt contract\": prompts.triage = triage-prompt.md's block with its input line replaced (spec path, or the diff's file list + stat); prompts.scouts.<lane|lens> = the scout file's shared block with [LANE]/[LENS] replaced by that block, [ITERATION_STANCE] and [RECALL_POLICY] replaced by the round's blocks (iteration 1: 'A rubber-stamp is a failure.' + '## High recall'; with a prior report: the mirror-image stance + '## Materiality bar'), and the category bullet set to the lane/lens name; rounds >= 2 add 'regression' to config.coreLanes/coreLenses and its prompt; design mode also sets prompts.scoutDomainTemplate (the domain lens, category domain:{{DOMAIN}}); prompts.dedupe = dedupe-prompt.md's block; prompts.seats.<reproduce|refute|ground> = judge-seat-prompts.md's shared core with [SEAT PROCEDURE] replaced by the seat block (PR mode: append the 'PR mode adjustments' text); prompts.reporter = reporter-prompt.md's block with the line 'independence: {{INDEPENDENCE}}' rendered; config.models = {triage: sonnet, scout: opus, dedupe: fable, judge: sonnet, reporter: fable}. Produce one JSON object {mode, profile, inputs, iteration, priorReport, independence, prompts, config}."
+  exit 4
+}
+exec node "$here/assemble-args.mjs" "$@"
