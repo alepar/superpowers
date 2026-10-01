@@ -275,9 +275,9 @@ function oneTaskCanned(overrides = {}) {
     'read-ledger': { text: '' },
     'ledger-append:launch': { appended: true },
     'ledger-append:detector': { appended: true },
-    'edge-audit:1': { openLeaves: 0, depth: 1, suspectEdges: [], summary: 'stub audit' },
-    'edge-audit:2': { openLeaves: 0, depth: 1, suspectEdges: [], summary: 'stub audit' },
-    'edge-audit:3': { openLeaves: 0, depth: 1, suspectEdges: [], summary: 'stub audit' },
+    'edge-audit:1': { openLeaves: 0, depth: 1, changes: [], summary: 'stub audit' },
+    'edge-audit:2': { openLeaves: 0, depth: 1, changes: [], summary: 'stub audit' },
+    'edge-audit:3': { openLeaves: 0, depth: 1, changes: [], summary: 'stub audit' },
     'ledger-append:edge-audit:1': { appended: true },
     'ledger-append:edge-audit:2': { appended: true },
     'ledger-append:edge-audit:3': { appended: true },
@@ -364,8 +364,8 @@ async function main() {
   {
     const scan = scanTemplateSpans(scriptBody)
     check(scan.clean, 'scanner ends in code state (no unterminated literal, string, or ${})')
-    check(scan.spans.length === 285,
-      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 285 — 215 after the D4 loop rewrite, +10 for the merge-evidence contract (clean-check and merge steps, mergeEvidence's diagnoses and logs, the Merge-cleanup line) and writeFence(), +17 for the failing-mergeCheck seam route (the check-fix and fix-review dispatch keys/labels, their logs and blocker findings, the re-merge, fixPrompt's check branch, checkFixReviewPrompt), +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log, −7 for batched ledger writes (per-line ledger keys and labels out, the per-task flush key, the merge agent's LEDGER step and its line templates, the runtime-slot logs, the per-site null-merge logs and the background edge audit in), +46 for early unblock and graph readiness (the split/reopen/discard dispatch keys, labels, prompts and logs, the cancel and graph-dispatch logs, the stacked/re-entry brief and implementer wording, the stacked rebase and review-bead close, the held-back and re-entry logs, the reconcile split note, the detector and Metrics fields, the resume note); update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
+    check(scan.spans.length === 318,
+      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 318 — 215 after the D4 loop rewrite, +10 for the merge-evidence contract (clean-check and merge steps, mergeEvidence's diagnoses and logs, the Merge-cleanup line) and writeFence(), +17 for the failing-mergeCheck seam route (the check-fix and fix-review dispatch keys/labels, their logs and blocker findings, the re-merge, fixPrompt's check branch, checkFixReviewPrompt), +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log, −7 for batched ledger writes (per-line ledger keys and labels out, the per-task flush key, the merge agent's LEDGER step and its line templates, the runtime-slot logs, the per-site null-merge logs and the background edge audit in), +46 for early unblock and graph readiness (the split/reopen/discard dispatch keys, labels, prompts and logs, the cancel and graph-dispatch logs, the stacked/re-entry brief and implementer wording, the stacked rebase and review-bead close, the held-back and re-entry logs, the reconcile split note, the detector and Metrics fields, the resume note), +33 for proactive slowness handling (noteSlowness and its items, the hot-file raise, the graph-bound arming and its audit reason, the detector's lane fields, the act-capable edge audit: change formatting, the edge-cuts dispatch key/label/prompt, the Edge cut: lines and their elided variants, effDeps' cut key); update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
     // self-test: inject a raw backtick mid-way through the first literal's content and assert
     // the detector actually fires — a detector that cannot catch the known failure is decoration
     const [s, e] = scan.spans[0]
@@ -1067,9 +1067,9 @@ async function main() {
       'read-ledger': { text: '' },
       'ledger-append:launch': { appended: true },
       'ledger-append:detector': { appended: true },
-      'edge-audit:1': { openLeaves: 0, depth: 1, suspectEdges: [], summary: 'stub audit' },
-      'edge-audit:2': { openLeaves: 0, depth: 1, suspectEdges: [], summary: 'stub audit' },
-      'edge-audit:3': { openLeaves: 0, depth: 1, suspectEdges: [], summary: 'stub audit' },
+      'edge-audit:1': { openLeaves: 0, depth: 1, changes: [], summary: 'stub audit' },
+      'edge-audit:2': { openLeaves: 0, depth: 1, changes: [], summary: 'stub audit' },
+      'edge-audit:3': { openLeaves: 0, depth: 1, changes: [], summary: 'stub audit' },
       'ledger-append:edge-audit:1': { appended: true },
       'ledger-append:edge-audit:2': { appended: true },
       'ledger-append:edge-audit:3': { appended: true },
@@ -1134,6 +1134,38 @@ async function main() {
     check(idx('brief:bd-102') < idx('review:bd-101'), 'disjoint-file task overtook the hot-file wait')
     check(out.logs.some(l => l.includes('hot-file deferrals: src/a.js')), 'detector names the hot file')
     check(out.result?.completed.length === 3, 'all 3 still completed')
+    assertBucketsDisjoint(out.result)
+  }
+
+  scenario('hot-file cap: a file that holds back two tasks while a slot is free gets its cap raised by one for the round')
+  {
+    const ids = ['bd-101', 'bd-102', 'bd-103']
+    const canned = manyTaskCanned(ids, {
+      'plan': { planPath: PLANPATH, mapping: ids.map((id, i) => ({ n: i + 1, id, files: ['src/a.js'] })) },
+      // bd-101 finishes only once a second same-file task is implementing: without the raise this deadlocks
+      'impl:bd-101': async ctx => { await ctx.waitFor('impl:bd-103'); return { id: 'bd-101', status: 'IMPLEMENTED', files: [] } },
+    })
+    const out = await run({ args: liveArgs({ config: cfg({ hotFileCap: 1 }) }), canned })
+    assertNoThrow(out)
+    const idx = label => out.trace.findIndex(t => t.label === label)
+    check(idx('brief:bd-103') < idx('review:bd-101'), 'the third same-file task dispatched beside the first once the cap was raised')
+    check(idx('brief:bd-102') > idx('review:bd-101'), 'the raise is one step: the second deferred task still waits for the file')
+    check((out.result?.slowness ?? []).some(x => x.includes('src/a.js held back two tasks while a slot was free — its hot-file cap is raised to 2')), 'the raise is a slowness item', JSON.stringify(out.result?.slowness))
+    check(out.logs.some(l => /parallelism: .*hot-file cap raised: src\/a\.js/.test(l)), 'the detector names the raised file')
+    check(out.result?.completed.length === 3, 'all 3 completed')
+    assertBucketsDisjoint(out.result)
+  }
+
+  scenario('detector: merge-queue peak, idle slots and rows waiting on deps are on the persisted line; a deep merge backlog is a slowness item')
+  {
+    const ids = ['bd-101', 'bd-102', 'bd-103']
+    // all three implement at once; the first merge returns only once the third is queued
+    const canned = manyTaskCanned(ids, { 'merge:bd-101': async ctx => { await ctx.waitFor('review:bd-103'); await new Promise(r => setTimeout(r, 5)); return { id: 'bd-101', merged: true, mergeExit: 0, mergeHead: true, head: SHA('b'), mergeBase: SHA('a'), rebaseConflictFiles: 0 } } })
+    const out = await run({ args: liveArgs({ config: cfg({ concurrency: 8 }) }), canned })
+    assertNoThrow(out)
+    const det = extractLedgerLine(promptOf(out.trace, 'ledger-append:detector'))
+    check(!!det && /merge queue peak 3/.test(det) && /idle slots 5/.test(det), 'the Detector: line carries the merge-queue peak and the idle slots', det)
+    check((out.result?.slowness ?? []).some(x => x.includes('merge queue peaked at 3')), 'a merge-queue peak of 3 is a slowness item', JSON.stringify(out.result?.slowness))
     assertBucketsDisjoint(out.result)
   }
 
@@ -1567,13 +1599,13 @@ async function main() {
     assertBucketsDisjoint(out.result)
   }
 
-  scenario('edge audit: armed by two below-cap rounds, report-only, bounded by edgeAuditCap; width computed in JS')
+  scenario('edge audit: armed by two below-cap rounds, report-only by default, bounded by edgeAuditCap; width computed in JS')
   {
     const ids = ['bd-101', 'bd-102', 'bd-103', 'bd-104']
     const canned = manyTaskCanned(ids, {
       'bd-ready': [{ ids: ['bd-101'] }, { ids: ['bd-102'] }, { ids: ['bd-103'] }, { ids: ['bd-104'] }, { ids: [] }],
       // the audit returns only once round 3 is dispatching: awaiting it at the round end would deadlock
-      'edge-audit:1': async ctx => { await ctx.waitFor('brief:bd-103'); return { openLeaves: 5, depth: 2, suspectEdges: [{ from: 'bd-104', to: 'bd-103', reason: 'consumer reads nothing the producer writes' }], summary: 'graph-bound' } },
+      'edge-audit:1': async ctx => { await ctx.waitFor('brief:bd-103'); return { openLeaves: 5, depth: 2, changes: [{ dependent: 'bd-104', blocker: 'bd-103', kind: 'drop', safe: true, reason: 'consumer reads nothing the producer writes' }], summary: 'graph-bound' } },
     })
     const out = await run({ args: liveArgs({ config: cfg({ edgeAuditCap: 1 }) }), canned })
     assertNoThrow(out)
@@ -1581,9 +1613,11 @@ async function main() {
     const idx = label => out.trace.findIndex(t => t.label === label)
     check(idx('edge-audit:1') > idx('merge:bd-102') && idx('edge-audit:1') < idx('brief:bd-103'), 'audit dispatches at the end of round 2, before round 3 dispatches — and round 3 does not wait for it')
     const line = extractLedgerLine(promptOf(out.trace, 'ledger-append:edge-audit:1'))
-    check(!!line && line.includes('achievable width 3 vs cap 4') && line.includes('bd-104→bd-103'), 'ledger line carries ceil(5/2)=3 computed in JS and the suspect edge', line)
+    check(!!line && line.includes('achievable width 3 vs cap 4') && line.includes('bd-104 <- bd-103 · drop') && line.includes('safe yes'), 'ledger line carries ceil(5/2)=3 computed in JS and the proposed change', line)
+    check(!out.trace.some(t => t.label.startsWith('edge-cuts')), 'report-only by default: no apply dispatch even for a safe change')
+    check((out.result?.slowness ?? []).some(x => x.includes('edge audit 1: 1 edge change(s) left for an operator (report-only run)')), 'the unapplied change is returned as a slowness item', JSON.stringify(out.result?.slowness))
     const audit = promptOf(out.trace, 'edge-audit:1')
-    check(!!audit && audit.includes('READ-ONLY') && audit.includes(`bash ${SKILLS}/super-code/scripts/edge-stats bd-100`) && audit.includes('JQ_UNAVAILABLE:') && audit.includes('bd list --all --json') && !audit.includes('achievableWidth'), 'audit prompt is read-only, takes its numbers from edge-stats, reads edges from the bulk dump, and does not ask for the width', audit)
+    check(!!audit && audit.includes('READ-ONLY') && audit.includes(`bash ${SKILLS}/super-code/scripts/tree-shape bd-100`) && audit.includes(`${SKILLS}/super-design/graph-pass-prompt.md`) && audit.includes('JQ_UNAVAILABLE:') && audit.includes('bd list --all --json') && !audit.includes('achievableWidth'), 'audit prompt is read-only, takes its numbers from tree-shape, judges by super-design\'s graph-pass rules, reads edges from the bulk dump, and does not ask for the width', audit)
     check(out.result?.completed.length === 4, 'all four still complete')
     assertBucketsDisjoint(out.result)
   }
@@ -1993,6 +2027,7 @@ async function main() {
     assertNoThrow(out)
     check(JSON.stringify([...(out.result?.completed ?? [])].sort()) === '["bd-101","bd-102"]', 'both completed in one working round', JSON.stringify(out.result))
     check(out.counts['bd-ready'] === 2 && !out.counts['bd-ready-topup'], 'no bd-ready-topup: the dependent came from the graph', JSON.stringify(out.counts))
+    check(!out.counts['edge-audit:1'] && !(out.result?.slowness ?? []).some(x => x.includes('graph-bound')), 'a two-deep graph under a cap of 4 is not graph-bound: no early audit')
     check(out.counts['review-bead:bd-101'] === 1 && !out.counts['review-bead:bd-102'], 'the parent (it has a dependent) is split once; the leaf dependent is not')
     check(promptOf(out.trace, 'review-bead:bd-101')?.includes(`bash ${SKILLS}/super-code/scripts/review-bead split bd-101`), 'the split is a script echo of review-bead split', promptOf(out.trace, 'review-bead:bd-101'))
     check(at(out, 'brief:bd-102') > at(out, 'impl:bd-101') && at(out, 'brief:bd-102') < at(out, 'merge:bd-101'), 'the dependent is briefed after the parent\'s implementation and before its merge')
@@ -2120,6 +2155,38 @@ async function main() {
     const second = out.trace.filter(t => t.label === 'brief:bd-103')[1]?.prompt ?? ''
     check(!second.includes('-m "stack:') && (promptOf(out.trace, 'brief:bd-103') ?? '').includes('-m "stack: bd-101"') && (promptOf(out.trace, 'brief:bd-103') ?? '').includes('-m "stack: bd-102"'), 'the first brief stacked both parents; the fresh one stacks none')
     check(!out.counts['discard:bd-103'] && !taskLedgerLines(out.trace, 'bd-103').some(l => /cancelled/.test(l)), 'a stack conflict is a wait, not a cancellation')
+    assertBucketsDisjoint(out.result)
+  }
+
+  scenario('edge audit: with edgeCuts apply-safe, only the audit\'s safe changes are applied, recorded, and honored by graph readiness at once')
+  {
+    // bd-103 waits on bd-102 (a narrative-order edge) and bd-104 on bd-103; the graph is 3 deep against
+    // a cap of 8, so the audit arms in round 1. bd-102's implementation is held until the cut lands.
+    const rows = [{ id: 'bd-101' }, { id: 'bd-102' }, { id: 'bd-103', deps: ['bd-102'] }, { id: 'bd-104', deps: ['bd-103'] }]
+    const out = await run({ args: liveArgs({ config: cfg({ concurrency: 8, edgeCuts: 'apply-safe' }) }), canned: graphCanned(rows, {
+      'bd-ready': [{ ids: ['bd-101', 'bd-102'] }, { ids: [] }],
+      'edge-audit:1': { openLeaves: 4, depth: 3, summary: 'the graph binds', changes: [
+        { dependent: 'bd-103', blocker: 'bd-102', kind: 'drop', safe: true, reason: 'bd-103 reads nothing bd-102 writes' },
+        { dependent: 'bd-104', blocker: 'bd-103', kind: 'repoint', add: [{ dependent: 'bd-104', blocker: 'bd-101' }], safe: false, reason: 'shares src/x.js' },
+      ] },
+      'edge-cuts:1': { applied: [
+        { dependent: 'bd-103', blocker: 'bd-102', kind: 'drop', safe: true, reason: 'bd-103 reads nothing bd-102 writes' },
+        { dependent: 'bd-104', blocker: 'bd-103', kind: 'drop', safe: true, reason: 'not proposed as safe — must be ignored' },
+      ], skipped: [] },
+      'ledger-append:edge-cuts:1': { appended: true },
+      'impl:bd-102': async ctx => { await ctx.waitFor('brief:bd-103'); return { id: 'bd-102', status: 'IMPLEMENTED', files: [], head: SHA('c') } },
+    }) })
+    assertNoThrow(out)
+    check(out.counts['edge-audit:1'] === 1 && out.counts['edge-cuts:1'] === 1, 'graph-bound arming in round 1, then one apply dispatch', JSON.stringify(out.counts))
+    check((out.result?.slowness ?? []).some(x => x.includes('graph-bound — 4 open beads, depth 3, achievable width 2 vs cap 8')), 'the graph-bound arming is a slowness item', JSON.stringify(out.result?.slowness))
+    const cuts = promptOf(out.trace, 'edge-cuts:1') ?? ''
+    check(cuts.includes('bd-103 <- bd-102 · drop') && !cuts.includes('bd-104 <- bd-103') && cuts.includes('bd dep remove <dependent> <blocker>') && /re-check/.test(cuts), 'the apply dispatch gets only the safe change, re-checks it, and applies it with bd dep remove', cuts)
+    const lines = (promptOf(out.trace, 'ledger-append:edge-cuts:1') ?? '').split('\n')
+    check(lines.some(l => l.includes('Edge cut: bd-103 <- bd-102 · drop (bd-103 reads nothing bd-102 writes) · applied')) && !lines.some(l => l.includes('Edge cut: bd-104')), 'the applied cut goes to the ledger; a change the audit did not propose as safe is ignored', lines.join(' | '))
+    // impl:bd-102 returns only once bd-103 is briefed, so reaching here at all means the cut freed bd-103
+    check(at(out, 'brief:bd-103') > at(out, 'edge-cuts:1') && at(out, 'brief:bd-103') < at(out, 'review:bd-102') && !(promptOf(out.trace, 'brief:bd-103') ?? '').includes('stack: bd-102'), 'bd-103 dispatches from the graph as soon as the cut lands — before bd-102 is even implemented, and not stacked on it')
+    check((out.result?.slowness ?? []).some(x => x.includes('outside the safe class') && x.includes('bd-104 <- bd-103 · repoint')), 'the unsafe change is left for an operator', JSON.stringify(out.result?.slowness))
+    check(JSON.stringify([...(out.result?.completed ?? [])].sort()) === '["bd-101","bd-102","bd-103","bd-104"]', 'all four complete', JSON.stringify(out.result))
     assertBucketsDisjoint(out.result)
   }
 
@@ -2288,7 +2355,7 @@ esac
     scenario('scripts: every tree script prints JQ_UNAVAILABLE: and exits 4 when jq is missing')
     {
       const dir = newFixture()
-      for (const [name, args] of [['epic-tree', ['R', 'A']], ['ready-in-tree', ['R']], ['close-in-tree-epics', ['R']], ['edge-stats', ['R']], ['tree-deps', ['R']]]) {
+      for (const [name, args] of [['epic-tree', ['R', 'A']], ['ready-in-tree', ['R']], ['close-in-tree-epics', ['R']], ['tree-shape', ['R']], ['tree-deps', ['R']]]) {
         const r = runScript(dir, name, args, { noJq: true })
         check(r.code === 4 && /^JQ_UNAVAILABLE: /.test(r.stdout) && lines(r.stdout).length === 1 && r.stdout.includes('R'), `${name}: exit 4 with one self-contained JQ_UNAVAILABLE: line naming the epic`, JSON.stringify(r))
       }
@@ -2439,26 +2506,27 @@ esac
         rmSync(dir, { recursive: true, force: true })
       }
 
-      scenario('scripts: edge-stats — open leaves, depth through epic waits, one critical path')
+      scenario('scripts: tree-shape — super-design\'s graph-shape over the open tree, review beads dropped')
       {
-        let dir = newFixture()
-        let r = runScript(dir, 'edge-stats', ['R'])
-        let j = null; try { j = JSON.parse(r.stdout) } catch {}
-        // Open non-epic, non-blocker in-tree beads: A B C D zz-1 = 5. Longest wait chain:
-        // D -> S -> C -> B (S is an epic: depth 3).
-        check(r.code === 0 && j?.openLeaves === 5 && j?.depth === 3, 'openLeaves 5 (closed, blocker and out-of-tree beads excluded), depth 3 (the epic adds none)', r.stdout + r.stderr)
-        check(JSON.stringify(j?.criticalPath) === '["D","S","C","B"]', 'critical path runs through the epic-level edge, waiting bead first', r.stdout)
+        const withReview = baseList(); withReview.push(bead('R.r1', 'task', [bl('B'), pc('R')], { parent: 'R', labels: ['sp:review'] }))
+        let dir = newFixture({ list: withReview })
+        let r = runScript(dir, 'tree-shape', ['R'])
+        const out = lines(r.stdout)
+        // Open non-epic, non-blocker, non-review in-tree beads: A B C D zz-1 = 5. Longest wait chain:
+        // D waits on epic S (its whole subtree), S's subtree is C -> B: depth 3.
+        check(r.code === 0 && out[0] === 'shape: leaves 5 · depth 3 · width 1.7 · critical path: B → C → D', 'shape line: closed, blocker, review and out-of-tree beads excluded; the epic adds no depth; path in execution order', r.stdout + r.stderr)
+        check(out.includes('edge: D <- S · epic · critical yes · depth 3→2') && out.includes('edge: C <- B · leaf · critical yes · depth 3→2'), 'candidate edges with the depth if each alone were removed', r.stdout)
+        check(/^summary: /.test(out[out.length - 1]), 'ends with the summary line', r.stdout)
         rmSync(dir, { recursive: true, force: true })
 
         const cyc = baseList(); cyc.find(b => b.id === 'B').dependencies.push(bl('C'))
         dir = newFixture({ list: cyc })
-        r = runScript(dir, 'edge-stats', ['R'])
-        j = null; try { j = JSON.parse(r.stdout) } catch {}
-        check(r.code === 0 && j?.depth === 3 && r.stderr.includes('wait cycle'), 'a wait cycle terminates, is reported on stderr, and its closing edge is ignored', JSON.stringify(r))
+        r = runScript(dir, 'tree-shape', ['R'])
+        check(r.code === 0 && /depth 3/.test(r.stdout) && r.stderr.includes('wait cycle'), 'a wait cycle terminates, is reported on stderr, and its closing edge is ignored', JSON.stringify(r))
         rmSync(dir, { recursive: true, force: true })
 
         dir = newFixture()
-        check(runScript(dir, 'edge-stats', ['nope']).code === 2, 'unknown EPIC_ID exits 2')
+        check(runScript(dir, 'tree-shape', ['nope']).code === 2, 'unknown EPIC_ID exits 2')
         rmSync(dir, { recursive: true, force: true })
       }
     }

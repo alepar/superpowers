@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# The open part of one epic's tree in super-design's graph-shape format, for the edge audit.
+# Membership is structural (epic-tree); review beads (`sp:review`, a task already implemented)
+# are dropped, then super-design's scripts/graph-shape computes the numbers and candidate edges
+# over that dump — one graph model for design time and execution time.
+#
+# Usage: bash tree-shape EPIC_ID
+# Output: graph-shape's lines — `shape:`, one `edge:` per candidate, `summary:`.
+# Exit 0 ok, 2 bad input or unknown EPIC_ID, 4 jq unavailable (prints a JQ_UNAVAILABLE: line on
+# stdout).
+set -euo pipefail
+
+if [ $# -ne 1 ]; then
+  echo "usage: tree-shape EPIC_ID" >&2
+  exit 2
+fi
+epic=$1
+here=$(cd "$(dirname "$0")" && pwd)
+shape="$here/../../super-design/scripts/graph-shape"
+[ -f "$shape" ] || { echo "graph-shape not found at $shape" >&2; exit 2; }
+
+command -v jq >/dev/null 2>&1 || {
+  echo "JQ_UNAVAILABLE: jq is not installed, so compute this by hand from \`bd list --all --json --limit 0\`. A bead's parent is the \`depends_on_id\` of its \`dependencies\` entry with \`type\` \"parent-child\" (or its \`parent\` field); it is in the tree when it is ${epic} or its parent chain reaches ${epic}. Keep in-tree beads whose \`status\` is not \"closed\" and whose \`labels\` include neither \"blocker\" nor \"sp:review\". leaves = kept beads whose \`issue_type\` is not \"epic\". A kept bead waits on each kept bead named by its \`dependencies\` entries with \`type\` \"blocks\"; a bead blocked by an epic waits for every bead under that epic; every bead under an epic also waits on that epic's blockers. depth = the most non-epic beads on any chain of waits; width = leaves/depth to one decimal. Skip any edge whose dependent's description contains \`blocked-by <blocker>: consumes boundary contract\` or \`blocked-by <blocker>: consumes all leaves (integration sweep)\`. Of the rest, list each edge that lies on a longest chain or has an epic at either end, with the depth you get when only that edge is removed. Output: \`shape: leaves N · depth D · width W · critical path: <ids in execution order joined by ' → '>\`, then one \`edge: <dependent> <- <blocker> · leaf|epic · critical yes|no · depth D→D'\` line per listed edge, then \`summary: edges <all blocks edges> · exempt <n> · candidates <n> (critical <n>, epic-level <n>)\`."
+  exit 4
+}
+
+tmp=$(mktemp -d)
+trap 'rm -rf "$tmp"' EXIT
+bd list --all --json --limit 0 > "$tmp/dump.json"
+bash "$here/epic-tree" --from "$tmp/dump.json" "$epic" > "$tmp/members"
+jq --rawfile m "$tmp/members" '
+  ($m | split("\n") | map(select(. != ""))) as $ids
+  | map(select(.id as $i | ($ids | index($i)) and (((.labels // []) | index("sp:review")) | not)))
+' "$tmp/dump.json" > "$tmp/tree.json" || { echo "could not parse the bd list dump" >&2; exit 2; }
+bash "$shape" --from "$tmp/tree.json" "$epic"

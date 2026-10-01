@@ -31,6 +31,26 @@ When the Workflow ends on the agent-budget cap (no return value, no `stopReason`
 `ready-unavailable`/`plan-unavailable`, relaunch it yourself with `resumeFromRunId` and the ledger's
 `Launch:` args, without asking. Other copies of this rule are pointers here.
 
+**Watch for slowness while it runs.** Whenever you are woken during a run (a notification, a
+relaunch, a check-in), read the ledger's newest `Detector:`, `Edge audit:`, `Edge cut:` and
+`Recurring blocker:` lines (and, once returned, the `slowness` list). Look for a merge-queue peak
+that keeps climbing, idle slots while beads wait on deps, one file held back round after round,
+a recurring blocker cause, repeated null retries, or a long tail of mechanical latency. Take at
+most one cheap action per check, from this list, and record it as a `Slowness: <signal> → <action>`
+ledger line (and in the friction log):
+- tune `config` (`concurrency`, `runtimeSlots`, `hotFileCap`, `efforts`, `edgeAuditCap`) for the
+  next relaunch — and when no relaunch is coming, quiesce and relaunch at a round boundary only
+  for a signal that held for two detector rounds (`./coordinator-workflow.md`'s "Quiesce before a
+  planned relaunch");
+- for a file held back across two rounds, file one `Seam contract:` bead (or assign the file to
+  one bead) per super-design's §Coverage, for the next round's planner;
+- fix a recurring blocker's shared cause once when it is configuration (`mergeCheck`, `sweep`,
+  `testPaths`, a setup step) — at the next relaunch;
+- otherwise, one friction note naming the pipeline defect.
+
+No re-plans, no edits to running tasks, and never a stop: a signal you cannot act on cheaply is
+noted and the run goes on.
+
 ## Boundary
 
 super-code owns the epic-level machinery and its per-task prompts; it uses
@@ -68,12 +88,12 @@ A caller supplies these — none are inferable from the repo:
 | integration worktree | the checkout of `integrationBranch` this skill works in — passed as `integrationWorktree` in the coordinator contract (optional, additive). A caller that created the worktree itself (`super-auto`'s run worktree, any native-tool worktree) **must pass its path**: when omitted, the coordinator derives `.worktrees/<integrationBranch>` with any `/` in the branch name collapsed to `-`, which only matches worktrees created by this skill's own pre-flight convention — a slashed branch like `super-auto/<slug>` makes the derived path wrong by construction for any externally-created worktree (`./coordinator-workflow.md`'s "Coordinator contract") |
 | mode | autonomous or interactive. Same contract either way — mode changes who answers a blocked task, never what gets reviewed |
 | who owns the finish | **state it explicitly if the caller owns it.** There is no config flag. Left unsaid, this skill runs its own Finish: it merges the integration branch and deletes the worktree — taking the ledger and the per-task reports with it, which is where a caller's report gets its sources |
-| `config.models`, `config.efforts`, `config.concurrency`, `config.runtimeSlots`, `config.hotFileCap`, `config.topUpQueryCap`, `config.edgeAuditCap`, `config.earlyUnblock` | optional; see Model tiering and Parallelism below for what they default to and why an explicit map is preferred. Pre-flight resolves `config.runtimeSlots` (the runtime's `min(16, cores-2)` agent slots) |
+| `config.models`, `config.efforts`, `config.concurrency`, `config.runtimeSlots`, `config.hotFileCap`, `config.topUpQueryCap`, `config.edgeAuditCap`, `config.earlyUnblock`, `config.edgeCuts` | optional; see Model tiering and Parallelism below for what they default to and why an explicit map is preferred. Pre-flight resolves `config.runtimeSlots` (the runtime's `min(16, cores-2)` agent slots) |
 | `config.sweep` | optional: the exact full-suite command Finish runs once against the integration tip, envelope included (`nice`, thread caps — whatever `AGENTS.md` requires of every command). Undeclared, pre-flight resolves the project's full test command into it, so the `Launch:` line records it. The sweep always runs when work landed (`./coordinator-workflow.md`'s "Finish"). There is no per-merge gate; a `config.gate` is ignored with a log line |
 | `config.mergeCheck` | optional: the exact BUILD-ONLY command (compile/typecheck, envelope included — `cargo check --all-targets`, `tsc --noEmit`, `go build ./...`) the merge agent runs on the merged tree at every serial merge. **Never a test command.** Undeclared, pre-flight resolves the project's build/typecheck step into it, or `'none'` when the project has none (then no check runs); the `Launch:` line records which. A failing check gets one merge-check fix (the task's one seam fix) and a scoped review of it, then re-runs; still failing → the blocker path |
 | `deferSweep` | optional: `true` when the caller runs the full-suite sweep itself (`super-auto` does, after its fix loop). Finish skips the sweep, the final review is told it was deferred, and `sweep` returns `SWEEP DEFERRED (caller-owned)` |
 | `config.testPaths` | optional, additive: an array of git pathspecs that **replaces** the default test-file pathspec list wholesale for the `Test changes` check the task review and the seam review run. An empty array is rejected at pre-flight (defaults retained, a warning logged) rather than silently disabling the check |
-| standing authorisation | the operation classes every dispatched agent will run — worktree add/remove, rebase, `merge --no-ff`, `branch -D`, `bd create`/`close`/`comment`, the project's setup step, build/typecheck (`mergeCheck`) and test commands — must be allowed before launch. Pre-flight step 5 probes each one side-effect-free. A refusal mid-run is not recoverable by any agent: the task is quarantined for the run with a `BLOCKED-AUTH` ledger line and reported as untested scope |
+| standing authorisation | the operation classes every dispatched agent will run — worktree add/remove, rebase, `merge --no-ff`, `branch -D`, `bd create`/`close`/`comment` (plus `bd dep`/`update` under `config.edgeCuts: 'apply-safe'`), the project's setup step, build/typecheck (`mergeCheck`) and test commands — must be allowed before launch. Pre-flight step 5 probes each one side-effect-free. A refusal mid-run is not recoverable by any agent: the task is quarantined for the run with a `BLOCKED-AUTH` ledger line and reported as untested scope |
 
 It returns six buckets — `completed`, `escalated`, `pendingRetry`, `parked`, `stalled`, `review` —
 covering **the epic's whole tree as of return, not only the tasks this invocation dispatched** (a
@@ -94,7 +114,9 @@ tasks quarantined because the harness permission layer refused their commands (a
 sweep's one-line result, starting with the tip SHA it measured, whenever work landed
 (`MEASUREMENT INVALID: …`, `SWEEP UNAVAILABLE …` or `SWEEP DEFERRED (caller-owned)` mean the branch
 is unmeasured here, not green) —
-and **`metrics`**, an array of exactly four `Metrics:` ledger-line strings (merge/rebase/seam/
+**`slowness`**, the slowness signals the coordinator noticed and what it did about each (hot-file
+cap raises, a graph-bound audit, edge cuts applied or left for an operator, a merge backlog, a
+recurring blocker); and **`metrics`**, an array of exactly four `Metrics:` ledger-line strings (merge/rebase/seam/
 check-failure counts; completion kinds, with early dispatches and cancellations; fix-pass outcomes; and a ledger-check cross-checking the merge count
 against `completed.size`), written unconditionally at Finish, before the final review
 (`./coordinator-workflow.md`'s "Finish").
@@ -110,11 +132,11 @@ Every role below has a tier; a caller may override any of them via `config.model
 | Role | Model | Why |
 |---|---|---|
 | `planner` | opus | Materializes `<epicId>-plan.md` from the beads tree once per epic (judgment: dependency ordering, `filesTouched` extraction, ordinal assignment) |
-| `triage` | opus | RESOLVE vs ESCALATE on a blocker bead, and the report-only dependency-edge audit |
+| `triage` | opus | RESOLVE vs ESCALATE on a blocker bead, and the dependency-edge audit's change judgment |
 | `finalReview` | opus | Whole-epic review against the integration branch before hand-off |
 | `implementer` | sonnet | Per-task implementation, the fix pass, and the seam fix |
 | `reviewer` | sonnet | The per-task review, the seam review, and the merge agent |
-| `mechanical` | sonnet | Deterministic, no-improvisation dispatches that carry no judgment: `bd ready` queries, `task-brief` extraction, notifications, recording a clarification, ledger reads/appends, the sweep, filing a blocker bead once BLOCKED has already been decided, the epic-closure fixpoint (`./scripts/close-in-tree-epics`), and the early-unblock bookkeeping (`./scripts/review-bead` split and reopen, discarding a cancelled task's worktree) |
+| `mechanical` | sonnet | Deterministic, no-improvisation dispatches that carry no judgment: `bd ready` queries, `task-brief` extraction, notifications, recording a clarification, ledger reads/appends, the sweep, filing a blocker bead once BLOCKED has already been decided, the epic-closure fixpoint (`./scripts/close-in-tree-epics`), the early-unblock bookkeeping (`./scripts/review-bead` split and reopen, discarding a cancelled task's worktree), and applying an edge audit's safe cuts after re-checking them |
 
 `mechanical` and `triage` are deliberately separate: `triage` names the opus judgment calls; `mechanical` is everything with a fully-specified procedure. A `config.models.fixEscalation` key from older callers is ignored (there are no escalation rounds).
 
@@ -170,13 +192,19 @@ whole-epic gate whose dependents really need specific leaves is a design defect 
 leaf-level edges (super-design's fifth edge rule) rather than waiting it out.
 The detector line is persisted to the ledger every round (`Detector: round N — …`), so a run's
 parallelism is recoverable after the fact — and a round with no line is *unmeasured*, not clean.
+The line also carries the merge queue's peak, idle slots, and rows still waiting on deps.
+**The coordinator acts on cheap fixes itself** and returns each signal and action as `slowness`:
+a file that holds back two tasks while a slot is free gets its hot-file cap raised by one for the
+round; a merge-queue peak of 3 or more, and a recurring blocker cause, are flagged.
 **Depth, not width, is the usual ceiling** — measured: 1.00 agents per bead in flight over two
-hours, and raising a cap 4 → 14 bought 1.5×, not 3.5× — so when the frontier stays under the cap
-for two consecutive rounds the coordinator starts one **report-only edge audit** in the
-background — the next round does not wait for it (`config.edgeAuditCap`, default 3 per invocation): remaining critical-path depth, the achievable
-width (open leaves / depth) against the cap, and suspect edges by super-design's edge rules,
-written to the ledger. It removes nothing; three operator-applied audits on one run took the
-critical path 16 → 11 → 9 → 8 rounds, and that reshaping stays the operator's decision.
+hours, and raising a cap 4 → 14 bought 1.5×, not 3.5×. So the coordinator starts an **edge
+audit** in the background (`config.edgeAuditCap`, default 3 per invocation) as soon as the graph
+is known to be graph-bound (achievable width under half the cap), or after two rounds with the
+frontier under the cap. It measures with super-design's `graph-shape` (`./scripts/tree-shape`)
+and judges candidate edges by super-design's `graph-pass-prompt.md`. With `config.edgeCuts:
+'apply-safe'` (autonomous runs pass it) the safe-class changes are re-checked and applied mid-run,
+each on an `Edge cut:` ledger line; everything else, and every change in an interactive run, is
+left for an operator. Three audits on one run took the critical path 16 → 11 → 9 → 8 rounds.
 Rationale, measured evidence, and counter-evidence for this dispatch model:
 `./coordinator-workflow.md`'s Implement-phase relaxation comment.
 
@@ -202,7 +230,8 @@ Rationale, measured evidence, and counter-evidence for this dispatch model:
 - Treat a closed task bead as merged when its `review: <id>` bead is still open, or plan or dispatch a review bead as work — it is bookkeeping for a task already implemented, and its open state is what says the merge has not landed.
 - Put anything but merge work on that queue — blocker triage, notifications, already-merged closes and ledger appends run beside it; the one serial lane is the critical path, and each extra agent on it delays every later merge.
 - Hold completed tasks' merges behind a batch or round barrier — each task's integration is enqueued the instant its own chain ends; a straggler must never block its finished siblings from merging.
-- Exceed `config.hotFileCap` concurrently-dispatched tasks declaring the same file — overlap is allowed, unbounded hot-file pile-ups are not.
+- Exceed `config.hotFileCap` concurrently-dispatched tasks declaring the same file, beyond the coordinator's one-step raise for a file holding back two tasks while a slot is free — overlap is allowed, unbounded hot-file pile-ups are not.
+- Apply an edge change mid-run outside super-design's safe class, or in a run without `config.edgeCuts: 'apply-safe'` — unsafe and interactive-run changes are an operator's call.
 - Patch `scripts/task-brief` to accept bead ids directly, or collapse the ordinal ↔ bead-id mapping — SDD's `task-brief` only matches integer `## Task <N>` headings, not bead ids.
 - Treat a null `agent()` result as a result — the Workflow runtime returns null when a subagent dies on a terminal API error after retries, and every dispatch class has its own explicit null semantic (`./coordinator-workflow.md`'s "Null dispatch policy"); most defaults fabricate success (a null merge is not a failed merge, a null ready query is not an empty ready set, a null close-epics never closed the root).
 - File a blocker bead with anything besides the bare `blocker` label — an `sp:` label or a `--parent` makes the escalation record reachable as work and starts a self-sustaining blocker-filing loop (one new bead per round, reproduced live).
@@ -220,6 +249,6 @@ Throughout a run, append friction events (defects hit, workarounds, guidance tha
 - `./task-reviewer-prompt.md` — the per-task reviewer's brief (sonnet).
 - `./triage-prompt.md` — dispatch the blocker triage agent (opus): RESOLVE vs ESCALATE.
 - `./scripts/already-merged` — `bash` helper the brief stage runs to answer whether a re-entered task branch is already merged.
-- `./scripts/epic-tree`, `./scripts/ready-in-tree`, `./scripts/close-in-tree-epics`, `./scripts/edge-stats`, `./scripts/tree-deps`, `./scripts/review-bead` — `bash` helpers for structural tree membership, the epic-scoped ready query (work and ready review beads, apart), the in-tree epic-closure fixpoint, the edge audit's graph numbers, each open bead's leaf blockers for graph readiness, and the early-unblock split and its undo. They parse `bd` JSON with `jq` when it is installed; without it they print a `JQ_UNAVAILABLE:` line telling the agent how to compute the same result by hand.
+- `./scripts/epic-tree`, `./scripts/ready-in-tree`, `./scripts/close-in-tree-epics`, `./scripts/tree-shape`, `./scripts/tree-deps`, `./scripts/review-bead` — `bash` helpers for structural tree membership, the epic-scoped ready query (work and ready review beads, apart), the in-tree epic-closure fixpoint, the edge audit's graph numbers (super-design's `graph-shape` over the open tree), each open bead's leaf blockers for graph readiness, and the early-unblock split and its undo. They parse `bd` JSON with `jq` when it is installed; without it they print a `JQ_UNAVAILABLE:` line telling the agent how to compute the same result by hand.
 - `./trigger-micro-test.md` — the frontmatter description's probe set; re-run it before changing the description. Maintenance-only, deliberately outside this file.
 

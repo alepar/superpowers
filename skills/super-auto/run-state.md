@@ -161,7 +161,8 @@ a resume can silently redo work or violate a decision that was already made.
    never counted as a fourth round.
 
 6. **`super-code`'s returned buckets** — `completed`, `escalated`, `pendingRetry`,
-   `parked`, `stalled`, `review`, `sweep`, recorded verbatim at **every** phase 3→4 transition —
+   `parked`, `stalled`, `review`, `sweep`, and `slowness` (appended across invocations, not
+   overwritten), recorded verbatim at **every** phase 3→4 transition —
    overwritten on each fix-loop re-entry, not written once. `super-code` runs again
    for every fix round, and the buckets it returns then are the current truth; keeping
    only the first run's would leave every fix bead out of the report's Implemented

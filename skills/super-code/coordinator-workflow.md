@@ -34,6 +34,7 @@ args = {
     topUpQueryCap: 40,    // optional — see below
     earlyUnblock: true,   // optional — see below
     edgeAuditCap: 3,      // optional — see below
+    edgeCuts: 'apply-safe',  // optional — see below; autonomous runs only
     mergeCheck: '<exact build-only command>',  // optional — see below; never a test command
     sweep: '<exact full-suite test command>',  // optional — see below
     testPaths: ['tests/**', '...'],  // optional — REPLACES the default test pathspecs, see below
@@ -100,10 +101,15 @@ with none gets `'none'`, and no check runs. The `Launch:` line records the resol
 `none`. A `config.gate` from an older caller is ignored with a log line. Which command ran is on the ledger's `Launch:` and
 `Sweep:` lines.
 
-`edgeAuditCap` is **optional** — additive (issue #3 design question C): how many report-only
-dependency-edge audits one invocation may dispatch, default 3, `0` disables. Armed by two
-consecutive rounds whose dispatched frontier stayed under the cap; see "The coordinator loop"
-step 7.
+`edgeAuditCap` is **optional** — additive: how many dependency-edge audits one invocation may
+dispatch, default 3, `0` disables. Armed by two consecutive rounds whose dispatched frontier stayed
+under the cap, or once, as soon as the graph is known, when it is graph-bound; see "The
+coordinator loop" step 7.
+
+`edgeCuts` is **optional**: `'apply-safe'` lets an audit's safe-class changes be applied mid-run
+(an autonomous run passes it); absent or anything else, every audit is report-only (an
+interactive run leaves it unset, so a human decides). Pre-flight probes `bd dep` and `bd update`
+when it is set.
 
 `testPaths` is **optional** — additive: an array of git pathspecs that **replaces** the
 built-in default list wholesale (it is not merged with the defaults). Both reviewing dispatches on
@@ -131,11 +137,12 @@ template and script path in a dispatch is built from `skillsRoot`. A missing `sk
 launch on line 1.
 
 `mechanical` and `triage` are deliberately separate roles: `triage` names the opus **judgment
-calls** — RESOLVE vs ESCALATE on a blocker bead (see "The blocker-bead path") and the report-only
-edge audit — and never means "the cheap one". `mechanical` is for dispatches with a fully-specified, no-improvisation procedure — no branching
+calls** — RESOLVE vs ESCALATE on a blocker bead (see "The blocker-bead path") and the edge
+audit's change judgment — and never means "the cheap one". `mechanical` is for dispatches with a fully-specified, no-improvisation procedure — no branching
 left to the dispatched agent's judgment: a literal CLI or script echo (`scripts/ready-in-tree`,
 `scripts/close-in-tree-epics`, `scripts/task-brief`, `scripts/review-bead`, notifications,
-recording a clarification, discarding a cancelled task's worktree).
+recording a clarification, discarding a cancelled task's worktree, applying an audit's safe edge
+cuts after re-checking them).
 Deterministic multi-step procedures (the ready fallback's tree filter, the epic-closure fixpoint,
 the edge audit's graph numbers, each bead's leaf blockers, the early-unblock split) live in shipped
 scripts, not in prompt prose. Keep every dispatch
@@ -170,7 +177,7 @@ A Workflow script can call only its hooks — `agent()`, `pipeline()`, `parallel
 | Side-effect | Who does it |
 |-------------|-------------|
 | `bd ready`, `bd show`, `bd close`, `bd create` | a dispatched agent (returns structured data via `schema`) |
-| `scripts/sdd-workspace`, `scripts/task-brief`, `scripts/review-package`, `scripts/already-merged`, `scripts/ready-in-tree`, `scripts/close-in-tree-epics`, `scripts/edge-stats`, `scripts/tree-deps`, `scripts/review-bead` (and `scripts/epic-tree`, which the tree scripts share) | a dispatched agent, via `bash <abs path>` (these are shell scripts; the coordinator script cannot invoke them) |
+| `scripts/sdd-workspace`, `scripts/task-brief`, `scripts/review-package`, `scripts/already-merged`, `scripts/ready-in-tree`, `scripts/close-in-tree-epics`, `scripts/tree-shape`, `scripts/tree-deps`, `scripts/review-bead` (and `scripts/epic-tree`, which the tree scripts share) | a dispatched agent, via `bash <abs path>` (these are shell scripts; the coordinator script cannot invoke them) |
 | git: create worktree, commit, rebase, merge | the brief and implementer agents (the task worktree) and the merge agent (task and integration worktrees) |
 | decide resolvable vs escalate | the triage agent (opus) |
 
@@ -212,6 +219,7 @@ Two rules, both mandatory in the skeleton below:
 | `review-bead` (the early-unblock split) | **The task stays unsplit in bd**: no review bead, its task bead closes at its merge. Its dependents dispatch from the graph regardless — JS, not bd, decides mid-round readiness — and the merge closes only the task bead. Logged. |
 | `reopen` (a split task that did not merge) | **The task bead stays closed**, so bd may report its dependents ready next round; the round head holds back any ready id whose in-tree blocker is quarantined or awaiting its retry. Logged. |
 | `discard` (a cancelled task's worktree) | **The stale worktree may remain**: the task's next brief is told to remove it and cut fresh, so a re-dispatch never reuses work built on a stack parent that did not land. Logged. |
+| `edge-audit` / `edge-cuts` (the background dependency-edge audit and its apply step) | **Opportunistic**: nothing gates on either. A null audit records nothing; a null apply leaves the safe changes unapplied and returns them as a `slowness` item. Logged. |
 | `bd-ready-recheck` (the post-closure re-query when Close reported in-tree closures) | **Opportunistic**: a null keeps the original concurrent ready result — logged, never a stopReason. |
 | `plan` | Round abandoned (nothing downstream can run without the mapping); bounded retry, then `stopReason: 'plan-unavailable'`. |
 | `read-ledger` | Resume reconstructs nothing, loudly: `bd ready` remains the authority on closed work, but prior-run `pendingRetry` bounds are lost for this run — logged, not silent. |
@@ -298,7 +306,8 @@ Done by the main session, not the Workflow:
    - `git rebase` and `git merge --no-ff`: in that throwaway worktree before removing it,
      `git rebase <integrationBranch>` and `git merge --no-ff --no-edit <integrationBranch>` (both
      no-ops against its own base);
-   - `bd create` / `bd close` / `bd comment`: each with `--help`;
+   - `bd create` / `bd close` / `bd comment`: each with `--help`; with `config.edgeCuts:
+     'apply-safe'`, also `bd dep` and `bd update`;
    - the project's setup step, the `mergeCheck` build command, and the sweep command (or the project's test runner): each tool
      with `--help` or a collect-only flag.
    Never probe with a real push, delete, or close. If a class is refused, ask the user to allow it
@@ -459,17 +468,36 @@ Round-based with refill (each `bd ready` batch is, by definition, mutually indep
 7. **Round end — detector, persisted; edge audit, conditional; neither holds the next round.**
    After the drain, the round's ledger lines are flushed and the ledger chain drained, then the
    parallelism detector line is logged and queued to the ledger (`Detector: round N — …`; a line
-   that lives only in `log()` output is unrecoverable after the fact). When the dispatched
-   frontier has stayed under the cap for **two consecutive rounds**, one **report-only
-   dependency-edge audit** starts in the background (`edgeAuditPrompt`, `triage` tier, bounded by
-   `config.edgeAuditCap`; Finish awaits any still running):
-   `scripts/edge-stats` computes open leaves, remaining critical-path depth, and one critical path;
-   the coordinator derives the achievable width (open leaves / depth) in JS; the agent's own work is
-   naming suspect edges by super-design's edge rules and a one-line summary — to the ledger (`Edge audit: …`) and the log. It never removes an edge: reshaping the graph
-   mid-run is the operator's call (issue #3 design question C, decided). Measured: three ad-hoc
-   audits took one run's critical path 16 → 11 → 9 → 8 rounds while width sat at 1.00
-   agent-per-bead-in-flight — depth, not the cap, was the binding constraint, and only an audit
-   showed it.
+   that lives only in `log()` output is unrecoverable after the fact). Besides ready, topped-up,
+   cap and peak in-flight it names where the time went: the merge queue's peak depth, idle slots,
+   rows still waiting on deps, and any hot-file cap raised this round.
+   **The coordinator acts on what it can fix cheaply, and records the rest as `slowness` items**
+   (logged as `SLOWNESS:`, returned):
+   - **Hot file.** A file that holds back two tasks while a slot is free gets its hot-file cap
+     raised by one for the rest of the round (once per file per round).
+   - **Graph-bound.** As soon as the round's graph is known, if the open rows' longest chain
+     (`deps`, in JS) makes the achievable width less than half the cap, one edge audit arms at
+     once — once per invocation — instead of after two under-cap rounds.
+   - **Under-cap streak.** Two consecutive rounds with the dispatched frontier under the cap arm
+     one audit too. Both paths share `config.edgeAuditCap`.
+   - **Merge backlog.** A merge-queue peak of 3 or more is a `slowness` item (once per invocation):
+     the serial lane, not the cap, is binding.
+   - **Recurring blocker.** A `Recurring blocker:` cluster is a `slowness` item: one cause costing a
+     triage per task.
+
+   The **edge audit** runs in the background (`edgeAuditPrompt`, `triage` tier; Finish awaits any
+   still running). `scripts/tree-shape` runs super-design's `graph-shape` over the open tree
+   (review beads dropped) for the numbers and candidate edges; the coordinator derives the
+   achievable width in JS; the agent judges each candidate by super-design's
+   `graph-pass-prompt.md` (its checklist and its **safe** class) and returns `drop` / `narrow` /
+   `repoint` changes, each marked safe or not. Every change goes to the ledger (`Edge audit: …`).
+   With `config.edgeCuts: 'apply-safe'`, the safe ones go to one mechanical `edge-cuts:<k>`
+   dispatch that re-checks each against the live graph and applies it (`bd dep remove`/`add`, the
+   dependents' `blocked-by` lines); each outcome is an `Edge cut: … · applied | skipped` ledger
+   line, and graph readiness honors the applied cuts at once (a freed row dispatches in the live
+   round). Unsafe changes, and every change in a report-only run, are left for an operator as a
+   `slowness` item. Depth, not the cap, is usually what binds: three audits took one run's critical
+   path 16 → 11 → 9 → 8 rounds while width sat at one agent per bead in flight.
 
 Termination is by the root epic closing, a quarantine drain, the no-progress guard tripping, or a
 bounded infrastructure-outage stop (`ready-unavailable`/`plan-unavailable` — see "Null dispatch
@@ -548,6 +576,11 @@ wrote or read this file — everything below described intent, not behavior. `re
     stacked on did not merge, so its attempt stopped and its worktree was discarded. Not terminal:
     resume treats a `cancelled` last line as "not started", and the task dispatches again once bd
     reports it ready.
+  - Run-level lines that are not `Task` lines, so Resume and Metrics skip them: `Launch:`,
+    `Detector: round N — …`, `Edge audit: round N — …` (every proposed change, marked safe or not),
+    `Edge cut: <dependent> <- <blocker> · <kind> · applied | skipped (<reason>)`, `Recurring
+    <kind>: …`, `Sweep: …`, and `Slowness: <signal> → <action>` (written by the watching session,
+    SKILL.md's "Unattended runs").
 - **Resume behavior**, on any restart: the script's Resume phase reads `<workspace>/progress.md`
   once, before the round loop starts (see the script skeleton), and reconstructs `completed`,
   `parked`, and `pendingRetry` from the **last** ledger line recorded for each bead id (a split
@@ -630,7 +663,7 @@ wrote or read this file — everything below described intent, not behavior. `re
   failed merge's `Merge: … → blocker` line, its blocker outcome — is buffered per task and written
   by **one** `ledger:<id>` append when the task's chain ends; when the merge agent did not report
   writing its lines, the coordinator adds them to that flush. Run-level lines (`Launch:`,
-  `Detector:`, `Edge audit:`, `Recurring …:`, `Sweep:`) are their own appends. All appends run on
+  `Detector:`, `Edge audit:`, `Edge cut:`, `Recurring …:`, `Sweep:`) are their own appends. All appends run on
   one serialized ledger chain that no merge or chain awaits; the round end and Finish drain it, and
   per-id order is preserved. A throw inside a queued append (an unregistered dryRun stub key) is
   surfaced at the next drain — fatal under dryRun, logged live.
@@ -972,7 +1005,8 @@ to `superpowers:finishing-a-development-branch`, which merges the integration br
 user's base branch and cleans up the integration worktree. **When the caller owns the finish**
 (e.g. `super-auto`, which still needs this run's ledger and per-task reports after this loop ends),
 the coordinator returns its buckets (`completed`, `escalated`, `pendingRetry`, `parked`, `stalled`,
-`review`, plus `stopReason`) to the caller and stops, leaving the integration worktree, its branch,
+`review`, plus `stopReason` and `slowness` — the slowness signals it noticed and what it did about
+each) to the caller and stops, leaving the integration worktree, its branch,
 and its ledger intact. **Deferred minors reach the final reviewer through the ledger.** The task
 review reports Minor and ⚠️ items in `RESULT.minors`, and the merge gate writes one
 `Task <N> (<id>): minor (deferred): <one-liner>` line per item, in the task's one ledger flush. They
@@ -1477,11 +1511,14 @@ const mergeCheckCommand = typeof config.mergeCheck === 'string' && config.mergeC
 // one after its fix loop exits), so Finish skips it and says so.
 const deferSweep = A.deferSweep === true
 const SWEEP_DEFERRED = 'SWEEP DEFERRED (caller-owned)'
-// Conditional edge audit budget (optional, additive — issue #3 design question C): how many
-// report-only dependency-edge audits one invocation may dispatch. 0 disables. Default 3 — the
-// measured run's three ad-hoc audits took the critical path 16 → 11 → 9 → 8 rounds; a fourth
-// bought little, and each audit is an opus-tier read of the whole graph.
+// Conditional edge audit budget (optional, additive): how many dependency-edge audits one
+// invocation may dispatch. 0 disables. Default 3 — three audits took one run's critical path
+// 16 → 11 → 9 → 8 rounds; a fourth bought little, and each audit is an opus-tier read of the
+// whole graph.
 const edgeAuditCap = Math.max(0, Number.isFinite(Number(config.edgeAuditCap)) ? Number(config.edgeAuditCap) : 3)
+// Edge cuts (optional): 'apply-safe' (autonomous runs pass it) lets an edge audit's safe-class
+// changes be applied mid-run; anything else, the default, keeps every audit report-only.
+const edgeCutsApply = config.edgeCuts === 'apply-safe'
 // Test-changes pathspecs (optional, additive contract key): both reviewing dispatches (the task
 // review and the seam review) restrict their stat/full diff to these pathspecs (see
 // taskReviewPrompt / seamReviewPrompt below). The bare
@@ -1710,12 +1747,15 @@ const TRIAGE  = { type: 'object', properties: { decision: {type:'string', enum: 
 // `ledgerAppended`: the merge agent wrote the success-path ledger lines itself (see mergePrompt);
 // absent or false, the coordinator writes the same lines from the reported fields.
 const MERGE   = { type: 'object', properties: { id:{type:'string'}, merged:{type:'boolean'}, blockerBead:{type:'string'}, head:{type:'string'}, mergeBase:{type:'string'}, authRefused:{type:'string'}, seamOverlap:{ type:'array', items:{type:'string'} }, rebaseConflictFiles:{type:'number'}, check:{type:'string', enum:['pass','fail','none']}, checkOutput:{type:'string'}, mergeExit:{type:'number'}, mergeHead:{type:'boolean'}, dirty:{ type:'array', items:{type:'string'} }, removedIdentical:{ type:'array', items:{type:'string'} }, ledgerAppended:{type:'boolean'} }, required: ['id','merged'] }
-// issue #3 design question C: the conditional, report-only dependency-edge audit's return shape
-// — see `edgeAuditPrompt`. `suspectEdges` are named, never removed: reshaping the graph mid-run
-// stays an operator's call (super-design §Splitting a Bead is the precedent for how much a graph
-// edit can break); the coordinator only records what the audit found. openLeaves and depth are
-// copied from scripts/edge-stats; achievableWidth (ceil(openLeaves / depth)) is computed in JS.
-const EDGE_AUDIT = { type: 'object', properties: { openLeaves:{type:'integer'}, depth:{type:'integer'}, suspectEdges:{ type:'array', items:{ type:'object', properties:{ from:{type:'string'}, to:{type:'string'}, reason:{type:'string'} }, required:['from','to','reason'] } }, summary:{type:'string'}, scriptError:{type:'string'} }, required: ['openLeaves','depth','suspectEdges','summary'] }
+// The read-only dependency-edge audit's return shape — see `edgeAuditPrompt`. openLeaves and depth
+// are copied from scripts/tree-shape (super-design's graph-shape over this tree); achievableWidth
+// (ceil(openLeaves / depth)) is computed in JS. `changes` use super-design's graph-pass vocabulary
+// (drop / narrow / repoint, each judged safe or not by its safe class); `keep` verdicts are not
+// returned. Only with `config.edgeCuts: 'apply-safe'` are the safe ones applied (EDGE_CUTS);
+// everything else is recorded for an operator.
+const EDGE_CHANGE = { type:'object', properties:{ dependent:{type:'string'}, blocker:{type:'string'}, kind:{type:'string', enum:['drop','narrow','repoint']}, add:{ type:'array', items:{ type:'object', properties:{ dependent:{type:'string'}, blocker:{type:'string'} }, required:['dependent','blocker'] } }, safe:{type:'boolean'}, reason:{type:'string'} }, required:['dependent','blocker','kind','safe','reason'] }
+const EDGE_AUDIT = { type: 'object', properties: { openLeaves:{type:'integer'}, depth:{type:'integer'}, changes:{ type:'array', items: EDGE_CHANGE }, summary:{type:'string'}, scriptError:{type:'string'} }, required: ['openLeaves','depth','changes','summary'] }
+const EDGE_CUTS = { type: 'object', properties: { applied:{ type:'array', items: EDGE_CHANGE }, skipped:{ type:'array', items:{ type:'object', properties:{ dependent:{type:'string'}, blocker:{type:'string'}, reason:{type:'string'} }, required:['dependent','blocker','reason'] } } }, required: ['applied','skipped'] }
 const CLOSE   = { type: 'object', properties: { rootClosed: {type:'boolean'}, closedThisRun: { type: 'array', items: { type: 'string' } }, scriptError: {type:'string'} }, required: ['rootClosed','closedThisRun'] }
 // I1: the mechanical ledger read/append contract. `read-ledger` returns raw file text (empty
 // string if the ledger doesn't exist yet — a fresh epic, or one whose first task hasn't merged or
@@ -1835,24 +1875,39 @@ function noteRecurrence(kind, id, text, phase) {
   const sample = String(cl.sample).replace(/\s+/g, ' ').trim()
   const spread = `×${cl.count} across ${cl.tasks.size} task(s)`
   log(`RECURRING ${kind.toUpperCase()} ${spread} — a cluster at this rate is usually the pipeline reporting its own defect, or one systemic smell, not ${cl.count} independent ${kind === 'minor' ? 'nits' : 'blockers'}: ${sample}`)
+  if (kind === 'blocker') noteSlowness(`recurring blocker ${spread} (${[...cl.tasks].join(', ')}): ${sample} — each instance costs a triage cycle; fix the shared cause once`)
   queueLedger(`Recurring ${kind}: ${spread} (${[...cl.tasks].join(', ')}) — ${sample}`,
     `ledger-recurring:${recurringReported}`, phase,
     `Recurring ${kind}: ${spread} (${[...cl.tasks].join(', ')}) — sample elided`)
 }
+// Slowness signals the coordinator noticed and the cheap action it took (or left for the session):
+// hot-file cap raises, a graph-bound arming, edge cuts applied or left, a merge-lane backlog, a
+// recurring blocker. Logged as they happen and returned as `slowness`, so the watching session and
+// a caller's report see them without parsing the log.
+const slowness = []
+function noteSlowness(text) { slowness.push(text); log(`SLOWNESS: ${text}`) }
 const minorSignature = s => String(s).toLowerCase()
   .replace(/[\x60"'()[\]{}]/g, '')
   .replace(/\b[0-9a-f]{7,40}\b/g, '#')
   .replace(/\S+\/\S+/g, '<path>')
   .replace(/\d+/g, '#')
   .replace(/\s+/g, ' ').trim().slice(0, 120)
-// issue #3 defect 6 + design question C: round counter for the persisted detector line, and the
-// below-cap streak that arms the conditional edge audit (two consecutive rounds whose dispatched
-// frontier stayed under the cap — the detector's own hint condition, now a dispatch instead of a
-// sentence the operator has to notice).
+// Round counter for the persisted detector line, and the below-cap streak that arms the
+// conditional edge audit (two consecutive rounds whose dispatched frontier stayed under the cap).
 let roundNo = 0
 let frontierBelowCapStreak = 0
 let edgeAuditsRun = 0
 const pendingAudits = []   // background edge audits; Finish awaits them
+let graphBoundArmed = false   // the graph-bound early arming fires at most once per invocation
+let mergeBacklogNoted = false
+// Applied edge cuts, kept in memory so graph readiness honors them before the next planning round
+// re-reads the edges from bd. `cutRows`: rows whose deps changed this round — graph-dispatchable once
+// their remaining deps are done, even when none of those landed this round.
+const cutEdges = new Set()      // `${dependent}<-${blocker}`
+const addedDeps = new Map()     // dependent -> Set of blockers a narrow/repoint added
+const cutRows = new Set()
+const effDeps = m => [...(m.deps ?? []).filter(d => !cutEdges.has(`${m.id}<-${d}`)), ...(addedDeps.get(m.id) ?? [])]
+let edgeCutHook = () => {}      // the live round's graph top-up while its chains are still draining
 
 // I1: resume-from-ledger — the skill's stated Core principle (SKILL.md §Overview) — until this fix, no
 // dispatch ever wrote or read this file (see "Workspace and ledger" above): a restarted run had no
@@ -1950,6 +2005,7 @@ let lastPlanned = null
 while (true) {
   nullsThisRound = 0
   roundNo++
+  cutRows.clear()
   // MECHANICAL echo of scripts/close-in-tree-epics (the in-tree epic-closure fixpoint — see
   // "The coordinator loop" step 5 and closeEpicsPrompt). First iteration is harmless: nothing is
   // eligible yet.
@@ -2176,11 +2232,14 @@ while (true) {
   const onResolve = id => resolveRetryHook(id)
   let integrateAnnounced = false
   let mergeChain = Promise.resolve()
+  let mergeQueued = 0, mergeQueuePeak = 0   // tasks waiting for or in the merge lane, this round
   // A failed merge's attempt ends (its stacked dependents cancelled, its task bead reopened) before
   // its blocker path runs, so a RESOLVE retry starts from a settled attempt.
   const enqueueIntegration = r => {
+    mergeQueued++; mergeQueuePeak = Math.max(mergeQueuePeak, mergeQueued)
     const run = mergeChain.then(() => integrateOne(r))
     mergeChain = run.then(() => {}, () => {})   // settled either way: a throw must not poison the queue
+    mergeChain.then(() => { mergeQueued-- })
     return run.then(after => (typeof after === 'function'
       ? withSlot(r.id, async () => { await failAttempt(r.att, { failure: 'blocked', reopen: true }); return after() })
       : undefined))
@@ -2384,7 +2443,7 @@ while (true) {
   const graphMode = planned.mapping.some(m => Array.isArray(m.deps))
   // Held back: bd reports the id ready, but a blocker this run has not merged is quarantined or
   // awaiting its retry — a split task whose task-bead reopen was lost looks closed to bd.
-  const heldBack = ids.filter(id => (rowOf(id)?.deps ?? []).some(d => escalated.has(d) || pendingRetry.has(d)))
+  const heldBack = ids.filter(id => (rowOf(id) ? effDeps(rowOf(id)) : []).some(d => escalated.has(d) || pendingRetry.has(d)))
   if (heldBack.length) log(`held back ${heldBack.length} ready id(s) whose in-tree blocker is quarantined or awaiting its retry this run (bd sees that blocker's task bead closed): ${heldBack.join(', ')}`)
   const plannedIds = ids.filter(id => ordinalFor(id) !== undefined && !heldBack.includes(id))
   const unplannedIds = ids.filter(id => ordinalFor(id) === undefined)
@@ -2409,7 +2468,8 @@ while (true) {
   // BLOCKED never reaches review; it goes to `handleBlocker`, the single convergence point for
   // every blocker trigger.
   phase('Implement')
-  const sched = makeScheduler(cap, hotFileCap, id => planned.mapping.find(m => m.id === id)?.files ?? [])
+  const sched = makeScheduler(cap, hotFileCap, id => planned.mapping.find(m => m.id === id)?.files ?? [],
+    (file, raised) => noteSlowness(`round ${roundNo}: ${file} held back two tasks while a slot was free — its hot-file cap is raised to ${raised} for the rest of this round (a shared file worth splitting or assigning to one task)`))
   // Work outside a task chain (an unmapped id's filing and triage, a failed merge's blocker path)
   // takes a scheduler slot like a chain does, so admitted work never exceeds the cap.
   const withSlot = async (id, fn) => {
@@ -2451,19 +2511,20 @@ while (true) {
   const satisfiedThisRound = new Set()
   let stackedDispatched = 0, cancelledThisRound = 0
   const waiting = id => !dispatched.has(id) && !attemptOf.has(id) && !escalated.has(id) && !completed.has(id) && !pendingRetry.has(id)
-  const hasOpenDependents = id => graphMode && planned.mapping.some(m => Array.isArray(m.deps) && m.deps.includes(id) && !completed.has(m.id) && !escalated.has(m.id))
+  const hasOpenDependents = id => graphMode && planned.mapping.some(m => Array.isArray(m.deps) && effDeps(m).includes(id) && !completed.has(m.id) && !escalated.has(m.id))
   // Newly dispatchable rows: every in-tree leaf blocker merged (or, with early unblock, implemented
-  // and split), at least one of them this round, and nothing opaque gating the row.
+  // and split), at least one of them this round (or an applied edge cut changed the row this
+  // round), and nothing opaque gating the row. `effDeps` honors applied edge cuts.
   const readyFromGraph = () => !graphMode ? [] : planned.mapping
     .filter(m => Array.isArray(m.deps) && m.deps.length > 0 && m.opaque !== true && waiting(m.id)
-      && m.deps.every(d => completed.has(d) || implDone.has(d))
-      && m.deps.some(d => satisfiedThisRound.has(d)))
+      && effDeps(m).every(d => completed.has(d) || implDone.has(d))
+      && (effDeps(m).some(d => satisfiedThisRound.has(d)) || cutRows.has(m.id)))
     .map(m => m.id)
   const graphTopUp = () => {
     if (!canStartWork()) return
     for (const id of readyFromGraph()) {
       dispatched.add(id)
-      const parents = (rowOf(id)?.deps ?? []).filter(d => implDone.has(d))
+      const parents = (rowOf(id) ? effDeps(rowOf(id)) : []).filter(d => implDone.has(d))
       log(`graph: ${id} is ready — every in-tree blocker is ${parents.length ? `merged or implemented; dispatching it stacked on ${parents.join(', ')}` : 'merged; dispatching it now'}`)
       chains.push(runTask(id).catch(chainCatch(id)))
     }
@@ -2477,7 +2538,7 @@ while (true) {
   const startAttempt = (id, reentry) => {
     const att = newAttempt(id)
     if (!reentry) {
-      att.parents = (rowOf(id)?.deps ?? []).filter(d => implDone.has(d))
+      att.parents = (rowOf(id) ? effDeps(rowOf(id)) : []).filter(d => implDone.has(d))
       att.parentAttempts = att.parents.map(d => implDone.get(d))
     }
     if (reentry) { implDone.set(id, att); satisfiedThisRound.add(id) }
@@ -2704,6 +2765,21 @@ while (true) {
   // Review re-entries start first: a dependent cut at the round head stacks on them.
   for (const id of reentryPlanned) chains.push(runTask(id, { reentry: true }).catch(chainCatch(id)))
   for (const id of plannedIds) chains.push(runTask(id).catch(chainCatch(id)))
+  // An applied edge cut lands while this round's chains drain: its freed rows dispatch here.
+  edgeCutHook = () => graphTopUp()
+  // Graph-bound check, once per invocation, as soon as the graph is known: when the open rows'
+  // longest chain makes the achievable width (open / depth) less than half the cap, depth — not the
+  // cap — bounds this run, so the edge audit arms now instead of after two under-cap rounds. It
+  // runs in the background beside this round's work.
+  if (graphMode && !graphBoundArmed && edgeAuditsRun < edgeAuditCap) {
+    const g = rowsShape(planned.mapping.filter(m => !completed.has(m.id) && !escalated.has(m.id)))
+    const width = Math.ceil(g.open / Math.max(1, g.depth))
+    if (g.depth >= 3 && width * 2 < cap) {
+      graphBoundArmed = true; edgeAuditsRun++
+      noteSlowness(`round ${roundNo}: graph-bound — ${g.open} open beads, depth ${g.depth}, achievable width ${width} vs cap ${cap}; edge audit armed now`)
+      pendingAudits.push(runEdgeAudit(edgeAuditsRun, roundNo, `the open graph is ${g.depth} beads deep with ${g.open} open beads, so at most ~${width} can run at once against a cap of ${cap}`))
+    }
+  }
   let topUpActive = false, topUpQueued = false
   let topUpQueriesUsed = 0
   let startGateLogged = false
@@ -2797,6 +2873,7 @@ while (true) {
     await Promise.all([...chains, ...topUps])
     if (chains.length === chainCount && topUps.length === topUpCount) break
   }
+  edgeCutHook = () => {}   // nothing is draining now; a later cut is picked up by the next round's ready query
   if (topUpFailure) {
     if (dryRun) throw topUpFailure  // configuration error — loud where it is cheap (see above)
     log(`top-up failed and was swallowed (live run — a top-up gates nothing; see the adjudicated rethrow policy above): ${topUpFailure && topUpFailure.stack ? topUpFailure.stack : String(topUpFailure)}`)
@@ -2816,20 +2893,29 @@ while (true) {
   const slotsNote = runtimeSlots ? ` · runtime slots ${runtimeSlots}` : ''
   const toppedUp = dispatched.size - plannedIds.length - reentryPlanned.length
   const earlyNote = (reentryPlanned.length ? ` · review re-entries ${reentryPlanned.length}` : '') + (stackedDispatched ? ` · stacked ${stackedDispatched}` : '') + (cancelledThisRound ? ` · cancelled ${cancelledThisRound}` : '')
-  log(`parallelism: ${plannedIds.length} ready · topped-up ${toppedUp} · cap ${cap} · peak in-flight ${sched.stats.peak} · top-up queries ${Math.min(topUpQueriesUsed, topUpQueryCap)}/${topUpQueryCap}${earlyNote}${slotsNote}`
+  // Where the time went: the merge lane's backlog, slots left idle, and rows still waiting on deps.
+  const idleSlots = Math.max(0, cap - sched.stats.peak)
+  const waitingOnDeps = graphMode ? planned.mapping.filter(m => waiting(m.id)).length : null
+  const laneNote = ` · merge queue peak ${mergeQueuePeak}` + (idleSlots ? ` · idle slots ${idleSlots}` : '') + (waitingOnDeps ? ` · waiting on deps ${waitingOnDeps}` : '')
+    + (sched.stats.hotFileRaised.length ? ` · hot-file cap raised: ${sched.stats.hotFileRaised.join(', ')}` : '')
+  if (mergeQueuePeak >= 3 && !mergeBacklogNoted) {
+    mergeBacklogNoted = true
+    noteSlowness(`round ${roundNo}: merge queue peaked at ${mergeQueuePeak} — the serial merge lane is the bottleneck; look at mergeCheck duration, seam reviews and rebase conflicts on the Merge: lines`)
+  }
+  log(`parallelism: ${plannedIds.length} ready · topped-up ${toppedUp} · cap ${cap} · peak in-flight ${sched.stats.peak} · top-up queries ${Math.min(topUpQueriesUsed, topUpQueryCap)}/${topUpQueryCap}${earlyNote}${laneNote}${slotsNote}`
     + (hotDeferrals.length ? ` · hot-file deferrals: ${hotDeferrals.map(([f, n]) => `${f} (${n} task(s) waited)`).join(', ')} — a shared barrel/index/registry to split or assign to one task, or over-declared filesTouched (./planner-prompt.md)` : '')
     + (dispatched.size < cap ? ` · dispatched frontier smaller than the cap — if more open beads are waiting on dependencies, check for edges encoding narrative order rather than genuine blocking (super-design §Decomposition)` : ''))
   // The same line goes to the ledger (`Detector:`, a non-Task line the Resume reader ignores), so a
   // run's parallelism is recoverable afterwards. Queued, not awaited: the next round starts now.
-  const detectorLine = `Detector: round ${roundNo} — ${plannedIds.length} ready · topped-up ${toppedUp} · cap ${cap} · peak in-flight ${sched.stats.peak} · top-up queries ${Math.min(topUpQueriesUsed, topUpQueryCap)}/${topUpQueryCap}${earlyNote}${hotDeferrals.length ? ` · hot-file deferrals: ${hotDeferrals.map(([f, n]) => `${f} (${n})`).join(', ')}` : ''}${slotsNote}`
+  const detectorLine = `Detector: round ${roundNo} — ${plannedIds.length} ready · topped-up ${toppedUp} · cap ${cap} · peak in-flight ${sched.stats.peak} · top-up queries ${Math.min(topUpQueriesUsed, topUpQueryCap)}/${topUpQueryCap}${earlyNote}${laneNote}${hotDeferrals.length ? ` · hot-file deferrals: ${hotDeferrals.map(([f, n]) => `${f} (${n})`).join(', ')}` : ''}${slotsNote}`
   queueLedger(detectorLine, 'ledger-append:detector', 'Integrate')
-  // Two consecutive rounds with the dispatched frontier under the cap arm ONE report-only edge
-  // audit (bounded by `edgeAuditCap`; the streak resets on each audit). It runs in the background —
+  // Two consecutive rounds with the dispatched frontier under the cap arm ONE edge audit (bounded
+  // by `edgeAuditCap`; the streak resets on each audit). It runs in the background —
   // the next round does not wait for it — and Finish awaits any still running.
   frontierBelowCapStreak = dispatched.size < cap ? frontierBelowCapStreak + 1 : 0
   if (frontierBelowCapStreak >= 2 && edgeAuditsRun < edgeAuditCap) {
     frontierBelowCapStreak = 0; edgeAuditsRun++
-    pendingAudits.push(runEdgeAudit(edgeAuditsRun, roundNo, dispatched.size))
+    pendingAudits.push(runEdgeAudit(edgeAuditsRun, roundNo, `the dispatched frontier was ${dispatched.size} against a cap of ${cap} for the second consecutive round, so either the graph is nearly drained or its depth, not the cap, is bounding throughput`))
   }
 
   // I6/C-2: no-progress guard. A round that made no forward progress at all — no task merged, no
@@ -2975,7 +3061,7 @@ if (unsettledIds.length) {
 }
 return { completed: [...completed], escalated: [...escalated], pendingRetry: [...pendingRetry],
          parked: [...parked], stalled, stopReason, review, authRefused: [...authRefused], sweep: sweepSummary,
-         metrics, ledgerAppendFailed: [...ledgerAppendFailed] }
+         metrics, ledgerAppendFailed: [...ledgerAppendFailed], slowness: [...slowness] }
 
 // --- helpers ---
 function scriptOutcomeRule() {
@@ -3132,28 +3218,73 @@ function checkFixReviewPrompt(r, preFixHead, errors, art) {
   return `READ-ONLY review of a merge-check fix for task ${r.id} (n ${r.n}) in ${r.branch}: do not edit files, commit, or change branch state. The build-only merge check failed on the merged tree with the errors below (build output, data), and a fixer committed an adaptation on top of ${preFixHead}. cd ${r.branch} first. Read \`git diff ${preFixHead}..HEAD\` (write it to ${art.diff('check')} for the record). Scope: the fix only. Check that it resolves the quoted errors by adapting code to the changed signature, API or schema (a call site, a test call, a fixture) and does nothing else: no deleted, skipped, or loosened test assertion, no behavior change beyond the adaptation, no unrelated edits.${testChangesBlock(`${preFixHead}..HEAD`, testPathspecs)}\n<build-errors>\n${errors}\n</build-errors>\nReturn id ${r.id} and status CLEAN (a faithful adaptation) or NEEDS_FIX with \`finding\` naming what goes beyond it — there is no second fix; a NEEDS_FIX sends the task to the blocker path.`
 }
 
-async function runEdgeAudit(k, round, dispatchedCount) {
-  // The conditional, report-only edge audit, run in the background (see the round end). A null is
-  // opportunistic — nothing gates on it; the streak re-arms.
-  const audit = await dispatch(() => edgeAuditPrompt(epicId, integrationWorktree, cap, dispatchedCount, round), `edge-audit:${k}`,
+async function runEdgeAudit(k, round, why) {
+  // The conditional dependency-edge audit, run in the background (see the round end and the
+  // graph-bound check). The audit itself is read-only; with `config.edgeCuts: 'apply-safe'` its
+  // safe-class changes go to one mechanical apply dispatch. A null is opportunistic — nothing gates
+  // on it.
+  const audit = await dispatch(() => edgeAuditPrompt(epicId, integrationWorktree, cap, why, round), `edge-audit:${k}`,
     { label: `edge-audit:${k}`, phase: 'Integrate', ...tier('triage'), schema: EDGE_AUDIT })
   if (!audit) return
-  const edges = audit.suspectEdges.map(e => `${e.from}→${e.to} (${e.reason})`).join('; ')
   audit.achievableWidth = Math.ceil(audit.openLeaves / Math.max(1, audit.depth))  // computed here, never by the agent
-  log(`EDGE AUDIT ${k}/${edgeAuditCap} (round ${round}): open leaves ${audit.openLeaves}, remaining depth ${audit.depth}, achievable width ${audit.achievableWidth} vs cap ${cap}${audit.suspectEdges.length ? ` — ${audit.suspectEdges.length} suspect edge(s), report-only, an operator decides: ${edges}` : ' — no suspect edges'}. ${audit.summary}`)
-  queueLedger(`Edge audit: round ${round} — open leaves ${audit.openLeaves}, depth ${audit.depth}, achievable width ${audit.achievableWidth} vs cap ${cap}; suspect edges: ${edges || 'none'}; ${String(audit.summary).replace(/\s+/g, ' ').trim()}`,
+  const fmt = c => `${c.dependent} <- ${c.blocker} · ${c.kind}${(c.add ?? []).length ? ` → ${c.add.map(a => `${a.dependent} <- ${a.blocker}`).join(', ')}` : ''} (${c.reason})`
+  const changes = audit.changes ?? []
+  const safe = changes.filter(c => c.safe === true), unsafe = changes.filter(c => c.safe !== true)
+  log(`EDGE AUDIT ${k}/${edgeAuditCap} (round ${round}): open leaves ${audit.openLeaves}, remaining depth ${audit.depth}, achievable width ${audit.achievableWidth} vs cap ${cap} — ${changes.length ? `${safe.length} safe change(s), ${unsafe.length} for an operator${edgeCutsApply ? '' : ' (report-only run: nothing applied)'}` : 'no changes proposed'}. ${audit.summary}`)
+  queueLedger(`Edge audit: round ${round} — open leaves ${audit.openLeaves}, depth ${audit.depth}, achievable width ${audit.achievableWidth} vs cap ${cap}; changes: ${changes.map(c => `${fmt(c)} · safe ${c.safe ? 'yes' : 'no'}`).join('; ') || 'none'}; ${String(audit.summary).replace(/\s+/g, ' ').trim()}`,
     `ledger-append:edge-audit:${k}`, 'Integrate',
-    `Edge audit: round ${round} — open leaves ${audit.openLeaves}, depth ${audit.depth}, achievable width ${audit.achievableWidth} vs cap ${cap}; suspect edges and summary elided`)
+    `Edge audit: round ${round} — open leaves ${audit.openLeaves}, depth ${audit.depth}, achievable width ${audit.achievableWidth} vs cap ${cap}; changes and summary elided`)
+  const left = edgeCutsApply ? unsafe : changes
+  if (left.length) noteSlowness(`edge audit ${k}: ${left.length} edge change(s) left for an operator${edgeCutsApply ? ' (outside the safe class)' : ' (report-only run)'}: ${left.map(fmt).join('; ')}`)
+  if (!edgeCutsApply || !safe.length) return
+  const res = await dispatch(() => edgeCutsPrompt(epicId, integrationWorktree, safe), `edge-cuts:${k}`,
+    { label: `edge-cuts:${k}`, phase: 'Integrate', ...tier('mechanical'), schema: EDGE_CUTS })
+  if (!res) { noteSlowness(`edge audit ${k}: the apply dispatch returned null — ${safe.length} safe change(s) not applied: ${safe.map(fmt).join('; ')}`); return }
+  // Only changes the audit proposed as safe count as applied; anything else the agent reports is ignored.
+  const proposed = new Set(safe.map(c => `${c.dependent}<-${c.blocker}`))
+  const applied = (res.applied ?? []).filter(c => proposed.has(`${c.dependent}<-${c.blocker}`))
+  for (const c of applied) {
+    cutEdges.add(`${c.dependent}<-${c.blocker}`); cutRows.add(c.dependent)
+    for (const a of c.add ?? []) {
+      if (!addedDeps.has(a.dependent)) addedDeps.set(a.dependent, new Set())
+      addedDeps.get(a.dependent).add(a.blocker); cutRows.add(a.dependent)
+    }
+  }
+  const lines = [
+    ...applied.map(c => `Edge cut: ${fmt(c)} · applied`),
+    ...(res.skipped ?? []).map(c => `Edge cut: ${c.dependent} <- ${c.blocker} · skipped (${c.reason})`),
+  ]
+  if (lines.length) queueLedger(lines, `ledger-append:edge-cuts:${k}`, 'Integrate', [
+    ...applied.map(c => `Edge cut: ${c.dependent} <- ${c.blocker} · ${c.kind} · applied (reason elided)`),
+    ...(res.skipped ?? []).map(c => `Edge cut: ${c.dependent} <- ${c.blocker} · skipped (reason elided)`),
+  ])
+  if (applied.length) {
+    noteSlowness(`edge audit ${k}: applied ${applied.length} safe edge cut(s): ${applied.map(fmt).join('; ')}`)
+    edgeCutHook()
+  }
 }
 
-function edgeAuditPrompt(epicId, integrationWorktree, cap, dispatchedCount, roundNo) {
-  // Conditional, report-only. The graph numbers come from scripts/edge-stats; the agent's work is
-  // the suspect-edge judgment (grounded in bead text) and the summary.
-  return `READ-ONLY dependency-edge audit for epic ${epicId} — round ${roundNo}: the dispatched frontier was ${dispatchedCount} against a cap of ${cap} for the second consecutive round, so either the graph is nearly drained or its depth, not the cap, is bounding throughput. Working directory: ${integrationWorktree}. Do not edit any bead, dependency, or file — report only.
-1. Run \`bash ${codeSkill}/scripts/edge-stats ${epicId}\`. It prints one JSON object: \`openLeaves\` (open non-epic beads in the tree, blocker beads excluded), \`depth\` (the most non-epic beads on any chain of waits, where an open epic waits on its open children), and \`criticalPath\` (one such longest chain, waiting bead first). Report openLeaves and depth exactly as printed. ${scriptOutcomeRule()}
-2. Suspect edges, per super-design §Decomposition's edge rules: an edge whose consumer reads nothing the producer writes (narrative order, not a data or interface dependency); an epic-level edge where one leaf-to-leaf edge would do; a chain of same-area beads ordered because it reads naturally; an edge into a documentation or cleanup bead. Start from the critical path. Read edges from the bulk dump \`bd list --all --json --limit 0\` (\`bd show --json\` underreports blocking edges) and each bead's text with \`bd show <id>\`. For each suspect edge, report from (the blocked bead), to (its blocker), and a one-line reason grounded in BOTH beads' text — if you cannot ground it in text, it is not a suspect edge. An empty list is a valid answer.
-3. summary: one or two sentences — whether the cap or the graph is the binding constraint right now, and which single edge change would reduce depth most.
-Report openLeaves, depth, suspectEdges, summary.`
+function edgeAuditPrompt(epicId, integrationWorktree, cap, why, roundNo) {
+  // The graph numbers and candidate edges come from scripts/tree-shape; the agent judges each
+  // candidate with super-design's graph-pass rules and safe class. Read-only either way.
+  const pass = `${skillsRoot}/super-design/graph-pass-prompt.md`
+  return `READ-ONLY dependency-edge audit for epic ${epicId} — round ${roundNo}, mid-execution: ${why}. Working directory: ${integrationWorktree}. Do not edit any bead, dependency, or file — your output is a list of proposed changes the coordinator records (and, in some runs, hands to a separate apply step).
+1. Run \`bash ${codeSkill}/scripts/tree-shape ${epicId}\`. It prints super-design's graph-shape lines for the open part of this tree (review beads excluded): \`shape: leaves N · depth D · width W · critical path: …\`, one \`edge: <dependent> <- <blocker> · leaf|epic · critical yes|no · depth D→D'\` line per candidate, and a \`summary:\` line. Report leaves as openLeaves and depth exactly as printed. ${scriptOutcomeRule()}
+2. Judge every \`edge:\` line exactly as ${pass} describes — its "What to look at" list, its definition of **safe**, and the edge rules it points to in super-design's SKILL.md §Decomposition ("Blocking deps encode genuine blocking" and the five edge rules). Read edges from the bulk dump \`bd list --all --json --limit 0\` (\`bd show --json\` underreports blocking edges) and each bead's text with \`bd show <id>\`. Execution is under way: an edge whose blocker is already implemented or closed costs nothing more, so skip it.
+3. Return one entry in \`changes\` per edge you would change — kind \`drop\`, \`narrow\` (with \`add\`: the leaf→leaf edges that replace it) or \`repoint\` (with \`add\`: the one replacement edge) — with \`safe\` true only when that file's safe class holds for every wait the change removes, and a one-line \`reason\` grounded in both beads' text. Edges you would keep are not returned. An empty list is a valid answer.
+4. summary: one or two sentences — whether the cap or the graph is the binding constraint right now, and which single change would reduce depth most.
+Report openLeaves, depth, changes, summary.`
+}
+
+function edgeCutsPrompt(epicId, integrationWorktree, changes) {
+  // Applies the audit's safe-class changes, after re-checking each against the live graph. Scope:
+  // the named edges and their `blocked-by` description lines, nothing else.
+  const list = changes.map(c => `- ${c.dependent} <- ${c.blocker} · ${c.kind}${(c.add ?? []).length ? ` → add ${c.add.map(a => `${a.dependent} <- ${a.blocker}`).join(', ')}` : ''} · reason: ${c.reason}`).join('\n')
+  return `Apply safe dependency-edge changes in epic ${epicId}'s tree. Working directory: ${integrationWorktree}. Scope: only the edges listed below and the matching \`blocked-by\` lines in the dependents' descriptions — no other bead, field, dependency, file or branch.
+<changes>
+${list}
+</changes>
+For each change, first re-check it against \`bd list --all --json --limit 0\`: the edge still exists, both beads are still open, every added edge's beads exist and are open, and the safe class still holds — the two beads of every removed wait declare no file in common (their files-touched hints) and nothing in either bead (\`owns:\` / \`consumes:\`, acceptance criteria, \`(needs: <id>)\` citations, the description body) references the other's output or interface. A change that fails a check is skipped with the reason. Otherwise apply it: \`bd dep remove <dependent> <blocker>\`; for each added edge \`bd dep add <dependent> <blocker>\`; then rewrite each touched dependent's description in one \`bd update <id> --description\` call that drops the removed edge's \`blocked-by <blocker>: …\` line and adds a \`blocked-by <blocker>: consumes <artifact>\` line per added edge. Return \`applied\` (each applied change exactly as listed, including its \`add\`) and \`skipped\` (dependent, blocker, reason).`
 }
 
 function sweepPrompt(sweepCommand, integrationWorktree, integrationBranch) {
@@ -3340,7 +3471,27 @@ function short(sha) {
   return String(sha || '').slice(0, 7)
 }
 
-function makeScheduler(cap, hotFileCap, filesFor) {
+function rowsShape(rows) {
+  // Pure JS: how many open mapping rows, and the longest chain of waits among them over effDeps (a
+  // dep outside `rows` is already done). Opaque blockers are invisible here, so depth is a floor.
+  const byId = new Map(rows.map(m => [m.id, m]))
+  const memo = new Map(), onStack = new Set()
+  const depthOf = id => {
+    if (memo.has(id)) return memo.get(id)
+    if (onStack.has(id)) return 0   // a wait cycle: the closing edge adds nothing
+    onStack.add(id)
+    let best = 0
+    for (const d of effDeps(byId.get(id))) if (byId.has(d)) best = Math.max(best, depthOf(d))
+    onStack.delete(id)
+    memo.set(id, best + 1)
+    return best + 1
+  }
+  let depth = 0
+  for (const id of byId.keys()) depth = Math.max(depth, depthOf(id))
+  return { open: byId.size, depth }
+}
+
+function makeScheduler(cap, hotFileCap, filesFor, onRaise = () => {}) {
   // Pure JS, no I/O — the sliding-window dispatch scheduler that replaced disjoint-file
   // bucketing and `chunk()`'s inter-batch barriers (see the Implement phase's relaxation
   // comment for the measured evidence). Two constraints, enforced at acquire time:
@@ -3353,18 +3504,29 @@ function makeScheduler(cap, hotFileCap, filesFor) {
   // in-flight chains; `hotFileDeferrals` counts, once per id per file, the ids that had to wait
   // on a hot file — the observable trace of over-declared filesTouched or a genuinely shared
   // barrel/index/registry.
+  // A file that has held back two ids while a slot sat free gets its cap raised by one for the rest
+  // of this scheduler's round (once per file): a free slot is lost throughput, one more rebase on
+  // that file is cheap. `stats.hotFileRaised` and `onRaise` report it.
   let active = 0
   const fileCounts = {}
+  const fileCap = {}   // per-file raised caps
   const waiting = []   // FIFO of { id, res }
   const deferred = new Set()  // ids already counted in hotFileDeferrals — count once, not per pump
-  const stats = { peak: 0, hotFileDeferrals: {} }
+  const stats = { peak: 0, hotFileDeferrals: {}, hotFileRaised: [] }
   const pump = () => {
     for (let i = 0; i < waiting.length; ) {
       if (active >= cap) break  // window full — strict FIFO, no overtaking on the cap
       const { id, res } = waiting[i]
-      const hot = filesFor(id).find(f => (fileCounts[f] ?? 0) >= hotFileCap)
+      const hot = filesFor(id).find(f => (fileCounts[f] ?? 0) >= (fileCap[f] ?? hotFileCap))
       if (hot) {
         if (!deferred.has(id)) { deferred.add(id); stats.hotFileDeferrals[hot] = (stats.hotFileDeferrals[hot] ?? 0) + 1 }
+        // Reaching here means a slot is free (the cap check above breaks first).
+        if (!(hot in fileCap) && stats.hotFileDeferrals[hot] >= 2) {
+          fileCap[hot] = hotFileCap + 1
+          stats.hotFileRaised.push(hot)
+          onRaise(hot, fileCap[hot])
+          continue  // re-check this id against the raised cap
+        }
         i++  // hot-file skip: later ids may overtake this one
         continue
       }
@@ -3592,7 +3754,8 @@ narratives that used to accompany each row are in git history; nothing here depe
 | issue #5 defects 7–9 (`appendLedger` retry-then-mark; elided retries for free-text lines and `notify`; `noteRecurrence` over minors AND triaged blockers via TRIAGE `cause`) | replay 52/0 | replay 37/0 | replay 37/0 |
 | D4 loop (one review, one fix pass, no re-review/round cap/adjudicator, no per-merge tests (build-only `mergeCheck`), mandatory sweep with `deferSweep` opt-out, batched ledger appends, `skillsRoot`); columns 2–3 are now fix-pass-blocked / parked | replay 50/0 | replay 19/0 | replay 22/0 |
 | Off-critical-path batch (blocker handling and already-merged closes off the merge queue; merge agent writes its own success ledger lines; one `ledger:<id>` flush per task chain on a ledger chain nothing awaits; `runtimeSlots` cap; per-role `effort`; background edge audit and unawaited detector append; no unplanned-filing barrier) | replay 44/0 | replay 18/0 | replay 20/0 |
-| **Early unblock + graph readiness (planner `deps`/`opaque` rows from `scripts/tree-deps`; `readyFromGraph()` replaces the per-merge `bd ready` top-up wherever JS can see readiness; split at implementation-done via `scripts/review-bead`; stacked dependents with merge ordering and cancellation; review-bead re-entry on resume); the canonical scenario gains `bd-105`, stacked on `bd-102` — CURRENT** | **replay 48/0** | **replay 18/0** | **replay 20/0** |
+| Early unblock + graph readiness (planner `deps`/`opaque` rows from `scripts/tree-deps`; `readyFromGraph()` replaces the per-merge `bd ready` top-up wherever JS can see readiness; split at implementation-done via `scripts/review-bead`; stacked dependents with merge ordering and cancellation; review-bead re-entry on resume); the canonical scenario gains `bd-105`, stacked on `bd-102` | replay 48/0 | replay 18/0 | replay 20/0 |
+| **Proactive slowness (hot-file cap raised for a file holding back two tasks with a slot free; graph-bound early edge-audit arming; merge-queue peak, idle slots and waiting rows on the detector line; act-capable edge audit over `scripts/tree-shape` + super-design's graph-pass rules, applying safe cuts under `config.edgeCuts: 'apply-safe'`; `slowness` return field) — CURRENT** | **replay 48/0** | **replay 18/0** | **replay 20/0** |
 
 The current row's figures come from the offline replay harness (`tests/super-code/`): it replays
 the three `args` blocks below and runs the live-sim, null-injection, parallelism, seam,
@@ -3869,7 +4032,7 @@ exercised by the replay harness's live-sim scenarios.
 |---|---|---|
 | `read-ledger` | `{text:""}` | the one-time Resume-phase read; empty text = a fresh epic, nothing reconstructed |
 | `ledger-append:launch` | `{appended:true}` | the `Launch:` args record, once per launch |
-| `ledger-append:detector` | `{appended:true}` | the persisted `Detector: round N — …` line, once per round that reaches the drain (round 1 here; round 2 exits at `ready-drained` first). Keys this scenario never takes — `bd-ready-topup`, `review:<id>:retry`, `seam-review:<id>`, `merge:<id>:seam-cleared`, `fix:<id>:seam`, `edge-audit:<k>`, `ledger-recurring:<k>`, `ledger:bd-102`, `reopen:<id>`, `discard:<id>` — would throw `dryRun: no stub for key …` at the next ledger drain or dispatch if a regression routed onto them |
+| `ledger-append:detector` | `{appended:true}` | the persisted `Detector: round N — …` line, once per round that reaches the drain (round 1 here; round 2 exits at `ready-drained` first). Keys this scenario never takes — `bd-ready-topup`, `review:<id>:retry`, `seam-review:<id>`, `merge:<id>:seam-cleared`, `fix:<id>:seam`, `edge-audit:<k>`, `edge-cuts:<k>`, `ledger-append:edge-cuts:<k>`, `ledger-recurring:<k>`, `ledger:bd-102`, `reopen:<id>`, `discard:<id>` — would throw `dryRun: no stub for key …` at the next ledger drain or dispatch if a regression routed onto them |
 | `close-epics` (array, 2) | `{rootClosed:false,closedThisRun:[]}` then `{rootClosed:false,closedThisRun:["bd-101","bd-102"]}` | root stays open both rounds; round 2's in-tree closures fire the post-closure re-check |
 | `bd-ready` (array, 2) | `{ids:["bd-101","bd-102","bd-103","bd-104"]}` then `{ids:[]}` | round 1's batch; round 2 drains. Scoping flags are a property of the prompt text, not this return |
 | `bd-ready-recheck` | `{ids:[]}` | the post-closure re-check, once |
