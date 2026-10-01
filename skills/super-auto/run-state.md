@@ -99,7 +99,8 @@ a resume can silently redo work or violate a decision that was already made.
 
 4. **Parked items** — three kinds, each with its source report:
    - **escalations** — a roast finding that reached no verdict at all;
-   - **beyond-cap** — a severe finding the panel cap left unjudged;
+   - **beyond-cap** — a severe finding the panel cap left unjudged, or one under the report's
+     `## Not verified (dedupe failed or judge lost)` heading;
    - **degraded-verdict** — a sibling's own mandated pause that autonomous mode
      answered on the human's behalf instead of asking: a declined
      re-roast-at-raised-`config.panelCap` offer, or a `clean [low coverage]` /

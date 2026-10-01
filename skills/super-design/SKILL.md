@@ -522,6 +522,7 @@ report. The report file is the only cross-iteration state. **Three of its sectio
 | `## Confirmed findings` | One task per finding — the fix queue (steps 1–4 below). |
 | `## Escalations (need human)` | **Surface every entry to the human before starting fix work**; unattended, park each entry and go on with the fix queue (§Unattended Runs). These are findings with a dead panel seat, an unresolved external premise, or material dissent between seats. They need a human by definition: no verdict was reached, so there is nothing to auto-fix and nothing to auto-dismiss. Never fold them into the fix queue, and never let a `clean` verdict elsewhere in the report imply they were resolved. |
 | `## Not verified (beyond panel cap)` | Severe candidates the panel cap left unjudged. Present them next to the escalations and ask whether to re-roast with a raised `config.panelCap` before fixing anything — an unverified Blocking candidate is not a cleared one. Unattended, the answer is no: park them and fix the confirmed queue. |
+| `## Not verified (dedupe failed or judge lost)` | Findings the engine could not get judged (dedupe died, or a judge was lost). Treat them like the beyond-cap section: surface next to the escalations and offer a re-roast; unattended, park them and fix the confirmed queue. |
 
 **Step back before fixing.** Every round whose report has confirmed findings, before step 1,
 dispatch `./step-back-prompt.md` (mode `design`, model opus, fresh context, never an agent that
@@ -703,7 +704,7 @@ skill's work instead of re-running all of it.
 - Create a child without both `--no-inherit-labels` and an explicit `-l sp:<root-epic-id>` on the same `bd create` call.
 - Demote an epic to a task without first confirming `bd children <id> --json` is empty.
 - Read only `## Confirmed findings` out of a super-roast report — `## Escalations (need human)`
-  and `## Not verified (beyond panel cap)` must reach the human too (unattended: parked and handed
+  and both `## Not verified` sections must reach the human too (unattended: parked and handed
   back, §Unattended Runs).
 - Treat a `clean` verdict carrying `[low coverage]` or `[panel-capped: N unverified]` as a
   clearance — that's a degraded run, and the user decides whether to proceed (unattended: proceed

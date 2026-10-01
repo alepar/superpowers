@@ -67,7 +67,8 @@ engine script: **`./super-roast-workflow.md`**.
    tree, or a PR number resolved via `gh` when `gh` is available and a number was supplied.
    Profile is auto-detected and stated in the report header — never asked.
 2. **Triage (sonnet, 1)** — design mode: name 1–3 domains for domain-expert scouts. PR mode:
-   activate conditional lanes on top of the always-on core lanes. See `./triage-prompt.md`.
+   activate conditional lanes on top of the always-on core lanes. It runs alongside the core
+   scouts, which need nothing from it. See `./triage-prompt.md`.
 3. **Scouts (opus, parallel)** — design: core lenses (+ domain experts, + widened lenses if
    triage found no domain — see below). PR: core lanes + activated lanes. **Rounds ≥ 2** (a
    prior report was supplied): scouts run under the late-round stance and the `regression`
@@ -75,9 +76,12 @@ engine script: **`./super-roast-workflow.md`**.
    sections of the scout prompt files. Adversarial, may use
    WebSearch/WebFetch, return structured findings. See `./scout-prompts-design.md` /
    `./scout-prompts-pr.md`.
-4. **Dedupe-and-rank (fable, 1)** — merges overlapping findings (same location + root claim),
-   suggests a severity, and ranks the Nit/FYI tail. See `./dedupe-prompt.md`. The engine then
-   applies the remainder cap (`config.remainderCap`, default 50): all severe findings survive
+4. **Dedupe-and-rank (fable, 1; skipped when scouts found nothing)** — groups overlapping
+   findings by id (same location + root claim), suggests a severity, and ranks; the engine
+   assembles each merged finding from its members, so no evidence is lost in transcription. If
+   dedupe fails twice, every raw finding reaches the report unjudged under "## Not verified
+   (dedupe failed or judge lost)". See `./dedupe-prompt.md`. The engine then applies the
+   remainder cap (`config.remainderCap`, default 50): all severe findings survive
    uncapped; the Nit/FYI tail beyond the cap survives as a count, never silently dropped.
    Severe findings are NOT capped at the next stage by default: every one gets a full judge
    panel, in both modes, because an unverified Blocking candidate is not a cleared one. An
@@ -151,12 +155,14 @@ budget:
   ground — run in parallel; a failed seat is re-dispatched once.
 - **Nit / FYI candidates** get a **single refute-seat spot check.**
 - A spot check that returns **CONFIRM at Blocking/Should-fix** is under-graded — it's
-  **promoted** to the full three-seat panel.
+  **promoted** to the full three-seat panel: the reproduce and ground seats run, and the spot
+  check's verdict is its refute vote.
 - Judges never see the suggested severity — they rate blind.
 - The engine computes each packet's default route: a full panel with 2+ CONFIRM is confirmed,
   2+ REJECT rejected; a dead seat, an external claim with an UNVERIFIED vote, or a panel whose
   UNVERIFIED votes leave no 2-vote majority escalates to a human. The reporter may overrule
-  confirmed/rejected only by citing seat evidence, and never un-escalates.
+  confirmed/rejected only by citing seat evidence, and never un-escalates; the engine re-adds
+  any escalation the reporter omits and keeps a pre-existing defect at FYI.
 
 ### Report format
 
@@ -178,6 +184,9 @@ seat-agreement: panels N · rr 0.78 · rg 0.89 · fg 0.67 · unanimous 0.56 · g
 
 ## Not verified (beyond panel cap)   ← severe candidates the panel cap left unverified — listed, never dropped
 - [suggested SEV] <location> — <claim>
+
+## Not verified (dedupe failed or judge lost)   ← findings a pipeline failure left unjudged — listed, never dropped
+- [suggested SEV | unrated] <location> — <claim> (dedupe failed | judge lost)
 
 ## Beyond remainder cap (count only)   ← low-severity candidates the dedupe remainder cap dropped; the count survives, the claims do not
 - <N> candidates dropped by the remainder cap — raise config.remainderCap and re-run to see them
@@ -225,6 +234,9 @@ Full template and field semantics: `./reporter-prompt.md`.
 | Dedupe-and-rank | **fable** | Merging + grading is a bounded consolidation pass, not a reasoning-heavy one — keeping it off opus is part of the cost win the tiered verification targets. |
 | Judges | **sonnet** | Verification is rubric-bound (CONFIRM/REJECT/UNVERIFIED against evidence); judges are the dominant cost (up to 3 seats per finding); their safe failure mode is UNVERIFIED/escalate, not a false confirm. |
 | Reporter | **fable** | Aggregating already-judged packets into a verdict + markdown is a bounded synthesis pass, not a reasoning-heavy one. |
+
+Reasoning effort is set per stage through `config.effort` (defaults: triage `low`, spot checks
+`medium`, reporter `high`; the rest inherit the session) — see `./super-roast-workflow.md`.
 
 ## Red Flags
 

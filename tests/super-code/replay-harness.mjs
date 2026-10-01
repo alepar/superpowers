@@ -82,7 +82,7 @@ async function run({ args, canned = {}, nullLabels = new Set(), nullAll = false,
   async function agent(prompt, opts = {}) {
     const label = opts.label ?? '<unlabelled>'
     const kind = label.split(':')[0]
-    trace.push({ label, phase: opts.phase, prompt })
+    trace.push({ label, phase: opts.phase, prompt, opts })
     counts[label] = (counts[label] ?? 0) + 1
     seen.add(label)
     for (let i = waiters.length - 1; i >= 0; i--) {
@@ -101,15 +101,15 @@ async function run({ args, canned = {}, nullLabels = new Set(), nullAll = false,
       if (!(label in canned)) {
         // Dispatches that fire in nearly every live-sim scenario whatever its point — the Finish
         // Metrics block (unconditional), the Finish reconciliation (whenever escalated/pendingRetry
-        // is non-empty), the mandatory sweep (whenever work landed), and the per-task minor and
-        // fix-pass ledger appends — default to no-op answers here; a scenario that cares about one
+        // is non-empty), the mandatory sweep (whenever work landed), and each task's batched
+        // `ledger:<id>` flush — default to no-op answers here; a scenario that cares about one
         // overrides its key explicitly.
         if (label === 'read-ledger:finish') return { text: '' }
         if (label === 'ledger-append:metrics') return { appended: true }
         if (label === 'reconcile-buckets') return { closed: [] }
         if (label === 'sweep') return 'abc1234 — 1 passed, 0 failed, 0 errors, 0 skipped; failing: none; command: <project test command>'
         if (label === 'ledger-append:sweep') return { appended: true }
-        if (label.startsWith('ledger-minor:') || label.startsWith('ledger-append:fix-pass:')) return { appended: true }
+        if (label.startsWith('ledger:')) return { appended: true }   // a task's batched ledger flush
         throw new Error(`no canned answer for label ${label}`)
       }
       let v = canned[label]
@@ -230,6 +230,16 @@ function extractLedgerLines(promptText) {
 function extractLedgerLine(promptText) {
   return extractLedgerLines(promptText)[0] ?? null
 }
+// A task's ledger lines are batched: everything the task noted (fix pass, Merge:, completion,
+// minors, blocker outcome) is written by one `ledger:<id>` flush when its chain ends — or its
+// `:retry` when that flush returned null. These collect every line written for one id, in order.
+function taskLedgerLines(trace, id, { retry = false } = {}) {
+  const label = retry ? `ledger:${id}:retry` : `ledger:${id}`
+  return trace.filter(t => t.label === label).flatMap(t => extractLedgerLines(t.prompt))
+}
+function taskLedgerLine(trace, id, re, opts) {
+  return taskLedgerLines(trace, id, opts).find(l => re.test(l)) ?? null
+}
 // Mirrors the coordinator script's own `defaultTestPathspecs` (spec §5) — kept here, not
 // imported from the script, since the script has no module exports of its own (it's an
 // AsyncFunction body extracted from the doc's fence, see `extractScript`). The prompt-text
@@ -281,8 +291,6 @@ function oneTaskCanned(overrides = {}) {
     'review:bd-101': { id: 'bd-101', status: 'CLEAN' },
     'fix:bd-101': { id: 'bd-101', status: 'FIXED', head: SHA('f') },
     'merge:bd-101': { id: 'bd-101', merged: true, mergeExit: 0, mergeHead: true, head: SHA('b'), mergeBase: SHA('a'), rebaseConflictFiles: 0 },
-    'ledger-append:bd-101': { appended: true },
-    'ledger-append:merge:bd-101': { appended: true },
     'read-ledger:finish': { text: '' },
     'ledger-append:metrics': { appended: true },
     'final-review': 'looks fine',
@@ -356,8 +364,8 @@ async function main() {
   {
     const scan = scanTemplateSpans(scriptBody)
     check(scan.clean, 'scanner ends in code state (no unterminated literal, string, or ${})')
-    check(scan.spans.length === 246,
-      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 246 — 215 after the D4 loop rewrite, +10 for the merge-evidence contract (clean-check and merge steps, mergeEvidence's diagnoses and logs, the Merge-cleanup line) and writeFence(), +17 for the failing-mergeCheck seam route (the check-fix and fix-review dispatch keys/labels, their logs and blocker findings, the re-merge, fixPrompt's check branch, checkFixReviewPrompt), +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log; update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
+    check(scan.spans.length === 239,
+      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 239 — 215 after the D4 loop rewrite, +10 for the merge-evidence contract (clean-check and merge steps, mergeEvidence's diagnoses and logs, the Merge-cleanup line) and writeFence(), +17 for the failing-mergeCheck seam route (the check-fix and fix-review dispatch keys/labels, their logs and blocker findings, the re-merge, fixPrompt's check branch, checkFixReviewPrompt), +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log, −7 for batched ledger writes (per-line ledger keys and labels out, the per-task flush key, the merge agent's LEDGER step and its line templates, the runtime-slot logs, the per-site null-merge logs and the background edge audit in); update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
     // self-test: inject a raw backtick mid-way through the first literal's content and assert
     // the detector actually fires — a detector that cannot catch the known failure is decoration
     const [s, e] = scan.spans[0]
@@ -377,7 +385,7 @@ async function main() {
   {
     const out = await run({ args: canonicalArgs })
     assertNoThrow(out)
-    check(out.trace.length === 50, `50 agent dispatches (got ${out.trace.length}) — the doc's "Expected dispatch count" arithmetic`)
+    check(out.trace.length === 44, `44 agent dispatches (got ${out.trace.length}) — the doc's "Expected dispatch count" arithmetic`)
     const r = out.result
     check(r && JSON.stringify([...r.completed].sort()) === '["bd-101","bd-102"]', 'completed = [bd-101, bd-102]', JSON.stringify(r?.completed))
     check(r && JSON.stringify([...r.escalated].sort()) === '["bd-103","bd-104"]', 'escalated = [bd-103, bd-104] — bd-104 spent its one retry same-round and bounced', JSON.stringify(r?.escalated))
@@ -386,10 +394,11 @@ async function main() {
     check(!out.trace.some(t => ['review:bd-104', 'fix:bd-104', 'merge:bd-104'].includes(t.label)), 'bd-104 never reviewed, fixed, or merged (implementer BLOCKED guard held)')
     check(out.counts['fix:bd-101'] === 1 && !out.trace.some(t => /^fix:bd-10[234]$/.test(t.label)), 'exactly one fix pass, for bd-101 only')
     check(!out.trace.some(t => /re-review|adjudicate|breaker/.test(t.label)), 'no re-review, adjudicator, or breaker dispatch exists')
-    check(out.counts['ledger-append:fix-pass:bd-101'] === 1, 'one fix-pass ledger line for bd-101')
-    check(out.counts['ledger-minor:bd-101'] === 1, "bd-101's minors written in one ledger dispatch")
-    for (const id of ['bd-101', 'bd-102']) check(out.counts[`ledger-append:merge:${id}`] === 1, `exactly one ledger-append:merge:${id} dispatch`)
-    check(out.counts['ledger-append:merge-failed:bd-103'] === 1, 'exactly one ledger-append:merge-failed:bd-103 dispatch')
+    check(out.counts['ledger:bd-101'] === 1, "bd-101's fix-pass line and minors go out in ONE flush (its merge agent wrote the Merge: and completion lines)")
+    check(!out.counts['ledger:bd-102'], 'bd-102 needs no ledger dispatch: its merge agent wrote both success lines')
+    check(out.counts['ledger:bd-103'] === 1, "bd-103's failed Merge: line and BLOCKED line go out in one flush")
+    check(out.counts['ledger:bd-104'] === 2, 'bd-104 flushes once per chain: pending retry, then BLOCKED')
+    check(!out.trace.some(t => /^ledger-append:(merge|fix-pass|bd-)|^ledger-minor:/.test(t.label)), 'no per-line ledger dispatch remains')
     check(out.counts['sweep'] === 1 && out.counts['ledger-append:metrics'] === 1 && out.counts['final-review'] === 1, 'sweep, one Metrics append, and the final review each dispatch once')
     const idx = label => out.trace.findIndex(t => t.label === label)
     check(idx('sweep') < idx('read-ledger:finish') && idx('ledger-append:metrics') < idx('final-review'), 'sweep precedes Metrics, Metrics precedes the final review')
@@ -401,7 +410,7 @@ async function main() {
   {
     const out = await run({ args: fixBlockedArgs })
     assertNoThrow(out)
-    check(out.trace.length === 19, `19 agent dispatches (got ${out.trace.length})`)
+    check(out.trace.length === 18, `18 agent dispatches (got ${out.trace.length})`)
     const r = out.result
     check(r && r.completed.length === 0 && JSON.stringify(r.escalated) === '["bd-201"]' && r.pendingRetry.length === 0 && r.parked.length === 0, 'completed empty, escalated = [bd-201]', JSON.stringify(r))
     check(r && r.review === 'no work landed' && r.sweep === null, "review = 'no work landed', no sweep", JSON.stringify({ review: r?.review, sweep: r?.sweep }))
@@ -415,7 +424,7 @@ async function main() {
   {
     const out = await run({ args: parkedArgs })
     assertNoThrow(out)
-    check(out.trace.length === 22, `22 agent dispatches (got ${out.trace.length})`)
+    check(out.trace.length === 20, `20 agent dispatches (got ${out.trace.length})`)
     const r = out.result
     check(r && JSON.stringify(r.completed) === '["bd-301"]' && JSON.stringify(r.parked) === '["bd-301"]', 'bd-301 completed AND parked', JSON.stringify(r))
     check(!out.trace.some(t => /^(triage|notify|missing-blocker|unplanned-blocker):/.test(t.label)), 'a declined finding never reaches the blocker path')
@@ -434,7 +443,6 @@ async function main() {
       'impl:bd-104': { id: 'bd-104', status: 'BLOCKED', files: ['src/c.js'], blockerBead: 'bd-109' },
       'review:bd-101': { id: 'bd-101', status: 'NEEDS_FIX', finding: 'missing null check at src/a.js:42', minors: ['name x is uninformative'] },
       'fix:bd-101': { id: 'bd-101', status: 'FIXED', head: SHA('f') },
-      'ledger-append:bd-104': { appended: true },
       'triage:bd-104': { decision: 'RESOLVE', detail: 'name the constant' },
       'clarify:bd-104': { recorded: true },
       'notify:bd-104': { sent: true },
@@ -473,13 +481,15 @@ async function main() {
     check(/do not spawn subagents/.test(fix ?? '') && !/Dispatch a FRESH/.test(fix ?? '') && !/Resume the/.test(fix ?? ''), 'fix prompt forbids nested spawns and resumes no phantom implementer', fix)
     check(!out.trace.some(t => /re-review/.test(t.label)), 'no re-review after the fix pass')
 
-    const fixLine = extractLedgerLine(promptOf(out.trace, 'ledger-append:fix-pass:bd-101'))
+    const fixLine = taskLedgerLine(out.trace, 'bd-101', /fix pass/)
     check(/^Task 1 \(bd-101\): fix pass FIXED \(missing null check at src\/a\.js:42; commits cccccccc?\.\.fffffff\)$/.test(fixLine ?? ''), 'fix-pass line: ordinal, id, outcome, finding, and the implementer-head..fixer-head range', fixLine)
     check(LEDGER_LINE_RE.test(fixLine ?? ''), "fix-pass line matches the coordinator's LEDGER_LINE_RE")
-    const done = extractLedgerLine(promptOf(out.trace, 'ledger-append:bd-101'))
-    check(/^Task 1 \(bd-101\): complete \(commits aaaaaaa\.\.bbbbbbb, fix pass\)$/.test(done ?? ''), 'completion line records the fix pass', done)
-    const minors = extractLedgerLines(promptOf(out.trace, 'ledger-minor:bd-101'))
-    check(minors.length === 1 && minors[0] === 'Task 1 (bd-101): minor (deferred): name x is uninformative', 'minors written as one-per-line ledger entries in a single dispatch', JSON.stringify(minors))
+    const done = taskLedgerLine(out.trace, 'bd-101', /: complete/)
+    check(/^Task 1 \(bd-101\): complete \(commits aaaaaaa\.\.bbbbbbb, fix pass\)$/.test(done ?? ''), 'completion line records the fix pass (the merge agent did not report appending, so the coordinator wrote it)', done)
+    const minors = taskLedgerLines(out.trace, 'bd-101').filter(l => /minor \(deferred\)/.test(l))
+    check(minors.length === 1 && minors[0] === 'Task 1 (bd-101): minor (deferred): name x is uninformative', 'minors written as one-per-line ledger entries', JSON.stringify(minors))
+    check(out.counts['ledger:bd-101'] === 1 && JSON.stringify(taskLedgerLines(out.trace, 'bd-101').map(l => l.split(' ')[0] === 'Merge:' ? 'Merge' : l.replace(/^Task 1 \(bd-101\): (\w+).*$/, '$1'))) === '["fix","Merge","complete","minor"]',
+      "bd-101's lines go out in ONE flush, in order: fix pass, Merge:, completion, minor", JSON.stringify(taskLedgerLines(out.trace, 'bd-101')))
 
     const merge = promptOf(out.trace, 'merge:bd-101')
     check(/Run no tests in this dispatch/.test(merge ?? '') && !/project test command/.test(merge ?? ''), 'merge dispatch runs no tests (no per-merge gate)', merge)
@@ -539,7 +549,7 @@ async function main() {
     assertNoThrow(out)
     const r = out.result
     check(JSON.stringify(r?.completed) === '["bd-101"]' && JSON.stringify(r?.parked) === '["bd-101"]', 'completed and parked', JSON.stringify(r))
-    const line = extractLedgerLine(promptOf(out.trace, 'ledger-append:bd-101'))
+    const line = taskLedgerLine(out.trace, 'bd-101', /: complete/)
     check(/^Task 1 \(bd-101\): complete \(commits aaaaaaa\.\.bbbbbbb, fix pass, 1 parked — reason: duplicated constant — the brief requires it — finding: duplicated constant \(plan-mandated\)\)$/.test(line ?? ''), 'parked completion line carries the reason and the finding', line)
     check(out.logs.some(l => l.startsWith('PARKED bd-101')), 'parked merge logged')
     const fr = promptOf(out.trace, 'final-review')
@@ -562,7 +572,7 @@ async function main() {
     assertNoThrow(out)
     check(!out.trace.some(t => t.label === 'merge:bd-101'), 'never merged unfixed')
     check(/without a new commit/.test(promptOf(out.trace, 'missing-blocker:bd-101') ?? ''), 'the blocker bead carries the coordinator\'s diagnosis', promptOf(out.trace, 'missing-blocker:bd-101'))
-    check(/^Task 1 \(bd-101\): fix pass BLOCKED \(/.test(extractLedgerLine(promptOf(out.trace, 'ledger-append:fix-pass:bd-101')) ?? ''), 'fix-pass line records BLOCKED')
+    check(/^Task 1 \(bd-101\): fix pass BLOCKED \(/.test(taskLedgerLine(out.trace, 'bd-101', /fix pass/) ?? ''), 'fix-pass line records BLOCKED')
     check(JSON.stringify(out.result?.escalated) === '["bd-101"]', 'escalated', JSON.stringify(out.result))
   }
 
@@ -595,7 +605,6 @@ async function main() {
       'unplanned-blocker:bd-105': { id: 'bd-105', status: 'BLOCKED', blockerBead: 'bd-110' },
       'triage:bd-105': { decision: 'ESCALATE', detail: 'needs a human' },
       'notify:bd-105': { sent: true },
-      'ledger-append:bd-105': { appended: true },
     })
     const out = await run({ args: liveArgs(), canned })
     assertNoThrow(out)
@@ -667,7 +676,7 @@ async function main() {
     assertNoThrow(out)
     check(!out.trace.some(t => ['impl:bd-101', 'review:bd-101', 'merge:bd-101'].includes(t.label)), 'no implementer, reviewer, or merge dispatched')
     check(/bd close bd-101/.test(promptOf(out.trace, 'close-only:bd-101') ?? ''), 'close-only dispatch closes the task bead')
-    check(/^Task 1 \(bd-101\): complete \(already merged/.test(extractLedgerLine(promptOf(out.trace, 'ledger-append:bd-101')) ?? ''), 'ledger records an already-merged completion line')
+    check(/^Task 1 \(bd-101\): complete \(already merged/.test(taskLedgerLine(out.trace, 'bd-101', /complete/) ?? ''), 'ledger records an already-merged completion line')
     check(JSON.stringify(out.result?.completed) === '["bd-101"]' && out.result?.escalated.length === 0, 'lands in completed, never escalated', JSON.stringify(out.result))
   }
 
@@ -721,7 +730,6 @@ async function main() {
       'impl:bd-104': { id: 'bd-104', status: 'BLOCKED', files: ['src/c.js'], blockerBead: 'bd-109' },
       'triage:bd-104': { decision: 'ESCALATE', detail: 'needs a decision' },
       'notify:bd-104': { sent: true },
-      'ledger-append:bd-104': { appended: true },
       'reconcile-buckets': { closed: ['bd-104'] },
     })
     const out = await run({ args: liveArgs(), canned })
@@ -735,18 +743,18 @@ async function main() {
 
   scenario('live-sim: a null ledger append is retried once, then marked failed if the retry is null too')
   {
-    let canned = oneTaskCanned({ 'ledger-append:bd-101': [null, { appended: true }], 'ledger-append:bd-101:retry': { appended: true } })
+    let canned = oneTaskCanned({ 'ledger:bd-101': [null, { appended: true }], 'ledger:bd-101:retry': { appended: true } })
     let out = await run({ args: liveArgs(), canned })
     assertNoThrow(out)
-    check(out.counts['ledger-append:bd-101'] === 1 && out.counts['ledger-append:bd-101:retry'] === 1, 'one retry dispatch after the null append', JSON.stringify(out.counts))
-    check(extractLedgerLine(promptOf(out.trace, 'ledger-append:bd-101:retry'))?.startsWith('Task 1 (bd-101): complete'), 'the retry carries the same completion line shape')
+    check(out.counts['ledger:bd-101'] === 1 && out.counts['ledger:bd-101:retry'] === 1, 'one retry dispatch after the null flush', JSON.stringify(out.counts))
+    check(taskLedgerLine(out.trace, 'bd-101', /: complete/, { retry: true })?.startsWith('Task 1 (bd-101): complete'), 'the retry carries the same completion line shape')
     check(JSON.stringify(out.result?.ledgerAppendFailed) === '[]', 'nothing marked failed when the retry lands')
-    check(out.logs.some(l => /ledger-append retried: ledger-append:bd-101/.test(l)), 'the retry is logged by label')
-    canned = oneTaskCanned({ 'ledger-append:bd-101': null, 'ledger-append:bd-101:retry': null })
+    check(out.logs.some(l => /ledger-append retried: ledger:bd-101/.test(l)), 'the retry is logged by label')
+    canned = oneTaskCanned({ 'ledger:bd-101': null, 'ledger:bd-101:retry': null })
     out = await run({ args: liveArgs(), canned })
     assertNoThrow(out)
-    check(JSON.stringify(out.result?.ledgerAppendFailed) === '["ledger-append:bd-101"]', 'the lost line is returned by label', JSON.stringify(out.result?.ledgerAppendFailed))
-    check(out.logs.some(l => l.startsWith('ledger-append-failed: ledger-append:bd-101')), 'a ledger-append-failed marker is logged')
+    check(JSON.stringify(out.result?.ledgerAppendFailed) === '["ledger:bd-101"]', 'the lost flush is returned by label', JSON.stringify(out.result?.ledgerAppendFailed))
+    check(out.logs.some(l => l.startsWith('ledger-append-failed: ledger:bd-101')), 'a ledger-append-failed marker is logged')
     check((out.result?.metrics?.[3] ?? '').includes('append-failed 1'), 'Metrics ledger-check line counts the failed append', out.result?.metrics?.[3])
     check(JSON.stringify(out.result?.completed) === '["bd-101"]', 'the task still completes — the loss is recorded, not fatal')
   }
@@ -758,13 +766,13 @@ async function main() {
       'impl:bd-101': [{ id: 'bd-101', status: 'BLOCKED', files: ['src/a.js'], blockerBead: 'bd-109' }, { id: 'bd-101', status: 'IMPLEMENTED', files: ['src/a.js'], head: SHA('c') }],
       'triage:bd-101': { decision: 'RESOLVE', detail: DETAIL },
       'clarify:bd-101': { recorded: true },
-      'ledger-append:bd-101': [null, { appended: true }],
-      'ledger-append:bd-101:retry': { appended: true },
+      'ledger:bd-101': [null, { appended: true }],
+      'ledger:bd-101:retry': { appended: true },
     })
     let out = await run({ args: liveArgs(), canned })
     assertNoThrow(out)
-    check(promptOf(out.trace, 'ledger-append:bd-101')?.includes(DETAIL), 'the first attempt carries the triage detail')
-    const retry = promptOf(out.trace, 'ledger-append:bd-101:retry')
+    check(promptOf(out.trace, 'ledger:bd-101')?.includes(DETAIL), 'the first attempt carries the triage detail')
+    const retry = promptOf(out.trace, 'ledger:bd-101:retry')
     check(!!retry && !retry.includes(DETAIL) && !retry.includes('weakened'), 'the retry elides the triage detail', retry)
     const rl = extractLedgerLine(retry)
     const m = LEDGER_LINE_RE.exec(rl ?? '')
@@ -773,14 +781,14 @@ async function main() {
       'impl:bd-101': { id: 'bd-101', status: 'BLOCKED', files: ['src/a.js'], blockerBead: 'bd-109' },
       'triage:bd-101': { decision: 'ESCALATE', detail: DETAIL },
       'notify:bd-101': [null, { sent: true }],
-      'ledger-append:bd-101': null,
-      'ledger-append:bd-101:retry': { appended: true },
+      'ledger:bd-101': null,
+      'ledger:bd-101:retry': { appended: true },
     })
     out = await run({ args: liveArgs(), canned })
     assertNoThrow(out)
     const notifies = out.trace.filter(t => t.label === 'notify:bd-101').map(t => t.prompt)
     check(notifies.length === 2 && notifies[0].includes(DETAIL) && !notifies[1].includes(DETAIL) && notifies[1].includes('bd-109'), 'a null notify is retried once with the detail elided and the blocker bead named')
-    const bl = extractLedgerLine(promptOf(out.trace, 'ledger-append:bd-101:retry'))
+    const bl = extractLedgerLine(promptOf(out.trace, 'ledger:bd-101:retry'))
     check(!!bl && /\(bd-101\): BLOCKED — /.test(bl) && !bl.includes(DETAIL) && bl.includes('bd-109'), 'the elided BLOCKED line keeps the shape, id and blocker bead', bl)
     check(JSON.stringify(out.result?.escalated) === '["bd-101"]', 'the task is still quarantined')
   }
@@ -804,8 +812,6 @@ async function main() {
       canned[`clarify:${id}`] = { recorded: true }
       canned[`review:${id}`] = { id, status: 'CLEAN' }
       canned[`merge:${id}`] = { id, merged: true, mergeExit: 0, mergeHead: true, head: SHA('b'), mergeBase: SHA('a'), rebaseConflictFiles: 0 }
-      canned[`ledger-append:${id}`] = { appended: true }
-      canned[`ledger-append:merge:${id}`] = { appended: true }
     })
     const out = await run({ args: liveArgs(), canned })
     assertNoThrow(out)
@@ -826,10 +832,12 @@ async function main() {
     })
     const out = await run({ args: liveArgs(), canned })
     assertNoThrow(out)
-    check(out.counts['ledger-append:bd-101'] === 1, `exactly one completion ledger line (got ${out.counts['ledger-append:bd-101'] ?? 0})`)
+    const completions = taskLedgerLines(out.trace, 'bd-101').filter(l => /: complete/.test(l))
+    check(completions.length === 1, `exactly one completion ledger line (got ${completions.length})`)
     check(!out.trace.some(t => /^(triage|missing-blocker|notify):/.test(t.label)), 'null merge never entered the blocker path')
     check(JSON.stringify(out.result?.completed) === '["bd-101"]' && out.result?.escalated.length === 0 && out.result?.pendingRetry.length === 0, 'task completed exactly once, no other bucket', JSON.stringify(out.result))
     check(out.logs.some(l => l.includes('NULL dispatch: merge:bd-101')), 'swallowed null merge is logged by label')
+    check(out.logs.some(l => l.startsWith('merge for bd-101 unavailable (null dispatch) — no merge happened')), 'the merge site logs its own unsettled line')
     check(out.logs.some(l => l.includes('bounded null-retry 1/2')), 'no-progress round with a null took the bounded retry, not the stall')
     assertBucketsDisjoint(out.result)
   }
@@ -948,7 +956,7 @@ async function main() {
     assertNoThrow(out)
     const r = out.result
     check(r && r.escalated.length === 0 && r.pendingRetry.length === 0, 'neither quarantined nor retry-burned', JSON.stringify(r))
-    check(!out.trace.some(t => ['ledger-append:bd-101', 'notify:bd-101', 'clarify:bd-101'].includes(t.label)), 'no ledger line, neither triage branch executed')
+    check(!out.trace.some(t => ['ledger:bd-101', 'notify:bd-101', 'clarify:bd-101'].includes(t.label)), 'no ledger line, neither triage branch executed')
     check(out.logs.some(l => l.includes('unsettled')), 'unsettled state is logged')
     assertBucketsDisjoint(r)
   }
@@ -1070,8 +1078,6 @@ async function main() {
       c[`impl:${id}`] = tick({ id, status: 'IMPLEMENTED', files: [] })
       c[`review:${id}`] = { id, status: 'CLEAN' }
       c[`merge:${id}`] = tick({ id, merged: true, mergeExit: 0, mergeHead: true, head: SHA('b'), mergeBase: SHA('a') })
-      c[`ledger-append:${id}`] = { appended: true }
-      c[`ledger-append:merge:${id}`] = { appended: true }
     }
     return { ...c, ...overrides }
   }
@@ -1081,7 +1087,7 @@ async function main() {
     const ids = Array.from({ length: 13 }, (_, i) => `bd-${101 + i}`)
     const siblings = ids.slice(0, 12)
     const canned = manyTaskCanned(ids, {
-      'impl:bd-113': async ctx => { await Promise.all(siblings.map(s => ctx.waitFor(`ledger-append:${s}`))); return { id: 'bd-113', status: 'IMPLEMENTED', files: [] } },
+      'impl:bd-113': async ctx => { await Promise.all(siblings.map(s => ctx.waitFor(`ledger:${s}`))); return { id: 'bd-113', status: 'IMPLEMENTED', files: [] } },
     })
     const out = await run({ args: liveArgs({ config: cfg({ concurrency: 14 }) }), canned })
     assertNoThrow(out)
@@ -1096,7 +1102,7 @@ async function main() {
   scenario('sliding window: a straggler does not block later dispatch (no chunk barrier)')
   {
     const ids = ['bd-101', 'bd-102', 'bd-103']
-    const canned = manyTaskCanned(ids, { 'impl:bd-101': async ctx => { await ctx.waitFor('ledger-append:bd-103'); return { id: 'bd-101', status: 'IMPLEMENTED', files: [] } } })
+    const canned = manyTaskCanned(ids, { 'impl:bd-101': async ctx => { await ctx.waitFor('ledger:bd-103'); return { id: 'bd-101', status: 'IMPLEMENTED', files: [] } } })
     const out = await run({ args: liveArgs({ config: cfg({ concurrency: 2 }) }), canned })
     assertNoThrow(out)
     check(out.result?.completed.length === 3, `all 3 completed (got ${out.result?.completed.length})`)
@@ -1110,7 +1116,7 @@ async function main() {
     const ids = ['bd-101', 'bd-102', 'bd-103']
     const canned = manyTaskCanned(ids, {
       'plan': { planPath: PLANPATH, mapping: [{ n: 1, id: 'bd-101', files: ['src/a.js'] }, { n: 2, id: 'bd-102', files: ['src/b.js'] }, { n: 3, id: 'bd-103', files: ['src/a.js'] }] },
-      'impl:bd-101': async ctx => { await ctx.waitFor('ledger-append:bd-102'); return { id: 'bd-101', status: 'IMPLEMENTED', files: [] } },
+      'impl:bd-101': async ctx => { await ctx.waitFor('ledger:bd-102'); return { id: 'bd-101', status: 'IMPLEMENTED', files: [] } },
     })
     const out = await run({ args: liveArgs({ config: cfg({ hotFileCap: 1 }) }), canned })
     assertNoThrow(out)
@@ -1122,19 +1128,153 @@ async function main() {
     assertBucketsDisjoint(out.result)
   }
 
-  scenario('unplanned-id triage rides the merge queue instead of stalling dispatch')
+  scenario('unplanned-id filing and triage run beside the implementers — no barrier, never on the merge queue')
   {
     const canned = oneTaskCanned({
       'bd-ready': [{ ids: ['bd-101', 'bd-105'] }, { ids: [] }],
-      'unplanned-blocker:bd-105': { id: 'bd-105', status: 'BLOCKED', blockerBead: 'bd-110' },
+      // a filing barrier before dispatch would deadlock here: the filing waits for the implementer
+      'unplanned-blocker:bd-105': async ctx => { await ctx.waitFor('impl:bd-101'); return { id: 'bd-105', status: 'BLOCKED', blockerBead: 'bd-110' } },
       'triage:bd-105': async ctx => { await ctx.waitFor('impl:bd-101'); return { decision: 'ESCALATE', detail: 'needs a human' } },
       'notify:bd-105': { sent: true },
-      'ledger-append:bd-105': { appended: true },
     })
     const out = await run({ args: liveArgs(), canned })
     assertNoThrow(out)
-    check(JSON.stringify(out.result?.completed) === '["bd-101"]' && JSON.stringify(out.result?.escalated) === '["bd-105"]', 'mapped task completed; unmapped id escalated via the queue', JSON.stringify(out.result))
+    check(JSON.stringify(out.result?.completed) === '["bd-101"]' && JSON.stringify(out.result?.escalated) === '["bd-105"]', 'mapped task completed; unmapped id escalated beside it', JSON.stringify(out.result))
     assertBucketsDisjoint(out.result)
+  }
+
+  scenario('blocker triage runs off the merge queue: a merge in flight never holds a triage, and a failed merge releases the queue first')
+  {
+    const twoTasks = {
+      'bd-ready': [{ ids: ['bd-101', 'bd-102'] }, { ids: [] }],
+      'plan': { planPath: PLANPATH, mapping: [{ n: 1, id: 'bd-101', files: ['src/a.js'] }, { n: 2, id: 'bd-102', files: ['src/b.js'] }] },
+      'brief:bd-102': { id: 'bd-102', n: 2, status: 'BRIEFED', files: ['src/b.js'], branch: 'x', base: SHA('d') },
+      'review:bd-102': { id: 'bd-102', status: 'CLEAN' },
+    }
+    // bd-101's merge completes only after bd-102's triage started, and bd-102 blocks only once that
+    // merge is in flight: a triage queued behind the merge would deadlock
+    let out = await run({ args: liveArgs(), canned: oneTaskCanned({ ...twoTasks,
+      'impl:bd-102': async ctx => { await ctx.waitFor('merge:bd-101'); return { id: 'bd-102', status: 'BLOCKED', files: ['src/b.js'], blockerBead: 'bd-109' } },
+      'merge:bd-101': async ctx => { await ctx.waitFor('triage:bd-102'); return { id: 'bd-101', merged: true, mergeExit: 0, mergeHead: true, head: SHA('b'), mergeBase: SHA('a') } },
+      'triage:bd-102': { decision: 'ESCALATE', detail: 'needs a human' },
+      'notify:bd-102': { sent: true },
+    }) })
+    assertNoThrow(out)
+    check(JSON.stringify(out.result?.completed) === '["bd-101"]' && JSON.stringify(out.result?.escalated) === '["bd-102"]', 'merge and triage overlapped; both settled', JSON.stringify(out.result))
+    // bd-101's merge fails; its triage completes only after bd-102's merge started: a triage still
+    // holding the queue would deadlock
+    out = await run({ args: liveArgs(), canned: oneTaskCanned({ ...twoTasks,
+      'impl:bd-102': async ctx => { await ctx.waitFor('triage:bd-101'); return { id: 'bd-102', status: 'IMPLEMENTED', files: ['src/b.js'] } },
+      'merge:bd-101': { id: 'bd-101', merged: false, blockerBead: 'bd-108', rebaseConflictFiles: 2 },
+      'triage:bd-101': async ctx => { await ctx.waitFor('merge:bd-102'); return { decision: 'ESCALATE', detail: 'conflict' } },
+      'notify:bd-101': { sent: true },
+      'merge:bd-102': { id: 'bd-102', merged: true, mergeExit: 0, mergeHead: true, head: SHA('e'), mergeBase: SHA('d') },
+    }) })
+    assertNoThrow(out)
+    check(JSON.stringify(out.result?.completed) === '["bd-102"]' && JSON.stringify(out.result?.escalated) === '["bd-101"]', 'the next merge ran while the failed merge was in triage', JSON.stringify(out.result))
+    check(out.maxOpen.merge === 1, 'single-flight held')
+    const lines = taskLedgerLines(out.trace, 'bd-101')
+    check(lines.length === 2 && /^Merge: bd-101 — .* → blocker$/.test(lines[0]) && /\(bd-101\): BLOCKED — conflict$/.test(lines[1]), "bd-101's failed Merge: line precedes its BLOCKED line, in one flush", JSON.stringify(lines))
+    assertBucketsDisjoint(out.result)
+  }
+
+  scenario('a blocker burst stays inside the concurrency cap: triage holds the blocked task\'s slot')
+  {
+    const ids = ['bd-101', 'bd-102', 'bd-103', 'bd-104']
+    // implementers and triages share one in-flight counter: both are agents a slot must cover
+    let inFlight = 0, peak = 0
+    const counted = v => async () => { inFlight++; peak = Math.max(peak, inFlight); await new Promise(r => setImmediate(r)); inFlight--; return v }
+    const over = {}
+    for (const id of ids) {
+      over[`impl:${id}`] = counted({ id, status: 'BLOCKED', files: [], blockerBead: `bead-${id}` })
+      over[`triage:${id}`] = counted({ decision: 'ESCALATE', detail: 'x' })
+      over[`notify:${id}`] = { sent: true }
+    }
+    const out = await run({ args: liveArgs({ config: cfg({ concurrency: 2 }) }), canned: manyTaskCanned(ids, over) })
+    assertNoThrow(out)
+    check(peak <= 2 && (out.maxOpen.triage ?? 0) >= 1, `implementers plus triages never exceed the cap of 2 (peak ${peak})`)
+    check(out.result?.escalated.length === 4, 'all four escalated')
+  }
+
+  scenario('merge agent writes its own success ledger lines; the coordinator writes only what it must')
+  {
+    let out = await run({ args: liveArgs(), canned: oneTaskCanned({
+      'review:bd-101': { id: 'bd-101', status: 'CLEAN', minors: ['tiny nit'] },
+      'merge:bd-101': { id: 'bd-101', merged: true, mergeExit: 0, mergeHead: true, head: SHA('b'), mergeBase: SHA('a'), rebaseConflictFiles: 0, ledgerAppended: true },
+    }) })
+    assertNoThrow(out)
+    const merge = promptOf(out.trace, 'merge:bd-101') ?? ''
+    const tmpl = extractLedgerLines(merge)
+    check(JSON.stringify(tmpl) === JSON.stringify(['Merge: bd-101 — rebase <REBASE> · seam-review none · check none', 'Task 1 (bd-101): complete (commits <RANGE>, review clean)']), 'merge prompt hands the agent the Merge: and completion line templates', JSON.stringify(tmpl))
+    check(/LEDGER, last, only after the merge is committed/.test(merge) && merge.includes(`${PLANDIR.replace(IW + '/', '')}/progress.md`) && /report ledgerAppended true/.test(merge) && /Merge-cleanup: bd-101/.test(merge), 'the LEDGER step names the ledger path, the cleanup line and the report field', merge)
+    const lines = taskLedgerLines(out.trace, 'bd-101')
+    check(JSON.stringify(lines) === JSON.stringify(['Task 1 (bd-101): minor (deferred): tiny nit']), 'the coordinator flushes only the minor; no duplicate Merge: or completion line', JSON.stringify(lines))
+    check(JSON.stringify(out.result?.completed) === '["bd-101"]', 'merged')
+
+    out = await run({ args: liveArgs({ config: cfg({ mergeCheck: 'cargo check' }) }), canned: oneTaskCanned({
+      'review:bd-101': { id: 'bd-101', status: 'NEEDS_FIX', finding: 'dup constant (plan-mandated)' },
+      'fix:bd-101': { id: 'bd-101', status: 'FIXED', head: SHA('f'), declined: 'the brief requires it' },
+      'merge:bd-101': { id: 'bd-101', merged: true, mergeExit: 0, mergeHead: true, check: 'pass', head: SHA('b'), mergeBase: SHA('a'), rebaseConflictFiles: 0, ledgerAppended: true },
+    }) })
+    assertNoThrow(out)
+    const ptmpl = extractLedgerLines(promptOf(out.trace, 'merge:bd-101'))
+    check(JSON.stringify(ptmpl) === JSON.stringify(['Merge: bd-101 — rebase <REBASE> · seam-review none · check pass']), 'parked task: the agent gets only the Merge: template (check pass with a declared check); the completion line carries fixer free text', JSON.stringify(ptmpl))
+    check(/1 parked — reason: the brief requires it — finding: dup constant/.test(taskLedgerLine(out.trace, 'bd-101', /: complete/) ?? ''), 'the coordinator writes the parked completion line')
+
+    out = await run({ args: liveArgs(), canned: oneTaskCanned({
+      'merge:bd-101': { id: 'bd-101', merged: true, mergeExit: 0, mergeHead: false, head: SHA('b'), mergeBase: SHA('a'), ledgerAppended: true },
+      'missing-blocker:bd-101': { id: 'bd-101', status: 'BLOCKED', blockerBead: 'bd-190' },
+      'triage:bd-101': { decision: 'ESCALATE', detail: 'no merge' },
+      'notify:bd-101': { sent: true },
+    }) })
+    assertNoThrow(out)
+    check(out.logs.some(l => l.startsWith('ledger: the merge agent for bd-101 appended success lines for a merge the coordinator rejected')), 'a rejected merge whose agent claimed the ledger write is logged')
+    check(/\(bd-101\): BLOCKED — /.test(taskLedgerLines(out.trace, 'bd-101').at(-1) ?? ''), 'the BLOCKED line follows and supersedes on resume')
+  }
+
+  scenario('effort: mechanical dispatches run low, planner/triage/final review high, implementer/reviewer/merge inherit; config.efforts overrides')
+  {
+    const canned = oneTaskCanned({
+      'bd-ready': [{ ids: ['bd-101', 'bd-104'] }, { ids: [] }],
+      'plan': { planPath: PLANPATH, mapping: [{ n: 1, id: 'bd-101', files: ['src/a.js'] }, { n: 4, id: 'bd-104', files: ['src/c.js'] }] },
+      'brief:bd-104': { id: 'bd-104', n: 4, status: 'BRIEFED', files: ['src/c.js'], branch: 'x', base: SHA('d') },
+      'impl:bd-104': { id: 'bd-104', status: 'BLOCKED', files: ['src/c.js'], blockerBead: 'bd-109' },
+      'triage:bd-104': { decision: 'ESCALATE', detail: 'x' },
+      'notify:bd-104': { sent: true },
+    })
+    let out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    const opt = (o, l) => o.trace.find(t => t.label === l)?.opts ?? {}
+    for (const l of ['read-ledger', 'bd-ready', 'brief:bd-101', 'ledger:bd-101', 'sweep', 'read-ledger:finish']) check(opt(out, l).effort === 'low' && opt(out, l).model === 'sonnet', `${l}: sonnet at low effort`, JSON.stringify(opt(out, l)))
+    for (const l of ['plan', 'triage:bd-104', 'final-review']) check(opt(out, l).effort === 'high', `${l}: high effort`, JSON.stringify(opt(out, l)))
+    for (const l of ['impl:bd-101', 'review:bd-101', 'merge:bd-101']) check(!('effort' in opt(out, l)), `${l}: inherits the session effort`, JSON.stringify(opt(out, l)))
+    out = await run({ args: liveArgs({ config: cfg({ efforts: { mechanical: 'medium', implementer: 'high' } }) }), canned })
+    assertNoThrow(out)
+    check(opt(out, 'bd-ready').effort === 'medium' && opt(out, 'impl:bd-101').effort === 'high' && opt(out, 'plan').effort === 'high', 'config.efforts overrides per role; unset roles keep their default', JSON.stringify([opt(out, 'bd-ready'), opt(out, 'impl:bd-101')]))
+    const dry = await run({ args: extractJsonBlocks()[0] })
+    check(dry.trace.every(t => t.opts.model === 'haiku' && !('effort' in t.opts)), 'dryRun stubs: haiku, no effort override')
+  }
+
+  scenario('runtime slots: the cap leaves two runtime slots free; unset slots are logged')
+  {
+    const ids = Array.from({ length: 8 }, (_, i) => `bd-1${String(i + 1).padStart(2, '0')}`)
+    let out = await run({ args: liveArgs({ config: cfg({ concurrency: 16, runtimeSlots: 6 }) }), canned: manyTaskCanned(ids) })
+    assertNoThrow(out)
+    check(out.logs.some(l => l.startsWith('concurrency cap 16 lowered to 4: 6 runtime slots')), 'cap lowered to runtimeSlots - 2, logged')
+    check((out.maxOpen.impl ?? 0) <= 4 && out.logs.some(l => /^parallelism: .* · cap 4 · peak in-flight 4 .*· runtime slots 6/.test(l)), 'never more than 4 chains in flight; the detector reports the slots', out.logs.find(l => l.startsWith('parallelism:')))
+    check(out.result?.completed.length === 8, 'all 8 complete')
+    out = await run({ args: liveArgs({ config: cfg({ concurrency: 3, runtimeSlots: 14 }) }), canned: manyTaskCanned(ids) })
+    check(!out.logs.some(l => l.startsWith('concurrency cap')) && out.logs.some(l => / · cap 3 · /.test(l)), 'a cap already under the slots is kept as configured')
+    out = await run({ args: liveArgs(), canned: manyTaskCanned(ids) })
+    check(out.logs.some(l => l.startsWith('config.runtimeSlots not set')), 'unset runtimeSlots is logged')
+  }
+
+  scenario('dryRun: an unregistered ledger flush key is FATAL at the next drain, never silently lost')
+  {
+    const args = JSON.parse(JSON.stringify(extractJsonBlocks()[0]))
+    delete args.prompts.stubs['ledger:bd-101']
+    const out = await run({ args })
+    check(!!out.error && String(out.error).includes('no stub for key ledger:bd-101'), 'the queued append\'s throw surfaces', String(out.error))
   }
 
   // ===== 5. mid-round top-up =====
@@ -1217,7 +1357,7 @@ async function main() {
   scenario('top-up at scale: 40-bead unblock-two graph drains in ONE round (simulation shape)')
   {
     const ids = Array.from({ length: 40 }, (_, i) => `bd-${101 + i}`)
-    const readyNow = counts => ids.filter((id, k) => k === 0 || counts[`ledger-append:${ids[Math.floor((k - 1) / 2)]}`])
+    const readyNow = counts => ids.filter((id, k) => k === 0 || counts[`merge:${ids[Math.floor((k - 1) / 2)]}`])
     const canned = manyTaskCanned(ids, { 'bd-ready': [{ ids: ['bd-101'] }, { ids: [] }], 'bd-ready-topup': ctx => ({ ids: readyNow(ctx.counts) }) })
     const out = await run({ args: liveArgs({ config: cfg({ concurrency: 14 }) }), canned, timeoutMs: 30000 })
     assertNoThrow(out)
@@ -1364,7 +1504,7 @@ async function main() {
     const out = await run({ args: liveArgs(), canned })
     assertNoThrow(out)
     check(out.counts['ledger-recurring:1'] === 1 && !out.counts['ledger-recurring:2'], 'exactly one cluster line, reported once')
-    check(ids.every(id => out.counts[`ledger-minor:${id}`] === 1) && extractLedgerLines(promptOf(out.trace, 'ledger-minor:bd-102')).length === 2, 'one minor dispatch per task, one ledger line per minor')
+    check(ids.every(id => out.counts[`ledger:${id}`] === 1) && taskLedgerLines(out.trace, 'bd-102').filter(l => /minor \(deferred\)/.test(l)).length === 2, 'one ledger flush per task, one ledger line per minor')
     check(promptOf(out.trace, 'ledger-recurring:1')?.includes('Recurring minor: ×3 across 3 task(s)'), 'cluster line carries count and task spread')
     check(out.logs.some(l => l.startsWith('RECURRING MINOR ×3')), 'cluster is logged loudly')
     check(/triage those first/.test(promptOf(out.trace, 'final-review') ?? ''), 'final reviewer is told to triage clusters first')
@@ -1379,7 +1519,7 @@ async function main() {
     check(JSON.stringify(out.result?.escalated) === '["bd-101"]' && JSON.stringify(out.result?.completed) === '["bd-102"]', 'refused task quarantined, sibling completed', JSON.stringify(out.result))
     check(!out.trace.some(t => /^(triage|missing-blocker|notify):/.test(t.label)) && !out.trace.some(t => ['review:bd-101', 'merge:bd-101'].includes(t.label)), 'no bead, triage or notify; never reviewed or merged')
     check(JSON.stringify(out.result?.authRefused) === JSON.stringify([{ id: 'bd-101', refused: 'git worktree add .worktrees/x' }]), 'authRefused returned to the caller')
-    check(extractLedgerLine(promptOf(out.trace, 'ledger-append:bd-101'))?.includes('BLOCKED-AUTH — permission refused'), 'ledger line starts with BLOCKED')
+    check(taskLedgerLine(out.trace, 'bd-101', /BLOCKED-AUTH/)?.includes('(bd-101): BLOCKED-AUTH — permission refused'), 'ledger line starts with BLOCKED')
     check(out.logs.some(l => l.startsWith('AUTH-REFUSED bd-101')), 'logged loudly')
     const impl = promptOf(out.trace, 'impl:bd-101')
     check(!!impl && impl.includes('PERMISSION REFUSALS') && impl.includes('BLOCKED_AUTH') && impl.includes('ONE equivalent form'), 'implementer carries the auth-refusal rule')
@@ -1405,7 +1545,12 @@ async function main() {
 
   scenario('detector persistence: every completed round writes a Detector: ledger line')
   {
-    const out = await run({ args: liveArgs(), canned: manyTaskCanned(['bd-101', 'bd-102'], { 'bd-ready': [{ ids: ['bd-101'] }, { ids: ['bd-102'] }, { ids: [] }] }) })
+    const out = await run({ args: liveArgs(), canned: manyTaskCanned(['bd-101', 'bd-102'], {
+      'bd-ready': [{ ids: ['bd-101'] }, { ids: ['bd-102'] }, { ids: [] }],
+      // round 1's detector append completes only once round 2 is dispatching: awaiting it at the
+      // round end would deadlock
+      'ledger-append:detector': async ctx => { await ctx.waitFor('brief:bd-102'); return { appended: true } },
+    }) })
     assertNoThrow(out)
     const d = out.trace.filter(t => t.label === 'ledger-append:detector').map(t => extractLedgerLine(t.prompt))
     check(d.length === 2 && d[0]?.startsWith('Detector: round 1 —') && d[1]?.startsWith('Detector: round 2 —') && d[1].includes('cap 4'), 'one round-stamped detector line per working round', JSON.stringify(d))
@@ -1417,13 +1562,14 @@ async function main() {
     const ids = ['bd-101', 'bd-102', 'bd-103', 'bd-104']
     const canned = manyTaskCanned(ids, {
       'bd-ready': [{ ids: ['bd-101'] }, { ids: ['bd-102'] }, { ids: ['bd-103'] }, { ids: ['bd-104'] }, { ids: [] }],
-      'edge-audit:1': { openLeaves: 5, depth: 2, suspectEdges: [{ from: 'bd-104', to: 'bd-103', reason: 'consumer reads nothing the producer writes' }], summary: 'graph-bound' },
+      // the audit returns only once round 3 is dispatching: awaiting it at the round end would deadlock
+      'edge-audit:1': async ctx => { await ctx.waitFor('brief:bd-103'); return { openLeaves: 5, depth: 2, suspectEdges: [{ from: 'bd-104', to: 'bd-103', reason: 'consumer reads nothing the producer writes' }], summary: 'graph-bound' } },
     })
     const out = await run({ args: liveArgs({ config: cfg({ edgeAuditCap: 1 }) }), canned })
     assertNoThrow(out)
     check(out.counts['edge-audit:1'] === 1 && !out.counts['edge-audit:2'], 'one audit, bounded by the cap')
     const idx = label => out.trace.findIndex(t => t.label === label)
-    check(idx('edge-audit:1') > idx('merge:bd-102') && idx('edge-audit:1') < idx('brief:bd-103'), 'audit fires at the end of round 2, before round 3 dispatches')
+    check(idx('edge-audit:1') > idx('merge:bd-102') && idx('edge-audit:1') < idx('brief:bd-103'), 'audit dispatches at the end of round 2, before round 3 dispatches — and round 3 does not wait for it')
     const line = extractLedgerLine(promptOf(out.trace, 'ledger-append:edge-audit:1'))
     check(!!line && line.includes('achievable width 3 vs cap 4') && line.includes('bd-104→bd-103'), 'ledger line carries ceil(5/2)=3 computed in JS and the suspect edge', line)
     const audit = promptOf(out.trace, 'edge-audit:1')
@@ -1469,7 +1615,6 @@ async function main() {
       'impl:bd-104': { id: 'bd-104', status: 'BLOCKED', files: ['src/c.js'], blockerBead: 'bd-109' },
       'triage:bd-104': { decision: 'ESCALATE', detail: 'needs a decision' },
       'notify:bd-104': { sent: true },
-      'ledger-append:bd-104': { appended: true },
     })
     const eo = await run({ args: liveArgs(), canned: esc })
     assertNoThrow(eo)
@@ -1545,7 +1690,7 @@ async function main() {
     check(!!seam && seam.includes('READ-ONLY') && seam.includes('src/a.js') && seam.includes('outside this review') && !seam.includes('already approved'), 'seam review is read-only, scoped, and not primed with the prior approval', seam)
     check(!!seam && seam.includes('TEST CHANGES') && seam.includes(`${SHA('b')}..HEAD`) && /deleted, skipped, loosened, or whose expected values were edited/.test(seam) && /valid only with the command you ran stated/.test(seam), 'seam review carries the Test changes rule over the post-rebase range')
     check(promptOf(out.trace, 'merge:bd-101:seam-cleared')?.includes('ALREADY rebased') && promptOf(out.trace, 'merge:bd-101')?.includes('POST-REBASE SEAM CHECK'), 'first merge carries the seam check; the second skips it')
-    check(/^Merge: bd-101 — rebase clean · seam-review cleared · check none$/.test(extractLedgerLine(promptOf(out.trace, 'ledger-append:merge:bd-101')) ?? ''), 'Merge: line records seam-review cleared')
+    check(/^Merge: bd-101 — rebase clean · seam-review cleared · check none$/.test(taskLedgerLine(out.trace, 'bd-101', /^Merge: /) ?? ''), 'Merge: line records seam-review cleared')
     check(JSON.stringify(out.result?.completed) === '["bd-101"]' && out.maxOpen.merge === 1, 'merged; single-flight held')
     assertBucketsDisjoint(out.result)
   }
@@ -1563,7 +1708,7 @@ async function main() {
     check(out.counts['fix:bd-101:seam'] === 1 && out.counts['seam-review:bd-101'] === 1, 'one fix, one review')
     const fix = promptOf(out.trace, 'fix:bd-101:seam')
     check(!!fix && fix.includes('parseInput()') && /post-rebase seam fix/.test(fix) && /Run the tests covering the overlapping files/.test(fix), 'seam fix carries the finding and runs the covering tests')
-    check(/seam-review fixed · check none$/.test(extractLedgerLine(promptOf(out.trace, 'ledger-append:merge:bd-101')) ?? ''), 'Merge: line records seam-review fixed')
+    check(/seam-review fixed · check none$/.test(taskLedgerLine(out.trace, 'bd-101', /^Merge: /) ?? ''), 'Merge: line records seam-review fixed')
     check(JSON.stringify(out.result?.completed) === '["bd-101"]', 'merged after the fix')
     assertBucketsDisjoint(out.result)
   }
@@ -1592,7 +1737,7 @@ async function main() {
     check(!!merge && merge.includes(`EXACTLY this command on the merged tree in .worktrees/${BRANCH}, unchanged: \`${CHECK}\``) && /build only, never tests/.test(merge) && /Run no tests in this dispatch/.test(merge), 'merge dispatch runs the declared build-only check on the merged tree, and no tests', merge)
     check(!!merge && merge.indexOf('POST-REBASE SEAM CHECK') < merge.indexOf('MERGE CHECK') && /git merge --no-ff --no-commit task-bd-101/.test(merge), 'the check runs after the rebase and seam check, on an uncommitted merge')
     check(!!merge && /do not edit any code or test to make it pass/.test(merge) && /git merge --abort/.test(merge), 'a failing check is fenced: no in-place fixes, the merge is aborted')
-    check(extractLedgerLine(promptOf(ok.trace, 'ledger-append:merge:bd-101')) === 'Merge: bd-101 — rebase clean · seam-review none · check pass', 'Merge: line records check pass')
+    check(taskLedgerLine(ok.trace, 'bd-101', /^Merge: /) === 'Merge: bd-101 — rebase clean · seam-review none · check pass', 'Merge: line records check pass')
     check(extractLedgerLine(promptOf(ok.trace, 'ledger-append:launch'))?.includes(`"mergeCheck":"${CHECK}"`), 'the Launch line records the check command')
 
     const seamed = await run({ args: liveArgs({ config: cfg({ mergeCheck: CHECK }) }), canned: oneTaskCanned({
@@ -1608,7 +1753,6 @@ async function main() {
     const ERR = "error[E0061]: this function takes 2 arguments but 1 argument was supplied\n  --> crates/other/tests/provider.rs:41:9"
     const failMerge = { id: 'bd-101', merged: false, mergeExit: 0, mergeHead: true, rebaseConflictFiles: 0, check: 'fail', head: SHA('c'), mergeBase: SHA('b'), checkOutput: `${CHECK}\n${ERR}` }
     const blockerTail = {
-      'ledger-append:merge-failed:bd-101': { appended: true },
       'missing-blocker:bd-101': { id: 'bd-101', status: 'BLOCKED', blockerBead: 'bd-190' },
       'triage:bd-101': { decision: 'ESCALATE', detail: 'cross-lane compile seam' },
       'notify:bd-101': { sent: true },
@@ -1627,7 +1771,7 @@ async function main() {
     const crev = promptOf(fixed.trace, 'seam-review:bd-101:check')
     check(!!crev && /READ-ONLY/.test(crev) && crev.includes(`${SHA('c')}..HEAD`) && crev.includes('<build-errors>'), 'one scoped read-only review of the fix diff')
     check(promptOf(fixed.trace, 'merge:bd-101:check-fixed')?.includes(CHECK), 'the check re-runs on the re-dispatched merge')
-    check(extractLedgerLine(promptOf(fixed.trace, 'ledger-append:merge:bd-101')) === 'Merge: bd-101 — rebase clean · seam-review none · check fail→fixed', 'Merge: line records check fail→fixed')
+    check(taskLedgerLine(fixed.trace, 'bd-101', /^Merge: /) === 'Merge: bd-101 — rebase clean · seam-review none · check fail→fixed', 'Merge: line records check fail→fixed')
     check(JSON.stringify(fixed.result?.completed) === '["bd-101"]' && !fixed.trace.some(t => t.label.startsWith('triage:')), 'merged without the blocker path', JSON.stringify(fixed.result))
     check(!/file a blocker bead \(as below\) whose body also carries the command/.test(promptOf(fixed.trace, 'merge:bd-101') ?? '') && /do not file a blocker bead/.test(promptOf(fixed.trace, 'merge:bd-101') ?? ''), 'the merge agent reports the failure instead of filing a bead')
 
@@ -1637,7 +1781,7 @@ async function main() {
       ...blockerTail,
     }) })
     assertNoThrow(fixBlocked)
-    check(extractLedgerLine(promptOf(fixBlocked.trace, 'ledger-append:merge-failed:bd-101')) === 'Merge: bd-101 — rebase clean · seam-review none · check fail → blocker', 'fix BLOCKED: Merge: line records check fail → blocker')
+    check(taskLedgerLine(fixBlocked.trace, 'bd-101', /^Merge: .*→ blocker$/) === 'Merge: bd-101 — rebase clean · seam-review none · check fail → blocker', 'fix BLOCKED: Merge: line records check fail → blocker')
     check(/bd-191/.test(promptOf(fixBlocked.trace, 'triage:bd-101') ?? '') && !fixBlocked.trace.some(t => t.label === 'seam-review:bd-101:check'), 'fix BLOCKED: triage reads the fixer\'s bead; no review')
     check(JSON.stringify(fixBlocked.result?.escalated) === '["bd-101"]', 'fix BLOCKED: escalated')
 
@@ -1649,7 +1793,7 @@ async function main() {
       ...blockerTail,
     }) })
     assertNoThrow(still)
-    check(extractLedgerLine(promptOf(still.trace, 'ledger-append:merge-failed:bd-101'))?.endsWith('check fail → blocker'), 'still failing: check fail → blocker')
+    check(taskLedgerLine(still.trace, 'bd-101', /^Merge: .*→ blocker$/)?.endsWith('check fail → blocker'), 'still failing: check fail → blocker')
     check(/still fails after the merge-check fix/.test(promptOf(still.trace, 'missing-blocker:bd-101') ?? '') && still.counts['fix:bd-101:check'] === 1, 'still failing: blocker bead carries the diagnosis; no second fix')
     check(JSON.stringify(still.result?.escalated) === '["bd-101"]', 'still failing: escalated')
 
@@ -1671,13 +1815,13 @@ async function main() {
     }) })
     assertNoThrow(spent)
     check(!spent.trace.some(t => t.label === 'fix:bd-101:check'), 'same-file seam fix already used: no merge-check fix')
-    check(extractLedgerLine(promptOf(spent.trace, 'ledger-append:merge-failed:bd-101')) === 'Merge: bd-101 — rebase clean · seam-review fixed · check fail → blocker', 'same-file seam fix already used: seam-review fixed · check fail → blocker')
+    check(taskLedgerLine(spent.trace, 'bd-101', /^Merge: .*→ blocker$/) === 'Merge: bd-101 — rebase clean · seam-review fixed · check fail → blocker', 'same-file seam fix already used: seam-review fixed · check fail → blocker')
     check(JSON.stringify(spent.result?.escalated) === '["bd-101"]' && /failed on the merged tree/.test(promptOf(spent.trace, 'missing-blocker:bd-101') ?? ''), 'same-file seam fix already used: straight to the blocker path with the check output')
 
     const none = await run({ args: liveArgs(), canned: oneTaskCanned({ 'merge:bd-101': { id: 'bd-101', merged: true, mergeExit: 0, mergeHead: true, head: SHA('b'), mergeBase: SHA('a'), check: 'pass' } }) })
     assertNoThrow(none)
     check(/No merge check is declared/.test(promptOf(none.trace, 'merge:bd-101') ?? '') && !/MERGE CHECK/.test(promptOf(none.trace, 'merge:bd-101') ?? ''), 'undeclared: no check step in the merge dispatch')
-    check(extractLedgerLine(promptOf(none.trace, 'ledger-append:merge:bd-101'))?.endsWith('· check none'), 'undeclared: the Merge: line says check none, whatever the agent reported')
+    check(taskLedgerLine(none.trace, 'bd-101', /^Merge: /)?.endsWith('· check none'), 'undeclared: the Merge: line says check none, whatever the agent reported')
     check(extractLedgerLine(promptOf(none.trace, 'ledger-append:launch'))?.includes('"mergeCheck":"none (no build/typecheck step declared)"'), 'undeclared: the Launch line says no check runs')
     const explicitNone = await run({ args: liveArgs({ config: cfg({ mergeCheck: 'none' }) }), canned: oneTaskCanned() })
     assertNoThrow(explicitNone)
@@ -1688,7 +1832,6 @@ async function main() {
   {
     const CHECK = 'cargo check --all-targets'
     const tail = {
-      'ledger-append:merge-failed:bd-101': { appended: true },
       'missing-blocker:bd-101': { id: 'bd-101', status: 'BLOCKED', blockerBead: 'bd-190' },
       'triage:bd-101': { decision: 'ESCALATE', detail: 'merge failure' },
       'notify:bd-101': { sent: true },
@@ -1698,7 +1841,7 @@ async function main() {
     assertNoThrow(dirty)
     check(JSON.stringify(dirty.result?.escalated) === '["bd-101"]' && !dirty.result?.completed.length, 'dirty worktree: no merge, blocker path', JSON.stringify(dirty.result))
     check(/is dirty/.test(promptOf(dirty.trace, 'missing-blocker:bd-101') ?? '') && (promptOf(dirty.trace, 'missing-blocker:bd-101') ?? '').includes('evidence/host-recovery-validation/report.md'), 'dirty worktree: the bead names the stray paths', promptOf(dirty.trace, 'missing-blocker:bd-101'))
-    check(extractLedgerLine(promptOf(dirty.trace, 'ledger-append:merge-failed:bd-101'))?.endsWith('check none → blocker'), 'dirty worktree: Merge: line says check none → blocker')
+    check(taskLedgerLine(dirty.trace, 'bd-101', /^Merge: .*→ blocker$/)?.endsWith('check none → blocker'), 'dirty worktree: Merge: line says check none → blocker')
     check(!dirty.trace.some(t => t.label === 'fix:bd-101:check'), 'dirty worktree: never routed to a merge-check fix')
 
     const refused = await run({ args: liveArgs({ config: cfg({ mergeCheck: CHECK }) }), canned: oneTaskCanned({
@@ -1710,7 +1853,7 @@ async function main() {
       'merge:bd-101': { id: 'bd-101', merged: true, head: SHA('b'), mergeBase: SHA('a'), check: 'pass', mergeExit: 0, mergeHead: false }, ...tail }) })
     assertNoThrow(lying)
     check(!lying.result?.completed.length && JSON.stringify(lying.result?.escalated) === '["bd-101"]', 'no MERGE_HEAD: a reported merged/check pass is rejected (fail closed)', JSON.stringify(lying.result))
-    check(/MERGE_HEAD absent/.test(promptOf(lying.trace, 'missing-blocker:bd-101') ?? '') && extractLedgerLine(promptOf(lying.trace, 'ledger-append:merge-failed:bd-101'))?.endsWith('check none → blocker'), 'no MERGE_HEAD: diagnosis names it; the check result is voided on the ledger')
+    check(/MERGE_HEAD absent/.test(promptOf(lying.trace, 'missing-blocker:bd-101') ?? '') && taskLedgerLine(lying.trace, 'bd-101', /^Merge: .*→ blocker$/)?.endsWith('check none → blocker'), 'no MERGE_HEAD: diagnosis names it; the check result is voided on the ledger')
 
     const unreported = await run({ args: liveArgs(), canned: oneTaskCanned({
       'merge:bd-101': { id: 'bd-101', merged: true, head: SHA('b'), mergeBase: SHA('a') }, ...tail }) })
@@ -1720,7 +1863,7 @@ async function main() {
     const cleaned = await run({ args: liveArgs(), canned: oneTaskCanned({
       'merge:bd-101': { id: 'bd-101', merged: true, head: SHA('b'), mergeBase: SHA('a'), mergeExit: 0, mergeHead: true, check: 'none', removedIdentical: ['evidence/report.md'] } }) })
     assertNoThrow(cleaned)
-    const lines = extractLedgerLines(promptOf(cleaned.trace, 'ledger-append:merge:bd-101'))
+    const lines = taskLedgerLines(cleaned.trace, 'bd-101').filter(l => /^Merge/.test(l))
     check(lines.length === 2 && lines[1] === 'Merge-cleanup: bd-101 — removed byte-identical untracked copies from the integration worktree before merging: evidence/report.md', 'identical-copy removals are listed on a Merge-cleanup line', JSON.stringify(lines))
     check(JSON.stringify(cleaned.result?.completed) === '["bd-101"]', 'merged after removing only identical copies')
 
@@ -1753,16 +1896,15 @@ async function main() {
   {
     const ok = await run({ args: liveArgs(), canned: oneTaskCanned({ 'merge:bd-101': { id: 'bd-101', merged: true, mergeExit: 0, mergeHead: true, head: SHA('b'), mergeBase: SHA('a'), rebaseConflictFiles: 2 } }) })
     assertNoThrow(ok)
-    const okLine = extractLedgerLine(promptOf(ok.trace, 'ledger-append:merge:bd-101'))
+    const okLine = taskLedgerLine(ok.trace, 'bd-101', /^Merge: /)
     check(okLine === 'Merge: bd-101 — rebase conflict: 2 files · seam-review none · check none', 'success line: id, conflict count, no seam review, no gate field', okLine)
     const fail = await run({ args: liveArgs(), canned: oneTaskCanned({
       'merge:bd-101': { id: 'bd-101', merged: false, blockerBead: 'bd-108', rebaseConflictFiles: 3 },
-      'ledger-append:merge-failed:bd-101': { appended: true },
       'triage:bd-101': { decision: 'ESCALATE', detail: 'conflict resolution failed' },
       'notify:bd-101': { sent: true },
     }) })
     assertNoThrow(fail)
-    const failLine = extractLedgerLine(promptOf(fail.trace, 'ledger-append:merge-failed:bd-101'))
+    const failLine = taskLedgerLine(fail.trace, 'bd-101', /^Merge: .*→ blocker$/)
     check(failLine === 'Merge: bd-101 — rebase conflict: 3 files · seam-review none · check none → blocker', 'failure line ends in → blocker, no gate field', failLine)
     check(JSON.stringify(fail.result?.escalated) === '["bd-101"]', 'the blocked task reaches the ordinary ESCALATE bucket')
   }

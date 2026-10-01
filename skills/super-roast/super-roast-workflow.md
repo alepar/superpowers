@@ -11,10 +11,10 @@ that keep it stable. Don't duplicate the spec's reasoning here; link it.
 | # | Stage | Model | Count | Role |
 |---|---|---|---|---|
 | 1 | Pre-flight | (inline, main session) | — | mode / inputs / environment profile — see spec §1 |
-| 2 | Triage | sonnet | 1 | design: domains; PR: conditional-lane activation — spec §2 |
+| 2 | Triage | sonnet | 1 | design: domains; PR: conditional-lane activation — spec §2. Runs alongside the core scouts; it only adds scouts |
 | 3 | Scouts | opus | 5–8 design / 6–13 PR | high-recall finding — spec §3 |
-| 4 | Dedupe | fable | 1 | merge, suggest severity, rank the Nit/FYI tail (the engine applies the caps) — spec §4 |
-| 5 | Judges | sonnet | 3×severe + 1×nit | seat-differentiated verification — spec §5 |
+| 4 | Dedupe | fable | 0–1 | group raw finding ids, suggest severity, rank (the engine assembles merged findings and applies the caps; skipped when there are no raw findings) — spec §4 |
+| 5 | Judges | sonnet | 3×severe + 1×nit (+2 per promotion) | seat-differentiated verification — spec §5 |
 | 6 | Reporter | fable | 1 | overrules of the engine's default routes (cited seat evidence only), env-aware severity, report file — spec §6 |
 | 7 | Handoff | — | — | report → super-design fix loop — spec §7 |
 
@@ -27,29 +27,34 @@ Severity vocabulary throughout (the only one): **Blocking | Should-fix | Nit | F
   via the tool. Triage → scout fan-out → dedupe → tiered judge panels → reporter, each phase
   model-tiered per role.
 - **Subagents but no Workflow → manual fan-out**, same stage order, same prompt files, **same
-  bounds** (issue #4 defect 3 — the manual path used to state none, and one manual roast ran
-  12 scouts and 36 judge seats with the dedupe, the hand-off and the metrics all done by hand):
-  1. Dispatch the triage subagent (sonnet); collect lanes/domains.
-  2. Dispatch all scouts in parallel (opus) from the resulting roster; collect findings,
-     counting non-responses as coverage loss (never silently dropped).
-  3. Dispatch one dedupe subagent (fable) with the pooled findings; split its output into
-     severe (Blocking/Should-fix) and the remainder. `config.remainderCap` (default 50) applies
-     exactly as in the engine: keep the first N of the deduper's ranked Nit/FYI list and record
-     the overflow count as `beyondCap`.
-  4. Every severe finding gets the 3-seat panel (reproduce/refute/ground, sonnet) in parallel,
-     with `suggestedSeverity` and `previouslyRejected` removed from the finding JSON each seat sees —
-     uncapped by default in both modes. Only when `config.panelCap` is set does it apply exactly
-     as in the engine: the top `panelCap` severe findings get panels and the rest go to the
-     report's "Not verified (beyond panel cap)" section unjudged, never dropped. Re-dispatch any seat that returns nothing, once. **Moderation-safe retry:**
-     a seat whose provider rejects the dispatch on content-policy grounds (a refusal message,
-     not a null — measured on an OpenAI-only panel judging a local file-validation finding) is
+  bounds** as the engine:
+  1. Dispatch the triage subagent (sonnet) and the core scouts (opus) together; when triage
+     returns, dispatch the scouts it adds (activated lanes, or domain/widened lenses). Drop a
+     lane name with no prompt and record it as an unknown lane (not a dead scout). Count scout
+     non-responses as coverage loss (never silently dropped).
+  2. If there are raw findings, number them (`id` = position) and dispatch one dedupe subagent
+     (fable). It returns groups of ids; assemble the merged findings and split them into severe
+     (Blocking/Should-fix) and the remainder by running the engine's own `mergeGroup` and cap
+     code under node, not by hand. A raw finding no group claims is kept as a Nit, ranked last.
+     `config.remainderCap` (default 50) keeps the first N of the ranked Nit/FYI list and records
+     the overflow as `beyondCap`. If dedupe fails twice, pass every raw finding to the reporter
+     as a `not-verified:dedupe-failed` packet.
+  3. Every severe finding gets the 3-seat panel (reproduce/refute/ground, sonnet) in parallel,
+     with `suggestedSeverity` and `previouslyRejected` removed from the finding JSON each seat
+     sees — uncapped by default in both modes. Only when `config.panelCap` is set does it apply
+     exactly as in the engine: the top `panelCap` severe findings get panels and the rest go to
+     the report's "Not verified (beyond panel cap)" section unjudged, never dropped. Re-dispatch
+     any seat that returns nothing, once. **Moderation-safe retry:** a seat whose provider
+     rejects the dispatch on content-policy grounds (a refusal message, not a null) is
      re-dispatched once with the static-review wording: present the artifact as text to be
      analysed for correctness, drop the adversarial verbs ("break", "attack", "exploit") from
      the seat framing, keep the seat's method and output contract unchanged; a second rejection
-     is a dead seat (coverage loss, reported). For each remaining finding, dispatch a single
+     is a dead seat (coverage loss, reported). The engine does the same through the optional
+     `prompts.seatsSafe.<seat>` strings. For each remaining finding, dispatch a single
      refute-seat spot check; a spot check that CONFIRMs at Blocking/Should-fix is promoted —
-     dispatch the full 3-seat panel for it.
-  5. Compute what the engine computes before the reporter — the coverage object (every field
+     dispatch the reproduce and ground seats for it and reuse the spot check's verdict as its
+     refute vote.
+  4. Compute what the engine computes before the reporter — the coverage object (every field
      `{{COVERAGE_JSON}}` carries, including `lowCoverage`, `panelCappedTag`,
      `convergenceEligible`), the coverage line, the seat-agreement line, and each packet's
      `defaultRoute` — by running the engine script's own helpers (`defaultRoute`,
@@ -57,9 +62,10 @@ Severity vocabulary throughout (the only one): **Blocking | Should-fix | Nit | F
      hand. Persist the coverage object next to the report; a manual run without it cannot emit
      the coverage line or the verdict qualifiers, and the caller reads their absence as a clean
      run.
-  6. Dispatch one reporter subagent (fable) with the packets, the profile, the coverage values,
+  5. Dispatch one reporter subagent (fable) with the packets, the profile, the coverage values,
      and the prior report (if any); re-dispatch once on failure, then fall back to the engine's
-     `fallbackReport` rendering.
+     `fallbackReport` rendering. Apply the engine's `enforce` step to a live report (header
+     lines, omitted escalations, preExisting → FYI).
 - **No subagents → inline degraded (last resort).** Walk the same steps in one context. This
   is self-review — the independence label is `none (inline)` so the caller knows the verdict
   is weak.
@@ -68,10 +74,9 @@ Severity vocabulary throughout (the only one): **Blocking | Should-fix | Nit | F
 string.** The orchestrator renders `{{INDEPENDENCE}}` in the reporter prompt from the roster it
 dispatched (see "Prompt contract"): `same-family (<family>) — seat-differentiated panel` when
 every seat ran on one model family, `cross-family (<families>) — seat-differentiated panel`
-when the three seats span families, `none (inline)` for the degraded path. Measured: a manual
-roast on an OpenAI-only panel shipped a report labelled `same-family (Claude)` because the
-label was a literal in the template. A caller reads this line to weigh the verdict; a wrong
-family is a false claim about how independent the verification was.
+when the three seats span families, `none (inline)` for the degraded path. A caller reads
+this line to weigh the verdict; a wrong family is a false claim about how independent the
+verification was.
 
 **Honest limit:** the three seats differ by *method* (reproduce / refute / ground), which
 reduces correlated error but does not deliver family-level independence — a same-family panel
@@ -84,7 +89,10 @@ one of the three where a harness offers one, and label it so.
 leave-one-out ground vs. the reproduce/refute pair, and per-seat C/R/U counts) over the
 full panel/promoted-tier packets, printed immediately after `independence:` and omitted
 entirely when there are none. The engine renders the `coverage:` and `seat-agreement:` lines
-and re-applies the coverage-derived verdict qualifiers; the reporter copies the lines verbatim.
+and re-applies the coverage-derived verdict qualifiers. The reporter copies the lines verbatim,
+and after it returns the engine overwrites the `super-roast verdict:`, `coverage:`,
+`independence:` and `seat-agreement:` lines with its own values anyway (inserting any that are
+missing), so a miscopied header line cannot reach the caller.
 
 ## Key constraints
 
@@ -114,8 +122,9 @@ inserted value is never re-scanned for later tokens):
 |---|---|
 | `prompts.scouts.<name>` | `{{PRIOR_REPORT}}` |
 | `prompts.scoutDomainTemplate` | `{{DOMAIN}}`, `{{PRIOR_REPORT}}` |
-| `prompts.dedupe` | `{{FINDINGS_JSON}}` |
+| `prompts.dedupe` | `{{FINDINGS_JSON}}` (the raw findings, each with an `id` — its position — which the deduper's groups refer to) |
 | `prompts.seats.reproduce` / `.refute` / `.ground` | `{{FINDING_JSON}}` (without `suggestedSeverity` / `previouslyRejected` — judges rate blind) |
+| `prompts.seatsSafe.<seat>` (optional) | `{{FINDING_JSON}}` — the seat's static-review wording (artifact presented as text to analyse, no adversarial verbs, same method and output contract), used for the one re-dispatch of a seat that returned nothing; absent, the re-dispatch repeats `prompts.seats.<seat>` |
 | `prompts.reporter` | `{{PACKETS_JSON}}`, `{{PROFILE}}`, `{{PRIOR_REPORT}}`, `{{COVERAGE_JSON}}`, `{{COVERAGE_LINE}}`, `{{SEAT_AGREEMENT}}`, `{{MODE}}`, `{{ITERATION}}`, `{{INPUTS}}` — plus `{{INDEPENDENCE}}`, which the **orchestrator** renders before the script runs (the script never sees model families; the orchestrator chose them), from the seat roster as actually configured: `same-family (<family>) — seat-differentiated panel`, `cross-family (<families>) — seat-differentiated panel`, or `none (inline)`. Left unrendered, the literal token reaches the report — visibly wrong, which is the intended failure over a silently wrong family. The orchestrator also passes the same rendered string as `args.independence`, which the engine's fallback report uses if the reporter fails (it falls back to reading the rendered prompt only when the arg is absent) |
 
 **`prompts.scoutDomainTemplate` is why design-mode domain scouts work at all.** Domain names are
@@ -135,20 +144,31 @@ loop's cap tripped passes `post-cap audit`), and `args.inputs` (the spec paths, 
 `branch@sha vs base@sha [+dirty]`, or `PR#` string the pre-flight step recorded).
 
 `{{COVERAGE_JSON}}` carries the coverage object the script computes **before** the reporter
-call — scout dispatch/dead counts, the raw→deduped funnel, `beyondCap`, `beyondPanelCap`,
-`dedupeDead`, panel/spot/promoted counts, and the qualifier inputs `lowCoverage`,
-`panelCappedTag`, `convergenceEligible`. `{{COVERAGE_LINE}}` and `{{SEAT_AGREEMENT}}` are the
+call — scout dispatch/dead counts, `unknownLanes`, `domainsDropped`, the raw→deduped funnel,
+`dedupeOrphans`, `beyondCap`, `beyondPanelCap`, `dedupeDead`, panel/spot/promoted counts,
+`judgeLost`, `spotLost`, and the qualifier inputs `lowCoverage`, `panelCappedTag`,
+`convergenceEligible`. Only panel-tier seat losses, a lost judge dispatch, a dead triage, scout
+or dedupe set `lowCoverage`; a lost Nit spot check is counted (`spotLost`) and does not. `{{COVERAGE_LINE}}` and `{{SEAT_AGREEMENT}}` are the
 engine-rendered header lines (the latter empty when no full panel exists). Each packet in
 `{{PACKETS_JSON}}` is `{finding, votes, tier, valid, preExisting, defaultRoute}` (`preExisting`
-only on judged packets); `defaultRoute` is one of
-`confirmed`, `rejected`, `unverified-nit`, `not-verified`, `escalate:dead-seat`,
-`escalate:external-unverified`, `escalate:unsettled-panel`.
+only on judged packets). `tier` is `panel`, `spot`, `promoted`, `beyond-cap`, `dedupe-failed` or
+`judge-lost`. `defaultRoute` is one of `confirmed`, `rejected`, `unverified-nit`,
+`not-verified` (beyond the panel cap), `not-verified:dedupe-failed` (dedupe died; the raw finding
+passes through unjudged), `not-verified:judge-lost` (its judge dispatch threw),
+`not-verified:dead-spot` (its spot check returned nothing twice), `escalate:dead-seat`,
+`escalate:external-unverified`, `escalate:unsettled-panel`. Escalate and not-verified routes are
+final.
 
 `prompts.triage` carries no tokens — it needs no runtime substitution and is used as a plain
-string. This is the contract Task 7's SKILL.md and the
-orchestrator build `args.prompts` against; a function anywhere in `args` makes the script
-unrunnable (an earlier draft of this doc had `dedupe`/`seats.*`/`reporter` as functions —
-that draft never crossed the Workflow `args` boundary and was corrected before any real run).
+string. Its `lanes` schema is an enum built at runtime from the conditional lane keys in
+`prompts.scouts`, so an invented lane is retried by schema validation; a lane that still has no
+prompt is logged and recorded in `coverage.unknownLanes`, not counted as a dead scout. A function
+anywhere in `args` makes the script unrunnable.
+
+**`config.effort`** (optional, `{role: effort}`) sets the reasoning effort per stage, for the
+roles `triage`, `scout`, `dedupe`, `judge` (panel seats), `spot` (spot checks) and `reporter`.
+Defaults: triage `low`, spot `medium`, reporter `high`; the rest inherit the session effort.
+`dryRun` forces `low` everywhere.
 
 **`args` may arrive as an object or as a JSON string.** Some harness paths stringify `args`
 before invoking the script; the engine tolerates both — `JSON.parse`s it if it's a string —
@@ -173,7 +193,6 @@ export const meta = {
 
 const SEVERE = ['Blocking', 'Should-fix']
 const SEV = ['Blocking', 'Should-fix', 'Nit', 'FYI']
-const LANES = { type:'object', properties:{ lanes:{ type:'array', items:{ type:'string' } }, domains:{ type:'array', items:{ type:'string' } } }, required:['lanes','domains'] }
 const FINDING_PROPS = {
   claim:{type:'string'}, location:{type:'string'}, category:{type:'string'}, external:{type:'boolean'},
   kind:{enum:['GAP','UNVERIFIED-ASSUMPTION','ISSUE']}, evidence:{type:'string'}, spike:{type:'string'},
@@ -181,9 +200,11 @@ const FINDING_PROPS = {
 }
 const FINDINGS = { type:'object', properties:{ findings:{ type:'array', items:{ type:'object', properties:FINDING_PROPS,
   required:['claim','location','category','external','evidence'] } } }, required:['findings'] }
-const DEDUPED = { type:'object', properties:{ findings:{ type:'array', items:{ type:'object', properties:{ ...FINDING_PROPS,
-  suggestedSeverity:{enum:SEV} }, required:['claim','location','category','external','evidence','suggestedSeverity'] } } },
-  required:['findings'] }
+// Dedupe returns groups of raw-finding ids, not rewritten findings; the engine assembles each merged
+// finding from its members, so no claim, location or evidence is lost in transcription.
+const GROUPS = { type:'object', properties:{ groups:{ type:'array', items:{ type:'object', properties:{
+  ids:{ type:'array', items:{ type:'integer' } }, suggestedSeverity:{enum:SEV}, rank:{type:'integer'}, mergedClaim:{type:'string'} },
+  required:['ids','suggestedSeverity','rank'] } } }, required:['groups'] }
 // verdict + severity + evidence all REQUIRED so a missing field can't slide to clean.
 // preExisting (PR mode, refute check e): the defect is real but already on the base branch.
 const VERDICT = { type:'object', properties:{ verdict:{enum:['CONFIRM','REJECT','UNVERIFIED']}, severity:{enum:SEV}, evidence:{type:'string'}, preExisting:{type:'boolean'} }, required:['verdict','severity','evidence'] }
@@ -194,7 +215,16 @@ const REPORT = { type:'object', properties:{ verdict:{type:'string'}, reportMark
 const A = typeof args === 'string' ? JSON.parse(args) : args
 if (!A || !A.prompts || !A.config) throw new Error('super-roast: args must carry {mode, prompts, config} — got ' + JSON.stringify(A).slice(0, 200))
 const { mode, profile, priorReport = '', inputs = '', iteration = 1, dryRun = false, prompts, config, independence } = A
-const model = role => dryRun ? 'haiku' : config.models[role]
+const model = role => dryRun ? 'haiku' : config.models?.[role]
+// Mechanical stages run at low effort, the gate at high; the rest inherit the session effort.
+const EFFORT = { triage:'low', spot:'medium', reporter:'high' }
+const effort = role => dryRun ? 'low' : (config.effort?.[role] ?? EFFORT[role])
+const opts = (role, label, phase, schema, modelRole = role) => {
+  const o = { label, phase, model:model(modelRole), schema }
+  const e = effort(role)
+  if (e) o.effort = e
+  return o
+}
 const pick = (real, stubKey) => dryRun ? prompts.stubs[stubKey] : real
 // `N of <cap>` for a numbered round; any other value (e.g. `post-cap audit`) passes through verbatim.
 const iterationLabel = /^\d+$/.test(String(iteration)) ? `${iteration} of ${config.iterationCap ?? 3}` : String(iteration)
@@ -209,22 +239,10 @@ const fill = (template, vars) => {
 }
 const omit = (o, ...keys) => Object.fromEntries(Object.entries(o).filter(([k]) => !keys.includes(k)))
 
-// Triage — design: domains for expert critics; PR: conditional-lane activation (recall-leaning).
-// A dead triage is NOT a clean triage: in PR mode `triage?.lanes ?? []` silently collapses the
-// roster to core lanes, so triageDead is recorded and feeds coverage.lowCoverage.
-const triage = await agent(pick(prompts.triage, 'triage'), { label:'triage', phase:'Triage', model:model('triage'), schema:LANES })
-const triageDead = !triage
-const domains = (triage?.domains ?? []).filter(d => d && d !== 'none').slice(0, 3)
-const scoutNames = mode === 'design'
-  ? [...config.coreLenses, ...(domains.length ? [] : (config.widenLenses ?? [])), ...domains.map(d => `domain:${d}`)]
-  : [...new Set([...config.coreLanes, ...(triage?.lanes ?? [])])]
-
-// Domain scouts are named at RUNTIME from open-ended triage output, so `prompts.scouts[name]`
-// can never hold them (args.prompts is assembled before this script runs). Resolve them from the
-// single `prompts.scoutDomainTemplate` string instead. Every scout prompt also gets
-// {{PRIOR_REPORT}}: scouts skip ground the prior report settled and tag a re-surfaced rejection
-// whose evidence changed (`previouslyRejected`) for the reporter's Step 3. An unresolvable name
-// yields null → counted as a dead scout below (coverage loss, visible), never an exception.
+// Domain scouts are named at runtime from open-ended triage output, so `prompts.scouts[name]`
+// can never hold them; they resolve from the single `prompts.scoutDomainTemplate` string. Every
+// scout prompt gets {{PRIOR_REPORT}}. An unresolvable name yields null → a dead scout (coverage
+// loss), never an exception.
 const scoutPrompt = name => {
   const named = prompts.scouts?.[name]
   if (named) return fill(named, { '{{PRIOR_REPORT}}': priorReport })
@@ -232,35 +250,105 @@ const scoutPrompt = name => {
     return fill(prompts.scoutDomainTemplate, { '{{DOMAIN}}': name.slice('domain:'.length), '{{PRIOR_REPORT}}': priorReport })
   return null
 }
-
-// Scouts — parallel, high-recall. Nulls are counted (coverage), then filtered.
-// pick() runs BEFORE the guard so dryRun keeps dispatching from the stub table; the guard only
-// fires on a real run with an unresolvable name.
-const scoutResults = await parallel(scoutNames.map(name => async () => {
+// pick() runs before the guard so dryRun dispatches from the stub table; the guard only fires on
+// a real run with an unresolvable name.
+const runScout = name => async () => {
   const p = pick(scoutPrompt(name), `scout:${name}`)
-  if (!p) return null   // unresolvable prompt ⇒ dead scout, not a crash
-  return agent(p, { label:`scout:${name}`, phase:'Scout', model:model('scout'), schema:FINDINGS })
-}))
+  if (!p) return null
+  return agent(p, opts('scout', `scout:${name}`, 'Scout', FINDINGS))
+}
+
+// Core scouts need nothing from triage, so they start alongside it; triage only adds scouts.
+const coreNames = [...new Set(mode === 'design' ? config.coreLenses : config.coreLanes)]
+const scoutKnown = name => dryRun ? !!prompts.stubs?.[`scout:${name}`] : !!prompts.scouts?.[name]
+const laneKeys = Object.keys(dryRun ? (prompts.stubs ?? {}) : (prompts.scouts ?? {}))
+  .map(k => dryRun ? (k.startsWith('scout:') ? k.slice('scout:'.length) : null) : k)
+  .filter(k => k && !k.startsWith('domain:') && !coreNames.includes(k))
+// The lanes enum comes from the scout prompts actually supplied, so the schema retries an invented
+// lane instead of letting it reach dispatch. With no conditional prompts, lanes stay free strings.
+const LANES = { type:'object', properties:{
+  lanes:{ type:'array', items: laneKeys.length ? { enum: laneKeys } : { type:'string' } },
+  domains:{ type:'array', items:{ type:'string' } } }, required:['lanes','domains'] }
+
+const triageP = agent(pick(prompts.triage, 'triage'), opts('triage', 'triage', 'Triage', LANES))
+const coreP = parallel(coreNames.map(runScout))
+const triage = await triageP
+// A dead triage is not a clean triage: the roster collapses to core, and triageDead feeds lowCoverage.
+const triageDead = !triage
+const domainsAll = [...new Set((triage?.domains ?? []).filter(d => d && d !== 'none'))]
+const domains = domainsAll.slice(0, 3)
+const domainsDropped = domainsAll.slice(3)
+if (domainsDropped.length) log(`triage: ${domainsAll.length} domains, kept 3, dropped ${domainsDropped.join(', ')}`)
+let extraNames, unknownLanes = []
+if (mode === 'design') {
+  extraNames = [...(domains.length ? [] : (config.widenLenses ?? [])), ...domains.map(d => `domain:${d}`)]
+} else {
+  const lanes = [...new Set(triage?.lanes ?? [])].filter(l => !coreNames.includes(l))
+  unknownLanes = lanes.filter(l => !scoutKnown(l))
+  if (unknownLanes.length) log(`triage: unknown lane(s) ignored: ${unknownLanes.join(', ')}`)
+  extraNames = lanes.filter(l => scoutKnown(l))
+}
+extraNames = [...new Set(extraNames)].filter(n => !coreNames.includes(n))
+const extraResults = await parallel(extraNames.map(runScout))
+const coreResults = await coreP
+const scoutNames = [...coreNames, ...extraNames]
+const scoutResults = [...coreResults, ...extraResults]
 const deadScouts = scoutNames.filter((_, i) => !scoutResults[i])
 const scoutsDead = deadScouts.length
 const raw = scoutResults.filter(Boolean).flatMap(r => r.findings ?? [])
+log(`scouts: ${scoutNames.length - scoutsDead}/${scoutNames.length} returned · raw findings ${raw.length}`)
 
-// Dedupe — merge + suggested severity + ranking of the Nit/FYI tail. Re-dispatched once on a
-// dead/truncated response: a dead dedupe yields zero packets downstream, which would otherwise
-// read as a false "clean" verdict rather than a failure.
-const dedupePrompt = fill(prompts.dedupe, { '{{FINDINGS_JSON}}': JSON.stringify(raw) })
-const dedupeOnce = () => agent(pick(dedupePrompt, 'dedupe'), { label:'dedupe', phase:'Dedupe', model:model('dedupe'), schema:DEDUPED })
-const dd = (await dedupeOnce()) ?? (await dedupeOnce())
-const deduped = dd?.findings ?? []
-// Non-empty scout input collapsing to zero deduped findings means dedupe died on both tries.
-const dedupeDead = raw.length > 0 && deduped.length === 0
+// Dedupe — groups raw findings by id, suggests a severity, ranks. Skipped when there is nothing to
+// merge; re-dispatched once on a dead response.
+function mergeGroup(g) {
+  const members = g.ids.map(i => raw[i])
+  const uniq = xs => [...new Set(xs.filter(Boolean))]
+  const locations = uniq(members.map(m => m.location))
+  const kinds = uniq(members.map(m => m.kind))
+  const spikes = uniq(members.map(m => m.spike))
+  const f = {
+    claim: g.mergedClaim || members[0].claim,
+    location: locations.join('; '),
+    category: members[0].category,
+    external: members.some(m => m.external === true),
+    evidence: members.length === 1 ? members[0].evidence : members.map(m => `[${m.location}] ${m.evidence}`).join('\n---\n'),
+  }
+  if (kinds.length) f.kind = kinds[0]
+  if (spikes.length) f.spike = spikes.join('\n')
+  if (members.some(m => m.previouslyRejected === true)) f.previouslyRejected = true
+  return { ...f, suggestedSeverity: g.suggestedSeverity, rank: g.rank }
+}
+let dd = null
+if (raw.length) {
+  const dedupePrompt = fill(prompts.dedupe, { '{{FINDINGS_JSON}}': JSON.stringify(raw.map((f, id) => ({ id, ...f }))) })
+  const dedupeOnce = () => agent(pick(dedupePrompt, 'dedupe'), opts('dedupe', 'dedupe', 'Dedupe', GROUPS))
+  dd = (await dedupeOnce()) ?? (await dedupeOnce())
+}
+// Non-empty scout input with no usable dedupe output means dedupe died on both tries.
+const dedupeDead = raw.length > 0 && !(dd?.groups?.length)
+let deduped = [], dedupeOrphans = 0
+if (!dedupeDead && raw.length) {
+  const claimed = new Set()
+  const groups = []
+  for (const g of dd.groups) {
+    const ids = [...new Set(g.ids)].filter(i => Number.isInteger(i) && i >= 0 && i < raw.length && !claimed.has(i))
+    ids.forEach(i => claimed.add(i))
+    if (ids.length) groups.push({ ...g, ids })
+  }
+  // A raw finding no group claimed is kept, ranked last as a Nit: the spot check and its
+  // promotion rule still reach it, so a merge slip never drops a finding.
+  const orphans = raw.map((_, i) => i).filter(i => !claimed.has(i))
+  dedupeOrphans = orphans.length
+  if (orphans.length) log(`dedupe: ${orphans.length} raw finding(s) in no group, kept as Nit: ids ${orphans.join(', ')}`)
+  const maxRank = Math.max(0, ...groups.map(g => g.rank))
+  orphans.forEach((i, k) => groups.push({ ids: [i], suggestedSeverity: 'Nit', rank: maxRank + 1 + k }))
+  deduped = groups.map(mergeGroup).sort((a, b) => a.rank - b.rank).map(f => omit(f, 'rank'))
+}
 
-// Caps — both applied here, never by an agent. Remainder cap: dedupe returns every merged
-// finding with the Nit/FYI tail ranked most-important first; the top `remainderCap` get spot
-// checks and the overflow survives as a count. Panel cap: UNCAPPED by default — every
-// Blocking/Should-fix candidate gets a full 3-seat panel, because an unverified Blocking candidate
-// is not a cleared one. A caller-set `config.panelCap` bounds cost; the excess then reaches the
-// reporter as 'beyond-cap' packets (suggested severity, no votes), listed, never dropped.
+// Caps — both applied here, never by an agent. Remainder cap: the top `remainderCap` of the ranked
+// Nit/FYI tail get spot checks; the overflow survives as a count. Panel cap: uncapped by default,
+// because an unverified Blocking candidate is not a cleared one; a caller-set `config.panelCap`
+// sends the excess to the reporter as 'beyond-cap' packets, listed, never dropped.
 const remainderCap = config.remainderCap ?? 50
 const panelCap = config.panelCap ?? Infinity
 const severeAll = deduped.filter(f => SEVERE.includes(f.suggestedSeverity))
@@ -269,52 +357,75 @@ const severe = severeAll.slice(0, panelCap)
 const beyondPanelCap = severeAll.slice(panelCap)
 const rest = restAll.slice(0, remainderCap)
 const beyondCap = restAll.length - rest.length
+log(`dedupe: raw ${raw.length} → ${dedupeDead ? 'FAILED (raw passed through unverified)' : `deduped ${deduped.length}`} · panels ${severe.length} · spot checks ${rest.length}` +
+  (beyondPanelCap.length ? ` · beyond panel cap ${beyondPanelCap.length}` : '') + (beyondCap ? ` · beyond remainder cap ${beyondCap}` : ''))
 
-// Judges rate blind: the deduper's suggestedSeverity (already used for routing above) and the
-// scouts' previouslyRejected tag are stripped so neither anchors a seat's verdict.
+// Judges rate blind: the deduper's suggestedSeverity and the scouts' previouslyRejected tag are
+// stripped so neither anchors a seat's verdict.
 const blind = f => omit(f, 'suggestedSeverity', 'previouslyRejected')
 
-// site: 'panel' | 'spot' — stub keys are call-site qualified (seat:<name>:<site>) so a single
-// canned value per key stays deterministic (one key cannot answer both a panel vote and a spot check).
-async function seat(f, name, site) {
+// site: 'panel' | 'spot' — stub keys are call-site qualified (seat:<name>:<site>) so one canned
+// value per key stays deterministic. The re-dispatch uses `prompts.seatsSafe[name]` when supplied
+// (static-review wording, same method and contract), so a content-policy refusal is not simply
+// repeated.
+async function seat(f, name, site, idx) {
   const stubKey = `seat:${name}:${site}`
-  const seatPrompt = fill(prompts.seats[name], { '{{FINDING_JSON}}': JSON.stringify(blind(f)) })
-  const one = () => agent(pick(seatPrompt, stubKey), { label:`judge:${name}`, phase:'Judge', model:model('judge'), schema:VERDICT })
-  return (await one()) ?? (await one())   // re-dispatch a failed seat exactly once
+  const vars = { '{{FINDING_JSON}}': JSON.stringify(blind(f)) }
+  const first = fill(prompts.seats[name], vars)
+  const second = prompts.seatsSafe?.[name] ? fill(prompts.seatsSafe[name], vars) : first
+  const label = site === 'spot' ? `spot#${idx}` : `judge:${name}#${idx}`
+  const role = site === 'spot' ? 'spot' : 'judge'
+  return (await agent(pick(first, stubKey), opts(role, label, 'Judge', VERDICT, 'judge')))
+    ?? (await agent(pick(second, stubKey), opts(role, label, 'Judge', VERDICT, 'judge')))
 }
-async function panel(f, promoted = false) {
-  const votes = await parallel(['reproduce','refute','ground'].map(n => () => seat(f, n, 'panel')))
+// Votes are positional [reproduce, refute, ground]. A promoted panel reuses the spot check's refute
+// verdict, so it dispatches only reproduce and ground.
+async function panel(f, idx, refuteVote) {
+  const promoted = refuteVote !== undefined
+  const names = promoted ? ['reproduce', 'ground'] : ['reproduce', 'refute', 'ground']
+  const got = await parallel(names.map(n => () => seat(f, n, 'panel', idx)))
+  const votes = promoted ? [got[0], refuteVote, got[1]] : got
   return { f, votes, tier: promoted ? 'promoted' : 'panel' }
 }
-async function spotCheck(f) {
-  const v = await seat(f, 'refute', 'spot')
-  if (v?.verdict === 'CONFIRM' && SEVERE.includes(v.severity) && !v.preExisting) return panel(f, true)  // under-graded nit → full panel
+async function spotCheck(f, idx) {
+  const v = await seat(f, 'refute', 'spot', idx)
+  if (v?.verdict === 'CONFIRM' && SEVERE.includes(v.severity) && !v.preExisting) return panel(f, idx, v)  // under-graded nit → full panel
   return { f, votes: [v], tier: 'spot' }
 }
-const judged = (await parallel([...severe.map(f => () => panel(f)), ...rest.map(f => () => spotCheck(f))])).filter(Boolean)
+const toJudge = [...severe.map(f => ({ f, kind: 'panel' })), ...rest.map(f => ({ f, kind: 'spot' }))]
+const judgedRaw = await parallel(toJudge.map((t, i) => () => t.kind === 'panel' ? panel(t.f, i) : spotCheck(t.f, i)))
+// A judge thunk that threw resolves to null; its finding is kept as a 'judge-lost' packet.
+const judged = judgedRaw.map((j, i) => j ?? { f: toJudge[i].f, votes: [], tier: 'judge-lost' })
+const judgeLost = judged.filter(j => j.tier === 'judge-lost').length
+if (judgeLost) log(`judges: ${judgeLost} finding(s) lost their judge dispatch — kept as not-verified`)
 
 // Default route — the mechanical part of each verdict, computed here in precedence order so the
 // reporter keeps only the judgment remainder (evidence-cited overrules of confirmed/rejected,
-// material dissent, final severity). Escalate routes are final. UNVERIFIED is neither a pass nor a
-// refutation: a panel whose UNVERIFIED votes leave no 2-vote majority escalates, never rejects.
+// material dissent, final severity). Escalate and not-verified routes are final. UNVERIFIED is
+// neither a pass nor a refutation: a panel with no 2-vote majority escalates, never rejects.
 const isPanelTier = p => p.tier === 'panel' || p.tier === 'promoted'
 function defaultRoute(p) {
   if (p.tier === 'beyond-cap') return 'not-verified'
+  if (p.tier === 'dedupe-failed') return 'not-verified:dedupe-failed'
+  if (p.tier === 'judge-lost') return 'not-verified:judge-lost'
   const votes = p.votes.filter(Boolean)
   if (isPanelTier(p) && votes.length < 3) return 'escalate:dead-seat'
   if (p.finding.external && votes.some(v => v.verdict === 'UNVERIFIED')) return 'escalate:external-unverified'
-  if (!isPanelTier(p)) return 'unverified-nit'
+  if (!isPanelTier(p)) return votes.length ? 'unverified-nit' : 'not-verified:dead-spot'
   const count = k => votes.filter(v => v.verdict === k).length
   if (count('CONFIRM') >= 2) return 'confirmed'
   if (count('REJECT') >= 2) return 'rejected'
   return 'escalate:unsettled-panel'
 }
-// Judged packets drop suggestedSeverity (the reporter starts from seat severities); beyond-cap
+// Judged packets drop suggestedSeverity (the reporter starts from seat severities); unjudged
 // packets keep it, since it is the only severity they have. preExisting marks a defect a seat
 // found already on the base branch: its final severity is FYI, so it never drives a fix round.
+const unjudged = (f, tier) => ({ finding: f, votes: [], tier, valid: 0 })
 const packets = [
-  ...judged.map(j => ({ finding: omit(j.f, 'suggestedSeverity'), votes: j.votes, tier: j.tier, valid: j.votes.filter(Boolean).length, preExisting: j.votes.some(v => v?.preExisting === true) })),
-  ...beyondPanelCap.map(f => ({ finding: f, votes: [], tier: 'beyond-cap', valid: 0 })),
+  ...judged.map(j => j.tier === 'judge-lost' ? unjudged(j.f, 'judge-lost')
+    : { finding: omit(j.f, 'suggestedSeverity'), votes: j.votes, tier: j.tier, valid: j.votes.filter(Boolean).length, preExisting: j.votes.some(v => v?.preExisting === true) }),
+  ...beyondPanelCap.map(f => unjudged(f, 'beyond-cap')),
+  ...(dedupeDead ? raw.map(f => unjudged(f, 'dedupe-failed')) : []),
 ].map(p => ({ ...p, defaultRoute: defaultRoute(p) }))
 const routeCounts = packets.reduce((a, p) => ({ ...a, [p.defaultRoute]: (a[p.defaultRoute] ?? 0) + 1 }), {})
 
@@ -335,20 +446,22 @@ function seatAgreementLine() {
 const seatAgreement = seatAgreementLine()
 
 // Coverage — built before the reporter call so it reaches the reporter via {{COVERAGE_JSON}}.
-// lowCoverage / panelCappedTag / convergenceEligible are the verdict qualifiers' inputs, decided
-// here; the reporter adds only the judgment trigger (zero raw findings on a non-trivial artifact).
-const totalSeats = judged.reduce((a, j) => a + j.votes.length, 0)
-const validSeats = judged.reduce((a, j) => a + j.votes.filter(Boolean).length, 0)
-const lowCoverage = triageDead || scoutsDead > 0 || dedupeDead || validSeats < totalSeats
+// Only panel-tier seat losses drive lowCoverage; a lost Nit spot check is reported as a count.
+const panelJudged = judged.filter(isPanelTier)
+const totalSeats = panelJudged.reduce((a, j) => a + j.votes.length, 0)
+const validSeats = panelJudged.reduce((a, j) => a + j.votes.filter(Boolean).length, 0)
+const spotLost = judged.filter(j => j.tier === 'spot' && !j.votes[0]).length
+const lowCoverage = triageDead || scoutsDead > 0 || dedupeDead || judgeLost > 0 || validSeats < totalSeats
 const panelCappedTag = beyondPanelCap.length ? `[panel-capped: ${beyondPanelCap.length} unverified]` : ''
 const coverage = {
   triageDead,
-  scoutsDispatched: scoutNames.length, scoutsDead,
-  rawFindings: raw.length, dedupedFindings: deduped.length, beyondCap,
+  scoutsDispatched: scoutNames.length, scoutsDead, unknownLanes, domainsDropped,
+  rawFindings: raw.length, dedupedFindings: deduped.length, dedupeOrphans, beyondCap,
   beyondPanelCap: beyondPanelCap.length, dedupeDead,
   panelCount: judged.filter(j => j.tier === 'panel').length,
   spotCount: judged.filter(j => j.tier === 'spot').length,
   promotedCount: judged.filter(j => j.tier === 'promoted').length,
+  judgeLost, spotLost,
   judgeCompletionPct: totalSeats ? Math.round(100 * validSeats / totalSeats) : 0,
   lowCoverage, panelCappedTag,
   convergenceEligible: String(priorReport).trim() !== '' && !lowCoverage && !panelCappedTag,
@@ -356,8 +469,10 @@ const coverage = {
 const coverageLine = [
   `coverage: scouts ${scoutNames.length - scoutsDead}/${scoutNames.length} (${scoutNames.join(', ')})${scoutsDead ? ` — dead: ${deadScouts.join(', ')}` : ''}`,
   ...(triageDead ? ['triage failed (core roster only)'] : []),
-  `raw ${raw.length} → deduped ${deduped.length}${dedupeDead ? ' (dedupe failed)' : ''} → panel ${coverage.panelCount} · spot ${coverage.spotCount} · promoted ${coverage.promotedCount}${beyondPanelCap.length ? ` · beyond panel cap ${beyondPanelCap.length}` : ''}`,
-  `judge completion ${totalSeats ? coverage.judgeCompletionPct + '%' : 'n/a (nothing judged)'}`,
+  ...(unknownLanes.length ? [`unknown lanes ignored: ${unknownLanes.join(', ')}`] : []),
+  ...(domainsDropped.length ? [`domains dropped: ${domainsDropped.join(', ')}`] : []),
+  `raw ${raw.length} → deduped ${deduped.length}${dedupeDead ? ` (dedupe failed — ${raw.length} raw unverified)` : ''} → panel ${coverage.panelCount} · spot ${coverage.spotCount} · promoted ${coverage.promotedCount}${beyondPanelCap.length ? ` · beyond panel cap ${beyondPanelCap.length}` : ''}${judgeLost ? ` · judge lost ${judgeLost}` : ''}`,
+  `judge completion ${totalSeats ? coverage.judgeCompletionPct + '%' : 'n/a (no panels)'}${spotLost ? ` (spot checks lost ${spotLost})` : ''}`,
   `remainder-capped: ${beyondCap}`,
 ].join(' · ')
 
@@ -384,47 +499,105 @@ const reporterPrompt = fill(prompts.reporter, {
   '{{ITERATION}}': iterationLabel,
   '{{INPUTS}}': inputs,
 })
-const reporterOnce = () => agent(pick(reporterPrompt, 'reporter'), { label:'reporter', phase:'Report', model:model('reporter'), schema:REPORT })
+const reporterOnce = () => agent(pick(reporterPrompt, 'reporter'), opts('reporter', 'reporter', 'Report', REPORT))
 const rep = (await reporterOnce()) ?? (await reporterOnce())
+
+const indepRaw = independence ?? (String(prompts.reporter).match(/^independence: (.+)$/m) ?? [])[1]
+const indep = indepRaw && !indepRaw.includes('{{') ? indepRaw : undefined   // an unrendered token is not a roster
+const escalationLine = p => `${p.finding.location} — ${p.finding.claim} (${p.defaultRoute.slice('escalate:'.length)})`
+const engineEscalated = packets.filter(p => p.defaultRoute.startsWith('escalate:'))
+const pipelineLossLine = p => `- [${p.finding.suggestedSeverity ? `suggested ${p.finding.suggestedSeverity}` : 'unrated'}] ${p.finding.location} — ${p.finding.claim} (${p.defaultRoute === 'not-verified:judge-lost' ? 'judge lost' : 'dedupe failed'})`
 
 // Reporter dead on both tries: render a minimal report from the default routes instead of
 // returning an empty one. Always [low coverage]; seat severities, no profile conditioning.
 function fallbackReport() {
   const of = r => packets.filter(p => p.defaultRoute === r)
   const seatSev = p => p.preExisting ? 'FYI' : SEV[Math.min(...p.votes.filter(v => v?.verdict === 'CONFIRM').map(v => SEV.indexOf(v.severity)))]
-  const confirmed = of('confirmed'), nits = of('unverified-nit')
-  const escalated = packets.filter(p => p.defaultRoute.startsWith('escalate:'))
+  const confirmed = of('confirmed'), nits = of('unverified-nit'), lostSpots = of('not-verified:dead-spot')
   const top = confirmed.length ? SEV[Math.min(...confirmed.map(p => SEV.indexOf(seatSev(p))))] : null
   const verdict = qualify(`${top ? `${top} (${confirmed.length} confirmed)` : `clean (${nits.length} nits)`} [low coverage]`, false)
   const line = (p, sev) => `- [${sev}] ${p.finding.location} — ${p.finding.claim}`
   const section = (heading, lines) => ['', heading, ...(lines.length ? lines : ['- none'])]
-  const escalations = escalated.map(p => `${p.finding.location} — ${p.finding.claim} (${p.defaultRoute.slice('escalate:'.length)})`)
-  const indep = independence ?? (String(prompts.reporter).match(/^independence: (.+)$/m) ?? [])[1] ?? 'unknown — reporter failed'
+  const escalations = engineEscalated.map(escalationLine)
   const reportMarkdown = [
     `super-roast verdict: ${verdict}`,
     `mode: ${mode}        iteration: ${iterationLabel}`,
     `profile (assumed): ${profile ?? 'not supplied'} — NOT applied: the reporter failed; severities are raw seat severities and routes are the engine defaults`,
     `inputs: ${inputs || 'not supplied'}`,
     coverageLine,
-    `independence: ${indep}`,
+    `independence: ${indep ?? 'unknown — reporter failed'}`,
     ...(seatAgreement ? [seatAgreement] : []),
     ...section('## Confirmed findings', confirmed.map(p => line(p, seatSev(p)))),
     ...section('## Not verified (beyond panel cap)', of('not-verified').map(p => line(p, `suggested ${p.finding.suggestedSeverity}`))),
+    ...section('## Not verified (dedupe failed or judge lost)', [...of('not-verified:dedupe-failed'), ...of('not-verified:judge-lost')].map(pipelineLossLine)),
     ...section('## Beyond remainder cap (count only)', beyondCap ? [`- ${beyondCap} candidates dropped by the remainder cap — raise config.remainderCap and re-run to see them`] : []),
     ...section('## Rejected (with reason)', of('rejected').map(p => `${line(p, 'rejected')} — 2-of-3 REJECT`)),
-    ...section('## Unverified nits (spot-checked)', nits.map(p => line(p, 'Nit/FYI'))),
+    ...section('## Unverified nits (spot-checked)', [...nits.map(p => line(p, 'Nit/FYI')), ...lostSpots.map(p => `${line(p, 'Nit/FYI')} (spot check lost)`)]),
     ...section('## Escalations (need human)', escalations.map(e => `- ${e}`)),
   ].join('\n')
   return { verdict, reportMarkdown, confirmedCount: confirmed.length, escalations }
 }
 
-const out = rep ? { ...rep, verdict: qualify(rep.verdict, true) } : fallbackReport()
+// Live reporter output: the engine's facts win. Header lines are overwritten with engine values,
+// escalate routes the reporter left out are added back, and a preExisting finding placed above
+// FYI is rewritten to FYI (with the verdict's severity recomputed from the Confirmed section).
+const enforcement = []
+function enforce(rep) {
+  let verdict = qualify(rep.verdict, true)
+  let lines = String(rep.reportMarkdown ?? '').split('\n')
+  // preExisting → FYI, matched on the `- [SEV] <location> — ` entry line.
+  let rewrote = 0
+  for (const p of packets.filter(p => p.preExisting)) {
+    const re = new RegExp(`^(\\s*- )\\[(Blocking|Should-fix|Nit)\\] (${p.finding.location.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')} — )`)
+    lines = lines.map(l => re.test(l) ? (rewrote++, l.replace(re, '$1[FYI] $3')) : l)
+  }
+  if (rewrote) {
+    enforcement.push(`preExisting: ${rewrote} entr${rewrote === 1 ? 'y' : 'ies'} rewritten to FYI`)
+    const start = lines.findIndex(l => l.startsWith('## Confirmed findings'))
+    const end = start < 0 ? -1 : lines.findIndex((l, i) => i > start && l.startsWith('## '))
+    const sevs = start < 0 ? [] : lines.slice(start + 1, end < 0 ? undefined : end)
+      .map(l => (l.match(/^\s*- \[(Blocking|Should-fix|Nit|FYI)\]/) ?? [])[1]).filter(Boolean)
+    const top = sevs.length ? SEV[Math.min(...sevs.map(s => SEV.indexOf(s)))] : null
+    if (top) verdict = verdict.replace(/^(Blocking|Should-fix|Nit|FYI)(?= \()/, top)
+  }
+  // Header lines live above the first `## ` section.
+  const headEnd = () => { const i = lines.findIndex(l => l.startsWith('## ')); return i < 0 ? lines.length : i }
+  const find = key => lines.slice(0, headEnd()).findIndex(l => l.startsWith(key))
+  const put = (key, value, after) => {
+    const i = find(key)
+    if (value === null) { if (i >= 0) lines.splice(i, 1); return }
+    if (i >= 0) { if (lines[i] !== value) enforcement.push(`header: ${key} overwritten`); lines[i] = value; return }
+    const anchors = after.map(find).filter(j => j >= 0)
+    lines.splice(anchors.length ? Math.max(...anchors) + 1 : 0, 0, value)
+    enforcement.push(`header: ${key} inserted`)
+  }
+  put('super-roast verdict:', `super-roast verdict: ${verdict}`, [])
+  put('coverage:', coverageLine, ['super-roast verdict:', 'mode:', 'profile (assumed):', 'inputs:', 'delta vs prior:'])
+  if (indep) put('independence:', `independence: ${indep}`, ['coverage:'])
+  put('seat-agreement:', seatAgreement || null, ['independence:', 'coverage:'])
+  // Escalate routes are final: any the reporter omitted are appended.
+  const escalations = [...(rep.escalations ?? [])]
+  const missing = engineEscalated.filter(p => !escalations.some(e => e.includes(p.finding.location)))
+  if (missing.length) {
+    escalations.push(...missing.map(escalationLine))
+    lines.push('', '## Escalations the reporter omitted (engine-added — escalate routes are final)', ...missing.map(p => `- ${escalationLine(p)}`))
+    enforcement.push(`escalations: ${missing.length} engine-added`)
+  }
+  const confirmedRoutes = packets.filter(p => p.defaultRoute === 'confirmed').length
+  if (rep.confirmedCount !== confirmedRoutes)
+    enforcement.push(`confirmedCount ${rep.confirmedCount} vs ${confirmedRoutes} confirmed default routes (overrules account for the gap)`)
+  enforcement.forEach(e => log(`reporter enforcement: ${e}`))
+  return { verdict, reportMarkdown: lines.join('\n'), confirmedCount: rep.confirmedCount, escalations }
+}
+
+const out = rep ? enforce(rep) : fallbackReport()
 return {
   verdict: out.verdict,
-  reportMarkdown: String(out.reportMarkdown ?? '').replace(/^super-roast verdict:.*$/m, () => `super-roast verdict: ${out.verdict}`),
+  reportMarkdown: out.reportMarkdown,
   confirmedCount: out.confirmedCount,
   escalations: out.escalations,
   reporterFailed: !rep,
+  enforcement,
   coverage, routeCounts, seatAgreement,
 }
 ```
@@ -443,7 +616,7 @@ pennies, without touching a real spec/diff or spending opus/sonnet/fable budget.
 findings go to a panel vs. a spot check, the spot-check **promotion** rule, the panel/remainder
 caps, schemas, the `coverage` fields, each packet's `defaultRoute` (the ≥2-of-3 tally and the
 escalation tests, visible as `routeCounts`), the `seatAgreement` line, the verdict-qualifier
-re-application, and the reporter-failure fallback. It proves nothing about the reporter's
+re-application, the header overwrite on a live report, and the reporter-failure fallback. It proves nothing about the reporter's
 judgment — overrules, material dissent, profile-conditioned severity, prior-report tracking —
 because `pick()` replaces the reporter with a fixed canned stub; that is exercised only by a
 live run.
@@ -486,15 +659,15 @@ routing, spot-check promotion, and default routing.
 
 | Stub key | Canned output exercises |
 |---|---|
-| `triage` | `{lanes:["data-migrations"], domains:["queueing"]}` — conditional activation |
-| `scout:<core-1>` | 2 findings: one duplicate-of-scout-2's, one injection-flavored severe candidate |
-| `scout:<core-2>` | 2 findings: the duplicate + one nit |
-| `scout:<core-3>` | `{findings: []}` — a second empty-scout path alongside the activated lane (added so the 3-core-configured topology in Step 3 below has a stub for every dispatched core scout; the brief's table names only two core examples) |
+| `triage` | `{lanes:["data-migrations"], domains:["queueing"]}` — conditional activation (`domains` is ignored in PR mode) |
+| `scout:<core-1>` | 4 findings (ids 0–3): `dup` at `a.js:1`, `inj` at `b.js:1`, two nits |
+| `scout:<core-2>` | 4 findings (ids 4–7): the duplicate `dup` at `a.js:1`, three nits |
+| `scout:<core-3>` | `{findings: []}` — empty-scout path |
 | `scout:data-migrations` | `{findings: []}` — empty-scout path (the triage-activated lane) |
-| `dedupe` | 1 Blocking + 1 Should-fix + 5 Nit/FYI findings, all `external: false` (run with `config.remainderCap: 3` in dryRun args: the engine keeps 3 Nit/FYI and counts 2 as `beyondCap`) |
+| `dedupe` | `{groups: [{ids:[0,4], Blocking, rank 1}, {ids:[1], Should-fix, rank 2}, {ids:[2], Nit, 3}, {ids:[3], Nit, 4}, {ids:[5], FYI, 5}, {ids:[6], FYI, 6}, {ids:[7], Nit, 7}]}` — one merge, 7 deduped findings (run with `config.remainderCap: 3`: the engine keeps 3 Nit/FYI and counts 2 as `beyondCap`) |
 | `seat:reproduce:panel` / `seat:ground:panel` / `seat:reproduce:spot` / `seat:ground:spot` | `CONFIRM Blocking` |
 | `seat:refute:panel` | `REJECT` — panel findings survive on 2-of-3 |
-| `seat:refute:spot` | `CONFIRM Should-fix` → every spot check promotes (deterministic) |
+| `seat:refute:spot` | `CONFIRM Should-fix` → every spot check promotes (deterministic), and its verdict becomes the promoted panel's refute vote |
 | `reporter` | fixed `{verdict:"Blocking (1 confirmed)", reportMarkdown:"# stub report", confirmedCount:1, escalations:[]}` |
 
 For the two variant runs below, change one stub: `reporter` → `You are a stub. Call no tools.
@@ -502,50 +675,67 @@ Reply with the single word: none` (no structured output ⇒ a dead reporter), or
 `seat:ground:panel` → `UNVERIFIED FYI`.
 
 **Stub keys are call-site qualified** (`seat:<name>:panel` vs `seat:<name>:spot`) so a single
-canned value per key stays deterministic. A per-seat-name-only key (an earlier draft of this
-doc used `seat:refute` for both) would have to answer both a panel vote and a spot check with
-one fixed value — no stub can satisfy `REJECT` and `CONFIRM Should-fix` simultaneously, so that
-draft made `promotedCount === 1` unreachable (it would land on 0 or 3 depending on which value
-was picked). Qualifying by site removes the ambiguity: every spot check now deterministically
-promotes.
+canned value per key stays deterministic: no one stub could answer both a panel `REJECT` and a
+spot `CONFIRM Should-fix`. Agent labels carry the packet index (`judge:<seat>#<idx>`,
+`spot#<idx>`) so the progress view and the journal map back to findings; the stub key does not
+depend on the label.
 
 ## Assertions for the canonical dryRun (mode `pr`, `config.remainderCap: 3`)
 
-- triage: 1 call.
+- triage: 1 call, dispatched concurrently with the 3 core scouts.
 - scouts: 4 calls (3 core-configured + 1 triage-activated `data-migrations`).
 - dedupe: 1 call.
 - judges: 2 severe panels × 3 seats (6 calls) + 3 spot checks (3 calls) + 3 promotion panels ×
-  3 seats (9 calls, since every spot check promotes deterministically) = **18 seat calls**.
-- reporter: 1 call.
-- Return value: `coverage.beyondCap === 2`, `coverage.dedupedFindings === 7`,
-  `coverage.promotedCount === 3`, `coverage.judgeCompletionPct === 100`,
-  `coverage.lowCoverage === false`, `reporterFailed === false`,
+  2 seats (6 calls — reproduce and ground; the spot verdict is the refute vote) = **15 seat
+  calls**.
+- reporter: 1 call. **22 agents total.**
+- Return value: `coverage.rawFindings === 8`, `coverage.dedupedFindings === 7`,
+  `coverage.beyondCap === 2`, `coverage.promotedCount === 3`, `coverage.judgeCompletionPct ===
+  100`, `coverage.lowCoverage === false`, `reporterFailed === false`,
   `verdict === "Blocking (1 confirmed)"` (no qualifier re-applied),
-  `routeCounts` deep-equals `{confirmed: 5}` (every panel is reproduce CONFIRM · refute REJECT ·
-  ground CONFIRM), and `seatAgreement === "seat-agreement: panels 5 · rr 0.00 · rg 1.00 · fg 0.00
-  · unanimous 0.00 · ground-loo n/a (n=0) · reproduce 5/0/0 · refute 0/5/0 · ground 5/0/0"`
-  (one line).
-- **Dead-reporter variant:** 26 agents (reporter dispatched twice), `reporterFailed === true`,
+  `routeCounts` deep-equals `{confirmed: 5}`, and `seatAgreement === "seat-agreement: panels 5 ·
+  rr 0.60 · rg 1.00 · fg 0.60 · unanimous 0.60 · ground-loo 1.00 (n=3) · reproduce 5/0/0 ·
+  refute 3/2/0 · ground 5/0/0"` (one line). `reportMarkdown` is the stub's `# stub report` with
+  the engine's verdict, `coverage:`, `independence:` and `seat-agreement:` header lines inserted.
+- **Dead-reporter variant:** 23 agents (reporter dispatched twice), `reporterFailed === true`,
   `verdict === "Blocking (5 confirmed) [low coverage]"`, `reportMarkdown` starts with
   `super-roast verdict: Blocking (5 confirmed) [low coverage]` and carries every report heading.
-- **Unsettled-panel variant** (`seat:ground:panel` UNVERIFIED): 25 agents, `routeCounts`
-  deep-equals `{"escalate:unsettled-panel": 5}` — no panel reaches a 2-vote majority, and none
-  lands in `rejected`.
-- Since this stub table's dedupe returns only 2 severe findings (1 Blocking + 1 Should-fix)
-  and no `config.panelCap` is set (uncapped by default), both of these coverage fields are
-  non-firing here:
-  `coverage.dedupeDead === false` (dedupe returned findings normally) and
-  `coverage.beyondPanelCap === 0` (nothing exceeds the cap). Exercising the panel-cap-firing
-  and dedupe-dead paths themselves is a separate dryRun (small `panelCap`, a dedupe stub
-  returning nothing), not this canonical topology run — see "Additional passing baselines —
-  panel cap + dead dedupe" below for those runs and their recorded results.
+- **Unsettled-panel variant** (`seat:ground:panel` UNVERIFIED): 22 agents, `routeCounts`
+  deep-equals `{"escalate:unsettled-panel": 2, confirmed: 3}` — the two severe panels
+  (CONFIRM · REJECT · UNVERIFIED) reach no 2-vote majority and none lands in `rejected`; the
+  promoted panels (CONFIRM · reused CONFIRM · UNVERIFIED) confirm. `escalations` carries the
+  2 escalations the stub reporter omitted, engine-added.
+- `coverage.dedupeDead === false` and `coverage.beyondPanelCap === 0` here: the panel-cap,
+  dead-dedupe, unknown-lane, lost-judge, dead-spot, empty-raw and reporter-enforcement paths are
+  exercised by the local mock harness (below), not by this topology run.
 
 If any assertion fails, fix the script **in this doc** (this doc's script is canonical) and
 re-run before committing the fix.
 
+### Local mock harness (failure paths)
+
+A dryRun spends one haiku call per agent and can only reach a failure path through a stub that
+returns nothing. The cheaper check for structural edits is to extract the script from this doc
+and run it under node with a stub `agent()` and a `parallel()` that, like the runtime, turns a
+throwing thunk into `null`. Unlike a dryRun it can also see the filled prompts. The cases it
+should cover, beyond the canonical topology and the two variants above:
+
+| Case | Setup | Expect |
+|---|---|---|
+| dead dedupe | dedupe returns nothing | dedupe dispatched twice; `routeCounts` `{"not-verified:dedupe-failed": 8}`; `[low coverage]` |
+| unknown lane | triage adds `bogus` (no prompt) | `coverage.unknownLanes` `["bogus"]`, `scoutsDead` 0, a log line |
+| lost judge | the `spot#3` dispatch throws | `routeCounts["not-verified:judge-lost"]` 1, `judgeLost` 1, `lowCoverage` true |
+| dead spot checks | `seat:refute:spot` returns nothing | 3 × `not-verified:dead-spot`, `spotLost` 3, `lowCoverage` false |
+| empty raw | every scout returns `[]` | no dedupe call, 6 agents |
+| dedupe orphans | groups claim only ids 0, 1, 4 (plus an out-of-range id) | `dedupeOrphans` 5, `dedupedFindings` 7 |
+| reporter enforcement | refute seats CONFIRM with `preExisting`; reporter returns a made-up `coverage:` line and Blocking entries | entries rewritten to `[FYI]`, verdict severity recomputed, header lines overwritten, `enforcement` non-empty |
+| real path | `dryRun: false`, `prompts.seatsSafe`, first seat dispatch returns null | retry uses the safe wording; seat prompt has no `suggestedSeverity`; dedupe prompt carries numbered ids; effort `low`/`medium`/`high` on triage/spot/reporter; lanes enum from `prompts.scouts` |
+| design domains | triage returns `q, q, r, s, t` | 3 domain scouts (Set-deduped), `domainsDropped` `["t"]`, no widening; dryRun effort `low` on every call |
+| triage overlap | triage resolves only after a core scout is dispatched | core scouts dispatched before the activated lane |
+
 ### Passing baseline (recorded, not illustrative)
 
-> **Superseded 2026-09-29:** recorded against the earlier engine (deduper applied its own cap, reporter did the routing, no reporter retry); a fresh run against the assertions above is owed.
+> **Superseded:** recorded against an earlier engine (deduper returned rewritten findings and applied its own cap, reporter did the routing, promotion re-ran the refute seat); a fresh run against the assertions above is owed.
 
 Run `wf_cbe52959-ff0`, 2026-07-29, against the args above: **25 agents dispatched, 0 errors**
 — triage 1, scouts 4 (3 core + 1 triage-activated), dedupe 1, seat calls 18 (2 panels × 3 + 3
@@ -639,11 +829,9 @@ is a point-in-time receipt.
 
 > **Superseded 2026-09-29:** recorded against the earlier engine (the dead-dedupe runs predate the reporter fallback, which now renders a report for them); re-run owed.
 
-Recorded alongside (not replacing) the three baselines above. These target the two structural
-additions from Step 1b (item 1's dedupe retry/liveness flag, item 3's panel cap) that the
-canonical and design-mode baselines above don't exercise, since both used dedupe stubs with
-severe-finding counts far under the default `config.panelCap: 12` and a dedupe stub that
-returns normally.
+Recorded alongside (not replacing) the three baselines above. These target the dedupe
+retry/liveness flag and the panel cap, which the canonical and design-mode baselines above
+don't exercise.
 
 **Panel cap fires.** Run `wf_603bf9de-184`, PR mode, `config.panelCap: 1`, dedupe stub
 returning 2 Blocking + 0 Nit/FYI findings: **8 agents dispatched, 0 errors** (1 triage + 2
@@ -727,7 +915,7 @@ super-design integration direction. These confirmed findings are **knowingly not
 | Confirmed finding (design run) | Status | Why |
 |---|---|---|
 | §6 — floor 3 ("violation of the artifact's own stated core purpose") can't be applied: the reporter never receives the artifact or its stated purpose | **Deferred** | Fixing it means handing the full artifact to the reporter, changing what the gate stage reads and its cost profile. Needs its own design pass, not a patch in a consistency wave. |
-| §3 — design-mode `spike` recommendations survive dedupe and the schema, then have no report section | **Deferred** | The data path exists end-to-end (`FINDINGS`/`DEDUPED` both carry `spike`); only the report template lacks a slot. Adding a section is cheap but changes the byte-identical template shared with SKILL.md, so it is queued as its own change. |
+| §3 — design-mode `spike` recommendations survive dedupe and the schema, then have no report section | **Deferred** | The data path exists end-to-end (`FINDINGS` carries `spike` and the engine's group merge keeps it); only the report template lacks a slot. Adding a section is cheap but changes the byte-identical template shared with SKILL.md, so it is queued as its own change. |
 | §5 — an under-graded severe finding is spot-checked only by the refute seat, whose job is to kill findings | **Accepted** | The promotion rule (a spot check returning CONFIRM at Blocking/Should-fix escalates to a full panel) is the deliberate mitigation. It is one-sided by construction, and that residual is the price of the tiering. |
 | §7 — the 3-iteration cap depends on the caller handing back the prior report; nothing discovers existing `-roast-N.md` files | **Accepted** | `super-design` owns the loop and its iteration state (see `skills/super-design/SKILL.md` §Adversarial Review Loop). super-roast stays report-only; `args.iteration` is caller-supplied by contract. |
 | §1 — in PR mode the report is written into the working tree, which PR-mode inputs include, so a re-roast can review its own prior report | **Deferred** | Real, but only bites from iteration 2 onward and is avoided in practice by committing the report before re-roasting. A proper fix (excluding `docs/superpowers/reviews/` from PR inputs) belongs with the pre-flight input spec. |

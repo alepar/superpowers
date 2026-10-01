@@ -57,7 +57,7 @@ Task tool (general-purpose), model: opus:
     <report round="2" path="[ABS_PATH]"/>
     …
     [Read every report in full, all sections: `## Confirmed findings`, `## Escalations (need
-    human)`, `## Not verified (beyond panel cap)`, `## Rejected (with reason)`. A finding's key
+    human)`, both `## Not verified` sections, `## Rejected (with reason)`. A finding's key
     is its round plus its `[SEV] <location>` prefix, verbatim: `r2 [Blocking] §4.3`.]
 
     ## Prior step-back records

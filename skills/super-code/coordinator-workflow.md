@@ -29,6 +29,7 @@ args = {
   dryRun,
   config: {
     concurrency: 16,
+    runtimeSlots: 10,     // optional — see below; resolved by pre-flight
     hotFileCap: 3,        // optional — see below
     topUpQueryCap: 40,    // optional — see below
     edgeAuditCap: 3,      // optional — see below
@@ -36,10 +37,23 @@ args = {
     sweep: '<exact full-suite test command>',  // optional — see below
     testPaths: ['tests/**', '...'],  // optional — REPLACES the default test pathspecs, see below
     models: { planner: 'opus', implementer: 'sonnet', reviewer: 'sonnet', mechanical: 'sonnet', triage: 'opus', finalReview: 'opus' },
+    efforts: { mechanical: 'low' },  // optional — per-role reasoning effort overrides, see below
   },
   prompts: { ... },
 }
 ```
+
+`runtimeSlots` is **optional**: the Workflow runtime's agent slots per workflow, `min(16, cores-2)`,
+which pre-flight resolves (the script cannot read the core count). The scheduler cap becomes
+`min(concurrency, runtimeSlots - 2)`: the runtime queues every agent call over its slots in one
+queue, so admitting more chains than that parks the merge, top-up and ledger dispatches behind
+implementers. The two free slots are for the merge lane and the top-up/ledger work. Without it the
+cap is `concurrency` as given, and a log line says it was not checked.
+
+`efforts` is **optional**: per-role reasoning-effort overrides (`low`, `medium`, `high`, `xhigh`,
+`max`) passed beside each dispatch's model. Defaults: `mechanical` low; `planner`, `triage` and
+`finalReview` high; `implementer` and `reviewer` (which also runs the merge) inherit the session's
+effort. dryRun stubs take none.
 
 `hotFileCap` is **optional** — additive, defaulting to 3: how many in-flight tasks may declare
 the same `filesTouched` file at once (the scheduling constraint that replaced disjoint-file
@@ -186,7 +200,7 @@ Two rules, both mandatory in the skeleton below:
 | `read-ledger` | Resume reconstructs nothing, loudly: `bd ready` remains the authority on closed work, but prior-run `pendingRetry` bounds are lost for this run — logged, not silent. |
 | `read-ledger:finish` (the Metrics re-read) | Logged as a NULL dispatch; the four `Metrics:` lines are then written as `Metrics: UNAVAILABLE — the Finish ledger re-read returned null` rather than as zero counts. |
 | `final-review` | `review` is an explicit UNAVAILABLE string — **never** "no findings". |
-| `ledger-append` / `ledger-minor` / `ledger-recurring` (every ledger write, via `appendLedger`) | **Retried once, then marked**: a null append is re-dispatched once — with the lines' agent-authored free text elided where the call site has an elided variant (ids and outcome token kept) — and a second null is recorded by label in `ledgerAppendFailed` (returned), logged as `ledger-append-failed: <label>`, and counted on the Finish-phase `Metrics: ledger-check` line. Never silent, never fatal. |
+| ledger writes (`ledger:<id>` — one per task chain, carrying every line the task noted — plus `ledger-append:<kind>` and `ledger-recurring:<k>`; all via `appendLedger` on the ledger chain) | **Retried once, then marked**: a null append is re-dispatched once — with the lines' agent-authored free text elided where the call site has an elided variant (ids and outcome token kept) — and a second null is recorded by label in `ledgerAppendFailed` (returned), logged as `ledger-append-failed: <label>`, and counted on the Finish-phase `Metrics: ledger-check` line. Never silent, never fatal. |
 | `notify` | Retried once with the detail elided (ids and the blocker bead only); a second null is logged and the run continues — the ledger's BLOCKED line and the bead carry the record. |
 | `clarify` | Fire-and-forget: logged and continued. The clarification IS the payload, so there is no elided form; the retry then runs without it (a known cost, recorded here). |
 
@@ -244,12 +258,14 @@ Done by the main session, not the Workflow:
    `super-auto` created it as its run worktree), skip creation entirely and pass its real path as
    `integrationWorktree` — never re-derive it. The user's original worktree stays untouched.
    Record: epic id, integration branch name, and (when not derivable) the worktree path.
-3. Choose a concurrency cap. Default 16 — deliberately matching the Workflow runtime's own
-   fixed per-workflow agent cap of `min(16, cores-2)`: the script cannot read the core count (no
-   Node APIs in Workflow scripts), but it doesn't need to — the runtime queues any agent calls
-   the script over-admits, so a script cap of 16 yields an effective concurrency of exactly
-   `min(16, cores-2)` on every machine. Pass a smaller cap only to deliberately throttle below
-   the runtime (budget, or a repo where many concurrent worktrees hurt).
+3. Resolve the runtime's agent slots and choose a concurrency cap. Read the core count
+   (`sysctl -n hw.ncpu` on macOS, `nproc` on Linux) and pass `config.runtimeSlots = min(16, cores-2)`
+   — the Workflow runtime's per-workflow agent cap, which the script cannot read itself. The script
+   caps chains at `min(config.concurrency, runtimeSlots - 2)`, keeping two slots for the merge lane
+   and the top-up/ledger work: the runtime queues every call over its slots in one queue, so an
+   over-admitting cap would park merges behind implementers. `config.concurrency` defaults to 16;
+   pass a smaller value only to throttle further (budget, or a repo where many concurrent
+   worktrees hurt).
 4. Run step 5's permission check, then launch the Workflow (background) with the args from
    "Coordinator contract" above. Progress is visible via `/workflows`. The main session stays on
    the run and does not end its turn at launch (SKILL.md's "Unattended runs"): it appends
@@ -345,9 +361,9 @@ Round-based with refill (each `bd ready` batch is, by definition, mutually indep
    the general case (any future loop-control edge this doc hasn't anticipated). Stop and report
    rather than spin (see the script skeleton's no-progress guard, right after the Integrate phase).
 3. **Dispatch the batch under a sliding window** — every planned id dispatches as soon as a slot
-   frees, bounded by the concurrency cap (default 16 — effectively `min(16, cores-2)`, the
-   Workflow runtime's own fixed agent cap, which queues anything over-admitted), with one
-   file-based scheduling constraint:
+   frees, bounded by the concurrency cap (`min(config.concurrency, runtimeSlots - 2)`, so every
+   admitted chain is a running agent and two runtime slots stay free for merges and top-ups), with
+   one file-based scheduling constraint:
    at most `config.hotFileCap` (default 3) in-flight tasks may declare the same file
    (`filesTouched`, from the planner's mapping — a churn bound for shared barrel/index/registry
    files, not a dispatch gate). No batch or wave barriers anywhere: a straggler never delays the
@@ -361,8 +377,11 @@ Round-based with refill (each `bd ready` batch is, by definition, mutually indep
    (guaranteed by promise chaining, not batching — see `enqueueIntegration` in the skeleton).
    Completion order loses nothing dependency-wise: a `bd ready` batch is mutually independent by
    definition (step 1), so within-round merge order was never load-bearing. A successful merge
-   does `bd close <id>` — a leaf-task close; epic closure is the separate step below. Blocked
-   tasks and their triage ride the same queue, so `bd` mutations never race a `git merge`.
+   does `bd close <id>` — a leaf-task close; epic closure is the separate step below. Only merge
+   work rides the queue: a BLOCKED or permission-refused task, an unmapped id, and an
+   already-merged re-entry are handled where the chain ends, beside the merges and inside a
+   concurrency slot like any chain (none touches the integration branch, and `bd` writes are safe
+   beside a merge); a merge that fails releases the queue before its triage runs. Ledger lines never hold it either (see "Workspace and ledger").
    **Each successful merge also fires a mid-round top-up**: a ready re-query whose newly-ready,
    already-mapped beads dispatch into this same round's scheduler immediately — a bead unblocked
    by the round's first merge never waits for its last (see the top-up block in the skeleton for
@@ -387,12 +406,13 @@ Round-based with refill (each `bd ready` batch is, by definition, mutually indep
    and the loop back to step 1 remains the authority for the rest: beads a null top-up missed,
    and beads with no mapping row yet (created mid-round), which wait for the next round's
    planner pass. Their worktrees are cut from the now-updated integration branch.
-7. **Round end — detector, persisted; edge audit, conditional.** After the drain, the
-   parallelism detector line is both logged and appended to the ledger (`Detector: round N — …`,
-   issue #3 defect 6: a line that lives only in `log()` output is unrecoverable after the fact,
-   and "clean" and "unmeasured" become indistinguishable). When the dispatched frontier has
-   stayed under the cap for **two consecutive rounds**, one **report-only dependency-edge
-   audit** dispatches (`edgeAuditPrompt`, `triage` tier, bounded by `config.edgeAuditCap`):
+7. **Round end — detector, persisted; edge audit, conditional; neither holds the next round.**
+   After the drain, the round's ledger lines are flushed and the ledger chain drained, then the
+   parallelism detector line is logged and queued to the ledger (`Detector: round N — …`; a line
+   that lives only in `log()` output is unrecoverable after the fact). When the dispatched
+   frontier has stayed under the cap for **two consecutive rounds**, one **report-only
+   dependency-edge audit** starts in the background (`edgeAuditPrompt`, `triage` tier, bounded by
+   `config.edgeAuditCap`; Finish awaits any still running):
    `scripts/edge-stats` computes open leaves, remaining critical-path depth, and one critical path;
    the coordinator derives the achievable width (open leaves / depth) in JS; the agent's own work is
    naming suspect edges by super-design's edge rules and a one-line summary — to the ledger (`Edge audit: …`) and the log. It never removes an edge: reshaping the graph
@@ -543,28 +563,35 @@ wrote or read this file — everything below described intent, not behavior. `re
   re-invoke picks the id up from a true `bd ready` batch with nothing wasted; a mid-flight restart
   may waste up to two pipeline passes on an id that's still genuinely blocked before re-quarantining
   it — see "Known limitations" below).
-- **Ledger appends are retried once, then marked — no longer fire-and-forget** (issue #5 defect 8,
-  measured: 4 of 9 completion lines lost on one run, reconstructed after the fact from `git log`).
-  Every ledger write goes through `appendLedger()`: a null dispatch is re-dispatched once, and a
-  second null is recorded by label in `ledgerAppendFailed` (returned to the caller), logged as
-  `ledger-append-failed: <label>`, and counted on the Finish-phase `Metrics: ledger-check` line —
-  the prevention half of what that line's `M≠completed` check detects after the fact. The ledger
-  remains the *only* mechanism by which a restarted run recovers `parked` and `pendingRetry`, and the
-  only record of `complete`/`BLOCKED` history for reporting, so a line that fails both attempts
-  still costs what it always did (a `pending retry` loss resets C-2's one-retry bound on restart; a
-  parked-completion loss drops the ruling and the overruled finding) — the difference is that the
-  loss is now named, by label, where a reader and a resume both see it.
-  **The retry elides agent-authored free text** (issue #5 defect 9, measured: two `ledger-append`
-  dispatches were refused by the harness classifier *before any agent spawned* — the journal's
-  `failed` entries carry no agent id — because their `pending retry — RESOLVE: <detail>` line quoted
-  a bead's wording about hunting weakened, hardcoded and deleted tests). Call sites that interpolate
-  triage detail, a parked reason/finding, a review minor, a fix-pass finding or a sweep/audit summary
-  pass an elided variant that keeps the ids and the outcome token (`pending retry — RESOLVE
-  (clarification elided — recorded on bead <id> …; blocker bead <bead>)`, `BLOCKED — detail elided
-  (blocker bead <bead>; triage …)`, …) and drops the prose, so the second attempt cannot be refused
-  for the first attempt's wording; the same shape applies to `notify`. Still open: a dispatch that
-  *completes* while failing to write (a partial append, a wrong path) reports nothing the coordinator
-  inspects — `ledger-append` has no schema, and asking for a structured confirmation is future work.
+- **Who writes ledger lines, and when — never on the critical path.** The success-path `Merge:`
+  line and the completion line are written by the merge agent itself, inside the integration
+  worktree, right after it commits the merge and closes the bead (it fills only what it measured:
+  the rebase field and the commit range; it reports `ledgerAppended`). Every other line a task
+  produces — its fix-pass line, minors, a parked completion line (it carries fixer free text), a
+  failed merge's `Merge: … → blocker` line, its blocker outcome — is buffered per task and written
+  by **one** `ledger:<id>` append when the task's chain ends; when the merge agent did not report
+  writing its lines, the coordinator adds them to that flush. Run-level lines (`Launch:`,
+  `Detector:`, `Edge audit:`, `Recurring …:`, `Sweep:`) are their own appends. All appends run on
+  one serialized ledger chain that no merge or chain awaits; the round end and Finish drain it, and
+  per-id order is preserved. A throw inside a queued append (an unregistered dryRun stub key) is
+  surfaced at the next drain — fatal under dryRun, logged live.
+- **Ledger appends are retried once, then marked.** Every coordinator append goes through
+  `appendLedger()`: a null dispatch is re-dispatched once, and a second null is recorded by label in
+  `ledgerAppendFailed` (returned to the caller), logged as `ledger-append-failed: <label>`, and
+  counted on the Finish-phase `Metrics: ledger-check` line — the prevention half of what that
+  line's `M≠completed` check detects after the fact. The ledger is the only mechanism by which a
+  restarted run recovers `parked` and `pendingRetry`, so a line that fails both attempts still costs
+  what it always did (a `pending retry` loss resets C-2's one-retry bound on restart; a
+  parked-completion loss drops the reason and the finding) — the loss is named, by label, where a
+  reader and a resume both see it. **The retry elides agent-authored free text**: a harness
+  classifier can refuse a dispatch for the wording it quotes (triage detail about weakened or
+  deleted tests, say) before any agent spawns. Each line that interpolates triage detail, a parked
+  reason/finding, a review minor, a fix-pass finding or a sweep/audit summary carries an elided
+  variant that keeps the ids and the outcome token (`pending retry — RESOLVE (clarification elided
+  — recorded on bead <id> …; blocker bead <bead>)`, `BLOCKED — detail elided (blocker bead <bead>;
+  triage …)`, …) and drops the prose, so the second attempt cannot be refused for the first
+  attempt's wording; the same shape applies to `notify`. Still open: a dispatch that *completes*
+  while failing to write (a partial append, a wrong path) reports nothing the coordinator inspects.
 
 ## Per-task pipeline
 
@@ -767,15 +794,22 @@ is safe because a `bd ready` batch is mutually independent by definition):
 Merge: <bead-id> — rebase <clean | conflict: N files> · seam-review <none | cleared | fixed> · check <pass | fail→fixed | fail | none>
 ```
 
-with a trailing ` → blocker` on the failure path. Both paths append it through `ledgerAppendPrompt`,
-raw rather than through `ledgerLine()` (that helper's `Task <N> (<id>):` prefix names a task
-outcome; this line names a merge attempt). `rebase` is the merge agent's `rebaseConflictFiles`
+with a trailing ` → blocker` on the failure path. On success the merge agent appends it itself,
+with the completion line, as the last step of its dispatch (`mergePrompt`'s LEDGER step: the
+coordinator hands it both lines with `<REBASE>` and `<RANGE>` left for the values only it
+measures, and leaves out the completion line for a parked task, whose line carries fixer free
+text); a merge agent that does not report `ledgerAppended` gets the same lines written from its
+reported fields in the task's `ledger:<id>` flush. The failure-path line always goes in that
+flush, before the blocker outcome. It is raw rather than built by `ledgerLine()` (that helper's
+`Task <N> (<id>):` prefix names a task outcome; this line names a merge attempt). `rebase` is the merge agent's `rebaseConflictFiles`
 report (0 → `clean`); `seam-review` is `none` unless step 2 ran (`cleared` when it came back CLEAN,
 `fixed` when its one fix ran); a merge that removed byte-identical untracked copies first adds a
 `Merge-cleanup: <id> — removed … : <paths>` line in the same dispatch; `check` is the merge check's result: `pass`, `fail→fixed` (failed, the
 merge-check fix and its review passed, the re-run passed), `fail` (failed and went to the blocker
-path), or `none` (no check declared, or the attempt failed before reaching it). Stub keys: `ledger-append:merge:<id>` (success) and
-`ledger-append:merge-failed:<id>` (blocker path).
+path), or `none` (no check declared, or the attempt failed before reaching it). A merge the
+coordinator rejects after its agent reported writing success lines (missing merge evidence, a
+missing commit range) is logged; the blocker-path line that follows supersedes them on resume, and
+Metrics' `ledger-check` shows the gap.
 
 ## The blocker-bead path (the escalation currency)
 
@@ -866,7 +900,7 @@ the coordinator returns its buckets (`completed`, `escalated`, `pendingRetry`, `
 `review`, plus `stopReason`) to the caller and stops, leaving the integration worktree, its branch,
 and its ledger intact. **Deferred minors reach the final reviewer through the ledger.** The task
 review reports Minor and ⚠️ items in `RESULT.minors`, and the merge gate writes one
-`Task <N> (<id>): minor (deferred): <one-liner>` line per item, in one ledger dispatch per task. They
+`Task <N> (<id>): minor (deferred): <one-liner>` line per item, in the task's one ledger flush. They
 are written at the merge gate, alongside `parked`, because a minor on a task that never merges is
 part of a blocked task's open state, which the blocker path already carries.
 **Recurring minors are clustered, run-wide** (issue #3 defect 2): the coordinator normalises each
@@ -1213,7 +1247,16 @@ const skillsRoot = A && typeof A.skillsRoot === 'string' ? A.skillsRoot.replace(
 // Fail fast: undefined args crash late + cryptically (see "Authoring pitfalls"). Validate + log here.
 if (!epicId || !integrationBranch || !config || !skillsRoot) throw new Error('coordinator args missing (epicId, integrationBranch, config and skillsRoot are required): ' + JSON.stringify(A))
 log('coordinator: epic=' + epicId + ' branch=' + integrationBranch + ' skillsRoot=' + skillsRoot + ' dryRun=' + !!dryRun)
-const model = role => dryRun ? 'haiku' : config.models[role]
+// Model and reasoning effort per role, spread into every dispatch's opts. Mechanical dispatches
+// (ledger, ready queries, briefs, closes, notifications, the sweep) run at low effort; the
+// judgment roles that decide the run's shape run high; implementer and reviewer inherit the
+// session's effort. `config.efforts` overrides per role. dryRun stubs take neither override.
+const EFFORT_DEFAULTS = { mechanical: 'low', planner: 'high', triage: 'high', finalReview: 'high' }
+const tier = role => {
+  if (dryRun) return { model: 'haiku' }
+  const effort = (config.efforts && config.efforts[role]) || EFFORT_DEFAULTS[role]
+  return effort ? { model: config.models[role], effort } : { model: config.models[role] }
+}
 if (config.models && config.models.fixEscalation) log('config.models.fixEscalation is ignored — there are no fix-escalation rounds (one fix pass per task, on the implementer tier)')
 const sddScripts = `${skillsRoot}/subagent-driven-development/scripts`
 const codeSkill = `${skillsRoot}/super-code`
@@ -1304,18 +1347,18 @@ const taskBranch = id => `task-${id}`
 const planFileName = `${epicId}-plan.md`
 const workspace = `.superpowers/sdd/${epicId}-plan`
 const ledgerPath = `${workspace}/progress.md`
-// I3: config.concurrency bounds concurrent per-task chains. It's read from `args` and documented
-// in the contract as the thing that stops N ready tasks from dispatching N concurrent
-// implementers and N worktrees at once. Enforced by `makeScheduler` (helpers below) as a
-// sliding window — a slot frees, the next id dispatches — never as `chunk()`ed sub-batches with
-// barriers between them (that shape was the round-barrier defect one level down; see the
-// Implement phase's relaxation comment).
-// Default 16 = the Workflow runtime's own per-workflow agent-call cap ceiling (min(16, cores-2),
-// not configurable). The script can't read the core count, and doesn't need to: the runtime
-// queues over-admitted agent calls, so a script cap of 16 makes the EFFECTIVE concurrency
-// min(16, cores-2) on every machine. A caller passes a smaller value only to throttle below the
-// runtime deliberately.
-const cap = Math.max(1, Number(config.concurrency) || 16)
+// config.concurrency bounds concurrent per-task chains, enforced by `makeScheduler` (helpers
+// below) as a sliding window — a slot frees, the next id dispatches — never as batches.
+// The Workflow runtime runs at most min(16, cores-2) agents per workflow and queues the rest in
+// one shared queue, so admitting more chains than that parks the merge, top-up and ledger
+// dispatches behind implementers. Pre-flight resolves that slot count into `config.runtimeSlots`
+// (the script cannot read the core count); the cap keeps two slots free for the merge lane and
+// the top-up/ledger work, so every admitted chain is a running agent.
+const runtimeSlots = Number(config.runtimeSlots) > 0 ? Math.floor(Number(config.runtimeSlots)) : null
+const requestedCap = Math.max(1, Number(config.concurrency) || 16)
+const cap = runtimeSlots ? Math.max(1, Math.min(requestedCap, runtimeSlots - 2)) : requestedCap
+if (!runtimeSlots) log(`config.runtimeSlots not set — concurrency cap ${cap} is not checked against the runtime's agent slots; merges may queue behind implementers if the cap exceeds min(16, cores-2) - 2`)
+else if (cap < requestedCap) log(`concurrency cap ${requestedCap} lowered to ${cap}: ${runtimeSlots} runtime slots, two kept free for the merge lane and top-up/ledger work`)
 // Hot-file cap (optional, additive contract key — like `integrationWorktree`):
 // how many in-flight tasks may declare the same file at once. The dispatch-relaxation comment in
 // the Implement phase carries the measured evidence for why this replaced disjoint-file
@@ -1437,6 +1480,44 @@ async function appendLedger(line, stubKey, opts, elidedLine) {
   log(`ledger-append-failed: ${opts.label} — both the append and its retry returned null; this line is NOT on the ledger (counted on the Metrics ledger-check line; a resume will not see it)`)
   return null
 }
+// Ledger writes off the critical path. `queueLedger` serializes appends on their own chain, which
+// nothing on the merge path awaits; the round end and Finish drain it. A task's lines (fix pass,
+// merge, minors, blocker outcome) are buffered per id with `noteLedger` and written by ONE append
+// when the task's chain ends (`flushLedger`, label `ledger:<id>`); each line keeps its elided
+// variant, so the retry elides only the free text. Per-id order is preserved: one buffer per id,
+// flushed FIFO onto one chain.
+// A throw inside a queued append (an unregistered dryRun stub key, a broken prompt builder — a
+// null is appendLedger's own business) is kept and surfaced at the next drain: fatal under dryRun,
+// logged in a live run, where a lost line is already counted by appendLedger's marks.
+let ledgerChain = Promise.resolve()
+let ledgerFailure = null
+function queueLedger(lines, key, phase, elided) {
+  const run = ledgerChain.then(() => appendLedger(lines, key, { label: key, phase, ...tier('mechanical') }, elided))
+  ledgerChain = run.then(() => {}, e => { ledgerFailure = ledgerFailure ?? e })
+  return run
+}
+async function drainLedger() {
+  await ledgerChain
+  if (!ledgerFailure) return
+  const e = ledgerFailure
+  ledgerFailure = null
+  if (dryRun) throw e
+  log(`ledger append threw and was swallowed (live run): ${e && e.stack ? e.stack : String(e)}`)
+}
+const ledgerBuf = new Map()   // id -> [{ line, elided }]
+function noteLedger(id, line, elided) {
+  if (!ledgerBuf.has(id)) ledgerBuf.set(id, [])
+  ledgerBuf.get(id).push({ line, elided })
+}
+function flushLedger(id, phase) {
+  const entries = ledgerBuf.get(id)
+  ledgerBuf.delete(id)
+  if (!entries || !entries.length) return
+  const lines = entries.flatMap(e => flatLines(e.line))
+  const elided = entries.some(e => e.elided !== undefined) ? entries.flatMap(e => flatLines(e.elided ?? e.line)) : undefined
+  queueLedger(lines, `ledger:${id}`, phase, elided)
+}
+function flushAllLedger(phase) { for (const id of [...ledgerBuf.keys()]) flushLedger(id, phase) }
 
 const READY   = { type: 'object', properties: { ids: { type: 'array', items: { type: 'string' } }, scriptError: {type:'string'} }, required: ['ids'] }
 // mapping: ordinal (N, as scripts/task-brief needs it) <-> bead id (as bd needs it) <-> declared
@@ -1526,7 +1607,9 @@ const TRIAGE  = { type: 'object', properties: { decision: {type:'string', enum: 
 // Task 3 (`Merge:` ledger line): `rebaseConflictFiles` — the number of files the rebase reported
 // as conflicting (0 for a clean rebase) — reported on EVERY merge attempt, success or failure,
 // so the per-merge ledger line's `rebase <clean | conflict: N files>` field always has a source.
-const MERGE   = { type: 'object', properties: { id:{type:'string'}, merged:{type:'boolean'}, blockerBead:{type:'string'}, head:{type:'string'}, mergeBase:{type:'string'}, authRefused:{type:'string'}, seamOverlap:{ type:'array', items:{type:'string'} }, rebaseConflictFiles:{type:'number'}, check:{type:'string', enum:['pass','fail','none']}, checkOutput:{type:'string'}, mergeExit:{type:'number'}, mergeHead:{type:'boolean'}, dirty:{ type:'array', items:{type:'string'} }, removedIdentical:{ type:'array', items:{type:'string'} } }, required: ['id','merged'] }
+// `ledgerAppended`: the merge agent wrote the success-path ledger lines itself (see mergePrompt);
+// absent or false, the coordinator writes the same lines from the reported fields.
+const MERGE   = { type: 'object', properties: { id:{type:'string'}, merged:{type:'boolean'}, blockerBead:{type:'string'}, head:{type:'string'}, mergeBase:{type:'string'}, authRefused:{type:'string'}, seamOverlap:{ type:'array', items:{type:'string'} }, rebaseConflictFiles:{type:'number'}, check:{type:'string', enum:['pass','fail','none']}, checkOutput:{type:'string'}, mergeExit:{type:'number'}, mergeHead:{type:'boolean'}, dirty:{ type:'array', items:{type:'string'} }, removedIdentical:{ type:'array', items:{type:'string'} }, ledgerAppended:{type:'boolean'} }, required: ['id','merged'] }
 // issue #3 design question C: the conditional, report-only dependency-edge audit's return shape
 // — see `edgeAuditPrompt`. `suspectEdges` are named, never removed: reshaping the graph mid-run
 // stays an operator's call (super-design §Splitting a Bead is the precedent for how much a graph
@@ -1539,10 +1622,10 @@ const CLOSE   = { type: 'object', properties: { rootClosed: {type:'boolean'}, cl
 // blocked yet) so parsing stays pure JS in this script (see the Resume-phase block below) rather
 // than asking an agent to interpret ledger semantics — the same "mechanical extraction, judgment
 // stays in the script" split the scheduler already uses for the planner's file mapping.
-// `ledger-append` is schema-less and fire-and-forget, same tier as `notify`/`clarify` (see
-// "Schema-less dispatches" in the dryRun policy section below) — the coordinator never reads its
-// return value, only whether the call errored.
+// Ledger appends are schema-less (see "Schema-less dispatches" in the dryRun policy section): the
+// coordinator reads only whether the call returned null (appendLedger's retry-then-mark).
 const LEDGER_TEXT = { type: 'object', properties: { text: { type: 'string' } }, required: ['text'] }
+const SWEEP_SUMMARY = { type: 'object', properties: { summary: { type: 'string' } }, required: ['summary'] }
 // Fix-round-1 (review, "Strongly suggested structure"): the ONE shape every ledger line writer
 // (`ledgerLine()`, in the helpers section below — hoisted, so it's usable above its textual
 // definition) and the Resume-phase reader (above) agree on: `Task <ordinal-or-?> (<bead id>): <rest>`.
@@ -1619,7 +1702,7 @@ let recurringReported = 0
 // `Recurring <kind>:` ledger line (a non-Task line the Resume reader ignores, like `Launch:`) plus a
 // `RECURRING <KIND>` log line. Stub key qualified by report ordinal (predictable), not by the
 // signature text (agent-produced, so no dryRun block could ever declare it).
-async function noteRecurrence(kind, id, text, phase) {
+function noteRecurrence(kind, id, text, phase) {
   const sig = `${kind}:${minorSignature(text)}`
   const cl = minorClusters.get(sig) ?? { count: 0, tasks: new Set(), sample: text, reported: false }
   cl.count++; cl.tasks.add(id); minorClusters.set(sig, cl)
@@ -1628,8 +1711,8 @@ async function noteRecurrence(kind, id, text, phase) {
   const sample = String(cl.sample).replace(/\s+/g, ' ').trim()
   const spread = `×${cl.count} across ${cl.tasks.size} task(s)`
   log(`RECURRING ${kind.toUpperCase()} ${spread} — a cluster at this rate is usually the pipeline reporting its own defect, or one systemic smell, not ${cl.count} independent ${kind === 'minor' ? 'nits' : 'blockers'}: ${sample}`)
-  await appendLedger(`Recurring ${kind}: ${spread} (${[...cl.tasks].join(', ')}) — ${sample}`,
-    `ledger-recurring:${recurringReported}`, { label: `ledger-recurring:${recurringReported}`, phase, model: model('mechanical') },
+  queueLedger(`Recurring ${kind}: ${spread} (${[...cl.tasks].join(', ')}) — ${sample}`,
+    `ledger-recurring:${recurringReported}`, phase,
     `Recurring ${kind}: ${spread} (${[...cl.tasks].join(', ')}) — sample elided`)
 }
 const minorSignature = s => String(s).toLowerCase()
@@ -1645,6 +1728,7 @@ const minorSignature = s => String(s).toLowerCase()
 let roundNo = 0
 let frontierBelowCapStreak = 0
 let edgeAuditsRun = 0
+const pendingAudits = []   // background edge audits; Finish awaits them
 
 // I1: resume-from-ledger — the skill's stated Core principle (SKILL.md §Overview) — until this fix, no
 // dispatch ever wrote or read this file (see "Workspace and ledger" above): a restarted run had no
@@ -1657,22 +1741,17 @@ let edgeAuditsRun = 0
 // (see the `ledgerPath` comment above).
 phase('Resume')
 const ledger = await dispatch(() => readLedgerPrompt(integrationWorktree, ledgerPath), 'read-ledger',
-  { label: 'read-ledger', phase: 'Resume', schema: LEDGER_TEXT, model: model('mechanical') })
+  { label: 'read-ledger', phase: 'Resume', schema: LEDGER_TEXT, ...tier('mechanical') })
 // Null read-ledger ("Null dispatch policy"): resume reconstructs nothing, LOUDLY — `bd ready` is
 // the authority on closed work either way, but a prior run's `pendingRetry` bounds are lost for
 // this run, which is worth a log line rather than silence.
 if (!ledger) log('resume: ledger read unavailable (null dispatch) — proceeding with an empty reconstruction; bd ready remains the authority on closed work, but prior-run pendingRetry bounds are lost for this run')
-// Issue #2 defect 6: `args` appear in neither journal.jsonl nor the transcript dir, so every
-// relaunch reverse-engineered `{epicId, integrationBranch, config:{...}}` from the script's own
-// call sites — the first live attempt failed outright with "coordinator args missing: undefined",
-// at ~30 minutes per lost relaunch on a run that expects 4-6 invocations for the agent-budget cap
-// alone. The fully-resolved launch args are therefore written to the ledger as the first act of
-// every launch (fire-and-forget tier, `ledger-append` null policy): a later relaunch copies the
-// `Launch:` line's JSON back into the Workflow invocation verbatim instead of reconstructing it.
-// `prompts` (the dryRun stub tables) is deliberately omitted — it can run to many KB and a live
-// relaunch never needs it; `dryRun` itself is recorded so a stub-table omission is self-evident.
-await appendLedger(`Launch: args ${JSON.stringify({ epicId, integrationBranch, integrationWorktree, skillsRoot, deferSweep, mergeCheck: mergeCheckCommand ?? 'none (no build/typecheck step declared)', config, dryRun: !!dryRun })}`,
-  'ledger-append:launch', { label: 'ledger-append:launch', phase: 'Resume', model: model('mechanical') })
+// The fully-resolved launch args go to the ledger as a `Launch:` line (args appear in neither the
+// journal nor the transcript), so a relaunch copies them back verbatim. `prompts` (the dryRun stub
+// tables) is omitted — large, and never needed live; `dryRun` is recorded so a missing stub table
+// is self-evident.
+queueLedger(`Launch: args ${JSON.stringify({ epicId, integrationBranch, integrationWorktree, skillsRoot, deferSweep, mergeCheck: mergeCheckCommand ?? 'none (no build/typecheck step declared)', config, dryRun: !!dryRun })}`,
+  'ledger-append:launch', 'Resume')
 // Pure JS parse — no judgment, no further I/O (the text is already fetched above). Ledger lines are
 // append-only, so a bead id can have MORE THAN ONE line over a run's history (e.g. a "pending retry"
 // line followed later by a "complete" or "BLOCKED" one) — keep only the LAST line per id.
@@ -1753,13 +1832,13 @@ while (true) {
   // epic-dependent tasks join this round instead of waiting a full round.
   phase('Close')
   const closePromise = dispatch(() => closeEpicsPrompt(epicId), 'close-epics',
-    { label: 'close-epics', phase: 'Close', schema: CLOSE, model: model('mechanical') })
+    { label: 'close-epics', phase: 'Close', schema: CLOSE, ...tier('mechanical') })
   phase('Ready')
   const readyPromise = dispatch(
     // MECHANICAL echo of scripts/ready-in-tree: labelled fast path, structural fallback when it
     // comes up empty (see "The coordinator loop" step 1).
     () => readyPrompt(epicId), 'bd-ready',
-    { label: 'bd-ready', phase: 'Ready', schema: READY, model: model('mechanical') })
+    { label: 'bd-ready', phase: 'Ready', schema: READY, ...tier('mechanical') })
   // Null close-epics ("Null dispatch policy"): closed ZERO epics, never rootClosed — defaulting
   // rootClosed true would end the run declaring an unfinished epic done, the worst possible
   // fabrication. The zeroed default also feeds the no-progress guard's closedThisRun signal
@@ -1776,7 +1855,7 @@ while (true) {
   // original result — opportunistic like the top-up, never a stopReason, logged by dispatch().
   if (ready && closed.closedThisRun.length > 0) {
     const recheck = await dispatch(() => readyPrompt(epicId), 'bd-ready-recheck',
-      { label: 'bd-ready-recheck', phase: 'Ready', schema: READY, model: model('mechanical') })
+      { label: 'bd-ready-recheck', phase: 'Ready', schema: READY, ...tier('mechanical') })
     if (recheck) ready = recheck
     else log('post-closure ready re-check returned null — keeping the original ready result; next round remains the authority')
   }
@@ -1843,7 +1922,7 @@ while (true) {
   let planned = lastPlanned
   if (!lastPlanned || ids.some(id => !lastPlanned.mapping.some(m => m.id === id))) {
     planned = await dispatch(() => planPrompt(epicId, ids, planFileName), 'plan',
-      { label: 'plan', phase: 'Plan', model: model('planner'), schema: PLANNED })
+      { label: 'plan', phase: 'Plan', ...tier('planner'), schema: PLANNED })
     // Null plan ("Null dispatch policy"): nothing downstream can run without the mapping — abandon
     // the round (no fabricated empty mapping: that would route every ready id through the
     // unplanned-blocker path as if the planner had judged them unplannable). Bounded like ready.
@@ -1944,73 +2023,47 @@ while (true) {
     }
   }
 
-  // ROUND-BARRIER REMOVAL (measured live, 197-bead epic, 2026-08-20..23): this round's merges
-  // used to run in a `for` loop AFTER `await pipeline(...)` returned for the whole batch — a
-  // round barrier. Observed: 115 agents dispatched, 114 finished, one straggler held 13
-  // completed beads unmerged for over two hours (zero merges in 3h15m) — with the barrier,
-  // wall-clock IS the sum-of-slowest-per-stage the pipeline rationale promises to avoid.
-  // Now each task enqueues its own integration THE INSTANT its chain ends, onto a promise-chain
-  // queue that guarantees **exactly one merge in flight, ever** — the invariant serial
-  // merge-back exists for (two concurrent `git merge` into the integration worktree is the
-  // failure mode), preserved by CHAINING rather than by batching. Integration k+1 cannot start
-  // until k has fully returned. Blocked tasks and their triage ride the same queue, so
-  // `bd create`/`bd close` never race a `git merge`. Drain order is completion order — which
-  // loses nothing dependency-wise: a `bd ready` batch is mutually independent by definition
-  // (see "The coordinator loop"), so within-round merge order was never load-bearing.
-  // This shape was implemented and replay-verified on the live epic's adaptation first
-  // (a straggler's siblings observed merging while its implementer still ran), then ported here.
-  // Mid-round top-up hook (see the dispatch section below, where it is assigned): fired
-  // FIRE-AND-FORGET after each successful merge, so a bead the merge just unblocked can dispatch
-  // into this same round's scheduler instead of waiting for the whole merge drain plus the next
-  // round's Close/Ready/Plan head. Declared as a no-op here because unplanned-id integrations can
-  // start riding the queue before the dispatch section assigns the real hook — a merge cannot
-  // happen that early (unplanned entries are BLOCKED by construction), but the call site must
-  // never hit an uninitialized binding. Fire-and-forget is load-bearing: the hook must never be
-  // awaited from inside integrateOne, or the ready re-query would serialize into the single-flight
-  // merge queue it exists to overlap with.
+  // Single-flight merge queue: each task's integration joins it the instant the task's chain
+  // ends, and exactly one merge touches the integration worktree at a time — guaranteed by
+  // promise chaining, not batching. Drain order is completion order (a `bd ready` batch is
+  // mutually independent). Only merge work rides the queue: blocker triage, permission refusals
+  // and already-merged closes run outside it (none touches the integration branch, and `bd`
+  // writes are safe beside a merge), and ledger lines go to the ledger chain. A merge that ends
+  // on the blocker path returns that follow-up as a thunk, which runs after the queue moves on.
+  // Mid-round top-up hook (assigned in the dispatch section): fired without awaiting after each
+  // successful merge, so a bead the merge unblocked dispatches into this round. Awaiting it inside
+  // integrateOne would serialize the ready re-query into the merge queue.
   let topUpHook = () => {}
-  // Same-round RESOLVE retry hook (assigned in the dispatch section, same pattern as topUpHook):
-  // a blocker triaged RESOLVE is ready NOW with its clarification already recorded — waiting for
-  // the next round's head was pure dead time. handleBlocker invokes this on its RESOLVE branch;
-  // the assigned hook re-pushes the task's chain into this round (mapping-row-gated). C-2's
-  // one-retry bound is enforced in handleBlocker itself and is round-agnostic, so retrying
-  // same-round spends the same single allowance it always did.
+  // Same-round RESOLVE retry hook (assigned in the dispatch section): a blocker triaged RESOLVE
+  // is ready now, with its clarification recorded. handleBlocker enforces the one-retry bound.
   let resolveRetryHook = () => {}
+  const onResolve = id => resolveRetryHook(id)
   let integrateAnnounced = false
   let mergeChain = Promise.resolve()
   const enqueueIntegration = r => {
     const run = mergeChain.then(() => integrateOne(r))
     mergeChain = run.then(() => {}, () => {})   // settled either way: a throw must not poison the queue
-    return run
+    return run.then(after => (typeof after === 'function' ? withSlot(r.id, after) : undefined))
   }
+  // The success-path ledger lines the merge agent writes itself once the merge is committed
+  // (mergePrompt's LEDGER step): it fills `<REBASE>` and `<RANGE>`, which only it measures. A parked
+  // completion line carries fixer free text, so the coordinator writes that one.
+  const mergeLedger = (r, seam, checkFixed) => ({
+    mergeLine: `Merge: ${r.id} — rebase <REBASE> · seam-review ${seam} · check ${mergeCheckCommand ? (checkFixed ? 'fail→fixed' : 'pass') : 'none'}`,
+    completeLine: r.parkReason ? null : ledgerLine(r.n, r.id, `complete (commits <RANGE>, ${r.fixPass ? 'fix pass' : 'review clean'})`),
+  })
   const integrateOne = async r => {
-    // Lazy phase announcement, once per round, on the first integration — merges now interleave
-    // with the Implement phase's still-running chains, so a fixed phase('Integrate') call site
-    // no longer exists. Cosmetic only: every dispatch below carries its own opts.phase.
+    // Phase announcement, once per round, on the first integration (merges interleave with the
+    // Implement phase; every dispatch carries its own opts.phase).
     if (!integrateAnnounced) { integrateAnnounced = true; phase('Integrate') }
-    if (r.status === 'BLOCKED') { await handleBlocker(r, planned.planPath, id => resolveRetryHook(id)); return }
-    if (r.status === 'BLOCKED_AUTH') { await handleAuthRefusal(r, r.finding); return }
-    // The already-merged re-entry (see runTask) — nothing to merge; close the task bead (and the
-    // RESOLVEd blocker bead, if this id has one), settle completed, write the completion line with
-    // its own marker so a reader can tell a re-entry close from a merge.
-    if (r.status === 'ALREADY_MERGED') {
-      const closed = await dispatch(() => closeOnlyPrompt(r.id, integrationWorktree, integrationBranch, blockerBeadOf.get(r.id)), `close-only:${r.id}`,
-        { label: `close-only:${r.id}`, phase: 'Integrate', model: model('mechanical'), schema: RESULT })
-      // Null close ("Null dispatch policy"): the bead stays open; the next ready query
-      // re-surfaces it and this same short-circuit runs again — no bucket, no ledger line.
-      if (!closed) { log(`close-only for ${r.id} unavailable (null dispatch) — leaving ${r.id} unsettled this round`); return }
-      settle(r.id, completed)
-      blockerBeadOf.delete(r.id)
-      await appendLedger(ledgerLine(r.n, r.id, `complete (already merged into ${integrationBranch} before this re-entry — bead closed, no new review)`),
-        `ledger-append:${r.id}`, { label: `ledger-append:${r.id}`, phase: 'Integrate', model: model('mechanical') })
-      topUpHook()
-      return
-    }
+    // A merge the coordinator rejects after the agent already wrote success lines: the blocker
+    // path's own line follows and supersedes them on resume; Metrics' ledger-check shows the gap.
+    const warnRejectedAppend = mm => { if (mm && mm.ledgerAppended === true) log(`ledger: the merge agent for ${r.id} appended success lines for a merge the coordinator rejected — the blocker-path line that follows supersedes them on resume; Metrics' ledger-check will show the gap`) }
     // `seamOutcome` feeds the `Merge:` ledger line's `seam-review` field — `none` unless the seam
     // branch below runs, `cleared` if the scoped review came back CLEAN, `fixed` if its one fix ran.
     let seamOutcome = 'none'
-    let m = await dispatch(() => mergePrompt(r, integrationBranch, integrationWorktree, blockerBeadOf.get(r.id), mergeCheckCommand), `merge:${r.id}`,
-      { label: `merge:${r.id}`, phase: 'Integrate', model: model('reviewer'), schema: MERGE })
+    let m = await dispatch(() => mergePrompt(r, integrationBranch, integrationWorktree, blockerBeadOf.get(r.id), mergeCheckCommand, mergeLedger(r, 'none', false)), `merge:${r.id}`,
+      { label: `merge:${r.id}`, phase: 'Integrate', ...tier('reviewer'), schema: MERGE })
     // Post-rebase seam check: a rebase that moved the task onto sibling changes touching the SAME
     // files gets exactly one scoped seam review before merging — the task review ran pre-rebase
     // against a base the integration branch has since left. The merge agent reports the overlap
@@ -2020,7 +2073,7 @@ while (true) {
     if (m && !m.merged && Array.isArray(m.seamOverlap) && m.seamOverlap.length) {
       log(`seam: ${r.id} rebased onto sibling changes in ${m.seamOverlap.length} overlapping file(s) — one scoped seam review before merging: ${m.seamOverlap.join(', ')}`)
       const seam = await dispatch(() => seamReviewPrompt(r, m, integrationBranch, artifacts(r.id)), `seam-review:${r.id}`,
-        { label: `seam-review:${r.id}`, phase: 'Integrate', model: model('reviewer'), schema: RESULT })
+        { label: `seam-review:${r.id}`, phase: 'Integrate', ...tier('reviewer'), schema: RESULT })
       // Null seam review ("Null dispatch policy"): no verdict was rendered — do not merge on a
       // review that never happened, and do not block on it either. Unsettled this round; the
       // next ready query re-surfaces the id and the whole merge step re-runs.
@@ -2029,25 +2082,26 @@ while (true) {
         const seamFinding = seam.finding || 'the seam review reported an unresolved post-rebase incompatibility without finding text — see the seam diff it wrote'
         log(`seam: ${r.id} NEEDS_FIX after rebase — one bounded fix dispatch: ${seamFinding}`)
         const fixRes = await dispatch(() => fixPrompt(r, seamFinding, artifacts(r.id), 'seam'), `fix:${r.id}:seam`,
-          { label: `fix:${r.id}:seam`, phase: 'Integrate', model: model('implementer'), schema: RESULT })
+          { label: `fix:${r.id}:seam`, phase: 'Integrate', ...tier('implementer'), schema: RESULT })
         if (!fixRes) { log(`seam fix for ${r.id} unavailable (null dispatch) — leaving ${r.id} unsettled this round`); return }
-        if (fixRes.status === 'BLOCKED_AUTH') { await handleAuthRefusal(r, fixRes.finding); return }
-        if (fixRes.status === 'BLOCKED') { await handleBlocker({ id: r.id, n: r.n, blockerBead: fixRes.blockerBead, finding: `seam fix could not reconcile the post-rebase incompatibility: ${seamFinding}` }, planned.planPath, id => resolveRetryHook(id)); return }
+        if (fixRes.status === 'BLOCKED_AUTH') return () => handleAuthRefusal(r, fixRes.finding)
+        if (fixRes.status === 'BLOCKED') return () => handleBlocker({ id: r.id, n: r.n, blockerBead: fixRes.blockerBead, finding: `seam fix could not reconcile the post-rebase incompatibility: ${seamFinding}` }, planned.planPath, onResolve)
         seamOutcome = 'fixed'
       } else {
         seamOutcome = 'cleared'
       }
-      m = await dispatch(() => mergePrompt({ ...r, seamCleared: true }, integrationBranch, integrationWorktree, blockerBeadOf.get(r.id), mergeCheckCommand), `merge:${r.id}:seam-cleared`,
-        { label: `merge:${r.id}:seam-cleared`, phase: 'Integrate', model: model('reviewer'), schema: MERGE })
+      m = await dispatch(() => mergePrompt({ ...r, seamCleared: true }, integrationBranch, integrationWorktree, blockerBeadOf.get(r.id), mergeCheckCommand, mergeLedger(r, seamOutcome, false)), `merge:${r.id}:seam-cleared`,
+        { label: `merge:${r.id}:seam-cleared`, phase: 'Integrate', ...tier('reviewer'), schema: MERGE })
+      if (!m) { log(`merge for ${r.id} after its seam review unavailable (null dispatch) — no merge happened; leaving ${r.id} unsettled this round`); return }
     }
     // Null merge ("Null dispatch policy"): NO merge happened — no `bd close`, no `complete` ledger
     // line, no bucket, and NOT the blocker path (a transient API error is not blocker-worthy). The
     // bead stays open, so the next round's ready query re-surfaces it and the idempotent brief
     // stage re-enters the already-implemented worktree.
-    if (!m) return
+    if (!m) { log(`merge for ${r.id} unavailable (null dispatch) — no merge happened; leaving ${r.id} unsettled this round`); return }
     // The merge itself was refused by the permission layer — the command never ran, so this is
     // neither a failed merge nor blocker-worthy. Log, quarantine, continue; see handleAuthRefusal.
-    if (!m.merged && m.authRefused) { await handleAuthRefusal(r, m.authRefused); return }
+    if (!m.merged && m.authRefused) return () => handleAuthRefusal(r, m.authRefused)
     // A failing merge check is usually a semantic seam in a file this task did NOT touch (another
     // lane's test or call site still using a signature this task changed), which the same-file seam
     // review cannot see. It routes to the seam machinery before the blocker path: one merge-check
@@ -2070,6 +2124,7 @@ while (true) {
     const evidenceProblem = mergeEvidence(m)
     if (evidenceProblem) {
       log(`merge:${r.id} — ${evidenceProblem}; merge failure`)
+      warnRejectedAppend(m)
       blockerFinding = evidenceProblem
       mergeEvidenceBad = true
       m = { ...m, merged: false }
@@ -2084,25 +2139,25 @@ while (true) {
         log(`merge check: ${r.id} failed on the merged tree — one merge-check fix scoped to the build errors`)
         const preFixHead = m.head
         const fixRes = await dispatch(() => fixPrompt(r, errors, artifacts(r.id), 'check'), `fix:${r.id}:check`,
-          { label: `fix:${r.id}:check`, phase: 'Integrate', model: model('implementer'), schema: RESULT })
+          { label: `fix:${r.id}:check`, phase: 'Integrate', ...tier('implementer'), schema: RESULT })
         if (!fixRes) { log(`merge-check fix for ${r.id} unavailable (null dispatch) — leaving ${r.id} unsettled this round`); return }
-        if (fixRes.status === 'BLOCKED_AUTH') { await handleAuthRefusal(r, fixRes.finding); return }
+        if (fixRes.status === 'BLOCKED_AUTH') return () => handleAuthRefusal(r, fixRes.finding)
         if (fixRes.status !== 'FIXED') {
           blockerFinding = `${failFinding} — the merge-check fix reported ${fixRes.status}`
           m = { ...m, blockerBead: fixRes.blockerBead }
         } else {
           const rv = await dispatch(() => checkFixReviewPrompt(r, preFixHead, errors, artifacts(r.id)), `seam-review:${r.id}:check`,
-            { label: `seam-review:${r.id}:check`, phase: 'Integrate', model: model('reviewer'), schema: RESULT })
+            { label: `seam-review:${r.id}:check`, phase: 'Integrate', ...tier('reviewer'), schema: RESULT })
           if (!rv) { log(`merge-check fix review for ${r.id} unavailable (null dispatch) — leaving ${r.id} unsettled this round`); return }
           if (rv.status !== 'CLEAN') {
             blockerFinding = `${failFinding} — the merge-check fix was rejected by its review: ${rv.finding || 'no finding text'}`
           } else {
-            m = await dispatch(() => mergePrompt({ ...r, seamCleared: true }, integrationBranch, integrationWorktree, blockerBeadOf.get(r.id), mergeCheckCommand), `merge:${r.id}:check-fixed`,
-              { label: `merge:${r.id}:check-fixed`, phase: 'Integrate', model: model('reviewer'), schema: MERGE })
-            if (!m) return
-            if (!m.merged && m.authRefused) { await handleAuthRefusal(r, m.authRefused); return }
+            m = await dispatch(() => mergePrompt({ ...r, seamCleared: true }, integrationBranch, integrationWorktree, blockerBeadOf.get(r.id), mergeCheckCommand, mergeLedger(r, seamOutcome, true)), `merge:${r.id}:check-fixed`,
+              { label: `merge:${r.id}:check-fixed`, phase: 'Integrate', ...tier('reviewer'), schema: MERGE })
+            if (!m) { log(`merge for ${r.id} after its merge-check fix unavailable (null dispatch) — no merge happened; leaving ${r.id} unsettled this round`); return }
+            if (!m.merged && m.authRefused) return () => handleAuthRefusal(r, m.authRefused)
             const again = mergeEvidence(m)
-            if (again) { log(`merge:${r.id}:check-fixed — ${again}; merge failure`); blockerFinding = again; mergeEvidenceBad = true; m = { ...m, merged: false } }
+            if (again) { log(`merge:${r.id}:check-fixed — ${again}; merge failure`); warnRejectedAppend(m); blockerFinding = again; mergeEvidenceBad = true; m = { ...m, merged: false } }
             else if (m.merged) checkFixed = true
             else if (m.check === 'fail') blockerFinding = `merge check \`${mergeCheckCommand}\` still fails after the merge-check fix: ${String(m.checkOutput || '').replace(/\s+/g, ' ').slice(0, 600)}`
           }
@@ -2114,8 +2169,8 @@ while (true) {
     // half-formed commit range the resume reader cannot tell from a good one.
     if (m.merged && (!m.head || !m.mergeBase)) {
       log(`merge:${r.id} reported merged without a full commit range (head=${m.head ?? 'missing'}, mergeBase=${m.mergeBase ?? 'missing'}) — treating as BLOCKED`)
-      await handleBlocker({ id: r.id, n: r.n, blockerBead: m.blockerBead }, planned.planPath, id => resolveRetryHook(id))
-      return
+      warnRejectedAppend(m)
+      return () => handleBlocker({ id: r.id, n: r.n, blockerBead: m.blockerBead }, planned.planPath, onResolve)
     }
     const rebaseText = m.rebaseConflictFiles ? ('conflict: ' + m.rebaseConflictFiles + ' files') : 'clean'
     // `check`: the build-only mergeCheck result on the merged tree — `none` when no command is
@@ -2124,252 +2179,195 @@ while (true) {
     if (m.merged) {
       settle(r.id, completed)  // also clears a stale escalated/pendingRetry mark from a prior run
       blockerBeadOf.delete(r.id)  // the merge dispatch closed the RESOLVEd bead
-      // `Merge:` ledger line, success path — raw, not through ledgerLine(): it names a merge
-      // attempt, not a task outcome.
-      const removed = Array.isArray(m.removedIdentical) ? m.removedIdentical : []
-      await appendLedger([`Merge: ${r.id} — rebase ${rebaseText} · seam-review ${seamOutcome} · check ${checkText}`, ...(removed.length ? [`Merge-cleanup: ${r.id} — removed byte-identical untracked copies from the integration worktree before merging: ${removed.join(', ')}`] : [])],
-        `ledger-append:merge:${r.id}`, { label: `ledger-append:merge:${r.id}`, phase: 'Integrate', model: model('mechanical') })
-      // Minors are written HERE, at the merge gate — a minor deferred on a task that never merges
-      // is part of a blocked task's open state, which the blocker path already carries. One line
-      // per minor (the final reviewer triages them individually), all in ONE dispatch; the stub key
-      // is qualified by id, not by the agent-produced text.
+      // The completion line names the post-rebase range `mergeBase..head` (both captured by the
+      // merge agent), never `r.base..head`: after the rebase, `r.base` would pull in every commit
+      // other tasks merged meanwhile.
+      const range = `commits ${short(m.mergeBase)}..${short(m.head)}`
+      // The merge agent wrote the `Merge:` line (and the completion line unless parked) itself;
+      // when it did not report doing so, the same lines go through the ledger chain from here.
+      if (m.ledgerAppended !== true) {
+        const removed = Array.isArray(m.removedIdentical) ? m.removedIdentical : []
+        noteLedger(r.id, [`Merge: ${r.id} — rebase ${rebaseText} · seam-review ${seamOutcome} · check ${checkText}`, ...(removed.length ? [`Merge-cleanup: ${r.id} — removed byte-identical untracked copies from the integration worktree before merging: ${removed.join(', ')}`] : [])])
+        if (!r.parkReason) noteLedger(r.id, ledgerLine(r.n, r.id, `complete (${range}, ${r.fixPass ? 'fix pass' : 'review clean'})`))
+      }
+      // Minors are written at the merge gate — a minor deferred on a task that never merges is part
+      // of a blocked task's open state, which the blocker path already carries. One line per minor.
       const taskMinors = r.minors ?? []
       if (taskMinors.length) {
-        await appendLedger(taskMinors.map(mn => ledgerLine(r.n, r.id, `minor (deferred): ${mn}`)),
-          `ledger-minor:${r.id}`, { label: `ledger-minor:${r.id}`, phase: 'Integrate', model: model('mechanical') },
+        noteLedger(r.id, taskMinors.map(mn => ledgerLine(r.n, r.id, `minor (deferred): ${mn}`)),
           [ledgerLine(r.n, r.id, `minor (deferred): ${taskMinors.length} item(s), text elided — see ${artifacts(r.id).review}`)])
-        for (const mn of taskMinors) await noteRecurrence('minor', r.id, mn, 'Integrate')
+        for (const mn of taskMinors) noteRecurrence('minor', r.id, mn, 'Integrate')
       }
       // `parked` is recorded HERE, alongside the completed settle: the declined findings are
       // intent until this merge confirms them, so a task whose merge fails never lands in both.
-      if (r.parkReason) { parked.add(r.id); log(`PARKED ${r.id}: the fix pass declined findings (${r.parkReason}); merged with them open: ${r.finding}`) }
-      // The completion line names the post-rebase range `mergeBase..head` (both captured by the
-      // merge agent), never `r.base..head`: after the rebase, `r.base` would pull in every commit
-      // other tasks merged meanwhile. Built through ledgerLine(), the writer paired with the
-      // Resume reader's LEDGER_LINE_RE.
-      const range = `commits ${short(m.mergeBase)}..${short(m.head)}`
-      const how = r.parkReason ? `fix pass, 1 parked — reason: ${r.parkReason} — finding: ${r.finding}` : (r.fixPass ? 'fix pass' : 'review clean')
-      await appendLedger(ledgerLine(r.n, r.id, `complete (${range}, ${how})`),
-        `ledger-append:${r.id}`, { label: `ledger-append:${r.id}`, phase: 'Integrate', model: model('mechanical') },
-        r.parkReason ? ledgerLine(r.n, r.id, `complete (${range}, fix pass, 1 parked — reason and finding elided: see ${artifacts(r.id).report})`) : undefined)
-      // Mid-round top-up — fired ONLY on a successful merge (only a merge that landed can have
-      // unblocked a dependent). Fire-and-forget: see the topUpHook comment above.
+      if (r.parkReason) {
+        parked.add(r.id)
+        log(`PARKED ${r.id}: the fix pass declined findings (${r.parkReason}); merged with them open: ${r.finding}`)
+        noteLedger(r.id, ledgerLine(r.n, r.id, `complete (${range}, fix pass, 1 parked — reason: ${r.parkReason} — finding: ${r.finding})`),
+          ledgerLine(r.n, r.id, `complete (${range}, fix pass, 1 parked — reason and finding elided: see ${artifacts(r.id).report})`))
+      }
+      // Mid-round top-up — only a merge that landed can have unblocked a dependent.
       topUpHook()
+      return
     }
-    else {
-      // `Merge:` ledger line, failure path — dispatched BEFORE handleBlocker so it lands even if the
-      // blocker path's own dispatches are left unsettled by a null. `n: r.n` is carried so the
-      // blocker's eventual ledger line can cite the plan ordinal.
-      await appendLedger(`Merge: ${r.id} — rebase ${rebaseText} · seam-review ${seamOutcome} · check ${checkText} → blocker`,
-        `ledger-append:merge-failed:${r.id}`, { label: `ledger-append:merge-failed:${r.id}`, phase: 'Integrate', model: model('mechanical') })
-      await handleBlocker({ id: r.id, n: r.n, blockerBead: m.blockerBead, finding: blockerFinding }, planned.planPath, id => resolveRetryHook(id))
-    }
+    // `Merge:` ledger line, failure path, noted before the blocker path's own lines. `n: r.n` is
+    // carried so the blocker's ledger line can cite the plan ordinal.
+    warnRejectedAppend(mergeEvidenceBad ? null : m)
+    noteLedger(r.id, `Merge: ${r.id} — rebase ${rebaseText} · seam-review ${seamOutcome} · check ${checkText} → blocker`)
+    return () => handleBlocker({ id: r.id, n: r.n, blockerBead: m.blockerBead, finding: blockerFinding }, planned.planPath, onResolve)
+  }
+  // Already-merged re-entry (see runTask): nothing to merge — close the task bead (and the
+  // RESOLVEd blocker bead, if this id has one), settle completed, and write the completion line
+  // with its own marker so a reader can tell a re-entry close from a merge. Outside the queue.
+  const closeAlreadyMerged = async r => {
+    const closed = await dispatch(() => closeOnlyPrompt(r.id, integrationWorktree, integrationBranch, blockerBeadOf.get(r.id)), `close-only:${r.id}`,
+      { label: `close-only:${r.id}`, phase: 'Integrate', ...tier('mechanical'), schema: RESULT })
+    // Null close ("Null dispatch policy"): the bead stays open; the next ready query re-surfaces it
+    // and this same short-circuit runs again — no bucket, no ledger line.
+    if (!closed) { log(`close-only for ${r.id} unavailable (null dispatch) — leaving ${r.id} unsettled this round`); return }
+    settle(r.id, completed)
+    blockerBeadOf.delete(r.id)
+    noteLedger(r.id, ledgerLine(r.n, r.id, `complete (already merged into ${integrationBranch} before this re-entry — bead closed, no new review)`))
+    topUpHook()
   }
 
-  // planner-prompt.md permits leaving a genuinely unplannable bead unmapped (its "Your Job" step
-  // 4: BLOCKED, no mapping row, no ## Task <N> section). If such an id is in this round's `ids`
-  // and reaches the scheduler/taskBriefPrompt anyway, ordinalFor(id) is undefined and
-  // `scripts/task-brief <plan> undefined` fails the whole round — the same crash C5 fixed,
-  // through a different door. Filter to ids the planner actually mapped before grouping/dispatch;
-  // quarantine the rest explicitly (same `escalated` list "Escalation = notify + quarantine +
-  // continue" uses) rather than letting them fail silently downstream.
-  // Closes the TODO seam Task 2 left here: route each unmapped id through the SAME blocker-bead +
-  // triage flow as every other blocker trigger (see "The blocker-bead path"), instead of a bare
-  // quarantine — a `RESOLVE` verdict (e.g. "re-plan with this clarification") gets a real chance
-  // next round; only an `ESCALATE` actually quarantines (handleBlocker's own logic, unchanged).
+  // planner-prompt.md permits leaving a genuinely unplannable bead unmapped (BLOCKED, no mapping
+  // row, no ## Task <N> section). Briefing such an id would run `task-brief <plan> undefined` and
+  // fail its chain, so only mapped ids dispatch; each unmapped id goes through the same
+  // blocker-bead + triage flow as every other blocker trigger, so a RESOLVE verdict (e.g.
+  // "re-plan with this clarification") gets a real chance next round.
   const plannedIds = ids.filter(id => ordinalFor(id) !== undefined)
   const unplannedIds = ids.filter(id => ordinalFor(id) === undefined)
-  if (unplannedIds.length) {
-    log('plan: ' + unplannedIds.length + ' id(s) left unmapped this round by the planner (no plan-file section) — routing through the blocker-bead path: ' + JSON.stringify(unplannedIds))
-    const missingFor = id => (planned.unplanned ?? []).find(u => u.id === id)?.missingDecision
-    // Parallelism fix (same review as the round-barrier removal): this used to `await` a bead
-    // filing AND a full opus triage PER ID, serially, before any implementer dispatched — an
-    // unmapped id could stall the whole round's real work behind minutes of triage. The filings
-    // are independent mechanical dispatches — file them in parallel — and the triage rides the
-    // integration queue (each unmapped id enqueued as a BLOCKED record, handled by
-    // `handleBlocker` via `integrateOne`'s BLOCKED branch), so implementation dispatch below
-    // starts immediately and triage serializes only against merges/other triage, which is the
-    // queue's job. Null bead filing ("Null dispatch policy"): blockerBead passes through
-    // null-safe — handleBlocker's missing-bead fallback files one, and if that also nulls, it
-    // leaves the task unsettled rather than triaging against "the blocker bead undefined".
-    const beads = await parallel(unplannedIds.map(id => () =>
-      dispatch(() => unplannedBlockerPrompt(id, epicId, missingFor(id)), `unplanned-blocker:${id}`,
-        { label: `unplanned-blocker:${id}`, phase: 'Plan', model: model('mechanical'), schema: RESULT })))
-    unplannedIds.forEach((id, i) => enqueueIntegration({ id, status: 'BLOCKED', blockerBead: beads[i]?.blockerBead }))
-  }
 
-  // DISPATCH IS NO LONGER GATED ON FILE OVERLAP (measured live, 197-bead epic durak-hgr,
-  // 2026-08-20..23): disjoint-file bucketing collapsed 17 ready beads into 4 buckets — effective
-  // parallelism 4.25 against a configured cap of 14, and raising the cap 4→14 bought 1.5×, not
-  // 3.5×. Across the whole epic, ALL 12 BLOCKED ledger lines were plan/spec ordering defects —
-  // not one was a rebase conflict. The protection cost ~3.5× and prevented nothing that
-  // occurred: every task runs in its own worktree (on-disk collision between concurrent
-  // implementers is impossible), and the only real conflict point — the rebase at the merge
-  // gate — is serial by construction (the integration queue above), with a bounded conflict
-  // resolution, the seam review, and the blocker path behind it. What replaces bucketing:
-  // - a SLIDING-WINDOW scheduler (`makeScheduler`, helpers below): every planned id dispatches
-  //   the moment a slot frees, bounded by `cap` (config.concurrency). No wave/chunk barriers —
-  //   the old `chunk(group, cap)` inter-batch barrier was the round-barrier defect one level
-  //   down: a straggler in batch k held batch k+1's DISPATCH hostage exactly the way the round
-  //   barrier held merges hostage.
-  // - a HOT-FILE CAP (`config.hotFileCap`, default 3 — optional, additive contract key like
-  //   `integrationWorktree`): at most that many in-flight tasks may declare the same file.
-  //   `filesTouched` demotes from a dispatch gate to a scheduling constraint — it bounds
-  //   worst-case rebase churn on a shared barrel/index/registry file without collapsing the
-  //   frontier. An id with undeclared files no longer runs solo: worktree isolation makes
-  //   dispatch-time collision impossible, so the old solo-bucket fail-safe bought nothing but
-  //   full serialization.
-  // DESIGN ALTERNATIVES CONSIDERED AND REJECTED (recorded so the next reader doesn't re-derive
-  // them): (a) keeping filesTouched as a MERGE-ORDERING hint (merge same-file tasks adjacently
-  // to minimise rebase distance) — rejected: it conflicts with completion-order drain; holding a
-  // finished task's merge until a same-file sibling completes is the round barrier in miniature,
-  // a certain wait cost paid for a speculative rebase-distance saving. The dispatch-decoupling
-  // half of that idea IS what shipped. (b) keeping chunk-wave dispatch with the merge queue
-  // inside each wave — rejected after inspection: a straggler in wave k still blocks wave k+1's
-  // DISPATCH entirely (the same defect one level down), and the sliding window subsumes waves
-  // at no extra complexity (verified by the harness's straggler-overtake scenario).
-  // HONEST COUNTER-EVIDENCE, recorded rather than hidden: bucketing DID catch one real event in
-  // the measured epic — a semantic clash (durak-hgr.2.13) where two textually disjoint edits
-  // merged cleanly and WRONG (git reported no conflict; serialization would have let the second
-  // implementer build on the first's change). This relaxation stops catching that class at
-  // dispatch time. What catches it now: the post-rebase seam review (when the two tasks touched
-  // the same files), the Finish-phase full-suite sweep, and the whole-epic final review. That is not free, and this comment exists so nobody re-derives the old rule OR
-  // presents the new one as costless.
+  // Dispatch is a sliding window, not file-overlap buckets: every planned id dispatches the moment
+  // a slot frees, bounded by `cap`. Each task runs in its own worktree, so concurrent implementers
+  // cannot collide on disk; the only conflict point is the rebase at the serial merge gate, with
+  // the bounded conflict resolution, the seam review, the merge check and the blocker path behind
+  // it. `filesTouched` is one scheduling constraint: at most `hotFileCap` in-flight tasks may
+  // declare the same file, which bounds rebase churn on a shared barrel/index/registry. Cost,
+  // stated: two textually disjoint edits that merge cleanly and compose wrong are not caught at
+  // dispatch time; the seam review (same files), the Finish sweep and the final review catch them.
   //
-  // Per-task chain, per id. NO barrier between stages OR between tasks: a fast task proceeds —
-  // all the way through its own merge, via enqueueIntegration — while a slow sibling lags.
-  // Each agent works in its own worktree cut from the integration branch (taskWorktree(id)) and
-  // does its own git/bd I/O (see prompt templates). The brief stage dispatches on `mechanical`
-  // (task-brief is a deterministic extraction, not judgment); implement/review stay on their
-  // config-tiered roles.
-  //
-  // Comments preserved from the staged-pipeline shape, still load-bearing here:
-  // - `n`/`branch` are sourced from `ordinalFor(br.id)`/`taskWorktree(br.id)` DIRECTLY — never
-  //   from the brief agent's own echo (`RESULT` doesn't require either field; trusting the echo
-  //   reproduces C2's "branch: undefined"). `base`, by contrast, genuinely cannot be sourced
-  //   this way: it's a commit SHA captured inside the task's worktree (see taskBriefPrompt) and
-  //   the coordinator has no git access to compute it — the one field where round-tripping
-  //   through the brief report is deliberate.
-  // - I-8: a brief that reports BLOCKED (task-brief's "task not found") must not be handed to
-  //   the implementer — it becomes the task's result directly, `n`/`branch` stamped.
-  // - C4: an implementer's own BLOCKED skips review entirely — reviewAndFix's CLEAN/NEEDS_FIX
-  //   would overwrite the status and route blocked work to `mergePrompt`. The BLOCKED result
-  //   flows to `integrateOne`, whose status guard hands it to `handleBlocker` (the single
-  //   convergence point for every blocker trigger — see its I-7 comment).
+  // Per-task chain, per id, with no barrier between stages or tasks: a fast task proceeds all the
+  // way through its own merge while a slow sibling lags. `n`/`branch` come from
+  // `ordinalFor(id)`/`taskWorktree(id)`, never from an agent's echo; `base` is the one git fact
+  // the brief agent reports, because the coordinator has no git access. A brief or implementer
+  // BLOCKED never reaches review; it goes to `handleBlocker`, the single convergence point for
+  // every blocker trigger.
   phase('Implement')
   const sched = makeScheduler(cap, hotFileCap, id => planned.mapping.find(m => m.id === id)?.files ?? [])
-  const runTask = async id => {
+  // Work outside a task chain (an unmapped id's filing and triage, a failed merge's blocker path)
+  // takes a scheduler slot like a chain does, so admitted work never exceeds the cap.
+  const withSlot = async (id, fn) => {
     await sched.acquire(id)
-    let r = null
-    try {
-      let br = await dispatch(() => taskBriefPrompt(planned.planPath, ordinalFor(id), id, taskWorktree(id), taskBranch(id), integrationBranch, artifacts(id).brief), `brief:${id}`, { label: `brief:${id}`, phase: 'Implement', model: model('mechanical'), schema: RESULT })
-      if (!br) return null  // null brief ("Null dispatch policy"): no progress this round — dispatch() already logged it; the next ready query re-surfaces the id
-      // issue #5 (id re-stamp): the coordinator dispatched `id`; whatever id the agent echoes back
-      // is discarded. One live agent reported its plan ordinal (`task-9`) as the id, and that
-      // string went on to be filed against, ledgered, and returned in a bucket. Identity is the
-      // coordinator's, never the agent's — same rule `stamp()` applies inside reviewAndFix.
-      br = { ...br, id }
-      // BLOCKED_AUTH (issue #3 defect 3) rides the same passthrough as BLOCKED at both stages: it
-      // must never reach review or merge, and `integrateOne` routes it to `handleAuthRefusal`
-      // (log + quarantine + continue), never to `handleBlocker` (no bead, no triage).
-      if (br.status === 'BLOCKED' || br.status === 'BLOCKED_AUTH') r = { ...br, n: ordinalFor(id), branch: taskWorktree(id) }
-      // issue #5 defect 6: a re-entered task whose branch is ALREADY merged into the integration
-      // branch (the resume relaxation's "wasteful but self-healing" case: merge landed, `bd close`
-      // did not) has nothing to implement and an EMPTY diff to review — which the review stage's
-      // INVALID-twice rule then reported as BLOCKED, filing a blocker bead against finished work
-      // (three of the measured run's six). The brief stage answers `alreadyMerged` from git (the
-      // branch tip is the second parent of a merge on the integration branch); the coordinator
-      // skips implement/review/merge and goes straight to closing the bead.
-      else if (br.alreadyMerged === true) {
-        log(`${id}: task branch is already merged into ${integrationBranch} (re-entry after a lost bd close) — closing the bead, no implement/review/merge`)
-        r = { id, n: ordinalFor(id), branch: taskWorktree(id), base: br.base, status: 'ALREADY_MERGED' }
-      }
-      else {
-        let im = await dispatch(() => implementPrompt({ ...br, n: ordinalFor(id), branch: taskWorktree(id) }, integrationBranch, artifacts(id)), `implement:${id}`, { label: `impl:${id}`, phase: 'Implement', model: model('implementer'), schema: RESULT })
-        if (!im) return null  // null implement: same — not CLEAN, not BLOCKED, re-enters next round
-        im = { ...im, id }
-        // issue #5 defect 3: an implementer that reports IMPLEMENTED with its edits UNCOMMITTED
-        // (two on the measured run, one whose report even claimed a commit) leaves the task
-        // branch at `base`, so the review package's base..HEAD range is empty and the review
-        // stage's INVALID-twice rule filed a blocker bead against correct, unreviewed work. The
-        // implementer now reports `head`; a head equal to the brief's base means nothing was
-        // committed. One bounded nudge — commit what is there — then a diagnosed BLOCKED whose
-        // finding names the cause, so triage reads "uncommitted", not "reported BLOCKED".
-        if (im.status === 'IMPLEMENTED' && im.head && br.base && im.head === br.base) {
-          log(`${id}: implementer reported IMPLEMENTED but head == base (${short(br.base)}) — nothing committed on the task branch; one commit nudge`)
-          const nudged = await dispatch(() => commitNudgePrompt(id, ordinalFor(id), taskWorktree(id), taskBranch(id), br.base, artifacts(id).report), `commit-nudge:${id}`, { label: `commit-nudge:${id}`, phase: 'Implement', model: model('implementer'), schema: RESULT })
-          if (!nudged) return null  // null nudge: unsettled this round, re-enters via the next ready batch
-          im = { ...im, ...nudged, id }
-          if (!im.head || im.head === br.base) {
-            im = { ...im, status: 'BLOCKED', finding: `no commit on the task branch after the implementer reported IMPLEMENTED twice — the branch ${taskBranch(id)} is still at base ${short(br.base)}; the work is uncommitted in ${taskWorktree(id)} or was never made. The task was NOT reviewed.` }
-          }
-        }
-        const done = { ...im, n: ordinalFor(id), branch: taskWorktree(id), base: br.base }
-        r = (done.status === 'BLOCKED' || done.status === 'BLOCKED_AUTH') ? done : await reviewAndFix(done, planned.planPath, artifacts(id))
-      }
-    } finally {
-      sched.release(id)  // free the dispatch slot BEFORE integration: merges ride their own
-                         // single-flight queue and must not hold a concurrency slot hostage
-    }
-    // The instant this task's own chain ends, its integration joins the queue — no round
-    // barrier. A null chain result (dead dispatch somewhere above) enqueues nothing: no
-    // progress this round, re-enters via the next ready batch.
-    if (r) await enqueueIntegration(r)
-    return r
+    try { return await fn() } finally { sched.release(id) }
   }
-  // INTER-ROUND BARRIER REMOVAL (measured live: over a 153-minute window at cap 14, mean
-  // concurrency 2.85, median 1, max 8 — 51% of minutes had ≤1 agent running, in a bimodal shape
-  // of implementation bursts followed by a long single-agent merge-drain tail. Max 8 against cap
-  // 14 means the cap was NOT the binding constraint; this barrier was). Previously this section
-  // was `await parallel(all chains)` then `await mergeChain`: a bead unblocked by the round's
-  // FIRST merge waited for its LAST, plus the next round's Close/Ready/Plan head, before
-  // dispatching. Now each successful merge fires a TOP-UP: a ready re-query whose newly-ready,
-  // already-mapped ids dispatch into this same round's scheduler immediately.
-  //
-  // Why a top-up needs no planner pass (verified, load-bearing): planPrompt requires the FIRST
-  // planning round to enumerate every READY AND BLOCKED descendant, and `planned.mapping` is the
-  // FULL CUMULATIVE table — so `ordinalFor(id)`/`artifacts(id)` already resolve for beads that
-  // were blocked when the round started. An id with NO mapping row (created mid-round; or a
-  // refill edge case) is deliberately skipped — it waits for the next round's planner pass
-  // rather than adding a planner call inside the merge path.
-  //
-  // Bounds and safety, stated explicitly:
-  // - RECURSION BOUND: a topped-up bead's own merge fires another top-up, but `dispatched` only
-  //   grows and only ids with mapping rows ever dispatch, so total chains ≤ the mapping size —
-  //   a finite set fixed at Plan time. Top-up queries fire at most once per successful merge
-  //   (coalesced further by the re-entrancy guard), and merges ≤ chains, so queries are bounded
-  //   too. Strictly monotone growth toward a finite ceiling: the round terminates.
-  // - RE-ENTRANCY: one top-up query in flight at a time; a merge landing mid-query sets a flag
-  //   and the query re-runs once after — two merges close together cost one query, not two.
-  // - DEADLOCK ORDERING: a top-up awaits only its own ready dispatch and pushes chains; it
-  //   never awaits mergeChain. Chains await the scheduler and their own integration; the merge
-  //   queue awaits only integrations. No cycle. The hook call inside integrateOne is
-  //   fire-and-forget, so the merge queue never waits on a top-up either.
-  // - NULL top-up query ("Null dispatch policy"): opportunistic, so a null just skips this
-  //   top-up — logged by dispatch(), no bounded retry, never a stopReason. The next ROUND's
-  //   ready query remains the authority; a bead a null top-up missed dispatches then, exactly
-  //   as it would have before this change. It still counts into nullsThisRound, which is
-  //   correct: a no-progress round with a swallowed null takes the bounded null-retry.
-  // - NO-PROGRESS GUARD: unchanged semantics. Top-ups fire only after a successful merge, and a
-  //   successful merge already made the round productive (completed grew) — so a top-up can
-  //   never make an unproductive round look productive. The guard reads the sets only after
-  //   full quiescence + drain below, so it can never make a productive round look unproductive
-  //   either: everything the round did, top-ups included, is settled before it runs.
-  const dispatched = new Set(plannedIds)
-  // Chain rejections are swallowed to null — mirroring parallel()'s per-thunk catch, so one dead
-  // chain cannot abort the round-end drain — but the EXCEPTION IS LOGGED IN FULL first (2nd
-  // downstream feedback round, defect #1): a bare `.catch(() => null)` made a chain that died on
-  // a schema mismatch or a thrown prompt builder vanish with no type, no message, no stack — the
-  // round just reported a smaller frontier for no visible reason. One helper, applied at ALL
-  // THREE chain call sites (planned, top-up, RESOLVE retry) so every path reports identically.
-  // NOTE: parallel() cannot replace this array — its thunk list is fixed at call time and
-  // `chains` must grow while being awaited; the sliding-window scheduler is what bounds
-  // concurrency here, parallel() never was. Do not "restore" parallel() for this.
+  // Chain rejections are swallowed to null, as parallel() does, so one dead chain cannot abort the
+  // round-end drain — but the exception is logged in full first, so a chain that died on a schema
+  // mismatch or a thrown prompt builder never vanishes silently. `chains` grows while it is
+  // awaited (top-ups, RESOLVE retries, blocker jobs), which parallel() cannot do; the scheduler is
+  // what bounds concurrency.
   const chainCatch = id => e => {
     log(`chain for ${id} REJECTED — swallowed to null exactly as parallel() does, so the round-end drain still completes: ${e && e.stack ? e.stack : String(e)}`)
     return null
   }
-  const chains = plannedIds.map(id => runTask(id).catch(chainCatch(id)))
+  const chains = []
+  if (unplannedIds.length) {
+    log('plan: ' + unplannedIds.length + ' id(s) left unmapped this round by the planner (no plan-file section) — routing through the blocker-bead path: ' + JSON.stringify(unplannedIds))
+    const missingFor = id => (planned.unplanned ?? []).find(u => u.id === id)?.missingDecision
+    // Each unmapped id files its blocker bead and goes straight to triage as its own job beside the
+    // implementers — no barrier, and never on the merge queue. A null filing passes through:
+    // handleBlocker's missing-bead fallback files one, and leaves the task unsettled if that nulls too.
+    for (const id of unplannedIds) {
+      chains.push(withSlot(id, async () => {
+        try {
+          const bead = await dispatch(() => unplannedBlockerPrompt(id, epicId, missingFor(id)), `unplanned-blocker:${id}`,
+            { label: `unplanned-blocker:${id}`, phase: 'Plan', ...tier('mechanical'), schema: RESULT })
+          await handleBlocker({ id, status: 'BLOCKED', blockerBead: bead?.blockerBead }, planned.planPath, onResolve)
+        } finally { flushLedger(id, 'Triage') }
+      }).catch(chainCatch(id)))
+    }
+  }
+  const runTask = async id => {
+    try {
+      await sched.acquire(id)
+      let r = null
+      let integrate = false
+      try {
+        let br = await dispatch(() => taskBriefPrompt(planned.planPath, ordinalFor(id), id, taskWorktree(id), taskBranch(id), integrationBranch, artifacts(id).brief), `brief:${id}`, { label: `brief:${id}`, phase: 'Implement', ...tier('mechanical'), schema: RESULT })
+        if (!br) return null  // null brief ("Null dispatch policy"): no progress this round — dispatch() already logged it; the next ready query re-surfaces the id
+        // issue #5 (id re-stamp): the coordinator dispatched `id`; whatever id the agent echoes back
+        // is discarded. One live agent reported its plan ordinal (`task-9`) as the id, and that
+        // string went on to be filed against, ledgered, and returned in a bucket. Identity is the
+        // coordinator's, never the agent's — same rule `stamp()` applies inside reviewAndFix.
+        br = { ...br, id }
+        // BLOCKED_AUTH rides the same passthrough as BLOCKED at both stages: it must never reach
+        // review or merge, and the chain's outcome step routes it to `handleAuthRefusal`
+        // (log + quarantine + continue), never to `handleBlocker` (no bead, no triage).
+        if (br.status === 'BLOCKED' || br.status === 'BLOCKED_AUTH') r = { ...br, n: ordinalFor(id), branch: taskWorktree(id) }
+        // issue #5 defect 6: a re-entered task whose branch is ALREADY merged into the integration
+        // branch (the resume relaxation's "wasteful but self-healing" case: merge landed, `bd close`
+        // did not) has nothing to implement and an EMPTY diff to review — which the review stage's
+        // INVALID-twice rule then reported as BLOCKED, filing a blocker bead against finished work
+        // (three of the measured run's six). The brief stage answers `alreadyMerged` from git (the
+        // branch tip is the second parent of a merge on the integration branch); the coordinator
+        // skips implement/review/merge and goes straight to closing the bead.
+        else if (br.alreadyMerged === true) {
+          log(`${id}: task branch is already merged into ${integrationBranch} (re-entry after a lost bd close) — closing the bead, no implement/review/merge`)
+          r = { id, n: ordinalFor(id), branch: taskWorktree(id), base: br.base, status: 'ALREADY_MERGED' }
+        }
+        else {
+          let im = await dispatch(() => implementPrompt({ ...br, n: ordinalFor(id), branch: taskWorktree(id) }, integrationBranch, artifacts(id)), `implement:${id}`, { label: `impl:${id}`, phase: 'Implement', ...tier('implementer'), schema: RESULT })
+          if (!im) return null  // null implement: same — not CLEAN, not BLOCKED, re-enters next round
+          im = { ...im, id }
+          // issue #5 defect 3: an implementer that reports IMPLEMENTED with its edits UNCOMMITTED
+          // (two on the measured run, one whose report even claimed a commit) leaves the task
+          // branch at `base`, so the review package's base..HEAD range is empty and the review
+          // stage's INVALID-twice rule filed a blocker bead against correct, unreviewed work. The
+          // implementer now reports `head`; a head equal to the brief's base means nothing was
+          // committed. One bounded nudge — commit what is there — then a diagnosed BLOCKED whose
+          // finding names the cause, so triage reads "uncommitted", not "reported BLOCKED".
+          if (im.status === 'IMPLEMENTED' && im.head && br.base && im.head === br.base) {
+            log(`${id}: implementer reported IMPLEMENTED but head == base (${short(br.base)}) — nothing committed on the task branch; one commit nudge`)
+            const nudged = await dispatch(() => commitNudgePrompt(id, ordinalFor(id), taskWorktree(id), taskBranch(id), br.base, artifacts(id).report), `commit-nudge:${id}`, { label: `commit-nudge:${id}`, phase: 'Implement', ...tier('implementer'), schema: RESULT })
+            if (!nudged) return null  // null nudge: unsettled this round, re-enters via the next ready batch
+            im = { ...im, ...nudged, id }
+            if (!im.head || im.head === br.base) {
+              im = { ...im, status: 'BLOCKED', finding: `no commit on the task branch after the implementer reported IMPLEMENTED twice — the branch ${taskBranch(id)} is still at base ${short(br.base)}; the work is uncommitted in ${taskWorktree(id)} or was never made. The task was NOT reviewed.` }
+            }
+          }
+          const done = { ...im, n: ordinalFor(id), branch: taskWorktree(id), base: br.base }
+          r = (done.status === 'BLOCKED' || done.status === 'BLOCKED_AUTH') ? done : await reviewAndFix(done, planned.planPath, artifacts(id))
+        }
+        // The chain's outcome. Blocker, permission-refusal and already-merged outcomes never touch
+        // the integration branch: they are handled here, inside this task's slot (a triage is an
+        // agent like any other, so it counts against the cap). Only a merge candidate leaves the
+        // slot, for the single-flight queue. A null result (a dead dispatch above) does nothing this
+        // round — the next ready batch re-surfaces the id.
+        if (r?.status === 'BLOCKED') await handleBlocker(r, planned.planPath, onResolve)
+        else if (r?.status === 'BLOCKED_AUTH') await handleAuthRefusal(r, r.finding)
+        else if (r?.status === 'ALREADY_MERGED') await closeAlreadyMerged(r)
+        else if (r) integrate = true
+      } finally {
+        sched.release(id)  // free the slot before integration: merges ride their own queue
+      }
+      if (integrate) await enqueueIntegration(r)
+      return r
+    } finally {
+      flushLedger(id, 'Integrate')  // this chain's ledger lines, in one append, off the critical path
+    }
+  }
+  // Mid-round top-up: each successful merge fires a ready re-query whose newly-ready,
+  // already-mapped ids dispatch into this round's scheduler immediately, instead of waiting for
+  // the merge drain plus the next round's head. No planner pass is needed: the first planning round
+  // maps every ready AND blocked descendant, and `planned.mapping` is cumulative. An id with no
+  // mapping row is skipped and waits for the next round's planner pass.
+  // Bounds: `dispatched` only grows and only mapped ids dispatch, so chains ≤ the mapping size;
+  // one top-up query in flight at a time (a merge landing mid-query re-runs it once); a top-up
+  // never awaits mergeChain and integrateOne never awaits a top-up, so there is no cycle. A null
+  // top-up query just skips that top-up — the next round's ready query is the authority.
+  const dispatched = new Set(plannedIds)
+  for (const id of plannedIds) chains.push(runTask(id).catch(chainCatch(id)))
   let topUpActive = false, topUpQueued = false
   let topUpQueriesUsed = 0
   let startGateLogged = false
@@ -2401,7 +2399,7 @@ while (true) {
         // array. The close pass rides this dispatch because the top-up fires per successful
         // merge — the exact moment an epic can become close-eligible (issue #2 defect 3).
         const more = await dispatch(() => topUpPrompt(epicId), 'bd-ready-topup',
-          { label: 'bd-ready-topup', phase: 'Implement', schema: READY, model: model('mechanical') })
+          { label: 'bd-ready-topup', phase: 'Implement', schema: READY, ...tier('mechanical') })
         if (!more) { log('top-up ready query returned null — skipping this top-up; the next round query is the authority'); return }
         for (const id of (more.ids ?? [])) {
           if (dispatched.has(id) || escalated.has(id)) continue
@@ -2452,9 +2450,8 @@ while (true) {
   // still querying — so await chains AND top-ups together, and loop until NEITHER array grew
   // while awaiting (checking chains alone is not enough: a top-up pushed during the await could
   // otherwise be left unawaited and its work unaccounted). Terminates by the recursion bound
-  // above. Only then drain mergeChain (which at this point holds at most the unplanned-id
-  // triage entries enqueued before the chains) so the detector line and the no-progress guard
-  // read the round's complete outcome.
+  // above. Blocker jobs live in `chains` too, so quiescence covers them; mergeChain is already
+  // settled by then (every integration is awaited by its chain) — awaited once more as a guard.
   for (;;) {
     const chainCount = chains.length, topUpCount = topUps.length
     await Promise.all([...chains, ...topUps])
@@ -2465,50 +2462,31 @@ while (true) {
     log(`top-up failed and was swallowed (live run — a top-up gates nothing; see the adjudicated rethrow policy above): ${topUpFailure && topUpFailure.stack ? topUpFailure.stack : String(topUpFailure)}`)
   }
   await mergeChain
+  // This round's ledger lines are written before the round's own report: any buffer a chain left
+  // behind is flushed, and the ledger chain drains.
+  flushAllLedger('Integrate')
+  await drainLedger()
 
-  // THE DETECTOR the old rule never had. §Parallelism used to tell the operator to "notice"
-  // bucket collapse and "say so in the run" — a warning that depends on someone voluntarily
-  // looking is not a detector, and the measured 4.25-of-14 collapse ran unnoticed for five
-  // days. Every round now reports effective parallelism against the configured cap and names
-  // the suspected cause from the causes §Parallelism already lists.
+  // The detector: every round reports effective parallelism against the cap and names the
+  // suspected cause. The frontier hint keys on TOTAL dispatched (planned + topped-up): a small
+  // round-start frontier the top-up then filled is healthy. Query usage is reported so
+  // config.topUpQueryCap can be tuned from evidence.
   const hotDeferrals = Object.entries(sched.stats.hotFileDeferrals)
-  // The frontier hint keys on TOTAL dispatched (planned + topped-up), never on plannedIds alone:
-  // after the top-up fix, a small round-start frontier that the top-up then filled is the fix
-  // WORKING, not a narrative-order smell — keying the hint on plannedIds would make it fire on
-  // exactly the healthy rounds. Query usage is reported so config.topUpQueryCap's default can be
-  // tuned from evidence rather than guessed.
-  log(`parallelism: ${plannedIds.length} ready · topped-up ${dispatched.size - plannedIds.length} · cap ${cap} · peak in-flight ${sched.stats.peak} · top-up queries ${Math.min(topUpQueriesUsed, topUpQueryCap)}/${topUpQueryCap}`
+  const slotsNote = runtimeSlots ? ` · runtime slots ${runtimeSlots}` : ''
+  log(`parallelism: ${plannedIds.length} ready · topped-up ${dispatched.size - plannedIds.length} · cap ${cap} · peak in-flight ${sched.stats.peak} · top-up queries ${Math.min(topUpQueriesUsed, topUpQueryCap)}/${topUpQueryCap}${slotsNote}`
     + (hotDeferrals.length ? ` · hot-file deferrals: ${hotDeferrals.map(([f, n]) => `${f} (${n} task(s) waited)`).join(', ')} — a shared barrel/index/registry to split or assign to one task, or over-declared filesTouched (./planner-prompt.md)` : '')
     + (dispatched.size < cap ? ` · dispatched frontier smaller than the cap — if more open beads are waiting on dependencies, check for edges encoding narrative order rather than genuine blocking (super-design §Decomposition)` : ''))
-  // issue #3 defect 6: the detector line used to exist only as Workflow `log()` output — retrievable
-  // solely from the invoking session's own capture, which the measured run did not persist, so
-  // after the fact "clean" and "unmeasured" were indistinguishable. Same class as the launch args
-  // (issue #2 defect 6), same fix: a ledger line. `Detector:` is a non-Task line the Resume reader
-  // ignores, like `Launch:`. One mechanical dispatch per completed round.
-  const detectorLine = `Detector: round ${roundNo} — ${plannedIds.length} ready · topped-up ${dispatched.size - plannedIds.length} · cap ${cap} · peak in-flight ${sched.stats.peak} · top-up queries ${Math.min(topUpQueriesUsed, topUpQueryCap)}/${topUpQueryCap}${hotDeferrals.length ? ` · hot-file deferrals: ${hotDeferrals.map(([f, n]) => `${f} (${n})`).join(', ')}` : ''}`
-  await appendLedger(detectorLine,
-    'ledger-append:detector', { label: 'ledger-append:detector', phase: 'Integrate', model: model('mechanical') })
-  // issue #3 design question C (decided: conditional, report-only): two consecutive rounds with the
-  // dispatched frontier under the cap arm ONE read-only edge audit — an opus-tier read of the bulk
-  // dump that names suspect edges and the achievable width (open leaves / remaining depth) against
-  // the configured cap, so an over-configured cap reads as a number rather than reassurance. It
-  // never edits the graph: removing an edge mid-run is an operator's call (super-design §Splitting
-  // a Bead shows how much a graph edit can break). Bounded by `edgeAuditCap` per invocation; the
-  // streak resets on each audit so a long tail re-arms it every two rounds, not every round.
+  // The same line goes to the ledger (`Detector:`, a non-Task line the Resume reader ignores), so a
+  // run's parallelism is recoverable afterwards. Queued, not awaited: the next round starts now.
+  const detectorLine = `Detector: round ${roundNo} — ${plannedIds.length} ready · topped-up ${dispatched.size - plannedIds.length} · cap ${cap} · peak in-flight ${sched.stats.peak} · top-up queries ${Math.min(topUpQueriesUsed, topUpQueryCap)}/${topUpQueryCap}${hotDeferrals.length ? ` · hot-file deferrals: ${hotDeferrals.map(([f, n]) => `${f} (${n})`).join(', ')}` : ''}${slotsNote}`
+  queueLedger(detectorLine, 'ledger-append:detector', 'Integrate')
+  // Two consecutive rounds with the dispatched frontier under the cap arm ONE report-only edge
+  // audit (bounded by `edgeAuditCap`; the streak resets on each audit). It runs in the background —
+  // the next round does not wait for it — and Finish awaits any still running.
   frontierBelowCapStreak = dispatched.size < cap ? frontierBelowCapStreak + 1 : 0
   if (frontierBelowCapStreak >= 2 && edgeAuditsRun < edgeAuditCap) {
     frontierBelowCapStreak = 0; edgeAuditsRun++
-    const audit = await dispatch(() => edgeAuditPrompt(epicId, integrationWorktree, cap, dispatched.size, roundNo), `edge-audit:${edgeAuditsRun}`,
-      { label: `edge-audit:${edgeAuditsRun}`, phase: 'Integrate', model: model('triage'), schema: EDGE_AUDIT })
-    // Null audit ("Null dispatch policy"): opportunistic — nothing gates on it; the streak simply re-arms.
-    if (audit) {
-      const edges = audit.suspectEdges.map(e => `${e.from}→${e.to} (${e.reason})`).join('; ')
-      audit.achievableWidth = Math.ceil(audit.openLeaves / Math.max(1, audit.depth))  // computed here, never by the agent
-      log(`EDGE AUDIT ${edgeAuditsRun}/${edgeAuditCap} (round ${roundNo}): open leaves ${audit.openLeaves}, remaining depth ${audit.depth}, achievable width ${audit.achievableWidth} vs cap ${cap}${audit.suspectEdges.length ? ` — ${audit.suspectEdges.length} suspect edge(s), report-only, an operator decides: ${edges}` : ' — no suspect edges'}. ${audit.summary}`)
-      await appendLedger(`Edge audit: round ${roundNo} — open leaves ${audit.openLeaves}, depth ${audit.depth}, achievable width ${audit.achievableWidth} vs cap ${cap}; suspect edges: ${edges || 'none'}; ${String(audit.summary).replace(/\s+/g, ' ').trim()}`,
-        `ledger-append:edge-audit:${edgeAuditsRun}`, { label: `ledger-append:edge-audit:${edgeAuditsRun}`, phase: 'Integrate', model: model('mechanical') },
-        `Edge audit: round ${roundNo} — open leaves ${audit.openLeaves}, depth ${audit.depth}, achievable width ${audit.achievableWidth} vs cap ${cap}; suspect edges and summary elided`)
-    }
+    pendingAudits.push(runEdgeAudit(edgeAuditsRun, roundNo, dispatched.size))
   }
 
   // I6/C-2: no-progress guard. A round that made no forward progress at all — no task merged, no
@@ -2548,6 +2526,11 @@ while (true) {
 }
 
 phase('Finish')
+// Background edge audits finish and every ledger line this run noted lands before the Finish
+// report reads the counts.
+await Promise.all(pendingAudits)
+flushAllLedger('Finish')
+await drainLedger()
 log(`Completed: ${completed.size}. Escalated: ${escalated.size}. Pending retry: ${pendingRetry.size}. Parked (merged with fix-pass-declined findings): ${parked.size}. Auth-refused (coverage lost to permission refusals): ${authRefused.length}. Recurring clusters (minor + blocker): ${recurringReported}. Ledger appends failed: ${ledgerAppendFailed.length} (retried and saved: ${ledgerAppendRetried}). Stop reason: ${stopReason}.${stalled ? ' Stalled: true — see the STALLED log line above.' : ''}`)
 // The sweep: the full test suite, run ONCE here against the integration tip the final review is
 // about to read — mandatory whenever work landed (only the build-only mergeCheck runs per merge). `config.sweep` when
@@ -2558,21 +2541,21 @@ let sweepSummary = deferSweep ? SWEEP_DEFERRED : null
 if (deferSweep) log(`sweep: ${SWEEP_DEFERRED} — the caller runs the full suite after this invocation`)
 else if (completed.size) {
   const sw = await dispatch(() => sweepPrompt(sweepCommand, integrationWorktree, integrationBranch), 'sweep',
-    { label: 'sweep', phase: 'Finish', model: model('mechanical') })
+    { label: 'sweep', phase: 'Finish', ...tier('mechanical'), schema: SWEEP_SUMMARY })
   sweepSummary = sw ? String(typeof sw === 'string' ? sw : (sw.summary ?? JSON.stringify(sw))).replace(/\s+/g, ' ').trim() : 'SWEEP UNAVAILABLE — the sweep dispatch returned null; the branch has NOT had its full-suite run'
   // The sweep measured the tip, and an escalated or pending-retry leaf's code is not in it — name
   // those ids on the same summary so "100 passed" is read as "of what landed", never as the epic.
   const unswept = [...new Set([...escalated, ...pendingRetry])].filter(id => !completed.has(id))
   if (unswept.length) sweepSummary += ` — not in this measurement (escalated or pending retry, never merged): ${unswept.join(', ')}`
-  await appendLedger(`Sweep: ${sweepSummary}`,
-    'ledger-append:sweep', { label: 'ledger-append:sweep', phase: 'Finish', model: model('mechanical') },
+  queueLedger(`Sweep: ${sweepSummary}`, 'ledger-append:sweep', 'Finish',
     'Sweep: summary elided — see the sweep dispatch\'s own report')
+  await drainLedger()   // the Metrics re-read below must see the Sweep: line
 }
 // The Metrics block — one mechanical dispatch re-reads the ledger (this run's own appends since
 // Resume's one-time read are not in that variable); the four lines are computed here in JS and
 // appended by ONE dispatch. Written unconditionally, before the final review.
 const metricsLedger = await dispatch(() => readLedgerPrompt(integrationWorktree, ledgerPath), 'read-ledger:finish',
-  { label: 'read-ledger:finish', phase: 'Finish', model: model('mechanical'), schema: LEDGER_TEXT })
+  { label: 'read-ledger:finish', phase: 'Finish', ...tier('mechanical'), schema: LEDGER_TEXT })
 let metrics
 if (!metricsLedger) {
   metrics = ['merges', 'completions', 'fix-pass', 'ledger-check'].map(k => `Metrics: UNAVAILABLE (${k}) — the Finish ledger re-read returned null; no counts derived`)
@@ -2619,10 +2602,10 @@ if (!metricsLedger) {
   ]
 }
 await appendLedger(metrics,
-  'ledger-append:metrics', { label: 'ledger-append:metrics', phase: 'Finish', model: model('mechanical') })
+  'ledger-append:metrics', { label: 'ledger-append:metrics', phase: 'Finish', ...tier('mechanical') })
 const reviewRes = completed.size
   ? await dispatch(() => finalReviewPrompt(epicId, integrationBranch, integrationWorktree, ledgerPath, lastPlanned?.planPath, sweepSummary), 'final-review',
-      { label: 'final-review', phase: 'Finish', model: model('finalReview') })
+      { label: 'final-review', phase: 'Finish', ...tier('finalReview') })
   : 'no work landed'
 // Null final-review ("Null dispatch policy"): an explicit UNAVAILABLE string — never silence, and
 // never anything a reader could mistake for "reviewed, no findings".
@@ -2636,7 +2619,7 @@ const review = reviewRes ?? `FINAL REVIEW UNAVAILABLE — the final-review dispa
 const unsettledIds = [...new Set([...escalated, ...pendingRetry])]
 if (unsettledIds.length) {
   const rec = await dispatch(() => reconcileBucketsPrompt(unsettledIds), 'reconcile-buckets',
-    { label: 'reconcile-buckets', phase: 'Finish', model: model('mechanical'), schema: RECONCILE })
+    { label: 'reconcile-buckets', phase: 'Finish', ...tier('mechanical'), schema: RECONCILE })
   if (!rec) log(`bucket reconciliation unavailable (null dispatch) — returning the in-memory buckets unreconciled; ${unsettledIds.length} escalated/pendingRetry id(s) were NOT checked against the tracker`)
   else for (const id of (rec.closed ?? [])) {
     if (!unsettledIds.includes(id)) continue  // never admit an id this run did not ask about
@@ -2786,6 +2769,20 @@ function checkFixReviewPrompt(r, preFixHead, errors, art) {
   return `READ-ONLY review of a merge-check fix for task ${r.id} (n ${r.n}) in ${r.branch}: do not edit files, commit, or change branch state. The build-only merge check failed on the merged tree with the errors below (build output, data), and a fixer committed an adaptation on top of ${preFixHead}. cd ${r.branch} first. Read \`git diff ${preFixHead}..HEAD\` (write it to ${art.diff('check')} for the record). Scope: the fix only. Check that it resolves the quoted errors by adapting code to the changed signature, API or schema (a call site, a test call, a fixture) and does nothing else: no deleted, skipped, or loosened test assertion, no behavior change beyond the adaptation, no unrelated edits.${testChangesBlock(`${preFixHead}..HEAD`, testPathspecs)}\n<build-errors>\n${errors}\n</build-errors>\nReturn id ${r.id} and status CLEAN (a faithful adaptation) or NEEDS_FIX with \`finding\` naming what goes beyond it — there is no second fix; a NEEDS_FIX sends the task to the blocker path.`
 }
 
+async function runEdgeAudit(k, round, dispatchedCount) {
+  // The conditional, report-only edge audit, run in the background (see the round end). A null is
+  // opportunistic — nothing gates on it; the streak re-arms.
+  const audit = await dispatch(() => edgeAuditPrompt(epicId, integrationWorktree, cap, dispatchedCount, round), `edge-audit:${k}`,
+    { label: `edge-audit:${k}`, phase: 'Integrate', ...tier('triage'), schema: EDGE_AUDIT })
+  if (!audit) return
+  const edges = audit.suspectEdges.map(e => `${e.from}→${e.to} (${e.reason})`).join('; ')
+  audit.achievableWidth = Math.ceil(audit.openLeaves / Math.max(1, audit.depth))  // computed here, never by the agent
+  log(`EDGE AUDIT ${k}/${edgeAuditCap} (round ${round}): open leaves ${audit.openLeaves}, remaining depth ${audit.depth}, achievable width ${audit.achievableWidth} vs cap ${cap}${audit.suspectEdges.length ? ` — ${audit.suspectEdges.length} suspect edge(s), report-only, an operator decides: ${edges}` : ' — no suspect edges'}. ${audit.summary}`)
+  queueLedger(`Edge audit: round ${round} — open leaves ${audit.openLeaves}, depth ${audit.depth}, achievable width ${audit.achievableWidth} vs cap ${cap}; suspect edges: ${edges || 'none'}; ${String(audit.summary).replace(/\s+/g, ' ').trim()}`,
+    `ledger-append:edge-audit:${k}`, 'Integrate',
+    `Edge audit: round ${round} — open leaves ${audit.openLeaves}, depth ${audit.depth}, achievable width ${audit.achievableWidth} vs cap ${cap}; suspect edges and summary elided`)
+}
+
 function edgeAuditPrompt(epicId, integrationWorktree, cap, dispatchedCount, roundNo) {
   // Conditional, report-only. The graph numbers come from scripts/edge-stats; the agent's work is
   // the suspect-edge judgment (grounded in bead text) and the summary.
@@ -2802,10 +2799,10 @@ function sweepPrompt(sweepCommand, integrationWorktree, integrationBranch) {
   const what = sweepCommand
     ? `run EXACTLY this command — unchanged, no added or removed selections, no retries of individual tests: \`${sweepCommand}\``
     : `run the project's FULL test suite once — the command its AGENTS.md, README, or CI configuration names for the whole suite, with any execution envelope AGENTS.md requires (nice/ionice, thread caps) — no selections, no retries of individual tests`
-  return `Full-suite sweep for ${integrationBranch}. In ${integrationWorktree}, at the current tip (record \`git rev-parse HEAD\` first), ${what}. MEASUREMENT-VALIDITY FLOOR: before reporting counts, check that the run actually collected and finished a plausible suite — collection errors, a passed count near zero for a suite known to be large, or a runner that terminated before finalizing its report are NOT results; in any of those cases report the literal prefix "MEASUREMENT INVALID: <cause>" instead of counts. Otherwise report ONE line: "<tip sha7> — <passed> passed, <failed> failed, <errors> errors, <skipped> skipped; failing: <up to 20 failing node ids, or none>; command: <the exact command>". Do not fix anything, do not re-run selectively, do not interpret — the final reviewer reads this line as the branch's full-suite measurement.`
+  return `Full-suite sweep for ${integrationBranch}. In ${integrationWorktree}, at the current tip (record \`git rev-parse HEAD\` first), ${what}. MEASUREMENT-VALIDITY FLOOR: before reporting counts, check that the run actually collected and finished a plausible suite — collection errors, a passed count near zero for a suite known to be large, or a runner that terminated before finalizing its report are NOT results; in any of those cases report the literal prefix "MEASUREMENT INVALID: <cause>" instead of counts. Otherwise report ONE line as \`summary\`: "<tip sha7> — <passed> passed, <failed> failed, <errors> errors, <skipped> skipped; failing: <up to 20 failing node ids, or none>; command: <the exact command>". Do not fix anything, do not re-run selectively, do not interpret — the final reviewer reads this line as the branch's full-suite measurement.`
 }
 
-function mergePrompt(r, integrationBranch, integrationWorktree, resolvedBead, mergeCheck) {
+function mergePrompt(r, integrationBranch, integrationWorktree, resolvedBead, mergeCheck, ledger) {
   // Serial merge-back: rebase onto the integration branch, bounded conflict resolution (conflicted
   // hunks only), the post-rebase seam check, merge --no-ff and bd close. NO tests: the implementer
   // ran the task's tests and the sweep runs the full suite at Finish. `head` and `mergeBase` are
@@ -2827,10 +2824,16 @@ function mergePrompt(r, integrationBranch, integrationWorktree, resolvedBead, me
   const checkStep = mergeCheck
     ? `MERGE CHECK (build only, never tests), only after MERGE succeeded with mergeHead true: run EXACTLY this command on the merged tree in ${integrationWorktree}, unchanged: \`${mergeCheck}\`. If it succeeds, \`git commit --no-edit\` the merge and report check pass. If it fails, do not edit any code or test to make it pass and do not file a blocker bead: \`git merge --abort\` and report merged false with check fail, mergeExit, mergeHead, head and mergeBase as captured, and checkOutput set to the command and the first 40 lines of its error output (a merge-check fix is dispatched from that text).`
     : `No merge check is declared for this project: after MERGE succeeded with mergeHead true, \`git commit --no-edit\` the merge and report check none.`
+  // The merge agent writes the success-path ledger lines itself (`ledger`, from mergeLedger), so
+  // the merge queue never waits on a separate ledger dispatch. It fills only what it measured.
+  const ledgerLines = ledger ? [ledger.mergeLine, ...(ledger.completeLine ? [ledger.completeLine] : [])].map(l => `<ledger-line>${l}</ledger-line>`).join('\n') : ''
+  const ledgerStep = ledger
+    ? ` LEDGER, last, only after the merge is committed and the \`bd close\` above succeeded (never on any other path): in ${integrationWorktree}, append to ${ledgerPath} — if it does not exist, create its parent directory and the file with the exact first line "# SDD ledger — plan: ${planFileName}" — each line below as its own physical line, in order, with exactly the text between its tags (the tags are delimiters), replacing <REBASE> with \`clean\` when rebaseConflictFiles is 0 and \`conflict: N files\` otherwise (N = rebaseConflictFiles), and <RANGE> with the first 7 characters of mergeBase, two dots, and the first 7 characters of head:\n${ledgerLines}\nIf you deleted byte-identical files, append one more line: \`Merge-cleanup: ${r.id} — removed byte-identical untracked copies from the integration worktree before merging: <the deleted paths, comma-separated>\`. Then report ledgerAppended true.`
+    : ''
   const seamStep = r.seamCleared
     ? `This branch is ALREADY rebased and its post-rebase seam has been reviewed (and fixed if needed) — do not repeat the seam check; if new integration commits landed meanwhile, rebase once more and continue straight to the merge.`
     : `POST-REBASE SEAM CHECK, after a successful rebase and BEFORE merging: if ${integrationBranch} moved since this task branched (its current tip is not ${r.base}), list the files the sibling commits changed (\`git diff --name-only ${r.base} ${integrationBranch}\`) and the files this task changed (\`git diff --name-only $(git merge-base ${integrationBranch} ${br}) ${br}\`). If the two lists INTERSECT, do NOT merge: capture head and mergeBase as described below and report merged false with seamOverlap as the intersecting file list — a seam review runs and this merge is re-dispatched. If they do not intersect, or the branch did not move, continue.`
-  return `Task ${r.id}'s branch \`${br}\` is checked out in its worktree ${r.branch}; the integration branch ${integrationBranch} is checked out in ${integrationWorktree}. In ${r.branch}, rebase \`${br}\` onto ${integrationBranch}. Count the files the rebase reported as conflicting (0 if it applied cleanly): that is rebaseConflictFiles, reported however the attempt ends. CONFLICTS: make ONE bounded attempt that resolves the conflicted hunks only, keeping both sides' intent; edit nothing outside the conflicted hunks, and do not run, add, delete, skip, or loosen any test. ${seamStep} Then run \`git merge-base ${integrationBranch} ${br}\` (the POST-REBASE merge-base, captured before merging) and \`git rev-parse ${br}\` (the rebased tip). ${cleanStep} ${mergeStep} ${checkStep} Once the merge is committed, run \`bd close ${r.id}\`${beadClose}, and report merged true with head, mergeBase, rebaseConflictFiles, check, mergeExit, mergeHead, and removedIdentical (empty when you deleted nothing). Run no tests in this dispatch. If the conflict resolution fails, abort the rebase, report check none, and file a blocker bead: ${blockerBeadRule()}, with a body stating the task id, the merge-base SHA of the failed attempt, and the conflicted files, so a later reader can tell a blocker filed against a superseded merge-base from a current one; report merged false with its id as blockerBead, rebaseConflictFiles, and check. ${authRefusalRule()} For THIS dispatch, report a refusal as merged false with authRefused set to the exact refused command(s) instead of a status token.`
+  return `Task ${r.id}'s branch \`${br}\` is checked out in its worktree ${r.branch}; the integration branch ${integrationBranch} is checked out in ${integrationWorktree}. In ${r.branch}, rebase \`${br}\` onto ${integrationBranch}. Count the files the rebase reported as conflicting (0 if it applied cleanly): that is rebaseConflictFiles, reported however the attempt ends. CONFLICTS: make ONE bounded attempt that resolves the conflicted hunks only, keeping both sides' intent; edit nothing outside the conflicted hunks, and do not run, add, delete, skip, or loosen any test. ${seamStep} Then run \`git merge-base ${integrationBranch} ${br}\` (the POST-REBASE merge-base, captured before merging) and \`git rev-parse ${br}\` (the rebased tip). ${cleanStep} ${mergeStep} ${checkStep} Once the merge is committed, run \`bd close ${r.id}\`${beadClose}, and report merged true with head, mergeBase, rebaseConflictFiles, check, mergeExit, mergeHead, and removedIdentical (empty when you deleted nothing).${ledgerStep} Run no tests in this dispatch. If the conflict resolution fails, abort the rebase, report check none, and file a blocker bead: ${blockerBeadRule()}, with a body stating the task id, the merge-base SHA of the failed attempt, and the conflicted files, so a later reader can tell a blocker filed against a superseded merge-base from a current one; report merged false with its id as blockerBead, rebaseConflictFiles, and check. ${authRefusalRule()} For THIS dispatch, report a refusal as merged false with authRefused set to the exact refused command(s) instead of a status token.`
 }
 
 function missingBlockerBeadPrompt(r) {
@@ -2997,10 +3000,10 @@ async function reviewAndFix(im, planPath, art) {
   // errored): one fresh re-dispatch; a second INVALID becomes BLOCKED — the blocker path's
   // missing-bead fallback files the bead with this cause, and triage sees a pipeline defect.
   const validReview = async (build, key) => {
-    let res = await dispatch(build, key, { label: key, phase: 'Implement', model: model('reviewer'), schema: RESULT })
+    let res = await dispatch(build, key, { label: key, phase: 'Implement', ...tier('reviewer'), schema: RESULT })
     if (res && res.status === 'INVALID') {
       log(`review package for ${im.id} INVALID (empty diff / packager failure: ${res.finding ?? 'no detail'}) — the review did not happen; one fresh re-dispatch, never recorded as clean`)
-      res = await dispatch(build, `${key}:retry`, { label: `${key}:retry`, phase: 'Implement', model: model('reviewer'), schema: RESULT })
+      res = await dispatch(build, `${key}:retry`, { label: `${key}:retry`, phase: 'Implement', ...tier('reviewer'), schema: RESULT })
       if (res && res.status === 'INVALID') {
         log(`review package for ${im.id} INVALID twice — treating as BLOCKED (pipeline defect: no reviewer could obtain a non-empty diff)`)
         return { ...res, status: 'BLOCKED', finding: `review package invalid twice — no reviewer could obtain a non-empty diff for task ${im.id} (${res.finding ?? 'no detail'}); the task was NOT reviewed` }
@@ -3018,10 +3021,10 @@ async function reviewAndFix(im, planPath, art) {
   if (rv.status === 'CLEAN') return { ...rv, finding: undefined }
   const finding = rv.finding || `the task review returned ${rv.status} without finding text; its full review is at ${art.review}`
   const fixRes = await dispatch(() => fixPrompt(rv, finding, art, 'review'), `fix:${im.id}`,
-    { label: `fix:${im.id}`, phase: 'Implement', model: model('implementer'), schema: RESULT })
+    { label: `fix:${im.id}`, phase: 'Implement', ...tier('implementer'), schema: RESULT })
   if (!fixRes) return null  // null fix: no progress this round — never an unfixed merge
   // A fixer refused by the permission layer (twice) reports BLOCKED_AUTH — straight to
-  // integrateOne's auth branch (log + quarantine, no bead).
+  // the chain's auth-refusal outcome (log + quarantine, no bead).
   if (fixRes.status === 'BLOCKED_AUTH') return { ...stamp(fixRes), status: 'BLOCKED_AUTH', minors }
   const declined = typeof fixRes.declined === 'string' && fixRes.declined.trim() ? fixRes.declined.replace(/\s+/g, ' ').trim() : undefined
   // A FIXED report must carry a head, and a new one unless every finding was declined; anything
@@ -3036,8 +3039,7 @@ async function reviewAndFix(im, planPath, art) {
     cause = `the fix pass returned status ${fixRes.status}, which is not FIXED; the review findings were not addressed: ${finding}`
   }
   const range = fixRes.head && im.head && fixRes.head !== im.head ? `; commits ${short(im.head)}..${short(fixRes.head)}` : ''
-  await appendLedger(ledgerLine(im.n, im.id, `fix pass ${outcome} (${finding}${range})`),
-    `ledger-append:fix-pass:${im.id}`, { label: `ledger-append:fix-pass:${im.id}`, phase: 'Implement', model: model('mechanical') },
+  noteLedger(im.id, ledgerLine(im.n, im.id, `fix pass ${outcome} (${finding}${range})`),
     ledgerLine(im.n, im.id, `fix pass ${outcome} (finding elided — see ${art.review}${range})`))
   if (outcome === 'BLOCKED') return { ...stamp(fixRes), status: 'BLOCKED', blockerBead: fixRes.blockerBead, finding: cause || finding, minors }
   return { ...rv, status: 'CLEAN', fixPass: true, finding, parkReason: declined }
@@ -3059,14 +3061,13 @@ async function handleAuthRefusal(r, refused) {
   settle(r.id, escalated)
   authRefused.push({ id: r.id, refused: cmd })
   log(`AUTH-REFUSED ${r.id}: the harness permission layer refused \`${cmd}\` (porcelain form and one equivalent; the command never executed). No blocker bead, no triage — nothing an agent can lift here. Coverage for ${r.id} is LOST this run and its dependents stay unready; grant the operation class (Pre-flight step 5) and relaunch to recover it.`)
-  await appendLedger(ledgerLine(r.n, r.id, `BLOCKED-AUTH — permission refused, coverage lost this run: ${cmd}`),
-    `ledger-append:${r.id}`, { label: `ledger-append:${r.id}`, phase: 'Integrate', model: model('mechanical') })
+  noteLedger(r.id, ledgerLine(r.n, r.id, `BLOCKED-AUTH — permission refused, coverage lost this run: ${cmd}`))
 }
 
 async function handleBlocker(r, planPath, onResolve) {
   phase('Triage')
   // Every blocker-path entry converges here — an implementer/brief/fixer BLOCKED (via
-  // `integrateOne`'s BLOCKED branch), a review package invalid twice, a merge whose conflict
+  // the chain's outcome step), a review package invalid twice, a merge whose conflict
   // resolution failed, a seam fix that could not reconcile, and an unmapped planner id. RESULT and
   // MERGE leave `blockerBead` optional, so the missing-bead fallback runs here, once, for all of
   // them. `planPath` is passed in because `planned` is scoped to the round loop.
@@ -3076,7 +3077,7 @@ async function handleBlocker(r, planPath, onResolve) {
     // module-level workspace convention here; an unmapped id (no ordinal) has no report to name.
     const reportPath = r.n !== undefined ? `${integrationWorktree}/${workspace}/task-${r.n}-report.md` : undefined
     const bead = await dispatch(() => missingBlockerBeadPrompt({ ...r, reportPath }), `missing-blocker:${r.id}`,
-      { label: `missing-blocker:${r.id}`, phase: 'Triage', model: model('mechanical'), schema: RESULT })
+      { label: `missing-blocker:${r.id}`, phase: 'Triage', ...tier('mechanical'), schema: RESULT })
     // Null fallback filing ("Null dispatch policy"): with no bead there is nothing for triage to
     // read — leave the task UNSETTLED this round (no bucket, no ledger line) rather than triaging
     // against "the blocker bead undefined"; the next ready batch re-surfaces the id.
@@ -3089,7 +3090,7 @@ async function handleBlocker(r, planPath, onResolve) {
   // Genuine judgment call: RESOLVE vs ESCALATE, on `triage` (opus) — see "Coordinator contract"
   // on why `triage` and `mechanical` are not interchangeable.
   const t = await dispatch(() => triagePrompt(r.id, r.blockerBead, planPath), `triage:${r.id}`,
-    { label: `triage:${r.id}`, phase: 'Triage', model: model('triage'), schema: TRIAGE })
+    { label: `triage:${r.id}`, phase: 'Triage', ...tier('triage'), schema: TRIAGE })
   // Null triage ("Null dispatch policy"): UNSETTLED — neither judgment was made. ESCALATE is
   // terminal quarantine and RESOLVE burns the one-retry allowance, so defaulting to either would
   // spend a cost no agent decided to spend. No bucket, no ledger line; the id re-enters via the
@@ -3103,7 +3104,7 @@ async function handleBlocker(r, planPath, onResolve) {
   // issue #5 defect 7: every triaged blocker entry feeds the recurring-pattern detector, keyed on
   // the triage agent's root cause (whatever the decision — a false-premise blocker RESOLVEd three
   // times and ESCALATEd once is one pattern, not four incidents).
-  await noteRecurrence('blocker', r.id, t.cause || t.detail, 'Triage')
+  noteRecurrence('blocker', r.id, t.cause || t.detail, 'Triage')
   // C-2: bound RESOLVE to exactly one retry per id. A first-time RESOLVE gets a real re-attempt
   // next round (pendingRetry.add, below) — that's the whole point of RESOLVE. But if the SAME id
   // lands back in handleBlocker after that (pendingRetry already has it), the clarification didn't
@@ -3116,18 +3117,17 @@ async function handleBlocker(r, planPath, onResolve) {
     blockerBeadOf.set(r.id, r.blockerBead)  // issue #5 defect 4: closed by the dispatch that lands the retry
     // re-dispatch next round with clarification recorded on the bead; do NOT mark escalated.
     // Recording a clarification is a mechanical write, not a judgment call.
-    await dispatch(() => recordClarificationPrompt(r.id, t.detail), `clarify:${r.id}`, { label: `clarify:${r.id}`, phase: 'Triage', model: model('mechanical') })
+    await dispatch(() => recordClarificationPrompt(r.id, t.detail), `clarify:${r.id}`, { label: `clarify:${r.id}`, phase: 'Triage', ...tier('mechanical') })
     // I1: ledger records the RESOLVE-pending state so a resumed run reconstructs `pendingRetry`
     // (and therefore C-2's one-bounded-retry check above) instead of treating this id as untouched
     // — without this, a restart would let a bad clarification get a second, unbounded RESOLVE.
     // Built through `ledgerLine()` (see the merge-gate call site's comment) so `t.detail` — free
     // text from the triage agent — can't embed a newline and break the one-line-per-outcome shape.
-    await appendLedger(ledgerLine(r.n, r.id, `pending retry — RESOLVE: ${t.detail}`),
-      `ledger-append:${r.id}`, { label: `ledger-append:${r.id}`, phase: 'Triage', model: model('mechanical') },
+    noteLedger(r.id, ledgerLine(r.n, r.id, `pending retry — RESOLVE: ${t.detail}`),
       ledgerLine(r.n, r.id, `pending retry — RESOLVE (clarification elided — recorded on bead ${r.id} via bd comments; blocker bead ${r.blockerBead})`))
     // Same-round retry (see resolveRetryHook): the clarification is recorded and the bead is
     // still ready — re-attempt now instead of next round. The callback is optional-chained: the
-    // caller decides whether a same-round retry mechanism exists (integrateOne passes it).
+    // caller decides whether a same-round retry mechanism exists (every round-scoped caller passes it).
     onResolve?.(r.id)
   } else {
     const bounced = t.decision === 'RESOLVE'  // second RESOLVE for this id — bounced into ESCALATE
@@ -3138,8 +3138,8 @@ async function handleBlocker(r, planPath, onResolve) {
     // Sending a fixed notification is mechanical, same reasoning as the clarification write above.
     // issue #5 defect 9: a null here is retried once with the free text elided — ids and the
     // outcome only — so a notification refused for its wording still reaches the operator.
-    const sent = await dispatch(() => notifyPrompt(r.id, detail), `notify:${r.id}`, { label: `notify:${r.id}`, phase: 'Triage', model: model('mechanical') }) // push if available
-    if (sent === null) await dispatch(() => notifyPrompt(r.id, `detail elided (see blocker bead ${r.blockerBead} and the ledger's BLOCKED line for ${r.id})`), `notify:${r.id}`, { label: `notify:${r.id}`, phase: 'Triage', model: model('mechanical') })
+    const sent = await dispatch(() => notifyPrompt(r.id, detail), `notify:${r.id}`, { label: `notify:${r.id}`, phase: 'Triage', ...tier('mechanical') }) // push if available
+    if (sent === null) await dispatch(() => notifyPrompt(r.id, `detail elided (see blocker bead ${r.blockerBead} and the ledger's BLOCKED line for ${r.id})`), `notify:${r.id}`, { label: `notify:${r.id}`, phase: 'Triage', ...tier('mechanical') })
     log(`ESCALATED ${r.id}: ${detail}`)      // always surfaces in /workflows + completion
     // I1: ledger records the terminal quarantine — SKILL.md's `BLOCKED` line shape — so a resumed
     // run reconstructs `escalated` and the `ids` filter (see the Ready-phase block) skips this id
@@ -3149,8 +3149,7 @@ async function handleBlocker(r, planPath, onResolve) {
     // on. Built through `ledgerLine()`
     // (see the merge-gate call site's comment) so `detail` — which can itself embed `t.detail`,
     // free text from the triage agent — can't break the one-line-per-outcome shape with a newline.
-    await appendLedger(ledgerLine(r.n, r.id, `BLOCKED — ${detail}`),
-      `ledger-append:${r.id}`, { label: `ledger-append:${r.id}`, phase: 'Triage', model: model('mechanical') },
+    noteLedger(r.id, ledgerLine(r.n, r.id, `BLOCKED — ${detail}`),
       ledgerLine(r.n, r.id, `BLOCKED — detail elided (blocker bead ${r.blockerBead}; triage ${bounced ? 'second RESOLVE bounced to ESCALATE' : 'ESCALATE'})`))
   }
 }
@@ -3195,14 +3194,17 @@ narratives that used to accompany each row are in git history; nothing here depe
 | Tasks 4–6 (per-round fix-loop line, `Test changes` block, Finish `Metrics:` block) | replay 51/0 | replay 36/0 | replay 37/0 |
 | issue #5 defects 1–6 (coordinator-owned identities: absolute task worktree + pinned branch + id re-stamp; already-merged short-circuit; commit nudge; blocker-bead close; Finish bucket reconciliation) | replay 52/0 | replay 37/0 | replay 37/0 |
 | issue #5 defects 7–9 (`appendLedger` retry-then-mark; elided retries for free-text lines and `notify`; `noteRecurrence` over minors AND triaged blockers via TRIAGE `cause`) | replay 52/0 | replay 37/0 | replay 37/0 |
-| **D4 loop (one review, one fix pass, no re-review/round cap/adjudicator, no per-merge tests (build-only `mergeCheck`), mandatory sweep with `deferSweep` opt-out, batched ledger appends, `skillsRoot`) — CURRENT; columns 2–3 are now fix-pass-blocked / parked** | **replay 50/0** | **replay 19/0** | **replay 22/0** |
+| D4 loop (one review, one fix pass, no re-review/round cap/adjudicator, no per-merge tests (build-only `mergeCheck`), mandatory sweep with `deferSweep` opt-out, batched ledger appends, `skillsRoot`); columns 2–3 are now fix-pass-blocked / parked | replay 50/0 | replay 19/0 | replay 22/0 |
+| **Off-critical-path batch (blocker handling and already-merged closes off the merge queue; merge agent writes its own success ledger lines; one `ledger:<id>` flush per task chain on a ledger chain nothing awaits; `runtimeSlots` cap; per-role `effort`; background edge audit and unawaited detector append; no unplanned-filing barrier) — CURRENT** | **replay 44/0** | **replay 18/0** | **replay 20/0** |
 
-The D4 row's figures come from the offline replay harness (`tests/super-code/`), updated to the
-D4 loop: it replays the three `args` blocks below and runs the live-sim, null-injection,
-parallelism, seam, merge-check, sweep and Metrics scenarios against this script (1011 checks, 0
-failures at the D4 + `mergeCheck` + merge-evidence revision; the recorded dispatch counts are unchanged by
-`mergeCheck`, which adds dispatches only when a check fails). Every paragraph below that describes fix rounds, the round cap, re-review, the adjudicator, or a
-per-merge gate describes a superseded revision.
+The current row's figures come from the offline replay harness (`tests/super-code/`): it replays
+the three `args` blocks below and runs the live-sim, null-injection, parallelism, seam,
+merge-check, sweep, Metrics, off-queue, ledger-batching, effort and runtime-slot scenarios against
+this script (1067 checks, 0 failures). The drop from the D4 row is all ledger traffic: canonical
+50 → 44 (ten per-line appends become four per-task flushes — `bd-102`'s merge agent wrote both of
+its lines, so it needs none), fix-pass-blocked 19 → 18, parked 22 → 20. Every paragraph below that
+describes fix rounds, the round cap, re-review, the adjudicator, a per-merge gate, or one ledger
+dispatch per line describes a superseded revision.
 
 The issue #3/#4 row's +1 on every scenario is exactly the persisted detector line — one
 `ledger-append:detector` per round that reaches the drain (each scenario's second round exits at
@@ -3224,7 +3226,7 @@ siblings' merges observed dispatched **and completed** while the 13th task's imp
 still running — the old round barrier deadlocks this fixture into the harness timeout), a
 sliding-window straggler (a later id dispatches through a slot freed mid-round, impossible under
 the old chunk waves), a hot-file-cap firing case (same-file task defers, disjoint task
-overtakes, detector names the file), the unplanned-id triage riding the merge queue instead of
+overtakes, detector names the file), the unplanned-id triage riding the merge queue (since moved beside the implementers, off the queue) instead of
 stalling dispatch, and a mechanical `maxOpen.merge === 1` check that the single-flight invariant
 held in every one of them.
 
@@ -3460,7 +3462,7 @@ exercised by the replay harness's live-sim scenarios.
 |---|---|---|
 | `read-ledger` | `{text:""}` | the one-time Resume-phase read; empty text = a fresh epic, nothing reconstructed |
 | `ledger-append:launch` | `{appended:true}` | the `Launch:` args record, once per launch |
-| `ledger-append:detector` | `{appended:true}` | the persisted `Detector: round N — …` line, once per round that reaches the drain (round 1 here; round 2 exits at `ready-drained` first). Keys this scenario never takes — `review:<id>:retry`, `seam-review:<id>`, `merge:<id>:seam-cleared`, `fix:<id>:seam`, `edge-audit:<k>`, `ledger-recurring:<k>` — would throw `dryRun: no stub for key …` if a regression routed onto them |
+| `ledger-append:detector` | `{appended:true}` | the persisted `Detector: round N — …` line, once per round that reaches the drain (round 1 here; round 2 exits at `ready-drained` first). Keys this scenario never takes — `review:<id>:retry`, `seam-review:<id>`, `merge:<id>:seam-cleared`, `fix:<id>:seam`, `edge-audit:<k>`, `ledger-recurring:<k>`, `ledger:bd-102` — would throw `dryRun: no stub for key …` at the next ledger drain or dispatch if a regression routed onto them |
 | `close-epics` (array, 2) | `{rootClosed:false,closedThisRun:[]}` then `{rootClosed:false,closedThisRun:["bd-101","bd-102"]}` | root stays open both rounds; round 2's in-tree closures fire the post-closure re-check |
 | `bd-ready` (array, 2) | `{ids:["bd-101","bd-102","bd-103","bd-104"]}` then `{ids:[]}` | round 1's batch; round 2 drains. Scoping flags are a property of the prompt text, not this return |
 | `bd-ready-topup` | `{ids:[]}` (reused) | the top-up after each successful merge (`bd-101`, `bd-102`) |
@@ -3469,16 +3471,15 @@ exercised by the replay harness's live-sim scenarios.
 | `brief:bd-10X` | `{id,n,status:"BRIEFED",files,branch,base:"<40-char-sha>"}` | per-id; `base` originates here |
 | `implement:bd-101..103` | `{id,n,status:"IMPLEMENTED",files,branch}` | per-id; `n`/`branch` are re-stamped by the coordinator |
 | `implement:bd-104` | `{status:"BLOCKED",blockerBead:"bd-109"}` | the implementer's own BLOCKED skips review and routes to `handleBlocker` |
-| `review:bd-101` | `{status:"NEEDS_FIX",finding:"…src/a.js:42",minors:["…"]}` | the one review that triggers the fix pass; its minor reaches `ledger-minor:bd-101` at the merge gate |
+| `review:bd-101` | `{status:"NEEDS_FIX",finding:"…src/a.js:42",minors:["…"]}` | the one review that triggers the fix pass; its minor is noted at the merge gate and goes out in `ledger:bd-101` |
 | `review:bd-102` / `review:bd-103` | `{status:"CLEAN"}` | clean reviews — no fix pass. **No `review:bd-104` key** |
 | `fix:bd-101` | `{status:"FIXED",head:"<40-char-sha>"}` | the one fix pass; `head` renders the fix-pass line's commit range. No re-review key exists — a regression that re-reviewed would throw |
-| `ledger-append:fix-pass:bd-101` | `{appended:true}` | `Task 1 (bd-101): fix pass FIXED (<finding>; commits <a7>..<b7>)` |
-| `merge:bd-101` / `merge:bd-102` | `{merged:true,head,mergeBase,rebaseConflictFiles:0}` | successful serial merges; `mergeBase..head` renders the completion line |
-| `ledger-append:merge:bd-10X` / `ledger-append:bd-10X` / `ledger-minor:bd-101` | `{appended:true}` | the `Merge:` line, the completion line (`fix pass` for bd-101, `review clean` for bd-102), and bd-101's minors in one dispatch |
+| `merge:bd-101` / `merge:bd-102` | `{merged:true,head,mergeBase,rebaseConflictFiles:0,ledgerAppended:true}` | successful serial merges; each merge agent wrote its own `Merge:` and completion lines |
+| `ledger:bd-101` | `{appended:true}` | bd-101's one flush: its fix-pass line and its minor |
 | `merge:bd-103` | `{merged:false,blockerBead:"bd-108",rebaseConflictFiles:2}` | conflict resolution failed → blocker path. **No `merge:bd-104` key** |
-| `ledger-append:merge-failed:bd-103` | `{appended:true}` | the failure-path `Merge: … → blocker` line |
+| `ledger:bd-103` | `{appended:true}` | bd-103's one flush: the failure-path `Merge: … → blocker` line, then `BLOCKED` |
 | `triage:bd-103` / `triage:bd-104` | ESCALATE / RESOLVE (reused) | bd-104's second visit is bounced from RESOLVE into ESCALATE |
-| `notify:bd-103` / `notify:bd-104` / `clarify:bd-104` / `ledger-append:bd-103` / `ledger-append:bd-104` | fixed | notify on ESCALATE; clarification on RESOLVE; `pending retry` then `BLOCKED` lines for bd-104 |
+| `notify:bd-103` / `notify:bd-104` / `clarify:bd-104` / `ledger:bd-104` | fixed | notify on ESCALATE; clarification on RESOLVE; bd-104 flushes once per chain — `pending retry`, then `BLOCKED` |
 | `sweep` / `ledger-append:sweep` | `{summary:"f00dbee — 12 passed, …"}` / `{appended:true}` | the mandatory full-suite sweep at Finish (work landed); the summary names bd-103/bd-104 as not in the measurement |
 | `read-ledger:finish` / `ledger-append:metrics` | `{text:""}` / `{appended:true}` | the Metrics re-read and the one dispatch appending all four lines |
 | `reconcile-buckets` | `{closed:[]}` | Finish reconciliation of escalated ids against the tracker |
@@ -3503,13 +3504,14 @@ missing-bead fallback (`missing-blocker:<id>`) are not exercised by these scenar
   run continues; on `bd-104` it exercises RESOLVE, the same-round retry, and the one-retry bound.
 - No path reaches `mergePrompt` except after a CLEAN review or a completed fix pass.
 - The sweep dispatches exactly once, before `read-ledger:finish`, because work landed.
+- Ledger writes never wait in the merge queue: bd-101 and bd-102's success lines come from their
+  merge agents; every other task line goes out in one `ledger:<id>` flush per chain.
 - Expected dispatch count: `read-ledger` 1 + `ledger-append:launch` 1 + `close-epics` 2 +
   `bd-ready` 2 + `bd-ready-topup` 2 + `bd-ready-recheck` 1 + `plan` 1 + `brief` 5 + `implement` 5 +
-  `review` 3 + `fix` 1 + `ledger-append:fix-pass` 1 + `merge` 3 + `Merge:` lines 3 + completion lines
-  2 + `ledger-minor` 1 + `triage` 3 + `notify` 2 + `clarify` 1 + blocker-path ledger lines 3 +
-  `ledger-append:detector` 1 + `sweep` 1 + `ledger-append:sweep` 1 + `read-ledger:finish` 1 +
-  `ledger-append:metrics` 1 + `final-review` 1 + `reconcile-buckets` 1 = **50 agent calls, 0
-  errors**, terminal shape `{completed:["bd-102","bd-101"], escalated:["bd-103","bd-104"],
+  `review` 3 + `fix` 1 + `merge` 3 + `triage` 3 + `notify` 2 + `clarify` 1 + task ledger flushes 4
+  (`ledger:bd-101`, `ledger:bd-103`, `ledger:bd-104` ×2) + `ledger-append:detector` 1 + `sweep` 1 +
+  `ledger-append:sweep` 1 + `read-ledger:finish` 1 + `ledger-append:metrics` 1 + `final-review` 1 +
+  `reconcile-buckets` 1 = **44 agent calls, 0 errors**, terminal shape `{completed:["bd-102","bd-101"], escalated:["bd-103","bd-104"],
   pendingRetry:[], parked:[], stalled:false, stopReason:"ready-drained"}`.
 
 If any assertion fails, fix the script **in this doc** (this doc's script is canonical) and
@@ -3517,9 +3519,10 @@ re-run before committing the fix.
 
 ### Baselines for the canonical scenario (recorded, not illustrative)
 
-**Confirmed for the D4 loop by the offline replay harness** (`tests/super-code/replay-harness.mjs`,
-run via `test-coordinator-replay.sh`): 50 agent calls, 0 errors, the terminal shape above. No
-Workflow-hosted run has been recorded against this revision yet.
+**Confirmed for the current revision by the offline replay harness**
+(`tests/super-code/replay-harness.mjs`, run via `test-coordinator-replay.sh`): 44 agent calls,
+0 errors, the terminal shape above. No Workflow-hosted run has been recorded against this
+revision yet. (The D4 loop's 50 is superseded by the off-critical-path batch.)
 
 Superseded by the D4 loop (pre-D4 script: five-round fix loop, per-merge gate). Recorded then: run `wf_97164f71-a3c`: **32 agents dispatched, 0 errors**
 — one MORE than the 31 every prior revision hit, and the +1 is load-bearing: it is the new
@@ -3553,8 +3556,8 @@ it even by coincidence. The figures were real and unaltered — and still not ev
 run never executed. That is the failure the rule generalizes.
 
 **Schema-less dispatches — the harness's "N empty results" is expected, not a defect.** `notify`,
-`clarify`, `ledger-append`, `sweep` and `final-review` carry no `schema:`. The coordinator never
-reads the first three's return; `sweep`'s and `final-review`'s strings are returned verbatim as
+`clarify`, the ledger appends (`ledger:<id>`, `ledger-append:*`, `ledger-recurring:*`), `sweep` and
+`final-review` carry no `schema:`. The coordinator reads the first three only for null; `sweep`'s and `final-review`'s strings are returned verbatim as
 `sweep`/`review`. Don't add schemas to force them into a shape they don't need.
 
 **What this dryRun proves and does not prove:** it proves **coordinator topology** — dispatch
@@ -3612,23 +3615,17 @@ To reproduce or re-verify after a structural edit, run the Workflow tool with th
       "review:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-102\",\"n\":2,\"status\":\"CLEAN\",\"files\":[\"src/b.js\"]}",
       "review:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-103\",\"n\":3,\"status\":\"CLEAN\",\"files\":[\"src/a.js\"]}",
       "fix:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/a.js\"],\"head\":\"fefefef1111111111111111111111111111111\"}",
-      "ledger-append:fix-pass:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
-      "merge:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"merged\":true,\"mergeExit\":0,\"mergeHead\":true,\"head\":\"a1a1a1a1111111111111111111111111111111\",\"mergeBase\":\"aaaaaaa1111111111111111111111111111111\",\"rebaseConflictFiles\":0}",
-      "ledger-append:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
-      "ledger-append:merge:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
-      "ledger-minor:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
-      "merge:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-102\",\"merged\":true,\"mergeExit\":0,\"mergeHead\":true,\"head\":\"b2b2b2b2222222222222222222222222222222\",\"mergeBase\":\"bbbbbbb2222222222222222222222222222222\",\"rebaseConflictFiles\":0}",
-      "ledger-append:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
-      "ledger-append:merge:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "ledger:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "merge:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"merged\":true,\"mergeExit\":0,\"mergeHead\":true,\"head\":\"a1a1a1a1111111111111111111111111111111\",\"mergeBase\":\"aaaaaaa1111111111111111111111111111111\",\"rebaseConflictFiles\":0,\"ledgerAppended\":true}",
+      "merge:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-102\",\"merged\":true,\"mergeExit\":0,\"mergeHead\":true,\"head\":\"b2b2b2b2222222222222222222222222222222\",\"mergeBase\":\"bbbbbbb2222222222222222222222222222222\",\"rebaseConflictFiles\":0,\"ledgerAppended\":true}",
       "merge:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-103\",\"merged\":false,\"blockerBead\":\"bd-108\",\"rebaseConflictFiles\":2}",
-      "ledger-append:merge-failed:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "ledger:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "triage:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"decision\":\"ESCALATE\",\"detail\":\"rebase conflict on src/a.js survived one bounded resolution attempt\"}",
       "triage:bd-104": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"decision\":\"RESOLVE\",\"detail\":\"implementer needs the missing config constant named explicitly; re-plan and re-attempt\"}",
       "notify:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"sent\":true}",
       "notify:bd-104": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"sent\":true}",
-      "ledger-append:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "clarify:bd-104": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"recorded\":true}",
-      "ledger-append:bd-104": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "ledger:bd-104": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "read-ledger:finish": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"text\":\"\"}",
       "ledger-append:metrics": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "reconcile-buckets": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"closed\":[]}",
@@ -3655,14 +3652,14 @@ Nothing merges, so neither the sweep nor the final review dispatches.
 |---|---|---|
 | `review:bd-201` | `{status:"NEEDS_FIX",finding:"race condition … src/x.js:17"}` | the review that starts the fix pass |
 | `fix:bd-201` | `{status:"BLOCKED",blockerBead:"bd-210",finding:"…"}` | the fixer's own BLOCKED, with the bead it filed |
-| `ledger-append:fix-pass:bd-201` | `{appended:true}` | `Task 1 (bd-201): fix pass BLOCKED (…)` |
-| `triage:bd-201` / `notify:bd-201` / `ledger-append:bd-201` | ESCALATE / fixed | the ordinary blocker path; no `merge:bd-201` key exists |
+| `ledger:bd-201` | `{appended:true}` | the one flush: `Task 1 (bd-201): fix pass BLOCKED (…)`, then `BLOCKED` |
+| `triage:bd-201` / `notify:bd-201` | ESCALATE / fixed | the ordinary blocker path; no `merge:bd-201` key exists |
 | `read-ledger:finish` / `ledger-append:metrics` / `reconcile-buckets` | fixed | Metrics are written unconditionally; bd-201 is reconciled |
 
 **Assertions:** exactly one `fix:bd-201`; no `merge:bd-201`, `sweep`, or `final-review`
 dispatch; `completed` `[]`, `escalated` `["bd-201"]`, `pendingRetry` `[]`, `parked` `[]`,
-`stalled` false. Expected dispatch count: **19 agent calls, 0 errors** — confirmed by the offline
-replay harness at the D4 revision.
+`stalled` false. Expected dispatch count: **18 agent calls, 0 errors** — confirmed by the offline
+replay harness at the current revision.
 
 ```json
 {
@@ -3694,10 +3691,9 @@ replay harness at the D4 revision.
       "implement:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"IMPLEMENTED\",\"files\":[\"src/x.js\"],\"branch\":\".worktrees/epic-bd-200-integration--task-bd-201\"}",
       "review:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"NEEDS_FIX\",\"files\":[\"src/x.js\"],\"finding\":\"race condition writing the shared cache in src/x.js:17\"}",
       "fix:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-201\",\"n\":1,\"status\":\"BLOCKED\",\"files\":[\"src/x.js\"],\"blockerBead\":\"bd-210\",\"finding\":\"the fix needs a decision on the caching strategy the brief does not make\"}",
-      "ledger-append:fix-pass:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "ledger:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "triage:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"decision\":\"ESCALATE\",\"detail\":\"the caching strategy is a design decision the spec does not settle\"}",
       "notify:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"sent\":true}",
-      "ledger-append:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "read-ledger:finish": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"text\":\"\"}",
       "ledger-append:metrics": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "reconcile-buckets": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"closed\":[]}"
@@ -3721,14 +3717,15 @@ the parked variant carrying the reason and the finding, and the final review tri
 |---|---|---|
 | `review:bd-301` | `{status:"NEEDS_FIX",finding:"… (plan-mandated)"}` | a finding the fixer will decline |
 | `fix:bd-301` | `{status:"FIXED",head,declined:"… plan-mandated …"}` | `declined` non-empty → `parkReason` |
-| `merge:bd-301` / `ledger-append:merge:bd-301` / `ledger-append:bd-301` | merged / fixed | `Task 1 (bd-301): complete (commits …, fix pass, 1 parked — reason: … — finding: …)` |
+| `merge:bd-301` | merged, `ledgerAppended:true` | the merge agent writes the `Merge:` line only — a parked completion line carries fixer free text |
+| `ledger:bd-301` | `{appended:true}` | the one flush: the fix-pass line, then `Task 1 (bd-301): complete (commits …, fix pass, 1 parked — reason: … — finding: …)` |
 | `sweep` / `ledger-append:sweep` / `final-review` | fixed | work landed, so both dispatch |
 
 **Assertions:** no `triage`, `notify`, or blocker-filing key dispatches (a declined finding never
 reaches the blocker path); `completed` `["bd-301"]`, `parked` `["bd-301"]`, `escalated` `[]`,
 `pendingRetry` `[]`; the Finish log line reads `Parked (merged with fix-pass-declined findings): 1`.
-Expected dispatch count: **22 agent calls, 0 errors** — confirmed by the offline replay harness at
-the D4 revision.
+Expected dispatch count: **20 agent calls, 0 errors** — confirmed by the offline replay harness at
+the current revision.
 
 ```json
 {
@@ -3760,10 +3757,8 @@ the D4 revision.
       "implement:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"IMPLEMENTED\",\"files\":[\"src/y.js\"],\"branch\":\".worktrees/epic-bd-300-integration--task-bd-301\"}",
       "review:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"NEEDS_FIX\",\"files\":[\"src/y.js\"],\"finding\":\"the retry backoff constant is duplicated verbatim in src/y.js:12 and src/y.js:40 (plan-mandated)\"}",
       "fix:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/y.js\"],\"head\":\"dddddd1111111111111111111111111111111d\",\"declined\":\"duplicated backoff constant \\u2014 plan-mandated: the brief requires each call site to carry its own constant\"}",
-      "ledger-append:fix-pass:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
-      "merge:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"merged\":true,\"mergeExit\":0,\"mergeHead\":true,\"head\":\"f6f6f6f6666666666666666666666666666666\",\"mergeBase\":\"eeeeeee5555555555555555555555555555555\",\"rebaseConflictFiles\":0}",
-      "ledger-append:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
-      "ledger-append:merge:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "ledger:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "merge:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"merged\":true,\"mergeExit\":0,\"mergeHead\":true,\"head\":\"f6f6f6f6666666666666666666666666666666\",\"mergeBase\":\"eeeeeee5555555555555555555555555555555\",\"rebaseConflictFiles\":0,\"ledgerAppended\":true}",
       "read-ledger:finish": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"text\":\"\"}",
       "ledger-append:metrics": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "reconcile-buckets": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"closed\":[]}",
