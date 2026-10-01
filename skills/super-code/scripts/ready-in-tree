@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 # Ready work in one epic's tree: non-epic, non-blocker beads `bd ready` reports as claimable.
+# Review beads (label `sp:review`, title "review: <task id>", created when a task is split at
+# implementation-done) are reported apart from work: `reviews` lists each ready one with the task
+# it reviews, which re-enters at its review stage instead of being planned and implemented.
 # Fast path: the `sp:EPIC_ID` label super-design stamps on every bead it creates. Only when that
 # comes back empty (a hand-made epic, or a sub-epic whose members carry the root's label) does it
 # fall back to the repo-global ready set filtered through epic-tree's structural membership test.
@@ -7,7 +10,8 @@
 # the limit doubled (at most 3 re-runs).
 #
 # Usage: bash ready-in-tree EPIC_ID
-# Prints one JSON object {"ids":[...]} (bd's priority order) on stdout; notes go to stderr.
+# Prints one JSON object {"ids":[...],"reviews":[{"id":...,"task":...},...]} (bd's priority order)
+# on stdout; notes go to stderr.
 # Exit 0 ok (an empty list is ok), 2 bad input or unknown EPIC_ID, 4 jq unavailable (prints a
 # JQ_UNAVAILABLE: line on stdout).
 set -euo pipefail
@@ -20,15 +24,15 @@ epic=$1
 here=$(cd "$(dirname "$0")" && pwd)
 
 command -v jq >/dev/null 2>&1 || {
-  echo "JQ_UNAVAILABLE: jq is not installed, so compute this by hand. 1. Run \`bd ready --exclude-type=epic --exclude-label blocker --label sp:${epic} --limit 500\` (plain output; do not filter or re-judge readiness). If it lists exactly as many ids as the limit, it was truncated: re-run with the limit doubled, at most 3 times. If it lists at least one id, those ids are the answer. 2. Only if it listed none: run \`bd ready --exclude-type=epic --exclude-label blocker --limit 500\` (same truncation rule) and keep only the ids IN-TREE for ${epic}: an id is IN-TREE when it is ${epic} or its parent chain reaches ${epic}, where a bead's parent is the \`depends_on_id\` of its \`dependencies\` entry with \`type\` \"parent-child\" in \`bd list --all --json --limit 0\`; never judge by the id's prefix. Output one JSON object {\"ids\":[...]} with the ids in the order bd listed them."
+  echo "JQ_UNAVAILABLE: jq is not installed, so compute this by hand. 1. Run \`bd ready --exclude-type=epic --exclude-label blocker,sp:review --label sp:${epic} --limit 500\` (plain output; do not filter or re-judge readiness). If it lists exactly as many ids as the limit, it was truncated: re-run with the limit doubled, at most 3 times. If it lists at least one id, those ids are the answer. 2. Only if it listed none: run \`bd ready --exclude-type=epic --exclude-label blocker,sp:review --limit 500\` (same truncation rule) and keep only the ids IN-TREE for ${epic}: an id is IN-TREE when it is ${epic} or its parent chain reaches ${epic}, where a bead's parent is the \`depends_on_id\` of its \`dependencies\` entry with \`type\` \"parent-child\" in \`bd list --all --json --limit 0\`; never judge by the id's prefix. 3. Review beads, the same two steps with \`--label sp:review\` in place of the exclusion (fast path \`bd ready --exclude-type=epic --label sp:review --label sp:${epic} --limit 500\`): each one's title is \"review: <task id>\". Output one JSON object {\"ids\":[...],\"reviews\":[{\"id\":\"<review bead id>\",\"task\":\"<task id from its title>\"},...]} in the order bd listed them."
   exit 4
 }
 
-# ready_ids [extra bd flags...] — ids from bd ready, re-run with a doubled limit while truncated.
-ready_ids() {
+# ready_rows LABEL_FLAGS... — `id<TAB>title` rows from bd ready, re-run with a doubled limit while truncated.
+ready_rows() {
   local limit=500 rerun=0 out count
   while :; do
-    out=$(bd ready --exclude-type=epic --exclude-label blocker "$@" --limit "$limit" --json | jq -r '.[].id')
+    out=$(bd ready --exclude-type=epic "$@" --limit "$limit" --json | jq -r '.[] | "\(.id)\t\(.title // "")"')
     count=$(printf '%s' "$out" | grep -c . || true)
     if [ "$count" -lt "$limit" ]; then break; fi
     if [ "$rerun" -ge 3 ]; then
@@ -40,19 +44,28 @@ ready_ids() {
   printf '%s' "$out"
 }
 
-ids=$(ready_ids --label "sp:${epic}")
-if [ -n "$ids" ]; then
+# in_tree ROWS — keep the rows whose id epic-tree places in this tree, order kept.
+in_tree() {
+  local rows=$1 members
+  [ -n "$rows" ] || return 0
+  # shellcheck disable=SC2046  # ids are whitespace-free tokens
+  members=$(bash "$here/epic-tree" "$epic" $(printf '%s\n' "$rows" | cut -f1)) || return $?
+  printf '%s\n' "$rows" | awk -F '\t' 'NR == FNR { ok[$1] = 1; next } ok[$1]' <(printf '%s\n' "$members") -
+}
+
+work=$(ready_rows --exclude-label blocker,sp:review --label "sp:${epic}")
+if [ -n "$work" ]; then
   echo "fast path: sp:${epic} label" >&2
 else
   echo "fast path empty; filtering the repo-global ready set by tree membership" >&2
-  all=$(ready_ids)
-  if [ -n "$all" ]; then
-    # shellcheck disable=SC2086  # ids are whitespace-free tokens
-    ids=$(bash "$here/epic-tree" "$epic" $all)
-  else
-    bash "$here/epic-tree" "$epic" >/dev/null   # still reject an unknown EPIC_ID
-  fi
+  all=$(ready_rows --exclude-label blocker,sp:review)
+  if [ -n "$all" ]; then work=$(in_tree "$all") || exit $?; else bash "$here/epic-tree" "$epic" >/dev/null; fi   # still reject an unknown EPIC_ID
 fi
+reviews=$(ready_rows --label sp:review --label "sp:${epic}")
+[ -n "$reviews" ] || reviews=$(in_tree "$(ready_rows --label sp:review)") || exit $?
 
-# shellcheck disable=SC2086
-jq -nc '{ids: $ARGS.positional}' --args $ids
+printf '%s\n' "$work" | jq -R -s -c --arg rv "$reviews" '
+  { ids: [ split("\n")[] | select(length > 0) | split("\t")[0] ],
+    reviews: [ $rv | split("\n")[] | select(length > 0) | split("\t") as [$id, $title]
+               | ($title | capture("^review: (?<t>\\S+)$")?.t) as $task | select($task != null)
+               | {id: $id, task: $task} ] }'

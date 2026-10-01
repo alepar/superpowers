@@ -13,7 +13,8 @@ file" below) and writes no code.
 `plan.md`: each epic needs its own name so `sdd-workspace` resolves a workspace (and ledger) distinct
 from every other epic's. If a dispatch leaves it unfilled, derive it as `<epicId>-plan.md`.
 `[sdd-workspace]` is the absolute command `bash <skills root>/subagent-driven-development/scripts/sdd-workspace`
-(invoked through `bash`, since marketplace unpacking can strip exec bits).
+(invoked through `bash`, since marketplace unpacking can strip exec bits). `[tree-deps]` is the
+absolute command `bash <skills root>/super-code/scripts/tree-deps <epic id>`.
 
 ```
 Task tool (general-purpose), model: opus:
@@ -47,7 +48,8 @@ Task tool (general-purpose), model: opus:
     [plan file name] section — title, description, acceptance criteria, any files-touched hint,
     each pasted in full inside its own `<bead id="<bead id>">…</bead>` tags. On the epic's first
     planning round this is every ready/blocked descendant; on a refill round it is only the
-    newly-ready or newly-created beads. Blocker beads are never planned.]
+    newly-ready or newly-created beads. Blocker beads and review beads (label `sp:review`, title
+    `review: <task id>`) are never planned.]
 
     ## Plan file
 
@@ -98,6 +100,12 @@ Task tool (general-purpose), model: opus:
     4. If a bead is genuinely too ambiguous to plan (not merely underspecified — a real missing
        decision), leave it out of the mapping table and this round's sections, and list it in
        `unplanned` with exactly what decision is missing. Do not invent scope to force a plan.
+    5. Run `[tree-deps]` once. It prints `{"beads":[{"id","deps","opaque"},...]}` for every open
+       bead in the tree. Copy each listed bead's `deps` and `opaque` onto its mapping row exactly as
+       printed (they are dependency facts, not planning judgment); rows for beads it does not list
+       (closed ones from earlier rounds) get neither. If it prints a line starting
+       `JQ_UNAVAILABLE:`, follow that instruction by hand; if it fails any other way, leave `deps`
+       and `opaque` off every row.
 
     ## Constraints
 
@@ -113,11 +121,13 @@ Task tool (general-purpose), model: opus:
       from it to agents in other worktrees, where a relative path resolves to the wrong root)
     - `mapping`: the **full, cumulative mapping table** — every row assigned so far in `[plan file
       name]`, including rows from earlier rounds, not only the rows this round added — `{n:
-      <ordinal>, id: <bead id>, files: <filesTouched list>}` per row. Return the complete table
+      <ordinal>, id: <bead id>, files: <filesTouched list>, deps, opaque}` per row (`deps` and
+      `opaque` from step 5, only on rows of beads `[tree-deps]` listed). Return the complete table
       every round: the coordinator replaces its working copy with whatever you return, so a
       round-scoped subset would make every previously-assigned id's ordinal lookup fail on the
       very next round. `files` is required on every entry; it is what the coordinator's
-      hot-file cap (`config.hotFileCap`) counts.
+      hot-file cap (`config.hotFileCap`) counts. `deps`/`opaque` let the coordinator dispatch a
+      bead the moment its blockers land, without a `bd ready` round-trip.
     - `unplanned`: one `{id, missingDecision}` entry per bead you left out under step 4 (omit or
       leave empty when none). The coordinator files a blocker bead for each, carrying your
       `missingDecision` text.

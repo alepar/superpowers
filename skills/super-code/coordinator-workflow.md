@@ -32,6 +32,7 @@ args = {
     runtimeSlots: 10,     // optional — see below; resolved by pre-flight
     hotFileCap: 3,        // optional — see below
     topUpQueryCap: 40,    // optional — see below
+    earlyUnblock: true,   // optional — see below
     edgeAuditCap: 3,      // optional — see below
     mergeCheck: '<exact build-only command>',  // optional — see below; never a test command
     sweep: '<exact full-suite test command>',  // optional — see below
@@ -59,11 +60,21 @@ effort. dryRun stubs take none.
 the same `filesTouched` file at once (the scheduling constraint that replaced disjoint-file
 bucketing — see "The coordinator loop" step 3 and SKILL.md §Parallelism).
 
-`topUpQueryCap` is **optional** — additive, defaulting to 40: the per-round budget of mid-round
-top-up ready re-queries ("The coordinator loop" step 4). The dedup set bounds dispatches; this
-bounds the queries themselves — a merge that unblocks nothing still costs one mechanical agent.
-Exhaustion degrades to the ordinary round-boundary refill (no work lost), and the detector line
-reports usage so the default can be tuned from evidence; it is an untuned first guess.
+`topUpQueryCap` is **optional** — additive, defaulting to 40: the per-round budget of `bd ready`
+top-up re-queries ("The coordinator loop" step 4). Mid-round readiness is normally computed in JS
+from the planner's `deps` rows at no agent cost; the top-up query runs only where JS cannot see
+readiness — a mapping with no `deps` rows, or a waiting row marked `opaque` — and there it still
+costs one mechanical agent per landing, which this caps. Exhaustion degrades to the ordinary
+round-boundary refill (no work lost), and the detector line reports usage.
+
+`earlyUnblock` is **optional**, default `true`: a task with open in-tree dependents is **split**
+when its implementer reports a commit. A mechanical dispatch (`scripts/review-bead split`) creates a
+`review: <id>` bead (label `sp:review`, the task's parent and `sp:` labels, blocked by the task) and
+then closes the task bead; the task's review, fix and merge continue under the review bead, which
+its merge closes. Its dependents dispatch at once, each on a worktree cut with the task's branch
+merged in (its **stack parent**), and merge only after it merged; a stack parent that does not merge
+cancels them (see "The coordinator loop" step 4). `false` keeps dependents waiting for the merge,
+with no review beads. Early unblock needs the planner's `deps` rows; without them nothing is split.
 
 `sweep` is **optional**: the exact full-suite command Finish runs once, against the integration
 tip, before the final review. The string carries the project's execution envelope
@@ -123,9 +134,11 @@ launch on line 1.
 calls** — RESOLVE vs ESCALATE on a blocker bead (see "The blocker-bead path") and the report-only
 edge audit — and never means "the cheap one". `mechanical` is for dispatches with a fully-specified, no-improvisation procedure — no branching
 left to the dispatched agent's judgment: a literal CLI or script echo (`scripts/ready-in-tree`,
-`scripts/close-in-tree-epics`, `scripts/task-brief`, notifications, recording a clarification).
+`scripts/close-in-tree-epics`, `scripts/task-brief`, `scripts/review-bead`, notifications,
+recording a clarification, discarding a cancelled task's worktree).
 Deterministic multi-step procedures (the ready fallback's tree filter, the epic-closure fixpoint,
-the edge audit's graph numbers) live in shipped scripts, not in prompt prose. Keep every dispatch
+the edge audit's graph numbers, each bead's leaf blockers, the early-unblock split) live in shipped
+scripts, not in prompt prose. Keep every dispatch
 whose every branch is pre-decided on `mechanical`, and the RESOLVE vs ESCALATE call on `triage`.
 
 `dryRun: true` swaps every dispatched agent for a canned stub, for the same reason as
@@ -138,8 +151,9 @@ this skill's script are a later task's concern; this doc only reserves the field
 "Per-task pipeline" below for the full walk-through):
 
 ```
-task-brief → implementer (task-relevant tests, once) → review-package → task review (one, light)
-  → [Critical/Important: one fix pass] → serial merge (build-only mergeCheck, no tests) → ledger
+task-brief → implementer (task-relevant tests, once) → [split, when it has open dependents]
+  → review-package → task review (one, light) → [Critical/Important: one fix pass]
+  → [wait for stack parents' merges] → serial merge (build-only mergeCheck, no tests) → ledger
 ```
 
 One review per task, at most one fix pass, no re-review, and no per-merge tests (only the build-only
@@ -156,7 +170,7 @@ A Workflow script can call only its hooks — `agent()`, `pipeline()`, `parallel
 | Side-effect | Who does it |
 |-------------|-------------|
 | `bd ready`, `bd show`, `bd close`, `bd create` | a dispatched agent (returns structured data via `schema`) |
-| `scripts/sdd-workspace`, `scripts/task-brief`, `scripts/review-package`, `scripts/already-merged`, `scripts/ready-in-tree`, `scripts/close-in-tree-epics`, `scripts/edge-stats` (and `scripts/epic-tree`, which the last three share) | a dispatched agent, via `bash <abs path>` (these are shell scripts; the coordinator script cannot invoke them) |
+| `scripts/sdd-workspace`, `scripts/task-brief`, `scripts/review-package`, `scripts/already-merged`, `scripts/ready-in-tree`, `scripts/close-in-tree-epics`, `scripts/edge-stats`, `scripts/tree-deps`, `scripts/review-bead` (and `scripts/epic-tree`, which the tree scripts share) | a dispatched agent, via `bash <abs path>` (these are shell scripts; the coordinator script cannot invoke them) |
 | git: create worktree, commit, rebase, merge | the brief and implementer agents (the task worktree) and the merge agent (task and integration worktrees) |
 | decide resolvable vs escalate | the triage agent (opus) |
 
@@ -194,7 +208,10 @@ Two rules, both mandatory in the skeleton below:
 | blocker-filing (`missing-blocker` / `unplanned-blocker`) | The task proceeds without a bead id; `handleBlocker`'s missing-bead fallback files one, and if **that** also nulls, the task is left unsettled this round. |
 | `close-epics` | **Closed zero epics — never `rootClosed`**: defaulting `rootClosed` true would declare an unfinished epic done. |
 | `bd-ready` | **Not completion.** An explicit `stopReason: 'ready-unavailable'` after the bounded retry below — never the drained exit. |
-| `bd-ready-topup` (the mid-round top-up re-query) | **Opportunistic**: a null skips this top-up — logged, no bounded retry, never a stopReason. The next round's `bd-ready` remains the authority; the missed bead dispatches then. |
+| `bd-ready-topup` (the `bd ready` re-query after a landing, where JS cannot see readiness) | **Opportunistic**: a null skips this top-up — logged, no bounded retry, never a stopReason. The next round's `bd-ready` remains the authority; the missed bead dispatches then. |
+| `review-bead` (the early-unblock split) | **The task stays unsplit in bd**: no review bead, its task bead closes at its merge. Its dependents dispatch from the graph regardless — JS, not bd, decides mid-round readiness — and the merge closes only the task bead. Logged. |
+| `reopen` (a split task that did not merge) | **The task bead stays closed**, so bd may report its dependents ready next round; the round head holds back any ready id whose in-tree blocker is quarantined or awaiting its retry. Logged. |
+| `discard` (a cancelled task's worktree) | **The stale worktree may remain**: the task's next brief is told to remove it and cut fresh, so a re-dispatch never reuses work built on a stack parent that did not land. Logged. |
 | `bd-ready-recheck` (the post-closure re-query when Close reported in-tree closures) | **Opportunistic**: a null keeps the original concurrent ready result — logged, never a stopReason. |
 | `plan` | Round abandoned (nothing downstream can run without the mapping); bounded retry, then `stopReason: 'plan-unavailable'`. |
 | `read-ledger` | Resume reconstructs nothing, loudly: `bd ready` remains the authority on closed work, but prior-run `pendingRetry` bounds are lost for this run — logged, not silent. |
@@ -349,6 +366,14 @@ Round-based with refill (each `bd ready` batch is, by definition, mutually indep
    The Close pass and this query dispatch **concurrently** (they are independent except for
    epic-dependent tasks); when Close reports in-tree closures, one opportunistic re-check
    refreshes the ready result so epic-dependents join this round.
+   **Review beads come back apart from work.** The query excludes `sp:review` beads from `ids` and
+   lists each ready one in `reviews` with the task its title names: a task split at
+   implementation-done whose merge never landed (a restart, or a null merge). That task re-enters
+   at its review stage on its existing branch — never re-planned, never re-implemented — and a
+   dependent bd reports ready alongside it stacks on it. The round head also holds back a ready id
+   whose in-tree blocker this run quarantined or left awaiting its retry: bd sees that blocker's
+   task bead closed only when a reopen was lost. A round whose every ready id is held back ends
+   like an empty ready set (`ready-drained`).
 2. **Terminate?** — completion is **the root epic (`epicId`) closed**, not an empty ready set:
    run the epic-closure step (below) after each refill cycle and check whether the root closed.
    An empty ready set with the root still open means the remaining work is quarantined blockers
@@ -376,16 +401,40 @@ Round-based with refill (each `bd ready` batch is, by definition, mutually indep
    chain ends** and drains in completion order, with **exactly one merge in flight, ever**
    (guaranteed by promise chaining, not batching — see `enqueueIntegration` in the skeleton).
    Completion order loses nothing dependency-wise: a `bd ready` batch is mutually independent by
-   definition (step 1), so within-round merge order was never load-bearing. A successful merge
-   does `bd close <id>` — a leaf-task close; epic closure is the separate step below. Only merge
+   definition (step 1), and a task dispatched on an unmerged parent (below) enqueues only after
+   that parent merged. A successful merge does `bd close <id>` — a leaf-task close, plus the
+   task's review bead when it was split; epic closure is the separate step below. Only merge
    work rides the queue: a BLOCKED or permission-refused task, an unmapped id, and an
    already-merged re-entry are handled where the chain ends, beside the merges and inside a
    concurrency slot like any chain (none touches the integration branch, and `bd` writes are safe
    beside a merge); a merge that fails releases the queue before its triage runs. Ledger lines never hold it either (see "Workspace and ledger").
-   **Each successful merge also fires a mid-round top-up**: a ready re-query whose newly-ready,
-   already-mapped beads dispatch into this same round's scheduler immediately — a bead unblocked
-   by the round's first merge never waits for its last (see the top-up block in the skeleton for
-   the bounds: dedup set, re-entrancy coalescing, mapping-row gate, quiescence before the drain).
+   **Mid-round readiness is computed, not queried.** The planner's mapping rows carry each open
+   bead's in-tree leaf blockers (`deps`, from `scripts/tree-deps`) and whether anything else gates
+   it (`opaque`: an epic-level or out-of-tree blocker, a hand claim). Every landing — and, with
+   `earlyUnblock`, every split task's implementation — runs `readyFromGraph()` in JS: a row whose
+   blockers have all landed, at least one of them this round, dispatches into this round's
+   scheduler with no agent spent. The `bd ready` top-up (epic closure, then a ready re-query) runs
+   after a landing only where JS cannot see readiness: a mapping with no `deps` rows at all, or a
+   waiting `opaque` row (see the top-up block in the skeleton for the bounds: dedup set,
+   re-entrancy coalescing, mapping-row gate, quiescence before the drain).
+   **Early unblock** (`config.earlyUnblock`, default on). A task with open in-tree dependents is
+   split when its implementer reports a commit: `scripts/review-bead split` creates its
+   `review: <id>` bead, then closes its task bead — beside the review, never before the dependents
+   dispatch, and after its own stack parents' splits (bd refuses to close a bead whose blocker is
+   open). Each dependent is cut from the integration tip with its implemented-but-unmerged
+   blockers' branches merged in (`stack: <id>` commits), so its base is the commit after them and
+   its review package shows only its own diff. It waits for every stack parent to merge before it
+   enqueues — outside the queue, never at its head — and its merge rebases only its own commits
+   (`git rebase --onto <integration> <stacked base>`), so a parent's pre-review commits are never
+   replayed; its seam check compares against the stacked base, which counts every file the
+   parent's fix pass changed. A parent whose attempt ends without merging cancels every live task
+   stacked on it, transitively: each stops at its next step, gets a `cancelled (parent <id> …)`
+   ledger line, and has its worktree discarded; a terminal failure (BLOCKED, BLOCKED_AUTH, a failed
+   merge) also reopens the parent's task bead so bd blocks its dependents again, while a null leaves
+   it closed so its review bead brings it back at the review stage. A cancelled task is not
+   escalated: it dispatches again once its parent is implemented again (a RESOLVE retry, or a later
+   round). Two stack parents whose branches conflict make the brief report `STACK_CONFLICT`: the
+   task waits for both to merge, then cuts fresh.
 5. **Epic closure** — `bd epic close-eligible` is repo-global: it has no `--label`/`--parent`/
    `--mol` scoping flag (verified via `--help`), so the mutating form is **never** called
    unfiltered — in a repo holding more than one live epic it would close epics belonging to
@@ -402,10 +451,11 @@ Round-based with refill (each `bd ready` batch is, by definition, mutually indep
    can't fake the recorded link. Same contract as SKILL.md's manual mode — the coordinator changes
    *who runs it* and adds the scoping filter a human operator applies implicitly by only ever
    running the command against their own tree.
-6. **Refill** — closing tasks unblocks dependents; most dispatch mid-round via step 4's top-up,
-   and the loop back to step 1 remains the authority for the rest: beads a null top-up missed,
-   and beads with no mapping row yet (created mid-round), which wait for the next round's
-   planner pass. Their worktrees are cut from the now-updated integration branch.
+6. **Refill** — landing tasks unblocks dependents; most dispatch mid-round via step 4's graph
+   readiness (or its top-up), and the loop back to step 1 remains the authority for the rest:
+   beads a null top-up missed, beads whose `deps` the planner did not report, and beads with no
+   mapping row yet (created mid-round), which wait for the next round's planner pass. Their
+   worktrees are cut from the now-updated integration branch.
 7. **Round end — detector, persisted; edge audit, conditional; neither holds the next round.**
    After the drain, the round's ledger lines are flushed and the ledger chain drained, then the
    parallelism detector line is logged and queued to the ledger (`Detector: round N — …`; a line
@@ -492,9 +542,18 @@ wrote or read this file — everything below described intent, not behavior. `re
     for Metrics; resume does not use it (a restart re-runs the task from the brief stage).
   - `Task <N> (<bead id>): minor (deferred): <one-liner>` — one per Minor/⚠️ item, written at the
     merge gate.
+  - `Task <N> (<bead id>): stacked on <id>[, <id>] (dispatched at implementation-done)` — the task
+    was cut on the named implemented-but-unmerged tasks (early unblock). Informational for Metrics.
+  - `Task <N> (<bead id>): cancelled (parent <id> <blocked | unsettled | cancelled>)` — a task it was
+    stacked on did not merge, so its attempt stopped and its worktree was discarded. Not terminal:
+    resume treats a `cancelled` last line as "not started", and the task dispatches again once bd
+    reports it ready.
 - **Resume behavior**, on any restart: the script's Resume phase reads `<workspace>/progress.md`
   once, before the round loop starts (see the script skeleton), and reconstructs `completed`,
-  `parked`, and `pendingRetry` from the **last** ledger line recorded for each bead id (a bead can
+  `parked`, and `pendingRetry` from the **last** ledger line recorded for each bead id (a split
+  task whose merge never landed comes back through bd instead: its task bead is closed and its
+  review bead ready, so the ready query reports it under `reviews` and it re-enters at its review
+  stage — "The coordinator loop" step 1) (a bead can
   accumulate more than one line over a run's history, e.g. a `pending retry` line followed later by
   `complete` or `BLOCKED`). **Stated plainly, once, to resolve a contradiction an earlier revision of
   this doc carried between this bullet and the script skeleton's own Resume-phase comment (which
@@ -601,7 +660,9 @@ Each ready bead, in its **own worktree branched from the epic integration branch
 tests once and pastes the command and output into its report) → `review-package PLAN_FILE BASE
 HEAD` → one task review (`./task-reviewer-prompt.md`, sonnet; spec compliance and obvious
 correctness, test evidence checked, tests not re-run) → on NEEDS_FIX, one fix pass
-(`./implementer-prompt.md`'s "Fix pass") → serial merge → a completion line in the ledger.
+(`./implementer-prompt.md`'s "Fix pass") → serial merge → a completion line in the ledger. A task
+with open in-tree dependents is split right after its implementer's commit (early unblock, "The
+coordinator loop" step 4), so its dependents start while this pipeline continues.
 
 `task-brief` needs a `PLAN_FILE` a beads epic doesn't have on its own — the planner (opus)
 produces it; see "Plan materialization". The SDD scripts are always run as
@@ -664,6 +725,13 @@ retains the cumulative mapping across rounds and skips the dispatch otherwise �
 phase's planner-skip comment); when it does run, it appends new mapping rows and `## Task <N>`
 sections for newly-ready beads — new ordinals continue the existing sequence; an already-assigned
 ordinal or section is never renumbered or rewritten, since a task in flight may still be pointing at it.
+**Every planning dispatch also reports each open bead's dependency facts**: the planner runs
+`scripts/tree-deps <epicId>` and copies its `deps` (the bead's open in-tree leaf blockers) and
+`opaque` (gated by anything else — an epic-level or out-of-tree blocker, a hand claim or defer)
+onto the mapping row of every bead the script lists. That is what lets the coordinator compute
+mid-round readiness in JS ("The coordinator loop" step 4). A script failure leaves both off every
+row, and the coordinator falls back to `bd ready` top-ups. **Review beads are never planned** (label
+`sp:review`, title `review: <task id>`): they track a task that is already implemented.
 **Blocker beads are never planned and never get a mapping row** (see "Resolved in this
 branch": the blocker-bead-planning item): a blocker bead is an escalation record about a task — a `blocker` label and a body stating the
 task id, what failed, and what was tried (see "The blocker-bead path") — not a work item, and the
@@ -703,7 +771,11 @@ coordinator owns:
   collapsed to `-`; bead id, not the plan ordinal) on the branch named exactly `task-<bead id>`,
   cut from the **epic integration branch**. Pure string derivation, the same convention as the
   integration worktree itself; dispatches state the path is never to be resolved against the
-  agent's own cwd.
+  agent's own cwd. A task dispatched on implemented-but-unmerged blockers (early unblock) is cut the
+  same way and then has each blocker's branch merged in (`git merge --no-ff -m "stack: <id>"`); its
+  `base` is the commit after those merges, and its implementer is told it builds on unmerged code.
+  A brief that re-enters an existing stacked branch finds that base again from the newest
+  first-parent `stack: ` commit.
 - **Commit is the implementer's last step:** the implementer reports `head` (`git rev-parse HEAD`
   after its commit, with `git status --short` empty); a `head` equal to the brief's `base` means
   nothing was committed, and the coordinator sends one bounded commit nudge before treating the
@@ -742,9 +814,11 @@ In the integration worktree, for **one task at a time — exactly one merge in f
 in completion order off the single-flight queue ("The coordinator loop" step 4; completion order
 is safe because a `bd ready` batch is mutually independent by definition):
 
-1. Update the integration branch; rebase the task branch onto it. On conflicts, the merge agent
-   makes one bounded attempt that resolves the conflicted hunks only, keeping both sides' intent;
-   it edits nothing outside those hunks.
+1. Update the integration branch; rebase the task branch onto it — a stacked task (early unblock)
+   rebases only its own commits, `git rebase --onto <integration> <stacked base> <task branch>`,
+   since its stack parents have merged their reviewed versions by then (it enqueues only after they
+   did). On conflicts, the merge agent makes one bounded attempt that resolves the conflicted hunks
+   only, keeping both sides' intent; it edits nothing outside those hunks.
 2. **Seam check:** if the integration branch moved since the task branched *and* the sibling
    commits it moved onto touched files this task also changed, the merge agent stops before
    merging and reports the overlap. The coordinator runs **one scoped seam review** of the rebased
@@ -779,7 +853,8 @@ is safe because a `bd ready` batch is mutually independent by definition):
    which re-runs the check. This is the task's one seam fix: if a same-file seam fix already ran for
    this merge, a failing check goes straight to the blocker path.
 5. On a passing check (or none), commit the merge into the integration branch, then `bd close <id>`
-   (a leaf-task close; epic closure is the separate fixpoint step in "The coordinator loop").
+   (a leaf-task close; epic closure is the separate fixpoint step in "The coordinator loop") and,
+   for a split task, `bd close <review bead>` after it.
 6. Blocker path: a dirty integration worktree or a failed / no-op merge files the bead through the
    coordinator's missing-bead fallback, with the diagnosis. Otherwise: if the conflict resolution fails, the merge agent files a blocker bead
    (label-only rule, as in every filing prompt) stating the merge-base SHA and the conflicted
@@ -939,7 +1014,7 @@ dispatch appends them, in this order:
 
 ```
 Metrics: merges M · merge-failed Mf · rebase-conflicts C · seam-reviews S (fixed F) · check-fails G (fixed H)
-Metrics: completions — review clean A · after fix pass B · parked P · re-entry closes R
+Metrics: completions — review clean A · after fix pass B · parked P · re-entry closes R · dispatched early E · cancelled K
 Metrics: fix-pass — entered E · FIXED X · BLOCKED Y
 Metrics: ledger-check <ok | M≠completed: M vs N> · append-failed K · append-retried J
 ```
@@ -951,7 +1026,8 @@ nothing. A null re-read writes `Metrics: UNAVAILABLE …` lines instead of zero 
   lines. `C`, `S`, `F` come from `Merge:` lines on both paths; `G` counts lines whose check failed
   at least once (`fail` and `fail→fixed`), `H` the `fail→fixed` ones.
 - `A`/`B`/`P`/`R` count `complete` lines by variant: `review clean`, `fix pass` (parked included),
-  `parked`, `already merged`.
+  `parked`, `already merged`. `E` counts `stacked on` lines (tasks dispatched on an unmerged
+  parent), `K` counts `cancelled` lines (stacked attempts stopped because a parent did not merge).
 - `E`/`X`/`Y` count `fix pass` lines, all of them (a retried task's second fix pass is a real
   dispatch).
 - `ledger-check` cross-checks `M` against the coordinator's in-memory `completed.size` rather than
@@ -1082,6 +1158,17 @@ something the code did not do, and the risk a maintainer reintroduces it outlive
    check is `scripts/already-merged` (git only: the branch tip is the second parent of a merge on
    the integration branch), and the brief agent reports its stdout; the script cannot run git
    itself, so a mis-relayed `true` could still close a bead whose work never merged.
+4. **A cancelled stacked task's work is discarded, not salvaged.** When a stack parent does not
+   merge, every task stacked on it loses its worktree and re-implements from scratch on the
+   parent's next attempt — even when the parent's eventual fix would not have touched what the
+   dependent built on. The cost is bounded by how often a parent fails after implementation; the
+   alternative (rebasing a dependent across a parent's rewrite) moves the risk into the merge agent.
+5. **The dependency graph is read once per planning dispatch.** `deps`/`opaque` come from
+   `scripts/tree-deps` when the planner runs; an edge a human adds mid-run is invisible to
+   `readyFromGraph()` until the next planning round. Graph dispatch only fires for a row whose last
+   blocker landed this round, so a row bd already refused at the round head is never dispatched on
+   graph state alone, but a new mid-round edge into a row JS considers satisfied is missed until
+   the next planning round re-reads the graph.
 
 ## Resolved in this branch (kept as guardrails)
 
@@ -1365,13 +1452,17 @@ else if (cap < requestedCap) log(`concurrency cap ${requestedCap} lowered to ${c
 // bucketing as filesTouched's only scheduling role.
 const hotFileCap = Math.max(1, Number(config.hotFileCap) || 3)
 // Top-up query budget, PER ROUND (optional, additive contract key — the counter lives in the
-// round loop, so every round gets a fresh allowance; a run-global budget belongs to callers
-// that have one): a merge that unblocks nothing still
-// costs a ready-re-query agent, and the dedup set bounds DISPATCHES, not QUERIES — so queries
-// get their own per-round cap. Default 40 is an untuned first guess from the live adaptation;
-// the detector line reports usage so it can be tuned from evidence. Exhausting it degrades to
-// the old round-boundary refill: no work is lost, dependents just wait for the next round.
+// round loop, so every round gets a fresh allowance). Readiness is computed in JS from the
+// planner's `deps` rows (readyFromGraph); the `bd ready` top-up runs only where JS cannot see
+// readiness — a mapping with no `deps` rows, or a waiting row marked `opaque` (an epic-level or
+// out-of-tree blocker) — and in those graphs it still costs one mechanical agent per merge, so it
+// keeps a per-round cap. Exhausting it degrades to the round-boundary refill: no work is lost.
 const topUpQueryCap = Math.max(0, Number(config.topUpQueryCap) || 40)
+// Early unblock (optional, default on): a task with open in-tree dependents is split when its
+// implementer reports a commit — the dependents dispatch at once, cut on its unmerged branch, while
+// its review, fix and merge continue under a `review: <id>` bead. `false` restores waiting for the
+// merge, with no review beads.
+const earlyUnblock = config.earlyUnblock !== false
 // No per-merge test run: the implementer runs each task's relevant tests once, and Finish runs the
 // full suite once (the sweep). `sweep` is the exact full-suite command when declared; undeclared,
 // the sweep agent runs the project's full test command. It carries the project's execution envelope
@@ -1519,7 +1610,9 @@ function flushLedger(id, phase) {
 }
 function flushAllLedger(phase) { for (const id of [...ledgerBuf.keys()]) flushLedger(id, phase) }
 
-const READY   = { type: 'object', properties: { ids: { type: 'array', items: { type: 'string' } }, scriptError: {type:'string'} }, required: ['ids'] }
+// `reviews`: ready review beads (a task split at implementation-done whose merge has not landed),
+// each with the task it reviews — re-entered at the review stage, never planned or implemented.
+const READY   = { type: 'object', properties: { ids: { type: 'array', items: { type: 'string' } }, reviews: { type: 'array', items: { type: 'object', properties: { id: {type:'string'}, task: {type:'string'} }, required: ['id','task'] } }, scriptError: {type:'string'} }, required: ['ids'] }
 // mapping: ordinal (N, as scripts/task-brief needs it) <-> bead id (as bd needs it) <-> declared
 // touched files (as the scheduler's hot-file cap needs it) — see "Plan materialization". This is the
 // FULL CUMULATIVE table, every round, not just this round's new rows: the coordinator replaces
@@ -1528,7 +1621,11 @@ const READY   = { type: 'object', properties: { ids: { type: 'array', items: { t
 // planPrompt below and planner-prompt.md's Report Format.
 // `unplanned`: beads the planner left out for a missing decision; the coordinator files a blocker
 // bead per id carrying `missingDecision` (optional — absent means none).
-const PLANNED = { type: 'object', properties: { planPath: {type:'string'}, mapping: { type:'array', items: { type:'object', properties: { n:{type:'integer'}, id:{type:'string'}, files:{type:'array', items:{type:'string'}} }, required:['n','id','files'] } }, unplanned: { type:'array', items: { type:'object', properties: { id:{type:'string'}, missingDecision:{type:'string'} }, required:['id'] } } }, required: ['planPath','mapping'] }
+// `deps` / `opaque` (from scripts/tree-deps, on rows of OPEN beads only): the bead's open in-tree
+// leaf blockers, and whether anything else gates it (an epic-level or out-of-tree blocker, a hand
+// claim). They let readyFromGraph dispatch a dependent the moment its blockers land, with no
+// `bd ready` round-trip. A mapping with no `deps` on any row falls back to the per-merge top-up.
+const PLANNED = { type: 'object', properties: { planPath: {type:'string'}, mapping: { type:'array', items: { type:'object', properties: { n:{type:'integer'}, id:{type:'string'}, files:{type:'array', items:{type:'string'}}, deps:{type:'array', items:{type:'string'}}, opaque:{type:'boolean'} }, required:['n','id','files'] } }, unplanned: { type:'array', items: { type:'object', properties: { id:{type:'string'}, missingDecision:{type:'string'} }, required:['id'] } } }, required: ['planPath','mapping'] }
 // `finding` is NOT required: a CLEAN result (or any non-review stage) has none. It exists so a
 // NEEDS_FIX result carries the actual review finding text across the schema boundary — without it,
 // taskReviewPrompt's "attach the finding when NEEDS_FIX" instruction has nowhere to land, and
@@ -1557,10 +1654,13 @@ const PLANNED = { type: 'object', properties: { planPath: {type:'string'}, mappi
 // `head`: the implementer's (and the fixer's) commit tip after committing — `git rev-parse HEAD`.
 // `declined`: the fix pass's findings it did not fix, one line each with the reason (wrong, or
 // plan-mandated); a non-empty value merges the task as parked.
+// `stacked`: the brief found (or cut) a branch carrying its stack parents' merges, so `base` is the
+// commit after them. `reopened`: a review re-entry found no branch and reopened the task bead — the
+// task is implemented afresh.
 // `status` is an enum of every token any RESULT-shaped dispatch may return; which subset applies is
 // stated in each dispatch.
-const RESULT_STATUSES = ['BRIEFED', 'IMPLEMENTED', 'BLOCKED', 'BLOCKED_AUTH', 'CLEAN', 'NEEDS_FIX', 'INVALID', 'FIXED', 'CLOSED']
-const RESULT  = { type: 'object', properties: { id: {type:'string'}, n: {type:'integer'}, status: {type:'string', enum: RESULT_STATUSES}, files: { type: 'array', items: {type:'string'} }, branch: {type:'string'}, base: {type:'string'}, blockerBead: {type:'string'}, finding: {type:'string'}, minors: { type: 'array', items: {type:'string'} }, head: {type:'string'}, alreadyMerged: {type:'boolean'}, declined: {type:'string'} }, required: ['id','status'] }
+const RESULT_STATUSES = ['BRIEFED', 'IMPLEMENTED', 'BLOCKED', 'BLOCKED_AUTH', 'CLEAN', 'NEEDS_FIX', 'INVALID', 'FIXED', 'CLOSED', 'STACK_CONFLICT']
+const RESULT  = { type: 'object', properties: { id: {type:'string'}, n: {type:'integer'}, status: {type:'string', enum: RESULT_STATUSES}, files: { type: 'array', items: {type:'string'} }, branch: {type:'string'}, base: {type:'string'}, blockerBead: {type:'string'}, finding: {type:'string'}, minors: { type: 'array', items: {type:'string'} }, head: {type:'string'}, alreadyMerged: {type:'boolean'}, declined: {type:'string'}, stacked: {type:'boolean'}, reopened: {type:'boolean'} }, required: ['id','status'] }
 // issue #5 defect 5: the Finish-phase reconciliation's answer — which of the ids the coordinator
 // still holds in escalated/pendingRetry the tracker reports CLOSED.
 const RECONCILE = { type: 'object', properties: { closed: { type: 'array', items: {type:'string'} } }, required: ['closed'] }
@@ -1626,6 +1726,11 @@ const CLOSE   = { type: 'object', properties: { rootClosed: {type:'boolean'}, cl
 // coordinator reads only whether the call returned null (appendLedger's retry-then-mark).
 const LEDGER_TEXT = { type: 'object', properties: { text: { type: 'string' } }, required: ['text'] }
 const SWEEP_SUMMARY = { type: 'object', properties: { summary: { type: 'string' } }, required: ['summary'] }
+// Early-unblock bookkeeping (scripts/review-bead): the split's review bead and whether the task bead
+// closed; a reopen's list; a cancelled task's worktree removal.
+const REVIEW_BEAD = { type: 'object', properties: { reviewBead: {type:'string'}, implClosed: {type:'boolean'}, created: {type:'boolean'}, scriptError: {type:'string'} }, required: ['reviewBead','implClosed'] }
+const REOPENED = { type: 'object', properties: { reopened: { type: 'array', items: {type:'string'} }, scriptError: {type:'string'} }, required: ['reopened'] }
+const DISCARD = { type: 'object', properties: { discarded: {type:'boolean'}, reopened: { type: 'array', items: {type:'string'} }, scriptError: {type:'string'} }, required: ['discarded'] }
 // Fix-round-1 (review, "Strongly suggested structure"): the ONE shape every ledger line writer
 // (`ledgerLine()`, in the helpers section below — hoisted, so it's usable above its textual
 // definition) and the Resume-phase reader (above) agree on: `Task <ordinal-or-?> (<bead id>): <rest>`.
@@ -1681,6 +1786,25 @@ const authRefused = []
 // open on the measured run. Recorded here on RESOLVE, handed to the merge (or close-only)
 // dispatch that lands the task, and forgotten once that dispatch succeeds.
 const blockerBeadOf = new Map()
+// Early unblock, run-wide. A task with open in-tree dependents is SPLIT when its implementer reports
+// a commit: `review-bead split` creates a `review: <id>` bead (blocked by the task) and closes the
+// task bead, and the dependents dispatch at once on a worktree cut with the task's branch merged in
+// (its stack parent). Each chain run is an ATTEMPT: `merged` settles true when its merge lands and
+// false when the attempt ends any other way; a dependent waits on its stack parents' `merged` before
+// it may enqueue its own merge, and is cancelled (worktree discarded, re-dispatched later) when one
+// settles false. `implDone`: implemented, not-yet-merged split tasks → their live attempt (the stack
+// parents a dependent is cut on). `reviewBeadOf` / `implClosed`: a split task's review bead and
+// whether its task bead is closed — the merge closes both, a failed attempt reopens the task bead.
+const reviewBeadOf = new Map()
+const implClosed = new Set()
+const implDone = new Map()     // id -> attempt
+const attemptOf = new Map()    // id -> the live attempt of its chain
+const discardFailed = new Set()  // cancelled tasks whose stale worktree may still exist; the next brief re-cuts
+function newAttempt(id) {
+  let resolveMerged
+  const merged = new Promise(res => { resolveMerged = res })
+  return { id, parents: [], parentAttempts: [], cancelledBy: null, ended: false, split: null, cut: false, merged, resolveMerged }
+}
 // issue #3 defect 2: run-wide deferred-minor clustering. 1,335 individually-correct deferrals
 // hid one line recurring ~40 times (the pipeline reporting its own defect once per merge) for a
 // fortnight because nothing counted recurrences. Signature = the minor's text with numbers,
@@ -1764,15 +1888,20 @@ for (const raw of (ledger?.text || '').split('\n')) {
   if (rest.startsWith('complete')) resumed.set(id, rest.includes('parked') ? 'parked' : 'complete')
   else if (rest.startsWith('pending retry')) resumed.set(id, 'pendingRetry')
   else if (rest.startsWith('BLOCKED')) resumed.set(id, 'blockedHistorically')
-  // else: a `fix pass` or `minor (deferred)` line — not a terminal state; the
+  // A `cancelled` last line (a stack parent did not merge) is not terminal and supersedes what came
+  // before it: the task re-enters fresh once bd reports it ready again.
+  else if (rest.startsWith('cancelled')) resumed.set(id, 'cancelled')
+  // else: a `fix pass`, `stacked on` or `minor (deferred)` line — not a terminal state; the
   // id isn't marked here, so the next `bd ready` surfaces it again and it re-enters from the brief.
 }
 let blockedHistoricallyCount = 0
+let cancelledHistoricallyCount = 0
 for (const [id, kind] of resumed) {
   if (kind === 'complete') settle(id, completed)
   else if (kind === 'parked') { settle(id, completed); parked.add(id) }
   else if (kind === 'pendingRetry') settle(id, pendingRetry)
   else if (kind === 'blockedHistorically') blockedHistoricallyCount++
+  else if (kind === 'cancelled') cancelledHistoricallyCount++
   // Fix-round-1 (review): a `BLOCKED` line is deliberately NOT folded into `escalated` here. It
   // used to be — but that made every invocation, crash-restart or deliberate re-invoke alike,
   // re-seed `escalated` from every BLOCKED line the ledger has EVER recorded, with no line kind
@@ -1803,7 +1932,7 @@ for (const [id, kind] of resumed) {
   // that gate reads `completed.size` after Resume has already seeded it from prior-run ledger
   // lines, not only from this run's own `completed.push` calls.
 }
-if (resumed.size) log(`resume: reconstructed from ${ledgerPath} — ${completed.size} complete (${parked.size} parked), ${pendingRetry.size} pending retry, ${blockedHistoricallyCount} previously-BLOCKED id(s) found (not re-quarantined — each gets a fresh attempt this run; see the resume-reconstruction comment above)`)
+if (resumed.size) log(`resume: reconstructed from ${ledgerPath} — ${completed.size} complete (${parked.size} parked), ${pendingRetry.size} pending retry, ${blockedHistoricallyCount} previously-BLOCKED id(s) found (not re-quarantined — each gets a fresh attempt this run; see the resume-reconstruction comment above)${cancelledHistoricallyCount ? `, ${cancelledHistoricallyCount} last cancelled (a stack parent did not merge; each re-enters fresh)` : ''}`)
 
 // Why the run stopped — returned to the caller so no two stop causes are ever conflated again
 // (defect 2, live: a null `bd ready`, written `ready?.ids ?? []`, used to exit this loop on a stop
@@ -1894,10 +2023,16 @@ while (true) {
   // point of a RESOLVE verdict. `escalated` (live, this-run-only after the fix above) is the one
   // list still legitimately gating dispatch, since it's what stops an immediate re-dispatch loop
   // for a task this same run already quarantined.
-  const ids = (ready.ids ?? []).filter(id => !escalated.has(id))
+  // Ready review beads: a task split at implementation-done in an earlier run (or this one, when its
+  // merge never landed) whose task bead is closed and whose review bead is not. It re-enters at its
+  // review stage on its existing branch — never planned again, never re-implemented.
+  const reentries = (ready.reviews ?? []).filter(rv => rv && rv.id && rv.task && !escalated.has(rv.task))
+  for (const rv of reentries) { reviewBeadOf.set(rv.task, rv.id); implClosed.add(rv.task) }
+  const reentryIds = [...new Set(reentries.map(rv => rv.task))]
+  const ids = (ready.ids ?? []).filter(id => !escalated.has(id) && !reentryIds.includes(id))
   // Quarantine exit: the root isn't closed (checked above) but nothing is ready — remaining
   // work is blocked/escalated. Not a clean finish; report below distinguishes the two cases.
-  if (ids.length === 0) { stopReason = 'ready-drained'; break }
+  if (ids.length === 0 && reentryIds.length === 0) { stopReason = 'ready-drained'; break }
   // I6/C-2: snapshot before this round's Plan/Implement/Integrate work so the no-progress guard
   // below (after Integrate) can tell whether THIS round moved anything forward. Captured here,
   // before the unplannedIds quarantine below can touch `escalated`/`pendingRetry`, so that
@@ -1920,8 +2055,8 @@ while (true) {
   // unaffected. The divergence guard below still runs on the retained value: it is a pure
   // string check, and re-asserting it each round is cheaper than reasoning about staleness.
   let planned = lastPlanned
-  if (!lastPlanned || ids.some(id => !lastPlanned.mapping.some(m => m.id === id))) {
-    planned = await dispatch(() => planPrompt(epicId, ids, planFileName), 'plan',
+  if (!lastPlanned || [...ids, ...reentryIds].some(id => !lastPlanned.mapping.some(m => m.id === id))) {
+    planned = await dispatch(() => planPrompt(epicId, ids, planFileName, reentryIds), 'plan',
       { label: 'plan', phase: 'Plan', ...tier('planner'), schema: PLANNED })
     // Null plan ("Null dispatch policy"): nothing downstream can run without the mapping — abandon
     // the round (no fabricated empty mapping: that would route every ready id through the
@@ -2031,8 +2166,9 @@ while (true) {
   // writes are safe beside a merge), and ledger lines go to the ledger chain. A merge that ends
   // on the blocker path returns that follow-up as a thunk, which runs after the queue moves on.
   // Mid-round top-up hook (assigned in the dispatch section): fired without awaiting after each
-  // successful merge, so a bead the merge unblocked dispatches into this round. Awaiting it inside
-  // integrateOne would serialize the ready re-query into the merge queue.
+  // landing (a merge, or an already-merged close), so a bead the landing unblocked dispatches into
+  // this round — from the graph in JS, plus the `bd ready` top-up where JS cannot see readiness.
+  // Awaiting it inside integrateOne would serialize that work into the merge queue.
   let topUpHook = () => {}
   // Same-round RESOLVE retry hook (assigned in the dispatch section): a blocker triaged RESOLVE
   // is ready now, with its clarification recorded. handleBlocker enforces the one-retry bound.
@@ -2040,10 +2176,14 @@ while (true) {
   const onResolve = id => resolveRetryHook(id)
   let integrateAnnounced = false
   let mergeChain = Promise.resolve()
+  // A failed merge's attempt ends (its stacked dependents cancelled, its task bead reopened) before
+  // its blocker path runs, so a RESOLVE retry starts from a settled attempt.
   const enqueueIntegration = r => {
     const run = mergeChain.then(() => integrateOne(r))
     mergeChain = run.then(() => {}, () => {})   // settled either way: a throw must not poison the queue
-    return run.then(after => (typeof after === 'function' ? withSlot(r.id, after) : undefined))
+    return run.then(after => (typeof after === 'function'
+      ? withSlot(r.id, async () => { await failAttempt(r.att, { failure: 'blocked', reopen: true }); return after() })
+      : undefined))
   }
   // The success-path ledger lines the merge agent writes itself once the merge is committed
   // (mergePrompt's LEDGER step): it fills `<REBASE>` and `<RANGE>`, which only it measures. A parked
@@ -2206,7 +2346,8 @@ while (true) {
         noteLedger(r.id, ledgerLine(r.n, r.id, `complete (${range}, fix pass, 1 parked — reason: ${r.parkReason} — finding: ${r.finding})`),
           ledgerLine(r.n, r.id, `complete (${range}, fix pass, 1 parked — reason and finding elided: see ${artifacts(r.id).report})`))
       }
-      // Mid-round top-up — only a merge that landed can have unblocked a dependent.
+      // Its stacked dependents may now merge; a landing can unblock more work.
+      markMerged(r.att)
       topUpHook()
       return
     }
@@ -2228,6 +2369,7 @@ while (true) {
     settle(r.id, completed)
     blockerBeadOf.delete(r.id)
     noteLedger(r.id, ledgerLine(r.n, r.id, `complete (already merged into ${integrationBranch} before this re-entry — bead closed, no new review)`))
+    markMerged(r.att)
     topUpHook()
   }
 
@@ -2236,8 +2378,20 @@ while (true) {
   // fail its chain, so only mapped ids dispatch; each unmapped id goes through the same
   // blocker-bead + triage flow as every other blocker trigger, so a RESOLVE verdict (e.g.
   // "re-plan with this clarification") gets a real chance next round.
-  const plannedIds = ids.filter(id => ordinalFor(id) !== undefined)
+  const rowOf = id => planned.mapping.find(m => m.id === id)
+  // Graph mode: the planner reported `deps` rows (scripts/tree-deps), so readiness mid-round is
+  // computed here. Without them every merge falls back to the `bd ready` top-up.
+  const graphMode = planned.mapping.some(m => Array.isArray(m.deps))
+  // Held back: bd reports the id ready, but a blocker this run has not merged is quarantined or
+  // awaiting its retry — a split task whose task-bead reopen was lost looks closed to bd.
+  const heldBack = ids.filter(id => (rowOf(id)?.deps ?? []).some(d => escalated.has(d) || pendingRetry.has(d)))
+  if (heldBack.length) log(`held back ${heldBack.length} ready id(s) whose in-tree blocker is quarantined or awaiting its retry this run (bd sees that blocker's task bead closed): ${heldBack.join(', ')}`)
+  const plannedIds = ids.filter(id => ordinalFor(id) !== undefined && !heldBack.includes(id))
   const unplannedIds = ids.filter(id => ordinalFor(id) === undefined)
+  const reentryPlanned = reentryIds.filter(id => ordinalFor(id) !== undefined)
+  for (const id of reentryIds.filter(id => ordinalFor(id) === undefined)) log(`review re-entry: ${id} has no mapping row (the planner did not restore it) — its review bead stays open for a later round`)
+  // Everything ready is held back behind quarantined blockers: the same drain as an empty ready set.
+  if (heldBack.length && !plannedIds.length && !unplannedIds.length && !reentryPlanned.length) { stopReason = 'ready-drained'; break }
 
   // Dispatch is a sliding window, not file-overlap buckets: every planned id dispatches the moment
   // a slot frees, bounded by `cap`. Each task runs in its own worktree, so concurrent implementers
@@ -2265,8 +2419,8 @@ while (true) {
   // Chain rejections are swallowed to null, as parallel() does, so one dead chain cannot abort the
   // round-end drain — but the exception is logged in full first, so a chain that died on a schema
   // mismatch or a thrown prompt builder never vanishes silently. `chains` grows while it is
-  // awaited (top-ups, RESOLVE retries, blocker jobs), which parallel() cannot do; the scheduler is
-  // what bounds concurrency.
+  // awaited (top-ups, graph dispatches, RESOLVE retries, blocker jobs, splits), which parallel()
+  // cannot do; the scheduler is what bounds concurrency.
   const chainCatch = id => e => {
     log(`chain for ${id} REJECTED — swallowed to null exactly as parallel() does, so the round-end drain still completes: ${e && e.stack ? e.stack : String(e)}`)
     return null
@@ -2288,19 +2442,167 @@ while (true) {
       }).catch(chainCatch(id)))
     }
   }
-  const runTask = async id => {
+
+  // --- Early unblock and graph readiness ---
+  // `satisfiedThisRound`: blockers that became implemented or merged during this round. A row is
+  // graph-dispatched only when its last blocker landed here — a row whose blockers were all done
+  // before the round started and that bd still did not report ready is gated by something the
+  // graph does not show, and bd stays the authority for it.
+  const satisfiedThisRound = new Set()
+  let stackedDispatched = 0, cancelledThisRound = 0
+  const waiting = id => !dispatched.has(id) && !attemptOf.has(id) && !escalated.has(id) && !completed.has(id) && !pendingRetry.has(id)
+  const hasOpenDependents = id => graphMode && planned.mapping.some(m => Array.isArray(m.deps) && m.deps.includes(id) && !completed.has(m.id) && !escalated.has(m.id))
+  // Newly dispatchable rows: every in-tree leaf blocker merged (or, with early unblock, implemented
+  // and split), at least one of them this round, and nothing opaque gating the row.
+  const readyFromGraph = () => !graphMode ? [] : planned.mapping
+    .filter(m => Array.isArray(m.deps) && m.deps.length > 0 && m.opaque !== true && waiting(m.id)
+      && m.deps.every(d => completed.has(d) || implDone.has(d))
+      && m.deps.some(d => satisfiedThisRound.has(d)))
+    .map(m => m.id)
+  const graphTopUp = () => {
+    if (!canStartWork()) return
+    for (const id of readyFromGraph()) {
+      dispatched.add(id)
+      const parents = (rowOf(id)?.deps ?? []).filter(d => implDone.has(d))
+      log(`graph: ${id} is ready — every in-tree blocker is ${parents.length ? `merged or implemented; dispatching it stacked on ${parents.join(', ')}` : 'merged; dispatching it now'}`)
+      chains.push(runTask(id).catch(chainCatch(id)))
+    }
+  }
+  // The `bd ready` top-up is needed only where JS cannot see readiness: no `deps` rows at all, or a
+  // waiting row gated by something opaque (an epic-level or out-of-tree blocker).
+  const needsBdTopUp = () => !graphMode || planned.mapping.some(m => m.opaque === true && waiting(m.id))
+  // An attempt starts with its stack parents: the in-tree blockers implemented and split but not yet
+  // merged. A review re-entry is itself implemented and split already (bd reports its dependents
+  // ready), so its dependents stack on it even with early unblock off.
+  const startAttempt = (id, reentry) => {
+    const att = newAttempt(id)
+    if (!reentry) {
+      att.parents = (rowOf(id)?.deps ?? []).filter(d => implDone.has(d))
+      att.parentAttempts = att.parents.map(d => implDone.get(d))
+    }
+    if (reentry) { implDone.set(id, att); satisfiedThisRound.add(id) }
+    attemptOf.set(id, att)
+    return att
+  }
+  // Implementation done: split the task when it has open dependents. The split (review bead, then
+  // the task-bead close) runs beside the review, never before the dependents dispatch; a parent's
+  // split lands first because bd refuses to close a bead whose blocker is open.
+  const markImplemented = att => {
+    if (!earlyUnblock || att.ended || att.cancelledBy || !hasOpenDependents(att.id)) return
+    implDone.set(att.id, att)
+    satisfiedThisRound.add(att.id)
+    const parentSplits = att.parentAttempts.map(p => p.split).filter(Boolean)
+    att.split = (async () => {
+      await Promise.all(parentSplits)
+      const res = await dispatch(() => reviewBeadPrompt(att.id), `review-bead:${att.id}`,
+        { label: `review-bead:${att.id}`, phase: 'Implement', ...tier('mechanical'), schema: REVIEW_BEAD })
+      if (!res) { log(`review-bead:${att.id} unavailable (null dispatch) — ${att.id} stays unsplit in bd (its task bead closes at its merge); its dependents dispatch from the graph regardless`); return null }
+      reviewBeadOf.set(att.id, res.reviewBead)
+      if (res.implClosed) implClosed.add(att.id)
+      else log(`review-bead:${att.id}: bd kept ${att.id} open (it is blocked by an open bead) — it closes at its merge; its dependents dispatch regardless`)
+      return res
+    })().catch(e => { log(`review-bead:${att.id} threw: ${e && e.stack ? e.stack : String(e)}`); return null })
+    chains.push(att.split)
+    graphTopUp()
+  }
+  const markMerged = att => {
+    if (!att || att.ended) return
+    att.ended = true
+    if (implDone.get(att.id) === att) implDone.delete(att.id)
+    satisfiedThisRound.add(att.id)
+    att.resolveMerged(true)
+  }
+  // Every live attempt stacked on `att`, transitively, is cancelled: it can never merge.
+  const cancelStackedOn = (att, reason) => {
+    for (const a of attemptOf.values()) {
+      if (a.ended || a.cancelledBy || !a.parentAttempts.includes(att)) continue
+      a.cancelledBy = att.id
+      a.cancelReason = reason
+      log(`cancel: ${a.id} was stacked on ${att.id}, which will not merge (${reason}) — it stops at its next step and is re-dispatched once ${att.id} is implemented again`)
+      cancelStackedOn(a, 'cancelled')
+    }
+  }
+  // An attempt that will not merge. `failure` 'blocked' (a terminal outcome: BLOCKED, BLOCKED_AUTH,
+  // a failed merge) reopens a split task's bead so bd blocks its dependents again; 'unsettled' (a null
+  // dispatch) leaves it closed, so its review bead brings it back at the review stage. `discard`
+  // removes a cancelled task's worktree in the same dispatch.
+  const failAttempt = async (att, { failure = 'unsettled', reopen = false, discard = false } = {}) => {
+    if (!att || att.ended) return
+    att.ended = true
+    att.failure = failure
+    if (implDone.get(att.id) === att) implDone.delete(att.id)
+    att.resolveMerged(false)
+    cancelStackedOn(att, failure)
+    if (att.split) await att.split
+    const reopenBead = (reopen || discard) && implClosed.has(att.id)
+    if (discard && att.cut) {
+      const d = await dispatch(() => discardPrompt(att.id, reopenBead), `discard:${att.id}`,
+        { label: `discard:${att.id}`, phase: 'Implement', ...tier('mechanical'), schema: DISCARD })
+      if (!d || d.discarded !== true) { discardFailed.add(att.id); log(`discard:${att.id} ${d ? 'reported the worktree not removed' : 'unavailable (null dispatch)'} — its next brief re-cuts the worktree`) }
+      else discardFailed.delete(att.id)
+      if (d && (d.reopened ?? []).includes(att.id)) implClosed.delete(att.id)
+    } else if (reopenBead) {
+      const ro = await dispatch(() => reopenPrompt([att.id]), `reopen:${att.id}`,
+        { label: `reopen:${att.id}`, phase: 'Implement', ...tier('mechanical'), schema: REOPENED })
+      if (ro && (ro.reopened ?? []).includes(att.id)) implClosed.delete(att.id)
+      else log(`reopen of ${att.id} ${ro ? 'reported nothing reopened' : 'unavailable (null dispatch)'} — its task bead stays closed, so bd may report its dependents ready; the round head holds them back while ${att.id} is quarantined or awaiting its retry`)
+    }
+  }
+  // A cancelled attempt stops here: one ledger line, its worktree discarded (and its own task bead
+  // reopened if it was split), then the graph may re-dispatch it on a fresh attempt of its parent.
+  const abandon = async (att, inSlot) => {
+    const reason = att.cancelReason ?? 'blocked'
+    noteLedger(att.id, ledgerLine(ordinalFor(att.id), att.id, `cancelled (parent ${att.cancelledBy} ${reason})`))
+    cancelledThisRound++
+    const run = () => failAttempt(att, { failure: 'cancelled', discard: true })
+    await (inSlot ? run() : withSlot(att.id, run))
+    if (attemptOf.get(att.id) === att) attemptOf.delete(att.id)
+    dispatched.delete(att.id)
+    graphTopUp()
+    return null
+  }
+  const parentsMerged = async att => {
+    const results = await Promise.all(att.parentAttempts.map(p => p.merged))
+    const i = results.indexOf(false)
+    if (i !== -1 && !att.cancelledBy) { att.cancelledBy = att.parents[i]; att.cancelReason = att.parentAttempts[i].failure === 'unsettled' ? 'unsettled' : 'blocked' }
+    return i === -1
+  }
+
+  const runTask = async (id, { reentry = false } = {}) => {
+    const att = startAttempt(id, reentry)
+    let r = null
+    let integrate = false
+    let slotHeld = false
     try {
       await sched.acquire(id)
-      let r = null
-      let integrate = false
+      slotHeld = true
       try {
-        let br = await dispatch(() => taskBriefPrompt(planned.planPath, ordinalFor(id), id, taskWorktree(id), taskBranch(id), integrationBranch, artifacts(id).brief), `brief:${id}`, { label: `brief:${id}`, phase: 'Implement', ...tier('mechanical'), schema: RESULT })
+        if (att.cancelledBy) return await abandon(att, true)
+        let br = await dispatch(() => taskBriefPrompt(planned.planPath, ordinalFor(id), id, taskWorktree(id), taskBranch(id), integrationBranch, artifacts(id).brief, { parents: att.parents, reentry, recut: discardFailed.has(id) }), `brief:${id}`, { label: `brief:${id}`, phase: 'Implement', ...tier('mechanical'), schema: RESULT })
         if (!br) return null  // null brief ("Null dispatch policy"): no progress this round — dispatch() already logged it; the next ready query re-surfaces the id
         // issue #5 (id re-stamp): the coordinator dispatched `id`; whatever id the agent echoes back
         // is discarded. One live agent reported its plan ordinal (`task-9`) as the id, and that
         // string went on to be filed against, ledgered, and returned in a bucket. Identity is the
         // coordinator's, never the agent's — same rule `stamp()` applies inside reviewAndFix.
         br = { ...br, id }
+        att.cut = br.status !== 'STACK_CONFLICT'
+        if (att.cut) discardFailed.delete(id)
+        if (att.cancelledBy) return await abandon(att, true)
+        // Two stack parents whose branches conflict cannot share a worktree: the brief removed what
+        // it cut, and this task waits (slot released) for the parents to merge, then a fresh attempt
+        // cuts it from the integration tip.
+        if (br.status === 'STACK_CONFLICT') {
+          log(`${id}: its stack parents' branches conflict with each other (${br.finding ?? 'no detail'}) — waiting for ${att.parents.join(', ')} to merge, then cutting it fresh from ${integrationBranch}`)
+          sched.release(id); slotHeld = false
+          if (!(await parentsMerged(att))) return await abandon(att, false)
+          att.ended = true
+          att.resolveMerged(false)
+          if (attemptOf.get(id) === att) attemptOf.delete(id)
+          chains.push(runTask(id).catch(chainCatch(id)))
+          return null
+        }
+        const stacked = att.parents.length > 0 || br.stacked === true
+        if (att.parents.length) { stackedDispatched++; noteLedger(id, ledgerLine(ordinalFor(id), id, `stacked on ${att.parents.join(', ')} (dispatched at implementation-done)`)) }
         // BLOCKED_AUTH rides the same passthrough as BLOCKED at both stages: it must never reach
         // review or merge, and the chain's outcome step routes it to `handleAuthRefusal`
         // (log + quarantine + continue), never to `handleBlocker` (no bead, no triage).
@@ -2314,59 +2616,93 @@ while (true) {
         // skips implement/review/merge and goes straight to closing the bead.
         else if (br.alreadyMerged === true) {
           log(`${id}: task branch is already merged into ${integrationBranch} (re-entry after a lost bd close) — closing the bead, no implement/review/merge`)
-          r = { id, n: ordinalFor(id), branch: taskWorktree(id), base: br.base, status: 'ALREADY_MERGED' }
+          r = { id, n: ordinalFor(id), branch: taskWorktree(id), base: br.base, status: 'ALREADY_MERGED', att }
         }
         else {
-          let im = await dispatch(() => implementPrompt({ ...br, n: ordinalFor(id), branch: taskWorktree(id) }, integrationBranch, artifacts(id)), `implement:${id}`, { label: `impl:${id}`, phase: 'Implement', ...tier('implementer'), schema: RESULT })
-          if (!im) return null  // null implement: same — not CLEAN, not BLOCKED, re-enters next round
-          im = { ...im, id }
-          // issue #5 defect 3: an implementer that reports IMPLEMENTED with its edits UNCOMMITTED
-          // (two on the measured run, one whose report even claimed a commit) leaves the task
-          // branch at `base`, so the review package's base..HEAD range is empty and the review
-          // stage's INVALID-twice rule filed a blocker bead against correct, unreviewed work. The
-          // implementer now reports `head`; a head equal to the brief's base means nothing was
-          // committed. One bounded nudge — commit what is there — then a diagnosed BLOCKED whose
-          // finding names the cause, so triage reads "uncommitted", not "reported BLOCKED".
-          if (im.status === 'IMPLEMENTED' && im.head && br.base && im.head === br.base) {
-            log(`${id}: implementer reported IMPLEMENTED but head == base (${short(br.base)}) — nothing committed on the task branch; one commit nudge`)
-            const nudged = await dispatch(() => commitNudgePrompt(id, ordinalFor(id), taskWorktree(id), taskBranch(id), br.base, artifacts(id).report), `commit-nudge:${id}`, { label: `commit-nudge:${id}`, phase: 'Implement', ...tier('implementer'), schema: RESULT })
-            if (!nudged) return null  // null nudge: unsettled this round, re-enters via the next ready batch
-            im = { ...im, ...nudged, id }
-            if (!im.head || im.head === br.base) {
-              im = { ...im, status: 'BLOCKED', finding: `no commit on the task branch after the implementer reported IMPLEMENTED twice — the branch ${taskBranch(id)} is still at base ${short(br.base)}; the work is uncommitted in ${taskWorktree(id)} or was never made. The task was NOT reviewed.` }
+          let done
+          if (reentry && br.reopened !== true) {
+            // Review re-entry: the implementation is on the task branch already.
+            log(`${id}: review re-entry (review bead ${reviewBeadOf.get(id)}) — its implementation is on ${taskBranch(id)}; reviewing it, no implementer dispatch`)
+            done = { id, status: 'IMPLEMENTED', n: ordinalFor(id), branch: taskWorktree(id), base: br.base, head: br.head, files: rowOf(id)?.files ?? [] }
+          } else {
+            if (reentry) {
+              // The branch was gone: the brief reopened the task bead and cut fresh, so it is an
+              // ordinary implementation now and no longer stacks its dependents.
+              log(`${id}: review re-entry found no task branch — the brief reopened ${id} and cut it fresh; implementing it`)
+              implClosed.delete(id)
+              if (implDone.get(id) === att) implDone.delete(id)
             }
+            let im = await dispatch(() => implementPrompt({ ...br, n: ordinalFor(id), branch: taskWorktree(id) }, integrationBranch, artifacts(id), att.parents), `implement:${id}`, { label: `impl:${id}`, phase: 'Implement', ...tier('implementer'), schema: RESULT })
+            if (!im) return null  // null implement: same — not CLEAN, not BLOCKED, re-enters next round
+            im = { ...im, id }
+            if (att.cancelledBy) return await abandon(att, true)
+            // issue #5 defect 3: an implementer that reports IMPLEMENTED with its edits UNCOMMITTED
+            // (two on the measured run, one whose report even claimed a commit) leaves the task
+            // branch at `base`, so the review package's base..HEAD range is empty and the review
+            // stage's INVALID-twice rule filed a blocker bead against correct, unreviewed work. The
+            // implementer now reports `head`; a head equal to the brief's base means nothing was
+            // committed. One bounded nudge — commit what is there — then a diagnosed BLOCKED whose
+            // finding names the cause, so triage reads "uncommitted", not "reported BLOCKED".
+            if (im.status === 'IMPLEMENTED' && im.head && br.base && im.head === br.base) {
+              log(`${id}: implementer reported IMPLEMENTED but head == base (${short(br.base)}) — nothing committed on the task branch; one commit nudge`)
+              const nudged = await dispatch(() => commitNudgePrompt(id, ordinalFor(id), taskWorktree(id), taskBranch(id), br.base, artifacts(id).report), `commit-nudge:${id}`, { label: `commit-nudge:${id}`, phase: 'Implement', ...tier('implementer'), schema: RESULT })
+              if (!nudged) return null  // null nudge: unsettled this round, re-enters via the next ready batch
+              im = { ...im, ...nudged, id }
+              if (!im.head || im.head === br.base) {
+                im = { ...im, status: 'BLOCKED', finding: `no commit on the task branch after the implementer reported IMPLEMENTED twice — the branch ${taskBranch(id)} is still at base ${short(br.base)}; the work is uncommitted in ${taskWorktree(id)} or was never made. The task was NOT reviewed.` }
+              }
+            }
+            done = { ...im, n: ordinalFor(id), branch: taskWorktree(id), base: br.base }
+            // Implementation done: its dependents may start now (early unblock).
+            if (done.status === 'IMPLEMENTED') markImplemented(att)
           }
-          const done = { ...im, n: ordinalFor(id), branch: taskWorktree(id), base: br.base }
-          r = (done.status === 'BLOCKED' || done.status === 'BLOCKED_AUTH') ? done : await reviewAndFix(done, planned.planPath, artifacts(id))
+          r = (done.status === 'BLOCKED' || done.status === 'BLOCKED_AUTH') ? done : await reviewAndFix(done, planned.planPath, artifacts(id), () => !!att.cancelledBy)
+          if (att.cancelledBy || r?.status === 'CANCELLED') return await abandon(att, true)
+          if (r) r = { ...r, att, stacked }
         }
         // The chain's outcome. Blocker, permission-refusal and already-merged outcomes never touch
         // the integration branch: they are handled here, inside this task's slot (a triage is an
         // agent like any other, so it counts against the cap). Only a merge candidate leaves the
         // slot, for the single-flight queue. A null result (a dead dispatch above) does nothing this
-        // round — the next ready batch re-surfaces the id.
-        if (r?.status === 'BLOCKED') await handleBlocker(r, planned.planPath, onResolve)
-        else if (r?.status === 'BLOCKED_AUTH') await handleAuthRefusal(r, r.finding)
+        // round — the next ready batch re-surfaces the id. The attempt ends before the blocker path,
+        // so a RESOLVE retry starts from a settled one.
+        if (r?.status === 'BLOCKED') { await failAttempt(att, { failure: 'blocked', reopen: true }); await handleBlocker(r, planned.planPath, onResolve) }
+        else if (r?.status === 'BLOCKED_AUTH') { await failAttempt(att, { failure: 'blocked', reopen: true }); await handleAuthRefusal(r, r.finding) }
         else if (r?.status === 'ALREADY_MERGED') await closeAlreadyMerged(r)
         else if (r) integrate = true
       } finally {
-        sched.release(id)  // free the slot before integration: merges ride their own queue
+        if (slotHeld) sched.release(id)  // free the slot before integration: merges ride their own queue
       }
-      if (integrate) await enqueueIntegration(r)
+      if (integrate) {
+        // A split task's merge closes its review bead, so the split lands first; a stacked task
+        // merges only after every stack parent merged, waiting here, never at the head of the queue.
+        if (att.split) await att.split
+        if (!(await parentsMerged(att)) || att.cancelledBy) return await abandon(att, false)
+        await enqueueIntegration(r)
+      }
       return r
     } finally {
+      // An attempt that ends without merging and without a settled failure (a null dispatch) ends
+      // unsettled: its stacked dependents are cancelled; a split task keeps its task bead closed,
+      // so its review bead brings it back at the review stage.
+      if (!att.ended) await failAttempt(att, { failure: 'unsettled' })
+      if (attemptOf.get(id) === att) attemptOf.delete(id)
       flushLedger(id, 'Integrate')  // this chain's ledger lines, in one append, off the critical path
     }
   }
-  // Mid-round top-up: each successful merge fires a ready re-query whose newly-ready,
-  // already-mapped ids dispatch into this round's scheduler immediately, instead of waiting for
-  // the merge drain plus the next round's head. No planner pass is needed: the first planning round
-  // maps every ready AND blocked descendant, and `planned.mapping` is cumulative. An id with no
-  // mapping row is skipped and waits for the next round's planner pass.
-  // Bounds: `dispatched` only grows and only mapped ids dispatch, so chains ≤ the mapping size;
-  // one top-up query in flight at a time (a merge landing mid-query re-runs it once); a top-up
-  // never awaits mergeChain and integrateOne never awaits a top-up, so there is no cycle. A null
-  // top-up query just skips that top-up — the next round's ready query is the authority.
-  const dispatched = new Set(plannedIds)
+  // Mid-round dispatch beyond the round head. Each landing (and, with early unblock, each split
+  // task's implementation) runs `readyFromGraph()` in JS: a row whose in-tree blockers have all
+  // landed dispatches at once, with no agent spent. The `bd ready` top-up runs only where JS cannot
+  // see readiness (`needsBdTopUp`). Its newly-ready, already-mapped ids dispatch into this round's
+  // scheduler. An id with no mapping row is skipped and waits for the next round's planner pass.
+  // Bounds: `dispatched` only grows (a cancelled id leaves it to be re-dispatched once) and only
+  // mapped ids dispatch, so chains ≤ the mapping size plus cancellations; one top-up query in flight
+  // at a time (a landing mid-query re-runs it once); a top-up never awaits mergeChain and
+  // integrateOne never awaits a top-up, so there is no cycle. A null top-up query just skips that
+  // top-up — the next round's ready query is the authority.
+  const dispatched = new Set([...plannedIds, ...reentryPlanned])
+  // Review re-entries start first: a dependent cut at the round head stacks on them.
+  for (const id of reentryPlanned) chains.push(runTask(id, { reentry: true }).catch(chainCatch(id)))
   for (const id of plannedIds) chains.push(runTask(id).catch(chainCatch(id)))
   let topUpActive = false, topUpQueued = false
   let topUpQueriesUsed = 0
@@ -2396,13 +2732,13 @@ while (true) {
         topUpQueriesUsed++
         // topUpPrompt = the epic-close script + the round query's script, DISTINCT stub key/label: a dryRun scenario
         // controls top-up responses separately from the round-gating query's consumed-per-round
-        // array. The close pass rides this dispatch because the top-up fires per successful
-        // merge — the exact moment an epic can become close-eligible (issue #2 defect 3).
+        // array. The close pass rides this dispatch because the top-up fires per landing — the
+        // moment an epic can become close-eligible, which is what an opaque row waits on.
         const more = await dispatch(() => topUpPrompt(epicId), 'bd-ready-topup',
           { label: 'bd-ready-topup', phase: 'Implement', schema: READY, ...tier('mechanical') })
         if (!more) { log('top-up ready query returned null — skipping this top-up; the next round query is the authority'); return }
         for (const id of (more.ids ?? [])) {
-          if (dispatched.has(id) || escalated.has(id)) continue
+          if (dispatched.has(id) || escalated.has(id) || attemptOf.has(id)) continue
           if (ordinalFor(id) === undefined) {
             // Safety net, not an edge case: briefing against an undefined ordinal fails the whole
             // chain (`task-brief <plan> undefined`), and if the planner's ready-AND-blocked
@@ -2429,7 +2765,10 @@ while (true) {
   // to report a component that gates nothing: a top-up's worst failure mode is the pre-top-up
   // behaviour, work waiting for the next round's refill. A slowdown, not a loss.
   let topUpFailure = null
-  topUpHook = () => { topUps.push(runTopUp().catch(e => { topUpFailure = topUpFailure ?? e })) }
+  topUpHook = () => {
+    graphTopUp()
+    if (needsBdTopUp()) topUps.push(runTopUp().catch(e => { topUpFailure = topUpFailure ?? e }))
+  }
   // Same-round RESOLVE retry: re-push the task's chain immediately. The id stays in `dispatched`
   // (top-ups must not triple-dispatch it); the deliberate second runTask is this retry itself,
   // and C-2 bounds RESOLVEs to one per id, so at most one retry chain per task per run. Gated on
@@ -2445,6 +2784,7 @@ while (true) {
     log(`RESOLVE retry: re-dispatching ${id} into this round with its clarification recorded`)
     chains.push(runTask(id).catch(chainCatch(id)))
   }
+
   // QUIESCENCE, then drain. A chain's promise resolves only after its own integration completed
   // (runTask awaits enqueueIntegration), and an integration may have fired a top-up that is
   // still querying — so await chains AND top-ups together, and loop until NEITHER array grew
@@ -2468,17 +2808,20 @@ while (true) {
   await drainLedger()
 
   // The detector: every round reports effective parallelism against the cap and names the
-  // suspected cause. The frontier hint keys on TOTAL dispatched (planned + topped-up): a small
-  // round-start frontier the top-up then filled is healthy. Query usage is reported so
-  // config.topUpQueryCap can be tuned from evidence.
+  // suspected cause. The frontier hint keys on TOTAL dispatched (planned + topped-up, where
+  // topped-up counts graph and `bd ready` top-up dispatches alike): a small round-start frontier
+  // that mid-round dispatch then filled is healthy. Query usage is reported so
+  // config.topUpQueryCap can be tuned from evidence; early-unblock activity is named when nonzero.
   const hotDeferrals = Object.entries(sched.stats.hotFileDeferrals)
   const slotsNote = runtimeSlots ? ` · runtime slots ${runtimeSlots}` : ''
-  log(`parallelism: ${plannedIds.length} ready · topped-up ${dispatched.size - plannedIds.length} · cap ${cap} · peak in-flight ${sched.stats.peak} · top-up queries ${Math.min(topUpQueriesUsed, topUpQueryCap)}/${topUpQueryCap}${slotsNote}`
+  const toppedUp = dispatched.size - plannedIds.length - reentryPlanned.length
+  const earlyNote = (reentryPlanned.length ? ` · review re-entries ${reentryPlanned.length}` : '') + (stackedDispatched ? ` · stacked ${stackedDispatched}` : '') + (cancelledThisRound ? ` · cancelled ${cancelledThisRound}` : '')
+  log(`parallelism: ${plannedIds.length} ready · topped-up ${toppedUp} · cap ${cap} · peak in-flight ${sched.stats.peak} · top-up queries ${Math.min(topUpQueriesUsed, topUpQueryCap)}/${topUpQueryCap}${earlyNote}${slotsNote}`
     + (hotDeferrals.length ? ` · hot-file deferrals: ${hotDeferrals.map(([f, n]) => `${f} (${n} task(s) waited)`).join(', ')} — a shared barrel/index/registry to split or assign to one task, or over-declared filesTouched (./planner-prompt.md)` : '')
     + (dispatched.size < cap ? ` · dispatched frontier smaller than the cap — if more open beads are waiting on dependencies, check for edges encoding narrative order rather than genuine blocking (super-design §Decomposition)` : ''))
   // The same line goes to the ledger (`Detector:`, a non-Task line the Resume reader ignores), so a
   // run's parallelism is recoverable afterwards. Queued, not awaited: the next round starts now.
-  const detectorLine = `Detector: round ${roundNo} — ${plannedIds.length} ready · topped-up ${dispatched.size - plannedIds.length} · cap ${cap} · peak in-flight ${sched.stats.peak} · top-up queries ${Math.min(topUpQueriesUsed, topUpQueryCap)}/${topUpQueryCap}${hotDeferrals.length ? ` · hot-file deferrals: ${hotDeferrals.map(([f, n]) => `${f} (${n})`).join(', ')}` : ''}${slotsNote}`
+  const detectorLine = `Detector: round ${roundNo} — ${plannedIds.length} ready · topped-up ${toppedUp} · cap ${cap} · peak in-flight ${sched.stats.peak} · top-up queries ${Math.min(topUpQueriesUsed, topUpQueryCap)}/${topUpQueryCap}${earlyNote}${hotDeferrals.length ? ` · hot-file deferrals: ${hotDeferrals.map(([f, n]) => `${f} (${n})`).join(', ')}` : ''}${slotsNote}`
   queueLedger(detectorLine, 'ledger-append:detector', 'Integrate')
   // Two consecutive rounds with the dispatched frontier under the cap arm ONE report-only edge
   // audit (bounded by `edgeAuditCap`; the streak resets on each audit). It runs in the background —
@@ -2565,7 +2908,7 @@ if (!metricsLedger) {
   // a failed merge's id, so a both-paths count would mismatch ledger-check on every failed merge.
   const MERGE_METRICS_RE = /^Merge:\s+\S+\s+—\s+rebase\s+(clean|conflict:\s*\d+\s*files?)\s+·\s+seam-review\s+(none|cleared|fixed)\s+·\s+check\s+(pass|fail→fixed|fail|none)(\s+→\s+blocker)?$/
   let mMerges = 0, mMergeFailed = 0, mConflicts = 0, mSeamReviews = 0, mSeamFixed = 0, mCheckFails = 0, mCheckFixed = 0
-  let cClean = 0, cFixPass = 0, cParked = 0, cReentry = 0
+  let cClean = 0, cFixPass = 0, cParked = 0, cReentry = 0, cStacked = 0, cCancelled = 0
   let fEntered = 0, fFixed = 0, fBlocked = 0
   for (const line of metricsLines) {
     const mm = MERGE_METRICS_RE.exec(line)
@@ -2584,7 +2927,9 @@ if (!metricsLedger) {
       if (rest.includes('already merged')) cReentry++
       else if (rest.includes('review clean')) cClean++
       else if (rest.includes('fix pass')) { cFixPass++; if (rest.includes('parked')) cParked++ }
-    } else if (rest.startsWith('fix pass')) {
+    } else if (rest.startsWith('stacked on')) cStacked++
+    else if (rest.startsWith('cancelled (')) cCancelled++
+    else if (rest.startsWith('fix pass')) {
       fEntered++
       if (rest.startsWith('fix pass FIXED')) fFixed++
       else if (rest.startsWith('fix pass BLOCKED')) fBlocked++
@@ -2596,7 +2941,7 @@ if (!metricsLedger) {
   const mLedgerCheck = mMerges === completed.size ? 'ok' : `M≠completed: ${mMerges} vs ${completed.size}`
   metrics = [
     `Metrics: merges ${mMerges} · merge-failed ${mMergeFailed} · rebase-conflicts ${mConflicts} · seam-reviews ${mSeamReviews} (fixed ${mSeamFixed}) · check-fails ${mCheckFails} (fixed ${mCheckFixed})`,
-    `Metrics: completions — review clean ${cClean} · after fix pass ${cFixPass} · parked ${cParked} · re-entry closes ${cReentry}`,
+    `Metrics: completions — review clean ${cClean} · after fix pass ${cFixPass} · parked ${cParked} · re-entry closes ${cReentry} · dispatched early ${cStacked} · cancelled ${cCancelled}`,
     `Metrics: fix-pass — entered ${fEntered} · FIXED ${fFixed} · BLOCKED ${fBlocked}`,
     `Metrics: ledger-check ${mLedgerCheck} · append-failed ${ledgerAppendFailed.length} · append-retried ${ledgerAppendRetried}`,
   ]
@@ -2615,10 +2960,11 @@ const review = reviewRes ?? `FINAL REVIEW UNAVAILABLE — the final-review dispa
 // (quarantined this run), so the four-bucket invariant is unchanged.
 // Reconcile against the tracker before returning: a bead the tracker reports closed is
 // `completed` whatever the ledger's BLOCKED history says — a caller records these buckets
-// verbatim. Mechanical (`bd show` per id); null → buckets returned as-is, logged.
+// verbatim. A split task's closed task bead means implemented, not merged: it counts only when its
+// review bead is closed too. Mechanical (`bd show` per id); null → buckets returned as-is, logged.
 const unsettledIds = [...new Set([...escalated, ...pendingRetry])]
 if (unsettledIds.length) {
-  const rec = await dispatch(() => reconcileBucketsPrompt(unsettledIds), 'reconcile-buckets',
+  const rec = await dispatch(() => reconcileBucketsPrompt(unsettledIds, unsettledIds.filter(id => reviewBeadOf.has(id)).map(id => [id, reviewBeadOf.get(id)])), 'reconcile-buckets',
     { label: 'reconcile-buckets', phase: 'Finish', ...tier('mechanical'), schema: RECONCILE })
   if (!rec) log(`bucket reconciliation unavailable (null dispatch) — returning the in-memory buckets unreconciled; ${unsettledIds.length} escalated/pendingRetry id(s) were NOT checked against the tracker`)
   else for (const id of (rec.closed ?? [])) {
@@ -2643,7 +2989,7 @@ function readyPrompt(epicId) {
   // Scoping, the blocker-label exclusion, the truncation re-runs, and the structural fallback for
   // trees without the `sp:` label all live in scripts/ready-in-tree (tree membership:
   // scripts/epic-tree) — the agent only echoes. See "The coordinator loop" step 1.
-  return `Run \`bash ${codeSkill}/scripts/ready-in-tree ${epicId}\` and report the \`ids\` array from the JSON object it prints, verbatim and in its order. Do not run \`bd ready\` yourself, and do not filter, reorder, or re-judge the ids. ${scriptOutcomeRule()} Do not start any work.`
+  return `Run \`bash ${codeSkill}/scripts/ready-in-tree ${epicId}\` and report the \`ids\` and \`reviews\` arrays from the JSON object it prints, verbatim and in their order. Do not run \`bd ready\` yourself, and do not filter, reorder, or re-judge them. ${scriptOutcomeRule()} Do not start any work.`
 }
 
 function closeEpicsPrompt(epicId) {
@@ -2697,36 +3043,53 @@ function blockerBeadRule() {
 // Agent-written text interpolated into a dispatch (a review finding, a triage clarification, a
 // coordinator-diagnosed cause) is wrapped in tags and marked as data.
 
-function planPrompt(epicId, ids, planFileName) {
+function planPrompt(epicId, ids, planFileName, reentryIds = []) {
   // planner (opus), once per epic then append-only — see "Plan materialization". The template
   // carries the planning rules; this builder supplies its parameters and the enumeration command.
   // `ids` is THIS ROUND'S CONFIRMED-READY set — not the planning scope: round 1 plans every ready
   // AND blocked descendant, and `bd ready` never returns blocked beads, so the planner enumerates
   // the wider set itself. ENUMERATION COMMAND (verified): `bd show <epic> --json` has no child ids;
   // `bd children <id> --json` lists one level only, so the walk recurses into epic-typed children.
-  return `Working directory: the integration worktree ${integrationWorktree} (the plan file and ledger live in its workspace; do not plan from a task worktree). Read ${tpl.planner} and do what its prompt block says for epic ${epicId}, with these parameter values: [plan file name] = \`${planFileName}\` (use it everywhere the template says \`[plan file name]\`, never the literal \`plan.md\`); [sdd-workspace] = \`bash ${sddScripts}/sdd-workspace\`. On the FIRST planning round (${planFileName} has no mapping rows yet), enumerate every READY AND BLOCKED descendant bead of ${epicId} and plan all of them: run \`bd children ${epicId} --json\` for its direct children, then \`bd children <id> --json\` on every child whose \`issue_type\` is "epic", repeating until no unexpanded epic-typed child remains (\`bd show ${epicId} --json\` lists no child ids). On a REFILL round, plan only newly-ready beads without a mapping row. Never plan a blocker bead: it is an escalation record about a task, not a work item. This round's confirmed-ready ids (a subset of the scope above): ${JSON.stringify(ids)}. Run \`bd show <id> --json\` for every bead you plan this round. Report per the template's Report Format: planPath as an ABSOLUTE path, mapping as the FULL CUMULATIVE table (every row assigned so far, earlier rounds included), and unplanned for any bead you left out for a missing decision.`
+  // `deps`/`opaque` come from scripts/tree-deps verbatim, on every dispatch, for open beads only.
+  const reentry = reentryIds.length ? ` Review re-entries this round (each was implemented in an earlier run; its task bead is closed and its review bead open): ${JSON.stringify(reentryIds)} — keep their mapping rows; if one has none, plan it like any other bead (its implementation already exists on its task branch, and its section is what the reviewer checks it against).` : ''
+  return `Working directory: the integration worktree ${integrationWorktree} (the plan file and ledger live in its workspace; do not plan from a task worktree). Read ${tpl.planner} and do what its prompt block says for epic ${epicId}, with these parameter values: [plan file name] = \`${planFileName}\` (use it everywhere the template says \`[plan file name]\`, never the literal \`plan.md\`); [sdd-workspace] = \`bash ${sddScripts}/sdd-workspace\`; [tree-deps] = \`bash ${codeSkill}/scripts/tree-deps ${epicId}\`. On the FIRST planning round (${planFileName} has no mapping rows yet), enumerate every READY AND BLOCKED descendant bead of ${epicId} and plan all of them: run \`bd children ${epicId} --json\` for its direct children, then \`bd children <id> --json\` on every child whose \`issue_type\` is "epic", repeating until no unexpanded epic-typed child remains (\`bd show ${epicId} --json\` lists no child ids). On a REFILL round, plan only newly-ready beads without a mapping row. Never plan a blocker bead (an escalation record about a task) or a review bead (label \`sp:review\`, title \`review: <task id>\` — bookkeeping for a task already implemented): neither is a work item. This round's confirmed-ready ids (a subset of the scope above): ${JSON.stringify(ids)}.${reentry} Run \`bd show <id> --json\` for every bead you plan this round. If [tree-deps] prints a line starting \`JQ_UNAVAILABLE:\`, follow that instruction by hand; if it fails any other way, leave \`deps\` and \`opaque\` off every row (the coordinator then finds newly-ready beads with \`bd ready\`). Report per the template's Report Format: planPath as an ABSOLUTE path, mapping as the FULL CUMULATIVE table (every row assigned so far, earlier rounds included) with \`deps\` and \`opaque\` copied from [tree-deps] onto the row of every bead it lists, and unplanned for any bead you left out for a missing decision.`
 }
 
-function taskBriefPrompt(planPath, n, id, worktree, branchName, integrationBranch, briefFile) {
+function taskBriefPrompt(planPath, n, id, worktree, branchName, integrationBranch, briefFile, { parents = [], reentry = false, recut = false } = {}) {
   // MECHANICAL. `worktree` is the coordinator's path and `branchName` its pinned name — the agent
   // creates or reuses exactly these. IDEMPOTENT: a restart re-dispatching a previously-quarantined
   // or previously-completed id lands here with both already present, and `git worktree add` fails
   // on an existing path or branch, so the agent reuses them. `base` is the pre-implementer commit
-  // on a fresh cut, and `git merge-base <integration> <task branch>` on a re-entered one (HEAD there
-  // is a prior attempt's tip; using it would drop that attempt's commits from review). Never
-  // `HEAD~1`, which drops all but the last commit of a multi-commit task. `alreadyMerged` comes from
-  // scripts/already-merged (git only) so a re-entry after a lost `bd close` closes the bead instead
-  // of reviewing an empty diff. task-brief gets an explicit OUTFILE in the integration workspace:
-  // its default resolves against the task worktree's git root, whose .superpowers/ no other dispatch
-  // reads.
-  return `The task worktree is ${worktree} and the task branch is \`${branchName}\` — use both verbatim; ${worktree} is an absolute path when the integration worktree is one, otherwise relative to the REPOSITORY ROOT, never to your own working directory. Check whether ${worktree} and the branch \`${branchName}\` already exist (\`git worktree list\`, \`git branch --list ${branchName}\`); a restart lands here with both present, which is expected. If NEITHER exists: \`git worktree add ${worktree} -b ${branchName} ${integrationBranch}\`, then in ${worktree} run \`git rev-parse HEAD\` and report that as base, and report alreadyMerged false. If BOTH exist: reuse them as they are (do not delete, recreate, or re-run \`git worktree add\`); in ${worktree} run \`git merge-base ${integrationBranch} ${branchName}\` and report that as base; then run \`bash ${codeSkill}/scripts/already-merged ${integrationBranch} ${branchName}\` and report alreadyMerged as its output (true or false). Either way, then run \`bash ${sddScripts}/task-brief ${planPath} ${n} ${briefFile}\` in ${worktree} (the third argument is the output file; keep it). TOOLCHAIN PROVENANCE, after cutting a FRESH worktree: run the project's setup step in it if it has one (the same install/sync the integration worktree was set up with), then check that the test runner and the package under test both resolve INSIDE ${worktree} (e.g. \`which <runner>\` and the interpreter's import path for the package); if either resolves elsewhere, rebuild the local environment before reporting. Report id ${id}, n ${n}, branch ${worktree}, base, alreadyMerged, and status BRIEFED — or status BLOCKED if task-brief reports "task not found". ${authRefusalRule()}`
+  // on a fresh cut, and on a re-entered one the newest first-parent `stack: ` merge (a stacked
+  // branch) or `git merge-base <integration> <task branch>` (HEAD there is a prior attempt's tip;
+  // using it would drop that attempt's commits from review). Never `HEAD~1`, which drops all but
+  // the last commit of a multi-commit task. `alreadyMerged` comes from scripts/already-merged (git
+  // only) so a re-entry after a lost `bd close` closes the bead instead of reviewing an empty diff.
+  // task-brief gets an explicit OUTFILE in the integration workspace: its default resolves against
+  // the task worktree's git root, whose .superpowers/ no other dispatch reads.
+  // `parents` (early unblock): the implemented, not-yet-merged tasks this one is stacked on — a
+  // fresh cut merges each one's branch, so `base` is the commit after those merges and the review
+  // package shows only this task's own diff. `reentry`: a review re-entry, whose implementation must
+  // already be on the branch. `recut`: a cancelled attempt's worktree may still exist; remove it.
+  const stackStep = parents.length
+    ? ` Then, still in ${worktree}, merge each stack parent's branch in this order, one commit per parent: ${parents.map(p => `\`git merge --no-ff -m "stack: ${p}" ${taskBranch(p)}\``).join(', then ')}. These tasks are implemented but not merged yet; their code is what this task builds on. If any of these merges conflicts, run \`git merge --abort\`, leave ${worktree} (cd to the repository root), remove what you made (\`git worktree remove --force ${worktree}\` and \`git branch -D ${branchName}\`), and report status STACK_CONFLICT with \`finding\` naming the parent and the conflicting files — nothing else. Otherwise run \`git rev-parse HEAD\` after the last merge and report that as base, with stacked true.`
+    : ` Then in ${worktree} run \`git rev-parse HEAD\` and report that as base.`
+  const recutStep = recut
+    ? ` An earlier attempt of this task was cancelled and its worktree may not have been removed: if ${worktree} or the branch \`${branchName}\` exists, remove both first (\`git worktree remove --force ${worktree}\`, \`git branch -D ${branchName}\`), then treat this as the NEITHER case.`
+    : ''
+  const neither = reentry
+    ? `If NEITHER exists, this task's implementation is gone: run \`bd reopen ${id} --reason "review re-entry found no task branch"\`, then \`git worktree add ${worktree} -b ${branchName} ${integrationBranch}\`, run \`git rev-parse HEAD\` in ${worktree} and report that as base, and report reopened true and alreadyMerged false.`
+    : `If NEITHER exists: \`git worktree add ${worktree} -b ${branchName} ${integrationBranch}\`.${stackStep} Report alreadyMerged false.`
+  const reentryNote = reentry ? ` This is a review re-entry: the task was implemented in an earlier attempt and its review bead is open, so the worktree and branch are expected to exist.` : ''
+  return `The task worktree is ${worktree} and the task branch is \`${branchName}\` — use both verbatim; ${worktree} is an absolute path when the integration worktree is one, otherwise relative to the REPOSITORY ROOT, never to your own working directory.${reentryNote}${recutStep} Check whether ${worktree} and the branch \`${branchName}\` already exist (\`git worktree list\`, \`git branch --list ${branchName}\`); a restart lands here with both present, which is expected. ${neither} If BOTH exist: reuse them as they are (do not delete, recreate, or re-run \`git worktree add\`); find the base: \`git log --first-parent --grep='^stack: ' -n 1 --format=%H ${branchName}\` — if it prints a commit, that is base and report stacked true; otherwise base is \`git merge-base ${integrationBranch} ${branchName}\` (run in ${worktree}). Report head as \`git rev-parse ${branchName}\`. Then run \`bash ${codeSkill}/scripts/already-merged ${integrationBranch} ${branchName}\` and report alreadyMerged as its output (true or false). Either way, then run \`bash ${sddScripts}/task-brief ${planPath} ${n} ${briefFile}\` in ${worktree} (the third argument is the output file; keep it). TOOLCHAIN PROVENANCE, after cutting a FRESH worktree: run the project's setup step in it if it has one (the same install/sync the integration worktree was set up with), then check that the test runner and the package under test both resolve INSIDE ${worktree} (e.g. \`which <runner>\` and the interpreter's import path for the package); if either resolves elsewhere, rebuild the local environment before reporting. Report id ${id}, n ${n}, branch ${worktree}, base, alreadyMerged, and status BRIEFED — or status BLOCKED if task-brief reports "task not found". ${authRefusalRule()}`
 }
 
-function implementPrompt(br, integrationBranch, art) {
+function implementPrompt(br, integrationBranch, art, parents = []) {
   // `br` carries the coordinator-stamped n/branch/base. The template (implementer-prompt.md) holds
   // the whole contract: unattended default reading, bd comments, task-relevant tests once with the
   // command and output in the report, scope fence, blocker filing, commit last, status tokens.
-  return `You are the implementer for task ${br.id}. Read ${tpl.implementer} and follow its "Your job" path, with these parameter values: [TASK_ID] = ${br.id}; [N] = ${br.n}; [WORKTREE] = ${br.branch}; [BRANCH] = ${taskBranch(br.id)}; [BASE] = ${br.base}; [INTEGRATION_BRANCH] = ${integrationBranch}; [BRIEF_FILE] = ${art.brief}; [REPORT_FILE] = ${art.report}. ${writeFence(br.branch)} ${authRefusalRule()}`
+  const stacked = parents.length ? ` This worktree was cut with the branches of ${parents.join(', ')} merged in: those tasks are implemented and under review but not yet merged into ${integrationBranch}. Build on their code as it stands; [BASE] is the commit after those merges, so your diff is your own.` : ''
+  return `You are the implementer for task ${br.id}. Read ${tpl.implementer} and follow its "Your job" path, with these parameter values: [TASK_ID] = ${br.id}; [N] = ${br.n}; [WORKTREE] = ${br.branch}; [BRANCH] = ${taskBranch(br.id)}; [BASE] = ${br.base}; [INTEGRATION_BRANCH] = ${integrationBranch}; [BRIEF_FILE] = ${art.brief}; [REPORT_FILE] = ${art.report}.${stacked} ${writeFence(br.branch)} ${authRefusalRule()}`
 }
 
 // Test-changes instruction for the seam review (the task reviewer's template carries its own).
@@ -2810,8 +3173,19 @@ function mergePrompt(r, integrationBranch, integrationWorktree, resolvedBead, me
   // the `Merge:` line. `resolvedBead` is the blocker bead a RESOLVE verdict left open for this
   // task's retry; the merge that lands the retry closes it.
   const beadClose = resolvedBead ? ` and \`bd close ${resolvedBead} --reason "resolved: task ${r.id} merged"\` (the blocker bead whose RESOLVE this retry answered)` : ''
+  // A split task (early unblock): its task bead may already be closed, and its review bead closes
+  // here, after it — the review bead is blocked by the task bead.
+  const reviewBead = reviewBeadOf.get(r.id)
+  const taskClose = reviewBead
+    ? `\`bd close ${r.id}\` (a no-op if it is already closed), then \`bd close ${reviewBead}\` (its review bead)`
+    : `\`bd close ${r.id}\``
   // `r.branch` is the task WORKTREE path; the git ref is taskBranch(r.id).
   const br = taskBranch(r.id)
+  // A stacked task's branch carries its stack parents' pre-review commits below `r.base`; their
+  // final versions are on the integration branch now, so only this task's own commits are replayed.
+  const rebaseStep = r.stacked
+    ? `In ${r.branch}, rebase only this task's own commits onto ${integrationBranch}: \`git rebase --onto ${integrationBranch} ${r.base} ${br}\`. (${r.base} is where the branches of the tasks it was stacked on were merged in; they have merged into ${integrationBranch} since, so their commits must not be replayed.)`
+    : `In ${r.branch}, rebase \`${br}\` onto ${integrationBranch}.`
   // The build-only merged-tree check: compile/typecheck only, never tests. It catches cross-branch
   // compile seams (a sibling changed an API this task still calls) that each task's own tests
   // cannot see. A failure is the ordinary merge-failure blocker path, never an in-place fix.
@@ -2832,8 +3206,8 @@ function mergePrompt(r, integrationBranch, integrationWorktree, resolvedBead, me
     : ''
   const seamStep = r.seamCleared
     ? `This branch is ALREADY rebased and its post-rebase seam has been reviewed (and fixed if needed) — do not repeat the seam check; if new integration commits landed meanwhile, rebase once more and continue straight to the merge.`
-    : `POST-REBASE SEAM CHECK, after a successful rebase and BEFORE merging: if ${integrationBranch} moved since this task branched (its current tip is not ${r.base}), list the files the sibling commits changed (\`git diff --name-only ${r.base} ${integrationBranch}\`) and the files this task changed (\`git diff --name-only $(git merge-base ${integrationBranch} ${br}) ${br}\`). If the two lists INTERSECT, do NOT merge: capture head and mergeBase as described below and report merged false with seamOverlap as the intersecting file list — a seam review runs and this merge is re-dispatched. If they do not intersect, or the branch did not move, continue.`
-  return `Task ${r.id}'s branch \`${br}\` is checked out in its worktree ${r.branch}; the integration branch ${integrationBranch} is checked out in ${integrationWorktree}. In ${r.branch}, rebase \`${br}\` onto ${integrationBranch}. Count the files the rebase reported as conflicting (0 if it applied cleanly): that is rebaseConflictFiles, reported however the attempt ends. CONFLICTS: make ONE bounded attempt that resolves the conflicted hunks only, keeping both sides' intent; edit nothing outside the conflicted hunks, and do not run, add, delete, skip, or loosen any test. ${seamStep} Then run \`git merge-base ${integrationBranch} ${br}\` (the POST-REBASE merge-base, captured before merging) and \`git rev-parse ${br}\` (the rebased tip). ${cleanStep} ${mergeStep} ${checkStep} Once the merge is committed, run \`bd close ${r.id}\`${beadClose}, and report merged true with head, mergeBase, rebaseConflictFiles, check, mergeExit, mergeHead, and removedIdentical (empty when you deleted nothing).${ledgerStep} Run no tests in this dispatch. If the conflict resolution fails, abort the rebase, report check none, and file a blocker bead: ${blockerBeadRule()}, with a body stating the task id, the merge-base SHA of the failed attempt, and the conflicted files, so a later reader can tell a blocker filed against a superseded merge-base from a current one; report merged false with its id as blockerBead, rebaseConflictFiles, and check. ${authRefusalRule()} For THIS dispatch, report a refusal as merged false with authRefused set to the exact refused command(s) instead of a status token.`
+    : `POST-REBASE SEAM CHECK, after a successful rebase and BEFORE merging: if ${integrationBranch} moved since this task branched (its current tip is not ${r.base}), list the files the sibling commits changed (\`git diff --name-only ${r.base} ${integrationBranch}\`${r.stacked ? ` — ${r.base} holds the stacked parents' pre-review code, so this list includes every file their fix passes changed` : ''}) and the files this task changed (\`git diff --name-only $(git merge-base ${integrationBranch} ${br}) ${br}\`). If the two lists INTERSECT, do NOT merge: capture head and mergeBase as described below and report merged false with seamOverlap as the intersecting file list — a seam review runs and this merge is re-dispatched. If they do not intersect, or the branch did not move, continue.`
+  return `Task ${r.id}'s branch \`${br}\` is checked out in its worktree ${r.branch}; the integration branch ${integrationBranch} is checked out in ${integrationWorktree}. ${rebaseStep} Count the files the rebase reported as conflicting (0 if it applied cleanly): that is rebaseConflictFiles, reported however the attempt ends. CONFLICTS: make ONE bounded attempt that resolves the conflicted hunks only, keeping both sides' intent; edit nothing outside the conflicted hunks, and do not run, add, delete, skip, or loosen any test. ${seamStep} Then run \`git merge-base ${integrationBranch} ${br}\` (the POST-REBASE merge-base, captured before merging) and \`git rev-parse ${br}\` (the rebased tip). ${cleanStep} ${mergeStep} ${checkStep} Once the merge is committed, run ${taskClose}${beadClose}, and report merged true with head, mergeBase, rebaseConflictFiles, check, mergeExit, mergeHead, and removedIdentical (empty when you deleted nothing).${ledgerStep} Run no tests in this dispatch. If the conflict resolution fails, abort the rebase, report check none, and file a blocker bead: ${blockerBeadRule()}, with a body stating the task id, the merge-base SHA of the failed attempt, and the conflicted files, so a later reader can tell a blocker filed against a superseded merge-base from a current one; report merged false with its id as blockerBead, rebaseConflictFiles, and check. ${authRefusalRule()} For THIS dispatch, report a refusal as merged false with authRefused set to the exact refused command(s) instead of a status token.`
 }
 
 function missingBlockerBeadPrompt(r) {
@@ -2867,15 +3241,35 @@ function commitNudgePrompt(id, n, worktree, branchName, base, reportFile) {
 function closeOnlyPrompt(id, integrationWorktree, integrationBranch, resolvedBead) {
   // issue #5 defect 6: the already-merged re-entry — close what a lost `bd close` left open.
   const bead = resolvedBead ? ` Then run \`bd close ${resolvedBead} --reason "resolved: task ${id} merged"\` — the blocker bead a RESOLVE verdict left open for this task's retry.` : ''
-  return `In ${integrationWorktree}: task ${id}'s branch is already merged into ${integrationBranch} (a prior attempt merged it but its bead close was lost). Run \`bd close ${id}\`.${bead} Report id ${id} and status CLOSED.`
+  const review = reviewBeadOf.get(id) ? ` (a no-op if it is already closed), then \`bd close ${reviewBeadOf.get(id)}\` (its review bead)` : ''
+  return `In ${integrationWorktree}: task ${id}'s branch is already merged into ${integrationBranch} (a prior attempt merged it but its bead close was lost). Run \`bd close ${id}\`${review}.${bead} Report id ${id} and status CLOSED.`
 }
 
-function reconcileBucketsPrompt(ids) {
+function reviewBeadPrompt(id) {
+  // MECHANICAL script echo: the early-unblock split (scripts/review-bead) — create or reuse the
+  // `review: <id>` bead, then close the task bead so bd frees its dependents.
+  return `Working directory: ${integrationWorktree}. Run \`bash ${codeSkill}/scripts/review-bead split ${id}\` and report \`reviewBead\`, \`implClosed\` and \`created\` from the JSON object it prints, verbatim. Do not create, close or edit any bead yourself unless the script's fallback instruction tells you to. ${scriptOutcomeRule()}`
+}
+
+function reopenPrompt(ids) {
+  // MECHANICAL script echo: undo a split whose task did not merge, so bd blocks its dependents again.
+  return `Working directory: ${integrationWorktree}. Run \`bash ${codeSkill}/scripts/review-bead reopen ${ids.join(' ')}\` and report \`reopened\` from the JSON object it prints, verbatim. ${scriptOutcomeRule()}`
+}
+
+function discardPrompt(id, reopenBead) {
+  // MECHANICAL: a cancelled task's worktree holds work built on a stack parent that will not land as
+  // it was; remove it (and reopen its own task bead when it had been split).
+  const reopen = reopenBead ? ` Then run \`bash ${codeSkill}/scripts/review-bead reopen ${id}\` and report \`reopened\` from the JSON object it prints. ${scriptOutcomeRule()}` : ' Report reopened as an empty list.'
+  return `Working directory: ${integrationWorktree}. Task ${id} was cancelled: a task it was stacked on did not merge, so its worktree holds work built on code that will not land as it was. Remove it: \`git worktree remove --force ${taskWorktree(id)}\`, then \`git branch -D ${taskBranch(id)}\` (either may already be gone; that is fine). Touch nothing else.${reopen} Report discarded true when neither the worktree nor the branch exists any more.`
+}
+
+function reconcileBucketsPrompt(ids, reviewPairs) {
   // issue #5 defect 5 — MECHANICAL: a fixed query per id, no judgment. The return buckets used to
   // be the coordinator's in-memory sets alone; after a resume they reported beads the tracker
   // had closed as `escalated`/`pendingRetry` (three on the measured run), because a ledger BLOCKED
   // line from a false-premise blocker outlived the merge that closed the bead.
-  return `For each of these bead ids run \`bd show <id> --json\` and read its status: ${ids.join(', ')}. Return closed as the list of ids whose status is exactly "closed" (any other status, or a lookup error, is NOT closed — leave it out). Do not modify anything.`
+  const split = reviewPairs.length ? ` These tasks were split at implementation-done, so a closed task bead alone means implemented, not merged: each counts as closed only when its review bead's status is also exactly "closed" — ${reviewPairs.map(([t, rv]) => `${t} (review bead ${rv})`).join(', ')}.` : ''
+  return `For each of these bead ids run \`bd show <id> --json\` and read its status: ${ids.join(', ')}. Return closed as the list of ids whose status is exactly "closed" (any other status, or a lookup error, is NOT closed — leave it out).${split} Do not modify anything.`
 }
 
 function recordClarificationPrompt(id, detail) {
@@ -2991,8 +3385,9 @@ function makeScheduler(cap, hotFileCap, filesFor) {
 // One review, at most one fix pass, no re-review. The review returns CLEAN (merge), NEEDS_FIX (one
 // fix pass for the Critical/Important items, then merge), or INVALID (re-dispatched once; twice is
 // BLOCKED). Any verdict other than CLEAN gets the fix pass — an unrecognized verdict never merges
-// unfixed. Minors ride along to the merge gate's ledger lines.
-async function reviewAndFix(im, planPath, art) {
+// unfixed. Minors ride along to the merge gate's ledger lines. `isCancelled` (early unblock): a task
+// whose stack parent will not merge stops before its fix pass and returns CANCELLED.
+async function reviewAndFix(im, planPath, art, isCancelled = () => false) {
   // Identity and git facts are the coordinator's: re-stamp id/n/files/branch/base from `im` on
   // every agent result instead of trusting an echo.
   const stamp = res => ({ ...res, id: im.id, n: im.n, files: im.files, branch: im.branch, base: im.base })
@@ -3019,6 +3414,7 @@ async function reviewAndFix(im, planPath, art) {
   const rv = { ...stamp(reviewRes), minors }
   if (rv.status === 'BLOCKED') return rv
   if (rv.status === 'CLEAN') return { ...rv, finding: undefined }
+  if (isCancelled()) return { ...rv, status: 'CANCELLED' }
   const finding = rv.finding || `the task review returned ${rv.status} without finding text; its full review is at ${art.review}`
   const fixRes = await dispatch(() => fixPrompt(rv, finding, art, 'review'), `fix:${im.id}`,
     { label: `fix:${im.id}`, phase: 'Implement', ...tier('implementer'), schema: RESULT })
@@ -3195,14 +3591,20 @@ narratives that used to accompany each row are in git history; nothing here depe
 | issue #5 defects 1–6 (coordinator-owned identities: absolute task worktree + pinned branch + id re-stamp; already-merged short-circuit; commit nudge; blocker-bead close; Finish bucket reconciliation) | replay 52/0 | replay 37/0 | replay 37/0 |
 | issue #5 defects 7–9 (`appendLedger` retry-then-mark; elided retries for free-text lines and `notify`; `noteRecurrence` over minors AND triaged blockers via TRIAGE `cause`) | replay 52/0 | replay 37/0 | replay 37/0 |
 | D4 loop (one review, one fix pass, no re-review/round cap/adjudicator, no per-merge tests (build-only `mergeCheck`), mandatory sweep with `deferSweep` opt-out, batched ledger appends, `skillsRoot`); columns 2–3 are now fix-pass-blocked / parked | replay 50/0 | replay 19/0 | replay 22/0 |
-| **Off-critical-path batch (blocker handling and already-merged closes off the merge queue; merge agent writes its own success ledger lines; one `ledger:<id>` flush per task chain on a ledger chain nothing awaits; `runtimeSlots` cap; per-role `effort`; background edge audit and unawaited detector append; no unplanned-filing barrier) — CURRENT** | **replay 44/0** | **replay 18/0** | **replay 20/0** |
+| Off-critical-path batch (blocker handling and already-merged closes off the merge queue; merge agent writes its own success ledger lines; one `ledger:<id>` flush per task chain on a ledger chain nothing awaits; `runtimeSlots` cap; per-role `effort`; background edge audit and unawaited detector append; no unplanned-filing barrier) | replay 44/0 | replay 18/0 | replay 20/0 |
+| **Early unblock + graph readiness (planner `deps`/`opaque` rows from `scripts/tree-deps`; `readyFromGraph()` replaces the per-merge `bd ready` top-up wherever JS can see readiness; split at implementation-done via `scripts/review-bead`; stacked dependents with merge ordering and cancellation; review-bead re-entry on resume); the canonical scenario gains `bd-105`, stacked on `bd-102` — CURRENT** | **replay 48/0** | **replay 18/0** | **replay 20/0** |
 
 The current row's figures come from the offline replay harness (`tests/super-code/`): it replays
 the three `args` blocks below and runs the live-sim, null-injection, parallelism, seam,
-merge-check, sweep, Metrics, off-queue, ledger-batching, effort and runtime-slot scenarios against
-this script (1067 checks, 0 failures). The drop from the D4 row is all ledger traffic: canonical
-50 → 44 (ten per-line appends become four per-task flushes — `bd-102`'s merge agent wrote both of
-its lines, so it needs none), fix-pass-blocked 19 → 18, parked 22 → 20. Every paragraph below that
+merge-check, sweep, Metrics, off-queue, ledger-batching, effort, runtime-slot and early-unblock
+scenarios against this script (0 failures). Canonical 44 → 48: its mapping now carries `deps`
+rows, so the two per-merge `bd-ready-topup` dispatches are gone (−2), and the new `bd-105` (stacked
+on `bd-102`) adds `review-bead:bd-102`, its own brief, implement, review and merge, and one
+`ledger:bd-105` flush for its `stacked on` line (+6). The other two fixtures carry no `deps` rows,
+so they keep the per-merge top-up and their counts. The off-critical-path row's drop from the D4
+row is all ledger traffic: canonical 50 → 44 (ten per-line appends become four per-task flushes —
+`bd-102`'s merge agent wrote both of its lines, so it needs none), fix-pass-blocked 19 → 18,
+parked 22 → 20. Every paragraph below that
 describes fix rounds, the round cap, re-review, the adjudicator, a per-merge gate, or one ledger
 dispatch per line describes a superseded revision.
 
@@ -3412,10 +3814,12 @@ stringify by default.
 **Every stub key a scenario can reach must be registered — including the mid-round keys.** The
 top-up (`bd-ready-topup`) and the post-closure re-check (`bd-ready-recheck`) are deliberately
 distinct keys from `bd-ready`, so scenarios control them independently — which also means a
-scenario whose fixture merges anything (top-up fires) or closes in-tree epics (re-check fires)
-MUST register them or `pick()` throws. Under `dryRun` that throw is deliberately fatal (the
-adjudicated rethrow policy in the skeleton's quiescence block); in a live run the same failure is
-swallowed and logged. All three recorded scenarios below register both keys.
+scenario whose fixture merges anything without `deps` rows, or with a waiting `opaque` row (top-up
+fires), or closes in-tree epics (re-check fires) MUST register them or `pick()` throws. Under
+`dryRun` that throw is deliberately fatal (the adjudicated rethrow policy in the skeleton's
+quiescence block); in a live run the same failure is swallowed and logged. The canonical scenario
+carries `deps` rows and no opaque row, so it never reaches `bd-ready-topup` and does not register
+it; the other two register both keys.
 
 **Stub phrasing is exact, not a paraphrase.** Every stub prompt MUST use the literal wording
 
@@ -3447,7 +3851,10 @@ Close/Ready calls report nothing left to do.
 Each stub prompt is `You are a stub. Call no tools. Return exactly this JSON as your structured
 output: <json>` (exact phrasing — see "dryRun policy" above). The set below is the canonical
 topology scenario: **four** ready tasks under one epic, all dispatched under the sliding window
-(cap 4; `bd-101` and `bd-103` share `src/a.js`, under the default `hotFileCap: 3`). `bd-101`'s
+(cap 4; `bd-101` and `bd-103` share `src/a.js`, under the default `hotFileCap: 3`), plus a fifth,
+`bd-105`, blocked by `bd-102`. The mapping carries `deps` rows, so `bd-102` (it has an open
+dependent) is split when its implementer reports a commit, and `bd-105` dispatches right then,
+stacked on `bd-102`'s unmerged branch, and merges after it. `bd-101`'s
 review returns NEEDS_FIX with one minor, so it runs the one fix pass and merges without re-review.
 `bd-102` reviews CLEAN and merges. `bd-103` reviews CLEAN but its merge fails (blocker bead filed by
 the merge agent) → triage ESCALATE → notify → quarantine, and the run **continues**. `bd-104`'s
@@ -3462,15 +3869,17 @@ exercised by the replay harness's live-sim scenarios.
 |---|---|---|
 | `read-ledger` | `{text:""}` | the one-time Resume-phase read; empty text = a fresh epic, nothing reconstructed |
 | `ledger-append:launch` | `{appended:true}` | the `Launch:` args record, once per launch |
-| `ledger-append:detector` | `{appended:true}` | the persisted `Detector: round N — …` line, once per round that reaches the drain (round 1 here; round 2 exits at `ready-drained` first). Keys this scenario never takes — `review:<id>:retry`, `seam-review:<id>`, `merge:<id>:seam-cleared`, `fix:<id>:seam`, `edge-audit:<k>`, `ledger-recurring:<k>`, `ledger:bd-102` — would throw `dryRun: no stub for key …` at the next ledger drain or dispatch if a regression routed onto them |
+| `ledger-append:detector` | `{appended:true}` | the persisted `Detector: round N — …` line, once per round that reaches the drain (round 1 here; round 2 exits at `ready-drained` first). Keys this scenario never takes — `bd-ready-topup`, `review:<id>:retry`, `seam-review:<id>`, `merge:<id>:seam-cleared`, `fix:<id>:seam`, `edge-audit:<k>`, `ledger-recurring:<k>`, `ledger:bd-102`, `reopen:<id>`, `discard:<id>` — would throw `dryRun: no stub for key …` at the next ledger drain or dispatch if a regression routed onto them |
 | `close-epics` (array, 2) | `{rootClosed:false,closedThisRun:[]}` then `{rootClosed:false,closedThisRun:["bd-101","bd-102"]}` | root stays open both rounds; round 2's in-tree closures fire the post-closure re-check |
 | `bd-ready` (array, 2) | `{ids:["bd-101","bd-102","bd-103","bd-104"]}` then `{ids:[]}` | round 1's batch; round 2 drains. Scoping flags are a property of the prompt text, not this return |
-| `bd-ready-topup` | `{ids:[]}` (reused) | the top-up after each successful merge (`bd-101`, `bd-102`) |
 | `bd-ready-recheck` | `{ids:[]}` | the post-closure re-check, once |
-| `plan` | `{planPath:"...", mapping:[4 rows, files]}` | the ordinal↔bead-id↔files mapping every `ordinalFor` and the hot-file cap consume |
+| `plan` | `{planPath:"...", mapping:[5 rows, files, deps, opaque]}` | the ordinal↔bead-id↔files mapping every `ordinalFor` and the hot-file cap consume; `bd-105`'s `deps: ["bd-102"]` drives graph readiness and the split |
 | `brief:bd-10X` | `{id,n,status:"BRIEFED",files,branch,base:"<40-char-sha>"}` | per-id; `base` originates here |
 | `implement:bd-101..103` | `{id,n,status:"IMPLEMENTED",files,branch}` | per-id; `n`/`branch` are re-stamped by the coordinator |
 | `implement:bd-104` | `{status:"BLOCKED",blockerBead:"bd-109"}` | the implementer's own BLOCKED skips review and routes to `handleBlocker` |
+| `review-bead:bd-102` | `{reviewBead:"bd-112",implClosed:true,created:true}` | the split at `bd-102`'s implementation (it has an open dependent); its merge then closes `bd-112` too |
+| `brief:bd-105` / `implement:bd-105` / `review:bd-105` | `{…,stacked:true}` / IMPLEMENTED / CLEAN | the graph dispatch of `bd-105`, stacked on `bd-102`, before `bd-102` merges |
+| `merge:bd-105` / `ledger:bd-105` | merged, `ledgerAppended:true` / `{appended:true}` | `bd-105` merges only after `bd-102`; its one flush carries its `stacked on bd-102` line |
 | `review:bd-101` | `{status:"NEEDS_FIX",finding:"…src/a.js:42",minors:["…"]}` | the one review that triggers the fix pass; its minor is noted at the merge gate and goes out in `ledger:bd-101` |
 | `review:bd-102` / `review:bd-103` | `{status:"CLEAN"}` | clean reviews — no fix pass. **No `review:bd-104` key** |
 | `fix:bd-101` | `{status:"FIXED",head:"<40-char-sha>"}` | the one fix pass; `head` renders the fix-pass line's commit range. No re-review key exists — a regression that re-reviewed would throw |
@@ -3499,7 +3908,10 @@ missing-bead fallback (`missing-blocker:<id>`) are not exercised by these scenar
 - `bd-101`/`bd-102`/`bd-103` run brief → implement → review; only `bd-101` runs `fix:bd-101`, once,
   and merges with no further review.
 - **`bd-104` never reaches `review:bd-104`, `fix:bd-104`, or `merge:bd-104`.**
-- Merge-back is single-flight: three `merge:<id>` calls, never two in flight.
+- Merge-back is single-flight: four `merge:<id>` calls, never two in flight.
+- `bd-102` alone is split (`review-bead:bd-102` once); `brief:bd-105` dispatches after
+  `impl:bd-102` and before `merge:bd-102`, and `merge:bd-105` after `merge:bd-102`. No
+  `bd-ready-topup` dispatch: readiness came from the `deps` rows.
 - The blocker path fires on `bd-103`'s failed merge (triage ESCALATE → notify → quarantine) and the
   run continues; on `bd-104` it exercises RESOLVE, the same-round retry, and the one-retry bound.
 - No path reaches `mergePrompt` except after a CLEAN review or a completed fix pass.
@@ -3507,12 +3919,13 @@ missing-bead fallback (`missing-blocker:<id>`) are not exercised by these scenar
 - Ledger writes never wait in the merge queue: bd-101 and bd-102's success lines come from their
   merge agents; every other task line goes out in one `ledger:<id>` flush per chain.
 - Expected dispatch count: `read-ledger` 1 + `ledger-append:launch` 1 + `close-epics` 2 +
-  `bd-ready` 2 + `bd-ready-topup` 2 + `bd-ready-recheck` 1 + `plan` 1 + `brief` 5 + `implement` 5 +
-  `review` 3 + `fix` 1 + `merge` 3 + `triage` 3 + `notify` 2 + `clarify` 1 + task ledger flushes 4
-  (`ledger:bd-101`, `ledger:bd-103`, `ledger:bd-104` ×2) + `ledger-append:detector` 1 + `sweep` 1 +
-  `ledger-append:sweep` 1 + `read-ledger:finish` 1 + `ledger-append:metrics` 1 + `final-review` 1 +
-  `reconcile-buckets` 1 = **44 agent calls, 0 errors**, terminal shape `{completed:["bd-102","bd-101"], escalated:["bd-103","bd-104"],
-  pendingRetry:[], parked:[], stalled:false, stopReason:"ready-drained"}`.
+  `bd-ready` 2 + `bd-ready-recheck` 1 + `plan` 1 + `brief` 6 + `implement` 6 + `review-bead` 1 +
+  `review` 4 + `fix` 1 + `merge` 4 + `triage` 3 + `notify` 2 + `clarify` 1 + task ledger flushes 5
+  (`ledger:bd-101`, `ledger:bd-103`, `ledger:bd-104` ×2, `ledger:bd-105`) + `ledger-append:detector` 1 +
+  `sweep` 1 + `ledger-append:sweep` 1 + `read-ledger:finish` 1 + `ledger-append:metrics` 1 +
+  `final-review` 1 + `reconcile-buckets` 1 = **48 agent calls, 0 errors**, terminal shape
+  `{completed:["bd-102","bd-101","bd-105"], escalated:["bd-103","bd-104"], pendingRetry:[], parked:[],
+  stalled:false, stopReason:"ready-drained"}` (bucket order follows completion order).
 
 If any assertion fails, fix the script **in this doc** (this doc's script is canonical) and
 re-run before committing the fix.
@@ -3520,9 +3933,10 @@ re-run before committing the fix.
 ### Baselines for the canonical scenario (recorded, not illustrative)
 
 **Confirmed for the current revision by the offline replay harness**
-(`tests/super-code/replay-harness.mjs`, run via `test-coordinator-replay.sh`): 44 agent calls,
+(`tests/super-code/replay-harness.mjs`, run via `test-coordinator-replay.sh`): 48 agent calls,
 0 errors, the terminal shape above. No Workflow-hosted run has been recorded against this
-revision yet. (The D4 loop's 50 is superseded by the off-critical-path batch.)
+revision yet. (The off-critical-path batch's 44 is superseded by the early-unblock batch; the D4
+loop's 50 by the off-critical-path batch.)
 
 Superseded by the D4 loop (pre-D4 script: five-round fix loop, per-merge gate). Recorded then: run `wf_97164f71-a3c`: **32 agents dispatched, 0 errors**
 — one MORE than the 31 every prior revision hit, and the +1 is load-bearing: it is the new
@@ -3600,24 +4014,29 @@ To reproduce or re-verify after a structural edit, run the Workflow tool with th
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[\"bd-101\",\"bd-102\",\"bd-103\",\"bd-104\"]}",
         "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[]}"
       ],
-      "bd-ready-topup": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[]}",
       "bd-ready-recheck": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"ids\":[]}",
-      "plan": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"planPath\":\".worktrees/epic-bd-100-integration/.superpowers/sdd/bd-100-plan/bd-100-plan.md\",\"mapping\":[{\"n\":1,\"id\":\"bd-101\",\"files\":[\"src/a.js\"]},{\"n\":2,\"id\":\"bd-102\",\"files\":[\"src/b.js\"]},{\"n\":3,\"id\":\"bd-103\",\"files\":[\"src/a.js\"]},{\"n\":4,\"id\":\"bd-104\",\"files\":[\"src/c.js\"]}]}",
+      "plan": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"planPath\":\".worktrees/epic-bd-100-integration/.superpowers/sdd/bd-100-plan/bd-100-plan.md\",\"mapping\":[{\"n\":1,\"id\":\"bd-101\",\"files\":[\"src/a.js\"],\"deps\":[],\"opaque\":false},{\"n\":2,\"id\":\"bd-102\",\"files\":[\"src/b.js\"],\"deps\":[],\"opaque\":false},{\"n\":3,\"id\":\"bd-103\",\"files\":[\"src/a.js\"],\"deps\":[],\"opaque\":false},{\"n\":4,\"id\":\"bd-104\",\"files\":[\"src/c.js\"],\"deps\":[],\"opaque\":false},{\"n\":5,\"id\":\"bd-105\",\"files\":[\"src/d.js\"],\"deps\":[\"bd-102\"],\"opaque\":false}]}",
       "brief:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"BRIEFED\",\"files\":[\"src/a.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-101\",\"base\":\"aaaaaaa1111111111111111111111111111111\"}",
       "brief:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-102\",\"n\":2,\"status\":\"BRIEFED\",\"files\":[\"src/b.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-102\",\"base\":\"bbbbbbb2222222222222222222222222222222\"}",
       "brief:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-103\",\"n\":3,\"status\":\"BRIEFED\",\"files\":[\"src/a.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-103\",\"base\":\"ccccccc3333333333333333333333333333333\"}",
       "brief:bd-104": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-104\",\"n\":4,\"status\":\"BRIEFED\",\"files\":[\"src/c.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-104\",\"base\":\"ddddddd4444444444444444444444444444444\"}",
+      "brief:bd-105": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-105\",\"n\":5,\"status\":\"BRIEFED\",\"files\":[\"src/d.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-105\",\"base\":\"5555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"stacked\":true}",
       "implement:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"IMPLEMENTED\",\"files\":[\"src/a.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-101\"}",
       "implement:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-102\",\"n\":2,\"status\":\"IMPLEMENTED\",\"files\":[\"src/b.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-102\"}",
       "implement:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-103\",\"n\":3,\"status\":\"IMPLEMENTED\",\"files\":[\"src/a.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-103\"}",
       "implement:bd-104": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-104\",\"n\":4,\"status\":\"BLOCKED\",\"files\":[\"src/c.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-104\",\"blockerBead\":\"bd-109\"}",
+      "implement:bd-105": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-105\",\"n\":5,\"status\":\"IMPLEMENTED\",\"files\":[\"src/d.js\"],\"branch\":\".worktrees/epic-bd-100-integration--task-bd-105\"}",
       "review:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"NEEDS_FIX\",\"files\":[\"src/a.js\"],\"finding\":\"missing null check on parsed input in src/a.js:42\",\"minors\":[\"variable name x in src/a.js:17 is uninformative\"]}",
       "review:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-102\",\"n\":2,\"status\":\"CLEAN\",\"files\":[\"src/b.js\"]}",
       "review:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-103\",\"n\":3,\"status\":\"CLEAN\",\"files\":[\"src/a.js\"]}",
+      "review:bd-105": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-105\",\"n\":5,\"status\":\"CLEAN\",\"files\":[\"src/d.js\"]}",
+      "review-bead:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"reviewBead\":\"bd-112\",\"implClosed\":true,\"created\":true}",
       "fix:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/a.js\"],\"head\":\"fefefef1111111111111111111111111111111\"}",
       "ledger:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "merge:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"merged\":true,\"mergeExit\":0,\"mergeHead\":true,\"head\":\"a1a1a1a1111111111111111111111111111111\",\"mergeBase\":\"aaaaaaa1111111111111111111111111111111\",\"rebaseConflictFiles\":0,\"ledgerAppended\":true}",
       "merge:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-102\",\"merged\":true,\"mergeExit\":0,\"mergeHead\":true,\"head\":\"b2b2b2b2222222222222222222222222222222\",\"mergeBase\":\"bbbbbbb2222222222222222222222222222222\",\"rebaseConflictFiles\":0,\"ledgerAppended\":true}",
+      "merge:bd-105": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-105\",\"merged\":true,\"mergeExit\":0,\"mergeHead\":true,\"head\":\"e5e5e5e5555555555555555555555555555555\",\"mergeBase\":\"b2b2b2b2222222222222222222222222222222\",\"rebaseConflictFiles\":0,\"ledgerAppended\":true}",
+      "ledger:bd-105": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "merge:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-103\",\"merged\":false,\"blockerBead\":\"bd-108\",\"rebaseConflictFiles\":2}",
       "ledger:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "triage:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"decision\":\"ESCALATE\",\"detail\":\"rebase conflict on src/a.js survived one bounded resolution attempt\"}",

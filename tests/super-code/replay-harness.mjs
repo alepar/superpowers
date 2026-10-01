@@ -364,8 +364,8 @@ async function main() {
   {
     const scan = scanTemplateSpans(scriptBody)
     check(scan.clean, 'scanner ends in code state (no unterminated literal, string, or ${})')
-    check(scan.spans.length === 239,
-      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 239 — 215 after the D4 loop rewrite, +10 for the merge-evidence contract (clean-check and merge steps, mergeEvidence's diagnoses and logs, the Merge-cleanup line) and writeFence(), +17 for the failing-mergeCheck seam route (the check-fix and fix-review dispatch keys/labels, their logs and blocker findings, the re-merge, fixPrompt's check branch, checkFixReviewPrompt), +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log, −7 for batched ledger writes (per-line ledger keys and labels out, the per-task flush key, the merge agent's LEDGER step and its line templates, the runtime-slot logs, the per-site null-merge logs and the background edge audit in); update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
+    check(scan.spans.length === 285,
+      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 285 — 215 after the D4 loop rewrite, +10 for the merge-evidence contract (clean-check and merge steps, mergeEvidence's diagnoses and logs, the Merge-cleanup line) and writeFence(), +17 for the failing-mergeCheck seam route (the check-fix and fix-review dispatch keys/labels, their logs and blocker findings, the re-merge, fixPrompt's check branch, checkFixReviewPrompt), +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log, −7 for batched ledger writes (per-line ledger keys and labels out, the per-task flush key, the merge agent's LEDGER step and its line templates, the runtime-slot logs, the per-site null-merge logs and the background edge audit in), +46 for early unblock and graph readiness (the split/reopen/discard dispatch keys, labels, prompts and logs, the cancel and graph-dispatch logs, the stacked/re-entry brief and implementer wording, the stacked rebase and review-bead close, the held-back and re-entry logs, the reconcile split note, the detector and Metrics fields, the resume note); update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
     // self-test: inject a raw backtick mid-way through the first literal's content and assert
     // the detector actually fires — a detector that cannot catch the known failure is decoration
     const [s, e] = scan.spans[0]
@@ -385,9 +385,9 @@ async function main() {
   {
     const out = await run({ args: canonicalArgs })
     assertNoThrow(out)
-    check(out.trace.length === 44, `44 agent dispatches (got ${out.trace.length}) — the doc's "Expected dispatch count" arithmetic`)
+    check(out.trace.length === 48, `48 agent dispatches (got ${out.trace.length}) — the doc's "Expected dispatch count" arithmetic`)
     const r = out.result
-    check(r && JSON.stringify([...r.completed].sort()) === '["bd-101","bd-102"]', 'completed = [bd-101, bd-102]', JSON.stringify(r?.completed))
+    check(r && JSON.stringify([...r.completed].sort()) === '["bd-101","bd-102","bd-105"]', 'completed = [bd-101, bd-102, bd-105]', JSON.stringify(r?.completed))
     check(r && JSON.stringify([...r.escalated].sort()) === '["bd-103","bd-104"]', 'escalated = [bd-103, bd-104] — bd-104 spent its one retry same-round and bounced', JSON.stringify(r?.escalated))
     check(r && r.pendingRetry.length === 0 && r.parked.length === 0 && r.stalled === false, 'pendingRetry and parked empty, stalled false', JSON.stringify(r))
     check(r && r.stopReason === 'ready-drained', "stopReason = 'ready-drained'", r?.stopReason)
@@ -399,6 +399,15 @@ async function main() {
     check(out.counts['ledger:bd-103'] === 1, "bd-103's failed Merge: line and BLOCKED line go out in one flush")
     check(out.counts['ledger:bd-104'] === 2, 'bd-104 flushes once per chain: pending retry, then BLOCKED')
     check(!out.trace.some(t => /^ledger-append:(merge|fix-pass|bd-)|^ledger-minor:/.test(t.label)), 'no per-line ledger dispatch remains')
+    {
+      const at = label => out.trace.findIndex(t => t.label === label)
+      check(out.counts['review-bead:bd-102'] === 1 && !out.trace.some(t => /^review-bead:bd-10[1345]$/.test(t.label)), 'only bd-102, the one task with an open dependent, is split')
+      check(at('brief:bd-105') > at('impl:bd-102') && at('brief:bd-105') < at('merge:bd-102'), 'bd-105 dispatches at bd-102\'s implementation, before bd-102 merges (early unblock)')
+      check(at('merge:bd-105') > at('merge:bd-102'), 'bd-105 merges only after its stack parent bd-102 merged')
+      check(!out.counts['bd-ready-topup'], 'graph mode: no bd-ready-topup dispatch (readiness computed from the deps rows)', JSON.stringify(out.counts['bd-ready-topup']))
+      check(out.counts['ledger:bd-105'] === 1, "bd-105's stacked-on line goes out in its one flush")
+      check(out.maxOpen.merge === 1, 'single-flight merge held')
+    }
     check(out.counts['sweep'] === 1 && out.counts['ledger-append:metrics'] === 1 && out.counts['final-review'] === 1, 'sweep, one Metrics append, and the final review each dispatch once')
     const idx = label => out.trace.findIndex(t => t.label === label)
     check(idx('sweep') < idx('read-ledger:finish') && idx('ledger-append:metrics') < idx('final-review'), 'sweep precedes Metrics, Metrics precedes the final review')
@@ -1432,7 +1441,8 @@ async function main() {
   // ===== 7. failure visibility =====
   scenario('dryRun: an unregistered top-up stub key is FATAL (config errors loud where they are cheap)')
   {
-    const args = JSON.parse(JSON.stringify(canonicalArgs))
+    // the parked fixture's mapping carries no deps rows, so its merge falls back to the bd top-up
+    const args = JSON.parse(JSON.stringify(parkedArgs))
     delete args.prompts.stubs['bd-ready-topup']
     const out = await run({ args })
     check(!!out.error && String(out.error).includes('no stub for key bd-ready-topup'), 'run fails naming the missing key', String(out.error).slice(0, 200))
@@ -1937,16 +1947,230 @@ async function main() {
       'Task 6 (bd-106): fix pass FIXED (finding C; commits ccccccc..ddddddd)',
       'Task 7 (bd-107): complete (already merged into epic-bd-100-integration before this re-entry — bead closed, no new review)',
       'Task 8 (bd-108): minor (deferred): naming',
+      'Task 9 (bd-109): stacked on bd-101 (dispatched at implementation-done)',
+      'Task 10 (bd-110): cancelled (parent bd-106 blocked)',
       'Detector: round 1 — 2 ready · topped-up 0 · cap 4 · peak in-flight 2 · top-up queries 0/40',
     ].join('\n')
     const out = await run({ args: liveArgs(), canned: manyTaskCanned(['bd-101', 'bd-102'], { 'read-ledger:finish': { text: knownLedger } }) })
     assertNoThrow(out)
     const lines = extractLedgerLines(promptOf(out.trace, 'ledger-append:metrics'))
     check(lines[0] === 'Metrics: merges 2 · merge-failed 1 · rebase-conflicts 2 · seam-reviews 2 (fixed 1) · check-fails 2 (fixed 1)', 'line 1: success-path merges only; conflicts, seam reviews and check failures on both paths', lines[0])
-    check(lines[1] === 'Metrics: completions — review clean 1 · after fix pass 2 · parked 1 · re-entry closes 1', 'line 2: completion kinds (parked counted within fix pass)', lines[1])
+    check(lines[1] === 'Metrics: completions — review clean 1 · after fix pass 2 · parked 1 · re-entry closes 1 · dispatched early 1 · cancelled 1', 'line 2: completion kinds (parked counted within fix pass), early dispatches and cancellations', lines[1])
     check(lines[2] === 'Metrics: fix-pass — entered 4 · FIXED 3 · BLOCKED 1', 'line 3: every fix-pass line counted, a retried task twice', lines[2])
     check(lines[3] === 'Metrics: ledger-check ok · append-failed 0 · append-retried 0', "line 4: M (2) matches this run's completed.size (2)", lines[3])
     check(JSON.stringify(out.result?.metrics) === JSON.stringify(lines), 'the return carries exactly those four lines, in order', JSON.stringify(out.result?.metrics))
+  }
+
+  // ===== 12. early unblock and graph readiness =====
+  // `graphCanned(rows)`: manyTaskCanned over the given rows, with the planner's deps/opaque columns
+  // on the mapping and NO bd-ready-topup answer — in graph mode the top-up must not run.
+  function graphCanned(rows, overrides = {}) {
+    const ids = rows.map(r => r.id)
+    const c = manyTaskCanned(ids, {
+      'plan': { planPath: PLANPATH, mapping: rows.map((r, i) => ({ n: i + 1, id: r.id, files: [`src/f${i}.js`], deps: r.deps ?? [], opaque: r.opaque ?? false })) },
+      ...overrides,
+    })
+    if (!('bd-ready-topup' in overrides)) delete c['bd-ready-topup']
+    for (const id of ids) {
+      if (!(`review-bead:${id}` in c)) c[`review-bead:${id}`] = { reviewBead: `${id}-rv`, implClosed: true, created: true }
+      c[`impl:${id}`] = c[`impl:${id}`] ?? tick({ id, status: 'IMPLEMENTED', files: [], head: SHA('c') })
+    }
+    return c
+  }
+  const at = (out, label) => out.trace.findIndex(t => t.label === label)
+  const lastAt = (out, label) => out.trace.map(t => t.label).lastIndexOf(label)
+
+  scenario('early unblock: a dependent dispatches at its parent\'s implementation, cut on the parent\'s branch, and merges after it')
+  {
+    const canned = graphCanned([{ id: 'bd-101' }, { id: 'bd-102', deps: ['bd-101'] }], {
+      'bd-ready': [{ ids: ['bd-101'] }, { ids: [] }],
+      // the parent's review finishes only once the dependent is already implementing
+      'review:bd-101': async ctx => { await ctx.waitFor('impl:bd-102'); return { id: 'bd-101', status: 'CLEAN' } },
+      'review-bead:bd-101': { reviewBead: 'bd-150', implClosed: true, created: true },
+      'brief:bd-102': { id: 'bd-102', status: 'BRIEFED', files: [], branch: 'x', base: SHA('e'), stacked: true },
+    })
+    const out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    check(JSON.stringify([...(out.result?.completed ?? [])].sort()) === '["bd-101","bd-102"]', 'both completed in one working round', JSON.stringify(out.result))
+    check(out.counts['bd-ready'] === 2 && !out.counts['bd-ready-topup'], 'no bd-ready-topup: the dependent came from the graph', JSON.stringify(out.counts))
+    check(out.counts['review-bead:bd-101'] === 1 && !out.counts['review-bead:bd-102'], 'the parent (it has a dependent) is split once; the leaf dependent is not')
+    check(promptOf(out.trace, 'review-bead:bd-101')?.includes(`bash ${SKILLS}/super-code/scripts/review-bead split bd-101`), 'the split is a script echo of review-bead split', promptOf(out.trace, 'review-bead:bd-101'))
+    check(at(out, 'brief:bd-102') > at(out, 'impl:bd-101') && at(out, 'brief:bd-102') < at(out, 'merge:bd-101'), 'the dependent is briefed after the parent\'s implementation and before its merge')
+    const brief = promptOf(out.trace, 'brief:bd-102') ?? ''
+    check(brief.includes('git merge --no-ff -m "stack: bd-101" task-bd-101') && /STACK_CONFLICT/.test(brief), 'the dependent\'s brief merges the parent\'s branch into its fresh worktree, with a stack-conflict exit', brief)
+    check((promptOf(out.trace, 'impl:bd-102') ?? '').includes('cut with the branches of bd-101 merged in'), 'the dependent\'s implementer is told it builds on the unmerged parent')
+    check(at(out, 'merge:bd-102') > at(out, 'merge:bd-101') && out.maxOpen.merge === 1, 'the dependent merges only after its parent merged; single-flight held')
+    const mergeChild = promptOf(out.trace, 'merge:bd-102') ?? ''
+    check(mergeChild.includes(`git rebase --onto ${BRANCH} ${SHA('e')} task-bd-102`) && /fix passes changed/.test(mergeChild), 'the dependent rebases only its own commits (--onto from its stacked base), and its seam list covers the parent\'s fix pass', mergeChild)
+    check((promptOf(out.trace, 'merge:bd-101') ?? '').includes('`bd close bd-101` (a no-op if it is already closed), then `bd close bd-150`'), 'the parent\'s merge closes its task bead, then its review bead')
+    check(taskLedgerLines(out.trace, 'bd-102').includes('Task 2 (bd-102): stacked on bd-101 (dispatched at implementation-done)'), 'the dependent\'s ledger flush carries its stacked-on line', JSON.stringify(taskLedgerLines(out.trace, 'bd-102')))
+    check(out.logs.some(l => /parallelism: 1 ready · topped-up 1 · .* · stacked 1/.test(l)), 'the detector counts the graph dispatch and names the stacked one')
+    assertBucketsDisjoint(out.result)
+  }
+
+  scenario('early unblock: a parent BLOCKED at its fix pass cancels its stacked dependent, discards its worktree, and reopens the parent\'s task bead')
+  {
+    const canned = graphCanned([{ id: 'bd-101' }, { id: 'bd-102', deps: ['bd-101'] }], {
+      'bd-ready': [{ ids: ['bd-101'] }, { ids: [] }],
+      'review:bd-101': { id: 'bd-101', status: 'NEEDS_FIX', finding: 'wrong cache key' },
+      'fix:bd-101': async ctx => { await ctx.waitFor('impl:bd-102'); return { id: 'bd-101', status: 'BLOCKED', blockerBead: 'bd-109', finding: 'needs a decision' } },
+      // the dependent finishes implementing only after the parent's failure was handled
+      'impl:bd-102': async ctx => { await ctx.waitFor('reopen:bd-101'); return { id: 'bd-102', status: 'IMPLEMENTED', files: [], head: SHA('d') } },
+      'reopen:bd-101': { reopened: ['bd-101'] },
+      'discard:bd-102': { discarded: true, reopened: [] },
+      'triage:bd-101': { decision: 'ESCALATE', detail: 'a human picks the cache key' },
+      'notify:bd-101': { sent: true },
+    })
+    const out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    const r = out.result
+    check(JSON.stringify(r?.escalated) === '["bd-101"]' && r?.completed.length === 0 && !JSON.stringify(r).includes('bd-102'), 'the parent is escalated; the cancelled dependent is in no bucket (it re-enters when the parent resolves)', JSON.stringify(r))
+    check(!out.trace.some(t => ['review:bd-102', 'merge:bd-102', 'triage:bd-102', 'notify:bd-102'].includes(t.label)), 'the dependent is never reviewed, merged, or escalated')
+    check(out.counts['reopen:bd-101'] === 1 && (promptOf(out.trace, 'reopen:bd-101') ?? '').includes(`scripts/review-bead reopen bd-101`), 'the parent\'s task bead is reopened (review-bead reopen) so bd blocks its dependents again')
+    check(at(out, 'reopen:bd-101') < at(out, 'triage:bd-101'), 'the reopen lands before the parent\'s triage, so a RESOLVE retry starts from a settled attempt')
+    const discard = promptOf(out.trace, 'discard:bd-102') ?? ''
+    check(out.counts['discard:bd-102'] === 1 && discard.includes('git worktree remove --force') && discard.includes('git branch -D task-bd-102'), 'the dependent\'s worktree and branch are discarded', discard)
+    check(taskLedgerLines(out.trace, 'bd-102').includes('Task 2 (bd-102): cancelled (parent bd-101 blocked)'), 'the dependent\'s cancelled line names its parent', JSON.stringify(taskLedgerLines(out.trace, 'bd-102')))
+    check(out.counts['brief:bd-102'] === 1, 'not re-dispatched while its parent is quarantined')
+    assertBucketsDisjoint(r)
+  }
+
+  scenario('early unblock: when the parent\'s RESOLVE retry is implemented again, the cancelled dependent is re-dispatched on it and both land')
+  {
+    const canned = graphCanned([{ id: 'bd-101' }, { id: 'bd-102', deps: ['bd-101'] }], {
+      'bd-ready': [{ ids: ['bd-101'] }, { ids: [] }],
+      'review:bd-101': [{ id: 'bd-101', status: 'NEEDS_FIX', finding: 'wrong cache key' }, { id: 'bd-101', status: 'CLEAN' }],
+      'fix:bd-101': async ctx => { await ctx.waitFor('impl:bd-102'); return { id: 'bd-101', status: 'BLOCKED', blockerBead: 'bd-109', finding: 'needs a decision' } },
+      'impl:bd-102': [async ctx => { await ctx.waitFor('reopen:bd-101'); return { id: 'bd-102', status: 'IMPLEMENTED', files: [], head: SHA('d') } }, tick({ id: 'bd-102', status: 'IMPLEMENTED', files: [], head: SHA('d') })],
+      'reopen:bd-101': { reopened: ['bd-101'] },
+      'discard:bd-102': { discarded: true, reopened: [] },
+      'triage:bd-101': { decision: 'RESOLVE', detail: 'use the tenant id as the key' },
+      'clarify:bd-101': { recorded: true },
+    })
+    const out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    check(JSON.stringify([...(out.result?.completed ?? [])].sort()) === '["bd-101","bd-102"]' && out.result?.pendingRetry.length === 0, 'both land in the same round', JSON.stringify(out.result))
+    check(out.counts['brief:bd-102'] === 2 && out.counts['discard:bd-102'] === 1 && out.counts['review-bead:bd-101'] === 2, 'the dependent ran twice (cancelled, then re-dispatched); the parent was split again on its retry', JSON.stringify(out.counts))
+    check(lastAt(out, 'brief:bd-102') > lastAt(out, 'impl:bd-101') && at(out, 'merge:bd-102') > at(out, 'merge:bd-101'), 'the re-dispatch follows the parent\'s second implementation, and merges after it')
+    assertBucketsDisjoint(out.result)
+  }
+
+  scenario('resume: an open review bead re-enters its task at the review stage, and a dependent bd reports ready stacks on it')
+  {
+    const canned = graphCanned([{ id: 'bd-101' }, { id: 'bd-102', deps: ['bd-101'] }], {
+      'bd-ready': [{ ids: ['bd-102'], reviews: [{ id: 'bd-150', task: 'bd-101' }] }, { ids: [] }],
+      'brief:bd-101': { id: 'bd-101', status: 'BRIEFED', files: [], branch: 'x', base: SHA('a'), head: SHA('c'), alreadyMerged: false },
+    })
+    const out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    check(JSON.stringify([...(out.result?.completed ?? [])].sort()) === '["bd-101","bd-102"]', 'the re-entered task and its dependent both land', JSON.stringify(out.result))
+    check(!out.counts['impl:bd-101'] && out.counts['review:bd-101'] === 1, 'the re-entered task is reviewed without an implementer dispatch')
+    check(/review re-entry/.test(promptOf(out.trace, 'brief:bd-101') ?? '') && (promptOf(out.trace, 'brief:bd-101') ?? '').includes('bd reopen bd-101'), 'its brief knows it is a re-entry, with the reopen path when the branch is gone')
+    check((promptOf(out.trace, 'review:bd-101') ?? '').includes(`[BASE] = ${SHA('a')}`), 'the review uses the base the brief found')
+    check((promptOf(out.trace, 'plan') ?? '').includes('Review re-entries this round') && (promptOf(out.trace, 'plan') ?? '').includes('"bd-101"'), 'the planner is told to keep the re-entry\'s row')
+    check((promptOf(out.trace, 'merge:bd-101') ?? '').includes('then `bd close bd-150`'), 'its merge closes the review bead from the ready set')
+    check((promptOf(out.trace, 'brief:bd-102') ?? '').includes('stack: bd-101') && at(out, 'merge:bd-102') > at(out, 'merge:bd-101'), 'the dependent stacks on the re-entry and merges after it')
+    check(!out.counts['review-bead:bd-101'], 'the re-entry is not split again (its review bead exists)')
+    assertBucketsDisjoint(out.result)
+  }
+
+  scenario('earlyUnblock false: the dependent waits for the merge — no review beads, no stacking, still no top-up agent')
+  {
+    const canned = graphCanned([{ id: 'bd-101' }, { id: 'bd-102', deps: ['bd-101'] }], { 'bd-ready': [{ ids: ['bd-101'] }, { ids: [] }] })
+    const out = await run({ args: liveArgs({ config: cfg({ earlyUnblock: false }) }), canned })
+    assertNoThrow(out)
+    check(JSON.stringify([...(out.result?.completed ?? [])].sort()) === '["bd-101","bd-102"]', 'both completed in one working round', JSON.stringify(out.result))
+    check(!out.trace.some(t => /^(review-bead|reopen|discard):/.test(t.label)), 'no split, reopen or discard dispatch')
+    check(at(out, 'brief:bd-102') > at(out, 'merge:bd-101'), 'the dependent is briefed only after its parent merged')
+    check(!(promptOf(out.trace, 'brief:bd-102') ?? '').includes('-m "stack:') && !(promptOf(out.trace, 'merge:bd-102') ?? '').includes('--onto'), 'no stack merge in the brief, plain rebase at the merge')
+    check(!out.counts['bd-ready-topup'], 'the graph still finds the dependent with no top-up agent')
+    assertBucketsDisjoint(out.result)
+  }
+
+  scenario('graph readiness: a three-link chain drains in one round with no top-up agent; an opaque row keeps the bd top-up')
+  {
+    const rows = [{ id: 'bd-101' }, { id: 'bd-102', deps: ['bd-101'] }, { id: 'bd-103', deps: ['bd-102'] }]
+    // the first link's review completes only once the third link is briefed: each link stacks on the one before
+    const out = await run({ args: liveArgs(), canned: graphCanned(rows, { 'bd-ready': [{ ids: ['bd-101'] }, { ids: [] }], 'review:bd-101': async ctx => { await ctx.waitFor('brief:bd-103'); return { id: 'bd-101', status: 'CLEAN' } } }) })
+    assertNoThrow(out)
+    check(out.result?.completed.length === 3 && out.counts['bd-ready'] === 2 && !out.counts['bd-ready-topup'], 'the whole chain in one round, zero top-up dispatches', JSON.stringify(out.counts))
+    check(at(out, 'merge:bd-101') < at(out, 'merge:bd-102') && at(out, 'merge:bd-102') < at(out, 'merge:bd-103'), 'merges land in dependency order')
+    check(at(out, 'brief:bd-103') < at(out, 'merge:bd-101'), 'the third link starts before the first one merges (each stacks on the one before)')
+    check(out.counts['review-bead:bd-101'] === 1 && out.counts['review-bead:bd-102'] === 1 && !out.counts['review-bead:bd-103'], 'each task with a dependent is split once; the last link is not')
+    assertBucketsDisjoint(out.result)
+
+    // bd-104 waits on an epic-level edge JS cannot see: every landing re-queries bd for it
+    const opaque = graphCanned([{ id: 'bd-101' }, { id: 'bd-104', opaque: true }], { 'bd-ready': [{ ids: ['bd-101'] }, { ids: [] }], 'bd-ready-topup': { ids: ['bd-104'] } })
+    const o2 = await run({ args: liveArgs(), canned: opaque })
+    assertNoThrow(o2)
+    check(o2.counts['bd-ready-topup'] === 1 && JSON.stringify([...(o2.result?.completed ?? [])].sort()) === '["bd-101","bd-104"]', 'the opaque row is found by the bd top-up after the landing, then nothing is left waiting', JSON.stringify(o2.counts))
+    assertBucketsDisjoint(o2.result)
+  }
+
+  scenario('early unblock: stack parents whose branches conflict — the dependent waits for both merges, then cuts fresh')
+  {
+    const canned = graphCanned([{ id: 'bd-101' }, { id: 'bd-102' }, { id: 'bd-103', deps: ['bd-101', 'bd-102'] }], {
+      'bd-ready': [{ ids: ['bd-101', 'bd-102'] }, { ids: [] }],
+      'brief:bd-103': [{ id: 'bd-103', status: 'STACK_CONFLICT', finding: 'task-bd-101 and task-bd-102 both rewrite src/x.js' }, { id: 'bd-103', status: 'BRIEFED', files: [], branch: 'x', base: SHA('a') }],
+    })
+    const out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    check(out.result?.completed.length === 3, 'all three land', JSON.stringify(out.result))
+    check(out.counts['brief:bd-103'] === 2 && lastAt(out, 'brief:bd-103') > at(out, 'merge:bd-101') && lastAt(out, 'brief:bd-103') > at(out, 'merge:bd-102'), 'the second brief comes after both parents merged')
+    const second = out.trace.filter(t => t.label === 'brief:bd-103')[1]?.prompt ?? ''
+    check(!second.includes('-m "stack:') && (promptOf(out.trace, 'brief:bd-103') ?? '').includes('-m "stack: bd-101"') && (promptOf(out.trace, 'brief:bd-103') ?? '').includes('-m "stack: bd-102"'), 'the first brief stacked both parents; the fresh one stacks none')
+    check(!out.counts['discard:bd-103'] && !taskLedgerLines(out.trace, 'bd-103').some(l => /cancelled/.test(l)), 'a stack conflict is a wait, not a cancellation')
+    assertBucketsDisjoint(out.result)
+  }
+
+  scenario('split unavailable: a null review-bead dispatch leaves the task unsplit in bd, and its dependent still dispatches early')
+  {
+    const canned = graphCanned([{ id: 'bd-101' }, { id: 'bd-102', deps: ['bd-101'] }], { 'bd-ready': [{ ids: ['bd-101'] }, { ids: [] }], 'review-bead:bd-101': null })
+    const out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    check(out.result?.completed.length === 2 && at(out, 'brief:bd-102') < at(out, 'merge:bd-101'), 'the dependent still started before the parent merged; both land')
+    check(!(promptOf(out.trace, 'merge:bd-101') ?? '').includes('review bead') && out.logs.some(l => l.includes('stays unsplit in bd')), 'no review bead to close at the merge; the gap is logged')
+    assertBucketsDisjoint(out.result)
+  }
+
+  scenario('Finish reconciliation: a split task counts as closed only when its review bead is closed too')
+  {
+    const canned = graphCanned([{ id: 'bd-101' }, { id: 'bd-102', deps: ['bd-101'] }], {
+      'bd-ready': [{ ids: ['bd-101'] }, { ids: [] }],
+      // the dependent is already waiting at its merge gate when the parent's merge fails
+      'merge:bd-101': async ctx => { await ctx.waitFor('review:bd-102'); await new Promise(r => setImmediate(r)); return { id: 'bd-101', merged: false, blockerBead: 'bd-108', rebaseConflictFiles: 1 } },
+      'reopen:bd-101': null,
+      'discard:bd-102': { discarded: true, reopened: [] },
+      'triage:bd-101': { decision: 'ESCALATE', detail: 'conflict' },
+      'notify:bd-101': { sent: true },
+    })
+    const out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    const rec = promptOf(out.trace, 'reconcile-buckets') ?? ''
+    check(rec.includes('bd-101 (review bead bd-101-rv)') && /counts as closed only when its review bead/.test(rec), 'the reconciliation names the split task with its review bead', rec)
+    check(out.logs.some(l => l.includes('reopen of bd-101 unavailable')) && JSON.stringify(out.result?.escalated) === '["bd-101"]', 'a failed merge reopens the split task; a null reopen is logged', JSON.stringify(out.result))
+    check(taskLedgerLines(out.trace, 'bd-102').includes('Task 2 (bd-102): cancelled (parent bd-101 blocked)') && out.counts['discard:bd-102'] === 1 && !out.counts['merge:bd-102'], 'the merge failure cancels the dependent waiting at its merge gate, and discards its worktree')
+    assertBucketsDisjoint(out.result)
+  }
+
+  scenario('round head: a ready id whose blocker this run quarantined is held back (a lost reopen), and an all-held-back round drains')
+  {
+    const canned = graphCanned([{ id: 'bd-101' }, { id: 'bd-102', deps: ['bd-101'] }], {
+      // round 2: bd still reports bd-102 ready, because bd-101's reopen was lost
+      'bd-ready': [{ ids: ['bd-101'] }, { ids: ['bd-102'] }, { ids: [] }],
+      'review:bd-101': { id: 'bd-101', status: 'NEEDS_FIX', finding: 'f' },
+      'fix:bd-101': { id: 'bd-101', status: 'BLOCKED', blockerBead: 'bd-109', finding: 'needs a decision' },
+      'impl:bd-102': async ctx => { await ctx.waitFor('reopen:bd-101'); return { id: 'bd-102', status: 'IMPLEMENTED', files: [] } },
+      'reopen:bd-101': null,
+      'discard:bd-102': { discarded: true, reopened: [] },
+      'triage:bd-101': { decision: 'ESCALATE', detail: 'a human decides' },
+      'notify:bd-101': { sent: true },
+    })
+    const out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    check(out.counts['brief:bd-102'] === 1 && out.logs.some(l => l.startsWith('held back 1 ready id(s)') && l.includes('bd-102')), 'round 2 holds bd-102 back instead of dispatching it on a quarantined blocker', JSON.stringify(out.counts))
+    check(out.result?.stopReason === 'ready-drained' && out.result?.stalled === false && out.counts['bd-ready'] === 2, 'a round whose only ready ids are held back drains, never stalls', JSON.stringify({ stop: out.result?.stopReason, n: out.counts['bd-ready'] }))
+    assertBucketsDisjoint(out.result)
   }
 
   // ===== 10. shipped tree scripts against a fake `bd` serving fixture JSON =====
@@ -1977,10 +2201,13 @@ async function main() {
       bead('R.9', 'task', [pc('OE')], { parent: 'OE' }),
       bead('OE.1', 'task', [pc('OE')], { parent: 'OE', status: 'closed' }),
     ]
-    // Fake bd: list/show read list.json with closed.txt applied; close appends to closed.txt;
-    // close-eligible derives eligibility (open epic, >=1 child, all children closed) and refuses
-    // the mutating form; ready serves ready-label.json / ready-all.json cut to --limit. Every call
-    // is logged to calls.log.
+    // Fake bd: list/show read list.json with closed.txt applied (list honors --label and, without
+    // --all, hides closed beads); close appends to closed.txt, refusing a bead with an open blocks
+    // dependency; reopen removes it; create appends a bead (title, --parent, -l, --deps blocked-by:)
+    // and prints its id; close-eligible derives eligibility (open epic, >=1 child, all children
+    // closed) and refuses the mutating form; ready serves ready-label.json / ready-all.json (work) or
+    // ready-review-label.json / ready-review-all.json (with --label sp:review) cut to --limit. Every
+    // call is logged to calls.log.
     const fakeBd = `#!${bashPath}
 set -euo pipefail
 d=$FAKE_BD_DIR
@@ -1988,9 +2215,27 @@ echo "$*" >> "$d/calls.log"
 closed() { if [ -s "$d/closed.txt" ]; then jq -R . "$d/closed.txt" | jq -s .; else echo '[]'; fi; }
 state() { jq --argjson c "$(closed)" 'map(if (.id as $i | $c | index($i)) then .status = "closed" else . end)' "$d/list.json"; }
 case "$1" in
-  list) state ;;
+  list)
+    label=; all=0; prev=
+    for a in "$@"; do [ "$prev" = --label ] && label=$a; [ "$a" = --all ] && all=1; prev=$a; done
+    state | jq --arg l "$label" --argjson all "$all" 'map(select(($l == "" or ((.labels // []) | index($l))) and ($all == 1 or .status != "closed")))' ;;
   show) state | jq -e --arg id "$2" '[.[] | select(.id == $id)] | if length == 0 then error("no issue " + $id) else . end' ;;
-  close) echo "$2" >> "$d/closed.txt" ;;
+  close)
+    if state | jq -e --arg id "$2" '. as $all | .[] | select(.id == $id) | (.dependencies // [])[] | select(.type == "blocks") | .depends_on_id as $b | $all[] | select(.id == $b and .status != "closed")' >/dev/null; then
+      echo "cannot close blocked issue: $2" >&2; exit 1
+    fi
+    echo "$2" >> "$d/closed.txt" ;;
+  reopen) grep -vx "$2" "$d/closed.txt" > "$d/closed.tmp" || true; mv "$d/closed.tmp" "$d/closed.txt" ;;
+  create)
+    title=$2; shift 2; parent=; labels=; deps=
+    while [ $# -gt 0 ]; do case "$1" in --parent) parent=$2; shift ;; -l) labels=$2; shift ;; --deps) deps=$2; shift ;; -d) shift ;; esac; shift; done
+    id="\${parent:-N}.r$(( $(jq length "$d/list.json") + 1 ))"
+    jq --arg id "$id" --arg t "$title" --arg p "$parent" --arg l "$labels" --arg dp "$deps" '. + [{id: $id, title: $t, status: "open", issue_type: "task",
+      labels: ($l | split(",") | map(select(length > 0))), parent: (if $p == "" then null else $p end),
+      dependencies: ([ if $p == "" then empty else {depends_on_id: $p, type: "parent-child"} end ]
+        + [ $dp | split(",")[] | select(length > 0) | {depends_on_id: sub("^blocked-by:"; ""), type: "blocks"} ])}]' "$d/list.json" > "$d/list.tmp"
+    mv "$d/list.tmp" "$d/list.json"
+    echo "$id" ;;
   epic)
     case " $* " in *" --dry-run "*) ;; *) echo "fake bd: unfiltered mutating close-eligible" >&2; exit 9 ;; esac
     state | jq '. as $all | [ .[] | select(.issue_type == "epic" and .status != "closed") | .id as $e
@@ -1998,23 +2243,29 @@ case "$1" in
       | select(($k | length) > 0 and all($k[]; .status == "closed"))
       | {epic: {id: $e, status: "open"}, total_children: ($k | length), closed_children: ($k | length), eligible_for_close: true} ]' ;;
   ready)
-    limit=100; f=ready-all.json; prev=
+    limit=100; labelled=0; review=0; prev=
     for a in "$@"; do
       [ "$prev" = --limit ] && limit=$a
-      [ "$prev" = --label ] && f=ready-label.json
+      if [ "$prev" = --label ]; then if [ "$a" = sp:review ]; then review=1; else labelled=1; fi; fi
       prev=$a
     done
+    f=ready-all.json
+    if [ "$review" = 1 ]; then f=ready-review-all.json; [ "$labelled" = 1 ] && f=ready-review-label.json
+    elif [ "$labelled" = 1 ]; then f=ready-label.json; fi
     jq --argjson n "$limit" '.[:$n]' "$d/$f" ;;
   *) echo "fake bd: unexpected $*" >&2; exit 9 ;;
 esac
 `
-    const newFixture = ({ list = baseList(), readyLabel = [], readyAll = [], closed = [] } = {}) => {
+    const newFixture = ({ list = baseList(), readyLabel = [], readyAll = [], reviewLabel = [], reviewAll = [], closed = [] } = {}) => {
       const dir = mkdtempSync(path.join(os.tmpdir(), 'sc-tree-scripts-'))
       mkdirSync(path.join(dir, 'bin'))
       writeFileSync(path.join(dir, 'bin', 'bd'), fakeBd, { mode: 0o755 })
       writeFileSync(path.join(dir, 'list.json'), JSON.stringify(list))
-      writeFileSync(path.join(dir, 'ready-label.json'), JSON.stringify(readyLabel.map(id => ({ id }))))
-      writeFileSync(path.join(dir, 'ready-all.json'), JSON.stringify(readyAll.map(id => ({ id }))))
+      writeFileSync(path.join(dir, 'ready-label.json'), JSON.stringify(readyLabel.map(id => ({ id, title: id }))))
+      writeFileSync(path.join(dir, 'ready-all.json'), JSON.stringify(readyAll.map(id => ({ id, title: id }))))
+      // review entries are [reviewBeadId, taskId] pairs, served with the "review: <task>" title
+      writeFileSync(path.join(dir, 'ready-review-label.json'), JSON.stringify(reviewLabel.map(([id, t]) => ({ id, title: `review: ${t}` }))))
+      writeFileSync(path.join(dir, 'ready-review-all.json'), JSON.stringify(reviewAll.map(([id, t]) => ({ id, title: `review: ${t}` }))))
       writeFileSync(path.join(dir, 'closed.txt'), closed.map(c => c + '\n').join(''))
       writeFileSync(path.join(dir, 'calls.log'), '')
       return dir
@@ -2037,9 +2288,13 @@ esac
     scenario('scripts: every tree script prints JQ_UNAVAILABLE: and exits 4 when jq is missing')
     {
       const dir = newFixture()
-      for (const [name, args] of [['epic-tree', ['R', 'A']], ['ready-in-tree', ['R']], ['close-in-tree-epics', ['R']], ['edge-stats', ['R']]]) {
+      for (const [name, args] of [['epic-tree', ['R', 'A']], ['ready-in-tree', ['R']], ['close-in-tree-epics', ['R']], ['edge-stats', ['R']], ['tree-deps', ['R']]]) {
         const r = runScript(dir, name, args, { noJq: true })
         check(r.code === 4 && /^JQ_UNAVAILABLE: /.test(r.stdout) && lines(r.stdout).length === 1 && r.stdout.includes('R'), `${name}: exit 4 with one self-contained JQ_UNAVAILABLE: line naming the epic`, JSON.stringify(r))
+      }
+      for (const args of [['split', 'C'], ['reopen', 'B', 'C']]) {
+        const r = runScript(dir, 'review-bead', args, { noJq: true })
+        check(r.code === 4 && /^JQ_UNAVAILABLE: /.test(r.stdout) && lines(r.stdout).length === 1 && r.stdout.includes('C'), `review-bead ${args[0]}: exit 4 with one self-contained JQ_UNAVAILABLE: line naming the task`, JSON.stringify(r))
       }
       check(calls(dir).length === 0, 'the no-jq path runs no bd command', calls(dir).join(' | '))
       rmSync(dir, { recursive: true, force: true })
@@ -2069,30 +2324,49 @@ esac
         rmSync(dir, { recursive: true, force: true })
       }
 
-      scenario('scripts: ready-in-tree — labelled fast path, structural fallback, truncation re-runs')
+      scenario('scripts: ready-in-tree — labelled fast path, structural fallback, truncation re-runs, review beads apart')
       {
         let dir = newFixture({ readyLabel: ['A'], readyAll: ['O', 'A', 'B'] })
         let r = runScript(dir, 'ready-in-tree', ['R'])
-        check(r.code === 0 && r.stdout.trim() === '{"ids":["A"]}', 'fast path: the labelled ids, as one JSON object', JSON.stringify(r))
-        check(calls(dir).length === 1 && /--exclude-type=epic --exclude-label blocker --label sp:R --limit 500 --json/.test(calls(dir)[0]), 'fast path runs only the labelled query, excluding epics and blocker beads', calls(dir).join(' | '))
+        check(r.code === 0 && r.stdout.trim() === '{"ids":["A"],"reviews":[]}', 'fast path: the labelled ids, as one JSON object with an empty reviews list', JSON.stringify(r))
+        const fastCalls = calls(dir).filter(c => c.startsWith('ready'))
+        check(/--exclude-type=epic --exclude-label blocker,sp:review --label sp:R --limit 500 --json/.test(fastCalls[0]) && !fastCalls.slice(1).some(c => c.includes('--exclude-label')), 'the work query runs labelled first, excluding epics, blocker beads and review beads', fastCalls.join(' | '))
+        check(fastCalls.length === 3 && /--label sp:review --label sp:R/.test(fastCalls[1]) && /--label sp:review --limit/.test(fastCalls[2]), 'review beads: a labelled query, then the repo-global one when it comes back empty', fastCalls.join(' | '))
         rmSync(dir, { recursive: true, force: true })
 
         dir = newFixture({ readyLabel: [], readyAll: ['O', 'R.9', 'B', 'zz-1', 'OE.1'] })
         r = runScript(dir, 'ready-in-tree', ['R'])
-        check(r.code === 0 && r.stdout.trim() === '{"ids":["B","zz-1"]}', 'empty fast path falls back to the repo-global set filtered by structure, bd order kept', JSON.stringify(r))
+        check(r.code === 0 && r.stdout.trim() === '{"ids":["B","zz-1"],"reviews":[]}', 'empty fast path falls back to the repo-global set filtered by structure, bd order kept', JSON.stringify(r))
         const readyCalls = calls(dir).filter(c => c.startsWith('ready'))
-        check(readyCalls.length === 2 && !readyCalls[1].includes('--label') && readyCalls[1].includes('--exclude-label blocker'), 'fallback query is repo-global and still excludes blocker beads', readyCalls.join(' | '))
+        check(!readyCalls[1].includes('--label') && readyCalls[1].includes('--exclude-label blocker,sp:review'), 'fallback query is repo-global and still excludes blocker and review beads', readyCalls.join(' | '))
         rmSync(dir, { recursive: true, force: true })
 
         dir = newFixture({ readyLabel: [], readyAll: [] })
         r = runScript(dir, 'ready-in-tree', ['R'])
-        check(r.code === 0 && r.stdout.trim() === '{"ids":[]}', 'nothing ready anywhere: an empty list, exit 0', JSON.stringify(r))
+        check(r.code === 0 && r.stdout.trim() === '{"ids":[],"reviews":[]}', 'nothing ready anywhere: empty lists, exit 0', JSON.stringify(r))
+        rmSync(dir, { recursive: true, force: true })
+
+        dir = newFixture({ readyLabel: ['zz-1'], reviewLabel: [['R.r20', 'B']] })
+        r = runScript(dir, 'ready-in-tree', ['R'])
+        check(r.code === 0 && r.stdout.trim() === '{"ids":["zz-1"],"reviews":[{"id":"R.r20","task":"B"}]}', 'a ready review bead is reported apart, with the task its title names', JSON.stringify(r))
+        rmSync(dir, { recursive: true, force: true })
+
+        // a review bead's labels need not carry this epic's label: the structural fallback finds it
+        const withReview = [...baseList(), { id: 'S.r30', title: 'review: C', status: 'open', issue_type: 'task', labels: ['sp:review'], parent: 'S', dependencies: [{ issue_id: 'x', depends_on_id: 'S', type: 'parent-child' }, { issue_id: 'x', depends_on_id: 'C', type: 'blocks' }] }]
+        dir = newFixture({ list: withReview, readyLabel: ['zz-1'], reviewAll: [['OE.r9', 'R.9'], ['S.r30', 'C']] })
+        r = runScript(dir, 'ready-in-tree', ['R'])
+        check(r.code === 0 && r.stdout.trim() === '{"ids":["zz-1"],"reviews":[{"id":"S.r30","task":"C"}]}', 'repo-global review beads are filtered by structure: the out-of-tree one is dropped', JSON.stringify(r))
+        rmSync(dir, { recursive: true, force: true })
+
+        dir = newFixture({ readyAll: ['B'] })
+        r = runScript(dir, 'ready-in-tree', ['nope'])
+        check(r.code === 2 && r.stderr.includes('unknown epic'), 'unknown EPIC_ID exits 2 (the fallback\'s tree filter fails, and that failure propagates)', JSON.stringify(r))
         rmSync(dir, { recursive: true, force: true })
 
         const many = Array.from({ length: 700 }, (_, i) => `R.${i + 100}`)
         dir = newFixture({ readyLabel: many })
         r = runScript(dir, 'ready-in-tree', ['R'])
-        const limits = calls(dir).map(c => c.match(/--limit (\d+)/)?.[1])
+        const limits = calls(dir).filter(c => c.includes('--label sp:R') && !c.includes('--label sp:review')).map(c => c.match(/--limit (\d+)/)?.[1])
         check(r.code === 0 && JSON.parse(r.stdout).ids.length === 700 && JSON.stringify(limits) === '["500","1000"]', 'a result that fills the limit re-runs with it doubled until it comes back short', JSON.stringify({ limits, n: r.stdout.length }))
         rmSync(dir, { recursive: true, force: true })
       }
@@ -2115,6 +2389,53 @@ esac
         dir = newFixture()
         r = runScript(dir, 'close-in-tree-epics', ['nope'])
         check(r.code === 2, 'unknown EPIC_ID exits 2', JSON.stringify(r))
+        rmSync(dir, { recursive: true, force: true })
+      }
+
+      scenario('scripts: tree-deps — in-tree leaf blockers per open leaf; opaque when anything else gates it')
+      {
+        let dir = newFixture()
+        let r = runScript(dir, 'tree-deps', ['R'])
+        let j = null; try { j = JSON.parse(r.stdout) } catch {}
+        const by = id => j?.beads.find(b => b.id === id)
+        check(r.code === 0 && JSON.stringify(j?.beads.map(b => b.id)) === '["B","C","A","D","zz-1"]', 'one entry per open, non-epic, non-blocker in-tree bead, in dump order (closed Z, blocker X, out-of-tree O excluded)', r.stdout + r.stderr)
+        check(JSON.stringify(by('C')) === '{"id":"C","deps":["B"],"opaque":false}' && JSON.stringify(by('B')) === '{"id":"B","deps":[],"opaque":false}', 'C waits on the in-tree leaf B; B on nothing', r.stdout)
+        check(by('A')?.opaque === true && by('A')?.deps.length === 0, 'A, blocked by an out-of-tree bead, is opaque', r.stdout)
+        check(by('D')?.opaque === true && by('D')?.deps.length === 0, 'D, blocked by an epic, is opaque', r.stdout)
+        rmSync(dir, { recursive: true, force: true })
+
+        const gated = baseList(); gated.find(b => b.id === 'S').dependencies.push(bl('A'))
+        gated.find(b => b.id === 'zz-1').status = 'in_progress'
+        dir = newFixture({ list: gated, closed: ['B'] })
+        r = runScript(dir, 'tree-deps', ['R'])
+        j = null; try { j = JSON.parse(r.stdout) } catch {}
+        check(r.code === 0 && JSON.stringify(by('C')) === '{"id":"C","deps":[],"opaque":true}', 'a closed blocker is satisfied (C loses B); an ancestor epic with an open blocker makes its leaves opaque', r.stdout)
+        check(by('zz-1')?.opaque === true, 'a bead claimed by hand (status in_progress) is opaque', r.stdout)
+        rmSync(dir, { recursive: true, force: true })
+
+        dir = newFixture()
+        check(runScript(dir, 'tree-deps', ['nope']).code === 2, 'unknown EPIC_ID exits 2')
+        rmSync(dir, { recursive: true, force: true })
+      }
+
+      scenario('scripts: review-bead — split creates or reuses the review bead before closing the task; reopen undoes it')
+      {
+        const dir = newFixture({ closed: ['O'] })   // A's out-of-tree blocker is done, so A can close
+        let r = runScript(dir, 'review-bead', ['split', 'C'])
+        check(r.code === 0 && r.stdout.trim() === '{"reviewBead":"S.r14","implClosed":false,"created":true}', 'C (blocked by open B): review bead created, and bd\'s refusal to close a blocked bead is reported, not forced', JSON.stringify(r))
+        const created = JSON.parse(readFileSync(path.join(dir, 'list.json'), 'utf8')).find(b => b.id === 'S.r14')
+        check(created?.title === 'review: C' && created?.parent === 'S' && JSON.stringify(created?.labels) === '["sp:review"]' && created?.dependencies.some(d => d.type === 'blocks' && d.depends_on_id === 'C'), 'the review bead: title "review: C", C\'s parent, sp:review, blocked by C', JSON.stringify(created))
+        const create = calls(dir).find(c => c.startsWith('create'))
+        check(/--no-inherit-labels/.test(create ?? '') && /--deps blocked-by:C/.test(create ?? ''), 'created with --no-inherit-labels and blocked-by the task', create)
+        const order = calls(dir).filter(c => /^(create|close) /.test(c)).map(c => c.split(' ')[0])
+        check(JSON.stringify(order) === '["create","close"]', 'the review bead exists before the task bead is closed', JSON.stringify(order))
+        r = runScript(dir, 'review-bead', ['split', 'A'])
+        check(r.code === 0 && JSON.parse(r.stdout).implClosed === true && JSON.stringify(JSON.parse(readFileSync(path.join(dir, 'list.json'), 'utf8')).find(b => b.title === 'review: A')?.labels) === '["sp:R","sp:review"]', 'the task\'s sp: labels carry over; an unblocked task closes', JSON.stringify(r))
+        r = runScript(dir, 'review-bead', ['split', 'A'])
+        check(r.code === 0 && JSON.parse(r.stdout).created === false && JSON.parse(r.stdout).reviewBead === 'R.r15', 'a second split reuses the open review bead', JSON.stringify(r))
+        r = runScript(dir, 'review-bead', ['reopen', 'A', 'C'])
+        check(r.code === 0 && r.stdout.trim() === '{"reopened":["A"]}' && !readFileSync(path.join(dir, 'closed.txt'), 'utf8').split('\n').includes('A'), 'reopen reopens the closed task only', JSON.stringify(r))
+        check(runScript(dir, 'review-bead', ['split', 'nope']).code === 2 && runScript(dir, 'review-bead', ['bogus', 'A']).code === 2, 'unknown task or subcommand exits 2')
         rmSync(dir, { recursive: true, force: true })
       }
 

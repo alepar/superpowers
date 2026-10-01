@@ -193,8 +193,9 @@ the recorded disposition. Findings the recorded step-back dissolved are skipped;
 with no matching record go through the scope-filter pass.
 
 A resume at `phase: code` whose epic is already closed has nothing to dispatch — `bd ready` comes
-back empty by construction. Skip to phase 4 and source Implemented from the closed beads; do not
-read an empty ready set as a failed run.
+back empty by construction. Skip to phase 4 and source Implemented from the closed beads (skip
+super-code's `review: <id>` bookkeeping beads, label `sp:review`); do not read an empty ready set as
+a failed run.
 
 A match resumes from its recorded phase
 (`./run-state.md`) — never re-ask the flags, never reset a counter. `run.md` is created the moment

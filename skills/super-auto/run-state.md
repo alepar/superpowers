@@ -178,7 +178,9 @@ a resume can silently redo work or violate a decision that was already made.
    that ends inside phase 3 resumes knowing only `phase: code`. Refresh
    `codeBuckets` from the tracker as the phase proceeds — closed beads under the
    epic are `completed`, quarantined ones are `escalated` — so the file always
-   reflects the last completed round. Same fields, written more often; not a
+   reflects the last completed round. A `review: <id>` bead (label `sp:review`) is
+   super-code's bookkeeping, never a task: skip it, and count a task whose
+   review bead is still open as in flight, not completed. Same fields, written more often; not a
    second schema.
 
    **`review` records what the final whole-epic review found, not only that it

@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # Dependency-graph numbers for the open part of one epic's tree, for the report-only edge audit.
 # Nodes: in-tree beads (epic-tree's structural membership) that are not closed and not labelled
-# `blocker`. A bead waits on its open in-tree `blocks` dependencies; an open epic waits on each of
-# its open in-tree children (so a bead blocked by an epic waits for that epic's whole subtree).
+# `blocker` or `sp:review` (a review bead tracks a task that is already implemented). A bead
+# waits on its open in-tree `blocks` dependencies; an open epic waits on each of its open in-tree
+# children (so a bead blocked by an epic waits for that epic's whole subtree).
 #   openLeaves    = open non-epic nodes
 #   depth         = the most non-epic nodes on any chain of waits (epics add no depth)
 #   criticalPath  = one such longest chain, waiting bead first, epics included
@@ -22,7 +23,7 @@ epic=$1
 here=$(cd "$(dirname "$0")" && pwd)
 
 command -v jq >/dev/null 2>&1 || {
-  echo "JQ_UNAVAILABLE: jq is not installed, so compute this by hand from \`bd list --all --json --limit 0\`. A bead's parent is the \`depends_on_id\` of its \`dependencies\` entry with \`type\` \"parent-child\"; it is in the tree when it is ${epic} or its parent chain reaches ${epic}. Keep in-tree beads whose \`status\` is not \"closed\" and whose \`labels\` do not include \"blocker\". openLeaves = how many of those have \`issue_type\` other than \"epic\". A kept bead waits on each kept bead named by its \`dependencies\` entries with \`type\` \"blocks\"; a kept epic also waits on each of its kept children. depth = the largest number of non-epic beads on any chain of waits (epics count 0). criticalPath = the ids along one longest chain, waiting bead first. Output one JSON object {\"openLeaves\":N,\"depth\":N,\"criticalPath\":[...]}."
+  echo "JQ_UNAVAILABLE: jq is not installed, so compute this by hand from \`bd list --all --json --limit 0\`. A bead's parent is the \`depends_on_id\` of its \`dependencies\` entry with \`type\` \"parent-child\"; it is in the tree when it is ${epic} or its parent chain reaches ${epic}. Keep in-tree beads whose \`status\` is not \"closed\" and whose \`labels\` include neither \"blocker\" nor \"sp:review\". openLeaves = how many of those have \`issue_type\` other than \"epic\". A kept bead waits on each kept bead named by its \`dependencies\` entries with \`type\` \"blocks\"; a kept epic also waits on each of its kept children. depth = the largest number of non-epic beads on any chain of waits (epics count 0). criticalPath = the ids along one longest chain, waiting bead first. Output one JSON object {\"openLeaves\":N,\"depth\":N,\"criticalPath\":[...]}."
   exit 4
 }
 
@@ -31,10 +32,10 @@ trap 'rm -rf "$tmp"' EXIT
 bd list --all --json --limit 0 > "$tmp/dump.json"
 bash "$here/epic-tree" --from "$tmp/dump.json" "$epic" > "$tmp/members"
 
-# N<TAB>id<TAB>status<TAB>issue_type<TAB>blocker(0|1); D<TAB>bead<TAB>depends_on<TAB>type
+# N<TAB>id<TAB>status<TAB>issue_type<TAB>excluded(0|1: a blocker or review bead); D<TAB>bead<TAB>depends_on<TAB>type
 jq -r '
   .[] | .id as $c |
-  "N\t\($c)\t\(.status)\t\(.issue_type)\t\(if ((.labels // []) | index("blocker")) then 1 else 0 end)",
+  "N\t\($c)\t\(.status)\t\(.issue_type)\t\(if ((.labels // []) | (index("blocker") or index("sp:review"))) then 1 else 0 end)",
   ( (.dependencies // [])[] | select(.type == "blocks" or .type == "parent-child")
     | "D\t\($c)\t\(.depends_on_id)\t\(.type)" )' "$tmp/dump.json" > "$tmp/graph" ||
   { echo "could not parse the bd list dump" >&2; exit 2; }
