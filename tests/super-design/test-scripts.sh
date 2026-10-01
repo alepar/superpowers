@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Tests for skills/super-design/scripts/: coverage-precheck, requirements-tally,
-# coverage-divergence. Runs against the fixtures beside this file; no bd tracker needed.
+# coverage-divergence, graph-shape. Runs against the fixtures beside this file; no bd tracker needed.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -84,6 +84,32 @@ assert_eq "$(printf '%s\n' "$out" | tail -1)" "widening: no" "shrinking round is
 
 run bash "$S/coverage-divergence" "$F/findings-r1.md"
 assert_eq "$code" 2 "missing argument exits 2"
+
+echo "graph-shape"
+if command -v jq >/dev/null 2>&1; then
+  run bash "$S/graph-shape" --from "$F/graph.json" r
+  assert_eq "$out" "shape: leaves 8 · depth 5 · width 1.6 · critical path: r.1.1 → r.1.2 → r.2.2 → r.3 → r.9
+edge: r.1.2 <- r.1.1 · leaf · critical yes · depth 5→4
+edge: r.2 <- r.1 · epic · critical yes · depth 5→3
+edge: r.3 <- r.2.2 · leaf · critical yes · depth 5→4
+summary: edges 11 · exempt 7 · candidates 3 (critical 3, epic-level 1)" \
+    "epic edge waits for the subtree; sweep/contract edges count but are exempt; closed/blocker beads and off-path leaf edges dropped"
+  assert_eq "$code" 0 "exit 0"
+
+  cyc=$(mktemp)
+  printf '%s' '[{"id":"c","issue_type":"epic","status":"open","labels":["sp:c"]},{"id":"c.1","issue_type":"task","status":"open","parent":"c","dependencies":[{"depends_on_id":"c.2","type":"blocks"}]},{"id":"c.2","issue_type":"task","status":"open","parent":"c","dependencies":[{"depends_on_id":"c.1","type":"blocks"}]}]' > "$cyc"
+  run bash "$S/graph-shape" --from "$cyc" c
+  assert_eq "$code" 0 "a wait cycle still exits 0"
+  assert_eq "$(printf '%s\n' "$out" | head -1)" "shape: leaves 2 · depth 2 · width 1.0 · critical path: c.2 → c.1" "cycle edge ignored"
+  rm -f "$cyc"
+
+  run bash "$S/graph-shape" --from "$F/graph.json" nope
+  assert_eq "$code" 2 "unknown root exits 2"
+fi
+run env PATH="$nojq" bash "$S/graph-shape" --from "$F/graph.json" r
+assert_eq "$code" 4 "no jq exits 4"
+case "$out" in JQ_UNAVAILABLE:*) pass "no jq prints a JQ_UNAVAILABLE: instruction" ;;
+  *) fail "no jq prints a JQ_UNAVAILABLE: instruction"; echo "    got: $out" ;; esac
 
 echo
 if [ "$FAILURES" -eq 0 ]; then echo "All super-design script tests passed"; else echo "$FAILURES failure(s)"; exit 1; fi

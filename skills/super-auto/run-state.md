@@ -97,7 +97,7 @@ a resume can silently redo work or violate a decision that was already made.
    fields, its absence is not a sign of an interrupted run — it is the normal outcome whenever
    nothing was filed.
 
-4. **Parked items** — three kinds, each with its source report:
+4. **Parked items** — four kinds, each with its source report:
    - **escalations** — a roast finding that reached no verdict at all;
    - **beyond-cap** — a severe finding the panel cap left unjudged, or one under the report's
      `## Not verified (dedupe failed or judge lost)` heading;
@@ -108,6 +108,9 @@ a resume can silently redo work or violate a decision that was already made.
      Recorded with which branch was taken, e.g. `"clean [low coverage] — proceeded"`.
      A goal- or scope-changing redesign the phase-5 step-back proposed and autonomous mode
      did not apply is this kind too: `"redesign proposed, not applied — <one line>"`.
+   - **graph-change** — an edge change or proposal from super-design's parallelism pass that
+     was not applied (outside the safe class), as super-design recorded it beside its
+     `graph-pass:` line.
 
    **Parking is mode-independent.** A `beyond-cap` or `degraded-verdict` item is
    recorded the same way whether autonomous mode answered the question or a human

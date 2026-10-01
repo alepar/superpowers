@@ -1,0 +1,136 @@
+#!/usr/bin/env bash
+# The settled tree's parallelism numbers and the blocking edges worth a look, for the parallelism
+# pass. Nodes: beads labelled sp:ROOT that are not closed and not labelled `blocker`. Execution
+# runs one leaf per round along a chain, so:
+#   leaves  = open non-epic beads
+#   depth   = the most leaves on any chain of waits (epics add no depth)
+#   width   = leaves / depth, the average parallelism the graph allows
+# Waits follow bd ready: a bead waits on its `blocks` dependencies; a bead blocked by an epic waits
+# for that epic's whole subtree; every bead under an epic waits on that epic's own blockers.
+# A candidate edge is a `blocks` edge that lies on a longest chain, or that has an epic at either
+# end. Edges whose dependent states them as `consumes boundary contract` (a seam contract) or
+# `consumes all leaves (integration sweep)` are exempt and never listed.
+#
+# Usage: bash graph-shape [--from DUMP_FILE] ROOT_EPIC_ID
+#   --from reads a saved `bd list --label sp:ROOT_EPIC_ID --all --json --limit 0` dump instead of
+#   running bd.
+# Output:
+#   shape: leaves N · depth D · width W · critical path: <id> → <id> → …   (execution order)
+#   edge: <dependent> <- <blocker> · leaf|epic · critical yes|no · depth D→D'
+#     (one per candidate; D' is the depth with only that edge removed)
+#   summary: edges N · exempt N · candidates N (critical N, epic-level N)
+# A wait cycle is reported on stderr and its closing edge ignored.
+# Exit 0 ok, 2 bad input, 4 jq unavailable (prints a JQ_UNAVAILABLE: line on stdout).
+set -euo pipefail
+
+usage() { echo "usage: graph-shape [--from DUMP_FILE] ROOT_EPIC_ID" >&2; exit 2; }
+
+dump_file=
+if [ "${1:-}" = "--from" ]; then
+  [ $# -ge 2 ] || usage
+  dump_file=$2
+  shift 2
+  [ -f "$dump_file" ] || { echo "no such dump file: $dump_file" >&2; exit 2; }
+fi
+[ $# -eq 1 ] || usage
+root=$1
+
+command -v jq >/dev/null 2>&1 || {
+  echo "JQ_UNAVAILABLE: jq is not installed, so compute this by hand over \`bd list --label sp:${root} --all --json --limit 0\`. Keep beads whose \`status\` is not \"closed\" and whose \`labels\` do not include \"blocker\". leaves = kept beads whose \`issue_type\` is not \"epic\". A bead's blocking edges are its \`dependencies\` entries with \`type\` \"blocks\" (it waits on \`depends_on_id\`); its parent is the \`parent\` field. A bead waits on its blockers; a bead blocked by an epic waits for every bead under that epic; every bead under an epic also waits on that epic's blockers. depth = the most non-epic beads on any chain of waits; width = leaves/depth to one decimal. Skip any edge whose dependent's description contains \`blocked-by <blocker>: consumes boundary contract\` or \`blocked-by <blocker>: consumes all leaves (integration sweep)\`. Of the rest, list each edge that lies on a longest chain or has an epic at either end, with the depth you get when only that edge is removed. Output: \`shape: leaves N · depth D · width W · critical path: <ids in execution order joined by ' → '>\`, then one \`edge: <dependent> <- <blocker> · leaf|epic · critical yes|no · depth D→D'\` line per listed edge, then \`summary: edges <all blocks edges> · exempt <n> · candidates <n> (critical <n>, epic-level <n>)\`."
+  exit 4
+}
+
+if [ -n "$dump_file" ]; then
+  dump=$(cat "$dump_file")
+else
+  dump=$(bd list --label "sp:${root}" --all --json --limit 0)
+fi
+
+# Rows: N id kept(1/0) epic(1/0) | P child parent | B dependent blocker exempt(1/0)
+rows=$(printf '%s' "$dump" | jq -r '
+  .[] | .id as $id | (.description // "") as $desc |
+  "N\t\($id)\t\(if (.status != "closed") and (((.labels // []) | index("blocker")) | not) then 1 else 0 end)\t\(if .issue_type == "epic" then 1 else 0 end)",
+  ( .parent // empty | "P\t\($id)\t\(.)" ),
+  ( (.dependencies // [])[] | select(.type == "parent-child") | "P\t\($id)\t\(.depends_on_id)" ),
+  ( (.dependencies // [])[] | select(.type == "blocks") | .depends_on_id as $b |
+    "B\t\($id)\t\($b)\t\(if ($desc | index("blocked-by " + $b + ": consumes boundary contract")) or ($desc | index("blocked-by " + $b + ": consumes all leaves (integration sweep)")) then 1 else 0 end)" )
+') || { echo "could not parse the bd list dump" >&2; exit 2; }
+
+grep -q "^N	${root}	" <<<"$rows" || { echo "root epic not in the dump: $root" >&2; exit 2; }
+
+printf '%s\n' "$rows" | awk -F '\t' '
+  $1 == "N" { if ($3 == 1) { kept[$2] = 1; epic[$2] = $4; order[++nN] = $2; if (!$4) leaves++ }; next }
+  $1 == "P" { if (!(($2, $3) in seenP)) { seenP[$2, $3] = 1; parentOf[$2] = $3 }; next }
+  $1 == "B" { nB++; bDep[nB] = $2; bBlk[nB] = $3; bEx[nB] = $4; next }
+  # Graph nodes: a leaf is its id (weight 1); an epic is "^id" (its start: waits on its blockers)
+  # and "id" (its end: waits on its children). Edge k: from[k] waits on to[k]; tag[k] = the blocks
+  # edge it came from, 0 for structural waits.
+  function addEdge(a, b, t) { nE++; from[nE] = a; to[nE] = b; tag[nE] = t; out[a, ++nOut[a]] = nE; inn[b, ++nIn[b]] = nE }
+  function down(x,   k, e, v, best) {
+    if (x in dmemo) return dmemo[x]
+    onstack[x] = 1; best = 0; dnext[x] = ""
+    for (k = 1; k <= nOut[x]; k++) {
+      e = out[x, k]
+      if (e == skip) continue
+      if (to[e] in onstack) { if (!warned[e]++) print "wait cycle: " x " -> " to[e] " (edge ignored)" > "/dev/stderr"; continue }
+      v = down(to[e])
+      if (v > best || dnext[x] == "") { best = v; dnext[x] = to[e] }
+    }
+    delete onstack[x]
+    return dmemo[x] = w[x] + best
+  }
+  function up(x,   k, e, v, best) {
+    if (x in umemo) return umemo[x]
+    onstack[x] = 1; best = 0
+    for (k = 1; k <= nIn[x]; k++) {
+      e = inn[x, k]
+      if (from[e] in onstack) continue
+      v = up(from[e]); if (v > best) best = v
+    }
+    delete onstack[x]
+    return umemo[x] = w[x] + best
+  }
+  function depthNow(   i, v, d) {
+    delete dmemo; d = 0; start = ""
+    for (i = 1; i <= nNode; i++) { v = down(node[i]); if (v > d) { d = v; start = node[i] } }
+    return d
+  }
+  END {
+    for (i = 1; i <= nN; i++) {
+      id = order[i]
+      if (epic[id]) { node[++nNode] = "^" id; w["^" id] = 0; node[++nNode] = id; w[id] = 0; addEdge(id, "^" id, 0) }
+      else { node[++nNode] = id; w[id] = 1 }
+    }
+    for (i = 1; i <= nN; i++) {
+      id = order[i]; p = parentOf[id]
+      if (!(p in kept) || !epic[p]) continue
+      addEdge(epic[id] ? "^" id : id, "^" p, 0)   # waits on the parent epic s blockers
+      addEdge(p, id, 0)                           # the parent epic ends when this child does
+    }
+    for (i = 1; i <= nB; i++) {
+      if (!(bDep[i] in kept) || !(bBlk[i] in kept)) continue
+      total++
+      if (bEx[i]) exempt++
+      addEdge(epic[bDep[i]] ? "^" bDep[i] : bDep[i], bBlk[i], bEx[i] ? 0 : i)   # exempt edges wait but are never candidates
+    }
+    skip = 0
+    depth = depthNow()
+    path = ""
+    for (x = start; x != ""; x = dnext[x]) if (w[x]) path = x (path == "" ? "" : " → ") path
+    for (i = 1; i <= nNode; i++) { du[node[i]] = dmemo[node[i]] }
+    delete umemo
+    for (i = 1; i <= nNode; i++) up(node[i])
+    width = depth ? sprintf("%.1f", leaves / depth) : "n/a"
+    printf "shape: leaves %d · depth %d · width %s · critical path: %s\n", leaves, depth, width, (path == "" ? "none" : path)
+    for (e = 1; e <= nE; e++) {
+      if (!tag[e]) continue
+      i = tag[e]
+      crit = (umemo[from[e]] + du[to[e]] == depth) ? "yes" : "no"
+      lvl = (epic[bDep[i]] || epic[bBlk[i]]) ? "epic" : "leaf"
+      if (crit == "no" && lvl == "leaf") continue
+      skip = e; d2 = depthNow(); skip = 0
+      cand++; if (crit == "yes") nCrit++; if (lvl == "epic") nEpic++
+      printf "edge: %s <- %s · %s · critical %s · depth %d→%d\n", bDep[i], bBlk[i], lvl, crit, depth, d2
+    }
+    printf "summary: edges %d · exempt %d · candidates %d (critical %d, epic-level %d)\n", total, exempt, cand, nCrit, nEpic
+  }'

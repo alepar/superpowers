@@ -42,8 +42,9 @@ This is the one statement of the design gates; other sections point here.
 | `autonomous` (implies Mode B for every brainstorm, root and nested) | **applied**, as above | hand-off, no stop |
 
 An applied top split is recorded like an approval, marked `auto` (§Run-State File), and named
-in the next summary. The design is ready when the coverage loop and the roast loop have both
-exited. At the one-shot stop, present the settled tree, the roast loop's exit summary, and
+in the next summary. §Parallelism Pass splits the same way: interactive asks, one-shot and
+`autonomous` apply its safe changes and park the rest. The design is ready when the coverage
+loop and the roast loop have both exited and the parallelism pass has run. At the one-shot stop, present the settled tree, the roast loop's exit summary, and
 everything parked; hand-off waits for the human's go-ahead. When a caller owns the hand-off,
 report the settled tree and return; the caller owns the stop (`super-auto`: end of phase 2,
 before code).
@@ -67,12 +68,13 @@ The only stops, a closed list:
 2. a one-shot run's design-ready stop (§Gates by Mode), which ends the unattended stretch.
 
 Every other ask in this skill is answered by its documented unattended default, **recorded** in
-the run-state file (a parked escalation, beyond-cap item, qualifier, or step-back redesign; with
+the run-state file (a parked escalation, beyond-cap item, qualifier, step-back redesign, or graph
+change; with
 no run-state file, in the round summaries), and surfaced in the final summary — never waited on:
 the top split (§Gates by Mode), coverage's `ORPHAN` escalation (§Coverage), the tripwire
 (§Tripwire), the recall-floor read-through (§Coverage), roast escalations, beyond-cap items,
 verdict qualifiers, step-back redesigns, loop exits and Capped Blocking (§Adversarial Review
-Loop). A protected resource you cannot reach, or a risky or destructive action that would need
+Loop), and the parallelism pass's unsafe changes (§Parallelism Pass). A protected resource you cannot reach, or a risky or destructive action that would need
 confirmation, is not taken: skip that work, record it, and surface it. Large fix work runs as a
 Mode B nested brainstorm. The run then proceeds to §Hand-off — to the caller when one owns it,
 otherwise to execution, with everything still open restated in the final summary. That is
@@ -88,7 +90,9 @@ completion, not a stop.
 6. For each promoted child, **in dependency order, depth-first** (a child's entire subtree completes before the next sibling starts, so later siblings can read earlier siblings' finished specs): check the tripwire (§Tripwire), then run its nested brainstorm — §Nested Brainstorms — then invoke `superpowers:super-design` on the spec it wrote; that is the recursion.
 7. **Root only**, once the tree has settled (every subepic designed, every leaf decomposed, no pending promotions): run the coverage loop — §Coverage.
 8. **Root only, optional:** offer `superpowers:super-roast` on the settled tree; on a confirmed-findings verdict, run the fix + auto-re-roast loop — §Adversarial Review Loop.
-9. **Root only:** hand off to execution — §Hand-off. A standalone root invocation (when this invocation does not have a caller that owns the hand-off) then invokes `superpowers:upstream-feedback`; throughout the run, append friction events to `<artifact-directory>/friction.md` (or the enclosing run's log when nested) per that skill's format, the moment they happen.
+9. **Root only:** the parallelism pass — measure the settled graph and remove the edges that
+   needlessly lengthen its longest chain — §Parallelism Pass.
+10. **Root only:** hand off to execution — §Hand-off. A standalone root invocation (when this invocation does not have a caller that owns the hand-off) then invokes `superpowers:upstream-feedback`; throughout the run, append friction events to `<artifact-directory>/friction.md` (or the enclosing run's log when nested) per that skill's format, the moment they happen.
 
 ## Re-entry (this skill can be invoked twice on the same goal)
 
@@ -104,6 +108,7 @@ is done-vs-not: check for the artifact a step would produce before producing it.
 | §Promotion Review | verdicts already applied (`-t epic` + `sp:needs-design`, or `sp:demoted-by-session`) — re-review only undecided children |
 | §The Process step 5 / §Coverage | a recorded top-split decision, and the coverage rounds already spent — see §Run-State File |
 | §Coverage, root integration sweep | an existing `Integration sweep:` bead for this root — adopt it; **never create a second** (two sweeps each fanning in on every leaf split the join) |
+| §Parallelism Pass | a recorded `graph-pass:` line (§Run-State File) — the pass has run; parked changes stay parked |
 
 **A partially-written artifact is not an adoptable one.** Adopt a spec only if it is committed, and
 an epic only if it carries its own `sp:` label — the label flip and the commit are the "done"
@@ -184,7 +189,7 @@ catches only the bottleneck case, so Step A's job is to not fuse work that could
 - **Cohesion:** a leaf is one merge-worthy deliverable a reviewer accepts or rejects as a
   unit. A description that needs "and then" is two beads.
 - **Floor:** execution spends roughly five dispatches of ceremony per bead (brief → implement →
-  review → merge, plus re-review rounds and ledger writes), so never split below one coherent
+  review → merge, plus ledger writes), so never split below one coherent
   reviewable change — a bead whose implementation is smaller than its own ceremony merges into a
   sibling. Minimal is not tiny.
 - **Bottleneck rule (fan-out-aware):** size a bead inversely to how many others depend on it. A
@@ -282,7 +287,8 @@ wide body with a long thin tail — a finishing layer written as wire-up → ver
 decomposition smell: tails usually re-decompose into per-feature integration beads that run
 abreast. And a tail whose beads all declare the same file serializes on execution's hot-file cap
 regardless of what the graph permits — declared-file overlap inside an intended-parallel layer
-means the file should be split or assigned to a single bead.
+means the file should be split or assigned to a single bead. §Parallelism Pass measures this on
+the settled tree and removes what it safely can; at decomposition, aim to need it little.
 
 - **Beads:** for every child, `bd create ... --parent <id> --no-inherit-labels -l sp:<root-epic-id>` — both flags together, every time. `--no-inherit-labels` alone still strips the wanted root label; without it, parent labels (including `sp:needs-design`) smear onto every leaf. The root invocation creates the epic first, labeled `sp:<its-own-id>`.
 - **No beads:** the same fields as a task-table row — see §No-Beads Mode for the columns it must carry.
@@ -505,8 +511,8 @@ Loop step 1), so the sweep still runs last.
 Runs once the coverage loop passes (§Coverage), before hand-off. Offered once, at the root, the
 same offer brainstorming makes on a single un-decomposed spec — a decomposed tree gets it here
 instead, after the tree has settled, since that's the first point a full design exists to review.
-Opt-in; declining goes straight to hand-off — and a caller may pre-decide it **either way**
-(§Inputs): pre-declined skips to hand-off, pre-accepted runs the roast, and in neither case is the
+Opt-in; declining goes straight to §Parallelism Pass — and a caller may pre-decide it **either way**
+(§Inputs): pre-declined skips to it, pre-accepted runs the roast, and in neither case is the
 offerer's question asked — the caller's user already answered it once.
 
 On accept, invoke `superpowers:super-roast` (design mode) on the settled tree, passing per its
@@ -578,7 +584,7 @@ findings go through step 1, and step 3 re-roasts, since a design decision change
 
 **Verdict qualifiers gate the exits** — the same rule `brainstorming` applies at its own gate:
 
-- `clean` with **no qualifier** → the loop is done; proceed to hand-off.
+- `clean` with **no qualifier** → the loop is done; proceed to §Parallelism Pass.
 - `clean [low coverage]` or `clean [panel-capped: N unverified]` → **not a clearance.** The
   qualifier says the run itself was degraded (dead triage, dead scout, dead dedupe, incomplete
   judging, or zero findings on a non-trivial artifact) or that N severe candidates were never
@@ -591,11 +597,50 @@ findings go through step 1, and step 3 re-roasts, since a design decision change
 Every exit — cap-out, clean, converged, and thrash — **summarizes for the human**, restating any
 open escalations, any beyond-panel-cap candidates, any parked redesign, the converged exit's punch
 list (when that exit fired), and any qualifier still on the verdict. An unqualified `clean`
-proceeds to hand-off after its summary; every other exit **pauses** there. This loop never
+proceeds to §Parallelism Pass after its summary; every other exit **pauses** there. This loop never
 declares itself finished, mirroring `super-roast`'s own handoff contract. Unattended (§Unattended
 Runs): no exit pauses — record the summary into the run-state file (or the final summary, when
 there is none) and proceed to the design-ready point (§Gates by Mode); Capped Blocking follows
 its own rule above.
+
+## Parallelism Pass (root only)
+
+Runs once, after the roast loop exits or is declined, and before the design-ready point (§Gates
+by Mode). The coverage loop audited each edge on its own; this pass looks at the whole graph:
+execution spends one round per bead along the longest chain, so an edge on that chain that
+carries no real artifact costs a round on every run. Low-hanging fruit only: it changes edges,
+never scope, and creates no beads.
+
+1. **Measure.** Dump the tree (`bd list --label sp:<root-epic-id> --all --json --limit 0`) and
+   run `bash <base>/scripts/graph-shape --from <dump> <root-epic-id>` (if it prints a line
+   starting `JQ_UNAVAILABLE:`, follow its instruction and produce the same output format). It
+   prints the `shape:` line (leaves, depth, width = leaves/depth, the critical path), one
+   `edge:` line per candidate with the depth if only that edge were removed, and a summary.
+   Seam-contract and integration-sweep edges are exempt by construction. With zero candidates,
+   record the result (step 4) and stop here.
+2. **Judge.** Dispatch `./graph-pass-prompt.md` (model opus, fresh context) with the script
+   output, the dump path, and this skill's "Blocking deps encode genuine blocking" paragraph and
+   five edge rules (§Decomposition) pasted verbatim. It returns one `change:` line per candidate
+   (`drop`, `narrow`, `repoint`, or `keep`, each marked `safe yes|no`) plus any `proposal:` lines
+   (split a shared file, extract a seam contract), which are never safe.
+3. **Verify, then apply.** Check each change against the dump: the edge exists, the ids resolve,
+   and for `safe yes` the two beads' files-touched hints and boundary lines really share
+   nothing. A change that fails the check is dropped. Then, by mode:
+   - Interactive: present the changes and proposals with the reviewer's recommendation; apply
+     what the human picks.
+   - One-shot and `autonomous`: apply every verified `safe yes` change; record each `safe no`
+     change and each proposal as a parked graph change, surfaced at the design-ready stop or in
+     the final summary.
+
+   Applying follows the edge rules' bookkeeping: `bd dep remove <dependent> <blocker>`, and for
+   `narrow` / `repoint` a `bd dep add` per new edge, each with its `blocked-by <id>: consumes
+   <artifact>` line written into the dependent's description through the wholesale
+   `bd update --description` rule (a removed edge's line goes in the same update). A proposal the
+   human accepts goes through §Splitting a Bead or §Coverage's `UNOWNED-SEAM` machinery.
+4. **Record.** Re-run the script and write one line to the run-state file (§Run-State File; with
+   none, to the final summary): `graph-pass: depth <D>→<D'> · width <W>→<W'> · applied <n> ·
+   parked <m>`. Append each disposed change to the coverage ledger as `<ledger-id> · graph ·
+   GRAPH-EDGE · <dependent> <- <blocker> · applied|parked|declined|kept — <one line>`.
 
 ## Hand-off (root only)
 
@@ -605,9 +650,10 @@ run the design-ready stop (§Gates by Mode) comes first. By default:
 - **Beads:** hand off the root epic to `superpowers:super-code`, which owns the epic-scoped `bd ready` loop and the `bd epic close-eligible` fixpoint. Run completion = the root epic is closed.
 - **No beads:** run `superpowers:writing-plans` once per epic (a mixed epic still gets a plan for its own leaf tasks); invoke `superpowers:subagent-driven-development` on each plan, serially, in dependency order.
 
-**When the caller owns the hand-off** (e.g. an outer sequencer such as `super-auto`, which needs to thread its own flags and hand-off decisions into the next phase), `super-design` still completes the coverage loop (§Coverage) and the adversarial-review offer (§Adversarial Review Loop), then reports the settled tree and stops. **The report back to a caller that owns the hand-off
-carries four things beyond the tree**: the root epic id, the roast report paths in order, the number
-of roast rounds run, and any verdict qualifier left unresolved. These were already written into the
+**When the caller owns the hand-off** (e.g. an outer sequencer such as `super-auto`, which needs to thread its own flags and hand-off decisions into the next phase), `super-design` still completes the coverage loop (§Coverage), the adversarial-review offer (§Adversarial Review Loop), and the parallelism pass (§Parallelism Pass), then reports the settled tree and stops. **The report back to a caller that owns the hand-off
+carries five things beyond the tree**: the root epic id, the roast report paths in order, the number
+of roast rounds run, any verdict qualifier left unresolved, and the `graph-pass:` line with any
+parked graph changes. These were already written into the
 run-state file as they happened (§Run-State File); hand them back as well so the caller need not
 re-read the file to proceed. Symmetrically, **a caller may hand in a starting round number**; resume from it
 rather than from 1, or the cap-3 loop silently restarts on every resumed run. The onward invocation
@@ -647,12 +693,13 @@ Write these, each as it happens:
 | the root epic id | §Decomposition creates it |
 | each roast report path | `super-roast` returns it |
 | the roast round count | incremented **per round**, before the next round starts |
-| a parked escalation, beyond-cap item, or verdict qualifier | the round that produced it |
+| a parked escalation, beyond-cap item, verdict qualifier, or graph change | the round or pass that produced it |
 | `stepBack-round-<N>: patch \| redesign — <one line>` (format: `./step-back-prompt.md`), one line per round, appended | that round's step-back decision is made |
 | the caller's phase token, if it supplied one for this stage | entering that stage |
 | **each top-split decision, asked or applied, with the shape it covers** | the moment it is made |
 | `capped-blocking`, with the unresolved Blocking ids, the extension report, and stopped or proceeded | the extension round ends Blocking |
 | **each coverage round's dispositions, under that round's number** | that round's fixes are applied |
+| `graph-pass: depth <D>→<D'> · width <W>→<W'> · applied <n> · parked <m>` | §Parallelism Pass step 4 |
 
 **A caller that hands in a run-state file hands in its format contract too** — follow that file's
 field names, entry shapes, and relative-path rule exactly; the caller reads these fields back, and
@@ -712,6 +759,8 @@ skill's work instead of re-running all of it.
 - Start a roast round's fix work before its step-back pass has decided `patch` or `redesign`, or
   hand a fixer only the latest round's report.
 - Summarize the task tree for the root coverage pass — only spec prose may be summarized.
+- Apply a parallelism-pass change marked `safe no`, or any proposal, in an unattended run — park
+  it; or touch a seam-contract or integration-sweep edge in that pass.
 - Run a third coverage round, or spend a fresh pair of rounds on a resume — the cap is two per run
   and the run-state file says how many are left (§Coverage, §Run-State File).
 - Ask the user to dispose of a coverage finding, or to confirm a recommended split or promotion.
@@ -731,7 +780,7 @@ skill's work instead of re-running all of it.
 
 - Entered at the root with a goal or idea — by a user directly, or by an outer caller (e.g. `super-auto`); recurses into itself, nested, once each promoted subepic's brainstorm returns a spec.
 - Invokes `superpowers:brainstorming` — once at the root to produce the root spec (§Root Brainstorm), then once per promoted subepic (§Nested Brainstorms).
-- Dispatches `./promotion-reviewer-prompt.md`, `./coverage-reviewer-prompt.md`, and `./step-back-prompt.md` (which `super-auto`'s phase-5 fix loop also dispatches, in code mode).
-- Runs `./scripts/coverage-precheck`, `./scripts/requirements-tally`, and `./scripts/coverage-divergence` in the coverage loop (§Coverage).
+- Dispatches `./promotion-reviewer-prompt.md`, `./coverage-reviewer-prompt.md`, `./step-back-prompt.md` (which `super-auto`'s phase-5 fix loop also dispatches, in code mode), and `./graph-pass-prompt.md`.
+- Runs `./scripts/coverage-precheck`, `./scripts/requirements-tally`, and `./scripts/coverage-divergence` in the coverage loop (§Coverage), and `./scripts/graph-shape` in §Parallelism Pass.
 - Offers `superpowers:super-roast` (root only, optional) once the coverage loop passes; consumes its report to drive the fix + auto-re-roast loop — §Adversarial Review Loop.
 - Hands off to `superpowers:super-code` (beads mode) or `superpowers:subagent-driven-development` (once per epic's plan in no-beads mode); no-beads mode also uses `superpowers:writing-plans`.
