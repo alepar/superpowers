@@ -171,8 +171,10 @@ may parse this line, and `clean (<n> nits)` deliberately does NOT carry the word
 since nothing did.
 Then append the qualifiers, in this order:
 - ` [low coverage]` when `coverage.lowCoverage` is true (a dead triage, scout, dedupe or judge
-  seat), or when `coverage.rawFindings` is 0 and you judge the artifact non-trivial. Low
-  coverage is a fact about the run — append it to a `clean` verdict too.
+  seat), or, on iteration 1 only, when `coverage.rawFindings` is 0 and you judge the artifact
+  non-trivial. On a later round `coverage.emptyLateRound` (every scout returned, none found
+  anything) is convergence evidence, not low coverage. Low coverage is a fact about the run —
+  append it to a `clean` verdict too.
 - `coverage.panelCappedTag` (after a space), when it is non-empty.
 - ` [converged]` — the signal a caller's fix loop uses to stop iterating — when
   `coverage.convergenceEligible` is true (a prior report exists and neither coverage

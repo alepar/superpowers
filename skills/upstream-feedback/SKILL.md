@@ -43,9 +43,9 @@ append. A standalone run is its own outermost.
 ## The Process
 
 1. **Gather** (no dispatch): the friction log; the run ledger (when available — a standalone
-   super-design run has none); `parallelism:` detector lines (when available — these are Workflow
-   log output, recoverable only from the invoking session's own capture per
-   `coordinator-workflow.md`'s Finish note, never from a file); roast verdict/`delta vs prior`
+   super-design run has none); the parallelism detector lines — the ledger's `Detector: round N — …`
+   lines, with its `Slowness:`, `Edge audit:` and `Edge cut:` lines (a round with `complete` lines
+   but no `Detector:` line is unmeasured); roast verdict/`delta vs prior`
    lines; `run.md`; a graph-shape summary when a bead tree exists (open count, rounds ≈ longest
    chain, width per round); the installed plugin version (`plugin.json` in the plugin cache).
    Also gather, for `## Run metrics`:

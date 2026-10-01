@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+# The phase-5 scope dispositions for one fix-loop round, computed from the scope filter's JSON.
+#
+#   scope-dispositions --round N --findings KEYS_FILE --filter FILTER_JSON [--step-back STEP_BACK_FILE]
+#
+# KEYS_FILE: one `[SEV] <location>` key per line — the round's confirmed findings the step-back did
+# not dissolve. FILTER_JSON: the scope filter's output ({findings:[{key,disposition,reason,
+# clusterOverride?}]}). STEP_BACK_FILE: the round's step-back output; its `clusters:` lines
+# (`- <id>: rN [SEV] <loc>, … | rule: …`) are read, keeping this round's members.
+#
+# Rules, in order: a `[Blocking]` key is in-scope; a key with no exact filter entry is in-scope
+# (unrouted); otherwise the filter's disposition. Then each cluster with an in-scope member pulls
+# every other member in, except a member whose entry carries `clusterOverride`.
+#
+# Prints the `scopeFilter-round-N:` lines in KEYS_FILE order, then the aggregate line
+# `scope-filter: <in> in-scope · <punch> punch-listed`.
+# Exit 0 ok, 2 bad input, 4 jq unavailable (prints a JQ_UNAVAILABLE: line on stdout).
+set -euo pipefail
+
+usage() { echo "usage: scope-dispositions --round N --findings KEYS_FILE --filter FILTER_JSON [--step-back STEP_BACK_FILE]" >&2; exit 2; }
+round='' keys='' filter='' stepback=''
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --round) round=${2:-}; shift 2 ;;
+    --findings) keys=${2:-}; shift 2 ;;
+    --filter) filter=${2:-}; shift 2 ;;
+    --step-back) stepback=${2:-}; shift 2 ;;
+    *) usage ;;
+  esac
+done
+[ -n "$round" ] && [ -n "$keys" ] && [ -n "$filter" ] || usage
+[[ "$round" =~ ^[0-9]+$ ]] || usage
+[ -f "$keys" ] && [ -f "$filter" ] || { echo "findings or filter file not found" >&2; exit 2; }
+[ -z "$stepback" ] || [ -f "$stepback" ] || { echo "step-back file not found: $stepback" >&2; exit 2; }
+
+command -v jq >/dev/null 2>&1 || {
+  echo "JQ_UNAVAILABLE: jq is not installed, so compute the round-${round} scope dispositions by hand. For each key in ${keys} (one \`[SEV] <location>\` per line, in order): a key starting \`[Blocking]\` is \`in-scope — Blocking, always in-scope\`; a key with no entry in ${filter} whose \`key\` matches exactly is \`in-scope — unrouted by filter — defaulted in-scope\`; otherwise use that entry's \`disposition\` and \`reason\`. Then read the \`clusters:\` lines of ${stepback:-the step-back file (none given: skip this step)} (\`- <id>: <keys, each rN [SEV] <location>, comma-separated> | rule: …\`), keeping members whose prefix is r${round} and dropping that prefix. For each cluster with an in-scope member, every other member that is punch-list becomes \`in-scope — cluster <id>\`, unless its filter entry has a \`clusterOverride\`, in which case it is \`punch-list — cluster override: <clusterOverride>\`. Output one line per key, \`scopeFilter-round-${round}: <key> <in-scope|punch-list> — <reason>\`, then \`scope-filter: <in-scope count> in-scope · <punch-list count> punch-listed\`."
+  exit 4
+}
+
+clusters='[]'
+if [ -n "$stepback" ]; then
+  clusters=$(awk '
+    /^[[:space:]]*clusters:/ { on = 1; next }
+    on && /^[[:space:]]*- [^:]+:.*\| rule:/ { print; next }
+    on && /^[[:space:]]*[a-z]+:/ { on = 0 }
+  ' "$stepback" | jq -R -s --arg r "r$round " '
+    split("\n") | map(select(length > 0))
+    | map(capture("^\\s*- (?<id>[^:]+):\\s*(?<members>.*?)\\s*\\|\\s*rule:")
+          | {id, members: ([.members | splits(",\\s*(?=r[0-9]+ \\[)")]
+                           | map(gsub("^\\s+|\\s+$"; "")) | map(select(startswith($r))) | map(ltrimstr($r)))})
+    | map(select(.members | length > 0))')
+fi
+
+jq -r -n --rawfile keys "$keys" --slurpfile f "$filter" --argjson clusters "$clusters" --arg n "$round" '
+  ($keys | split("\n") | map(gsub("^\\s+|\\s+$"; "")) | map(select(length > 0))) as $ks
+  | ($f[0].findings // [] | map({(.key): .}) | add // {}) as $by
+  | ($ks | map(. as $k
+      | if startswith("[Blocking]") then {key: $k, d: "in-scope", reason: "Blocking, always in-scope"}
+        elif $by[$k] == null then {key: $k, d: "in-scope", reason: "unrouted by filter — defaulted in-scope"}
+        else {key: $k, d: $by[$k].disposition, reason: ($by[$k].reason // ""), override: $by[$k].clusterOverride}
+        end)) as $base
+  | ($base | map({(.key): .}) | add // {}) as $bm
+  | reduce $clusters[] as $c ($bm;
+      if any($c.members[]; . as $m | $bm[$m].d == "in-scope") then
+          reduce ($c.members[] | select(. as $m | $bm[$m] != null and $bm[$m].d == "punch-list")) as $m (.;
+            if (.[$m].override // "") != "" then .[$m].reason = "cluster override: \(.[$m].override)"
+            else .[$m].d = "in-scope" | .[$m].reason = "cluster \($c.id)" end)
+        else . end) as $out
+  | ($ks | map($out[.])) as $rows
+  | ($rows[] | "scopeFilter-round-\($n): \(.key) \(.d) — \(.reason)"),
+    "scope-filter: \($rows | map(select(.d == "in-scope")) | length) in-scope · \($rows | map(select(.d == "punch-list")) | length) punch-listed"
+'

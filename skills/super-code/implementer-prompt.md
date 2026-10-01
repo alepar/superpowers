@@ -43,7 +43,8 @@ Work in [WORKTREE] (branch `[BRANCH]`, cut from `[INTEGRATION_BRANCH]` at [BASE]
    criteria, and steps.
 2. Implement exactly what the task specifies, with tests (TDD when the brief says so).
 3. Run the tests relevant to this task: the ones covering the files you changed and the brief's
-   acceptance criteria. Do not run the whole suite; it runs once at the end of the epic. Iterate
+   acceptance criteria. If you changed the behavior or signature of a function other code calls,
+   also run the tests covering those callers (grep its call sites). Do not run the whole suite; it runs once at the end of the epic. Iterate
    with focused runs, and keep the command and output of your final run for the report.
 4. Self-review your diff against the brief (see "Self-review"), fix what you find, and re-run the
    relevant tests if you changed anything.
@@ -125,7 +126,8 @@ the task gets; it merges after you, without another review.
 - If a finding is wrong, or fixing it would contradict the plan (a plan-mandated item), don't fix
   it. List it under "Declined" with a technical reason. Declined findings go to the ledger and the
   final whole-epic review.
-- Run the tests covering what you changed and keep the command and output.
+- Run the tests covering what you changed, plus the tests covering the callers of any function
+  whose behavior or signature you changed (grep its call sites), and keep the command and output.
 - Append a section to [REPORT_FILE], headed "## Fix pass", or the heading your dispatch names
   ("## Seam fix", "## Merge-check fix"): what you changed for each finding, declined findings with their
   reasons, and the test command and output.

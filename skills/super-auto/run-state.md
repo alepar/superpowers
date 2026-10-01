@@ -198,6 +198,12 @@ a resume can silently redo work or violate a decision that was already made.
    `SWEEP DEFERRED (caller-owned)`. Phase 6 runs the sweep after phase 5 exits and overwrites
    it; the report cites it only when that SHA is the tip it describes (`SKILL.md`'s phase 6).
 
+   **`sweepFix:`** — written when a failing phase-6 sweep gets its one fix pass: the failing
+   count, the fix beads filed, and, once the re-run is back, its result
+   (`sweepFix: 3 failing → bd-431, bd-432 · re-run PASS 415 tests @ 7c01d9e`). Present means the
+   pass was spent: a resume re-runs the sweep if the re-run result is missing, and never files a
+   second pass.
+
 7. **Design decisions already made, and what each one covered.** Each is made
    **once**, by the human or by the run per `super-design` §Gates by Mode. A resumed
    run replays a recorded decision instead of re-making it; without this, a session
@@ -247,6 +253,10 @@ a resume can silently redo work or violate a decision that was already made.
      scopeFilter-round-1: [Nit] lib/format.ts:12 punch-list — goal doesn't mention formatting
      scope-filter: 1 in-scope · 1 punch-listed
      ```
+
+     A finding pulled in by its cluster (`SKILL.md` §Phase 5 step 2) records
+     `in-scope — cluster <id>`; a member kept out by the filter's `clusterOverride` records
+     `punch-list — cluster override: <reason>`.
 
      The block **ends** with one aggregate line, `scope-filter: <in-scope> in-scope · <punch>
      punch-listed`, written by `super-auto` in the same phase-5 step — not by the scope-filter

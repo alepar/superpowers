@@ -122,6 +122,8 @@ This repository is the `alepar` fork. Its versions are `<upstream version>-alepa
    - `node tests/super-code/replay-harness.mjs`
    - `bash tests/super-design/test-scripts.sh`
    - `bash tests/super-roast/test-assemble-args.sh`
+   - `bash tests/super-auto/test-scripts.sh`
+   - `bash tests/skill-scripts/test-bash-invocation.sh`
    - `bash tests/codex/test-marketplace-manifest.sh`
    
    If a Workflow engine changed (`skills/super-code/coordinator-workflow.md`, `skills/super-roast/super-roast-workflow.md`), also run its documented `dryRun` scenarios and compare against the expected agent counts recorded in that doc.

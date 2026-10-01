@@ -152,7 +152,9 @@ loop's cap tripped passes `post-cap audit`), and `args.inputs` (the spec paths, 
 call — scout dispatch/dead counts, `unknownLanes`, `domainsDropped`, the raw→deduped funnel,
 `dedupeOrphans`, `beyondCap`, `beyondPanelCap`, `dedupeDead`, panel/spot/promoted counts,
 `judgeLost`, `spotLost`, and the qualifier inputs `lowCoverage`, `panelCappedTag`,
-`convergenceEligible`. Only panel-tier seat losses, a lost judge dispatch, a dead triage, scout
+`emptyLateRound`, `convergenceEligible`. `emptyLateRound` is true on a round ≥ 2 with every scout
+alive and zero raw findings: the engine then drops a reporter-added `[low coverage]` and sets
+`[converged]` itself, since nothing confirmed means no Blocking of any provenance. Only panel-tier seat losses, a lost judge dispatch, a dead triage, scout
 or dedupe set `lowCoverage`; a lost Nit spot check is counted (`spotLost`) and does not. `{{COVERAGE_LINE}}` and `{{SEAT_AGREEMENT}}` are the
 engine-rendered header lines (the latter empty when no full panel exists). Each packet in
 `{{PACKETS_JSON}}` is `{finding, votes, tier, valid, preExisting, defaultRoute}` (`preExisting`
@@ -464,6 +466,9 @@ const validSeats = panelJudged.reduce((a, j) => a + j.votes.filter(Boolean).leng
 const spotLost = judged.filter(j => j.tier === 'spot' && !j.votes[0]).length
 const lowCoverage = triageDead || scoutsDead > 0 || dedupeDead || judgeLost > 0 || validSeats < totalSeats
 const panelCappedTag = beyondPanelCap.length ? `[panel-capped: ${beyondPanelCap.length} unverified]` : ''
+// A round ≥ 2 whose every scout returned and found nothing is convergence evidence, not a blind
+// run: the late-round stance names "no material findings" as an expected outcome.
+const emptyLateRound = String(priorReport).trim() !== '' && raw.length === 0 && !lowCoverage
 const coverage = {
   triageDead,
   scoutsDispatched: scoutNames.length, scoutsDead, unknownLanes, domainsDropped,
@@ -474,7 +479,7 @@ const coverage = {
   promotedCount: judged.filter(j => j.tier === 'promoted').length,
   judgeLost, spotLost,
   judgeCompletionPct: totalSeats ? Math.round(100 * validSeats / totalSeats) : 0,
-  lowCoverage, panelCappedTag,
+  lowCoverage, panelCappedTag, emptyLateRound,
   convergenceEligible: String(priorReport).trim() !== '' && !lowCoverage && !panelCappedTag,
 }
 const coverageLine = [
@@ -489,11 +494,11 @@ const coverageLine = [
 
 // Verdict qualifiers are re-applied to whatever the reporter returns, so a missed or spurious
 // qualifier can't make a degraded round read clean or converged.
-function qualify(verdict, allowConverged) {
+function qualify(verdict, allowConverged, forceLow = false) {
   const v = String(verdict ?? '').replace(/^super-roast verdict:\s*/, '')
   const base = v.replace(/\s*\[(low coverage|panel-capped[^\]]*|converged)\]/g, '').trim()
-  const low = lowCoverage || v.includes('[low coverage]')
-  const converged = allowConverged && v.includes('[converged]') && coverage.convergenceEligible && !low
+  const low = forceLow || lowCoverage || (!emptyLateRound && v.includes('[low coverage]'))
+  const converged = allowConverged && coverage.convergenceEligible && !low && (emptyLateRound || v.includes('[converged]'))
   return [base, low && '[low coverage]', panelCappedTag, converged && '[converged]'].filter(Boolean).join(' ')
 }
 
@@ -526,7 +531,7 @@ function fallbackReport() {
   const seatSev = p => p.preExisting ? 'FYI' : SEV[Math.min(...p.votes.filter(v => v?.verdict === 'CONFIRM').map(v => SEV.indexOf(v.severity)))]
   const confirmed = of('confirmed'), nits = of('unverified-nit'), lostSpots = of('not-verified:dead-spot')
   const top = confirmed.length ? SEV[Math.min(...confirmed.map(p => SEV.indexOf(seatSev(p))))] : null
-  const verdict = qualify(`${top ? `${top} (${confirmed.length} confirmed)` : `clean (${nits.length} nits)`} [low coverage]`, false)
+  const verdict = qualify(`${top ? `${top} (${confirmed.length} confirmed)` : `clean (${nits.length} nits)`} [low coverage]`, false, true)
   const line = (p, sev) => `- [${sev}] ${p.finding.location} — ${p.finding.claim}${isFixRegression(p.finding) ? ' [fix-regression]' : ''}`
   const section = (heading, lines) => ['', heading, ...(lines.length ? lines : ['- none'])]
   const escalations = engineEscalated.map(escalationLine)
@@ -746,6 +751,7 @@ should cover, beyond the canonical topology and the two variants above:
 | lost judge | the `spot#3` dispatch throws | `routeCounts["not-verified:judge-lost"]` 1, `judgeLost` 1, `lowCoverage` true |
 | dead spot checks | `seat:refute:spot` returns nothing | 3 × `not-verified:dead-spot`, `spotLost` 3, `lowCoverage` false |
 | empty raw | every scout returns `[]` | no dedupe call, 6 agents |
+| empty late round | round 2 with a prior report, every scout returns `[]`, the reporter adds `[low coverage]` | `emptyLateRound` true, verdict `clean (0 nits) [converged]`; on round 1, or with a dead scout, the verdict keeps `[low coverage]` |
 | dedupe orphans | groups claim only ids 0, 1, 4 (plus an out-of-range id) | `dedupeOrphans` 5, `dedupedFindings` 7 |
 | reporter enforcement | refute seats CONFIRM with `preExisting`; reporter returns a made-up `coverage:` line and Blocking entries | entries rewritten to `[FYI]`, verdict severity recomputed, header lines overwritten, `enforcement` non-empty |
 | real path | `dryRun: false`, `prompts.seatsSafe`, first seat dispatch returns null | retry uses the safe wording; seat prompt has no `suggestedSeverity`; dedupe prompt carries numbered ids; effort `low`/`medium`/`high` on triage/spot/reporter; lanes enum from `prompts.scouts` |

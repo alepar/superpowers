@@ -128,7 +128,7 @@ edit that lets `super-code` run its own Finish (worktree removal included) befor
 | Remaining | What did not land, and why each didn't | `codeBuckets`' `escalated` and `pendingRetry`; parked escalations carried in `run.md`; unresolved Blocking findings still open at panel cap-out; every `punch-list` finding from `run.md`'s `scopeFilter-round-<N>` records, each tagged `out of scope (filtered)` with its recorded reason — these never became beads, so `codeBuckets` never sees them; every parked graph change from super-design's parallelism pass, with its `graph-pass:` line |
 | Gotchas & surprises | Where reality diverged from the design | roast findings that changed a design decision; blocker beads that were triaged; plan-defect findings; anything that forced a nested brainstorm; `stepBack-round-<N>` redesigns, applied or proposed; `codeBuckets.slowness` items and the ledger's `Slowness:` / `Edge cut:` lines — what slowed the run and what was done about it |
 | Entrypoints | Where to start reading, in order | the task tree's dependency order: root-most module first, then its public interface, then the primary caller |
-| Smells | Code the run is uneasy about, each with a one-line "the smell" | parked findings; parked `degraded-verdict` records (a road not taken because autonomous mode answered a sibling's gate itself); `DONE_WITH_CONCERNS` implementer reports; tasks whose one review needed a fix pass, which merged without re-review; the fixes of a `regressionPass-round-<N>` record, which merged with no re-roast |
+| Smells | Code the run is uneasy about, each with a one-line "the smell" | parked findings; parked `degraded-verdict` records (a road not taken because autonomous mode answered a sibling's gate itself); `DONE_WITH_CONCERNS` implementer reports; tasks whose one review needed a fix pass, which merged without re-review; the fixes of a `regressionPass-round-<N>` record, which merged with no re-roast; the fixes of a `sweepFix:` pass, and its re-run result |
 
 ## Smells: the section that surfaces what passed
 
@@ -153,7 +153,8 @@ Two properties of the Smells section are load-bearing and easy to lose in a rewr
 > cannot be traced to one of those artifacts, it does not go in the report.
 
 This is what keeps the report honest under compaction and restart: the agent
-writing `report.md` may not be the agent (or even the session) that ran phase
-`code` or `roast-code`. It has no memory of that work beyond what those phases
+drafting `report.md` may not be the agent (or even the session) that ran phase
+`code` or `roast-code`. A drafting subagent returns the report body as text; the run's
+coordinator writes and commits the file. It has no memory of that work beyond what those phases
 wrote down. A report narrated from recollection is exactly how a run with parked
 findings ends up reading as "done."

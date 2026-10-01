@@ -219,6 +219,8 @@ resolved / regressed against the prior report, with Blocking sub-counts. `[conve
 on the verdict when a non-degraded round ≥ 2 confirms **zero Blocking of any provenance** —
 no new, no regressed, no carried — and is never emitted alongside `[low coverage]` or
 `[panel-capped]` (a degraded round finding nothing is absence of evidence, not convergence).
+A round ≥ 2 whose scouts all returned and found nothing is the opposite case: the engine marks it
+`emptyLateRound` and sets `[converged]` itself.
 It tells the caller's fix loop to stop iterating and treat any remaining sub-Blocking
 confirmations as a punch list instead of running another round into diminishing returns.
 Full semantics: `./reporter-prompt.md` Steps 3–4.

@@ -1,6 +1,6 @@
 // Runs a super-roast engine script produced by `assemble-args --script` against a mock agent()
 // and checks how the assembled prompts reach each stage. Usage: node engine-mock.mjs <script> <scenario>
-// Scenarios: pr-r1, pr-r2, design-r1. Prints PASS/FAIL lines; exits 1 on any failure.
+// Scenarios: pr-r1, pr-r2, pr-r2-empty, design-r1. Prints PASS/FAIL lines; exits 1 on any failure.
 import { readFileSync } from 'node:fs'
 import assert from 'node:assert/strict'
 
@@ -19,6 +19,8 @@ const seen = []
 const agent = async (prompt, o) => {
   seen.push({ label: o.label, prompt, o })
   if (o.label === 'triage') return { lanes: scenario.startsWith('pr') ? ['testing'] : [], domains: scenario.startsWith('design') ? ['queueing'] : [] }
+  if (scenario === 'pr-r2-empty' && o.label.startsWith('scout:')) return { findings: [] }
+  if (scenario === 'pr-r2-empty' && o.label === 'reporter') return { verdict: 'clean (0 nits) [low coverage]', reportMarkdown: 'super-roast verdict: x', confirmedCount: 0, escalations: [] }
   if (o.label === 'scout:correctness' || o.label === 'scout:premortem') return { findings: [F('core defect', 'c.js:1', o.label.slice(6))] }
   if (o.label === 'scout:regression') return { findings: [F('fix broke caller', 'r.js:5', 'regression')] }
   if (o.label.startsWith('scout:')) return { findings: [] }
@@ -75,6 +77,13 @@ if (scenario === 'pr-r2') {
   })
   check('fixRegressions return field names the regression finding', () => assert.deepEqual(r.fixRegressions.map(f => f.location), ['r.js:5']))
   check('iteration label rendered N of cap', () => assert.ok(by('reporter')[0].prompt.includes('iteration: 2 of 3')))
+}
+if (scenario === 'pr-r2-empty') {
+  check('empty late round with every scout alive converges', () => {
+    assert.equal(r.coverage.emptyLateRound, true)
+    assert.equal(r.verdict, 'clean (0 nits) [converged]')
+    assert.ok(r.reportMarkdown.startsWith('super-roast verdict: clean (0 nits) [converged]'))
+  })
 }
 if (scenario === 'design-r1') {
   check('domain scout dispatched from the template', () => {

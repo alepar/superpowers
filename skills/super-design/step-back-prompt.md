@@ -21,7 +21,9 @@ stepBack-round-<N>: patch — <why no higher-level correction fits>
 stepBack-round-<N>: redesign — <applied | parked | declined>: <decision changed> → <replacement> (dissolves <K>)
 ```
 
-`<N>` is the roast round number. `applied` = the redesign is being carried out; `parked` = outside
+`<N>` is the roast round number. The output's `clusters:` lines are machine-read by the caller:
+`super-auto`'s scope filter decides each cluster as a unit, and each cluster is fixed as one task
+carrying its `rule:`. `applied` = the redesign is being carried out; `parked` = outside
 the root goal/non-goals in an autonomous run, surfaced at the loop exit instead; `declined` = the
 human chose patching.
 
@@ -74,7 +76,9 @@ Task tool (general-purpose), model: opus:
       not converging.
 
     `patch` is the right answer when the findings are independent or when a redesign would cost
-    more than the patches it saves. Say so plainly; recommending no redesign is a normal result.
+    more than the patches it saves. A `patch` decision can still name clusters: findings that
+    are one rule applied inconsistently get swept together, so the rule's other instances do not
+    come back as new findings next round. Say so plainly; recommending no redesign is a normal result.
     For `redesign`, keep it targeted: change the one decision that generates the findings, not
     the whole design.
 
@@ -83,6 +87,8 @@ Task tool (general-purpose), model: opus:
     decision: patch | redesign
     summary: <one line — becomes the caller's `stepBack-round-<N>` record>
     pattern: <the recurrence or cluster you found, citing finding keys; "none" if none>
+    clusters: <"none", or one line per cluster of findings that share one cause and one fix:
+      `- <cluster-id>: <member keys, comma-separated, each `rN [SEV] <location>` verbatim> | rule: <the one fix that applies to every instance, including instances the roast did not cite>`>
 
     For `redesign` only:
     changes: <the decision or approach that changes, and where it is stated (spec §, file, bead)>
