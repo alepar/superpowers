@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-# Tests for skills/super-auto/scripts: scope-dispositions (Blocking and unrouted defaults, cluster
-# pull-in, cluster override, round filtering, input validation, the no-jq path).
+# Tests for skills/super-auto/scripts; each section below names the script it covers.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -97,12 +96,55 @@ assert_eq "$code" 2 "missing step-back file exits 2"
 run bash "$SBC" --step-back "$SF/valid-patch.md"
 assert_eq "$code" 2 "missing --keys exits 2"
 
+echo "report-status"
+RS="$REPO_ROOT/skills/super-auto/scripts/report-status"
+RF="$SCRIPT_DIR/fixtures/report-status"
+rs_status() { run bash "$RS" "$@"; printf '%s\n' "$out" | head -1; }
+
+assert_eq "$(rs_status "$RF/clean.md")" "status: clean" "clean run"
+run bash "$RS" "$RF/clean.md"
+assert_eq "$code" 0 "clean run exits 0"
+assert_eq "$out" "status: clean" "clean run prints no qualifier lines"
+assert_eq "$(rs_status "$RF/degraded-verdict.md")" "status: clean [degraded: low coverage, redesign proposed, not applied]" "degraded-verdict records become qualifiers; beyond-cap and graph-change do not"
+run bash "$RS" "$RF/escalations.md"
+assert_eq "$out" "status: completed with 0 unresolved Blocking, 2 escalations [degraded: low coverage, code findings parked]
+qualifier: low coverage
+qualifier: code findings parked" "parked escalation plus codeBuckets.escalated count as escalations; one qualifier line each"
+assert_eq "$(rs_status "$RF/roast-skipped.md")" "status: clean [degraded: plan roast skipped, code roast skipped]" "skipped roasts (t/f flag values) are qualifiers"
+assert_eq "$(rs_status "$RF/code-capped.md")" "status: completed with 2 unresolved Blocking, 0 escalations" "roastCodeCapped keys (comma-bearing locations) count as unresolved Blocking"
+assert_eq "$(rs_status "$RF/design-capped-proceeded.md")" "status: completed with 2 unresolved Blocking, 0 escalations [degraded: design roast capped-blocking, code roast skipped]" "proceeded design cap counts its keys and leads the qualifiers"
+assert_eq "$(rs_status "$RF/design-capped-stopped.md")" "status: stalled at phase capped-blocking" "phase capped-blocking is a stall"
+assert_eq "$(rs_status "$RF/code-stalled.md")" "status: stalled at phase code" "codeBuckets.stalled true is a stall at code"
+assert_eq "$(rs_status "$RF/pending-retry.md")" "status: completed with 0 unresolved Blocking, 0 escalations [degraded: tasks pending retry, final review: Blocking (2 confirmed)]" "pendingRetry forces completed form; non-CLEAN review is a qualifier"
+assert_eq "$(rs_status "$RF/sweep-deferred.md")" "status: clean [degraded: sweep: SWEEP DEFERRED (caller-owned)]" "deferred sweep is a qualifier"
+assert_eq "$(rs_status "$RF/sweep-failed.md")" "status: clean [degraded: sweep: FAIL 1 of 415 tests @ 7c01d9e]" "failed sweep is a qualifier"
+assert_eq "$(rs_status "$RF/clean.md" --tip 3f9c2e1a)" "status: clean" "--tip matching the sweep SHA keeps clean"
+assert_eq "$(rs_status "$RF/clean.md" --tip abcdef0)" "status: clean [degraded: sweep: PASS 412 tests @ 3f9c2e1]" "--tip differing from the sweep SHA is a qualifier"
+assert_eq "$(rs_status --stalled finish "$RF/clean.md")" "status: stalled at phase finish" "--stalled before RUN_MD"
+run bash "$RS" "$RF/roast-skipped.md" --stalled roast-code
+assert_eq "$out" "status: stalled at phase roast-code
+qualifier: plan roast skipped
+qualifier: code roast skipped" "--stalled wins; qualifier lines still printed"
+
+run bash "$RS" "$RF/clean.md" --stalled bogus
+assert_eq "$code" 2 "unknown --stalled phase exits 2"
+run bash "$RS" "$RF/clean.md" --tip XYZ
+assert_eq "$code" 2 "non-SHA --tip exits 2"
+run bash "$RS" "$RF/missing.md"
+assert_eq "$code" 2 "missing run.md exits 2"
+run bash "$RS" "$RF/no-phase.md"
+assert_eq "$code" 2 "run.md without phase: exits 2"
+run bash "$RS"
+assert_eq "$code" 2 "no arguments exits 2"
+
 nojq=$(mktemp -d)
 ln -s "$(command -v bash)" "$nojq/bash"
 ln -s "$(command -v awk)" "$nojq/awk"
 run env PATH="$nojq" bash "$SBC" --step-back "$SF/valid-redesign.md" --keys "$SF/keys.txt"
+assert_eq "$code:$out" "0:ok" "step-back-check runs with only bash and awk on PATH (no jq)"
+run env PATH="$nojq" bash "$RS" "$RF/escalations.md"
+assert_eq "$code" 0 "report-status runs with only bash and awk on PATH (no jq)"
 rm -rf "$nojq"
-assert_eq "$code:$out" "0:ok" "runs with only bash and awk on PATH (no jq)"
 
 echo
 if [ "$FAILURES" -eq 0 ]; then echo "All super-auto script tests passed"; else echo "$FAILURES failure(s)"; exit 1; fi
