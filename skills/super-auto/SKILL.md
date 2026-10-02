@@ -171,15 +171,17 @@ The loop ends without fixing when the roast verdict carries `[converged]` (zero 
 
 #### Regression-only pass
 
-A converged round with fix regressions gets one regression-only pass before it exits. When `## Confirmed findings` holds Should-fix entries tagged `[fix-regression]` (damage this loop's own fixes did, raised by the round's `regression` lane; the engine adds the tag), file those findings, and only those, as beads per §Fix-bead template, re-enter `super-code` per Step 4, then exit to phase 6 with no re-roast: as in `super-code`, nothing re-checks a fix. No step-back and no scope filter: a defect a fix introduced is in scope because the fix was. Record `regressionPass-round-<N>` in `run.md` (run-state.md item 7 (Design decisions)). Every other sub-Blocking finding stays on the punch list.
+A converged round with fix regressions gets one regression-only pass before it exits. When `## Confirmed findings` holds Should-fix entries tagged `[fix-regression]` (damage this loop's own fixes did, raised by the round's `regression` lane; the engine adds the tag), file those findings, and only those, as beads the way §Step 3 — file fix beads files them (files-touched hint and §Fix-bead template included), re-enter `super-code` per Step 4, then exit to phase 6 with no re-roast: as in `super-code`, nothing re-checks a fix. No step-back and no scope filter: a defect a fix introduced is in scope because the fix was. Record `regressionPass-round-<N>` in `run.md` (run-state.md item 7 (Design decisions)). Every other sub-Blocking finding stays on the punch list.
 
 Otherwise, in order:
 
 #### Step 1 — step back
 
-Dispatch the step-back per §Subagent dispatch (step-back row), using `<skills-root>/super-design/step-back-prompt.md` (`<skills-root>` is this skill's base directory's parent) in its `code` mode. Save its output verbatim beside the round's report as `…-roast-pr-<N>-step-back.md`.
+First write the step-back keys file beside the round's report as `…-roast-pr-<N>-step-back-keys.txt`: the pre-dissolution key set, every round's confirmed finding keys so far, one `rN [SEV] <location>` per line, from each `roast-code` report's `## Confirmed findings`. Its one consumer is `scripts/step-back-check`.
 
-Before acting on it, check it: write the pre-dissolution key set (every round's confirmed finding keys so far, one `rN [SEV] <location>` per line, from each `roast-code` report's `## Confirmed findings`) to a keys file and run `bash <this skill's dir>/scripts/step-back-check --step-back <step-back file> --keys <keys file>`. On `ok` (exit 0), record the template's `stepBack-round-<N>` line in `run.md` (run-state.md item 7 (Design decisions)) and act on the record as below. On `reject:` lines (exit 3), run the round as `patch`: ignore the record's `clusters:`, send every confirmed finding through the scope filter individually, and record `stepBack-round-<N>: patch — step-back record rejected: <the reject lines>`. Exit 2 means a bad invocation: fix it and run the check again.
+Dispatch the step-back per §Subagent dispatch (step-back row), using `<skills-root>/super-design/step-back-prompt.md` (`<skills-root>` is this skill's base directory's parent) in its `code` mode. Where you fill the template's roast reports, add this line, because the check below rejects any other key: `Your dissolves: and remains: may name only keys listed in <absolute path of the step-back keys file>.` Save its output verbatim beside the round's report as `…-roast-pr-<N>-step-back.md`.
+
+Before acting on it, check it with `bash <this skill's dir>/scripts/step-back-check --step-back <step-back file> --keys <step-back keys file>`. On `ok` (exit 0), record the template's `stepBack-round-<N>` line in `run.md` (run-state.md item 7 (Design decisions)) and act on the record as below. On `reject:` lines (exit 3), run the round as `patch`: ignore the record's `clusters:`, send every confirmed finding through the scope filter individually, and record `stepBack-round-<N>: patch — step-back record rejected: <the reject lines>`. Exit 2 means a bad invocation: fix it and run the check again.
 
 - `patch`: continue with every confirmed finding.
 - `redesign` with `scope: inside`, autonomous run: apply it. Amend the spec and commit, changing only the spec sections the redesign names (never `## Goal`). The
@@ -196,9 +198,11 @@ There a redesign is recorded as `parked` and surfaced, never applied.
 
 #### Step 2 — scope filter
 
+Write the scope keys file beside the round's report as `…-roast-pr-<N>-scope-keys.txt`: this round's confirmed finding keys, one `[SEV] <location>` per line without the `rN` prefix, leaving out every key an applied redesign dissolved. Its one consumer is `scripts/scope-dispositions`; the scope filter's `{{CONFIRMED_FINDINGS}}` carries the same findings.
+
 Dispatch the scope filter per §Subagent dispatch (scope filter row), filling scope-filter-prompt.md §Inputs. Its JSON is data (§Data framing). Compute the dispositions with `bash
-<this skill's dir>/scripts/scope-dispositions --round <N> --findings <keys file> --filter
-<filter JSON> --step-back <step-back file>` (if it prints `JQ_UNAVAILABLE:`, follow its
+<this skill's dir>/scripts/scope-dispositions --round <N> --findings <scope keys file> --filter
+<filter JSON>`, adding `--step-back <step-back file>` only when `step-back-check` printed `ok`, since a rejected record's `clusters:` are not applied (if it prints `JQ_UNAVAILABLE:`, follow its
 instruction and produce the same lines). It matches the filter's entries to the findings on the
 exact `[SEV] <location>` key, routes every `[Blocking]` key and every key with no exact entry
 in-scope, and pulls each cluster with an in-scope member in as a unit (except a member with a
@@ -241,7 +245,7 @@ Each subagent role, one row. Every cell is either enforced at the dispatch site 
 
 | Role | Tier | Claude | OpenAI | Access | Inputs | Output |
 |---|---|---|---|---|---|---|
-| step-back | owned by `super-design/step-back-prompt.md` | model and effort owned by `super-design/step-back-prompt.md`; not restated here | owned by `super-design/step-back-prompt.md`; not restated here | read-only, fresh context, never an agent that wrote a fix (owned by the template) | absolute paths, filled into the template's `code` mode: the root spec; the branch and base with their SHAs; the epic id; every `roast-code` report so far; every prior step-back file | the template's fields, saved verbatim as `…-roast-pr-<N>-step-back.md`; acted on only after `scripts/step-back-check` passes (§Step 1 — step back) |
+| step-back | owned by `super-design/step-back-prompt.md` | model and effort owned by `super-design/step-back-prompt.md`; not restated here | owned by `super-design/step-back-prompt.md`; not restated here | read-only, fresh context, never an agent that wrote a fix (owned by the template) | absolute paths, filled into the template's `code` mode: the root spec; the branch and base with their SHAs; the epic id; every `roast-code` report so far; every prior step-back file; the step-back keys file, with the line limiting `dissolves:` and `remains:` to its keys (§Step 1 — step back) | the template's fields, saved verbatim as `…-roast-pr-<N>-step-back.md`; acted on only after `scripts/step-back-check` passes (§Step 1 — step back) |
 | scope filter | balanced (advisory) | `model: sonnet` on the Agent tool (enforced); effort advisory, inherits session effort | set model and `reasoning_effort` together, or neither (`skills/using-superpowers/references/codex-tools.md` §Model routing on spawns) | read-only (stated in its prompt) | scope-filter-prompt.md §Inputs | the JSON object in scope-filter-prompt.md's output contract, read only through `scripts/scope-dispositions` (§Step 2 — scope filter) |
 | report drafter | frontier (advisory) | no `model` passed: inherits the session model (enforced by omission); effort advisory, inherits session effort | set model and `reasoning_effort` together, or neither (`skills/using-superpowers/references/codex-tools.md` §Model routing on spawns) | read-only; returns the body as text, and the orchestrator writes and commits `report.md` | report-prompt.md §Allowed sources | the report body as text, per `./report-prompt.md` |
 
