@@ -1,7 +1,7 @@
 # super-auto run — 2026-10-01-prompting-guide-roast-fixes
 
 flags: planOneShot=f skipPlanRoast=f skipCodeRoast=f autonomous=t
-phase: fix-loop
+phase: report
 
 idea: apply the prompting-guide roast fixes to skills/super-auto in this repo (/Users/alepar/AleCode/superpowers). Inputs (all in ~/Documents/prompt-roast-handoff/): super-auto-roast.md (report: top 10 actions, 10 systemic patterns, 7 conflicts, 59 findings with machine-verified quotes), super-auto-roast-findings.json (structured), super-auto-roast-decisions.md (owner's binding decisions on all 7 conflicts), decisions.md (house rules for edits: altitude, no history in runtime files, calm register, deterministic work in code). Scope: the 4 high-severity findings, the systemic patterns as they apply to skills/super-auto, and the 7 decisions; medium/low findings only where a fix subsumes them. Do not edit outside skills/super-auto unless a decision requires it.
 branch: super-auto/prompting-guide-roast-fixes
@@ -46,11 +46,11 @@ parked:
 - graph-pass · graph-change · "drop super-plan-5pi.6<-.3 and .4<-.3 (with the above, depth →5, width ~2.0): both share MAINTENANCE.md (separate headings); not safe unattended"
 
 codeBuckets:
-  completed: super-plan-5pi.1, super-plan-5pi.2, super-plan-5pi.10, super-plan-5pi.3, super-plan-5pi.4, super-plan-5pi.6, super-plan-5pi.5, super-plan-5pi.7, super-plan-5pi.8, super-plan-5pi.9, super-plan-5pi.21, super-plan-5pi.20
+  completed: super-plan-5pi.1, super-plan-5pi.2, super-plan-5pi.10, super-plan-5pi.3, super-plan-5pi.4, super-plan-5pi.6, super-plan-5pi.5, super-plan-5pi.7, super-plan-5pi.8, super-plan-5pi.9, super-plan-5pi.21, super-plan-5pi.20, super-plan-5pi.22
   escalated:
   pendingRetry:
   parked:
   stalled: false
-  review: not ready — 2 must-fix (--tip vs bookkeeping commits in report-status/SKILL phase 6; fix-bead done-clause contradiction) + behavioral probes (run by orchestrator 2026-10-02, results in run dir)
-  sweep: SWEEP DEFERRED (caller-owned)
+  review: not ready — 1 must-fix (fix-bead done-clause contradiction, wording from the spec; needs the human's ruling); stepBack-round key collision deferred (pre-existing, field names frozen)
+  sweep: f679cfc — 1385 passed, 0 failed, 0 errors, 0 skipped; failing: none; command: Launch: config.sweep (replay harness + super-design, super-roast, super-auto scripts, super-auto contract lint, bash invocation, codex manifest suites) @ f679cfc
   slowness:
