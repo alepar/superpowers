@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+# Validates one phase-5 step-back record before the orchestrator acts on it.
+#
+#   step-back-check --step-back STEP_BACK_FILE --keys KEYS_FILE
+#
+# STEP_BACK_FILE: the step-back output, in super-design/step-back-prompt.md's fields. KEYS_FILE:
+# the pre-dissolution key set, every round's confirmed finding keys so far, one
+# `rN [SEV] <location>` per line.
+#
+# Checks: `decision:` is present and is `patch` or `redesign`; when it is `redesign`, `scope:` is
+# present and starts with `inside` or `outside`; every `dissolves:` and `remains:` key matches a
+# KEYS_FILE line exactly. Those fields are split on the comma before each `rN [`, the same
+# lookahead scope-dispositions uses for `clusters:`; `none` or an empty value lists no keys.
+#
+# Prints `ok`, or one `reject: <reason>` line per problem. Pure bash and awk: needs no jq, so it
+# never prints JQ_UNAVAILABLE.
+# Exit 0 ok, 3 rejected, 2 bad input.
+set -euo pipefail
+
+usage() { echo "usage: step-back-check --step-back STEP_BACK_FILE --keys KEYS_FILE" >&2; exit 2; }
+stepback='' keys=''
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --step-back) [ $# -ge 2 ] || usage; stepback=$2; shift 2 ;;
+    --keys) [ $# -ge 2 ] || usage; keys=$2; shift 2 ;;
+    *) usage ;;
+  esac
+done
+[ -n "$stepback" ] && [ -n "$keys" ] || usage
+[ -f "$stepback" ] || { echo "step-back file not found: $stepback" >&2; exit 2; }
+[ -f "$keys" ] || { echo "keys file not found: $keys" >&2; exit 2; }
+
+awk '
+  function trim(s) { sub(/^[ \t]+/, "", s); sub(/[ \t\r]+$/, "", s); return s }
+  function value(s) { sub(/^[ \t]*[a-z]+:/, "", s); return trim(s) }
+  function reject(r) { rejects[++nr] = "reject: " r }
+  function checkkey(field, k) { k = trim(k); if (k != "" && !(k in known)) reject(field ": unknown key \047" k "\047") }
+  function checkkeys(field, v,   s) {
+    v = trim(v)
+    if (v == "" || tolower(v) == "none") return
+    s = v
+    while (match(s, /,[ \t]*r[0-9]+ \[/)) { checkkey(field, substr(s, 1, RSTART - 1)); s = substr(s, RSTART + 1) }
+    checkkey(field, s)
+  }
+  FILENAME == ARGV[1] { k = trim($0); if (k != "") known[k] = 1; next }
+  { sub(/\r$/, "") }
+  !hasdecision && /^[ \t]*decision:/ { hasdecision = 1; decision = value($0); next }
+  !hasscope && /^[ \t]*scope:/ { hasscope = 1; scope = value($0); next }
+  /^[ \t]*dissolves:/ { dissolves = value($0); next }
+  /^[ \t]*remains:/ { remains = value($0); next }
+  END {
+    if (decision == "") reject("decision: missing")
+    else if (decision != "patch" && decision != "redesign") reject("decision: \047" decision "\047 is not patch or redesign")
+    if (decision == "redesign") {
+      if (scope == "") reject("scope: missing (required for redesign)")
+      else if (scope !~ /^(inside|outside)([^a-z]|$)/) reject("scope: \047" scope "\047 does not start with inside or outside")
+    }
+    checkkeys("dissolves", dissolves)
+    checkkeys("remains", remains)
+    if (nr == 0) { print "ok"; exit 0 }
+    for (i = 1; i <= nr; i++) print rejects[i]
+    exit 3
+  }
+' "$keys" "$stepback"
