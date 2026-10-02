@@ -13,6 +13,19 @@ roastDesignRound: 2
 roastCodeRound: 1
 roast-code: 2026-10-01-prompting-guide-roast-fixes-roast-pr-1.md
 stepBack-round-1: patch — two interface clusters (status inputs; step-handoff files) + independent fixes; final review's keys-file collision and sweep issues folded into the clusters
+scopeFilter-round-1: [Should-fix] skills/super-auto/scripts/report-status:92 in-scope — thrash exit with Blocking open prints clean; cluster status-inputs
+scopeFilter-round-1: [Should-fix] skills/super-auto/scripts/report-status:121 in-scope — PASS-prefix misclassifies real sweep format; cluster status-inputs
+scopeFilter-round-1: [Should-fix] skills/super-auto/scripts/report-status:118 in-scope — ignores sweepFix; stale qualifier; cluster status-inputs
+scopeFilter-round-1: [Should-fix] skills/super-auto/SKILL.md:182 in-scope — keys file vs step-back template mismatch; cluster step-handoff-files
+scopeFilter-round-1: [Should-fix] skills/super-auto/MAINTENANCE.md:97 punch-list — process/eval-evidence gap, not incorrect goal-named behavior
+scopeFilter-round-1: [Nit] skills/super-auto/scripts/report-status:112 in-scope — missing codeBuckets yields bare clean; cluster status-inputs
+scopeFilter-round-1: [Nit] skills/super-auto/scripts/report-status:118; skills/super-auto/scripts/report-status:122 in-scope — optional --tip lets stale sweep read clean; cluster status-inputs
+scopeFilter-round-1: [Nit] skills/super-auto/scripts/report-status:72; skills/super-auto/scripts/report-status:70 in-scope — verdictq picks wrong qualifier on bracket in tail
+scopeFilter-round-1: [Nit] skills/super-auto/SKILL.md:182 in-scope — Step 2 passes --step-back after rejection; cluster step-handoff-files
+scopeFilter-round-1: [Nit] skills/super-auto/SKILL.md:174 in-scope — regression-only pass lost the files-touched hint
+scopeFilter-round-1: [FYI] skills/super-auto/scripts/step-back-check:58 punch-list — pre-existing; optional hardening
+scopeFilter-round-1: [FYI] skills/super-auto/SKILL.md:184 punch-list — pre-existing; optional hardening
+scope-filter: 9 in-scope · 3 punch-listed
 roast-design: 2026-10-01-prompting-guide-roast-fixes-roast-design-1.md, 2026-10-01-prompting-guide-roast-fixes-roast-design-2.md
 
 approvals:
