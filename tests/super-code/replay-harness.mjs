@@ -2651,7 +2651,7 @@ esac
         rmSync(d, { recursive: true, force: true })
       }
 
-      scenario('scripts: stop-run-processes — matches cwd, executable, arguments, HOME/TMPDIR and children under a root; --check lists without killing; never touches an unrelated process')
+      scenario('scripts: stop-run-processes — matches cwd, executable, HOME/TMPDIR, and arguments only for orphans; no kinship expansion; refuses roots holding a parent worktree or a caller cwd; --check lists without killing')
       {
         const d = execFileSync('bash', ['-c', 'cd "$1" && pwd -P', '_', mkdtempSync(path.join(os.tmpdir(), 'srp-'))], { encoding: 'utf8' }).trim()
         const wt = path.join(d, 'wt'), other = path.join(d, 'other'), rundir = path.join(d, 'run')
@@ -2661,11 +2661,16 @@ esac
         execFileSync('cp', [execFileSync('bash', ['-c', 'command -v sleep'], { encoding: 'utf8' }).trim(), exeCopy])
         if (process.platform === 'darwin') execFileSync('codesign', ['-f', '-s', '-', exeCopy], { stdio: 'ignore' })  // a copied binary is killed on macOS until re-signed
         const keep = 'setTimeout(()=>{},300000)'
+        // An orphan (reparented to PID 1 once its launching shell exits), as a leaked daemon is.
+        const orphan = cmd => Number(execFileSync('sh', ['-c', `${cmd} >/dev/null 2>&1 & echo $!`], { cwd: other, encoding: 'utf8' }).trim())
+        const argsOrphanPid = orphan(`'${process.execPath}' -e '${keep}' '${path.join(wt, 'x')}'`)
+        const tailOrphanPid = orphan(`tail -f '${path.join(rundir, 'progress.md')}'`)
         const procs = {
-          argsOnly: spawn('sh', ['-c', 'sleep 300; :', 'marker', path.join(wt, 'x')], { cwd: other, detached: true, stdio: 'ignore' }),
+          argsOnly: { pid: argsOrphanPid, unref() {} },
+          argsChild: spawn(process.execPath, ['-e', keep, path.join(wt, 'y')], { cwd: other, detached: true, stdio: 'ignore' }),
           homeEnv: spawn(process.execPath, ['-e', keep], { cwd: '/', env: { ...process.env, HOME: path.join(wt, '.tmp', 'home') }, detached: true, stdio: 'ignore' }),
           exe: spawn(exeCopy, ['301'], { cwd: '/', detached: true, stdio: 'ignore' }),
-          tailf: spawn('tail', ['-f', path.join(rundir, 'progress.md')], { cwd: '/', detached: true, stdio: 'ignore' }),
+          tailf: { pid: tailOrphanPid, unref() {} },
           unrelated: spawn(process.execPath, ['-e', keep], { cwd: other, detached: true, stdio: 'ignore' }),
         }
         for (const c of Object.values(procs)) c.unref()
@@ -2674,16 +2679,19 @@ esac
         const srp = (...a) => { const r = spawnSync(bashPath, [path.join(scriptsDir, 'stop-run-processes'), ...a], { encoding: 'utf8' }); return { code: r.status, out: r.stdout ?? '', err: r.stderr ?? '' } }
         let r = srp('--check', wt, rundir)
         const listed = pid => new RegExp(`^match: ${pid} `, 'm').test(r.out)
-        check(r.code === 3 && listed(procs.argsOnly.pid) && listed(procs.homeEnv.pid) && listed(procs.exe.pid) && listed(procs.tailf.pid) && !listed(procs.unrelated.pid), '--check lists the argument, HOME, executable and tail -f matches, and not the unrelated process', JSON.stringify(r))
+        check(r.code === 3 && listed(procs.argsOnly.pid) && listed(procs.homeEnv.pid) && listed(procs.exe.pid) && listed(procs.tailf.pid) && !listed(procs.unrelated.pid) && !listed(procs.argsChild.pid), '--check lists the orphan argument, HOME, executable and orphan tail -f matches; not the unrelated process, nor a non-orphan whose only reference is an argument (a user editor or command naming a worktree file)', JSON.stringify(r))
         check(['argsOnly', 'homeEnv', 'exe', 'tailf'].every(k => isAlive(procs[k].pid)), '--check kills nothing', JSON.stringify(r))
         r = srp(wt, rundir)
         execFileSync('sleep', ['0.3'])
         const stopped = pid => new RegExp(`^stopped: ${pid} `, 'm').test(r.out)
-        check(r.code === 0 && ['argsOnly', 'homeEnv', 'exe', 'tailf'].every(k => stopped(procs[k].pid) && !isAlive(procs[k].pid)), 'stop mode stops every match (cwd outside, argument under the root; HOME under .tmp; executable under the root; tail -f on a run-dir file)', JSON.stringify(r))
-        check(/^stopped: \d+ sleep 300 — child of \d+/m.test(r.out), 'a matched process\'s child goes with it even though it references no root itself', JSON.stringify(r))
+        check(r.code === 0 && ['argsOnly', 'homeEnv', 'exe', 'tailf'].every(k => stopped(procs[k].pid) && !isAlive(procs[k].pid)), 'stop mode stops every match (orphan with an argument under the root; HOME under .tmp; executable under the root; orphan tail -f on a run-dir file)', JSON.stringify(r))
+        check(!/child of/.test(r.out) && isAlive(procs.argsChild.pid), 'no kinship expansion: nothing is matched for being a child or parent of a match, and a non-orphan argument-only process survives', JSON.stringify(r))
+        try { process.kill(procs.argsChild.pid) } catch {}
         check(isAlive(procs.unrelated.pid), 'a process that references no root survives, whatever it is named', JSON.stringify(r))
         try { process.kill(procs.unrelated.pid) } catch {}
         check(srp('relative/path').code === 2 && srp('/').code === 2 && srp().code === 2, 'a relative root, the root directory, or no root exits 2')
+        { const rc = spawnSync(bashPath, [path.join(scriptsDir, 'stop-run-processes'), '--check', wt], { cwd: wt, encoding: 'utf8' })
+          check(rc.status === 2 && /working directory/.test(rc.stderr ?? ''), 'a root containing the caller\'s working directory is refused (a coordinating session stands there)', JSON.stringify({ code: rc.status, err: rc.stderr })) }
 
         // .tmp/ never reads as uncommitted work: a merged worktree holding only .tmp/ state is removed.
         const genv = { ...process.env, GIT_AUTHOR_NAME: 'x', GIT_AUTHOR_EMAIL: 'x@x', GIT_COMMITTER_NAME: 'x', GIT_COMMITTER_EMAIL: 'x@x' }
@@ -2696,6 +2704,9 @@ esac
         mkdirSync(path.join(tw, '.tmp', 'home'), { recursive: true }); writeFileSync(path.join(tw, '.tmp', 'home', 'state'), 's')
         const rr = spawnSync(bashPath, [path.join(scriptsDir, 'remove-task-worktree'), tw, 't', 'main'], { cwd: repo, encoding: 'utf8', env: genv })
         check(rr.status === 0 && /^removed: /m.test(rr.stdout ?? '') && !existsSync(tw), 'a merged worktree whose only extra state is in .tmp/ is removed (.tmp/ is git-excluded)', JSON.stringify({ code: rr.status, out: rr.stdout, err: rr.stderr }))
+        g(repo, 'worktree', 'add', '-q', '.worktrees/t2', '-b', 't2')
+        { const rp = srp('--check', repo); const rd = srp('--check', path.join(repo, '.worktrees'))
+          check(rp.code === 2 && /nested/.test(rp.err) && rd.code !== 2, 'a root holding a worktree with worktrees nested under it (the main or an epic/integration checkout) is refused; the task-worktree directory is accepted', JSON.stringify({ rp, rd })) }
         rmSync(d, { recursive: true, force: true })
       }
 

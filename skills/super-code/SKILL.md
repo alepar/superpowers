@@ -124,9 +124,10 @@ is unmeasured here, not green) —
 **`worktreesKept`**, the task worktrees the Finish sweep left in place because they hold
 uncommitted or unmerged work (a caller's report lists them; empty means every finished task's
 worktree is gone) — **`processSweep`**, `{ stopped, survived }`: the run's processes the Finish
-sweep found still running (any process whose cwd, executable, arguments or HOME/TMPDIR is under a
-task worktree, the run temp root, or a caller's `processRoots`), stopped, and any that survived
-being killed — a caller's report lists the survivors — **`slowness`**, the slowness signals the coordinator noticed and what it did about each (hot-file
+sweep found still running (any process whose cwd, executable or HOME/TMPDIR is under a task
+worktree, the run temp root, or a caller's `processRoots`, or an orphan with an argument there),
+stopped, any kept because it holds or hosts an interactive terminal, and any that survived being
+killed — a caller's report lists the survivors — **`slowness`**, the slowness signals the coordinator noticed and what it did about each (hot-file
 cap raises, a graph-bound audit, edge cuts applied or left for an operator, a merge backlog, a
 recurring blocker); and **`metrics`**, an array of exactly four `Metrics:` ledger-line strings (merge/rebase/seam/
 check-failure counts; completion kinds, with early dispatches and cancellations; fix-pass outcomes; and a ledger-check cross-checking the merge count
@@ -267,7 +268,7 @@ Throughout a run, append friction events (defects hit, workarounds, guidance tha
 - `./implementer-prompt.md` — the implementer's brief (sonnet): workspace setup, implementation, and the fix pass.
 - `./task-reviewer-prompt.md` — the per-task reviewer's brief (sonnet).
 - `./triage-prompt.md` — dispatch the blocker triage agent (opus): RESOLVE vs ESCALATE.
-- `./scripts/stop-run-processes` — `bash` helper that finds (`--check`) or stops this user's processes belonging to given roots: cwd, executable, arguments or HOME/TMPDIR under a root, plus their children; never PID 1, its own process tree, or anything that references no root.
+- `./scripts/stop-run-processes` — `bash` helper that finds (`--check`) or stops this user's processes belonging to given roots: cwd, executable, or exactly `HOME=`/`TMPDIR=` under a root, or (orphans reparented to PID 1 only) an argument path under a root. It never expands to a match's children or parents, never stops a process holding or hosting an interactive terminal (reported `kept:`), and refuses a root that holds a worktree with worktrees nested under it (an epic/integration or main checkout) or contains the caller's working directory. Never PID 1, its own process tree, or anything that references no root.
 - `./scripts/remove-task-worktree` — `bash` helper that stops a finished task's processes and removes its worktree and branch, keeping uncommitted or unmerged work (`--keep-branch`, `--discard` for a cancelled task, `--sweep` for the Finish backstop).
 - `./scripts/already-merged` — `bash` helper the implementer's workspace setup runs to answer whether a re-entered task branch is already merged.
 - `./scripts/epic-tree`, `./scripts/ready-in-tree`, `./scripts/close-in-tree-epics`, `./scripts/tree-shape`, `./scripts/tree-deps`, `./scripts/review-bead` — `bash` helpers for structural tree membership, the epic-scoped ready query (work and ready review beads, apart), the in-tree epic-closure fixpoint, the edge audit's graph numbers (super-design's `graph-shape` over the open tree), each open bead's leaf blockers for graph readiness, and the early-unblock split and its undo. They parse `bd` JSON with `jq` when it is installed; without it they print a `JQ_UNAVAILABLE:` line telling the agent how to compute the same result by hand.
