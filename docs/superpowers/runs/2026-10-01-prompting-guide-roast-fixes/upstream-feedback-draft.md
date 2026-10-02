@@ -1,4 +1,4 @@
-<!-- upstream-feedback draft, PARKED (autonomous run): not filed. Target repo: alepar/superpowers. Awaits the human's file?/scrub? answer at the phase-7 menu. -->
+<!-- upstream-feedback: FILED as https://github.com/alepar/superpowers/issues/11 (no scrub) -->
 # 2026-10-01-prompting-guide-roast-fixes: an uncommitted friction-log append blocks every super-code merge, and the coordinator triages it per task
 
 Plugin: superpowers 6.4.2-alepar4.6 (2bf1d53). Run: super-auto, autonomous, fixing skills/super-auto in this same repo. 13 work beads (plus 9 `review:` beads), 5 super-code launches, design roast 2 rounds (converged), code roast 2 rounds (converged, then one regression-only pass). Wall clock about 3.5 h.
