@@ -1,0 +1,4 @@
+r1 [Should-fix] Decision points › Scope fences: "named tests pass unmodified, and only named spec sections change"
+r1 [Nit] report-prompt.md:40
+r2 [Blocking] auth/token-refresh.ts:88
+r2 [Should-fix] auth/session.ts:12, 14
