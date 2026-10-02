@@ -6,7 +6,10 @@
 #
 # RUN_MD: the run's run.md (fields per run-state.md). --tip SHA: the run branch's HEAD, the commit
 # the report describes; every report-prompt.md call passes it, and without it a sweep's stamp is
-# still required but not compared. --stalled PHASE: the orchestrator judged the run stalled at
+# still required but not compared. A stamp other than SHA is still at the tip when `git diff` finds
+# no change between the two commits outside RUN_MD's directory, the run directory that phase 6
+# commits run.md, friction.md and report.md into after the sweep; a git failure counts as a change.
+# --stalled PHASE: the orchestrator judged the run stalled at
 # PHASE, a state run.md cannot carry.
 #
 # Status, first match wins:
@@ -42,10 +45,12 @@
 #                                 or errors count, FAIL, DEFERRED, INVALID, UNAVAILABLE) or lacks
 #                                 the pass form `<P> passed, 0 failed, 0 errors`;
 #   `sweep: unstamped — <sweep>`  a pass with no ` @ <sha>` stamp;
-#   `sweep: not at tip — <sweep>` a pass stamped with a SHA that is not --tip.
+#   `sweep: not at tip — <sweep>` a pass whose stamp is not --tip and differs from it outside the
+#                                 run directory.
 #
 # Prints the status line, then one `qualifier: <text>` line per qualifier, in the order above.
-# Pure bash and awk: needs no jq, so it never prints JQ_UNAVAILABLE.
+# Bash and awk, plus git only to compare a sweep stamp with --tip: needs no jq, so it never prints
+# JQ_UNAVAILABLE.
 # Exit 0 ok, 2 bad input.
 set -euo pipefail
 
@@ -66,8 +71,9 @@ case "$stalled" in
   *) echo "not a stallable phase: $stalled" >&2; exit 2 ;;
 esac
 [ -z "$tip" ] || [[ "$tip" =~ ^[0-9a-f]{7,40}$ ]] || { echo "not a commit SHA: $tip" >&2; exit 2; }
+rundir=$(CDPATH= cd -- "$(dirname -- "$run")" && pwd)
 
-awk -v stalled="$stalled" -v tip="$tip" '
+RS_RUNDIR=$rundir awk -v stalled="$stalled" -v tip="$tip" '
   function trim(s) { sub(/^[ \t]+/, "", s); sub(/[ \t\r]+$/, "", s); return s }
   function truthy(v) { v = tolower(trim(v)); return v == "true" || v == "t" || v == "yes" || v == "1" }
   function isempty(v) { v = tolower(trim(v)); return v == "" || v == "none" || v == "-" }
@@ -94,13 +100,18 @@ awk -v stalled="$stalled" -v tip="$tip" '
     if (match(t, /\[[^]]*\]/)) return substr(t, RSTART + 1, RLENGTH - 2)
     return t
   }
+  # True when commits a and b differ only inside the run directory (RS_RUNDIR, the directory
+  # holding RUN_MD). Any git failure, such as a SHA that does not resolve, counts as a difference.
+  function codesame(a, b) {
+    return system("git -C \"$RS_RUNDIR\" diff --quiet " a " " b " -- \":/\" \":(exclude).\" > /dev/null 2>&1") == 0
+  }
   function sweepq(s,   sha) {
     if (s == "") return "sweep: none recorded"
     if (s ~ /(^|[^0-9])0*[1-9][0-9]* (failed|errors)/ || s ~ /FAIL|DEFERRED|INVALID|UNAVAILABLE/) return "sweep: " s
     if (s !~ /(^|[^0-9])[0-9]+ passed, 0+ failed, 0+ errors/) return "sweep: " s
     if (!match(s, /@[ \t]*[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]+/)) return "sweep: unstamped — " s
     sha = substr(s, RSTART + 1, RLENGTH - 1); sub(/^[ \t]+/, "", sha)
-    if (tip != "" && index(tip, sha) != 1 && index(sha, tip) != 1) return "sweep: not at tip — " s
+    if (tip != "" && index(tip, sha) != 1 && index(sha, tip) != 1 && !codesame(sha, tip)) return "sweep: not at tip — " s
     return ""
   }
   { sub(/\r$/, "") }
