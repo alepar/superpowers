@@ -93,7 +93,7 @@ The schema home for `run.md`: every field's name and line format. The numbered i
 
    `review` records what the final whole-epic review found: `CLEAN`, or the verdict and its finding count. That review is mandatory even when `skipCodeRoast` is set, and its findings are fixed as beads under the epic per SKILL.md §Fix-bead template, so the fix campaign stays visible to the tree and the report.
 
-   `sweep` is the run's one full-suite result in the §Field table form, stamped with the SHA it measured; it reads `SWEEP DEFERRED (caller-owned)` until phase 6. `scripts/report-status` counts it as a pass only in that form with zero failed and zero errors, stamped with the report's `--tip`; any other value becomes a qualifier.
+   `sweep` is the run's one full-suite result in the §Field table form, stamped with the SHA it measured; it reads `SWEEP DEFERRED (caller-owned)` until phase 6. `scripts/report-status` counts it as a pass only in that form with zero failed and zero errors, stamped at the report's tip as report-prompt.md §The status block defines it; any other value becomes a qualifier.
 
    `sweepFix` is written when a failing phase-6 sweep gets its one fix pass, e.g. `sweepFix: 3 failing → bd-431, bd-432 · re-run 7c01d9e — 415 passed, 0 failed, 0 errors, 2 skipped; failing: none; command: npm test @ 7c01d9e`. The re-run result also replaces `sweep`. Present means the pass was spent: a resume re-runs the sweep if the re-run result is missing and never files a second pass.
 

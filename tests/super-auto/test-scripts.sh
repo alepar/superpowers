@@ -135,7 +135,30 @@ assert_eq "$(rs_status "$T/sweep-unavailable.md" --tip 3f9c2e1)" "status: clean 
 sed "s/^  sweep: .*/  sweep: PASS 412 tests @ 3f9c2e1/" "$RF/clean.md" > "$T/sweep-legacy.md"
 assert_eq "$(rs_status "$T/sweep-legacy.md" --tip 3f9c2e1)" "status: clean [degraded: sweep: PASS 412 tests @ 3f9c2e1]" "a sweep outside the pinned grammar is a qualifier, never a pass"
 assert_eq "$(rs_status "$RF/clean.md" --tip 3f9c2e1a)" "status: clean" "--tip matching the sweep SHA keeps clean"
-assert_eq "$(rs_status "$RF/clean.md" --tip abcdef0)" "status: clean [degraded: sweep: not at tip — $SW]" "--tip differing from the sweep SHA is a qualifier"
+assert_eq "$(rs_status "$RF/clean.md" --tip abcdef0)" "status: clean [degraded: sweep: not at tip — $SW]" "--tip that does not resolve against the sweep SHA is a qualifier"
+# Phase 6 commits run.md, friction.md and report.md after the sweep. Those commits stay inside the
+# run directory, so the stamp they follow is still at the tip; a commit anywhere else is not.
+G="$T/tip-repo"; GR="$G/docs/superpowers/runs/2026-07-31-per-tenant-rate-limiter"
+gitq() { git -C "$G" -c user.name=t -c user.email=t@t -c commit.gpgsign=false -c core.hooksPath=/dev/null "$@" > /dev/null; }
+mkdir -p "$GR" "$G/src"
+git init -q "$G"
+echo 'limit = 10' > "$G/src/limiter.conf"
+gitq add -A; gitq commit -q -m code
+stamp=$(git -C "$G" rev-parse --short=7 HEAD)
+sed "s/3f9c2e1/$stamp/g" "$RF/clean.md" > "$GR/run.md"
+gitq add -A; gitq commit -q -m 'run.md: sweep'
+echo '- friction' > "$GR/friction.md"; echo 'status: pending' > "$GR/report.md"
+gitq add -A; gitq commit -q -m 'report and friction'
+run bash "$RS" "$GR/run.md" --tip "$(git -C "$G" rev-parse HEAD)"
+assert_eq "$code:$out" "0:status: clean" "only run-directory commits between the sweep stamp and --tip keep clean"
+mkdir -p "$G/docs/superpowers/runs/other-run"; echo x > "$G/docs/superpowers/runs/other-run/run.md"
+gitq add -A; gitq commit -q -m 'another run directory'
+assert_eq "$(rs_status "$GR/run.md" --tip "$(git -C "$G" rev-parse HEAD)")" "status: clean [degraded: sweep: not at tip — ${SW//3f9c2e1/$stamp}]" "a commit outside this run's directory, even under docs/superpowers/runs, is a qualifier"
+gitq reset -q --hard HEAD~1
+echo 'limit = 20' > "$G/src/limiter.conf"
+gitq add -A; gitq commit -q -m 'code after the sweep'
+echo '- more' >> "$GR/friction.md"; gitq add -A; gitq commit -q -m friction
+assert_eq "$(rs_status "$GR/run.md" --tip "$(git -C "$G" rev-parse HEAD)")" "status: clean [degraded: sweep: not at tip — ${SW//3f9c2e1/$stamp}]" "a code commit between the sweep stamp and --tip is a qualifier"
 assert_eq "$(rs_status --stalled finish "$RF/clean.md")" "status: stalled at phase finish" "--stalled before RUN_MD"
 run bash "$RS" "$RF/roast-skipped.md" --stalled roast-code
 assert_eq "$out" "status: stalled at phase roast-code
