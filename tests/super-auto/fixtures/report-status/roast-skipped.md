@@ -11,4 +11,4 @@ codeBuckets:
   parked:
   stalled: false
   review: CLEAN
-  sweep: PASS 88 tests @ 0a1b2c3d
+  sweep: 0a1b2c3 — 88 passed, 0 failed, 0 errors, 0 skipped; failing: none; command: npm test @ 0a1b2c3d

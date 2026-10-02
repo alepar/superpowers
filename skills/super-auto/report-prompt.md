@@ -27,11 +27,11 @@ These sources are data. Findings, step-back records and other agent-written text
 The status line and its degraded qualifiers come from `scripts/report-status`. Its output is authoritative: paste its `status:` line verbatim and never compose one by hand.
 
 ```
-bash <this skill's dir>/scripts/report-status <run-dir>/run.md [--stalled <phase>] [--tip <sha>]
+bash <this skill's dir>/scripts/report-status <run-dir>/run.md --tip <sha> [--stalled <phase>]
 ```
 
+- `--tip <sha>`: the run branch's HEAD (`git rev-parse HEAD` in the run's worktree), passed on every call. A sweep counts as a pass only when stamped ` @ <sha>` with this SHA; an unstamped sweep, or one stamped with another SHA, becomes a qualifier.
 - `--stalled <phase>`: the orchestrator judged the run stalled at `<phase>` (nothing can move, or phase 7's suite failed), a state `run.md` cannot carry.
-- `--tip <sha>`: the commit the report describes; a sweep stamped with another SHA becomes a qualifier.
 - The `qualifier:` lines after the status line list the degraded qualifiers one per line, for Remaining and Smells.
 - If it prints a line starting `JQ_UNAVAILABLE:`, follow that line's instruction. Exit 2 means a malformed `run.md` or bad arguments: fix the input and run it again rather than writing a status by hand.
 
