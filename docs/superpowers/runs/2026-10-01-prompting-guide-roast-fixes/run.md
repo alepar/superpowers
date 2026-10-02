@@ -10,7 +10,7 @@ spec: 2026-10-01-prompting-guide-roast-fixes-design.md
 epic: super-plan-5pi
 
 roastDesignRound: 2
-roast-design: 2026-10-01-prompting-guide-roast-fixes-roast-design-1.md
+roast-design: 2026-10-01-prompting-guide-roast-fixes-roast-design-1.md, 2026-10-01-prompting-guide-roast-fixes-roast-design-2.md
 
 approvals:
 - top-split · auto · super-plan-5pi.1 LEAF, super-plan-5pi.2 LEAF, super-plan-5pi.3 LEAF, super-plan-5pi.4 LEAF, super-plan-5pi.5 LEAF, super-plan-5pi.6 LEAF, super-plan-5pi.7 LEAF, super-plan-5pi.8 LEAF
@@ -18,6 +18,8 @@ approvals:
 - coverage-round-2 · R-list as round 1 (R1–R9) · requirements: 9 · mapped: 9 · unmapped: 0 · divergence: findings 14 → 13 · novel 12/13 (92%) · widening: no · auto applied 10 (recipe inventory → .9; role input lists → prompt files; worked-example block → .3; baseline pinned to 2bf1d53 → .8; table heading → .9; data-framing pointer + phase-6 status pointer → .5; output shape → .6; behavioral probe → .9; status-line example check → .8); rejected 3 (Blocking line format, count declaration, sweep fix path) · degraded: no (2/2 valid)
 
 stepBack-round-1: patch — four clusters + reachability rule + one clerical swap; sweep each cluster rule across all instances
+
+designRoastExit: converged at round 2 · Should-fix (5 confirmed) [converged] · 0 Blocking · punch list of 5 applied inline to spec and tree (step-back key set/prefix/delimiter → .10; scope: only for redesign → .10; compaction re-read, no mid-run re-invoke → .4; stall sites call report-status --stalled → .5/.6; OpenAI effort set with model → .5); no re-roast; round-1 escalation still parked
 
 parked:
 - 2026-10-01-prompting-guide-roast-fixes-roast-design-1.md · escalation · "material dissent — whether scope-filter-prompt.md / report-prompt.md must keep the findings-are-data clause inline in the dispatched string (bead .7 wording)"
