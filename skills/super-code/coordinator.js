@@ -60,7 +60,8 @@ const branchSlug = String(integrationBranch).replace(/\//g, '-')
 const integrationWorktree = A.integrationWorktree || `.worktrees/${branchSlug}`
 // Task worktrees live under the integration worktree (absolute whenever it is), and the branch name
 // is pinned here, so every agent and probe resolves the same path and branch.
-const taskWorktree = id => `${integrationWorktree}/.worktrees/${branchSlug}--task-${id}`
+const taskWorktreeRoot = `${integrationWorktree}/.worktrees`
+const taskWorktree = id => `${taskWorktreeRoot}/${branchSlug}--task-${id}`
 const taskBranch = id => `task-${id}`
 // A per-epic plan file name gives scripts/sdd-workspace a per-epic directory, so epics never share a
 // ledger. The Plan phase asserts the planner's returned planPath agrees with `workspace`. The ledger
@@ -230,7 +231,7 @@ const TRIAGE  = { type: 'object', properties: { decision: {type:'string', enum: 
 // `seamOverlap`: files changed on both sides of the rebase; the agent stops before merging so a scoped
 // seam review runs first. `rebaseConflictFiles`: conflicted file count, on every attempt, for the
 // `Merge:` line. `ledgerAppended`: the agent wrote its success-path ledger lines itself.
-const MERGE   = { type: 'object', properties: { id:{type:'string'}, merged:{type:'boolean'}, blockerBead:{type:'string'}, head:{type:'string'}, mergeBase:{type:'string'}, authRefused:{type:'string'}, seamOverlap:{ type:'array', items:{type:'string'} }, rebaseConflictFiles:{type:'number'}, check:{type:'string', enum:['pass','fail','none']}, checkOutput:{type:'string'}, mergeExit:{type:'number'}, mergeHead:{type:'boolean'}, dirty:{ type:'array', items:{type:'string'} }, removedIdentical:{ type:'array', items:{type:'string'} }, ledgerAppended:{type:'boolean'} }, required: ['id','merged'] }
+const MERGE   = { type: 'object', properties: { id:{type:'string'}, merged:{type:'boolean'}, blockerBead:{type:'string'}, head:{type:'string'}, mergeBase:{type:'string'}, authRefused:{type:'string'}, seamOverlap:{ type:'array', items:{type:'string'} }, rebaseConflictFiles:{type:'number'}, check:{type:'string', enum:['pass','fail','none']}, checkOutput:{type:'string'}, mergeExit:{type:'number'}, mergeHead:{type:'boolean'}, dirty:{ type:'array', items:{type:'string'} }, removedIdentical:{ type:'array', items:{type:'string'} }, ledgerAppended:{type:'boolean'}, cleanup:{ type:'array', items:{type:'string'} } }, required: ['id','merged'] }
 // Edge-audit return shape (edgeAuditPrompt): openLeaves and depth from scripts/tree-shape;
 // `changes` use super-design's graph-pass vocabulary, each judged safe or not. Only
 // `config.edgeCuts: 'apply-safe'` applies the safe ones.
@@ -246,7 +247,9 @@ const SWEEP_SUMMARY = { type: 'object', properties: { summary: { type: 'string' 
 // closed; a reopen's list; a cancelled task's worktree removal.
 const REVIEW_BEAD = { type: 'object', properties: { reviewBead: {type:'string'}, implClosed: {type:'boolean'}, created: {type:'boolean'}, scriptError: {type:'string'} }, required: ['reviewBead','implClosed'] }
 const REOPENED = { type: 'object', properties: { reopened: { type: 'array', items: {type:'string'} }, scriptError: {type:'string'} }, required: ['reopened'] }
-const DISCARD = { type: 'object', properties: { discarded: {type:'boolean'}, reopened: { type: 'array', items: {type:'string'} }, scriptError: {type:'string'} }, required: ['discarded'] }
+const DISCARD = { type: 'object', properties: { discarded: {type:'boolean'}, reopened: { type: 'array', items: {type:'string'} }, cleanup: { type: 'array', items: {type:'string'} }, scriptError: {type:'string'} }, required: ['discarded'] }
+// The Finish backstop sweep's report: every output line of scripts/remove-task-worktree --sweep.
+const SWEEP_WORKTREES = { type: 'object', properties: { lines: { type: 'array', items: {type:'string'} }, scriptError: {type:'string'} }, required: ['lines'] }
 // The one ledger line shape writers (`ledgerLine()`) and the Resume reader share:
 // `Task <ordinal-or-?> (<bead id>): <rest>`.
 const LEDGER_LINE_RE = /^Task\s+(\S+)\s+\(([^)]+)\):\s*(.*)$/
@@ -1284,9 +1287,18 @@ if (unsettledIds.length) {
     settle(id, completed)
   }
 }
+// Backstop sweep: every task worktree still under the integration worktree goes now, merged and
+// clean only; split tasks' kept branches are deleted with -d. Anything kept is returned.
+const sweptBranches = [...reviewBeadOf.keys()].map(taskBranch)
+const wsweep = await dispatch(() => worktreeSweepPrompt(sweptBranches), 'worktree-sweep',
+  { label: 'worktree-sweep', phase: 'Finish', ...tier('mechanical'), schema: SWEEP_WORKTREES })
+const worktreesKept = !wsweep
+  ? ['WORKTREE SWEEP UNAVAILABLE — the sweep dispatch returned null; task worktrees under ' + taskWorktreeRoot + ' were not checked']
+  : (wsweep.lines || []).filter(l => /^kept:/.test(l)).map(l => l.replace(/^kept:\s*/, ''))
+if (wsweep) log(`worktree sweep: ${(wsweep.lines || []).filter(l => /^removed:/.test(l)).length} removed, ${worktreesKept.length} kept${worktreesKept.length ? ' — ' + worktreesKept.join('; ') : ''}`)
 return { completed: [...completed], escalated: [...escalated], pendingRetry: [...pendingRetry],
          parked: [...parked], stalled, stopReason, review, authRefused: [...authRefused], sweep: sweepSummary,
-         metrics, ledgerAppendFailed: [...ledgerAppendFailed], slowness: [...slowness] }
+         metrics, ledgerAppendFailed: [...ledgerAppendFailed], slowness: [...slowness], worktreesKept }
 
 // --- helpers ---
 function scriptOutcomeRule() {
@@ -1526,12 +1538,18 @@ function mergePrompt(r, integrationBranch, integrationWorktree, resolvedBead, me
   // the merge queue never waits on a separate ledger dispatch. It fills only what it measured.
   const ledgerLines = ledger ? [ledger.mergeLine, ...(ledger.completeLine ? [ledger.completeLine] : [])].map(l => `<ledger-line>${l}</ledger-line>`).join('\n') : ''
   const ledgerStep = ledger
-    ? ` LEDGER, last, only after the merge is committed and the \`bd close\` above succeeded (never on any other path): in ${integrationWorktree}, append to ${ledgerPath} — if it does not exist, create its parent directory and the file with the exact first line "# SDD ledger — plan: ${planFileName}" — each line below as its own physical line, in order, with exactly the text between its tags (the tags are delimiters), replacing <REBASE> with \`clean\` when rebaseConflictFiles is 0 and \`conflict: N files\` otherwise (N = rebaseConflictFiles), and <RANGE> with the first 7 characters of mergeBase, two dots, and the first 7 characters of head:\n${ledgerLines}\nIf you deleted byte-identical files, append one more line: \`Merge-cleanup: ${r.id} — removed byte-identical untracked copies from the integration worktree before merging: <the deleted paths, comma-separated>\`. Then report ledgerAppended true.`
+    ? ` LEDGER, last, only after the merge is committed and the \`bd close\` above succeeded (never on any other path): in ${integrationWorktree}, append to ${ledgerPath} — if it does not exist, create its parent directory and the file with the exact first line "# SDD ledger — plan: ${planFileName}" — each line below as its own physical line, in order, with exactly the text between its tags (the tags are delimiters), replacing <REBASE> with \`clean\` when rebaseConflictFiles is 0 and \`conflict: N files\` otherwise (N = rebaseConflictFiles), and <RANGE> with the first 7 characters of mergeBase, two dots, and the first 7 characters of head:\n${ledgerLines}\nAppend one more line, \`Cleanup: ${r.id} — <the CLEANUP output lines joined with "; ">\`. If you deleted byte-identical files, append one more line: \`Merge-cleanup: ${r.id} — removed byte-identical untracked copies from the integration worktree before merging: <the deleted paths, comma-separated>\`. Then report ledgerAppended true.`
     : ''
+  // A finished task's worktree goes as soon as it merged: the script stops processes started there,
+  // then removes the worktree and branch, refusing anything uncommitted or unmerged. A split task
+  // (early unblock) keeps its branch: a dependent being cut right now may still merge it by name, and
+  // the Finish sweep deletes it.
+  const cleanupCmd = `bash ${codeSkill}/scripts/remove-task-worktree ${reviewBead ? '--keep-branch ' : ''}${r.branch} ${br} ${integrationBranch}`
+  const cleanupStep = ` CLEANUP, only after the merge is committed and the \`bd close\` above succeeded: from ${integrationWorktree}, run \`${cleanupCmd}\` and report every line it prints as cleanup. Exit 3 means it kept the worktree on purpose (uncommitted or unmerged work): never force it, just report the lines.`
   const seamStep = r.seamCleared
     ? `This branch is ALREADY rebased and its post-rebase seam has been reviewed (and fixed if needed) — do not repeat the seam check; if new integration commits landed meanwhile, rebase once more and continue straight to the merge.`
     : `POST-REBASE SEAM CHECK, after a successful rebase and BEFORE merging: if ${integrationBranch} moved since this task branched (its current tip is not ${r.base}), list the files the sibling commits changed (\`git diff --name-only ${r.base} ${integrationBranch}\`${r.stacked ? ` — ${r.base} holds the stacked parents' pre-review code, so this list includes every file their fix passes changed` : ''}) and the files this task changed (\`git diff --name-only $(git merge-base ${integrationBranch} ${br}) ${br}\`). If the two lists INTERSECT, do NOT merge: capture head and mergeBase as described below and report merged false with seamOverlap as the intersecting file list — a seam review runs and this merge is re-dispatched. If they do not intersect, or the branch did not move, continue.`
-  return `Task ${r.id}'s branch \`${br}\` is checked out in its worktree ${r.branch}; the integration branch ${integrationBranch} is checked out in ${integrationWorktree}. ${rebaseStep} Count the files the rebase reported as conflicting (0 if it applied cleanly): that is rebaseConflictFiles, reported however the attempt ends. CONFLICTS: make ONE bounded attempt that resolves the conflicted hunks only, keeping both sides' intent; edit nothing outside the conflicted hunks, and do not run, add, delete, skip, or loosen any test. ${seamStep} Then run \`git merge-base ${integrationBranch} ${br}\` (the POST-REBASE merge-base, captured before merging) and \`git rev-parse ${br}\` (the rebased tip). ${cleanStep} ${mergeStep} ${checkStep} Once the merge is committed, run ${taskClose}${beadClose}, and report merged true with head, mergeBase, rebaseConflictFiles, check, mergeExit, mergeHead, and removedIdentical (empty when you deleted nothing).${ledgerStep} Run no tests in this dispatch. If the conflict resolution fails, abort the rebase, report check none, and file a blocker bead: ${blockerBeadRule()}, with a body stating the task id, the merge-base SHA of the failed attempt, and the conflicted files, so a later reader can tell a blocker filed against a superseded merge-base from a current one; report merged false with its id as blockerBead, rebaseConflictFiles, and check. ${authRefusalRule()} For THIS dispatch, report a refusal as merged false with authRefused set to the exact refused command(s) instead of a status token.`
+  return `Task ${r.id}'s branch \`${br}\` is checked out in its worktree ${r.branch}; the integration branch ${integrationBranch} is checked out in ${integrationWorktree}. ${rebaseStep} Count the files the rebase reported as conflicting (0 if it applied cleanly): that is rebaseConflictFiles, reported however the attempt ends. CONFLICTS: make ONE bounded attempt that resolves the conflicted hunks only, keeping both sides' intent; edit nothing outside the conflicted hunks, and do not run, add, delete, skip, or loosen any test. ${seamStep} Then run \`git merge-base ${integrationBranch} ${br}\` (the POST-REBASE merge-base, captured before merging) and \`git rev-parse ${br}\` (the rebased tip). ${cleanStep} ${mergeStep} ${checkStep} Once the merge is committed, run ${taskClose}${beadClose}, and report merged true with head, mergeBase, rebaseConflictFiles, check, mergeExit, mergeHead, and removedIdentical (empty when you deleted nothing).${cleanupStep}${ledgerStep} Run no tests in this dispatch. If the conflict resolution fails, abort the rebase, report check none, and file a blocker bead: ${blockerBeadRule()}, with a body stating the task id, the merge-base SHA of the failed attempt, and the conflicted files, so a later reader can tell a blocker filed against a superseded merge-base from a current one; report merged false with its id as blockerBead, rebaseConflictFiles, and check. ${authRefusalRule()} For THIS dispatch, report a refusal as merged false with authRefused set to the exact refused command(s) instead of a status token.`
 }
 
 function missingBlockerBeadPrompt(r) {
@@ -1563,7 +1581,7 @@ function closeOnlyPrompt(id, integrationWorktree, integrationBranch, resolvedBea
   // Already-merged re-entry: close what a lost `bd close` left open.
   const bead = resolvedBead ? ` Then run \`bd close ${resolvedBead} --reason "resolved: task ${id} merged"\` — the blocker bead a RESOLVE verdict left open for this task's retry.` : ''
   const review = reviewBeadOf.get(id) ? ` (a no-op if it is already closed), then \`bd close ${reviewBeadOf.get(id)}\` (its review bead)` : ''
-  return `In ${integrationWorktree}: task ${id}'s branch is already merged into ${integrationBranch} (a prior attempt merged it but its bead close was lost). Run \`bd close ${id}\`${review}.${bead} Report id ${id} and status CLOSED.`
+  return `In ${integrationWorktree}: task ${id}'s branch is already merged into ${integrationBranch} (a prior attempt merged it but its bead close was lost). Run \`bd close ${id}\`${review}.${bead} Then remove its finished worktree: \`bash ${codeSkill}/scripts/remove-task-worktree ${reviewBeadOf.get(id) ? '--keep-branch ' : ''}${taskWorktree(id)} ${taskBranch(id)} ${integrationBranch}\` (exit 3 means it kept something on purpose; never force it), and put its output lines in finding. Report id ${id} and status CLOSED.`
 }
 
 function reviewBeadPrompt(id) {
@@ -1581,7 +1599,12 @@ function discardPrompt(id, reopenBead) {
   // MECHANICAL: a cancelled task's worktree holds work built on a stack parent that will not land as
   // it was; remove it (and reopen its own task bead when it had been split).
   const reopen = reopenBead ? ` Then run \`bash ${codeSkill}/scripts/review-bead reopen ${id}\` and report \`reopened\` from the JSON object it prints. ${scriptOutcomeRule()}` : ' Report reopened as an empty list.'
-  return `Working directory: ${integrationWorktree}. Task ${id} was cancelled: a task it was stacked on did not merge, so its worktree holds work built on code that will not land as it was. Remove it: \`git worktree remove --force ${taskWorktree(id)}\`, then \`git branch -D ${taskBranch(id)}\` (either may already be gone; that is fine). Touch nothing else.${reopen} Report discarded true when neither the worktree nor the branch exists any more.`
+  return `Working directory: ${integrationWorktree}. Task ${id} was cancelled: a task it was stacked on did not merge, so its worktree holds work built on code that will not land as it was. Remove it, stopping any process started from it first: \`bash ${codeSkill}/scripts/remove-task-worktree --discard ${taskWorktree(id)} ${taskBranch(id)}\` (it removes with --force and -D, because this work is abandoned by design; either may already be gone, which is fine). Report its output lines as cleanup. Touch nothing else.${reopen} Report discarded true when neither the worktree nor the branch exists any more.`
+}
+
+function worktreeSweepPrompt(branches) {
+  // MECHANICAL script echo: the Finish backstop for task worktrees the per-task cleanup missed.
+  return `Working directory: ${integrationWorktree}. Run \`bash ${codeSkill}/scripts/remove-task-worktree --sweep ${taskWorktreeRoot} ${integrationBranch}${branches.length ? ' ' + branches.join(' ') : ''}\` and report every line it prints, verbatim, as lines. Exit 0 and exit 3 are both normal outcomes (3 means it kept something on purpose: uncommitted or unmerged work); report the lines either way, and never remove anything yourself or force. Any other exit: set scriptError to the exit code and the last lines of its stderr, set lines to an empty list, and stop.`
 }
 
 function reconcileBucketsPrompt(ids, reviewPairs) {

@@ -43,6 +43,7 @@ The schema home for `run.md`: every field's name and line format. The numbered i
 | `codeBuckets.review` | `  review: CLEAN`, or `  review: <verdict> (<N> confirmed)` | 6 | super-auto |
 | `codeBuckets.sweep` | `  sweep: <one-line result> @ <sha>`, the result in `super-code`'s sweep form, `<sha7> — <P> passed, <F> failed, <E> errors, <S> skipped; failing: <ids, or none>; command: <command>`, or `MEASUREMENT INVALID: <cause>`; `  sweep: SWEEP DEFERRED (caller-owned)` until phase 6 | 6 | super-auto (SKILL.md §Phase 6 — report steps 1 and 2) |
 | `codeBuckets.slowness` | `  slowness: <items>`, appended across invocations | 6 | super-auto |
+| `codeBuckets.worktreesKept` | `  worktreesKept: <worktree — reason>, …` (empty when every finished task's worktree was removed) | 6 | super-auto |
 | `sweepFix` | `sweepFix: <N> failing → <fix bead ids> · re-run <result> @ <sha>`, `<result>` in the `codeBuckets.sweep` form | 6 | super-auto |
 | `approvals` | `approvals:` then one `- <record>` line per decision below | 7 | super-design; super-auto (`design-review`) |
 | `approvals · top-split` | `- top-split · human \| auto · <child id> LEAF \| PROMOTE, …` | 7 | super-design |
@@ -87,7 +88,7 @@ The schema home for `run.md`: every field's name and line format. The numbered i
 
    `roastCodeCapped` is written by `super-auto` the moment the code-roast loop exits with Blocking findings still confirmed, at the cap or at thrash (SKILL.md §Cap disposition), before they are parked; absent when the loop converged or ended with no Blocking open. A resume reading `phase: roast-code` with it present must not start another round, because the loop has ended; without it the loop is mid-way. A later whole-branch roast is invoked with iteration `post-cap audit` and its report path is appended here, never counted as a round.
 
-6. **Code buckets** — `completed`, `escalated`, `pendingRetry`, `parked`, `stalled`, `review`, `sweep`, `slowness` (appended across invocations, not overwritten), recorded verbatim at every phase 3→4 transition and overwritten on each fix-loop re-entry, because the latest `super-code` return is the current truth. The exception is `sweep`, which phase 6 rewrites after each sweep it runs (SKILL.md §Phase 6 — report). `super-code` returns them once and does not persist them, and report-prompt.md §Sections and their sources reads them.
+6. **Code buckets** — `completed`, `escalated`, `pendingRetry`, `parked`, `stalled`, `review`, `sweep`, `slowness` (appended across invocations, not overwritten), `worktreesKept`, recorded verbatim at every phase 3→4 transition and overwritten on each fix-loop re-entry, because the latest `super-code` return is the current truth. The exception is `sweep`, which phase 6 rewrites after each sweep it runs (SKILL.md §Phase 6 — report). `super-code` returns them once and does not persist them, and report-prompt.md §Sections and their sources reads them.
 
    Refresh them from the tracker as phase 3 proceeds, so a session that ends inside phase 3 resumes with the last completed round: closed task beads under the epic are `completed`, quarantined ones `escalated`. A `review: <id>` bead (label `sp:review`) is `super-code`'s bookkeeping, never a task, and a task whose review bead is still open is in flight. When `super-code` returns, overwrite the buckets with its returned fields verbatim.
 
@@ -207,6 +208,7 @@ codeBuckets:
   review: CLEAN
   sweep: SWEEP DEFERRED (caller-owned)
   slowness:
+  worktreesKept:
 ```
 
 ## The resume rule

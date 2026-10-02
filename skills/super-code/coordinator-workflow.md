@@ -226,6 +226,7 @@ Two rules, both mandatory in `./coordinator.js`:
 | `read-ledger` | Resume reconstructs nothing, loudly: `bd ready` remains the authority on closed work, but prior-run `pendingRetry` bounds are lost for this run — logged, not silent. |
 | `read-ledger:finish` (the Metrics re-read) | Logged as a NULL dispatch; the four `Metrics:` lines are then written as `Metrics: UNAVAILABLE — the Finish ledger re-read returned null` rather than as zero counts. |
 | `final-review` | `review` is an explicit UNAVAILABLE string — **never** "no findings". |
+| `worktree-sweep` | `worktreesKept` is `['WORKTREE SWEEP UNAVAILABLE — …']` — **never** an empty list, which would read as nothing left behind. |
 | ledger writes (`ledger:<id>` — one per task chain, carrying every line the task noted — plus `ledger-append:<kind>` and `ledger-recurring:<k>`; all via `appendLedger` on the ledger chain) | **Retried once, then marked**: a null append is re-dispatched once — with the lines' agent-authored free text elided where the call site has an elided variant (ids and outcome token kept) — and a second null is recorded by label in `ledgerAppendFailed` (returned), logged as `ledger-append-failed: <label>`, and counted on the Finish-phase `Metrics: ledger-check` line. Never silent, never fatal. |
 | `notify` | Retried once with the detail elided (ids and the blocker bead only); a second null is logged and the run continues — the ledger's BLOCKED line and the bead carry the record. |
 | `clarify` | Fire-and-forget: logged and continued. The clarification IS the payload, so there is no elided form; the retry then runs without it (a known cost, recorded here). |
@@ -873,7 +874,15 @@ is safe because a `bd ready` batch is mutually independent by definition):
    this merge, a failing check goes straight to the blocker path.
 5. On a passing check (or none), commit the merge into the integration branch, then `bd close <id>`
    (a leaf-task close; epic closure is the separate fixpoint step in "The coordinator loop") and,
-   for a split task, `bd close <review bead>` after it.
+   for a split task, `bd close <review bead>` after it. Then, still in the same dispatch, the merge
+   agent removes the finished task's worktree with `scripts/remove-task-worktree`: it stops every
+   process whose cwd is inside the worktree (test daemons, servers), then runs `git worktree remove`
+   and `git branch -d`, never `--force` or `-D`, and keeps anything uncommitted or unmerged (exit
+   3). A split task passes `--keep-branch`: a dependent being cut at that moment may still merge its
+   branch by name, so only the worktree goes now and the Finish sweep deletes the branch. The outcome
+   lines go on a `Cleanup: <id> — …` ledger line, which the Resume and Metrics parsers skip. An
+   already-merged re-entry close runs the same script, and a cancelled task's discard runs it with
+   `--discard` (force, because that work is abandoned by design).
 6. Blocker path: a dirty integration worktree or a failed / no-op merge files the bead through the
    coordinator's missing-bead fallback, with the diagnosis. Otherwise: if the conflict resolution fails, the merge agent files a blocker bead
    (label-only rule, as in every filing prompt) stating the merge-base SHA and the conflicted
@@ -981,6 +990,13 @@ invocation simply re-attempts the task. A caller's report lists these ids as **u
 never as findings and never as done.
 
 ## Finish
+
+After the final review and the bucket reconciliation, one mechanical `worktree-sweep` dispatch
+runs `scripts/remove-task-worktree --sweep` over every task worktree still under the integration
+worktree's `.worktrees/` (the backstop for anything the per-task cleanup missed), plus `git branch -d`
+on split tasks' kept branches. It keeps anything uncommitted or unmerged, never forces, and its
+`kept:` lines are returned as `worktreesKept`. It runs whoever owns the finish, because task
+worktrees are this skill's, not the caller's.
 
 When the loop ends (and at least some work landed), run the sweep (below), then dispatch the
 **final whole-epic review (opus)** against the integration branch. It is report-only, reviews the
@@ -1256,12 +1272,13 @@ narratives that used to accompany each row are in git history; nothing here depe
 | Off-critical-path batch (blocker handling and already-merged closes off the merge queue; merge agent writes its own success ledger lines; one `ledger:<id>` flush per task chain on a ledger chain nothing awaits; `runtimeSlots` cap; per-role `effort`; background edge audit and unawaited detector append; no unplanned-filing barrier) | replay 44/0 | replay 18/0 | replay 20/0 |
 | Early unblock + graph readiness (planner `deps`/`opaque` rows from `scripts/tree-deps`; `readyFromGraph()` replaces the per-merge `bd ready` top-up wherever JS can see readiness; split at implementation-done via `scripts/review-bead`; stacked dependents with merge ordering and cancellation; review-bead re-entry on resume); the canonical scenario gains `bd-105`, stacked on `bd-102` | replay 48/0 | replay 18/0 | replay 20/0 |
 | Proactive slowness (hot-file cap raised for a file holding back two tasks with a slot free; graph-bound early edge-audit arming; merge-queue peak, idle slots and waiting rows on the detector line; act-capable edge audit over `scripts/tree-shape` + super-design's graph-pass rules, applying safe cuts under `config.edgeCuts: 'apply-safe'`; `slowness` return field) | replay 48/0 | replay 18/0 | replay 20/0 |
-| **Script in `./coordinator.js` (comments trimmed, history to `./MAINTENANCE.md`); round-1 planning split (`plan` for the ready ids, `plan-rest` for the rest of the tree beside them); workspace setup folded into the implementer (no `brief:<id>` dispatch; `SETUP_FAILED` / `ALREADY_MERGED` / `STACK_CONFLICT` early returns) — CURRENT** | **replay 43/0** | **replay 18/0** | **replay 20/0** |
+| **Script in `./coordinator.js` (comments trimmed, history to `./MAINTENANCE.md`); round-1 planning split (`plan` for the ready ids, `plan-rest` for the rest of the tree beside them); workspace setup folded into the implementer (no `brief:<id>` dispatch; `SETUP_FAILED` / `ALREADY_MERGED` / `STACK_CONFLICT` early returns) | replay 43/0 | replay 18/0 | replay 20/0 |
+| **Task-worktree cleanup (merge agent runs `scripts/remove-task-worktree` after the merge and bead close — processes stopped, `git worktree remove` + `git branch -d`, never forced, `--keep-branch` for split tasks; close-only re-entries clean up too; discards go through `--discard`; Finish `worktree-sweep` backstop returning `worktreesKept`) — CURRENT** | **replay 44/0** | **replay 19/0** | **replay 21/0** |
 
 The current row's figures come from the offline replay harness (`tests/super-code/`): it replays
 the three `args` blocks below and runs the live-sim, null-injection, parallelism, seam,
 merge-check, sweep, Metrics, off-queue, ledger-batching, effort, runtime-slot and early-unblock
-scenarios against this script (0 failures). Canonical 48 → 43: every task's separate brief
+scenarios against this script (0 failures). Every fixture gains one `worktree-sweep` dispatch at Finish (43 → 44, 18 → 19, 20 → 21); per-task cleanup rides the merge dispatch and adds none. Before that, canonical 48 → 43: every task's separate brief
 dispatch is gone (−6, counting bd-104's retry) and round 1 adds the `plan-rest` planner (+1); the
 other two fixtures trade one brief for one `plan-rest` and keep their counts. Before that, 44 → 48: its mapping now carries `deps`
 rows, so the two per-merge `bd-ready-topup` dispatches are gone (−2), and the new `bd-105` (stacked
@@ -1558,6 +1575,7 @@ exercised by the replay harness's live-sim scenarios.
 | `sweep` / `ledger-append:sweep` | `{summary:"f00dbee — 12 passed, …"}` / `{appended:true}` | the mandatory full-suite sweep at Finish (work landed); the summary names bd-103/bd-104 as not in the measurement |
 | `read-ledger:finish` / `ledger-append:metrics` | `{text:""}` / `{appended:true}` | the Metrics re-read and the one dispatch appending all four lines |
 | `reconcile-buckets` | `{closed:[]}` | Finish reconciliation of escalated ids against the tracker |
+| `worktree-sweep` | `{lines:[]}` | the Finish task-worktree backstop (always dispatched) |
 | `final-review` | `{summary,verdict}` | dispatched because `completed.size` is 2 |
 
 **Stub keys are call-site qualified** (`implement:<id>`, `review:<id>`, `fix:<id>`, `merge:<id>`,
@@ -1589,7 +1607,7 @@ missing-bead fallback (`missing-blocker:<id>`) are not exercised by these scenar
   `review` 4 + `fix` 1 + `merge` 4 + `triage` 3 + `notify` 2 + `clarify` 1 + task ledger flushes 5
   (`ledger:bd-101`, `ledger:bd-103`, `ledger:bd-104` ×2, `ledger:bd-105`) + `ledger-append:detector` 1 +
   `sweep` 1 + `ledger-append:sweep` 1 + `read-ledger:finish` 1 + `ledger-append:metrics` 1 +
-  `final-review` 1 + `reconcile-buckets` 1 = **43 agent calls, 0 errors**, terminal shape
+  `final-review` 1 + `reconcile-buckets` 1 + `worktree-sweep` 1 = **44 agent calls, 0 errors**, terminal shape
   `{completed:["bd-102","bd-101","bd-105"], escalated:["bd-103","bd-104"], pendingRetry:[], parked:[],
   stalled:false, stopReason:"ready-drained"}` (bucket order follows completion order).
 
@@ -1599,9 +1617,9 @@ re-run before committing the fix.
 ### Baselines for the canonical scenario (recorded, not illustrative)
 
 **Confirmed for the current revision by the offline replay harness**
-(`tests/super-code/replay-harness.mjs`, run via `test-coordinator-replay.sh`): 43 agent calls,
+(`tests/super-code/replay-harness.mjs`, run via `test-coordinator-replay.sh`): 44 agent calls,
 0 errors, the terminal shape above. No Workflow-hosted run has been recorded against this
-revision yet. (The early-unblock batch's 48 is superseded by this one; the off-critical-path
+revision yet. (The script-in-file batch's 43 is superseded by this one's added `worktree-sweep`; the early-unblock batch's 48 by the script-in-file batch; the off-critical-path
 batch's 44 by the early-unblock batch; the D4 loop's 50 by the off-critical-path batch.)
 
 Superseded by the D4 loop (pre-D4 script: five-round fix loop, per-merge gate). Recorded then: run `wf_97164f71-a3c`: **32 agents dispatched, 0 errors**
@@ -1707,6 +1725,7 @@ To reproduce or re-verify after a structural edit, run the Workflow tool with th
       "notify:bd-104": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"sent\":true}",
       "clarify:bd-104": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"recorded\":true}",
       "ledger:bd-104": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "worktree-sweep": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"lines\":[]}",
       "read-ledger:finish": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"text\":\"\"}",
       "ledger-append:metrics": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "reconcile-buckets": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"closed\":[]}",
@@ -1735,11 +1754,11 @@ Nothing merges, so neither the sweep nor the final review dispatches.
 | `fix:bd-201` | `{status:"BLOCKED",blockerBead:"bd-210",finding:"…"}` | the fixer's own BLOCKED, with the bead it filed |
 | `ledger:bd-201` | `{appended:true}` | the one flush: `Task 1 (bd-201): fix pass BLOCKED (…)`, then `BLOCKED` |
 | `triage:bd-201` / `notify:bd-201` | ESCALATE / fixed | the ordinary blocker path; no `merge:bd-201` key exists |
-| `read-ledger:finish` / `ledger-append:metrics` / `reconcile-buckets` | fixed | Metrics are written unconditionally; bd-201 is reconciled |
+| `read-ledger:finish` / `ledger-append:metrics` / `reconcile-buckets` / `worktree-sweep` | fixed | Metrics are written unconditionally; bd-201 is reconciled; the worktree sweep always runs |
 
 **Assertions:** exactly one `fix:bd-201`; no `merge:bd-201`, `sweep`, or `final-review`
 dispatch; `completed` `[]`, `escalated` `["bd-201"]`, `pendingRetry` `[]`, `parked` `[]`,
-`stalled` false. Expected dispatch count: **18 agent calls, 0 errors** — confirmed by the offline
+`stalled` false. Expected dispatch count: **19 agent calls, 0 errors** — confirmed by the offline
 replay harness at the current revision.
 
 ```json
@@ -1775,6 +1794,7 @@ replay harness at the current revision.
       "ledger:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "triage:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"decision\":\"ESCALATE\",\"detail\":\"the caching strategy is a design decision the spec does not settle\"}",
       "notify:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"sent\":true}",
+      "worktree-sweep": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"lines\":[]}",
       "read-ledger:finish": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"text\":\"\"}",
       "ledger-append:metrics": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "reconcile-buckets": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"closed\":[]}"
@@ -1801,11 +1821,12 @@ the parked variant carrying the reason and the finding, and the final review tri
 | `merge:bd-301` | merged, `ledgerAppended:true` | the merge agent writes the `Merge:` line only — a parked completion line carries fixer free text |
 | `ledger:bd-301` | `{appended:true}` | the one flush: the fix-pass line, then `Task 1 (bd-301): complete (commits …, fix pass, 1 parked — reason: … — finding: …)` |
 | `sweep` / `ledger-append:sweep` / `final-review` | fixed | work landed, so both dispatch |
+| `worktree-sweep` | `{lines:[]}` | the Finish task-worktree backstop |
 
 **Assertions:** no `triage`, `notify`, or blocker-filing key dispatches (a declined finding never
 reaches the blocker path); `completed` `["bd-301"]`, `parked` `["bd-301"]`, `escalated` `[]`,
 `pendingRetry` `[]`; the Finish log line reads `Parked (merged with fix-pass-declined findings): 1`.
-Expected dispatch count: **20 agent calls, 0 errors** — confirmed by the offline replay harness at
+Expected dispatch count: **21 agent calls, 0 errors** — confirmed by the offline replay harness at
 the current revision.
 
 ```json
@@ -1840,6 +1861,7 @@ the current revision.
       "fix:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/y.js\"],\"head\":\"dddddd1111111111111111111111111111111d\",\"declined\":\"duplicated backoff constant \\u2014 plan-mandated: the brief requires each call site to carry its own constant\"}",
       "ledger:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "merge:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"merged\":true,\"mergeExit\":0,\"mergeHead\":true,\"head\":\"f6f6f6f6666666666666666666666666666666\",\"mergeBase\":\"eeeeeee5555555555555555555555555555555\",\"rebaseConflictFiles\":0,\"ledgerAppended\":true}",
+      "worktree-sweep": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"lines\":[]}",
       "read-ledger:finish": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"text\":\"\"}",
       "ledger-append:metrics": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "reconcile-buckets": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"closed\":[]}",
