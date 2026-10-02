@@ -362,8 +362,8 @@ async function main() {
   {
     const scan = scanTemplateSpans(scriptBody)
     check(scan.clean, 'scanner ends in code state (no unterminated literal, string, or ${})')
-    check(scan.spans.length === 327,
-      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 327 — 215 after the D4 loop rewrite, +10 for the merge-evidence contract (clean-check and merge steps, mergeEvidence's diagnoses and logs, the Merge-cleanup line) and writeFence(), +17 for the failing-mergeCheck seam route (the check-fix and fix-review dispatch keys/labels, their logs and blocker findings, the re-merge, fixPrompt's check branch, checkFixReviewPrompt), +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log, −7 for batched ledger writes (per-line ledger keys and labels out, the per-task flush key, the merge agent's LEDGER step and its line templates, the runtime-slot logs, the per-site null-merge logs and the background edge audit in), +46 for early unblock and graph readiness (the split/reopen/discard dispatch keys, labels, prompts and logs, the cancel and graph-dispatch logs, the stacked/re-entry brief and implementer wording, the stacked rebase and review-bead close, the held-back and re-entry logs, the reconcile split note, the detector and Metrics fields, the resume note), +33 for proactive slowness handling (noteSlowness and its items, the hot-file raise, the graph-bound arming and its audit reason, the detector's lane fields, the act-capable edge audit: change formatting, the edge-cuts dispatch key/label/prompt, the Edge cut: lines and their elided variants, effDeps' cut key), +8 for the round-1 planning split (planPrompt's walk and three scopes, the plan-rest key/label, its logs), +1 when the brief folded into the implementer (workspaceSetup's re-entry branch and the setup/no-base findings in, the brief dispatch key/label out); update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
+    check(scan.spans.length === 328,
+      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 328 — 215 after the D4 loop rewrite, +10 for the merge-evidence contract (clean-check and merge steps, mergeEvidence's diagnoses and logs, the Merge-cleanup line) and writeFence(), +17 for the failing-mergeCheck seam route (the check-fix and fix-review dispatch keys/labels, their logs and blocker findings, the re-merge, fixPrompt's check branch, checkFixReviewPrompt), +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log, −7 for batched ledger writes (per-line ledger keys and labels out, the per-task flush key, the merge agent's LEDGER step and its line templates, the runtime-slot logs, the per-site null-merge logs and the background edge audit in), +46 for early unblock and graph readiness (the split/reopen/discard dispatch keys, labels, prompts and logs, the cancel and graph-dispatch logs, the stacked/re-entry brief and implementer wording, the stacked rebase and review-bead close, the held-back and re-entry logs, the reconcile split note, the detector and Metrics fields, the resume note), +33 for proactive slowness handling (noteSlowness and its items, the hot-file raise, the graph-bound arming and its audit reason, the detector's lane fields, the act-capable edge audit: change formatting, the edge-cuts dispatch key/label/prompt, the Edge cut: lines and their elided variants, effDeps' cut key), +8 for the round-1 planning split (planPrompt's walk and three scopes, the plan-rest key/label, its logs), +1 when the brief folded into the implementer (workspaceSetup's re-entry branch and the setup/no-base findings in, the brief dispatch key/label out), +1 for the planner-null degrade log; update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
     // self-test: inject a raw backtick mid-way through the first literal's content and assert
     // the detector actually fires — a detector that cannot catch the known failure is decoration
     const [s, e] = scan.spans[0]
@@ -951,6 +951,44 @@ async function main() {
     check(out.counts['plan'] === 3, `bounded: exactly 3 plan attempts (got ${out.counts['plan']})`)
     check(out.result?.completed.length === 0 && out.result?.escalated.length === 0, 'no fabricated outcome for the un-planned ids')
     assertBucketsDisjoint(out.result)
+  }
+
+  scenario('null plan with already-mapped ready ids: those dispatch on the retained plan, only the unmapped wait')
+  {
+    const task = id => ({
+      [`impl:${id}`]: { id, status: 'IMPLEMENTED', base: SHA('a'), files: [] },
+      [`review:${id}`]: { id, status: 'CLEAN' },
+      [`merge:${id}`]: { id, merged: true, mergeExit: 0, mergeHead: true, head: SHA('b'), mergeBase: SHA('a'), rebaseConflictFiles: 0 },
+    })
+    const out = await run({ args: liveArgs(), canned: oneTaskCanned({
+      ...task('bd-102'), ...task('bd-103'),
+      // Round 1 maps bd-101 and bd-102; round 2's planner (needed for bd-103) returns null; round 3's maps bd-103.
+      'bd-ready': [{ ids: ['bd-101'] }, { ids: ['bd-102', 'bd-103'] }, { ids: ['bd-103'] }, { ids: [] }],
+      'plan': [
+        { planPath: PLANPATH, mapping: [{ n: 1, id: 'bd-101', files: [] }, { n: 2, id: 'bd-102', files: [] }] },
+        null,
+        { planPath: PLANPATH, mapping: [{ n: 1, id: 'bd-101', files: [] }, { n: 2, id: 'bd-102', files: [] }, { n: 3, id: 'bd-103', files: [] }] },
+      ],
+    }) })
+    assertNoThrow(out)
+    check(JSON.stringify([...(out.result?.completed ?? [])].sort()) === '["bd-101","bd-102","bd-103"]' && out.result?.stopReason === 'ready-drained', 'all three land; the null planner round was not abandoned', JSON.stringify(out.result))
+    const idx = label => out.trace.findIndex(t => t.label === label)
+    check(idx('impl:bd-102') < idx('impl:bd-103'), 'bd-102 (mapped) ran in the null-planner round; bd-103 waited for the next planner', JSON.stringify(out.counts))
+    check(!out.counts['unplanned-blocker:bd-103'] && out.result?.escalated.length === 0, 'the deferred id never takes the unplanned-blocker path', JSON.stringify(out.counts))
+    check(out.logs.some(l => l.includes('dispatching the 1 ready id(s) already mapped on the retained plan')), 'the degrade is logged')
+    assertBucketsDisjoint(out.result)
+  }
+
+  scenario('interleaved ready and planner nulls: neither infrastructure stop trips early')
+  {
+    const out = await run({ args: liveArgs(), canned: oneTaskCanned({
+      // ready null, planner null, ready null, planner null, then both answer.
+      'bd-ready': [null, { ids: ['bd-101'] }, null, { ids: ['bd-101'] }, { ids: ['bd-101'] }, { ids: [] }],
+      'plan': [null, null, { planPath: PLANPATH, mapping: [{ n: 1, id: 'bd-101', files: [] }] }],
+    }) })
+    assertNoThrow(out)
+    check(JSON.stringify(out.result?.completed) === '["bd-101"]' && out.result?.stopReason === 'ready-drained', 'four mixed nulls (two of each) do not stop the run; the work lands', JSON.stringify(out.result))
+    check(out.counts['plan'] === 3 && out.counts['bd-ready'] === 6, 'each stop counts only its own consecutive nulls', JSON.stringify(out.counts))
   }
 
   scenario('null implement, transient: no bucket, re-enters, completes once')
@@ -2376,7 +2414,8 @@ case "$1" in
     state | jq '. as $all | [ .[] | select(.issue_type == "epic" and .status != "closed") | .id as $e
       | [ $all[] | select(any((.dependencies // [])[]; .type == "parent-child" and .depends_on_id == $e)) ] as $k
       | select(($k | length) > 0 and all($k[]; .status == "closed"))
-      | {epic: {id: $e, status: "open"}, total_children: ($k | length), closed_children: ($k | length), eligible_for_close: true} ]' ;;
+      | {epic: {id: $e, status: "open"}, total_children: ($k | length), closed_children: ($k | length), eligible_for_close: true} ]
+      | if length == 0 then {closed: [], count: 0, reason: "All children completed", schema_version: 1} else . end' ;;
   ready)
     limit=100; labelled=0; review=0; prev=
     for a in "$@"; do
@@ -2519,6 +2558,13 @@ esac
         dir = newFixture({ closed: ['B'] })
         r = runScript(dir, 'close-in-tree-epics', ['R'])
         check(r.code === 0 && r.stdout.trim() === '{"rootClosed":false,"closedThisRun":[]}', 'nothing eligible in tree: one pass, nothing closed, root open', JSON.stringify(r))
+        rmSync(dir, { recursive: true, force: true })
+
+        dir = newFixture({ closed: [] })
+        r = runScript(dir, 'close-in-tree-epics', ['R'])
+        check(r.code === 0 && r.stdout.trim() === '{"rootClosed":false,"closedThisRun":[]}', 'no eligible epic anywhere (bd 1.3 answers an object, not []): exits 0, nothing closed', JSON.stringify(r))
+        r = runScript(dir, 'close-in-tree-epics', ['--help'])
+        check(r.code === 2 && /usage:/.test(r.stderr), '--help prints usage and exits 2, never runs the loop', JSON.stringify(r))
         rmSync(dir, { recursive: true, force: true })
 
         dir = newFixture()

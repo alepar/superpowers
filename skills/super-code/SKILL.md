@@ -108,7 +108,7 @@ outcome. A caller that records run state records
 these verbatim. The return also carries **`stopReason`** — `root-closed` (the one true
 completion), `ready-drained` (empty ready set, root still open: quarantined blockers remain),
 `stalled` (no-progress guard), or `ready-unavailable` / `plan-unavailable` (infrastructure outage:
-the `bd ready` or planner dispatch kept dying on terminal API errors). The last two are **never**
+the `bd ready` or planner dispatch kept dying on terminal API errors, with nothing mapped left to run; a clean round-boundary stop). The last two are **never**
 completion — never treat a stop as "done" without checking `stopReason`
 (`./coordinator-workflow.md`'s "Null dispatch policy"). Three additive fields: **`authRefused`** —
 tasks quarantined because the harness permission layer refused their commands (also in

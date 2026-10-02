@@ -221,7 +221,7 @@ Two rules, both mandatory in `./coordinator.js`:
 | `discard` (a cancelled task's worktree) | **The stale worktree may remain**: the task's next workspace setup is told to remove it and cut fresh, so a re-dispatch never reuses work built on a stack parent that did not land. Logged. |
 | `edge-audit` / `edge-cuts` (the background dependency-edge audit and its apply step) | **Opportunistic**: nothing gates on either. A null audit records nothing; a null apply leaves the safe changes unapplied and returns them as a `slowness` item. Logged. |
 | `bd-ready-recheck` (the post-closure re-query when Close reported in-tree closures) | **Opportunistic**: a null keeps the original concurrent ready result — logged, never a stopReason. |
-| `plan` | Round abandoned (nothing downstream can run without the mapping); bounded retry, then `stopReason: 'plan-unavailable'`. |
+| `plan` | **Degrade first**: ready ids an earlier round already mapped still dispatch on the retained plan, and only the unmapped ids wait for a later round's planner (never the unplanned-blocker path). With nothing mapped the round is abandoned; three consecutive such planner nulls stop the run with `stopReason: 'plan-unavailable'`. |
 | `plan-rest` (round 1's second planner) | **Opportunistic**: logged; the beads it would have mapped are planned by later rounds' refill planning. Never a stopReason. |
 | `read-ledger` | Resume reconstructs nothing, loudly: `bd ready` remains the authority on closed work, but prior-run `pendingRetry` bounds are lost for this run — logged, not silent. |
 | `read-ledger:finish` (the Metrics re-read) | Logged as a NULL dispatch; the four `Metrics:` lines are then written as `Metrics: UNAVAILABLE — the Finish ledger re-read returned null` rather than as zero counts. |
@@ -234,8 +234,11 @@ Two rules, both mandatory in `./coordinator.js`:
 one null* is retried up to two consecutive times before the no-progress guard stalls the run — one
 transient failure costs a round, not a run, while a permanently failing dispatch still terminates
 through the same stall guard once the bound is spent. The counter resets on any round that makes
-real progress. The `bd-ready`/`plan` nulls share the same counter (their rounds are abandoned
-before the guard is reached), so a mixed outage is bounded too.
+real progress. The `bd-ready` and `plan` stops each count only their own consecutive nulls (three
+attempts), so a mixed outage cannot trip either stop early, and each is still bounded. Both stops
+happen at a round boundary: a round drains its chains, top-ups and merge queue before the next
+round's Ready and Plan, so nothing is in flight and the caller relaunches without asking
+(SKILL.md "Unattended runs").
 
 ## Authoring pitfalls (plumbing that crashes the coordinator before real work runs)
 

@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Close every close-eligible epic in one epic's tree, to a fixpoint. `bd epic close-eligible` is
 # repo-global (no --label/--parent scoping) and closes one tree level per call, so this loops:
-# preview with --dry-run --json, keep the candidates epic-tree says are IN-TREE, `bd close` each
+# preview with --dry-run --json (an array of candidates; bd 1.3 returns an object instead when there
+# are none), keep the candidates epic-tree says are IN-TREE, `bd close` each
 # one individually, repeat. It stops on a pass that closes zero ids — not on an empty preview,
 # because an out-of-tree epic that is permanently eligible reappears in every preview. The
 # unfiltered mutating form is never called: it would close other trees' epics.
@@ -12,7 +13,7 @@
 # 4 jq unavailable (prints a JQ_UNAVAILABLE: line on stdout).
 set -euo pipefail
 
-if [ $# -ne 1 ]; then
+if [ $# -ne 1 ] || [ "${1#-}" != "$1" ]; then
   echo "usage: close-in-tree-epics EPIC_ID" >&2
   exit 2
 fi
@@ -29,7 +30,8 @@ pass=0
 while [ "$pass" -lt 50 ]; do
   pass=$((pass + 1))
   candidates=$(bd epic close-eligible --dry-run --json |
-    jq -r '.[] | if type == "string" then . elif has("epic") then .epic.id else .id end')
+    jq -r '(if type == "array" then .[] else empty end)
+      | if type == "string" then . elif has("epic") then .epic.id else .id end')
   inTree=
   if [ -n "$candidates" ]; then
     # shellcheck disable=SC2086  # ids are whitespace-free tokens

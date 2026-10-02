@@ -121,7 +121,11 @@ else if (Array.isArray(config.testPaths) && config.testPaths.length === 0) log(`
 // a null means (see "Null dispatch policy"); there is no blanket default, because most defaults would
 // fabricate an outcome.
 let nullsThisRound = 0
-let consecutiveNullRounds = 0  // rounds abandoned/unproductive due to nulls, since the last real progress
+let consecutiveNullRounds = 0  // no-progress rounds that swallowed a null, since the last real progress
+// Infrastructure stops count their own dispatch's consecutive nulls, so a mix of ready and planner
+// nulls doesn't trip either stop early.
+let consecutiveReadyNulls = 0
+let consecutivePlanNulls = 0
 // Adaptation point: a coordinator with a budget replaces this one predicate. It gates the two
 // mid-round work starters (the top-up query and the same-round RESOLVE retry), not the round-boundary
 // refill.
@@ -421,15 +425,16 @@ while (true) {
   // A null ready means the query never ran, not that nothing is ready: own stop reason, bounded
   // retry ("Null dispatch policy").
   if (!ready) {
-    if (consecutiveNullRounds >= 2) {
+    if (consecutiveReadyNulls >= 2) {
       stopReason = 'ready-unavailable'
-      log(`bd ready unavailable for ${consecutiveNullRounds + 1} consecutive attempts — stopping with stopReason 'ready-unavailable'. This is an infrastructure outage, NOT completion: the epic may still hold ready work.`)
+      log(`bd ready unavailable for ${consecutiveReadyNulls + 1} consecutive attempts — stopping with stopReason 'ready-unavailable' at a round boundary (nothing in flight). This is an infrastructure outage, NOT completion: the epic may still hold ready work; the caller relaunches.`)
       break
     }
-    consecutiveNullRounds++
-    log(`bd ready returned null — retrying next round (null-retry ${consecutiveNullRounds}/2). An empty ready set and an unavailable ready query are different things; only the former can end the run as drained.`)
+    consecutiveReadyNulls++
+    log(`bd ready returned null — retrying next round (null-retry ${consecutiveReadyNulls}/2). An empty ready set and an unavailable ready query are different things; only the former can end the run as drained.`)
     continue
   }
+  consecutiveReadyNulls = 0
   // Only `escalated` (this run's quarantine) gates dispatch. `bd ready` is the authority on closed
   // beads; filtering by `completed` would make an epic unclosable when a merge landed but its `bd close`
   // failed, whereas re-dispatching makes the re-run a no-op that closes it. pendingRetry ids are due
@@ -458,22 +463,34 @@ while (true) {
   // second planner maps the rest of the tree beside them (`planRest`, in the Implement phase).
   let planned = lastPlanned
   const planRest = !lastPlanned
+  // Ids the planner left unmapped because it returned null: they wait for a later round's planner
+  // instead of taking the unplanned-blocker path.
+  let deferredIds = []
   if (!lastPlanned || [...ids, ...reentryIds].some(id => !lastPlanned.mapping.some(m => m.id === id))) {
     planned = await dispatch(() => planPrompt(epicId, ids, planFileName, reentryIds, planRest ? 'ready' : 'refill'), 'plan',
       { label: 'plan', phase: 'Plan', ...tier('planner'), schema: PLANNED })
-    // Null plan: nothing can run without the mapping, so abandon the round (bounded like ready). An
-    // empty mapping would route every id through the unplanned-blocker path.
-    if (!planned) {
-      if (consecutiveNullRounds >= 2) {
+    // Null plan: ids already mapped by an earlier round still run on the retained mapping, and only
+    // the unmapped ones wait. With nothing mapped the round is abandoned, bounded like ready. An empty
+    // mapping is never substituted: it would route every id through the unplanned-blocker path.
+    const mappedNow = lastPlanned ? [...ids, ...reentryIds].filter(id => lastPlanned.mapping.some(m => m.id === id)) : []
+    if (!planned && mappedNow.length) {
+      planned = lastPlanned
+      deferredIds = [...ids, ...reentryIds].filter(id => !mappedNow.includes(id))
+      consecutivePlanNulls = 0
+      log(`planner returned null — dispatching the ${mappedNow.length} ready id(s) already mapped on the retained plan; ${deferredIds.length} unmapped id(s) wait for a later round's planner: ${JSON.stringify(deferredIds)}`)
+    } else if (!planned) {
+      if (consecutivePlanNulls >= 2) {
         stopReason = 'plan-unavailable'
-        log(`planner unavailable for ${consecutiveNullRounds + 1} consecutive attempts — stopping with stopReason 'plan-unavailable'. NOT completion; the epic still holds ready work: ${JSON.stringify(ids)}`)
+        log(`planner unavailable for ${consecutivePlanNulls + 1} consecutive attempts with nothing mapped to run — stopping with stopReason 'plan-unavailable' at a round boundary (nothing in flight). NOT completion; the epic still holds ready work: ${JSON.stringify(ids)}; the caller relaunches.`)
         break
       }
-      consecutiveNullRounds++
-      log(`planner returned null — abandoning this round, retrying next (null-retry ${consecutiveNullRounds}/2)`)
+      consecutivePlanNulls++
+      log(`planner returned null with nothing mapped to run — abandoning this round, retrying next (null-retry ${consecutivePlanNulls}/2)`)
       continue
+    } else {
+      consecutivePlanNulls = 0
+      lastPlanned = planned
     }
-    lastPlanned = planned
   } else {
     log(`plan: all ${ids.length} ready id(s) already mapped — skipping the planner dispatch this round`)
   }
@@ -712,11 +729,11 @@ while (true) {
   const heldBack = ids.filter(id => (rowOf(id) ? effDeps(rowOf(id)) : []).some(d => escalated.has(d) || pendingRetry.has(d)))
   if (heldBack.length) log(`held back ${heldBack.length} ready id(s) whose in-tree blocker is quarantined or awaiting its retry this run (bd sees that blocker's task bead closed): ${heldBack.join(', ')}`)
   const plannedIds = ids.filter(id => ordinalFor(id) !== undefined && !heldBack.includes(id))
-  const unplannedIds = ids.filter(id => ordinalFor(id) === undefined)
+  const unplannedIds = ids.filter(id => ordinalFor(id) === undefined && !deferredIds.includes(id))
   const reentryPlanned = reentryIds.filter(id => ordinalFor(id) !== undefined)
-  for (const id of reentryIds.filter(id => ordinalFor(id) === undefined)) log(`review re-entry: ${id} has no mapping row (the planner did not restore it) — its review bead stays open for a later round`)
+  for (const id of reentryIds.filter(id => ordinalFor(id) === undefined && !deferredIds.includes(id))) log(`review re-entry: ${id} has no mapping row (the planner did not restore it) — its review bead stays open for a later round`)
   // Everything ready is held back behind quarantined blockers: the same drain as an empty ready set.
-  if (heldBack.length && !plannedIds.length && !unplannedIds.length && !reentryPlanned.length) { stopReason = 'ready-drained'; break }
+  if (heldBack.length && !plannedIds.length && !unplannedIds.length && !reentryPlanned.length && !deferredIds.length) { stopReason = 'ready-drained'; break }
 
   // Dispatch is a sliding window bounded by `cap`; each task has its own worktree, so the only
   // conflict point is the rebase at the serial merge. `filesTouched` limits how many in-flight tasks
