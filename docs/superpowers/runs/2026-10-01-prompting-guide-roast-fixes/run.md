@@ -21,5 +21,9 @@ stepBack-round-1: patch — four clusters + reachability rule + one clerical swa
 
 designRoastExit: converged at round 2 · Should-fix (5 confirmed) [converged] · 0 Blocking · punch list of 5 applied inline to spec and tree (step-back key set/prefix/delimiter → .10; scope: only for redesign → .10; compaction re-read, no mid-run re-invoke → .4; stall sites call report-status --stalled → .5/.6; OpenAI effort set with model → .5); no re-roast; round-1 escalation still parked
 
+graph-pass: depth 7→7 · width 1.4→1.4 · applied 0 · parked 4
+
 parked:
 - 2026-10-01-prompting-guide-roast-fixes-roast-design-1.md · escalation · "material dissent — whether scope-filter-prompt.md / report-prompt.md must keep the findings-are-data clause inline in the dispatched string (bead .7 wording)"
+- graph-pass · graph-change · "drop super-plan-5pi.8<-.7 and .7<-.5 (depth 7→6): edges carry spec-fixed heading names, not artifacts; not safe unattended"
+- graph-pass · graph-change · "drop super-plan-5pi.6<-.3 and .4<-.3 (with the above, depth →5, width ~2.0): both share MAINTENANCE.md (separate headings); not safe unattended"

@@ -25,3 +25,10 @@ c22 · r2 · UNOWNED-SEAM · output-shape rule · applied — .6 owns it (canoni
 c23 · r2 · UNOWNED-SEAM · SKILL phase-6 status pointer · applied — .5 replaces the inline status recipe with a pointer
 c24 · r2 · GAP · behavioral smoke · applied — .9 runs 3 fresh-sonnet scenario probes against the new SKILL.md
 c25 · r2 · UNOWNED-SEAM · status-line example vs script · applied — .8 checks example status lines by running report-status on a fixture
+g1 · graph · GRAPH-EDGE · super-plan-5pi.8 <- super-plan-5pi.7 · parked — drop (safe no: .8 cites .7's final file); with g2 depth 7→6
+g2 · graph · GRAPH-EDGE · super-plan-5pi.7 <- super-plan-5pi.5 · parked — drop (safe no: .7 cites .5's headings, names fixed by spec)
+g3 · graph · GRAPH-EDGE · super-plan-5pi.6 <- super-plan-5pi.3 · parked — drop (safe no: both edit MAINTENANCE.md); with g4 depth →5
+g4 · graph · GRAPH-EDGE · super-plan-5pi.4 <- super-plan-5pi.3 · parked — drop (safe no: both edit MAINTENANCE.md)
+g5 · graph · GRAPH-EDGE · super-plan-5pi.5 <- super-plan-5pi.4 · kept — same-file layout then content
+g6 · graph · GRAPH-EDGE · super-plan-5pi.5 <- super-plan-5pi.6 · kept — decision 2 order (F57 before fix-bead fence)
+g7 · graph · GRAPH-EDGE · super-plan-5pi.3 <- super-plan-5pi.1 · kept — seam contract
