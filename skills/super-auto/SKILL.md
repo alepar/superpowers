@@ -163,7 +163,7 @@ own, or the flags strand and the sequence is lost. Each row's parenthetical is t
 | # | Phase (`run.md` token) | Skill | Note |
 |---|---|---|---|
 | 1 | Design (`design`) | `super-design` | Pass: the goal (on a resume, `run.md`'s recorded `idea:`), the artifact-directory override, the `run.md` path together with run-state.md, whose field names and formats govern every write (a co-writer that never sees the contract invents an incompatible one), the `roast-design` phase token to write when that stage begins, the design mode (Mode B when `planOneShot` or `autonomous` is set), `autonomous` and `skipPlanRoast`, and — resuming mid-roast — the starting round. Say the hand-off is `super-auto`'s. It drives the root brainstorm, decomposition, every subepic brainstorm, the coverage loop and the design roast, recording into `run.md` as it goes. |
-| 2 | Design roast (`roast-design`) | `super-roast` (design) | Runs inside phase 1's `super-design` invocation, via its own offer; fix loop capped per run-state.md item 5 (Roast iteration counts), cap handling in §Roast caps. In a one-shot run without `autonomous`, the run stops after this phase for design review (§Autonomous mode). `super-auto` holds no control while it runs, so `super-design` writes `phase: roast-design`, the report paths and `roastDesignRound` into `run.md` itself, per its §Run-State File contract (§Who writes run.md). After the roast loop, `super-design`'s parallelism pass reshapes the bead graph (safe edge cuts applied, the rest parked as `graph-change` items) and records its `graph-pass:` line before handing back. |
+| 2 | Design roast (`roast-design`) | `super-roast` (design) | Runs inside phase 1's `super-design` invocation, via its own offer; fix loop capped per run-state.md item 5 (Roast iteration counts), cap handling in §Roast caps. In a one-shot run without `autonomous`, the run stops after this phase for design review (§Autonomous mode). `super-auto` holds no control while it runs, so `super-design` writes `phase: roast-design`, the report paths and `roastDesignRound` into `run.md` itself, per `super-design` §Run-State File (§Who writes run.md). After the roast loop, `super-design`'s parallelism pass reshapes the bead graph (safe edge cuts applied, the rest parked as `graph-change` items) and records its `graph-pass:` line before handing back. |
 | 3 | Code (`code`) | `super-code` | The integration branch is this run's branch, and its integration worktree is this run's worktree — both exist already, from pre-flight (§Run directory). Create nothing; pass them — the worktree's real path explicitly, as `integrationWorktree`, never left for `super-code` to derive: the run branch `super-auto/<slug>` contains a slash, and `super-code`'s no-arg fallback derives a slash-collapsed `.worktrees/` path that matches no worktree this run ever created. (`branch` was recorded at run-directory creation.) Autonomous or interactive per flag; under `autonomous`, pass `config.edgeCuts: 'apply-safe'` so the coordinator's edge audit may apply safe edge cuts. Say in the invocation that `super-auto` owns the finish — there is no config flag, and without it `super-code` merges and deletes the worktree the report still needs. Also pass the friction-log path (`<run-dir>/friction.md`) so phase 3 can append to it, and `deferSweep: true` on this and every fix-loop re-entry: the one full-suite sweep runs in phase 6 (each merge inside `super-code` still runs its build-only `mergeCheck` — compile/typecheck, no tests). |
 | 4 | Code roast (`roast-code`) | `super-roast` (PR) | Against the live integration branch, diffed against `run.md`'s `base`. Pass the run directory as the report-location override, the iteration number from `roastCodeRound` (without it round 2's report overwrites round 1's file), `autonomous` when the run is (without it super-roast pauses for a human at its loop exits), and on rounds ≥2 the prior report — without which the round re-litigates what the last one already cleared |
 | 5 | Fix loop (`fix-loop`) | — | Per round: step-back, scope filter, fix beads, re-enter `super-code`, loop to phase 4; see §Phase 5 — the code fix loop. |
@@ -176,7 +176,7 @@ Phase 7 is entered only through §Invariants I2 (phase-7 gate).
 
 A match resumes from its recorded phase (run-state.md item 2 (Current phase)). `run.md` is created the moment the run directory exists, with `phase: design` and the flags already written — before `super-design` itself runs — so a crash mid-run still resumes without re-asking. It is written again after every phase transition and after every roast round: by `super-auto` for phases 3–7, and by `super-design` for phases 1–2, which run inside its invocation.
 
-Phases 1 and 2 run inside one `super-design` invocation, so `super-design` writes `run.md` during them. `super-auto` holds no control between invoking it and its return — the longest, most expensive stretch of a run, and the likeliest place for a session to end. Rather than leave that window unrecorded, hand `super-design` the `run.md` path along with the artifact-directory override; its §Run-State File contract (when a caller supplies one) has it record the spec path, the epic id, each roast report, the roast round count and each gate decision as each becomes true, plus the `roast-design` phase token when that stage begins. (`branch` and `base` are already recorded — you created the workspace in pre-flight.)
+Phases 1 and 2 run inside one `super-design` invocation, so `super-design` writes `run.md` during them. `super-auto` holds no control between invoking it and its return — the longest, most expensive stretch of a run, and the likeliest place for a session to end. Rather than leave that window unrecorded, hand `super-design` the `run.md` path along with the artifact-directory override; `super-design` §Run-State File (when a caller supplies one) has it record the spec path, the epic id, each roast report, the roast round count and each gate decision as each becomes true, plus the `roast-design` phase token when that stage begins. (`branch` and `base` are already recorded — you created the workspace in pre-flight.)
 
 Field ownership is split and does not overlap: `super-design` writes what phases 1–2 produce; `super-auto` writes everything from phase 3 on (`codeBuckets`, `roast-code`, `roastCodeRound`, and every phase token from `code` onward) — plus `roast-design (skipped)` when `skipPlanRoast` is set, since a stage that never begins is one `super-design` never writes a token for, and `capped-blocking` when `super-design` returns stopped on it. Neither rewrites the other's fields.
 
@@ -237,7 +237,7 @@ go to `report.md`'s Remaining, tagged `out of scope (filtered)`, and are never f
 Reopen the epic (`bd update <epicId> --status open`). File in-scope findings and any
 applied redesign as beads — an in-scope cluster as one bead covering all its members, whose
 description carries the cluster's `rule:` and says to apply it to every instance, not only the
-cited lines — using the fields `super-design`'s §Decomposition lists (title, short
+cited lines — using the fields listed in `super-design` §Decomposition (title, short
 description, files-touched hint, blocking deps; without the files hint every fix bead runs
 alone) and with the flags in §Invariants I3 (fix-bead flags). Each fix bead's description links every `roast-code` report
 so far and the step-back record, and the amended spec section when a redesign applies, so the
@@ -277,7 +277,7 @@ Filled by the dispatch table.
 
 > Autonomy begins at launch, once pre-flight passes, and ends at the phase-7 hand-back.
 
-The design gates are `super-design`'s (its §Gates by Mode); the flags pick the row.
+The design gates are in `super-design` §Gates by Mode; the flags pick the row.
 
 - `autonomous`: the top split is applied as recommended, recorded, and named in the next
   summary, and the run goes straight on into phase 3.
@@ -305,7 +305,7 @@ not asked, and the road not taken is parked (`run-state.md`'s `degraded-verdict`
   with the findings in hand; the unexplored raise is parked, not silently dropped.
 - The `clean [low coverage]` / `clean [panel-capped: N unverified]` three-way gate, at both
   roasts: answered proceed; the qualifier is parked.
-- Loop-exit pauses (both loops): `super-design`'s §Unattended Runs already records and hands
+- Loop-exit pauses (both loops): `super-design` §Unattended Runs already records and hands
   back instead of pausing when the caller owns the hand-off; whatever was open lands in `run.md` and
   the report.
 - Fix designs are applied without asking or waiting — the request to run autonomously is the
@@ -334,7 +334,7 @@ The round counts are run-state.md item 5 (Roast iteration counts). When a cap tr
 All artifacts of one run live under `docs/superpowers/runs/YYYY-MM-DD-<slug>/`. Slug and date are both fixed once, before phase 1:
 take the idea's content words, drop stopwords and any flag clause, keep the first three to five,
 kebab-case them — "add a per-tenant rate limiter to the public API, run it autonomously" gives
-`per-tenant-rate-limiter`. Concrete because resume.md §Finding a run globs on it: two sessions that slug one idea
+`per-tenant-rate-limiter`. Concrete because resume.md globs on it (§Finding a run): two sessions that slug one idea
 differently create two runs for one feature, which resume.md's idea match exists to catch — `brainstorming` has not produced
 a title yet, and the directory must exist to be handed to `super-design` as an override at phase 1's
 invocation, which relays it to every `brainstorming` iteration it runs (root and nested).
@@ -382,7 +382,7 @@ Every link into a run directory carries the full `YYYY-MM-DD-<slug>` name, never
 That includes the `specs/INDEX.md` row for this run, which links to
 `../runs/YYYY-MM-DD-<slug>/<the spec's actual filename>` — `brainstorming` names it
 `YYYY-MM-DD-<topic>-design.md`, and redirecting the directory does not rename the file, so never
-hard-code `design.md`. The date prefix on the directory is not decoration: resume.md §Finding a run globs
+hard-code `design.md`. The date prefix on the directory is not decoration: resume.md (§Finding a run) globs
 `runs/*-<slug>/run.md`, so a link written without it points at a directory that does not exist, and
 a human following that link concludes the run is missing while the run is sitting on disk.
 
