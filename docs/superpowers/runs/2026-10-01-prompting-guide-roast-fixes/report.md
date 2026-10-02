@@ -1,5 +1,5 @@
 status: completed with 0 unresolved Blocking, 1 escalations [degraded: final review: not ready — 1 must-fix (fix-bead done-clause contradiction, wording from the spec; needs the human's ruling); stepBack-round key collision deferred (pre-existing, field names frozen)]
-metrics: pending (upstream-feedback not yet run)
+metrics: docs/superpowers/runs/2026-10-01-prompting-guide-roast-fixes/upstream-feedback-draft.md (parked, not filed)
 
 Branch `super-auto/prompting-guide-roast-fixes` @ f679cfc, base `main` @ 2bf1d53. Epic `super-plan-5pi` closed (13/13 beads). The status line is the output of the branch's own `scripts/report-status run.md --tip <HEAD>`, which matches what this run's loaded report contract derives by hand.
 
