@@ -1,0 +1,12 @@
+[Should-fix] skills/super-auto/scripts/report-status:92
+[Should-fix] skills/super-auto/scripts/report-status:121
+[Should-fix] skills/super-auto/scripts/report-status:118
+[Should-fix] skills/super-auto/SKILL.md:182
+[Should-fix] skills/super-auto/MAINTENANCE.md:97
+[Nit] skills/super-auto/scripts/report-status:112
+[Nit] skills/super-auto/scripts/report-status:118; skills/super-auto/scripts/report-status:122
+[Nit] skills/super-auto/scripts/report-status:72; skills/super-auto/scripts/report-status:70
+[Nit] skills/super-auto/SKILL.md:182
+[Nit] skills/super-auto/SKILL.md:174
+[FYI] skills/super-auto/scripts/step-back-check:58
+[FYI] skills/super-auto/SKILL.md:184

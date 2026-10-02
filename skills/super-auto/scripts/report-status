@@ -1,0 +1,180 @@
+#!/usr/bin/env bash
+# The report.md status line for one super-auto run, computed from its run.md. This script is the
+# only source of the status line and its degraded qualifiers; paste its output verbatim.
+#
+#   report-status RUN_MD [--tip SHA] [--stalled PHASE]
+#
+# RUN_MD: the run's run.md (fields per run-state.md). --tip SHA: the run branch's HEAD, the commit
+# the report describes; every report-prompt.md call passes it, and without it a sweep's stamp is
+# still required but not compared. A stamp other than SHA is still at the tip when `git diff` finds
+# no change between the two commits outside RUN_MD's directory, the run directory that phase 6
+# commits run.md, friction.md and report.md into after the sweep; a git failure counts as a change.
+# --stalled PHASE: the orchestrator judged the run stalled at
+# PHASE, a state run.md cannot carry.
+#
+# Status, first match wins:
+#   --stalled PHASE                         -> status: stalled at phase PHASE
+#   phase: capped-blocking                  -> status: stalled at phase capped-blocking
+#   codeBuckets.stalled true                -> status: stalled at phase code
+#   N > 0, M > 0 or pendingRetry non-empty  -> status: completed with N unresolved Blocking, M escalations
+#   otherwise                               -> status: clean
+# The two non-stalled forms take ` [degraded: q1, q2, ...]` when any qualifier applies.
+# N: finding keys in `roastCodeCapped:` plus, unless it ends `stopped`, in `roastDesignCapped:`.
+# M: parked `escalation` records plus ids in codeBuckets.escalated.
+#
+# Fields read, each with its writer and what its absent or other form gives:
+#   flags (skipPlanRoast, skipCodeRoast): SKILL.md §Pre-flight step 4. No line, or a key missing: exit 2.
+#   phase: SKILL.md §Who writes run.md. No line, or not a run-state.md token: exit 2.
+#   parked: super-design (phases 1-2), super-auto (phase 3 on). Absent: no records.
+#   roastDesignCapped: super-design §Adversarial Review Loop (root only). Absent: nothing; a last
+#     slot other than `stopped` counts as `proceeded`.
+#   roastCodeCapped: SKILL.md §Cap disposition, on a cap or thrash exit with Blocking open. Absent: nothing.
+#   codeBuckets: run-state.md item 6 at each phase 3->4 transition and re-entry; `sweep` rewritten by
+#     SKILL.md §Phase 6 — report steps 1 and 2. No block at phase report, finish or done: `final
+#     review: none recorded` and `sweep: none recorded`; no block earlier: nothing. A bucket line
+#     missing from the block: `<bucket> bucket: none recorded` (review and sweep: their own
+#     `none recorded` forms).
+#
+# Qualifiers, in this order, each once: `design roast capped-blocking` (roastDesignCapped not
+# stopped); each parked `degraded-verdict` record's qualifier (the bracketed text in its part before
+# ` — `, else that part); `plan roast skipped` / `code roast skipped` (flags); then the codeBuckets
+# ones: missing-bucket qualifiers, `code findings parked` (parked non-empty), `tasks pending retry`
+# (pendingRetry non-empty), `final review: <review>` (review not CLEAN;
+# `none recorded` when empty), then the sweep:
+#   `sweep: <sweep>`              it is not a pass: it carries a failing signal (a non-zero failed
+#                                 or errors count, FAIL, DEFERRED, INVALID, UNAVAILABLE) or lacks
+#                                 the pass form `<P> passed, 0 failed, 0 errors`;
+#   `sweep: unstamped — <sweep>`  a pass with no ` @ <sha>` stamp;
+#   `sweep: not at tip — <sweep>` a pass whose stamp is not --tip and differs from it outside the
+#                                 run directory.
+#
+# Prints the status line, then one `qualifier: <text>` line per qualifier, in the order above.
+# Bash and awk, plus git only to compare a sweep stamp with --tip: needs no jq, so it never prints
+# JQ_UNAVAILABLE.
+# Exit 0 ok, 2 bad input.
+set -euo pipefail
+
+usage() { echo "usage: report-status RUN_MD [--tip SHA] [--stalled PHASE]" >&2; exit 2; }
+run='' stalled='' tip=''
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --stalled) [ $# -ge 2 ] || usage; stalled=$2; shift 2 ;;
+    --tip) [ $# -ge 2 ] || usage; tip=$2; shift 2 ;;
+    -*) usage ;;
+    *) [ -z "$run" ] || usage; run=$1; shift ;;
+  esac
+done
+[ -n "$run" ] || usage
+[ -f "$run" ] || { echo "run.md not found: $run" >&2; exit 2; }
+case "$stalled" in
+  ''|design|roast-design|capped-blocking|code|roast-code|fix-loop|report|finish) ;;
+  *) echo "not a stallable phase: $stalled" >&2; exit 2 ;;
+esac
+[ -z "$tip" ] || [[ "$tip" =~ ^[0-9a-f]{7,40}$ ]] || { echo "not a commit SHA: $tip" >&2; exit 2; }
+rundir=$(CDPATH= cd -- "$(dirname -- "$run")" && pwd)
+
+RS_RUNDIR=$rundir awk -v stalled="$stalled" -v tip="$tip" '
+  function trim(s) { sub(/^[ \t]+/, "", s); sub(/[ \t\r]+$/, "", s); return s }
+  function truthy(v) { v = tolower(trim(v)); return v == "true" || v == "t" || v == "yes" || v == "1" }
+  function isempty(v) { v = tolower(trim(v)); return v == "" || v == "none" || v == "-" }
+  function after(s, label) { return trim(substr(s, length(label) + 1)) }
+  function countids(v,   n, p, i, c) {
+    if (isempty(v)) return 0
+    n = split(v, p, ","); c = 0
+    for (i = 1; i <= n; i++) if (trim(p[i]) != "") c++
+    return c
+  }
+  # Finding keys (`[SEV] <loc>` or `rN [SEV] <loc>`) may hold commas: count one per key start.
+  function countkeys(v,   s, c) {
+    if (isempty(v)) return 0
+    if (index(v, "[") == 0) return countids(v)
+    s = "," v; c = 0
+    while (match(s, /,[ \t]*(r[0-9]+ )?\[/)) { c++; s = substr(s, RSTART + RLENGTH) }
+    return c
+  }
+  function addq(q) { q = trim(q); if (q != "" && !(q in seenq)) { seenq[q] = 1; qs[++nq] = q } }
+  # The qualifier sits in the part before ` — `; the free-text tail may hold brackets of its own.
+  function verdictq(t,   i) {
+    t = trim(t); sub(/^"/, "", t); sub(/"$/, "", t)
+    i = index(t, " — "); if (i) t = substr(t, 1, i - 1)
+    if (match(t, /\[[^]]*\]/)) return substr(t, RSTART + 1, RLENGTH - 2)
+    return t
+  }
+  # True when commits a and b differ only inside the run directory (RS_RUNDIR, the directory
+  # holding RUN_MD). Any git failure, such as a SHA that does not resolve, counts as a difference.
+  function codesame(a, b) {
+    return system("git -C \"$RS_RUNDIR\" diff --quiet " a " " b " -- \":/\" \":(exclude).\" > /dev/null 2>&1") == 0
+  }
+  function sweepq(s,   sha) {
+    if (s == "") return "sweep: none recorded"
+    if (s ~ /(^|[^0-9])0*[1-9][0-9]* (failed|errors)/ || s ~ /FAIL|DEFERRED|INVALID|UNAVAILABLE/) return "sweep: " s
+    if (s !~ /(^|[^0-9])[0-9]+ passed, 0+ failed, 0+ errors/) return "sweep: " s
+    if (!match(s, /@[ \t]*[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]+/)) return "sweep: unstamped — " s
+    sha = substr(s, RSTART + 1, RLENGTH - 1); sub(/^[ \t]+/, "", sha)
+    if (tip != "" && index(tip, sha) != 1 && index(sha, tip) != 1 && !codesame(sha, tip)) return "sweep: not at tip — " s
+    return ""
+  }
+  { sub(/\r$/, "") }
+  /^[^ \t-]/ { block = "" }
+  /^flags:/ {
+    haveflags = 1
+    n = split(after($0, "flags:"), f, /[ \t]+/)
+    for (i = 1; i <= n; i++) if (split(f[i], kv, "=") == 2) flag[kv[1]] = kv[2]
+    next
+  }
+  /^phase:/ { phase = after($0, "phase:"); sub(/[ \t]*\(skipped\)$/, "", phase); next }
+  /^parked:/ { block = "parked"; next }
+  /^codeBuckets:/ { block = "cb"; havecb = 1; next }
+  /^roastDesignCapped:/ {
+    n = split(after($0, "roastDesignCapped:"), p, / · /)
+    if (n < 2 || trim(p[n]) !~ /^stopped/) { dcapped = 1; blocking += countkeys(p[1]) }
+    next
+  }
+  /^roastCodeCapped:/ { split(after($0, "roastCodeCapped:"), p, / · /); blocking += countkeys(p[1]); next }
+  block == "parked" && /^[ \t]*- / {
+    n = split($0, p, / · /)
+    kind = trim(p[2]); text = p[3]
+    for (i = 4; i <= n; i++) text = text " · " p[i]
+    if (kind == "escalation") esc++
+    else if (kind == "degraded-verdict") dv[++ndv] = verdictq(text)
+    next
+  }
+  block == "cb" && /^[ \t]+[A-Za-z]+:/ {
+    line = trim($0); k = substr(line, 1, index(line, ":") - 1)
+    cb[k] = after(line, k ":"); hascb[k] = 1
+    next
+  }
+  END {
+    if (!haveflags || phase == "") { print "run.md has no flags: or phase: line" > "/dev/stderr"; exit 2 }
+    if (!("skipPlanRoast" in flag) || !("skipCodeRoast" in flag)) { print "flags: line lacks skipPlanRoast= or skipCodeRoast=" > "/dev/stderr"; exit 2 }
+    if (phase !~ /^(design|roast-design|capped-blocking|code|roast-code|fix-loop|report|finish|done)$/) { print "not a phase token: " phase > "/dev/stderr"; exit 2 }
+    if (dcapped) addq("design roast capped-blocking")
+    for (i = 1; i <= ndv; i++) addq(dv[i])
+    if (truthy(flag["skipPlanRoast"])) addq("plan roast skipped")
+    if (truthy(flag["skipCodeRoast"])) addq("code roast skipped")
+    if (havecb) {
+      split("escalated pendingRetry parked stalled", need, " ")
+      for (i = 1; i <= 4; i++) if (!(need[i] in hascb)) addq(need[i] " bucket: none recorded")
+      if (!isempty(cb["parked"])) addq("code findings parked")
+      pending = countids(cb["pendingRetry"])
+      if (pending) addq("tasks pending retry")
+      esc += countids(cb["escalated"])
+      review = trim(cb["review"])
+      if (review != "CLEAN") addq("final review: " (review == "" ? "none recorded" : review))
+      addq(sweepq(trim(cb["sweep"])))
+      codestalled = truthy(cb["stalled"])
+    } else if (phase == "report" || phase == "finish" || phase == "done") {
+      addq("final review: none recorded")
+      addq("sweep: none recorded")
+    }
+    suffix = ""
+    for (i = 1; i <= nq; i++) suffix = suffix (i == 1 ? " [degraded: " : ", ") qs[i]
+    if (nq) suffix = suffix "]"
+    if (stalled != "") print "status: stalled at phase " stalled
+    else if (phase == "capped-blocking") print "status: stalled at phase capped-blocking"
+    else if (codestalled) print "status: stalled at phase code"
+    else if (blocking || esc || pending) print "status: completed with " (blocking + 0) " unresolved Blocking, " (esc + 0) " escalations" suffix
+    else print "status: clean" suffix
+    for (i = 1; i <= nq; i++) print "qualifier: " qs[i]
+  }
+' "$run"
