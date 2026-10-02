@@ -125,4 +125,12 @@ The owner decided all seven conflicts (`super-auto-roast-decisions.md`) and set 
 
 ## Post-Implementation Notes
 
+**Changes vs. original design (2026-10-02):**
+- `report-status` takes `--tip <sha>` as well as `--stalled <phase>`. The tip is the commit whose code tree the sweep measured, so later commits that only touch the run directory don't make a green sweep read stale.
+- The sweep result has a pinned grammar in run-state.md's field table: super-code's count form plus ` @ <sha>`. A phase-5 exit with Blocking findings still open writes `roastCodeCapped:` at thrash as well as at the cap.
+- Phase 5 names its handoff files per consumer. Step 1 validates against an every-round, `rN`-prefixed keys file, and the step-back is told to use only those keys. Step 2 builds its own findings file: this round's keys, unprefixed, after dissolution.
+- Still open:
+  - The fix-bead "done" clause contradicts its test-defect clause ("named tests pass unmodified"). This needs the owner's ruling.
+  - `stepBack-round-<N>` is written by both the design and code loops, so the keys collide. This was already true at the fork point, and field names are frozen.
+
 > *As this design is implemented and iterated on — bug fixes, adjustments, anything that diverged from the assumptions above — append a dated note here, whether or not a formal debugging skill was used.*
