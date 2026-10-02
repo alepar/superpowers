@@ -1,8 +1,8 @@
 # Implementer brief (super-code)
 
-super-code's coordinator dispatches an implementer (initial implementation) or a fixer (the fix
-pass, or the post-rebase seam fix) with this file's absolute path and the values of the bracketed
-parameters. Adapted from `subagent-driven-development/implementer-prompt.md`; super-code owns this
+super-code's coordinator dispatches an implementer (workspace setup, then the initial
+implementation) or a fixer (the fix pass, the post-rebase seam fix, or the merge-check fix) with
+this file's absolute path and the values of the bracketed parameters. Adapted from `subagent-driven-development/implementer-prompt.md`; super-code owns this
 copy. Everything below the line is addressed to the dispatched agent.
 
 ---
@@ -37,8 +37,16 @@ This applies to the fix pass too.
 
 ## Your job
 
-Work in [WORKTREE] (branch `[BRANCH]`, cut from `[INTEGRATION_BRANCH]` at [BASE]).
+Work in [WORKTREE] (branch `[BRANCH]`, cut from `[INTEGRATION_BRANCH]`).
 
+0. Workspace setup, before anything else. Run the steps your dispatch gives as
+   [WORKSPACE_SETUP] exactly as written: they cut or reuse the worktree and branch, merge any stack
+   parents, find the base commit, write the brief to [BRIEF_FILE], and check that the toolchain
+   resolves inside [WORKTREE]. This step is mechanical: don't improvise around a failure. Return
+   early, without implementing, when the setup says to: `ALREADY_MERGED` (with `base`),
+   `STACK_CONFLICT` or `SETUP_FAILED` (each with `finding` naming the cause), or `IMPLEMENTED` with
+   `base` and `head` for a review re-entry whose branch already holds the implementation. Otherwise
+   continue; the base you found is [BASE] below.
 1. Read the brief at [BRIEF_FILE]: the task's section of the plan, with files to touch, acceptance
    criteria, and steps.
 2. Implement exactly what the task specifies, with tests (TDD when the brief says so).
@@ -111,7 +119,8 @@ workspace, which is where the reviewer reads it; don't write a copy anywhere els
 - Assumptions, and Concerns
 
 Then return: `id`, `status` (IMPLEMENTED or BLOCKED, or BLOCKED_AUTH per your dispatch's
-permission rule), `files` touched, `head`, and `blockerBead` when BLOCKED.
+permission rule), `files` touched, `base` (from step 0), `head`, `stacked` / `reopened` when step 0
+reported them, and `blockerBead` when BLOCKED.
 
 ## Fix pass
 

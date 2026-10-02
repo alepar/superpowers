@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// Replay harness for the canonical coordinator script embedded in
-// skills/super-code/coordinator-workflow.md.
+// Replay harness for the canonical coordinator script, skills/super-code/coordinator.js (dryRun
+// args and stub tables live in skills/super-code/coordinator-workflow.md).
 //
 // Why this exists: every recorded validation of that script before 2026-08 was dryRun-only, and
 // dryRun stubs never return null and never reference a missing file — so the entire class of
@@ -35,9 +35,7 @@ const reviewerTemplate = readFileSync(path.join(skillDir, 'task-reviewer-prompt.
 // ---------- extraction ----------
 
 function extractScript() {
-  const m = doc.match(/```javascript\n([\s\S]*?)\n```/)
-  if (!m) throw new Error('no ```javascript fence found in coordinator-workflow.md')
-  return m[1].replace(/^export const meta/m, 'const meta')
+  return readFileSync(path.join(skillDir, 'coordinator.js'), 'utf8').replace(/^export const meta/m, 'const meta')
 }
 
 function extractJsonBlocks() {
@@ -110,6 +108,7 @@ async function run({ args, canned = {}, nullLabels = new Set(), nullAll = false,
         if (label === 'sweep') return 'abc1234 — 1 passed, 0 failed, 0 errors, 0 skipped; failing: none; command: <project test command>'
         if (label === 'ledger-append:sweep') return { appended: true }
         if (label.startsWith('ledger:')) return { appended: true }   // a task's batched ledger flush
+        if (label === 'plan-rest') return { planPath: '', mapping: [] }   // round 1's second planner: nothing more to map
         throw new Error(`no canned answer for label ${label}`)
       }
       let v = canned[label]
@@ -286,8 +285,7 @@ function oneTaskCanned(overrides = {}) {
     'bd-ready-topup': { ids: [] },
     'bd-ready-recheck': { ids: [] },
     'plan': { planPath: PLANPATH, mapping: [{ n: 1, id: 'bd-101', files: ['src/a.js'] }] },
-    'brief:bd-101': { id: 'bd-101', n: 1, status: 'BRIEFED', files: ['src/a.js'], branch: 'x', base: SHA('a') },
-    'impl:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', files: ['src/a.js'] },
+    'impl:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', base: SHA('a'), files: ['src/a.js'] },
     'review:bd-101': { id: 'bd-101', status: 'CLEAN' },
     'fix:bd-101': { id: 'bd-101', status: 'FIXED', head: SHA('f') },
     'merge:bd-101': { id: 'bd-101', merged: true, mergeExit: 0, mergeHead: true, head: SHA('b'), mergeBase: SHA('a'), rebaseConflictFiles: 0 },
@@ -364,8 +362,8 @@ async function main() {
   {
     const scan = scanTemplateSpans(scriptBody)
     check(scan.clean, 'scanner ends in code state (no unterminated literal, string, or ${})')
-    check(scan.spans.length === 318,
-      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 318 — 215 after the D4 loop rewrite, +10 for the merge-evidence contract (clean-check and merge steps, mergeEvidence's diagnoses and logs, the Merge-cleanup line) and writeFence(), +17 for the failing-mergeCheck seam route (the check-fix and fix-review dispatch keys/labels, their logs and blocker findings, the re-merge, fixPrompt's check branch, checkFixReviewPrompt), +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log, −7 for batched ledger writes (per-line ledger keys and labels out, the per-task flush key, the merge agent's LEDGER step and its line templates, the runtime-slot logs, the per-site null-merge logs and the background edge audit in), +46 for early unblock and graph readiness (the split/reopen/discard dispatch keys, labels, prompts and logs, the cancel and graph-dispatch logs, the stacked/re-entry brief and implementer wording, the stacked rebase and review-bead close, the held-back and re-entry logs, the reconcile split note, the detector and Metrics fields, the resume note), +33 for proactive slowness handling (noteSlowness and its items, the hot-file raise, the graph-bound arming and its audit reason, the detector's lane fields, the act-capable edge audit: change formatting, the edge-cuts dispatch key/label/prompt, the Edge cut: lines and their elided variants, effDeps' cut key); update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
+    check(scan.spans.length === 327,
+      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 327 — 215 after the D4 loop rewrite, +10 for the merge-evidence contract (clean-check and merge steps, mergeEvidence's diagnoses and logs, the Merge-cleanup line) and writeFence(), +17 for the failing-mergeCheck seam route (the check-fix and fix-review dispatch keys/labels, their logs and blocker findings, the re-merge, fixPrompt's check branch, checkFixReviewPrompt), +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log, −7 for batched ledger writes (per-line ledger keys and labels out, the per-task flush key, the merge agent's LEDGER step and its line templates, the runtime-slot logs, the per-site null-merge logs and the background edge audit in), +46 for early unblock and graph readiness (the split/reopen/discard dispatch keys, labels, prompts and logs, the cancel and graph-dispatch logs, the stacked/re-entry brief and implementer wording, the stacked rebase and review-bead close, the held-back and re-entry logs, the reconcile split note, the detector and Metrics fields, the resume note), +33 for proactive slowness handling (noteSlowness and its items, the hot-file raise, the graph-bound arming and its audit reason, the detector's lane fields, the act-capable edge audit: change formatting, the edge-cuts dispatch key/label/prompt, the Edge cut: lines and their elided variants, effDeps' cut key), +8 for the round-1 planning split (planPrompt's walk and three scopes, the plan-rest key/label, its logs), +1 when the brief folded into the implementer (workspaceSetup's re-entry branch and the setup/no-base findings in, the brief dispatch key/label out); update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
     // self-test: inject a raw backtick mid-way through the first literal's content and assert
     // the detector actually fires — a detector that cannot catch the known failure is decoration
     const [s, e] = scan.spans[0]
@@ -385,7 +383,7 @@ async function main() {
   {
     const out = await run({ args: canonicalArgs })
     assertNoThrow(out)
-    check(out.trace.length === 48, `48 agent dispatches (got ${out.trace.length}) — the doc's "Expected dispatch count" arithmetic`)
+    check(out.trace.length === 43, `43 agent dispatches (got ${out.trace.length}) — the doc's "Expected dispatch count" arithmetic`)
     const r = out.result
     check(r && JSON.stringify([...r.completed].sort()) === '["bd-101","bd-102","bd-105"]', 'completed = [bd-101, bd-102, bd-105]', JSON.stringify(r?.completed))
     check(r && JSON.stringify([...r.escalated].sort()) === '["bd-103","bd-104"]', 'escalated = [bd-103, bd-104] — bd-104 spent its one retry same-round and bounced', JSON.stringify(r?.escalated))
@@ -402,7 +400,7 @@ async function main() {
     {
       const at = label => out.trace.findIndex(t => t.label === label)
       check(out.counts['review-bead:bd-102'] === 1 && !out.trace.some(t => /^review-bead:bd-10[1345]$/.test(t.label)), 'only bd-102, the one task with an open dependent, is split')
-      check(at('brief:bd-105') > at('impl:bd-102') && at('brief:bd-105') < at('merge:bd-102'), 'bd-105 dispatches at bd-102\'s implementation, before bd-102 merges (early unblock)')
+      check(at('impl:bd-105') > at('impl:bd-102') && at('impl:bd-105') < at('merge:bd-102'), 'bd-105 dispatches at bd-102\'s implementation, before bd-102 merges (early unblock)')
       check(at('merge:bd-105') > at('merge:bd-102'), 'bd-105 merges only after its stack parent bd-102 merged')
       check(!out.counts['bd-ready-topup'], 'graph mode: no bd-ready-topup dispatch (readiness computed from the deps rows)', JSON.stringify(out.counts['bd-ready-topup']))
       check(out.counts['ledger:bd-105'] === 1, "bd-105's stacked-on line goes out in its one flush")
@@ -447,8 +445,7 @@ async function main() {
     const canned = oneTaskCanned({
       'bd-ready': [{ ids: ['bd-101', 'bd-104'] }, { ids: [] }],
       'plan': { planPath: PLANPATH, mapping: [{ n: 1, id: 'bd-101', files: ['src/a.js'] }, { n: 4, id: 'bd-104', files: ['src/c.js'] }] },
-      'brief:bd-104': { id: 'bd-104', n: 4, status: 'BRIEFED', files: ['src/c.js'], branch: 'x', base: SHA('d') },
-      'impl:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', files: ['src/a.js'], head: SHA('c') },
+      'impl:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', base: SHA('a'), files: ['src/a.js'], head: SHA('c') },
       'impl:bd-104': { id: 'bd-104', status: 'BLOCKED', files: ['src/c.js'], blockerBead: 'bd-109' },
       'review:bd-101': { id: 'bd-101', status: 'NEEDS_FIX', finding: 'missing null check at src/a.js:42', minors: ['name x is uninformative'] },
       'fix:bd-101': { id: 'bd-101', status: 'FIXED', head: SHA('f') },
@@ -468,12 +465,14 @@ async function main() {
     const plan = promptOf(out.trace, 'plan')
     check(/ABSOLUTE path/.test(plan ?? '') && plan?.includes(`${TPL}/planner-prompt.md`) && plan?.includes(`bash ${SDD}/sdd-workspace`), 'plan prompt names the planner template and sdd-workspace by absolute path and requires an absolute planPath', plan)
 
-    const brief = promptOf(out.trace, 'brief:bd-101')
-    check(brief?.includes(`bash ${SDD}/task-brief ${PLANPATH} 1 ${PLANDIR}/task-1-brief.md`), 'brief prompt runs task-brief by absolute path with an explicit integration-workspace OUTFILE', brief)
+    const brief = promptOf(out.trace, 'impl:bd-101')
+    check(brief?.includes(`bash ${SDD}/task-brief ${PLANPATH} 1 ${PLANDIR}/task-1-brief.md`), 'the implementer\'s workspace setup runs task-brief by absolute path with an explicit integration-workspace OUTFILE', brief)
+    check(/<workspace-setup>[\s\S]*ALREADY_MERGED[\s\S]*SETUP_FAILED[\s\S]*<\/workspace-setup>/.test(brief ?? '') && /step 0/.test(brief ?? ''), 'the setup is the template\'s step 0, with its early-return statuses', brief)
+    check(!out.trace.some(t => t.label.startsWith('brief:')), 'no separate brief dispatch')
 
     const impl = promptOf(out.trace, 'impl:bd-101')
     check(impl?.includes(`${TPL}/implementer-prompt.md`) && /"Your job"/.test(impl ?? ''), 'implement prompt names the implementer template by absolute path', impl)
-    for (const [param, val] of [['BRIEF_FILE', `${PLANDIR}/task-1-brief.md`], ['REPORT_FILE', `${PLANDIR}/task-1-report.md`], ['BRANCH', 'task-bd-101'], ['BASE', SHA('a')], ['TASK_ID', 'bd-101']]) {
+    for (const [param, val] of [['BRIEF_FILE', `${PLANDIR}/task-1-brief.md`], ['REPORT_FILE', `${PLANDIR}/task-1-report.md`], ['BRANCH', 'task-bd-101'], ['TASK_ID', 'bd-101']]) {
       check(impl?.includes(`[${param}] = ${val}`), `implement prompt fills [${param}]`, impl)
     }
 
@@ -570,7 +569,7 @@ async function main() {
   scenario('live-sim: a fix pass that reports FIXED without a new commit is a diagnosed BLOCKED')
   {
     const canned = oneTaskCanned({
-      'impl:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', files: ['src/a.js'], head: SHA('c') },
+      'impl:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', base: SHA('a'), files: ['src/a.js'], head: SHA('c') },
       'review:bd-101': { id: 'bd-101', status: 'NEEDS_FIX', finding: 'missing null check' },
       'fix:bd-101': { id: 'bd-101', status: 'FIXED', head: SHA('c') },   // same head: nothing committed
       'missing-blocker:bd-101': { id: 'bd-101', status: 'BLOCKED', blockerBead: 'bd-190' },
@@ -583,6 +582,32 @@ async function main() {
     check(/without a new commit/.test(promptOf(out.trace, 'missing-blocker:bd-101') ?? ''), 'the blocker bead carries the coordinator\'s diagnosis', promptOf(out.trace, 'missing-blocker:bd-101'))
     check(/^Task 1 \(bd-101\): fix pass BLOCKED \(/.test(taskLedgerLine(out.trace, 'bd-101', /fix pass/) ?? ''), 'fix-pass line records BLOCKED')
     check(JSON.stringify(out.result?.escalated) === '["bd-101"]', 'escalated', JSON.stringify(out.result))
+  }
+
+  scenario('live-sim: a failed workspace setup routes like a blocker — never reviewed, the cause on the fallback bead')
+  {
+    const canned = oneTaskCanned({
+      'impl:bd-101': { id: 'bd-101', status: 'SETUP_FAILED', base: SHA('a'), finding: 'pytest resolves to /usr/bin, outside the worktree' },
+      'missing-blocker:bd-101': { id: 'bd-101', status: 'BLOCKED', blockerBead: 'bd-190' },
+      'triage:bd-101': { decision: 'ESCALATE', detail: 'toolchain' },
+      'notify:bd-101': { sent: true },
+    })
+    const out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    check(!out.trace.some(t => ['review:bd-101', 'merge:bd-101', 'commit-nudge:bd-101'].includes(t.label)), 'never reviewed, nudged or merged')
+    const filing = promptOf(out.trace, 'missing-blocker:bd-101') ?? ''
+    check(/workspace setup failed before implementation/.test(filing) && filing.includes('outside the worktree'), 'the fallback bead carries the setup\'s cause', filing)
+    check(JSON.stringify(out.result?.escalated) === '["bd-101"]', 'escalated through the ordinary blocker path', JSON.stringify(out.result))
+
+    const noBase = oneTaskCanned({
+      'impl:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', files: ['src/a.js'], head: SHA('c') },
+      'missing-blocker:bd-101': { id: 'bd-101', status: 'BLOCKED', blockerBead: 'bd-190' },
+      'triage:bd-101': { decision: 'ESCALATE', detail: 'no base' },
+      'notify:bd-101': { sent: true },
+    })
+    const out2 = await run({ args: liveArgs(), canned: noBase })
+    assertNoThrow(out2)
+    check(!out2.counts['review:bd-101'] && /without the base commit/.test(promptOf(out2.trace, 'missing-blocker:bd-101') ?? ''), 'IMPLEMENTED without a base is a diagnosed BLOCKED, never a review against an undefined base')
   }
 
   scenario('live-sim: a fixer\'s own BLOCKED goes to triage with its bead; an unrecognized review verdict still gets the fix pass')
@@ -633,7 +658,7 @@ async function main() {
     const canned = oneTaskCanned({ 'plan': { planPath: `${pd}/${EPIC}-plan.md`, mapping: [{ n: 1, id: 'bd-101', files: ['src/a.js'] }] } })
     const out = await run({ args: liveArgs({ integrationBranch: branch }), canned })
     assertNoThrow(out)
-    const brief = promptOf(out.trace, 'brief:bd-101')
+    const brief = promptOf(out.trace, 'impl:bd-101')
     check(brief?.includes('.worktrees/super-auto-my-slug--task-bd-101'), 'task worktree path collapses the branch slash', brief)
     check(!brief?.includes('.worktrees/super-auto/my-slug'), 'no slashed (nested) worktree path anywhere in the brief dispatch')
     const merge = promptOf(out.trace, 'merge:bd-101')
@@ -661,11 +686,11 @@ async function main() {
     const pd = `${explicit}/.superpowers/sdd/${EPIC}-plan`
     const canned = oneTaskCanned({
       'plan': { planPath: `${pd}/${EPIC}-plan.md`, mapping: [{ n: 1, id: 'bd-101', files: ['src/a.js'] }] },
-      'impl:bd-101': { id: 'task-1', status: 'IMPLEMENTED', files: ['src/a.js'], head: SHA('c') },  // a WRONG echoed id
+      'impl:bd-101': { id: 'task-1', status: 'IMPLEMENTED', base: SHA('a'), files: ['src/a.js'], head: SHA('c') },  // a WRONG echoed id
     })
     const out = await run({ args: liveArgs({ integrationBranch: 'super-auto/my-slug', integrationWorktree: explicit }), canned })
     assertNoThrow(out)
-    const brief = promptOf(out.trace, 'brief:bd-101')
+    const brief = promptOf(out.trace, 'impl:bd-101')
     check(brief?.includes(`${explicit}/.worktrees/super-auto-my-slug--task-bd-101`), 'brief names the task worktree as an ABSOLUTE path under the integration worktree', brief)
     check(/the task branch is `task-bd-101`/.test(brief ?? ''), 'brief pins the task branch name', brief)
     check(brief?.includes(`bash ${SKILLS}/super-code/scripts/already-merged super-auto/my-slug task-bd-101`), 'brief runs the shipped already-merged script', brief)
@@ -678,12 +703,12 @@ async function main() {
   scenario('live-sim: a re-entered task whose branch is already merged closes the bead without implement/review')
   {
     const canned = oneTaskCanned({
-      'brief:bd-101': { id: 'bd-101', n: 1, status: 'BRIEFED', files: ['src/a.js'], branch: 'x', base: SHA('a'), alreadyMerged: true },
+      'impl:bd-101': { id: 'bd-101', status: 'ALREADY_MERGED', base: SHA('a') },
       'close-only:bd-101': { id: 'bd-101', status: 'CLOSED' },
     })
     const out = await run({ args: liveArgs(), canned })
     assertNoThrow(out)
-    check(!out.trace.some(t => ['impl:bd-101', 'review:bd-101', 'merge:bd-101'].includes(t.label)), 'no implementer, reviewer, or merge dispatched')
+    check(out.counts['impl:bd-101'] === 1 && !out.trace.some(t => ['review:bd-101', 'merge:bd-101', 'commit-nudge:bd-101'].includes(t.label)), 'the implementer\'s setup reports ALREADY_MERGED; no review, nudge or merge follows')
     check(/bd close bd-101/.test(promptOf(out.trace, 'close-only:bd-101') ?? ''), 'close-only dispatch closes the task bead')
     check(/^Task 1 \(bd-101\): complete \(already merged/.test(taskLedgerLine(out.trace, 'bd-101', /complete/) ?? ''), 'ledger records an already-merged completion line')
     check(JSON.stringify(out.result?.completed) === '["bd-101"]' && out.result?.escalated.length === 0, 'lands in completed, never escalated', JSON.stringify(out.result))
@@ -692,7 +717,7 @@ async function main() {
   scenario('live-sim: an implementer that did not commit is nudged once, then reviewed; twice uncommitted is a diagnosed BLOCKED')
   {
     const nudged = oneTaskCanned({
-      'impl:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', files: ['src/a.js'], head: SHA('a') },  // head == base
+      'impl:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', base: SHA('a'), files: ['src/a.js'], head: SHA('a') },  // head == base
       'commit-nudge:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', files: ['src/a.js'], head: SHA('c') },
     })
     const out = await run({ args: liveArgs(), canned: nudged })
@@ -702,7 +727,7 @@ async function main() {
     check(out.trace.some(t => t.label === 'review:bd-101') && JSON.stringify(out.result?.completed) === '["bd-101"]', 'nudged task is reviewed and completes')
 
     const stillUncommitted = oneTaskCanned({
-      'impl:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', files: ['src/a.js'], head: SHA('a') },
+      'impl:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', base: SHA('a'), files: ['src/a.js'], head: SHA('a') },
       'commit-nudge:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', files: ['src/a.js'], head: SHA('a') },
       'missing-blocker:bd-101': { id: 'bd-101', status: 'BLOCKED', blockerBead: 'bd-190' },
       'triage:bd-101': { decision: 'ESCALATE', detail: 'no commit on the task branch' },
@@ -718,7 +743,7 @@ async function main() {
   scenario('live-sim: a RESOLVEd blocker bead is closed by the merge that lands the retry')
   {
     const canned = oneTaskCanned({
-      'impl:bd-101': [{ id: 'bd-101', status: 'BLOCKED', files: ['src/a.js'], blockerBead: 'bd-109' }, { id: 'bd-101', status: 'IMPLEMENTED', files: ['src/a.js'], head: SHA('c') }],
+      'impl:bd-101': [{ id: 'bd-101', status: 'BLOCKED', files: ['src/a.js'], blockerBead: 'bd-109' }, { id: 'bd-101', status: 'IMPLEMENTED', base: SHA('a'), files: ['src/a.js'], head: SHA('c') }],
       'triage:bd-101': { decision: 'RESOLVE', detail: 'the constant is named in the spec' },
       'clarify:bd-101': { recorded: true },
     })
@@ -735,7 +760,6 @@ async function main() {
     const canned = oneTaskCanned({
       'bd-ready': [{ ids: ['bd-101', 'bd-104'] }, { ids: [] }],
       'plan': { planPath: PLANPATH, mapping: [{ n: 1, id: 'bd-101', files: ['src/a.js'] }, { n: 4, id: 'bd-104', files: ['src/c.js'] }] },
-      'brief:bd-104': { id: 'bd-104', n: 4, status: 'BRIEFED', files: ['src/c.js'], branch: 'x', base: SHA('d') },
       'impl:bd-104': { id: 'bd-104', status: 'BLOCKED', files: ['src/c.js'], blockerBead: 'bd-109' },
       'triage:bd-104': { decision: 'ESCALATE', detail: 'needs a decision' },
       'notify:bd-104': { sent: true },
@@ -772,7 +796,7 @@ async function main() {
   {
     const DETAIL = 'hunt for weakened assertions, hardcoded expected values and deleted tests in the diff'
     let canned = oneTaskCanned({
-      'impl:bd-101': [{ id: 'bd-101', status: 'BLOCKED', files: ['src/a.js'], blockerBead: 'bd-109' }, { id: 'bd-101', status: 'IMPLEMENTED', files: ['src/a.js'], head: SHA('c') }],
+      'impl:bd-101': [{ id: 'bd-101', status: 'BLOCKED', files: ['src/a.js'], blockerBead: 'bd-109' }, { id: 'bd-101', status: 'IMPLEMENTED', base: SHA('a'), files: ['src/a.js'], head: SHA('c') }],
       'triage:bd-101': { decision: 'RESOLVE', detail: DETAIL },
       'clarify:bd-101': { recorded: true },
       'ledger:bd-101': [null, { appended: true }],
@@ -813,8 +837,7 @@ async function main() {
       'ledger-recurring:1': { appended: true },
     })
     ids.forEach((id, i) => {
-      canned[`brief:${id}`] = { id, n: i + 1, status: 'BRIEFED', files: [`src/${i}.js`], branch: 'x', base: SHA('a') }
-      canned[`impl:${id}`] = [{ id, status: 'BLOCKED', files: [`src/${i}.js`], blockerBead: `bd-11${i + 1}` }, { id, status: 'IMPLEMENTED', files: [`src/${i}.js`], head: SHA('c') }]
+      canned[`impl:${id}`] = [{ id, status: 'BLOCKED', files: [`src/${i}.js`], blockerBead: `bd-11${i + 1}` }, { id, status: 'IMPLEMENTED', base: SHA('a'), files: [`src/${i}.js`], head: SHA('c') }]
       canned[`triage:${id}`] = id === 'bd-103'
         ? { decision: 'ESCALATE', detail: `task ${id}: needs a decision`, cause: CAUSE }
         : { decision: 'RESOLVE', detail: `task ${id}: the report is task-${i + 1}-report.md`, cause: CAUSE }
@@ -934,7 +957,7 @@ async function main() {
   {
     const canned = oneTaskCanned({
       'bd-ready': [{ ids: ['bd-101'] }, { ids: ['bd-101'] }, { ids: [] }],
-      'impl:bd-101': [null, { id: 'bd-101', status: 'IMPLEMENTED', files: ['src/a.js'] }],
+      'impl:bd-101': [null, { id: 'bd-101', status: 'IMPLEMENTED', base: SHA('a'), files: ['src/a.js'] }],
     })
     const out = await run({ args: liveArgs(), canned })
     assertNoThrow(out)
@@ -1081,10 +1104,9 @@ async function main() {
       'final-review': 'fine',
     }
     for (const id of ids) {
-      c[`brief:${id}`] = { id, status: 'BRIEFED', files: [], branch: 'x', base: SHA('a') }
       // implementers and merges yield a tick so genuine concurrency (and a broken single-flight
       // queue) is OBSERVABLE as overlapping in-flight dispatches
-      c[`impl:${id}`] = tick({ id, status: 'IMPLEMENTED', files: [] })
+      c[`impl:${id}`] = tick({ id, status: 'IMPLEMENTED', base: SHA('a'), files: [] })
       c[`review:${id}`] = { id, status: 'CLEAN' }
       c[`merge:${id}`] = tick({ id, merged: true, mergeExit: 0, mergeHead: true, head: SHA('b'), mergeBase: SHA('a') })
     }
@@ -1096,7 +1118,7 @@ async function main() {
     const ids = Array.from({ length: 13 }, (_, i) => `bd-${101 + i}`)
     const siblings = ids.slice(0, 12)
     const canned = manyTaskCanned(ids, {
-      'impl:bd-113': async ctx => { await Promise.all(siblings.map(s => ctx.waitFor(`ledger:${s}`))); return { id: 'bd-113', status: 'IMPLEMENTED', files: [] } },
+      'impl:bd-113': async ctx => { await Promise.all(siblings.map(s => ctx.waitFor(`ledger:${s}`))); return { id: 'bd-113', status: 'IMPLEMENTED', base: SHA('a'), files: [] } },
     })
     const out = await run({ args: liveArgs({ config: cfg({ concurrency: 14 }) }), canned })
     assertNoThrow(out)
@@ -1111,7 +1133,7 @@ async function main() {
   scenario('sliding window: a straggler does not block later dispatch (no chunk barrier)')
   {
     const ids = ['bd-101', 'bd-102', 'bd-103']
-    const canned = manyTaskCanned(ids, { 'impl:bd-101': async ctx => { await ctx.waitFor('ledger:bd-103'); return { id: 'bd-101', status: 'IMPLEMENTED', files: [] } } })
+    const canned = manyTaskCanned(ids, { 'impl:bd-101': async ctx => { await ctx.waitFor('ledger:bd-103'); return { id: 'bd-101', status: 'IMPLEMENTED', base: SHA('a'), files: [] } } })
     const out = await run({ args: liveArgs({ config: cfg({ concurrency: 2 }) }), canned })
     assertNoThrow(out)
     check(out.result?.completed.length === 3, `all 3 completed (got ${out.result?.completed.length})`)
@@ -1125,13 +1147,13 @@ async function main() {
     const ids = ['bd-101', 'bd-102', 'bd-103']
     const canned = manyTaskCanned(ids, {
       'plan': { planPath: PLANPATH, mapping: [{ n: 1, id: 'bd-101', files: ['src/a.js'] }, { n: 2, id: 'bd-102', files: ['src/b.js'] }, { n: 3, id: 'bd-103', files: ['src/a.js'] }] },
-      'impl:bd-101': async ctx => { await ctx.waitFor('ledger:bd-102'); return { id: 'bd-101', status: 'IMPLEMENTED', files: [] } },
+      'impl:bd-101': async ctx => { await ctx.waitFor('ledger:bd-102'); return { id: 'bd-101', status: 'IMPLEMENTED', base: SHA('a'), files: [] } },
     })
     const out = await run({ args: liveArgs({ config: cfg({ hotFileCap: 1 }) }), canned })
     assertNoThrow(out)
     const idx = label => out.trace.findIndex(t => t.label === label)
-    check(idx('brief:bd-103') > idx('review:bd-101'), 'same-file task waited for the hot file to drain')
-    check(idx('brief:bd-102') < idx('review:bd-101'), 'disjoint-file task overtook the hot-file wait')
+    check(idx('impl:bd-103') > idx('review:bd-101'), 'same-file task waited for the hot file to drain')
+    check(idx('impl:bd-102') < idx('review:bd-101'), 'disjoint-file task overtook the hot-file wait')
     check(out.logs.some(l => l.includes('hot-file deferrals: src/a.js')), 'detector names the hot file')
     check(out.result?.completed.length === 3, 'all 3 still completed')
     assertBucketsDisjoint(out.result)
@@ -1143,13 +1165,13 @@ async function main() {
     const canned = manyTaskCanned(ids, {
       'plan': { planPath: PLANPATH, mapping: ids.map((id, i) => ({ n: i + 1, id, files: ['src/a.js'] })) },
       // bd-101 finishes only once a second same-file task is implementing: without the raise this deadlocks
-      'impl:bd-101': async ctx => { await ctx.waitFor('impl:bd-103'); return { id: 'bd-101', status: 'IMPLEMENTED', files: [] } },
+      'impl:bd-101': async ctx => { await ctx.waitFor('impl:bd-103'); return { id: 'bd-101', status: 'IMPLEMENTED', base: SHA('a'), files: [] } },
     })
     const out = await run({ args: liveArgs({ config: cfg({ hotFileCap: 1 }) }), canned })
     assertNoThrow(out)
     const idx = label => out.trace.findIndex(t => t.label === label)
-    check(idx('brief:bd-103') < idx('review:bd-101'), 'the third same-file task dispatched beside the first once the cap was raised')
-    check(idx('brief:bd-102') > idx('review:bd-101'), 'the raise is one step: the second deferred task still waits for the file')
+    check(idx('impl:bd-103') < idx('review:bd-101'), 'the third same-file task dispatched beside the first once the cap was raised')
+    check(idx('impl:bd-102') > idx('review:bd-101'), 'the raise is one step: the second deferred task still waits for the file')
     check((out.result?.slowness ?? []).some(x => x.includes('src/a.js held back two tasks while a slot was free — its hot-file cap is raised to 2')), 'the raise is a slowness item', JSON.stringify(out.result?.slowness))
     check(out.logs.some(l => /parallelism: .*hot-file cap raised: src\/a\.js/.test(l)), 'the detector names the raised file')
     check(out.result?.completed.length === 3, 'all 3 completed')
@@ -1189,7 +1211,6 @@ async function main() {
     const twoTasks = {
       'bd-ready': [{ ids: ['bd-101', 'bd-102'] }, { ids: [] }],
       'plan': { planPath: PLANPATH, mapping: [{ n: 1, id: 'bd-101', files: ['src/a.js'] }, { n: 2, id: 'bd-102', files: ['src/b.js'] }] },
-      'brief:bd-102': { id: 'bd-102', n: 2, status: 'BRIEFED', files: ['src/b.js'], branch: 'x', base: SHA('d') },
       'review:bd-102': { id: 'bd-102', status: 'CLEAN' },
     }
     // bd-101's merge completes only after bd-102's triage started, and bd-102 blocks only once that
@@ -1205,7 +1226,7 @@ async function main() {
     // bd-101's merge fails; its triage completes only after bd-102's merge started: a triage still
     // holding the queue would deadlock
     out = await run({ args: liveArgs(), canned: oneTaskCanned({ ...twoTasks,
-      'impl:bd-102': async ctx => { await ctx.waitFor('triage:bd-101'); return { id: 'bd-102', status: 'IMPLEMENTED', files: ['src/b.js'] } },
+      'impl:bd-102': async ctx => { await ctx.waitFor('triage:bd-101'); return { id: 'bd-102', status: 'IMPLEMENTED', base: SHA('a'), files: ['src/b.js'] } },
       'merge:bd-101': { id: 'bd-101', merged: false, blockerBead: 'bd-108', rebaseConflictFiles: 2 },
       'triage:bd-101': async ctx => { await ctx.waitFor('merge:bd-102'); return { decision: 'ESCALATE', detail: 'conflict' } },
       'notify:bd-101': { sent: true },
@@ -1278,7 +1299,6 @@ async function main() {
     const canned = oneTaskCanned({
       'bd-ready': [{ ids: ['bd-101', 'bd-104'] }, { ids: [] }],
       'plan': { planPath: PLANPATH, mapping: [{ n: 1, id: 'bd-101', files: ['src/a.js'] }, { n: 4, id: 'bd-104', files: ['src/c.js'] }] },
-      'brief:bd-104': { id: 'bd-104', n: 4, status: 'BRIEFED', files: ['src/c.js'], branch: 'x', base: SHA('d') },
       'impl:bd-104': { id: 'bd-104', status: 'BLOCKED', files: ['src/c.js'], blockerBead: 'bd-109' },
       'triage:bd-104': { decision: 'ESCALATE', detail: 'x' },
       'notify:bd-104': { sent: true },
@@ -1286,7 +1306,7 @@ async function main() {
     let out = await run({ args: liveArgs(), canned })
     assertNoThrow(out)
     const opt = (o, l) => o.trace.find(t => t.label === l)?.opts ?? {}
-    for (const l of ['read-ledger', 'bd-ready', 'brief:bd-101', 'ledger:bd-101', 'sweep', 'read-ledger:finish']) check(opt(out, l).effort === 'low' && opt(out, l).model === 'sonnet', `${l}: sonnet at low effort`, JSON.stringify(opt(out, l)))
+    for (const l of ['read-ledger', 'bd-ready', 'ledger:bd-101', 'sweep', 'read-ledger:finish']) check(opt(out, l).effort === 'low' && opt(out, l).model === 'sonnet', `${l}: sonnet at low effort`, JSON.stringify(opt(out, l)))
     for (const l of ['plan', 'triage:bd-104', 'final-review']) check(opt(out, l).effort === 'high', `${l}: high effort`, JSON.stringify(opt(out, l)))
     for (const l of ['impl:bd-101', 'review:bd-101', 'merge:bd-101']) check(!('effort' in opt(out, l)), `${l}: inherits the session effort`, JSON.stringify(opt(out, l)))
     out = await run({ args: liveArgs({ config: cfg({ efforts: { mechanical: 'medium', implementer: 'high' } }) }), canned })
@@ -1327,8 +1347,8 @@ async function main() {
     check(JSON.stringify([...(out.result?.completed ?? [])].sort()) === '["bd-101","bd-102"]', 'both completed', JSON.stringify(out.result))
     check(out.counts['bd-ready'] === 2, `bd-102 did NOT wait for a new round (got ${out.counts['bd-ready']} round queries)`)
     const idx = label => out.trace.findIndex(t => t.label === label)
-    check(idx('brief:bd-102') > idx('merge:bd-101'), 'topped-up bead dispatched after the unblocking merge')
-    check(out.counts['brief:bd-102'] === 1 && out.counts['brief:bd-101'] === 1, 'no double dispatch despite the top-up re-listing both ids')
+    check(idx('impl:bd-102') > idx('merge:bd-101'), 'topped-up bead dispatched after the unblocking merge')
+    check(out.counts['impl:bd-102'] === 1 && out.counts['impl:bd-101'] === 1, 'no double dispatch despite the top-up re-listing both ids')
     check(out.logs.some(l => l.includes('topped-up 1')), 'detector reports the topped-up count')
     const S = `bash ${SKILLS}/super-code/scripts`
     const close = promptOf(out.trace, 'close-epics')
@@ -1362,7 +1382,7 @@ async function main() {
   {
     const out = await run({ args: liveArgs(), canned: manyTaskCanned(['bd-101'], { 'bd-ready-topup': { ids: ['bd-999'] } }) })
     assertNoThrow(out)
-    check(!out.trace.some(t => t.label === 'brief:bd-999') && JSON.stringify(out.result?.completed) === '["bd-101"]', 'unmapped id never dispatched; round completes normally')
+    check(!out.trace.some(t => t.label === 'impl:bd-999') && JSON.stringify(out.result?.completed) === '["bd-101"]', 'unmapped id never dispatched; round completes normally')
     assertBucketsDisjoint(out.result)
   }
 
@@ -1376,7 +1396,7 @@ async function main() {
     assertNoThrow(out)
     check(out.result?.completed.length === 3 && out.counts['bd-ready'] === 2, 'entire chain drained in one round')
     const idx = label => out.trace.findIndex(t => t.label === label)
-    check(idx('brief:bd-102') > idx('merge:bd-101') && idx('brief:bd-103') > idx('merge:bd-102'), 'each link dispatched after its unblocking merge')
+    check(idx('impl:bd-102') > idx('merge:bd-101') && idx('impl:bd-103') > idx('merge:bd-102'), 'each link dispatched after its unblocking merge')
     check(out.logs.some(l => l.includes('topped-up 2')) && out.maxOpen.merge === 1, 'detector counts both; single-flight held')
     assertBucketsDisjoint(out.result)
   }
@@ -1403,7 +1423,7 @@ async function main() {
     const out = await run({ args: liveArgs({ config: cfg({ concurrency: 14 }) }), canned, timeoutMs: 30000 })
     assertNoThrow(out)
     check(out.result?.completed.length === 40 && out.counts['bd-ready'] === 2, 'all 40 completed in one working round')
-    check(out.maxOpen.merge === 1 && ids.every(id => (out.counts[`brief:${id}`] ?? 0) === 1), 'single-flight held; no double dispatch')
+    check(out.maxOpen.merge === 1 && ids.every(id => (out.counts[`impl:${id}`] ?? 0) === 1), 'single-flight held; no double dispatch')
     check(out.logs.some(l => l.includes('topped-up 39')), 'detector counts the 39 topped-up beads')
     assertBucketsDisjoint(out.result)
   }
@@ -1443,14 +1463,14 @@ async function main() {
   scenario('RESOLVE retry: clarified task completes in the SAME round')
   {
     const canned = manyTaskCanned(['bd-101'], {
-      'impl:bd-101': [{ id: 'bd-101', status: 'BLOCKED', files: [], blockerBead: 'bd-109' }, tick({ id: 'bd-101', status: 'IMPLEMENTED', files: [] })],
+      'impl:bd-101': [{ id: 'bd-101', status: 'BLOCKED', files: [], blockerBead: 'bd-109' }, tick({ id: 'bd-101', status: 'IMPLEMENTED', base: SHA('a'), files: [] })],
       'triage:bd-101': { decision: 'RESOLVE', detail: 'use the existing constant' },
       'clarify:bd-101': { recorded: true },
     })
     const out = await run({ args: liveArgs(), canned })
     assertNoThrow(out)
     check(JSON.stringify(out.result?.completed) === '["bd-101"]' && out.result?.pendingRetry.length === 0 && out.counts['bd-ready'] === 2, 'completed within the round; pendingRetry cleared')
-    check(out.counts['impl:bd-101'] === 2 && out.counts['brief:bd-101'] === 2 && out.counts['triage:bd-101'] === 1, 'retry re-briefed and re-implemented once; allowance spent once')
+    check(out.counts['impl:bd-101'] === 2 && out.counts['triage:bd-101'] === 1, 'retry re-implemented once (setup included); allowance spent once')
     check(promptOf(out.trace, 'impl:bd-101')?.includes('[TASK_ID] = bd-101') && /bd comments \[TASK_ID\]/.test(implementerTemplate), 'the implementer reads recorded clarifications (template) for this task id (dispatch)')
     assertBucketsDisjoint(out.result)
   }
@@ -1494,11 +1514,11 @@ async function main() {
   scenario('chain rejection is logged with the exception, never vanished')
   {
     const canned = manyTaskCanned(['bd-101', 'bd-102'], {})
-    delete canned['brief:bd-102']
+    delete canned['impl:bd-102']
     const out = await run({ args: liveArgs(), canned })
     assertNoThrow(out)
     const rejLog = out.logs.find(l => l.includes('chain for bd-102 REJECTED'))
-    check(JSON.stringify(out.result?.completed) === '["bd-101"]' && !!rejLog && rejLog.includes('no canned answer for label brief:bd-102'), 'sibling completed; dead chain logged with the actual exception', rejLog)
+    check(JSON.stringify(out.result?.completed) === '["bd-101"]' && !!rejLog && rejLog.includes('no canned answer for label impl:bd-102'), 'sibling completed; dead chain logged with the actual exception', rejLog)
     assertBucketsDisjoint(out.result)
   }
 
@@ -1591,7 +1611,7 @@ async function main() {
       'bd-ready': [{ ids: ['bd-101'] }, { ids: ['bd-102'] }, { ids: [] }],
       // round 1's detector append completes only once round 2 is dispatching: awaiting it at the
       // round end would deadlock
-      'ledger-append:detector': async ctx => { await ctx.waitFor('brief:bd-102'); return { appended: true } },
+      'ledger-append:detector': async ctx => { await ctx.waitFor('impl:bd-102'); return { appended: true } },
     }) })
     assertNoThrow(out)
     const d = out.trace.filter(t => t.label === 'ledger-append:detector').map(t => extractLedgerLine(t.prompt))
@@ -1605,13 +1625,13 @@ async function main() {
     const canned = manyTaskCanned(ids, {
       'bd-ready': [{ ids: ['bd-101'] }, { ids: ['bd-102'] }, { ids: ['bd-103'] }, { ids: ['bd-104'] }, { ids: [] }],
       // the audit returns only once round 3 is dispatching: awaiting it at the round end would deadlock
-      'edge-audit:1': async ctx => { await ctx.waitFor('brief:bd-103'); return { openLeaves: 5, depth: 2, changes: [{ dependent: 'bd-104', blocker: 'bd-103', kind: 'drop', safe: true, reason: 'consumer reads nothing the producer writes' }], summary: 'graph-bound' } },
+      'edge-audit:1': async ctx => { await ctx.waitFor('impl:bd-103'); return { openLeaves: 5, depth: 2, changes: [{ dependent: 'bd-104', blocker: 'bd-103', kind: 'drop', safe: true, reason: 'consumer reads nothing the producer writes' }], summary: 'graph-bound' } },
     })
     const out = await run({ args: liveArgs({ config: cfg({ edgeAuditCap: 1 }) }), canned })
     assertNoThrow(out)
     check(out.counts['edge-audit:1'] === 1 && !out.counts['edge-audit:2'], 'one audit, bounded by the cap')
     const idx = label => out.trace.findIndex(t => t.label === label)
-    check(idx('edge-audit:1') > idx('merge:bd-102') && idx('edge-audit:1') < idx('brief:bd-103'), 'audit dispatches at the end of round 2, before round 3 dispatches — and round 3 does not wait for it')
+    check(idx('edge-audit:1') > idx('merge:bd-102') && idx('edge-audit:1') < idx('impl:bd-103'), 'audit dispatches at the end of round 2, before round 3 dispatches — and round 3 does not wait for it')
     const line = extractLedgerLine(promptOf(out.trace, 'ledger-append:edge-audit:1'))
     check(!!line && line.includes('achievable width 3 vs cap 4') && line.includes('bd-104 <- bd-103 · drop') && line.includes('safe yes'), 'ledger line carries ceil(5/2)=3 computed in JS and the proposed change', line)
     check(!out.trace.some(t => t.label.startsWith('edge-cuts')), 'report-only by default: no apply dispatch even for a safe change')
@@ -1655,7 +1675,6 @@ async function main() {
     const esc = oneTaskCanned({
       'bd-ready': [{ ids: ['bd-101', 'bd-104'] }, { ids: [] }],
       'plan': { planPath: PLANPATH, mapping: [{ n: 1, id: 'bd-101', files: ['src/a.js'] }, { n: 4, id: 'bd-104', files: ['src/c.js'] }] },
-      'brief:bd-104': { id: 'bd-104', n: 4, status: 'BRIEFED', files: ['src/c.js'], branch: 'x', base: SHA('d') },
       'impl:bd-104': { id: 'bd-104', status: 'BLOCKED', files: ['src/c.js'], blockerBead: 'bd-109' },
       'triage:bd-104': { decision: 'ESCALATE', detail: 'needs a decision' },
       'notify:bd-104': { sent: true },
@@ -2007,7 +2026,7 @@ async function main() {
     if (!('bd-ready-topup' in overrides)) delete c['bd-ready-topup']
     for (const id of ids) {
       if (!(`review-bead:${id}` in c)) c[`review-bead:${id}`] = { reviewBead: `${id}-rv`, implClosed: true, created: true }
-      c[`impl:${id}`] = c[`impl:${id}`] ?? tick({ id, status: 'IMPLEMENTED', files: [], head: SHA('c') })
+      c[`impl:${id}`] = c[`impl:${id}`] ?? tick({ id, status: 'IMPLEMENTED', base: SHA('a'), files: [], head: SHA('c') })
     }
     return c
   }
@@ -2021,7 +2040,7 @@ async function main() {
       // the parent's review finishes only once the dependent is already implementing
       'review:bd-101': async ctx => { await ctx.waitFor('impl:bd-102'); return { id: 'bd-101', status: 'CLEAN' } },
       'review-bead:bd-101': { reviewBead: 'bd-150', implClosed: true, created: true },
-      'brief:bd-102': { id: 'bd-102', status: 'BRIEFED', files: [], branch: 'x', base: SHA('e'), stacked: true },
+      'impl:bd-102': tick({ id: 'bd-102', status: 'IMPLEMENTED', base: SHA('e'), files: [], head: SHA('c'), stacked: true }),
     })
     const out = await run({ args: liveArgs(), canned })
     assertNoThrow(out)
@@ -2030,8 +2049,8 @@ async function main() {
     check(!out.counts['edge-audit:1'] && !(out.result?.slowness ?? []).some(x => x.includes('graph-bound')), 'a two-deep graph under a cap of 4 is not graph-bound: no early audit')
     check(out.counts['review-bead:bd-101'] === 1 && !out.counts['review-bead:bd-102'], 'the parent (it has a dependent) is split once; the leaf dependent is not')
     check(promptOf(out.trace, 'review-bead:bd-101')?.includes(`bash ${SKILLS}/super-code/scripts/review-bead split bd-101`), 'the split is a script echo of review-bead split', promptOf(out.trace, 'review-bead:bd-101'))
-    check(at(out, 'brief:bd-102') > at(out, 'impl:bd-101') && at(out, 'brief:bd-102') < at(out, 'merge:bd-101'), 'the dependent is briefed after the parent\'s implementation and before its merge')
-    const brief = promptOf(out.trace, 'brief:bd-102') ?? ''
+    check(at(out, 'impl:bd-102') > at(out, 'impl:bd-101') && at(out, 'impl:bd-102') < at(out, 'merge:bd-101'), 'the dependent is briefed after the parent\'s implementation and before its merge')
+    const brief = promptOf(out.trace, 'impl:bd-102') ?? ''
     check(brief.includes('git merge --no-ff -m "stack: bd-101" task-bd-101') && /STACK_CONFLICT/.test(brief), 'the dependent\'s brief merges the parent\'s branch into its fresh worktree, with a stack-conflict exit', brief)
     check((promptOf(out.trace, 'impl:bd-102') ?? '').includes('cut with the branches of bd-101 merged in'), 'the dependent\'s implementer is told it builds on the unmerged parent')
     check(at(out, 'merge:bd-102') > at(out, 'merge:bd-101') && out.maxOpen.merge === 1, 'the dependent merges only after its parent merged; single-flight held')
@@ -2043,6 +2062,54 @@ async function main() {
     assertBucketsDisjoint(out.result)
   }
 
+  scenario('round-1 planning split: the ready ids are planned first and start at once; the rest of the tree is mapped beside them and its rows dispatch from the graph')
+  {
+    const canned = graphCanned([{ id: 'bd-101' }, { id: 'bd-102', deps: ['bd-101'] }], {
+      'bd-ready': [{ ids: ['bd-101'] }, { ids: [] }],
+      'plan': { planPath: PLANPATH, mapping: [{ n: 1, id: 'bd-101', files: ['src/f0.js'], deps: [], opaque: false }] },
+      // the second planner returns only once the first task is already implementing
+      'plan-rest': async ctx => { await ctx.waitFor('impl:bd-101'); return { planPath: PLANPATH, mapping: [{ n: 1, id: 'bd-101', files: ['src/f0.js'], deps: [], opaque: false }, { n: 2, id: 'bd-102', files: ['src/f1.js'], deps: ['bd-101'], opaque: false }] } },
+      'review:bd-101': async ctx => { await ctx.waitFor('impl:bd-102'); return { id: 'bd-101', status: 'CLEAN' } },
+    })
+    const out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    check(out.counts['plan'] === 1 && out.counts['plan-rest'] === 1, 'one ready-only planner, one rest-of-tree planner', JSON.stringify(out.counts))
+    check(/plan ONLY the confirmed-ready ids/.test(promptOf(out.trace, 'plan') ?? ''), 'the first planner plans only the ready ids', promptOf(out.trace, 'plan'))
+    const rest = promptOf(out.trace, 'plan-rest') ?? ''
+    check(/READY AND BLOCKED descendant/.test(rest) && /APPENDING only/.test(rest) && /Never rewrite, reorder or renumber/.test(rest), 'the second planner walks the whole tree and only appends', rest)
+    check(at(out, 'plan-rest') < at(out, 'review:bd-101'), 'the second planner runs beside the first task, not before it')
+    check(JSON.stringify([...(out.result?.completed ?? [])].sort()) === '["bd-101","bd-102"]', 'the row the second planner mapped completes in the same round', JSON.stringify(out.result))
+    check(out.counts['review-bead:bd-101'] === 1 && at(out, 'impl:bd-102') < at(out, 'merge:bd-101'), 'bd-101 is split once its dependent is mapped, and the dependent starts before bd-101 merges')
+    check(out.logs.some(l => l.includes('plan-rest: 1 more bead(s) mapped')), 'the merge is logged')
+    assertBucketsDisjoint(out.result)
+  }
+
+  scenario('round-1 planning split: a null second planner leaves the rest to later rounds; an ordinal clash drops the row')
+  {
+    const canned = graphCanned([{ id: 'bd-101' }, { id: 'bd-102', deps: ['bd-101'] }], {
+      'bd-ready': [{ ids: ['bd-101'] }, { ids: ['bd-102'] }, { ids: [] }],
+      'plan': [
+        { planPath: PLANPATH, mapping: [{ n: 1, id: 'bd-101', files: ['src/f0.js'], deps: [], opaque: false }] },
+        { planPath: PLANPATH, mapping: [{ n: 1, id: 'bd-101', files: ['src/f0.js'] }, { n: 2, id: 'bd-102', files: ['src/f1.js'] }] },
+      ],
+      'plan-rest': null,
+    })
+    const out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    check(out.logs.some(l => l.includes('plan-rest: the second planner returned null')), 'a null second planner is logged, not fatal')
+    check(out.counts['plan'] === 2 && out.counts['plan-rest'] === 1 && /REFILL round/.test(out.trace.filter(t => t.label === 'plan')[1]?.prompt ?? ''), 'round 2 plans the newly-ready id as a refill; no second rest planner')
+    check(JSON.stringify([...(out.result?.completed ?? [])].sort()) === '["bd-101","bd-102"]', 'both complete anyway', JSON.stringify(out.result))
+
+    const clash = graphCanned([{ id: 'bd-101' }, { id: 'bd-102', deps: ['bd-101'] }], {
+      'bd-ready': [{ ids: ['bd-101'] }, { ids: [] }],
+      'plan': { planPath: PLANPATH, mapping: [{ n: 1, id: 'bd-101', files: ['src/f0.js'], deps: [], opaque: false }] },
+      'plan-rest': { planPath: PLANPATH, mapping: [{ n: 1, id: 'bd-102', files: ['src/f1.js'], deps: ['bd-101'], opaque: false }] },
+    })
+    const out2 = await run({ args: liveArgs(), canned: clash })
+    assertNoThrow(out2)
+    check(out2.logs.some(l => l.includes('bd-102 came back with ordinal 1, already bound to bd-101')) && !out2.counts['impl:bd-102'], 'a row whose ordinal is taken is dropped, never dispatched against another task\'s section')
+  }
+
   scenario('early unblock: a parent BLOCKED at its fix pass cancels its stacked dependent, discards its worktree, and reopens the parent\'s task bead')
   {
     const canned = graphCanned([{ id: 'bd-101' }, { id: 'bd-102', deps: ['bd-101'] }], {
@@ -2050,7 +2117,7 @@ async function main() {
       'review:bd-101': { id: 'bd-101', status: 'NEEDS_FIX', finding: 'wrong cache key' },
       'fix:bd-101': async ctx => { await ctx.waitFor('impl:bd-102'); return { id: 'bd-101', status: 'BLOCKED', blockerBead: 'bd-109', finding: 'needs a decision' } },
       // the dependent finishes implementing only after the parent's failure was handled
-      'impl:bd-102': async ctx => { await ctx.waitFor('reopen:bd-101'); return { id: 'bd-102', status: 'IMPLEMENTED', files: [], head: SHA('d') } },
+      'impl:bd-102': async ctx => { await ctx.waitFor('reopen:bd-101'); return { id: 'bd-102', status: 'IMPLEMENTED', base: SHA('a'), files: [], head: SHA('d') } },
       'reopen:bd-101': { reopened: ['bd-101'] },
       'discard:bd-102': { discarded: true, reopened: [] },
       'triage:bd-101': { decision: 'ESCALATE', detail: 'a human picks the cache key' },
@@ -2066,7 +2133,7 @@ async function main() {
     const discard = promptOf(out.trace, 'discard:bd-102') ?? ''
     check(out.counts['discard:bd-102'] === 1 && discard.includes('git worktree remove --force') && discard.includes('git branch -D task-bd-102'), 'the dependent\'s worktree and branch are discarded', discard)
     check(taskLedgerLines(out.trace, 'bd-102').includes('Task 2 (bd-102): cancelled (parent bd-101 blocked)'), 'the dependent\'s cancelled line names its parent', JSON.stringify(taskLedgerLines(out.trace, 'bd-102')))
-    check(out.counts['brief:bd-102'] === 1, 'not re-dispatched while its parent is quarantined')
+    check(out.counts['impl:bd-102'] === 1, 'not re-dispatched while its parent is quarantined')
     assertBucketsDisjoint(r)
   }
 
@@ -2076,7 +2143,7 @@ async function main() {
       'bd-ready': [{ ids: ['bd-101'] }, { ids: [] }],
       'review:bd-101': [{ id: 'bd-101', status: 'NEEDS_FIX', finding: 'wrong cache key' }, { id: 'bd-101', status: 'CLEAN' }],
       'fix:bd-101': async ctx => { await ctx.waitFor('impl:bd-102'); return { id: 'bd-101', status: 'BLOCKED', blockerBead: 'bd-109', finding: 'needs a decision' } },
-      'impl:bd-102': [async ctx => { await ctx.waitFor('reopen:bd-101'); return { id: 'bd-102', status: 'IMPLEMENTED', files: [], head: SHA('d') } }, tick({ id: 'bd-102', status: 'IMPLEMENTED', files: [], head: SHA('d') })],
+      'impl:bd-102': [async ctx => { await ctx.waitFor('reopen:bd-101'); return { id: 'bd-102', status: 'IMPLEMENTED', base: SHA('a'), files: [], head: SHA('d') } }, tick({ id: 'bd-102', status: 'IMPLEMENTED', base: SHA('a'), files: [], head: SHA('d') })],
       'reopen:bd-101': { reopened: ['bd-101'] },
       'discard:bd-102': { discarded: true, reopened: [] },
       'triage:bd-101': { decision: 'RESOLVE', detail: 'use the tenant id as the key' },
@@ -2085,8 +2152,8 @@ async function main() {
     const out = await run({ args: liveArgs(), canned })
     assertNoThrow(out)
     check(JSON.stringify([...(out.result?.completed ?? [])].sort()) === '["bd-101","bd-102"]' && out.result?.pendingRetry.length === 0, 'both land in the same round', JSON.stringify(out.result))
-    check(out.counts['brief:bd-102'] === 2 && out.counts['discard:bd-102'] === 1 && out.counts['review-bead:bd-101'] === 2, 'the dependent ran twice (cancelled, then re-dispatched); the parent was split again on its retry', JSON.stringify(out.counts))
-    check(lastAt(out, 'brief:bd-102') > lastAt(out, 'impl:bd-101') && at(out, 'merge:bd-102') > at(out, 'merge:bd-101'), 'the re-dispatch follows the parent\'s second implementation, and merges after it')
+    check(out.counts['impl:bd-102'] === 2 && out.counts['discard:bd-102'] === 1 && out.counts['review-bead:bd-101'] === 2, 'the dependent ran twice (cancelled, then re-dispatched); the parent was split again on its retry', JSON.stringify(out.counts))
+    check(lastAt(out, 'impl:bd-102') > lastAt(out, 'impl:bd-101') && at(out, 'merge:bd-102') > at(out, 'merge:bd-101'), 'the re-dispatch follows the parent\'s second implementation, and merges after it')
     assertBucketsDisjoint(out.result)
   }
 
@@ -2094,17 +2161,18 @@ async function main() {
   {
     const canned = graphCanned([{ id: 'bd-101' }, { id: 'bd-102', deps: ['bd-101'] }], {
       'bd-ready': [{ ids: ['bd-102'], reviews: [{ id: 'bd-150', task: 'bd-101' }] }, { ids: [] }],
-      'brief:bd-101': { id: 'bd-101', status: 'BRIEFED', files: [], branch: 'x', base: SHA('a'), head: SHA('c'), alreadyMerged: false },
+      'impl:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', base: SHA('a'), files: [], head: SHA('c') },
     })
     const out = await run({ args: liveArgs(), canned })
     assertNoThrow(out)
     check(JSON.stringify([...(out.result?.completed ?? [])].sort()) === '["bd-101","bd-102"]', 'the re-entered task and its dependent both land', JSON.stringify(out.result))
-    check(!out.counts['impl:bd-101'] && out.counts['review:bd-101'] === 1, 'the re-entered task is reviewed without an implementer dispatch')
-    check(/review re-entry/.test(promptOf(out.trace, 'brief:bd-101') ?? '') && (promptOf(out.trace, 'brief:bd-101') ?? '').includes('bd reopen bd-101'), 'its brief knows it is a re-entry, with the reopen path when the branch is gone')
+    check(out.counts['impl:bd-101'] === 1 && out.counts['review:bd-101'] === 1, 'the re-entered task runs setup once, then its review')
+    check(/review re-entry/.test(promptOf(out.trace, 'impl:bd-101') ?? '') && /Do NOT implement anything/.test(promptOf(out.trace, 'impl:bd-101') ?? '') && (promptOf(out.trace, 'impl:bd-101') ?? '').includes('bd reopen bd-101'), 'its setup knows it is a re-entry: no re-implementation on an existing branch, the reopen path when the branch is gone')
+    check(out.logs.some(l => l.includes('bd-101: review re-entry') && l.includes('nothing re-implemented')), 'the re-entry is logged as reviewed, not re-implemented')
     check((promptOf(out.trace, 'review:bd-101') ?? '').includes(`[BASE] = ${SHA('a')}`), 'the review uses the base the brief found')
     check((promptOf(out.trace, 'plan') ?? '').includes('Review re-entries this round') && (promptOf(out.trace, 'plan') ?? '').includes('"bd-101"'), 'the planner is told to keep the re-entry\'s row')
     check((promptOf(out.trace, 'merge:bd-101') ?? '').includes('then `bd close bd-150`'), 'its merge closes the review bead from the ready set')
-    check((promptOf(out.trace, 'brief:bd-102') ?? '').includes('stack: bd-101') && at(out, 'merge:bd-102') > at(out, 'merge:bd-101'), 'the dependent stacks on the re-entry and merges after it')
+    check((promptOf(out.trace, 'impl:bd-102') ?? '').includes('stack: bd-101') && at(out, 'merge:bd-102') > at(out, 'merge:bd-101'), 'the dependent stacks on the re-entry and merges after it')
     check(!out.counts['review-bead:bd-101'], 'the re-entry is not split again (its review bead exists)')
     assertBucketsDisjoint(out.result)
   }
@@ -2116,8 +2184,8 @@ async function main() {
     assertNoThrow(out)
     check(JSON.stringify([...(out.result?.completed ?? [])].sort()) === '["bd-101","bd-102"]', 'both completed in one working round', JSON.stringify(out.result))
     check(!out.trace.some(t => /^(review-bead|reopen|discard):/.test(t.label)), 'no split, reopen or discard dispatch')
-    check(at(out, 'brief:bd-102') > at(out, 'merge:bd-101'), 'the dependent is briefed only after its parent merged')
-    check(!(promptOf(out.trace, 'brief:bd-102') ?? '').includes('-m "stack:') && !(promptOf(out.trace, 'merge:bd-102') ?? '').includes('--onto'), 'no stack merge in the brief, plain rebase at the merge')
+    check(at(out, 'impl:bd-102') > at(out, 'merge:bd-101'), 'the dependent is briefed only after its parent merged')
+    check(!(promptOf(out.trace, 'impl:bd-102') ?? '').includes('-m "stack:') && !(promptOf(out.trace, 'merge:bd-102') ?? '').includes('--onto'), 'no stack merge in the brief, plain rebase at the merge')
     check(!out.counts['bd-ready-topup'], 'the graph still finds the dependent with no top-up agent')
     assertBucketsDisjoint(out.result)
   }
@@ -2126,11 +2194,11 @@ async function main() {
   {
     const rows = [{ id: 'bd-101' }, { id: 'bd-102', deps: ['bd-101'] }, { id: 'bd-103', deps: ['bd-102'] }]
     // the first link's review completes only once the third link is briefed: each link stacks on the one before
-    const out = await run({ args: liveArgs(), canned: graphCanned(rows, { 'bd-ready': [{ ids: ['bd-101'] }, { ids: [] }], 'review:bd-101': async ctx => { await ctx.waitFor('brief:bd-103'); return { id: 'bd-101', status: 'CLEAN' } } }) })
+    const out = await run({ args: liveArgs(), canned: graphCanned(rows, { 'bd-ready': [{ ids: ['bd-101'] }, { ids: [] }], 'review:bd-101': async ctx => { await ctx.waitFor('impl:bd-103'); return { id: 'bd-101', status: 'CLEAN' } } }) })
     assertNoThrow(out)
     check(out.result?.completed.length === 3 && out.counts['bd-ready'] === 2 && !out.counts['bd-ready-topup'], 'the whole chain in one round, zero top-up dispatches', JSON.stringify(out.counts))
     check(at(out, 'merge:bd-101') < at(out, 'merge:bd-102') && at(out, 'merge:bd-102') < at(out, 'merge:bd-103'), 'merges land in dependency order')
-    check(at(out, 'brief:bd-103') < at(out, 'merge:bd-101'), 'the third link starts before the first one merges (each stacks on the one before)')
+    check(at(out, 'impl:bd-103') < at(out, 'merge:bd-101'), 'the third link starts before the first one merges (each stacks on the one before)')
     check(out.counts['review-bead:bd-101'] === 1 && out.counts['review-bead:bd-102'] === 1 && !out.counts['review-bead:bd-103'], 'each task with a dependent is split once; the last link is not')
     assertBucketsDisjoint(out.result)
 
@@ -2146,14 +2214,14 @@ async function main() {
   {
     const canned = graphCanned([{ id: 'bd-101' }, { id: 'bd-102' }, { id: 'bd-103', deps: ['bd-101', 'bd-102'] }], {
       'bd-ready': [{ ids: ['bd-101', 'bd-102'] }, { ids: [] }],
-      'brief:bd-103': [{ id: 'bd-103', status: 'STACK_CONFLICT', finding: 'task-bd-101 and task-bd-102 both rewrite src/x.js' }, { id: 'bd-103', status: 'BRIEFED', files: [], branch: 'x', base: SHA('a') }],
+      'impl:bd-103': [{ id: 'bd-103', status: 'STACK_CONFLICT', finding: 'task-bd-101 and task-bd-102 both rewrite src/x.js' }, tick({ id: 'bd-103', status: 'IMPLEMENTED', base: SHA('a'), files: [], head: SHA('c') })],
     })
     const out = await run({ args: liveArgs(), canned })
     assertNoThrow(out)
     check(out.result?.completed.length === 3, 'all three land', JSON.stringify(out.result))
-    check(out.counts['brief:bd-103'] === 2 && lastAt(out, 'brief:bd-103') > at(out, 'merge:bd-101') && lastAt(out, 'brief:bd-103') > at(out, 'merge:bd-102'), 'the second brief comes after both parents merged')
-    const second = out.trace.filter(t => t.label === 'brief:bd-103')[1]?.prompt ?? ''
-    check(!second.includes('-m "stack:') && (promptOf(out.trace, 'brief:bd-103') ?? '').includes('-m "stack: bd-101"') && (promptOf(out.trace, 'brief:bd-103') ?? '').includes('-m "stack: bd-102"'), 'the first brief stacked both parents; the fresh one stacks none')
+    check(out.counts['impl:bd-103'] === 2 && lastAt(out, 'impl:bd-103') > at(out, 'merge:bd-101') && lastAt(out, 'impl:bd-103') > at(out, 'merge:bd-102'), 'the second brief comes after both parents merged')
+    const second = out.trace.filter(t => t.label === 'impl:bd-103')[1]?.prompt ?? ''
+    check(!second.includes('-m "stack:') && (promptOf(out.trace, 'impl:bd-103') ?? '').includes('-m "stack: bd-101"') && (promptOf(out.trace, 'impl:bd-103') ?? '').includes('-m "stack: bd-102"'), 'the first brief stacked both parents; the fresh one stacks none')
     check(!out.counts['discard:bd-103'] && !taskLedgerLines(out.trace, 'bd-103').some(l => /cancelled/.test(l)), 'a stack conflict is a wait, not a cancellation')
     assertBucketsDisjoint(out.result)
   }
@@ -2174,7 +2242,7 @@ async function main() {
         { dependent: 'bd-104', blocker: 'bd-103', kind: 'drop', safe: true, reason: 'not proposed as safe — must be ignored' },
       ], skipped: [] },
       'ledger-append:edge-cuts:1': { appended: true },
-      'impl:bd-102': async ctx => { await ctx.waitFor('brief:bd-103'); return { id: 'bd-102', status: 'IMPLEMENTED', files: [], head: SHA('c') } },
+      'impl:bd-102': async ctx => { await ctx.waitFor('impl:bd-103'); return { id: 'bd-102', status: 'IMPLEMENTED', base: SHA('a'), files: [], head: SHA('c') } },
     }) })
     assertNoThrow(out)
     check(out.counts['edge-audit:1'] === 1 && out.counts['edge-cuts:1'] === 1, 'graph-bound arming in round 1, then one apply dispatch', JSON.stringify(out.counts))
@@ -2184,7 +2252,7 @@ async function main() {
     const lines = (promptOf(out.trace, 'ledger-append:edge-cuts:1') ?? '').split('\n')
     check(lines.some(l => l.includes('Edge cut: bd-103 <- bd-102 · drop (bd-103 reads nothing bd-102 writes) · applied')) && !lines.some(l => l.includes('Edge cut: bd-104')), 'the applied cut goes to the ledger; a change the audit did not propose as safe is ignored', lines.join(' | '))
     // impl:bd-102 returns only once bd-103 is briefed, so reaching here at all means the cut freed bd-103
-    check(at(out, 'brief:bd-103') > at(out, 'edge-cuts:1') && at(out, 'brief:bd-103') < at(out, 'review:bd-102') && !(promptOf(out.trace, 'brief:bd-103') ?? '').includes('stack: bd-102'), 'bd-103 dispatches from the graph as soon as the cut lands — before bd-102 is even implemented, and not stacked on it')
+    check(at(out, 'impl:bd-103') > at(out, 'edge-cuts:1') && at(out, 'impl:bd-103') < at(out, 'review:bd-102') && !(promptOf(out.trace, 'impl:bd-103') ?? '').includes('stack: bd-102'), 'bd-103 dispatches from the graph as soon as the cut lands — before bd-102 is even implemented, and not stacked on it')
     check((out.result?.slowness ?? []).some(x => x.includes('outside the safe class') && x.includes('bd-104 <- bd-103 · repoint')), 'the unsafe change is left for an operator', JSON.stringify(out.result?.slowness))
     check(JSON.stringify([...(out.result?.completed ?? [])].sort()) === '["bd-101","bd-102","bd-103","bd-104"]', 'all four complete', JSON.stringify(out.result))
     assertBucketsDisjoint(out.result)
@@ -2195,7 +2263,7 @@ async function main() {
     const canned = graphCanned([{ id: 'bd-101' }, { id: 'bd-102', deps: ['bd-101'] }], { 'bd-ready': [{ ids: ['bd-101'] }, { ids: [] }], 'review-bead:bd-101': null })
     const out = await run({ args: liveArgs(), canned })
     assertNoThrow(out)
-    check(out.result?.completed.length === 2 && at(out, 'brief:bd-102') < at(out, 'merge:bd-101'), 'the dependent still started before the parent merged; both land')
+    check(out.result?.completed.length === 2 && at(out, 'impl:bd-102') < at(out, 'merge:bd-101'), 'the dependent still started before the parent merged; both land')
     check(!(promptOf(out.trace, 'merge:bd-101') ?? '').includes('review bead') && out.logs.some(l => l.includes('stays unsplit in bd')), 'no review bead to close at the merge; the gap is logged')
     assertBucketsDisjoint(out.result)
   }
@@ -2227,7 +2295,7 @@ async function main() {
       'bd-ready': [{ ids: ['bd-101'] }, { ids: ['bd-102'] }, { ids: [] }],
       'review:bd-101': { id: 'bd-101', status: 'NEEDS_FIX', finding: 'f' },
       'fix:bd-101': { id: 'bd-101', status: 'BLOCKED', blockerBead: 'bd-109', finding: 'needs a decision' },
-      'impl:bd-102': async ctx => { await ctx.waitFor('reopen:bd-101'); return { id: 'bd-102', status: 'IMPLEMENTED', files: [] } },
+      'impl:bd-102': async ctx => { await ctx.waitFor('reopen:bd-101'); return { id: 'bd-102', status: 'IMPLEMENTED', base: SHA('a'), files: [] } },
       'reopen:bd-101': null,
       'discard:bd-102': { discarded: true, reopened: [] },
       'triage:bd-101': { decision: 'ESCALATE', detail: 'a human decides' },
@@ -2235,7 +2303,7 @@ async function main() {
     })
     const out = await run({ args: liveArgs(), canned })
     assertNoThrow(out)
-    check(out.counts['brief:bd-102'] === 1 && out.logs.some(l => l.startsWith('held back 1 ready id(s)') && l.includes('bd-102')), 'round 2 holds bd-102 back instead of dispatching it on a quarantined blocker', JSON.stringify(out.counts))
+    check(out.counts['impl:bd-102'] === 1 && out.logs.some(l => l.startsWith('held back 1 ready id(s)') && l.includes('bd-102')), 'round 2 holds bd-102 back instead of dispatching it on a quarantined blocker', JSON.stringify(out.counts))
     check(out.result?.stopReason === 'ready-drained' && out.result?.stalled === false && out.counts['bd-ready'] === 2, 'a round whose only ready ids are held back drains, never stalls', JSON.stringify({ stop: out.result?.stopReason, n: out.counts['bd-ready'] }))
     assertBucketsDisjoint(out.result)
   }

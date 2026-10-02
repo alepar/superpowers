@@ -126,7 +126,7 @@ This repository is the `alepar` fork. Its versions are `<upstream version>-alepa
    - `bash tests/skill-scripts/test-bash-invocation.sh`
    - `bash tests/codex/test-marketplace-manifest.sh`
    
-   If a Workflow engine changed (`skills/super-code/coordinator-workflow.md`, `skills/super-roast/super-roast-workflow.md`), also run its documented `dryRun` scenarios and compare against the expected agent counts recorded in that doc.
+   If a Workflow engine changed (`skills/super-code/coordinator.js`, `skills/super-roast/super-roast-workflow.md`), also run its documented `dryRun` scenarios and compare against the expected agent counts recorded in its doc (`coordinator-workflow.md` or `super-roast-workflow.md`).
 2. **Bump every manifest:** `./scripts/bump-version.sh <version>`. It updates all files listed in `.version-bump.json` and audits the repo for stragglers; `--check` reports drift. Never hand-edit a single manifest.
 3. **Commit, tag, push:**
    ```bash

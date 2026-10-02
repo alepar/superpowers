@@ -44,12 +44,13 @@ Task tool (general-purpose), model: opus:
 
     ## Beads to plan this round
 
-    [FULL TEXT of `bd show` for every ready/blocked descendant bead that does not yet have a
-    [plan file name] section — title, description, acceptance criteria, any files-touched hint,
-    each pasted in full inside its own `<bead id="<bead id>">…</bead>` tags. On the epic's first
-    planning round this is every ready/blocked descendant; on a refill round it is only the
-    newly-ready or newly-created beads. Blocker beads and review beads (label `sp:review`, title
-    `review: <task id>`) are never planned.]
+    [FULL TEXT of `bd show` for every bead this round plans that does not yet have a [plan file
+    name] section — title, description, acceptance criteria, any files-touched hint, each pasted in
+    full inside its own `<bead id="<bead id>">…</bead>` tags. A coordinator's first round splits
+    planning in two: the first planner plans only the ready beads, and a second planner, dispatched
+    as soon as the first returns, plans every other ready or blocked descendant while those tasks
+    run. A refill round plans only newly-ready or newly-created beads. Blocker beads and review
+    beads (label `sp:review`, title `review: <task id>`) are never planned.]
 
     ## Plan file
 
@@ -96,7 +97,10 @@ Task tool (general-purpose), model: opus:
            the section; one task reviewer checks spec compliance and quality together.
     3. Never renumber or rewrite an ordinal or `## Task <N>` section already present in `[plan
        file name]`, even if you would word it differently now — a task in flight may still be
-       pointing at it.
+       pointing at it. The mapping may continue in `## Mapping (continued)` tables further down the
+       file; read them all. When the dispatch says other tasks are already reading the file, write
+       only by appending (one `## Mapping (continued)` table plus your new sections, in a single
+       append at the end), never by rewriting it.
     4. If a bead is genuinely too ambiguous to plan (not merely underspecified — a real missing
        decision), leave it out of the mapping table and this round's sections, and list it in
        `unplanned` with exactly what decision is missing. Do not invent scope to force a plan.
