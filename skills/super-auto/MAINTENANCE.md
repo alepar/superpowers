@@ -49,3 +49,5 @@ A runtime file points at a rule's canonical home instead of restating it, copyin
 
 ## scope-filter-prompt.md
 
+
+- The goal is no longer marked as data; only the roast findings text is (F40, decision 3). The Blocking and cluster paragraphs collapsed to one line because `scripts/scope-dispositions` is the gate (F35, F36, decision 4). The `Model: sonnet` line moved to the dispatch table in SKILL.md (F32, decision 7).
