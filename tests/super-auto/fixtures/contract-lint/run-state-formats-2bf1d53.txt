@@ -1,0 +1,9 @@
+flags: planOneShot=<t/f> skipPlanRoast=<t/f> skipCodeRoast=<t/f> autonomous=<t/f>
+resumeChange: YYYY-MM-DD · "<the ask, verbatim>" · <what it changes>
+design | roast-design | capped-blocking | code | roast-code | fix-loop | report | finish | done
+skillSource: <abs skills path> @ <sha>[+dirty:<hash>] (<version>)
+feedback: <issue-url>
+roastDesignCapped: <unresolved finding ids> · <extension report path> · stopped | proceeded
+top-split · human | auto
+design-review · pending | approved
+scope-filter: <in-scope> in-scope · <punch> punch-listed

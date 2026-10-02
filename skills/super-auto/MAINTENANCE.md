@@ -13,13 +13,13 @@ A runtime file points at a rule's canonical home instead of restating it, copyin
 ## SKILL.md
 
 - Removed the parenthetical "mismatched by construction on every handoff before this field existed" from phase 3's `integrationWorktree` note (F18).
-- Removed "`super-roast` uses the report-location override added for this." from §Run directory (F19).
+- Removed "`super-roast` uses the report-location override added for this." from SKILL.md §Run directory (F19).
 - Removed the clause tying the `skipPlanRoast` + `autonomous` flag precedence to the cheap validation run (F21).
 - The local-checkout rule used to read "it exists on one machine only and says nothing about what this session loaded"; it now says it shows what is on disk, not what this session loaded (F26).
 - Removed the whole `## Known limitations` section (F30): "Nothing enforces the workspace rule. Pre-flight creating the run's worktree and branch is the load-bearing assumption behind one `run.md`, an observable `base`, and a phase-7 merge that carries the whole run. Nothing checks it happened, and a run that skips it fails far downstream — at phase 7, with the report on an unmerged branch." And "Documented gaps, deliberately not fixed": "Gate order is convention, not enforcement. Nothing catches an agent that writes `phase: finish` before actually confirming phase 7's three conditions; the rule is evaluate, then write." and "Resume can't distinguish a stall from a plain interruption. Both leave `phase` at whatever was in flight; nothing marks *why* the run stopped there."
-- Removed the separate "Hard stop, not a fallback" paragraph from §Pre-flight; its reason is folded into the tracker-check sentence.
-- Removed the "Recorded decisions replay" paragraph from §Autonomous mode (replay only on an exact match, never widened into a blanket approval); run-state.md item 7 (Design decisions) is its one home.
-- The closed stop list gained stop 4, the `capped-blocking` stop under `planOneShot` without `autonomous` (F3). The fix-bead flag triple moved from Red Flags to §Invariants I3 (F48, decision 5), and the human-owned merge rule's canonical home is §Invariants I5.
+- Removed the separate "Hard stop, not a fallback" paragraph from SKILL.md §Pre-flight; its reason is folded into the tracker-check sentence.
+- Removed the "Recorded decisions replay" paragraph from SKILL.md §Autonomous mode (replay only on an exact match, never widened into a blanket approval); run-state.md item 7 (Design decisions) is its one home.
+- The closed stop list gained stop 4, the `capped-blocking` stop under `planOneShot` without `autonomous` (F3). The fix-bead flag triple moved from Red Flags to SKILL.md §Invariants I3 (F48, decision 5), and the human-owned merge rule's canonical home is SKILL.md §Invariants I5.
 - The Resume section, the "Switching definitions mid-run" paragraph and the `design-review · pending` resume sentence moved to resume.md (F6); numeric counts that pointed at lists were removed (F46, F47, F50, F53).
 
 
@@ -44,7 +44,7 @@ A runtime file points at a rule's canonical home instead of restating it, copyin
 - Removed the status-form list and every status rule paragraph; `scripts/report-status` implements them now (F0). With them went their rationales: `[degraded: ...]` attaches to the `completed with ...` form too, because a `clean`-only suffix forced the qualifier to be dropped exactly where the reader was already being warned (F22); `<N>` and `<M>` count code outcomes, with `codeBuckets.escalated` in `<M>` and a non-empty `codeBuckets.parked` adding `code findings parked`, because roast-only counters let a run that skipped both roasts, quarantined a task and merged over a finding open as `clean [degraded: plan roast skipped, code roast skipped]` (F20); the paragraph on `clean [degraded: ...]` no longer meaning "nothing was left for a human", since autonomous mode can answer a sibling's gate on the human's behalf (F23); and the skipped-roast rationale: nothing was reviewed, so zero Blocking means "never checked".
 - Removed the warning to future editors that letting `super-code` run its own Finish before `report` would cut off two sources, because the ledger and implementer reports live git-ignored inside the integration worktree (F24).
 - Removed the "easy to lose in a rewrite" lead-in to the Smells section (F25).
-- Replaced the "durable artifacts only" sourcing prohibition with §Allowed sources, which lists every permitted source including the diff Entrypoints needs (F57, decision 2). The old text's reason survives: recollection and `super-code`'s non-durable return value are excluded because the drafter may not be the session that ran phase `code`.
+- Replaced the "durable artifacts only" sourcing prohibition with report-prompt.md §Allowed sources, which lists every permitted source including the diff Entrypoints needs (F57, decision 2). The old text's reason survives: recollection and `super-code`'s non-durable return value are excluded because the drafter may not be the session that ran phase `code`.
 
 
 ## scope-filter-prompt.md

@@ -1,0 +1,37 @@
+flags
+resumeChange
+phase
+idea
+spec
+epic
+branch
+base
+roast-design
+roast-code
+skillSource
+migrated
+feedback
+parked
+graph-pass
+roastDesignRound
+roastCodeRound
+roastDesignCapped
+roastCodeCapped
+codeBuckets
+codeBuckets.completed
+codeBuckets.escalated
+codeBuckets.pendingRetry
+codeBuckets.parked
+codeBuckets.stalled
+codeBuckets.review
+codeBuckets.sweep
+codeBuckets.slowness
+sweepFix
+approvals
+approvals · top-split
+approvals · design-review
+approvals · coverage-round-<N>
+stepBack-round-<N>
+scopeFilter-round-<N>
+scope-filter
+regressionPass-round-<N>
