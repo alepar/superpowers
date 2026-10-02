@@ -41,6 +41,11 @@ A runtime file points at a rule's canonical home instead of restating it, copyin
 
 ## report-prompt.md
 
+- Removed the status-form list and every status rule paragraph; `scripts/report-status` implements them now (F0). With them went their rationales: `[degraded: ...]` attaches to the `completed with ...` form too, because a `clean`-only suffix forced the qualifier to be dropped exactly where the reader was already being warned (F22); `<N>` and `<M>` count code outcomes, with `codeBuckets.escalated` in `<M>` and a non-empty `codeBuckets.parked` adding `code findings parked`, because roast-only counters let a run that skipped both roasts, quarantined a task and merged over a finding open as `clean [degraded: plan roast skipped, code roast skipped]` (F20); the paragraph on `clean [degraded: ...]` no longer meaning "nothing was left for a human", since autonomous mode can answer a sibling's gate on the human's behalf (F23); and the skipped-roast rationale: nothing was reviewed, so zero Blocking means "never checked".
+- Removed the warning to future editors that letting `super-code` run its own Finish before `report` would cut off two sources, because the ledger and implementer reports live git-ignored inside the integration worktree (F24).
+- Removed the "easy to lose in a rewrite" lead-in to the Smells section (F25).
+- Replaced the "durable artifacts only" sourcing prohibition with §Allowed sources, which lists every permitted source including the diff Entrypoints needs (F57, decision 2). The old text's reason survives: recollection and `super-code`'s non-durable return value are excluded because the drafter may not be the session that ran phase `code`.
+
 
 ## scope-filter-prompt.md
 
