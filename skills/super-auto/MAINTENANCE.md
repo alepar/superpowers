@@ -12,6 +12,16 @@ A runtime file points at a rule's canonical home instead of restating it, copyin
 
 ## SKILL.md
 
+- Removed the parenthetical "mismatched by construction on every handoff before this field existed" from phase 3's `integrationWorktree` note (F18).
+- Removed "`super-roast` uses the report-location override added for this." from §Run directory (F19).
+- Removed the clause tying the `skipPlanRoast` + `autonomous` flag precedence to the cheap validation run (F21).
+- The local-checkout rule used to read "it exists on one machine only and says nothing about what this session loaded"; it now says it shows what is on disk, not what this session loaded (F26).
+- Removed the whole `## Known limitations` section (F30): "Nothing enforces the workspace rule. Pre-flight creating the run's worktree and branch is the load-bearing assumption behind one `run.md`, an observable `base`, and a phase-7 merge that carries the whole run. Nothing checks it happened, and a run that skips it fails far downstream — at phase 7, with the report on an unmerged branch." And "Documented gaps, deliberately not fixed": "Gate order is convention, not enforcement. Nothing catches an agent that writes `phase: finish` before actually confirming phase 7's three conditions; the rule is evaluate, then write." and "Resume can't distinguish a stall from a plain interruption. Both leave `phase` at whatever was in flight; nothing marks *why* the run stopped there."
+- Removed the separate "Hard stop, not a fallback" paragraph from §Pre-flight; its reason is folded into the tracker-check sentence.
+- Removed the "Recorded decisions replay" paragraph from §Autonomous mode (replay only on an exact match, never widened into a blanket approval); run-state.md item 7 (Design decisions) is its one home.
+- The closed stop list gained stop 4, the `capped-blocking` stop under `planOneShot` without `autonomous` (F3). The fix-bead flag triple moved from Red Flags to §Invariants I3 (F48, decision 5), and the human-owned merge rule's canonical home is §Invariants I5.
+- The Resume section, the "Switching definitions mid-run" paragraph and the `design-review · pending` resume sentence moved to resume.md (F6); numeric counts that pointed at lists were removed (F46, F47, F50, F53).
+
 
 ## run-state.md
 
@@ -25,6 +35,8 @@ A runtime file points at a rule's canonical home instead of restating it, copyin
 - The worked example's intro said it was taken from a real run, and its `codeBuckets` showed a full-suite `sweep` result before phase 6, contradicting item 6 (F29, F44). It is now labelled illustrative and shows `SWEEP DEFERRED (caller-owned)` with an empty `slowness:`.
 
 ## resume.md
+
+- resume.md was split out of SKILL.md (F6, F12, F46). Run discovery stays prose because it runs once per invocation and is judgment (which candidates match), not a mechanical step worth a script.
 
 
 ## report-prompt.md
