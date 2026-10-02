@@ -219,10 +219,11 @@ Re-enter `super-code` with the new beads and `deferSweep: true`, then loop to ph
 
 #### Cap disposition
 
-When the cap trips with Blocking findings still confirmed, record the disposition before
+When the loop exits at the cap or at thrash with Blocking findings still confirmed, record the disposition before
 parking: write `roastCodeCapped:` to `run.md` with the unresolved finding ids, the final round's report
-path, and what authority the next step needs (run-state.md item 5 (Roast iteration counts)). A resume and the operator
-can then tell "cap exhausted with Blocking open" from "converged" without reading prose. Any later
+path, and what authority the next step needs (run-state.md item 5 (Roast iteration counts)). `scripts/report-status` counts
+those ids as unresolved Blocking, and a resume and the operator can tell "loop ended with Blocking open" from "converged"
+without reading prose. Any later
 whole-branch roast outside this loop, such as a post-cap audit or a re-review after an operator
 ruling, is invoked with iteration `post-cap audit`, which `super-roast`'s header accepts, never
 with a fabricated round number.
@@ -231,9 +232,9 @@ with a fabricated round number.
 
 Every `super-code` invocation ran with `deferSweep: true` (its `sweep` reads `SWEEP DEFERRED (caller-owned)` and its merges ran only the build-only `mergeCheck`), so the run's one full-suite sweep happens here, after phase 5 exits, against the tip the roast cleared. In order:
 
-1. Sweep. Run the command `super-code`'s ledger `Launch:` line records (the declared `config.sweep`, else the project's full test command under its `AGENTS.md` envelope), stamp the one-line result with the SHA it measured, and record it as `codeBuckets.sweep`. A stamp whose SHA is not the tip is invalid. When this branch does not land alone (a prerequisite branch lands with it, or the base moved materially), run the sweep, and any other once-per-branch verification such as a readiness gate, against the exact SHA that will land, after reviewing that combined tree's conflicts and its clean auto-merges.
-2. Sweep-fix pass, once. A failing sweep gets one fix pass, whether or not a regression pass ran just before it: file the failing tests as fix beads (tests sharing one cause in one bead) per §Fix-bead template, each linking the sweep output; re-enter `super-code` with them and `deferSweep: true`; re-run the sweep once at the new tip and record `sweepFix:` (run-state.md item 6 (Code buckets)). A second failure is reported as it stands. A `MEASUREMENT INVALID` sweep is not a failure to fix; report it.
-3. Write `report.md` per `./report-prompt.md`, before anything is torn down. You write and commit the file; a drafter is dispatched per §Subagent dispatch (report drafter row). The first write's `metrics:` line reads `metrics: pending (upstream-feedback not yet run)`. Its status line comes from `scripts/report-status`, run as report-prompt.md §The status block says.
+1. Sweep. Run the command `super-code`'s ledger `Launch:` line records (the declared `config.sweep`, else the project's full test command under its `AGENTS.md` envelope), and record its one-line result as `codeBuckets.sweep` in the form run-state.md §Field table gives (`super-code`'s sweep form, or `MEASUREMENT INVALID: <cause>`), stamped ` @ <sha>` with the SHA it measured. A stamp whose SHA is not the tip is invalid. When this branch does not land alone (a prerequisite branch lands with it, or the base moved materially), run the sweep, and any other once-per-branch verification such as a readiness gate, against the exact SHA that will land, after reviewing that combined tree's conflicts and its clean auto-merges.
+2. Sweep-fix pass, once. A failing sweep gets one fix pass, whether or not a regression pass ran just before it: file the failing tests as fix beads (tests sharing one cause in one bead) per §Fix-bead template, each linking the sweep output; re-enter `super-code` with them and `deferSweep: true`; re-run the sweep once at the new tip, write its result to `codeBuckets.sweep` as in step 1 (replacing the `SWEEP DEFERRED (caller-owned)` the re-entry's bucket overwrite left), and record `sweepFix:` (run-state.md item 6 (Code buckets)). A second failure is reported as it stands. A `MEASUREMENT INVALID` sweep is not a failure to fix; report it.
+3. Write `report.md` per `./report-prompt.md`, before anything is torn down. You write and commit the file; a drafter is dispatched per §Subagent dispatch (report drafter row). The first write's `metrics:` line reads `metrics: pending (upstream-feedback not yet run)`. Its status line comes from `scripts/report-status` with `--tip <the run branch's HEAD sha>`, run as report-prompt.md §The status block says.
 4. Invoke `superpowers:upstream-feedback`, once: this run is the outermost invocation. In an autonomous run its proposal parks and surfaces at the phase-7 menu, never mid-run; an attended run is asked directly.
 5. After it returns, rewrite only `report.md`'s `metrics:` line in place, per report-prompt.md §The status block.
 

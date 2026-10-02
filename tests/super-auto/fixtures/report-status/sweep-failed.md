@@ -3,7 +3,7 @@
 flags: planOneShot=false skipPlanRoast=false skipCodeRoast=false autonomous=true
 phase: report
 
-sweepFix: 3 failing → bd-431, bd-432 · re-run FAIL 1 of 415 tests @ 7c01d9e
+sweepFix: 3 failing → bd-431, bd-432 · re-run 7c01d9e — 414 passed, 1 failed, 0 errors, 0 skipped; failing: tests/limiter.test.ts::burst; command: npm test @ 7c01d9e
 
 codeBuckets:
   completed: bd-1, bd-431, bd-432
@@ -12,4 +12,4 @@ codeBuckets:
   parked:
   stalled: false
   review: CLEAN
-  sweep: FAIL 1 of 415 tests @ 7c01d9e
+  sweep: 7c01d9e — 414 passed, 1 failed, 0 errors, 0 skipped; failing: tests/limiter.test.ts::burst; command: npm test @ 7c01d9e
