@@ -1,7 +1,7 @@
 # super-auto run — 2026-10-01-prompting-guide-roast-fixes
 
 flags: planOneShot=f skipPlanRoast=f skipCodeRoast=f autonomous=t
-phase: roast-code
+phase: fix-loop
 
 idea: apply the prompting-guide roast fixes to skills/super-auto in this repo (/Users/alepar/AleCode/superpowers). Inputs (all in ~/Documents/prompt-roast-handoff/): super-auto-roast.md (report: top 10 actions, 10 systemic patterns, 7 conflicts, 59 findings with machine-verified quotes), super-auto-roast-findings.json (structured), super-auto-roast-decisions.md (owner's binding decisions on all 7 conflicts), decisions.md (house rules for edits: altitude, no history in runtime files, calm register, deterministic work in code). Scope: the 4 high-severity findings, the systemic patterns as they apply to skills/super-auto, and the 7 decisions; medium/low findings only where a fix subsumes them. Do not edit outside skills/super-auto unless a decision requires it.
 branch: super-auto/prompting-guide-roast-fixes
@@ -11,7 +11,7 @@ epic: super-plan-5pi
 
 roastDesignRound: 2
 roastCodeRound: 2
-roast-code: 2026-10-01-prompting-guide-roast-fixes-roast-pr-1.md
+roast-code: 2026-10-01-prompting-guide-roast-fixes-roast-pr-1.md, 2026-10-01-prompting-guide-roast-fixes-roast-pr-2.md
 stepBack-round-1: patch — two interface clusters (status inputs; step-handoff files) + independent fixes; final review's keys-file collision and sweep issues folded into the clusters
 scopeFilter-round-1: [Should-fix] skills/super-auto/scripts/report-status:92 in-scope — thrash exit with Blocking open prints clean; cluster status-inputs
 scopeFilter-round-1: [Should-fix] skills/super-auto/scripts/report-status:121 in-scope — PASS-prefix misclassifies real sweep format; cluster status-inputs
@@ -26,6 +26,7 @@ scopeFilter-round-1: [Nit] skills/super-auto/SKILL.md:174 in-scope — regressio
 scopeFilter-round-1: [FYI] skills/super-auto/scripts/step-back-check:58 punch-list — pre-existing; optional hardening
 scopeFilter-round-1: [FYI] skills/super-auto/SKILL.md:184 punch-list — pre-existing; optional hardening
 scope-filter: 9 in-scope · 3 punch-listed
+regressionPass-round-2: [Should-fix] skills/super-auto/report-prompt.md:33; skills/super-auto/SKILL.md:237; skills/super-auto/scripts/report-status:103; tests/super-auto/test-scripts.sh:137 — --tip pinned to HEAD trips on bookkeeping commits (converged round; FYI SKILL.md:235 stays punch list)
 roast-design: 2026-10-01-prompting-guide-roast-fixes-roast-design-1.md, 2026-10-01-prompting-guide-roast-fixes-roast-design-2.md
 
 approvals:
