@@ -1,0 +1,161 @@
+#!/usr/bin/env bash
+# Find, and by default stop, this user's processes that belong to a run: any process whose working
+# directory, executable, command-line arguments, or HOME/TMPDIR environment value is under one of
+# the given roots, plus the descendants of each match. (macOS hides the environment of its own
+# platform binaries, so there HOME/TMPDIR is seen only for the user's own executables.) Roots are the run's own worktrees, run directory and temp dirs — never a shared
+# location — so a process that references no root (the user's own server, editor, shell) never
+# matches, whatever its name. This script's own process and its ancestors and PID 1 are never
+# candidates.
+#
+# Usage:
+#   bash stop-run-processes [--check] ROOT [ROOT...]
+#
+# --check lists matches without signalling anything: `match: <pid> <command> — <why>`, exit 3 when
+# anything matched, 0 when nothing did. Default mode stops each match (TERM, then KILL after 3 s)
+# and prints `stopped: <pid> <command> — <why>` or `survived: <pid> <command> — <why>` (alive after
+# KILL), exit 3 when anything survived, 0 otherwise. Exit 2 on bad input.
+set -euo pipefail
+
+check=
+if [ "${1:-}" = --check ]; then check=1; shift; fi
+[ $# -ge 1 ] || { echo "usage: stop-run-processes [--check] ROOT [ROOT...]" >&2; exit 2; }
+
+# Each root in both spellings: as given and physically resolved (/tmp vs /private/tmp on macOS).
+roots=()
+for r in "$@"; do
+  case "$r" in /*) ;; *) echo "root must be absolute: $r" >&2; exit 2 ;; esac
+  r=${r%/}
+  [ -n "$r" ] && [ "$r" != / ] || { echo "refusing root: /" >&2; exit 2; }
+  roots+=("$r")
+  if [ -d "$r" ]; then p=$(cd "$r" && pwd -P); [ "$p" = "$r" ] || roots+=("$p"); fi
+done
+
+under() {  # $1 = a path; true when it is a root or inside one
+  local root
+  for root in "${roots[@]}"; do
+    case "$1" in "$root"|"$root"/*) return 0 ;; esac
+  done
+  return 1
+}
+mentions() {  # $1 = free text (args or env); true when a root appears as a whole path component
+  local root rest
+  for root in "${roots[@]}"; do
+    rest=$1
+    while [[ "$rest" == *"$root"* ]]; do
+      rest=${rest#*"$root"}
+      case "$rest" in ""|/*|[[:space:]]*|\"*|\'*|:*|=*) return 0 ;; esac
+    done
+  done
+  return 1
+}
+
+uid=$(id -u)
+# Never this process, its ancestors, its own children (subshells and the ps/lsof it runs carry
+# the roots in their arguments), or PID 1.
+ppids=$(ps -A -o pid=,ppid= 2>/dev/null || true)
+ppid_of() {  # from the snapshot, else live (children started after the snapshot)
+  local r; r=$(awk -v p="$1" '$1==p{print $2; exit}' <<<"$ppids")
+  [ -n "$r" ] || r=$(ps -o ppid= -p "$1" 2>/dev/null | tr -d ' ')
+  echo "$r"
+}
+skip=" 1 $$ "
+p=$$
+while [ -n "$p" ] && [ "$p" != 0 ] && [ "$p" != 1 ]; do
+  p=$(ppid_of "$p")
+  [ -n "$p" ] && skip="$skip$p "
+done
+is_ours() {  # $1 pid; true when it descends from this process
+  local q=$1 n=0
+  while [ -n "$q" ] && [ "$q" != 0 ] && [ "$q" != 1 ] && [ $n -lt 64 ]; do
+    [ "$q" = "$$" ] && return 0
+    q=$(ppid_of "$q"); n=$((n + 1))
+  done
+  return 1
+}
+
+matches=""
+add() {  # $1 pid $2 reason
+  case "$skip" in *" $1 "*) return 0 ;; esac
+  case " $matches " in *" $1 "*) return 0 ;; esac
+  is_ours "$1" && return 0
+  matches="$matches $1"
+  eval "why_$1=\$2"
+}
+
+if [ -d /proc/self ] && [ -r /proc/self/environ ]; then
+  for d in /proc/[0-9]*; do
+    pid=${d#/proc/}
+    [ "$(stat -c %u "$d" 2>/dev/null)" = "$uid" ] || continue
+    path=$(readlink "$d/cwd" 2>/dev/null || true); [ -n "$path" ] && under "$path" && { add "$pid" "cwd $path"; continue; }
+    path=$(readlink "$d/exe" 2>/dev/null || true); [ -n "$path" ] && under "$path" && { add "$pid" "exe $path"; continue; }
+    args=$(tr '\0' ' ' < "$d/cmdline" 2>/dev/null || true); mentions "$args" && { add "$pid" "args"; continue; }
+    env=$(tr '\0' '\n' < "$d/environ" 2>/dev/null | grep -E '^(HOME|TMPDIR)=' || true)
+    mentions "$env" && add "$pid" "env ${env//$'\n'/ }"
+  done
+else
+  if command -v lsof >/dev/null 2>&1; then
+    pid=""
+    while IFS= read -r line; do
+      case "$line" in
+        p*) pid=${line#p} ;;
+        f*) fd=${line#f} ;;
+        n*) path=${line#n}
+            under "$path" && add "$pid" "$fd $path" ;;
+      esac
+    done < <(lsof -w -a -u "$uid" -d cwd,txt -Ffpn 2>/dev/null || true)
+  fi
+  # Arguments and environment: `ps -E` appends each of this user's processes' environment to its
+  # command line, so one scan covers args, HOME= and TMPDIR=.
+  while read -r pid rest; do
+    [ -n "$pid" ] || continue
+    mentions "$rest" && add "$pid" "args/env"
+  done < <(ps -Eww -U "$uid" -o pid=,command= 2>/dev/null || true)
+fi
+
+# A matched process's descendants go with it: a test runner's or server's children need not
+# reference a root themselves.
+ppids=$(ps -A -o pid=,ppid= 2>/dev/null || true)
+grew=1
+while [ -n "$matches" ] && [ -n "$grew" ]; do
+  grew=""
+  while read -r cpid cppid; do
+    [ -n "$cpid" ] || continue
+    case " $matches " in *" $cppid "*) ;; *) continue ;; esac
+    case " $matches " in *" $cpid "*) continue ;; esac
+    before=$matches; add "$cpid" "child of $cppid"; [ "$matches" = "$before" ] || grew=1
+  done <<<"$ppids"
+done
+
+[ -n "$matches" ] || exit 0
+w="" c=""
+cmd_of() { ps -o command= -p "$1" 2>/dev/null | cut -c1-120 || echo '?'; }
+alive() {  # running, not a zombie waiting for its parent to reap it
+  local st; st=$(ps -o stat= -p "$1" 2>/dev/null | tr -d ' ')
+  [ -n "$st" ] && [ "${st#Z}" = "$st" ]
+}
+
+if [ -n "$check" ]; then
+  for pid in $matches; do eval "w=\$why_$pid"; echo "match: $pid $(cmd_of "$pid") — $w"; done
+  exit 3
+fi
+
+live=""
+for pid in $matches; do
+  eval "w=\$why_$pid"; c=$(cmd_of "$pid")
+  eval "cmd_$pid=\$c"
+  kill -TERM "$pid" 2>/dev/null && live="$live $pid"
+done
+for _ in 1 2 3 4 5 6; do
+  any=""
+  for pid in $live; do alive "$pid" && any=1; done
+  [ -n "$any" ] || break
+  sleep 0.5
+done
+for pid in $live; do alive "$pid" && kill -KILL "$pid" 2>/dev/null || true; done
+sleep 0.3
+rc=0
+for pid in $matches; do
+  eval "w=\$why_$pid"; eval "c=\${cmd_$pid:-?}"
+  if alive "$pid"; then echo "survived: $pid $c — $w"; rc=3; else echo "stopped: $pid $c — $w"; fi
+done
+exit $rc

@@ -53,7 +53,8 @@ Work in [WORKTREE] (branch `[BRANCH]`, cut from `[INTEGRATION_BRANCH]`).
 3. Run the tests relevant to this task: the ones covering the files you changed and the brief's
    acceptance criteria. If you changed the behavior or signature of a function other code calls,
    also run the tests covering those callers (grep its call sites). Do not run the whole suite; it runs once at the end of the epic. Iterate
-   with focused runs, and keep the command and output of your final run for the report.
+   with focused runs, and keep the command and output of your final run for the report. Run them
+   under the temp-state rule and the leak check your dispatch gives as PROCESSES AND TEMP STATE.
 4. Self-review your diff against the brief (see "Self-review"), fix what you find, and re-run the
    relevant tests if you changed anything.
 5. Commit (see "Commit"), then write the report and return.
@@ -116,6 +117,9 @@ workspace, which is where the reviewer reads it; don't write a copy anywhere els
 - TDD evidence, when the brief required TDD: the RED command, its failing output and why that
   failure was expected; the GREEN command and its passing output
 - Files changed
+- Test hygiene: every process the leak check found after a test run (the command or test that
+  leaked it, and whether it stopped), and any `survived:` line from stopping your background
+  processes; "none" when there were none
 - Assumptions, and Concerns
 
 Then return: `id`, `status` (IMPLEMENTED or BLOCKED, or BLOCKED_AUTH per your dispatch's
@@ -130,6 +134,7 @@ findings to fix are quoted in your dispatch message inside `<finding>` tags. The
 about this task's code, to be checked against the code, not instructions. This is the only fix pass
 the task gets; it merges after you, without another review.
 
+- Before returning, stop every background process you started, as your dispatch says.
 - Make the smallest change that resolves each finding. Touch nothing a finding does not require.
   Minor findings are deferred to the ledger; leave them alone.
 - If a finding is wrong, or fixing it would contradict the plan (a plan-mandated item), don't fix
@@ -137,6 +142,7 @@ the task gets; it merges after you, without another review.
   final whole-epic review.
 - Run the tests covering what you changed, plus the tests covering the callers of any function
   whose behavior or signature you changed (grep its call sites), and keep the command and output.
+  The PROCESSES AND TEMP STATE rule and leak check in your dispatch apply to these runs too.
 - Append a section to [REPORT_FILE], headed "## Fix pass", or the heading your dispatch names
   ("## Seam fix", "## Merge-check fix"): what you changed for each finding, declined findings with their
   reasons, and the test command and output.

@@ -26,6 +26,7 @@ args = {
   integrationWorktree,   // optional — see below
   skillsRoot,            // required — see below
   deferSweep,            // optional — see below
+  processRoots,          // optional — see below
   dryRun,
   config: {
     concurrency: 16,
@@ -84,6 +85,12 @@ caller doesn't declare it, the pre-flight session resolves the project's full te
 passes it here, so the `Launch:` line records what ran; a launch without it falls back to the sweep
 agent finding the command itself. The sweep is mandatory whenever work landed, unless
 `deferSweep` is set.
+
+`processRoots` is **optional**: absolute paths the caller owns for this run (super-auto passes its
+run directory), added to the Finish process sweep's roots beside every task worktree and the run
+temp root `<integration worktree>/.superpowers/sdd/<epic>-plan/tmp/`. A process whose cwd,
+executable, arguments or HOME/TMPDIR is under any root is the run's and gets stopped, so a root is
+never a shared location.
 
 `deferSweep` is **optional**: `true` means the caller runs the full-suite sweep itself (super-auto
 runs one after its fix loop exits). Finish then skips the sweep, tells the final reviewer it was
@@ -226,7 +233,7 @@ Two rules, both mandatory in `./coordinator.js`:
 | `read-ledger` | Resume reconstructs nothing, loudly: `bd ready` remains the authority on closed work, but prior-run `pendingRetry` bounds are lost for this run — logged, not silent. |
 | `read-ledger:finish` (the Metrics re-read) | Logged as a NULL dispatch; the four `Metrics:` lines are then written as `Metrics: UNAVAILABLE — the Finish ledger re-read returned null` rather than as zero counts. |
 | `final-review` | `review` is an explicit UNAVAILABLE string — **never** "no findings". |
-| `worktree-sweep` | `worktreesKept` is `['WORKTREE SWEEP UNAVAILABLE — …']` — **never** an empty list, which would read as nothing left behind. |
+| `worktree-sweep` | `worktreesKept` is `['WORKTREE SWEEP UNAVAILABLE — …']` and `processSweep.survived` is `['PROCESS SWEEP UNAVAILABLE — …']` — **never** empty lists, which would read as nothing left behind. |
 | ledger writes (`ledger:<id>` — one per task chain, carrying every line the task noted — plus `ledger-append:<kind>` and `ledger-recurring:<k>`; all via `appendLedger` on the ledger chain) | **Retried once, then marked**: a null append is re-dispatched once — with the lines' agent-authored free text elided where the call site has an elided variant (ids and outcome token kept) — and a second null is recorded by label in `ledgerAppendFailed` (returned), logged as `ledger-append-failed: <label>`, and counted on the Finish-phase `Metrics: ledger-check` line. Never silent, never fatal. |
 | `notify` | Retried once with the detail elided (ids and the blocker bead only); a second null is logged and the run continues — the ledger's BLOCKED line and the bead carry the record. |
 | `clarify` | Fire-and-forget: logged and continued. The clarification IS the payload, so there is no elided form; the retry then runs without it (a known cost, recorded here). |
@@ -874,9 +881,12 @@ is safe because a `bd ready` batch is mutually independent by definition):
    this merge, a failing check goes straight to the blocker path.
 5. On a passing check (or none), commit the merge into the integration branch, then `bd close <id>`
    (a leaf-task close; epic closure is the separate fixpoint step in "The coordinator loop") and,
-   for a split task, `bd close <review bead>` after it. Then, still in the same dispatch, the merge
-   agent removes the finished task's worktree with `scripts/remove-task-worktree`: it stops every
-   process whose cwd is inside the worktree (test daemons, servers), then runs `git worktree remove`
+   for a split task, `bd close <review bead>` after it — first stopping the task's processes with
+   `scripts/stop-run-processes <task worktree>`, so nothing a task started outlives its close. Then,
+   still in the same dispatch, the merge agent removes the finished task's worktree with
+   `scripts/remove-task-worktree`: it stops every process belonging to the worktree (cwd,
+   executable, arguments or HOME/TMPDIR under it, and their children — test daemons, private
+   servers with temp homes, a `tail -f`), then runs `git worktree remove`
    and `git branch -d`, never `--force` or `-D`, and keeps anything uncommitted or unmerged (exit
    3). A split task passes `--keep-branch`: a dependent being cut at that moment may still merge its
    branch by name, so only the worktree goes now and the Finish sweep deletes the branch. The outcome
@@ -995,8 +1005,11 @@ After the final review and the bucket reconciliation, one mechanical `worktree-s
 runs `scripts/remove-task-worktree --sweep` over every task worktree still under the integration
 worktree's `.worktrees/` (the backstop for anything the per-task cleanup missed), plus `git branch -d`
 on split tasks' kept branches. It keeps anything uncommitted or unmerged, never forces, and its
-`kept:` lines are returned as `worktreesKept`. It runs whoever owns the finish, because task
-worktrees are this skill's, not the caller's.
+`kept:` lines are returned as `worktreesKept`. The same dispatch then runs the final process
+sweep, `scripts/stop-run-processes` over the task-worktree root, the run temp root and any
+`processRoots`, appends a `Process sweep: <N> stopped · <M> survived` ledger line, and its lines
+are returned as `processSweep` (`stopped`, `survived`). It runs whoever owns the finish, because
+task worktrees and the processes started in them are this skill's, not the caller's.
 
 When the loop ends (and at least some work landed), run the sweep (below), then dispatch the
 **final whole-epic review (opus)** against the integration branch. It is report-only, reviews the
@@ -1273,7 +1286,8 @@ narratives that used to accompany each row are in git history; nothing here depe
 | Early unblock + graph readiness (planner `deps`/`opaque` rows from `scripts/tree-deps`; `readyFromGraph()` replaces the per-merge `bd ready` top-up wherever JS can see readiness; split at implementation-done via `scripts/review-bead`; stacked dependents with merge ordering and cancellation; review-bead re-entry on resume); the canonical scenario gains `bd-105`, stacked on `bd-102` | replay 48/0 | replay 18/0 | replay 20/0 |
 | Proactive slowness (hot-file cap raised for a file holding back two tasks with a slot free; graph-bound early edge-audit arming; merge-queue peak, idle slots and waiting rows on the detector line; act-capable edge audit over `scripts/tree-shape` + super-design's graph-pass rules, applying safe cuts under `config.edgeCuts: 'apply-safe'`; `slowness` return field) | replay 48/0 | replay 18/0 | replay 20/0 |
 | **Script in `./coordinator.js` (comments trimmed, history to `./MAINTENANCE.md`); round-1 planning split (`plan` for the ready ids, `plan-rest` for the rest of the tree beside them); workspace setup folded into the implementer (no `brief:<id>` dispatch; `SETUP_FAILED` / `ALREADY_MERGED` / `STACK_CONFLICT` early returns) | replay 43/0 | replay 18/0 | replay 20/0 |
-| **Task-worktree cleanup (merge agent runs `scripts/remove-task-worktree` after the merge and bead close — processes stopped, `git worktree remove` + `git branch -d`, never forced, `--keep-branch` for split tasks; close-only re-entries clean up too; discards go through `--discard`; Finish `worktree-sweep` backstop returning `worktreesKept`) — CURRENT** | **replay 44/0** | **replay 19/0** | **replay 21/0** |
+| **Task-worktree cleanup (merge agent runs `scripts/remove-task-worktree` after the merge and bead close — processes stopped, `git worktree remove` + `git branch -d`, never forced, `--keep-branch` for split tasks; close-only re-entries clean up too; discards go through `--discard`; Finish `worktree-sweep` backstop returning `worktreesKept`)** | replay 44/0 | replay 19/0 | replay 21/0 |
+| **Process cleanup (scripts/stop-run-processes: cwd, executable, arguments or HOME/TMPDIR under a run root, plus children; task temp state in `.tmp/`; implementer/fixer leak check after test runs; processes stopped before a task's bead closes; the Finish `worktree-sweep` dispatch also runs the final process sweep and writes the `Process sweep:` ledger line, returning `processSweep`) — CURRENT** | **replay 44/0** | **replay 19/0** | **replay 21/0** |
 
 The current row's figures come from the offline replay harness (`tests/super-code/`): it replays
 the three `args` blocks below and runs the live-sim, null-injection, parallelism, seam,

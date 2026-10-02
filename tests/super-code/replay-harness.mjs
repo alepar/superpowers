@@ -363,8 +363,8 @@ async function main() {
   {
     const scan = scanTemplateSpans(scriptBody)
     check(scan.clean, 'scanner ends in code state (no unterminated literal, string, or ${})')
-    check(scan.spans.length === 333,
-      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 333 — 215 after the D4 loop rewrite, +10 for the merge-evidence contract (clean-check and merge steps, mergeEvidence's diagnoses and logs, the Merge-cleanup line) and writeFence(), +17 for the failing-mergeCheck seam route (the check-fix and fix-review dispatch keys/labels, their logs and blocker findings, the re-merge, fixPrompt's check branch, checkFixReviewPrompt), +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log, −7 for batched ledger writes (per-line ledger keys and labels out, the per-task flush key, the merge agent's LEDGER step and its line templates, the runtime-slot logs, the per-site null-merge logs and the background edge audit in), +46 for early unblock and graph readiness (the split/reopen/discard dispatch keys, labels, prompts and logs, the cancel and graph-dispatch logs, the stacked/re-entry brief and implementer wording, the stacked rebase and review-bead close, the held-back and re-entry logs, the reconcile split note, the detector and Metrics fields, the resume note), +33 for proactive slowness handling (noteSlowness and its items, the hot-file raise, the graph-bound arming and its audit reason, the detector's lane fields, the act-capable edge audit: change formatting, the edge-cuts dispatch key/label/prompt, the Edge cut: lines and their elided variants, effDeps' cut key), +8 for the round-1 planning split (planPrompt's walk and three scopes, the plan-rest key/label, its logs), +1 when the brief folded into the implementer (workspaceSetup's re-entry branch and the setup/no-base findings in, the brief dispatch key/label out), +1 for the planner-null degrade log, +5 for task-worktree cleanup (the task-worktree root, the merge's cleanup command and step, the worktree-sweep log and prompt); update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
+    check(scan.spans.length === 337,
+      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 337 — 215 after the D4 loop rewrite, +10 for the merge-evidence contract (clean-check and merge steps, mergeEvidence's diagnoses and logs, the Merge-cleanup line) and writeFence(), +17 for the failing-mergeCheck seam route (the check-fix and fix-review dispatch keys/labels, their logs and blocker findings, the re-merge, fixPrompt's check branch, checkFixReviewPrompt), +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log, −7 for batched ledger writes (per-line ledger keys and labels out, the per-task flush key, the merge agent's LEDGER step and its line templates, the runtime-slot logs, the per-site null-merge logs and the background edge audit in), +46 for early unblock and graph readiness (the split/reopen/discard dispatch keys, labels, prompts and logs, the cancel and graph-dispatch logs, the stacked/re-entry brief and implementer wording, the stacked rebase and review-bead close, the held-back and re-entry logs, the reconcile split note, the detector and Metrics fields, the resume note), +33 for proactive slowness handling (noteSlowness and its items, the hot-file raise, the graph-bound arming and its audit reason, the detector's lane fields, the act-capable edge audit: change formatting, the edge-cuts dispatch key/label/prompt, the Edge cut: lines and their elided variants, effDeps' cut key), +8 for the round-1 planning split (planPrompt's walk and three scopes, the plan-rest key/label, its logs), +1 when the brief folded into the implementer (workspaceSetup's re-entry branch and the setup/no-base findings in, the brief dispatch key/label out), +1 for the planner-null degrade log, +5 for task-worktree cleanup (the task-worktree root, the merge's cleanup command and step, the worktree-sweep log and prompt), +4 for process cleanup (the run temp root, processHygiene's command and rule, the process-sweep log); update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
     // self-test: inject a raw backtick mid-way through the first literal's content and assert
     // the detector actually fires — a detector that cannot catch the known failure is decoration
     const [s, e] = scan.spans[0]
@@ -2105,6 +2105,25 @@ async function main() {
     assertBucketsDisjoint(out.result)
   }
 
+  scenario('process cleanup: task dispatches carry the temp-state rule and leak check, processes stop before a bead closes, and Finish sweeps and reports them')
+  {
+    const WTR = `.worktrees/${BRANCH}/.worktrees`
+    const STOP = `bash ${SKILLS}/super-code/scripts/stop-run-processes`
+    const RUN = '/abs/run-dir'
+    const out = await run({ args: liveArgs({ processRoots: [RUN, 'relative/ignored'] }), canned: oneTaskCanned({ 'worktree-sweep': { lines: [], processLines: [`stopped: 4242 herdr server — env HOME=${WTR}/x--task-bd-101/.tmp/home`, `survived: 4343 stuck-daemon — args/env`] } }) })
+    assertNoThrow(out)
+    const impl = promptOf(out.trace, 'impl:bd-101') ?? ''
+    check(impl.includes('TMPDIR=') && impl.includes('/.tmp') && impl.includes(`${STOP} --check `) && /Test hygiene/.test(impl) && /tail -f/.test(impl), 'the implementer is given the .tmp temp-state rule, the post-test leak check, and the stop-before-return rule', impl)
+    const m = promptOf(out.trace, 'merge:bd-101') ?? ''
+    const stopAt = m.indexOf(`${STOP} `), closeAt = m.indexOf('`bd close bd-101`'), cleanAt = m.indexOf('CLEANUP')
+    check(stopAt !== -1 && closeAt !== -1 && stopAt < closeAt && closeAt < cleanAt, 'the merge agent stops the task\'s processes before closing its bead, and removes the worktree after', m)
+    const sw = promptOf(out.trace, 'worktree-sweep') ?? ''
+    check(sw.includes(`${STOP} ${WTR} .worktrees/${BRANCH}/.superpowers/sdd/${EPIC}-plan/tmp ${RUN}`) && !sw.includes('relative/ignored') && /Process sweep: <N> stopped · <M> survived/.test(sw), 'the Finish sweep stops processes under the task worktrees, the run temp root and the caller\'s absolute processRoots, and writes the Process sweep ledger line', sw)
+    check(JSON.stringify(out.result?.processSweep) === JSON.stringify({ stopped: [`4242 herdr server — env HOME=${WTR}/x--task-bd-101/.tmp/home`], survived: ['4343 stuck-daemon — args/env'] }), 'processSweep returns what was stopped and what survived', JSON.stringify(out.result?.processSweep))
+    const out2 = await run({ args: liveArgs(), canned: oneTaskCanned({ 'worktree-sweep': null }) })
+    check(/^PROCESS SWEEP UNAVAILABLE/.test(out2.result?.processSweep?.survived?.[0] ?? ''), 'a null sweep reports the process sweep as unavailable, never as nothing left', JSON.stringify(out2.result?.processSweep))
+  }
+
   scenario('worktree cleanup: the Finish sweep runs remove-task-worktree --sweep, never forces, and returns what it kept')
   {
     const WTR = `.worktrees/${BRANCH}/.worktrees`  // the derived task-worktree root (no integrationWorktree passed)
@@ -2629,6 +2648,54 @@ esac
         r = rtw('--discard', wt('t2'), 't2')
         check(r.code === 0 && !existsSync(wt('t2')) && g(d, 'branch', '--list', 't2').trim() === '', '--discard removes an abandoned worktree and branch', JSON.stringify(r))
         check(rtw(wt('t3'), 't3').code === 2, 'missing argument exits 2')
+        rmSync(d, { recursive: true, force: true })
+      }
+
+      scenario('scripts: stop-run-processes — matches cwd, executable, arguments, HOME/TMPDIR and children under a root; --check lists without killing; never touches an unrelated process')
+      {
+        const d = execFileSync('bash', ['-c', 'cd "$1" && pwd -P', '_', mkdtempSync(path.join(os.tmpdir(), 'srp-'))], { encoding: 'utf8' }).trim()
+        const wt = path.join(d, 'wt'), other = path.join(d, 'other'), rundir = path.join(d, 'run')
+        for (const x of [wt, path.join(wt, '.tmp'), path.join(wt, '.bin'), other, rundir]) mkdirSync(x, { recursive: true })
+        writeFileSync(path.join(rundir, 'progress.md'), 'x\n')
+        const exeCopy = path.join(wt, '.bin', 'sleepcopy')
+        execFileSync('cp', [execFileSync('bash', ['-c', 'command -v sleep'], { encoding: 'utf8' }).trim(), exeCopy])
+        if (process.platform === 'darwin') execFileSync('codesign', ['-f', '-s', '-', exeCopy], { stdio: 'ignore' })  // a copied binary is killed on macOS until re-signed
+        const keep = 'setTimeout(()=>{},300000)'
+        const procs = {
+          argsOnly: spawn('sh', ['-c', 'sleep 300; :', 'marker', path.join(wt, 'x')], { cwd: other, detached: true, stdio: 'ignore' }),
+          homeEnv: spawn(process.execPath, ['-e', keep], { cwd: '/', env: { ...process.env, HOME: path.join(wt, '.tmp', 'home') }, detached: true, stdio: 'ignore' }),
+          exe: spawn(exeCopy, ['301'], { cwd: '/', detached: true, stdio: 'ignore' }),
+          tailf: spawn('tail', ['-f', path.join(rundir, 'progress.md')], { cwd: '/', detached: true, stdio: 'ignore' }),
+          unrelated: spawn(process.execPath, ['-e', keep], { cwd: other, detached: true, stdio: 'ignore' }),
+        }
+        for (const c of Object.values(procs)) c.unref()
+        execFileSync('sleep', ['0.8'])
+        const isAlive = pid => { const st = spawnSync('ps', ['-o', 'stat=', '-p', String(pid)], { encoding: 'utf8' }).stdout.trim(); return st !== '' && !st.startsWith('Z') }
+        const srp = (...a) => { const r = spawnSync(bashPath, [path.join(scriptsDir, 'stop-run-processes'), ...a], { encoding: 'utf8' }); return { code: r.status, out: r.stdout ?? '', err: r.stderr ?? '' } }
+        let r = srp('--check', wt, rundir)
+        const listed = pid => new RegExp(`^match: ${pid} `, 'm').test(r.out)
+        check(r.code === 3 && listed(procs.argsOnly.pid) && listed(procs.homeEnv.pid) && listed(procs.exe.pid) && listed(procs.tailf.pid) && !listed(procs.unrelated.pid), '--check lists the argument, HOME, executable and tail -f matches, and not the unrelated process', JSON.stringify(r))
+        check(['argsOnly', 'homeEnv', 'exe', 'tailf'].every(k => isAlive(procs[k].pid)), '--check kills nothing', JSON.stringify(r))
+        r = srp(wt, rundir)
+        execFileSync('sleep', ['0.3'])
+        const stopped = pid => new RegExp(`^stopped: ${pid} `, 'm').test(r.out)
+        check(r.code === 0 && ['argsOnly', 'homeEnv', 'exe', 'tailf'].every(k => stopped(procs[k].pid) && !isAlive(procs[k].pid)), 'stop mode stops every match (cwd outside, argument under the root; HOME under .tmp; executable under the root; tail -f on a run-dir file)', JSON.stringify(r))
+        check(/^stopped: \d+ sleep 300 — child of \d+/m.test(r.out), 'a matched process\'s child goes with it even though it references no root itself', JSON.stringify(r))
+        check(isAlive(procs.unrelated.pid), 'a process that references no root survives, whatever it is named', JSON.stringify(r))
+        try { process.kill(procs.unrelated.pid) } catch {}
+        check(srp('relative/path').code === 2 && srp('/').code === 2 && srp().code === 2, 'a relative root, the root directory, or no root exits 2')
+
+        // .tmp/ never reads as uncommitted work: a merged worktree holding only .tmp/ state is removed.
+        const genv = { ...process.env, GIT_AUTHOR_NAME: 'x', GIT_AUTHOR_EMAIL: 'x@x', GIT_COMMITTER_NAME: 'x', GIT_COMMITTER_EMAIL: 'x@x' }
+        const g = (cwd, ...a) => execFileSync('git', a, { cwd, encoding: 'utf8', env: genv, stdio: ['ignore', 'pipe', 'pipe'] })
+        const repo = path.join(d, 'repo'); mkdirSync(repo)
+        g(repo, 'init', '-q', '-b', 'main'); g(repo, 'commit', '-q', '--allow-empty', '-m', 'base')
+        g(repo, 'worktree', 'add', '-q', '.worktrees/t', '-b', 't')
+        const tw = path.join(repo, '.worktrees/t')
+        writeFileSync(path.join(tw, 'f'), 'f'); g(tw, 'add', '.'); g(tw, 'commit', '-q', '-m', 't'); g(repo, 'merge', '-q', '--no-ff', '-m', 'm', 't')
+        mkdirSync(path.join(tw, '.tmp', 'home'), { recursive: true }); writeFileSync(path.join(tw, '.tmp', 'home', 'state'), 's')
+        const rr = spawnSync(bashPath, [path.join(scriptsDir, 'remove-task-worktree'), tw, 't', 'main'], { cwd: repo, encoding: 'utf8', env: genv })
+        check(rr.status === 0 && /^removed: /m.test(rr.stdout ?? '') && !existsSync(tw), 'a merged worktree whose only extra state is in .tmp/ is removed (.tmp/ is git-excluded)', JSON.stringify({ code: rr.status, out: rr.stdout, err: rr.stderr }))
         rmSync(d, { recursive: true, force: true })
       }
 

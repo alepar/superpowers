@@ -27,6 +27,7 @@ codeBuckets.review
 codeBuckets.sweep
 codeBuckets.slowness
 codeBuckets.worktreesKept
+codeBuckets.processSweep
 sweepFix
 approvals
 approvals · top-split
