@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# Reduce a super-code ledger (progress.md) to the lines the coordinator parses, with free text cut.
+# The coordinator reads the ledger through a mechanical agent that echoes it; a large ledger (mostly
+# `minor (deferred)` reviewer prose) is slow to echo and gets refused by model safeguards. This
+# prints only:
+#   - `Merge:` lines, verbatim (fixed-format, short);
+#   - `Task <n> (<id>): <state>` lines whose state the coordinator acts on, reduced to their state
+#     tokens: `complete[, already merged][, review clean][, fix pass][, parked]`, `pending retry`,
+#     `BLOCKED…` (first word), `cancelled (` / `cancelled`, `stacked on <id>`, `fix pass <OUTCOME>`.
+# Every other line (header, `minor (deferred)`, `Detector:`, `Launch:`, `Metrics:`, …) is dropped.
+# Line order is kept: the last line per id wins on resume.
+#
+# Usage: bash ledger-digest LEDGER_PATH
+# A missing or empty ledger prints nothing and exits 0 (a fresh epic). Exits 2 on a bad argument.
+set -euo pipefail
+
+if [ $# -ne 1 ]; then
+  echo "usage: ledger-digest LEDGER_PATH" >&2
+  exit 2
+fi
+[ -s "$1" ] || exit 0
+
+awk '
+function trim(s) { sub(/^[ \t\r]+/, "", s); sub(/[ \t\r]+$/, "", s); return s }
+{
+  line = trim($0)
+  if (line ~ /^Merge:[ \t]/) { print line; next }
+  if (line !~ /^Task[ \t]+[^ \t]+[ \t]+\([^)]+\):/) next
+  head = line; sub(/\):.*$/, ")", head)            # "Task <n> (<id>)"
+  rest = line; sub(/^[^)]*\):[ \t]*/, "", rest)    # the state text
+  n = split(rest, w, /[ \t]+/)
+  if (rest ~ /^complete/) {
+    s = "complete"
+    if (index(rest, "already merged")) s = s ", already merged"
+    if (index(rest, "review clean")) s = s ", review clean"
+    if (index(rest, "fix pass")) s = s ", fix pass"
+    if (index(rest, "parked")) s = s ", parked"
+  } else if (rest ~ /^pending retry/) s = "pending retry"
+  else if (rest ~ /^BLOCKED/) s = w[1]
+  else if (rest ~ /^cancelled \(/) s = "cancelled ("
+  else if (rest ~ /^cancelled/) s = "cancelled"
+  else if (rest ~ /^stacked on/) s = "stacked on " w[3]
+  else if (rest ~ /^fix pass/) s = "fix pass " w[3]
+  else next
+  print head ": " s
+}' "$1"

@@ -451,7 +451,8 @@ Each entry is the comment that used to sit above the named line of `coordinator.
 
 ### `const LEDGER_TEXT = { type: 'object', properties: { text: { type: 'string' } }, required: ['text'] }`
 
-> I1: the mechanical ledger read/append contract. `read-ledger` returns raw file text (empty
+> I1: the mechanical ledger read/append contract. `read-ledger` returns the text `scripts/ledger-digest`
+> prints — the raw file's `Merge:` lines and `Task` state tokens, free text dropped (empty
 > string if the ledger doesn't exist yet — a fresh epic, or one whose first task hasn't merged or
 > blocked yet) so parsing stays pure JS in this script (see the Resume-phase block below) rather
 > than asking an agent to interpret ledger semantics — the same "mechanical extraction, judgment

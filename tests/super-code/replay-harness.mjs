@@ -363,8 +363,8 @@ async function main() {
   {
     const scan = scanTemplateSpans(scriptBody)
     check(scan.clean, 'scanner ends in code state (no unterminated literal, string, or ${})')
-    check(scan.spans.length === 337,
-      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 337 — 215 after the D4 loop rewrite, +10 for the merge-evidence contract (clean-check and merge steps, mergeEvidence's diagnoses and logs, the Merge-cleanup line) and writeFence(), +17 for the failing-mergeCheck seam route (the check-fix and fix-review dispatch keys/labels, their logs and blocker findings, the re-merge, fixPrompt's check branch, checkFixReviewPrompt), +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log, −7 for batched ledger writes (per-line ledger keys and labels out, the per-task flush key, the merge agent's LEDGER step and its line templates, the runtime-slot logs, the per-site null-merge logs and the background edge audit in), +46 for early unblock and graph readiness (the split/reopen/discard dispatch keys, labels, prompts and logs, the cancel and graph-dispatch logs, the stacked/re-entry brief and implementer wording, the stacked rebase and review-bead close, the held-back and re-entry logs, the reconcile split note, the detector and Metrics fields, the resume note), +33 for proactive slowness handling (noteSlowness and its items, the hot-file raise, the graph-bound arming and its audit reason, the detector's lane fields, the act-capable edge audit: change formatting, the edge-cuts dispatch key/label/prompt, the Edge cut: lines and their elided variants, effDeps' cut key), +8 for the round-1 planning split (planPrompt's walk and three scopes, the plan-rest key/label, its logs), +1 when the brief folded into the implementer (workspaceSetup's re-entry branch and the setup/no-base findings in, the brief dispatch key/label out), +1 for the planner-null degrade log, +5 for task-worktree cleanup (the task-worktree root, the merge's cleanup command and step, the worktree-sweep log and prompt), +4 for process cleanup (the run temp root, processHygiene's command and rule, the process-sweep log); update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
+    check(scan.spans.length === 338,
+      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 338 — 215 after the D4 loop rewrite, +10 for the merge-evidence contract (clean-check and merge steps, mergeEvidence's diagnoses and logs, the Merge-cleanup line) and writeFence(), +17 for the failing-mergeCheck seam route (the check-fix and fix-review dispatch keys/labels, their logs and blocker findings, the re-merge, fixPrompt's check branch, checkFixReviewPrompt), +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log, −7 for batched ledger writes (per-line ledger keys and labels out, the per-task flush key, the merge agent's LEDGER step and its line templates, the runtime-slot logs, the per-site null-merge logs and the background edge audit in), +46 for early unblock and graph readiness (the split/reopen/discard dispatch keys, labels, prompts and logs, the cancel and graph-dispatch logs, the stacked/re-entry brief and implementer wording, the stacked rebase and review-bead close, the held-back and re-entry logs, the reconcile split note, the detector and Metrics fields, the resume note), +33 for proactive slowness handling (noteSlowness and its items, the hot-file raise, the graph-bound arming and its audit reason, the detector's lane fields, the act-capable edge audit: change formatting, the edge-cuts dispatch key/label/prompt, the Edge cut: lines and their elided variants, effDeps' cut key), +8 for the round-1 planning split (planPrompt's walk and three scopes, the plan-rest key/label, its logs), +1 when the brief folded into the implementer (workspaceSetup's re-entry branch and the setup/no-base findings in, the brief dispatch key/label out), +1 for the planner-null degrade log, +5 for task-worktree cleanup (the task-worktree root, the merge's cleanup command and step, the worktree-sweep log and prompt), +4 for process cleanup (the run temp root, processHygiene's command and rule, the process-sweep log), +1 for the ledger-read retry label; update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
     // self-test: inject a raw backtick mid-way through the first literal's content and assert
     // the detector actually fires — a detector that cannot catch the known failure is decoration
     const [s, e] = scan.spans[0]
@@ -1056,21 +1056,33 @@ async function main() {
     check(promptOf(out.trace, 'final-review')?.includes('SWEEP UNAVAILABLE'), 'the final reviewer reads the unavailable measurement')
   }
 
-  scenario('null read-ledger: resume degrades loudly, run proceeds')
+  scenario('null read-ledger: retried once; a second null degrades resume loudly, run proceeds')
   {
-    const out = await run({ args: liveArgs(), canned: oneTaskCanned({ 'read-ledger': null }) })
+    const out = await run({ args: liveArgs(), canned: oneTaskCanned({ 'read-ledger': null, 'read-ledger:retry': null }) })
     assertNoThrow(out)
+    check(out.counts['read-ledger'] === 1 && out.counts['read-ledger:retry'] === 1, 'one read, one retry')
     check(JSON.stringify(out.result?.completed) === '["bd-101"]', 'run proceeds to a normal finish', JSON.stringify(out.result))
     check(out.logs.some(l => l.includes('ledger read unavailable')), 'degraded resume is logged')
   }
 
   scenario('null read-ledger:finish: Metrics lines say UNAVAILABLE, never zero counts')
   {
-    const out = await run({ args: liveArgs(), canned: oneTaskCanned({ 'read-ledger:finish': null }) })
+    const out = await run({ args: liveArgs(), canned: oneTaskCanned({ 'read-ledger:finish': null, 'read-ledger:finish:retry': null }) })
     assertNoThrow(out)
     const m = out.result?.metrics ?? []
     check(m.length === 4 && m.every(l => l.startsWith('Metrics: UNAVAILABLE')), 'all four lines are explicit UNAVAILABLE lines', JSON.stringify(m))
     check(JSON.stringify(extractLedgerLines(promptOf(out.trace, 'ledger-append:metrics'))) === JSON.stringify(m), 'the same four lines reach the ledger')
+  }
+
+  scenario('read-ledger: a null first read is recovered by the retry; the read echoes scripts/ledger-digest')
+  {
+    const out = await run({ args: liveArgs(), canned: oneTaskCanned({ 'read-ledger': null,
+      'read-ledger:retry': { text: `Task 1 (bd-101): complete, review clean` } }) })
+    assertNoThrow(out)
+    check(!out.logs.some(l => l.includes('ledger read unavailable')), 'no degraded-resume log')
+    check(out.logs.some(l => l.startsWith('resume: reconstructed')), 'resume reconstructed from the retry')
+    const p = promptOf(out.trace, 'read-ledger') ?? ''
+    check(p.includes('scripts/ledger-digest') && !p.includes('cat '), 'the read runs the digest script, not cat', p)
   }
 
   scenario('ALL dispatches null simultaneously: nothing throws, nothing fabricated')
@@ -2510,6 +2522,46 @@ esac
         check(r.code === 4 && /^JQ_UNAVAILABLE: /.test(r.stdout) && lines(r.stdout).length === 1 && r.stdout.includes('C'), `review-bead ${args[0]}: exit 4 with one self-contained JQ_UNAVAILABLE: line naming the task`, JSON.stringify(r))
       }
       check(calls(dir).length === 0, 'the no-jq path runs no bd command', calls(dir).join(' | '))
+      rmSync(dir, { recursive: true, force: true })
+    }
+
+    scenario('scripts: ledger-digest — keeps Merge: lines and Task state tokens, drops free text; the coordinator parses it as it parses the raw ledger')
+    {
+      const dir = mkdtempSync(path.join(os.tmpdir(), 'ldg-'))
+      const f = path.join(dir, 'progress.md')
+      const raw = [
+        '# SDD ledger — plan: e-plan.md',
+        'Launch: args {"epicId":"e"}',
+        'Task 1 (bd-1): stacked on bd-0 (base abc1234)',
+        'Task 1 (bd-1): minor (deferred): ⚠️ reviewer says "fix pass" and "parked" — quoted prose',
+        'Task 1 (bd-1): fix pass FIXED — long notes',
+        'Task 1 (bd-1): complete (commits a..b, fix pass, 1 parked — reason: long reason text)',
+        '  Merge: bd-1 — rebase conflict: 2 files · seam-review fixed · check pass  ',
+        'Task 2 (bd-2): BLOCKED-AUTH — permission refused: git merge',
+        'Task 3 (bd-3): cancelled (stack parent bd-1 did not merge)',
+        'Task 4 (bd-4): pending retry (1 of 2) — notes',
+        'Task 5 (bd-5): complete (already merged at 1234567)',
+        'Task 6 (bd-6): complete (commits c..d, review clean)',
+        'Detector: round 1 — frontier 3',
+        'Metrics: merges 1',
+      ].join('\n') + '\n'
+      writeFileSync(f, raw)
+      const r = runScript(dir, 'ledger-digest', [f])
+      check(r.code === 0, 'exits 0', JSON.stringify(r))
+      check(r.stdout === [
+        'Task 1 (bd-1): stacked on bd-0',
+        'Task 1 (bd-1): fix pass FIXED',
+        'Task 1 (bd-1): complete, fix pass, parked',
+        'Merge: bd-1 — rebase conflict: 2 files · seam-review fixed · check pass',
+        'Task 2 (bd-2): BLOCKED-AUTH',
+        'Task 3 (bd-3): cancelled (',
+        'Task 4 (bd-4): pending retry',
+        'Task 5 (bd-5): complete, already merged',
+        'Task 6 (bd-6): complete, review clean',
+      ].join('\n') + '\n', 'state tokens and Merge: lines only, in order; minor (deferred), Detector:, Launch:, Metrics: and the header dropped', r.stdout)
+      const missing = runScript(dir, 'ledger-digest', [path.join(dir, 'nope.md')])
+      check(missing.code === 0 && missing.stdout === '', 'a missing ledger prints nothing and exits 0', JSON.stringify(missing))
+      check(runScript(dir, 'ledger-digest', []).code === 2, 'no argument exits 2')
       rmSync(dir, { recursive: true, force: true })
     }
 

@@ -184,7 +184,7 @@ A Workflow script can call only its hooks — `agent()`, `pipeline()`, `parallel
 | Side-effect | Who does it |
 |-------------|-------------|
 | `bd ready`, `bd show`, `bd close`, `bd create` | a dispatched agent (returns structured data via `schema`) |
-| `scripts/sdd-workspace`, `scripts/task-brief`, `scripts/review-package`, `scripts/already-merged`, `scripts/ready-in-tree`, `scripts/close-in-tree-epics`, `scripts/tree-shape`, `scripts/tree-deps`, `scripts/review-bead` (and `scripts/epic-tree`, which the tree scripts share) | a dispatched agent, via `bash <abs path>` (these are shell scripts; the coordinator script cannot invoke them) |
+| `scripts/sdd-workspace`, `scripts/task-brief`, `scripts/review-package`, `scripts/already-merged`, `scripts/ledger-digest`, `scripts/ready-in-tree`, `scripts/close-in-tree-epics`, `scripts/tree-shape`, `scripts/tree-deps`, `scripts/review-bead` (and `scripts/epic-tree`, which the tree scripts share) | a dispatched agent, via `bash <abs path>` (these are shell scripts; the coordinator script cannot invoke them) |
 | git: create worktree, commit, rebase, merge | the implementer (its workspace setup and commits, in the task worktree) and the merge agent (task and integration worktrees) |
 | decide resolvable vs escalate | the triage agent (opus) |
 
@@ -230,8 +230,8 @@ Two rules, both mandatory in `./coordinator.js`:
 | `bd-ready-recheck` (the post-closure re-query when Close reported in-tree closures) | **Opportunistic**: a null keeps the original concurrent ready result — logged, never a stopReason. |
 | `plan` | **Degrade first**: ready ids an earlier round already mapped still dispatch on the retained plan, and only the unmapped ids wait for a later round's planner (never the unplanned-blocker path). With nothing mapped the round is abandoned; three consecutive such planner nulls stop the run with `stopReason: 'plan-unavailable'`. |
 | `plan-rest` (round 1's second planner) | **Opportunistic**: logged; the beads it would have mapped are planned by later rounds' refill planning. Never a stopReason. |
-| `read-ledger` | Resume reconstructs nothing, loudly: `bd ready` remains the authority on closed work, but prior-run `pendingRetry` bounds are lost for this run — logged, not silent. |
-| `read-ledger:finish` (the Metrics re-read) | Logged as a NULL dispatch; the four `Metrics:` lines are then written as `Metrics: UNAVAILABLE — the Finish ledger re-read returned null` rather than as zero counts. |
+| `read-ledger` | Retried once (`read-ledger:retry`). A second null: Resume reconstructs nothing, loudly: `bd ready` remains the authority on closed work, but prior-run `pendingRetry` bounds are lost for this run — logged, not silent. |
+| `read-ledger:finish` (the Metrics re-read) | Retried once (`read-ledger:finish:retry`). A second null is logged as a NULL dispatch; the four `Metrics:` lines are then written as `Metrics: UNAVAILABLE — the Finish ledger re-read returned null` rather than as zero counts. |
 | `final-review` | `review` is an explicit UNAVAILABLE string — **never** "no findings". |
 | `worktree-sweep` | `worktreesKept` is `['WORKTREE SWEEP UNAVAILABLE — …']` and `processSweep.survived` is `['PROCESS SWEEP UNAVAILABLE — …']` — **never** empty lists, which would read as nothing left behind. |
 | ledger writes (`ledger:<id>` — one per task chain, carrying every line the task noted — plus `ledger-append:<kind>` and `ledger-recurring:<k>`; all via `appendLedger` on the ledger chain) | **Retried once, then marked**: a null append is re-dispatched once — with the lines' agent-authored free text elided where the call site has an elided variant (ids and outcome token kept) — and a second null is recorded by label in `ledgerAppendFailed` (returned), logged as `ledger-append-failed: <label>`, and counted on the Finish-phase `Metrics: ledger-check` line. Never silent, never fatal. |
@@ -527,7 +527,12 @@ property: **an interrupted epic resumes from the ledger, not from coordinator me
 Workflow run can be killed, restarted, or simply lose its place across a long epic; the ledger is
 what lets the *next* invocation pick up exactly where the last one left off instead of
 re-querying beads state and guessing. `readLedgerPrompt` / `ledgerAppendPrompt` and the
-Resume-phase block in `./coordinator.js` implement it.
+Resume-phase block in `./coordinator.js` implement it. Both reads (Resume and the Finish Metrics
+re-read) echo `scripts/ledger-digest`, never the file itself: it keeps the `Merge:` lines and each
+`Task` line's state tokens and drops the free text (`minor (deferred)` prose, reasons, notes), which
+is most of a long ledger. A verbatim echo of a ~90 KB ledger was refused by model safeguards on
+every launch once the epic grew; the digest of the same ledger is ~12 KB, and the coordinator's
+parsers read it exactly as they read the raw file.
 
 - **Workspace, one per epic:** I7 fix — every epic's plan file used to be named literally
   `plan.md`, so `scripts/sdd-workspace`'s basename-derived directory

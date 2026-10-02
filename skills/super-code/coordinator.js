@@ -151,6 +151,14 @@ async function dispatch(buildReal, stubKey, opts) {
   }
   return out
 }
+// Every ledger read goes through readLedger: the digest echo, retried once on a null (a refusal or a
+// transient death) before the call site's degraded path runs.
+async function readLedger(stubKey, phaseName) {
+  const opts = { label: stubKey, phase: phaseName, schema: LEDGER_TEXT, ...tier('mechanical') }
+  const out = await dispatch(() => readLedgerPrompt(integrationWorktree, ledgerPath), stubKey, opts)
+  if (out !== null) return out
+  return dispatch(() => readLedgerPrompt(integrationWorktree, ledgerPath), stubKey, { ...opts, label: `${stubKey}:retry` })
+}
 // Every ledger write goes through appendLedger. A null is retried once, with the elided variant when
 // the call site has one (free text dropped, so a wording-based refusal can't repeat); a second null is
 // recorded in `ledgerAppendFailed` and counted on the Metrics ledger-check line. `line` may be an
@@ -352,8 +360,7 @@ let edgeCutHook = () => {}      // the live round's graph top-up while its chain
 // Resume from the ledger, read once before the round loop: after that, this process's own buckets
 // reflect every append. Runs in the integration worktree, which owns the ledger.
 phase('Resume')
-const ledger = await dispatch(() => readLedgerPrompt(integrationWorktree, ledgerPath), 'read-ledger',
-  { label: 'read-ledger', phase: 'Resume', schema: LEDGER_TEXT, ...tier('mechanical') })
+const ledger = await readLedger('read-ledger', 'Resume')
 // Null ledger read: reconstruct nothing, loudly. `bd ready` still guards closed work, but prior
 // pendingRetry bounds are lost.
 if (!ledger) log('resume: ledger read unavailable (null dispatch) — proceeding with an empty reconstruction; bd ready remains the authority on closed work, but prior-run pendingRetry bounds are lost for this run')
@@ -1220,8 +1227,7 @@ else if (completed.size) {
 }
 // Metrics: re-read the ledger (this run's appends postdate Resume's read), compute the four lines
 // in JS, append them in one dispatch. Written before the final review.
-const metricsLedger = await dispatch(() => readLedgerPrompt(integrationWorktree, ledgerPath), 'read-ledger:finish',
-  { label: 'read-ledger:finish', phase: 'Finish', ...tier('mechanical'), schema: LEDGER_TEXT })
+const metricsLedger = await readLedger('read-ledger:finish', 'Finish')
 let metrics
 if (!metricsLedger) {
   metrics = ['merges', 'completions', 'fix-pass', 'ledger-check'].map(k => `Metrics: UNAVAILABLE (${k}) — the Finish ledger re-read returned null; no counts derived`)
@@ -1645,8 +1651,9 @@ function notifyPrompt(id, detail) {
 }
 
 function readLedgerPrompt(integrationWorktree, ledgerPath) {
-  // MECHANICAL: a verbatim read; parsing happens in this script as plain JS.
-  return `Working directory: ${integrationWorktree} (the integration worktree, which owns the ledger). Run \`cat ${ledgerPath} 2>/dev/null || true\` and report its exact, complete contents verbatim as \`text\` (empty string if the file does not exist yet — do NOT create it, do NOT summarize).`
+  // MECHANICAL echo of scripts/ledger-digest: the lines this script parses, free text cut, so the
+  // echo stays small however long the ledger grows. Parsing happens here as plain JS.
+  return `Working directory: ${integrationWorktree} (the integration worktree, which owns the ledger). Run \`bash ${codeSkill}/scripts/ledger-digest ${ledgerPath}\` and report everything it prints, verbatim and in order, as \`text\` (empty string when it prints nothing — a fresh epic). Do not read the ledger file yourself, do not create it, do not summarize. ${scriptOutcomeRule()}`
 }
 
 function ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName, lines) {
