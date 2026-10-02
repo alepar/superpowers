@@ -1,0 +1,141 @@
+#!/usr/bin/env bash
+# The report.md status line for one super-auto run, computed from its run.md. This script is the
+# only source of the status line and its degraded qualifiers; paste its output verbatim.
+#
+#   report-status RUN_MD [--stalled PHASE] [--tip SHA]
+#
+# RUN_MD: the run's run.md (fields per run-state.md). --stalled PHASE: the orchestrator judged the
+# run stalled at PHASE, a state run.md cannot carry. --tip SHA: the commit the report describes; a
+# PASS sweep stamped with another SHA is not a pass for this report.
+#
+# Status, first match wins:
+#   --stalled PHASE                         -> status: stalled at phase PHASE
+#   phase: capped-blocking                  -> status: stalled at phase capped-blocking
+#   codeBuckets.stalled true                -> status: stalled at phase code
+#   N > 0, M > 0 or pendingRetry non-empty  -> status: completed with N unresolved Blocking, M escalations
+#   otherwise                               -> status: clean
+# The two non-stalled forms take ` [degraded: q1, q2, ...]` when any qualifier applies.
+# N: finding keys in `roastCodeCapped:` plus, when it ends `proceeded`, in `roastDesignCapped:`.
+# M: parked `escalation` records plus ids in codeBuckets.escalated.
+# Qualifiers, in this order, each once: `design roast capped-blocking` (roastDesignCapped
+# proceeded); each parked `degraded-verdict` record's qualifier (its bracketed text, else its text
+# before ` — `); `plan roast skipped` / `code roast skipped` (flags); then, when a codeBuckets block
+# exists: `code findings parked` (parked non-empty), `tasks pending retry` (pendingRetry
+# non-empty), `final review: <review>` (review not CLEAN; `none recorded` when empty),
+# `sweep: <sweep>` (sweep not PASS, or its @SHA does not match --tip; `none recorded` when empty).
+#
+# Prints the status line, then one `qualifier: <text>` line per qualifier, in the order above.
+# Pure bash and awk: needs no jq, so it never prints JQ_UNAVAILABLE.
+# Exit 0 ok, 2 bad input.
+set -euo pipefail
+
+usage() { echo "usage: report-status RUN_MD [--stalled PHASE] [--tip SHA]" >&2; exit 2; }
+run='' stalled='' tip=''
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --stalled) [ $# -ge 2 ] || usage; stalled=$2; shift 2 ;;
+    --tip) [ $# -ge 2 ] || usage; tip=$2; shift 2 ;;
+    -*) usage ;;
+    *) [ -z "$run" ] || usage; run=$1; shift ;;
+  esac
+done
+[ -n "$run" ] || usage
+[ -f "$run" ] || { echo "run.md not found: $run" >&2; exit 2; }
+case "$stalled" in
+  ''|design|roast-design|capped-blocking|code|roast-code|fix-loop|report|finish) ;;
+  *) echo "not a stallable phase: $stalled" >&2; exit 2 ;;
+esac
+[ -z "$tip" ] || [[ "$tip" =~ ^[0-9a-f]{7,40}$ ]] || { echo "not a commit SHA: $tip" >&2; exit 2; }
+
+awk -v stalled="$stalled" -v tip="$tip" '
+  function trim(s) { sub(/^[ \t]+/, "", s); sub(/[ \t\r]+$/, "", s); return s }
+  function truthy(v) { v = tolower(trim(v)); return v == "true" || v == "t" || v == "yes" || v == "1" }
+  function isempty(v) { v = tolower(trim(v)); return v == "" || v == "none" || v == "-" }
+  function after(s, label) { return trim(substr(s, length(label) + 1)) }
+  function countids(v,   n, p, i, c) {
+    if (isempty(v)) return 0
+    n = split(v, p, ","); c = 0
+    for (i = 1; i <= n; i++) if (trim(p[i]) != "") c++
+    return c
+  }
+  # Finding keys (`[SEV] <loc>` or `rN [SEV] <loc>`) may hold commas: count one per key start.
+  function countkeys(v,   s, c) {
+    if (isempty(v)) return 0
+    if (index(v, "[") == 0) return countids(v)
+    s = "," v; c = 0
+    while (match(s, /,[ \t]*(r[0-9]+ )?\[/)) { c++; s = substr(s, RSTART + RLENGTH) }
+    return c
+  }
+  function addq(q) { q = trim(q); if (q != "" && !(q in seenq)) { seenq[q] = 1; qs[++nq] = q } }
+  function verdictq(t,   i) {
+    t = trim(t); sub(/^"/, "", t); sub(/"$/, "", t)
+    if (match(t, /\[[^]]*\]/)) return substr(t, RSTART + 1, RLENGTH - 2)
+    i = index(t, " — ")
+    return i ? substr(t, 1, i - 1) : t
+  }
+  { sub(/\r$/, "") }
+  /^[^ \t-]/ { block = "" }
+  /^flags:/ {
+    haveflags = 1
+    n = split(after($0, "flags:"), f, /[ \t]+/)
+    for (i = 1; i <= n; i++) if (split(f[i], kv, "=") == 2) flag[kv[1]] = kv[2]
+    next
+  }
+  /^phase:/ { phase = after($0, "phase:"); sub(/[ \t]*\(skipped\)$/, "", phase); next }
+  /^parked:/ { block = "parked"; next }
+  /^codeBuckets:/ { block = "cb"; havecb = 1; next }
+  /^roastDesignCapped:/ {
+    n = split(after($0, "roastDesignCapped:"), p, / · /)
+    if (trim(p[n]) ~ /^proceeded/) { dcapped = 1; blocking += countkeys(p[1]) }
+    next
+  }
+  /^roastCodeCapped:/ { split(after($0, "roastCodeCapped:"), p, / · /); blocking += countkeys(p[1]); next }
+  block == "parked" && /^[ \t]*- / {
+    n = split($0, p, / · /)
+    kind = trim(p[2]); text = p[3]
+    for (i = 4; i <= n; i++) text = text " · " p[i]
+    if (kind == "escalation") esc++
+    else if (kind == "degraded-verdict") dv[++ndv] = verdictq(text)
+    next
+  }
+  block == "cb" && /^[ \t]+[A-Za-z]+:/ {
+    line = trim($0); k = substr(line, 1, index(line, ":") - 1)
+    cb[k] = after(line, k ":")
+    next
+  }
+  END {
+    if (!haveflags || phase == "") { print "run.md has no flags: or phase: line" > "/dev/stderr"; exit 2 }
+    if (dcapped) addq("design roast capped-blocking")
+    for (i = 1; i <= ndv; i++) addq(dv[i])
+    if (truthy(flag["skipPlanRoast"])) addq("plan roast skipped")
+    if (truthy(flag["skipCodeRoast"])) addq("code roast skipped")
+    if (havecb) {
+      if (!isempty(cb["parked"])) addq("code findings parked")
+      pending = countids(cb["pendingRetry"])
+      if (pending) addq("tasks pending retry")
+      esc += countids(cb["escalated"])
+      review = trim(cb["review"])
+      if (review != "CLEAN") addq("final review: " (review == "" ? "none recorded" : review))
+      sweep = trim(cb["sweep"])
+      if (sweep == "") addq("sweep: none recorded")
+      else if (sweep !~ /^PASS/) addq("sweep: " sweep)
+      else if (tip != "") {
+        sha = ""
+        if (match(sweep, /@[ \t]*[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]*/)) {
+          sha = substr(sweep, RSTART + 1, RLENGTH - 1); sub(/^[ \t]+/, "", sha)
+        }
+        if (sha == "" || (index(tip, sha) != 1 && index(sha, tip) != 1)) addq("sweep: " sweep)
+      }
+      codestalled = truthy(cb["stalled"])
+    }
+    suffix = ""
+    for (i = 1; i <= nq; i++) suffix = suffix (i == 1 ? " [degraded: " : ", ") qs[i]
+    if (nq) suffix = suffix "]"
+    if (stalled != "") print "status: stalled at phase " stalled
+    else if (phase == "capped-blocking") print "status: stalled at phase capped-blocking"
+    else if (codestalled) print "status: stalled at phase code"
+    else if (blocking || esc || pending) print "status: completed with " (blocking + 0) " unresolved Blocking, " (esc + 0) " escalations" suffix
+    else print "status: clean" suffix
+    for (i = 1; i <= nq; i++) print "qualifier: " qs[i]
+  }
+' "$run"
