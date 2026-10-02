@@ -8,3 +8,6 @@ branch: super-auto/prompting-guide-roast-fixes
 base: main
 spec: 2026-10-01-prompting-guide-roast-fixes-design.md
 epic: super-plan-5pi
+
+approvals:
+- top-split · auto · super-plan-5pi.1 LEAF, super-plan-5pi.2 LEAF, super-plan-5pi.3 LEAF, super-plan-5pi.4 LEAF, super-plan-5pi.5 LEAF, super-plan-5pi.6 LEAF, super-plan-5pi.7 LEAF, super-plan-5pi.8 LEAF

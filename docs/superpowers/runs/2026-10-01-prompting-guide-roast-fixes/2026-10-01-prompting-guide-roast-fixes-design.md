@@ -35,7 +35,7 @@ The owner decided all seven conflicts (`super-auto-roast-decisions.md`) and set 
   - a dispatch table section for per-role model, effort and access.
 - **Status line in code:** the status line becomes a script, `scripts/report-status`, following the existing `scope-dispositions` convention (bash, jq optional with a `JQ_UNAVAILABLE:` fallback, invoked as `bash <abs>/scripts/<name>`).
 - **Lint test:** a new test checks the worked examples and cross-references in `run-state.md`, `SKILL.md` and `report-prompt.md` against the canonical schema tables, so drift is caught mechanically.
-- **Tests location:** tests live in `tests/super-auto/`, which is the skill's existing test home. This is the one deliberate edit outside `skills/super-auto`.
+- **Tests location:** tests live in `tests/super-auto/`, which is the skill's existing test home, and the new lint test gets one line in `AGENTS.md`'s release checklist, per the repo's practice of listing every test suite there. These are the two deliberate edits outside `skills/super-auto`.
 - **Canonical homes:**
   - the invariants block near the top of SKILL.md for gates and interface contracts;
   - `run-state.md` for field schemas and the roast-cap counts;
