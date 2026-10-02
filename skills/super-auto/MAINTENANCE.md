@@ -51,3 +51,51 @@ A runtime file points at a rule's canonical home instead of restating it, copyin
 
 
 - The goal is no longer marked as data; only the roast findings text is (F40, decision 3). The Blocking and cluster paragraphs collapsed to one line because `scripts/scope-dispositions` is the gate (F35, F36, decision 4). The `Model: sonnet` line moved to the dispatch table in SKILL.md (F32, decision 7).
+
+## Roast resolution (2026-10-01)
+
+Source: `~/Documents/prompt-roast-handoff/super-auto-roast.md` and `super-auto-roast-decisions.md`.
+
+| Item | Resolved in |
+|---|---|
+| F0 status line derived by the model | report-prompt.md §The status block; `scripts/report-status` |
+| F3 stop list missing capped-blocking | SKILL.md §Ending turns in an autonomous run (stop 4) |
+| F44 worked example contradicts item 6 | run-state.md §File format — worked example |
+| F45 roast cap stated differently | run-state.md item 5 (Roast iteration counts); SKILL.md §Roast caps points there |
+| S1 cross-file contract drift | run-state.md §Field table; `tests/super-auto/test-contract-lint.sh` |
+| S2 rules restated in several sections | canonical homes per the inventory (no stragglers found); pointers elsewhere |
+| S3 deterministic bookkeeping as prose | `scripts/report-status`, `scripts/step-back-check`; recipe inventory below |
+| S4 monolithic SKILL.md, gates late | SKILL.md §Invariants; resume.md; SKILL.md §Phase 6 — report |
+| S5 under-specified subagent dispatch | SKILL.md §Subagent dispatch |
+| S6 history in runtime files | this file's per-file headings |
+| S7 emphasis inflation | every runtime file; SKILL.md §Red Flags is an index |
+| S8 fix beads with no fence or done | SKILL.md §Fix-bead template |
+| S9 human-facing output with no shape | report-prompt.md §Output shape |
+| S10 agent output not framed as data | SKILL.md §Data framing; `scripts/step-back-check` |
+| D1 pre-flight plugin update | SKILL.md §Pre-flight |
+| D2 scope fences list allowed sources | report-prompt.md §Allowed sources; SKILL.md §Fix-bead template |
+| D3 one data-framing rule | SKILL.md §Data framing; scope-filter-prompt.md §Prompt |
+| D4 Blocking safeguard line kept | scope-filter-prompt.md §Prompt |
+| D5 flag triple moved before pruning | SKILL.md §Invariants; SKILL.md §Red Flags |
+| D6 reconcile the cap, then one home | run-state.md item 5 (Roast iteration counts) |
+| D7 capability tiers in one table | SKILL.md §Subagent dispatch |
+
+Recipe inventory:
+
+- `codeBuckets` refresh from the tracker: run-state.md item 6 (Code buckets); judgment. It copies returned fields and runs at phase 3 transitions.
+- Run discovery: resume.md §Finding a run; judgment. It runs once per invocation.
+- Version comparison: SKILL.md §Pre-flight; judgment. It runs once per run.
+- Slug derivation: SKILL.md §Run directory; judgment. It runs once per run and picks content words.
+- `+dirty:<hash>` recipe: resume.md §Switching definitions mid-run; judgment. It is rare.
+- Step-back keys file: SKILL.md §Step 1 — step back; mechanical, runs once per round, left as prose because its input is the reports' `## Confirmed findings` lists the orchestrator already holds.
+- Status line: report-prompt.md §The status block; scripted (`scripts/report-status`).
+- Scope routing: SKILL.md §Step 2 — scope filter; scripted (`scripts/scope-dispositions`).
+- Step-back validation: SKILL.md §Step 1 — step back; scripted (`scripts/step-back-check`).
+
+Stragglers fixed: none. Every canonical-home grep showed one statement at its home and pointers elsewhere.
+
+Behavioral probe:
+
+- Resume at `phase: fix-loop` with `stepBack-round-2` and `scopeFilter-round-2` records: not run, the implementing session had no subagent tool.
+- `planOneShot` run, design roast capped Blocking: not run, same reason.
+- Scope filter model and effort under Claude Code and Codex: not run, same reason.
