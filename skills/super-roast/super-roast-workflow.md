@@ -23,6 +23,11 @@ Severity vocabulary throughout (the only one): **Blocking | Should-fix | Nit | F
 
 ## Capability ladder (never asked — selects the execution mechanism automatically)
 
+`Workflow` is available when it is in your own loaded function list. ToolSearch sees only
+deferred tools, so a ToolSearch miss is not evidence either way. The rung actually used ends the
+report's `independence:` line (` · rung: Workflow | manual fan-out | inline`) and, when a caller
+with a friction log invoked the roast, is appended to that log.
+
 - **`Workflow` tool available → dynamic workflow (preferred).** Run the engine script below
   via the tool. Triage → scout fan-out → dedupe → tiered judge panels → reporter, each phase
   model-tiered per role. Build its `args` with `bash <this skill's dir>/scripts/assemble-args`
@@ -63,22 +68,33 @@ Severity vocabulary throughout (the only one): **Blocking | Should-fix | Nit | F
      `convergenceEligible`), the coverage line, the seat-agreement line, and each packet's
      `defaultRoute` — by running the engine script's own helpers (`defaultRoute`,
      `seatAgreementLine`, the coverage block) under node over the collected results, not by
-     hand. Persist the coverage object next to the report; a manual run without it cannot emit
-     the coverage line or the verdict qualifiers, and the caller reads their absence as a clean
-     run.
+     hand. Persist the coverage object next to the report. A manual run without it writes
+     `coverage: unavailable — manual run, no coverage object` and `[low coverage]` on the
+     verdict, never an omitted line: the caller reads a missing line as a clean run.
   5. Dispatch one reporter subagent (fable) with the packets, the profile, the coverage values,
-     and the prior report (if any); re-dispatch once on failure, then fall back to the engine's
-     `fallbackReport` rendering. Apply the engine's `enforce` step to a live report (header
+     the prior report and the punch-listed keys (if any); re-dispatch once on failure, then fall
+     back to the engine's `fallbackReport` rendering. Apply the engine's `enforce` step to a live report (header
      lines, omitted escalations, preExisting → FYI).
+
+  When the scouts ran as subagents but the seats could not be dispatched and verification ran
+  inline, the independence label is `partial (subagent scouts, inline verification)`.
 - **No subagents → inline degraded (last resort).** Walk the same steps in one context. This
   is self-review — the independence label is `none (inline)` so the caller knows the verdict
   is weak.
+
+On the manual fan-out and inline rungs the orchestrator writes every header line itself (see
+"Report header lines" below), rendering each from the run's facts. A line it cannot compute
+gets an explicit degraded literal, such as `coverage: unavailable — manual run, no coverage
+object`; it is never omitted or left as a raw `{{TOKEN}}`.
 
 **The independence label is derived from the seats as actually invoked — never a fixed
 string.** The orchestrator renders `{{INDEPENDENCE}}` in the reporter prompt from the roster it
 dispatched (see "Prompt contract"): `same-family (<family>) — seat-differentiated panel` when
 every seat ran on one model family, `cross-family (<families>) — seat-differentiated panel`
-when the three seats span families, `none (inline)` for the degraded path. A caller reads
+when the three seats span families, `partial (subagent scouts, inline verification)` for the
+hybrid rung, `none (inline)` for the degraded path — each followed by ` · rung: <rung>`.
+`assemble-args` derives the same-family form and the rung (`Workflow` with `--script`, else
+`manual fan-out`); pass `--independence` for any other case. A caller reads
 this line to weigh the verdict; a wrong family is a false claim about how independent the
 verification was.
 
@@ -92,7 +108,11 @@ one of the three where a harness offers one, and label it so.
 `seat-agreement:` — a panel-agreement summary (pairwise seat agreement, unanimity,
 leave-one-out ground vs. the reproduce/refute pair, and per-seat C/R/U counts) over the
 full panel/promoted-tier packets, printed immediately after `independence:` and omitted
-entirely when there are none. The engine renders the `coverage:` and `seat-agreement:` lines
+entirely when there are none. Every rung writes every applicable line; `delta vs prior:` is
+`<X> new confirmed (<xB> Blocking) · <Y> carried (<yB> Blocking) · <Z> resolved · <W> regressed
+(<wB> Blocking) · <P> punch-listed (open)`, where `punch-listed (open)` counts prior confirmed
+findings on the caller's punch-listed list (`args.punchListed`) that this round did not
+re-surface: they are not resolved. The engine renders the `coverage:` and `seat-agreement:` lines
 and re-applies the coverage-derived verdict qualifiers. The reporter copies the lines verbatim,
 and after it returns the engine overwrites the `super-roast verdict:`, `coverage:`,
 `independence:` and `seat-agreement:` lines with its own values anyway (inserting any that are
@@ -130,7 +150,7 @@ inserted value is never re-scanned for later tokens):
 | `prompts.dedupe` | `{{FINDINGS_JSON}}` (the raw findings, each with an `id` — its position — which the deduper's groups refer to) |
 | `prompts.seats.reproduce` / `.refute` / `.ground` | `{{FINDING_JSON}}` (without `suggestedSeverity` / `previouslyRejected` — judges rate blind) |
 | `prompts.seatsSafe.<seat>` (optional) | `{{FINDING_JSON}}` — the seat's static-review wording (artifact presented as text to analyse, no adversarial verbs, same method and output contract), used for the one re-dispatch of a seat that returned nothing; absent, the re-dispatch repeats `prompts.seats.<seat>` |
-| `prompts.reporter` | `{{PACKETS_JSON}}`, `{{PROFILE}}`, `{{PRIOR_REPORT}}`, `{{COVERAGE_JSON}}`, `{{COVERAGE_LINE}}`, `{{SEAT_AGREEMENT}}`, `{{MODE}}`, `{{ITERATION}}`, `{{INPUTS}}` — plus `{{INDEPENDENCE}}`, which the **orchestrator** renders before the script runs (the script never sees model families; the orchestrator chose them), from the seat roster as actually configured: `same-family (<family>) — seat-differentiated panel`, `cross-family (<families>) — seat-differentiated panel`, or `none (inline)`. Left unrendered, the literal token reaches the report — visibly wrong, which is the intended failure over a silently wrong family. The orchestrator also passes the same rendered string as `args.independence`, which the engine's fallback report uses if the reporter fails (it falls back to reading the rendered prompt only when the arg is absent) |
+| `prompts.reporter` | `{{PACKETS_JSON}}`, `{{PROFILE}}`, `{{PRIOR_REPORT}}`, `{{PUNCH_LISTED}}` (`args.punchListed`: the prior round's punch-listed keys, one `[SEV] <location>` per line, or empty), `{{COVERAGE_JSON}}`, `{{COVERAGE_LINE}}`, `{{SEAT_AGREEMENT}}`, `{{MODE}}`, `{{ITERATION}}`, `{{INPUTS}}` — plus `{{INDEPENDENCE}}`, which the **orchestrator** renders before the script runs (the script never sees model families; the orchestrator chose them), from the seat roster as actually configured: `same-family (<family>) — seat-differentiated panel`, `cross-family (<families>) — seat-differentiated panel`, `partial (subagent scouts, inline verification)`, or `none (inline)`, followed by ` · rung: <rung>`. Left unrendered, the literal token reaches the report — visibly wrong, which is the intended failure over a silently wrong family. The orchestrator also passes the same rendered string as `args.independence`, which the engine's fallback report uses if the reporter fails (it falls back to reading the rendered prompt only when the arg is absent) |
 
 **`prompts.scoutDomainTemplate` is why design-mode domain scouts work at all.** Domain names are
 open-ended free text produced by triage **at runtime**, but `args.prompts` is assembled by the
@@ -222,7 +242,7 @@ const REPORT = { type:'object', properties:{ verdict:{type:'string'}, reportMark
 // both, and fail loudly (not with a cryptic destructure error) if the required shape is missing.
 const A = typeof args === 'string' ? JSON.parse(args) : args
 if (!A || !A.prompts || !A.config) throw new Error('super-roast: args must carry {mode, prompts, config} — got ' + JSON.stringify(A).slice(0, 200))
-const { mode, profile, priorReport = '', inputs = '', iteration = 1, dryRun = false, prompts, config, independence } = A
+const { mode, profile, priorReport = '', punchListed = '', inputs = '', iteration = 1, dryRun = false, prompts, config, independence } = A
 const model = role => dryRun ? 'haiku' : config.models?.[role]
 // Mechanical stages run at low effort, the gate at high; the rest inherit the session effort.
 const EFFORT = { triage:'low', spot:'medium', reporter:'high' }
@@ -507,6 +527,7 @@ const reporterPrompt = fill(prompts.reporter, {
   '{{PACKETS_JSON}}': JSON.stringify(packets),
   '{{PROFILE}}': profile,
   '{{PRIOR_REPORT}}': priorReport,
+  '{{PUNCH_LISTED}}': punchListed,
   '{{COVERAGE_JSON}}': JSON.stringify(coverage),
   '{{COVERAGE_LINE}}': coverageLine,
   '{{SEAT_AGREEMENT}}': seatAgreement,

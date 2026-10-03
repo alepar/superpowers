@@ -77,6 +77,7 @@ if (scenario === 'pr-r2') {
   })
   check('fixRegressions return field names the regression finding', () => assert.deepEqual(r.fixRegressions.map(f => f.location), ['r.js:5']))
   check('iteration label rendered N of cap', () => assert.ok(by('reporter')[0].prompt.includes('iteration: 2 of 3')))
+  check('punch-listed keys reach the reporter', () => assert.ok(by('reporter')[0].prompt.includes('<punch_listed>\n[Should-fix] c.js:1\n[Nit] d.js:2; e.js:3\n</punch_listed>')))
 }
 if (scenario === 'pr-r2-empty') {
   check('empty late round with every scout alive converges', () => {

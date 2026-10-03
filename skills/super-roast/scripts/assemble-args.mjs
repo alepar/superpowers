@@ -12,6 +12,9 @@ const USAGE = `usage: assemble-args --mode pr|design --inputs <header inputs> [o
   --iteration <N|post-cap audit>  round number (default 1); rounds >= 2 require --prior-report
   --prior-report <path>           previous round's report; switches scouts to the late-round
                                   stance and adds the regression lane/lens
+  --punch-listed <file>           prior round's punch-listed keys, one \`[SEV] <location>\` per
+                                  line: findings the caller left unfixed on purpose (needs
+                                  --prior-report; sub-Blocking only)
   --profile <text>                environment profile for the reporter (default: infer)
   --spec <path>                   design mode: the spec under review (required)
   --context <text|@file>          design mode: caller context the spec must satisfy
@@ -19,7 +22,9 @@ const USAGE = `usage: assemble-args --mode pr|design --inputs <header inputs> [o
                                   PR mode: names the diff command and computes triage's stat
   --diff-stat <text|@file>        PR mode: triage input instead of computing it with git
   --artifact <text>               PR mode: how scouts/judges name the change (default: --inputs)
-  --independence <text>           independence label (default: derived from config.models.judge)
+  --independence <text>           independence label (default: derived from config.models.judge,
+                                  ending \` · rung: Workflow\` with --script, else
+                                  \` · rung: manual fan-out\`)
   --config <json|@file>           merged over the defaults (models merged per key)
   --seats-safe                    add prompts.seatsSafe (static-review wording for seat retries)
   --report-dir <dir> --topic <slug> [--date YYYY-MM-DD]
@@ -40,7 +45,7 @@ for (let i = 0; i < argv.length; i++) {
   if (!a.startsWith('--') || i + 1 >= argv.length) die(2, `bad argument '${a}'\n${USAGE}`)
   opt[a.slice(2).replace(/-([a-z])/g, (_, c) => c.toUpperCase())] = argv[++i]
 }
-const known = ['mode','inputs','iteration','priorReport','profile','spec','context','repo','base','head','diffStat','artifact','independence','config','seatsSafe','reportDir','topic','date','out','script']
+const known = ['mode','inputs','iteration','priorReport','punchListed','profile','spec','context','repo','base','head','diffStat','artifact','independence','config','seatsSafe','reportDir','topic','date','out','script']
 for (const k of Object.keys(opt)) if (!known.includes(k)) die(2, `unknown option --${k.replace(/[A-Z]/g, c => '-' + c.toLowerCase())}`)
 const textArg = v => v?.startsWith('@') ? readFileSync(v.slice(1), 'utf8') : v
 
@@ -54,6 +59,15 @@ if (numbered && Number(iteration) >= 2 && !opt.priorReport) die(2, `iteration ${
 if (numbered && Number(iteration) === 1 && opt.priorReport) die(2, 'iteration 1 takes no --prior-report')
 if (opt.priorReport && !existsSync(opt.priorReport)) die(2, `prior report not found: ${opt.priorReport}`)
 const late = !!opt.priorReport
+let punchListed = ''
+if (opt.punchListed) {
+  if (!late) die(2, '--punch-listed needs --prior-report (it names the prior round\'s findings)')
+  if (!existsSync(opt.punchListed)) die(2, `punch-listed file not found: ${opt.punchListed}`)
+  const keys = readFileSync(opt.punchListed, 'utf8').split('\n').map(l => l.trim()).filter(Boolean)
+  const bad = keys.find(k => !/^\[(Should-fix|Nit|FYI)\] \S/.test(k))
+  if (bad) die(2, `--punch-listed: not a sub-Blocking \`[SEV] <location>\` key: ${bad}`)
+  punchListed = keys.join('\n')
+}
 if (mode === 'design' && !opt.spec) die(2, 'design mode needs --spec')
 if ((opt.reportDir || opt.topic) && !(opt.reportDir && opt.topic)) die(2, '--report-dir and --topic go together')
 
@@ -245,7 +259,7 @@ if (!prompts.dedupe.includes('{{FINDINGS_JSON}}')) drift('dedupe-prompt.md: {{FI
 
 // ---- reporter ----
 const family = m => /opus|sonnet|haiku|fable|claude/i.test(m ?? '') ? 'Claude' : (m || 'unknown')
-const independence = opt.independence ?? `same-family (${family(config.models.judge)}) — seat-differentiated panel`
+const independence = opt.independence ?? `same-family (${family(config.models.judge)}) — seat-differentiated panel · rung: ${opt.script ? 'Workflow' : 'manual fan-out'}`
 {
   const r = firstFence(read('reporter-prompt.md'))
   const re = /^independence: \{\{INDEPENDENCE\}\}$/m
@@ -261,7 +275,7 @@ const priorReport = opt.priorReport ? readFileSync(opt.priorReport, 'utf8') : ''
 const args = {
   mode, profile: opt.profile ?? 'not supplied by the caller — infer it from the repository and state it',
   inputs: opt.inputs, iteration: numbered ? Number(iteration) : iteration,
-  priorReport, independence, prompts, config,
+  priorReport, punchListed, independence, prompts, config,
 }
 const json = JSON.stringify(args, null, 2)
 

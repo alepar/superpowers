@@ -1,7 +1,7 @@
 # Coordinator Workflow (Autonomous Beads Execution)
 
-Reference for the **Workflow-coordinated autonomous mode** of `super-code`. Use this when a
-beads epic is handed to the coordinator **and** the `Workflow` tool is available. The Workflow
+Reference for `super-code`'s coordinator, which runs every epic, autonomous or interactive. The
+`Workflow` tool is required (SKILL.md's "Trigger rule"): there is no hand-driven fallback. The Workflow
 script is the *mechanical* coordinator; every judgment call is delegated to a short-lived
 `agent()`. The per-task prompts are this skill's own (`./implementer-prompt.md`,
 `./task-reviewer-prompt.md`); the brief, review-package and workspace scripts are
@@ -109,9 +109,11 @@ with none gets `'none'`, and no check runs. The `Launch:` line records the resol
 `Sweep:` lines.
 
 `edgeAuditCap` is **optional** — additive: how many dependency-edge audits one invocation may
-dispatch, default 3, `0` disables. Armed by two consecutive rounds whose dispatched frontier stayed
-under the cap, or once, as soon as the graph is known, when it is graph-bound; see "The
-coordinator loop" step 7.
+dispatch, default 3, `0` disables. Armed by two consecutive rounds whose peak in-flight stayed under
+the cap while mapped beads were still open (a drained graph has nothing to audit), or once, as soon
+as the graph is known, when it is graph-bound — checked again when round 1's second planner maps
+the rest of the tree, since before that the mapping holds only the first planner's rows; see "The
+coordinator loop" step 7. Each audit carries earlier "safe no" verdicts rather than re-judging them.
 
 `edgeCuts` is **optional**: `'apply-safe'` lets an audit's safe-class changes be applied mid-run
 (an autonomous run passes it); absent or anything else, every audit is report-only (an
@@ -124,7 +126,15 @@ a task — the task review and the post-rebase seam review — run a stat diff a
 their range restricted to these pathspecs (see "Per-task pipeline" below and `taskReviewPrompt` /
 `seamReviewPrompt`). An empty array (`testPaths: []`) is rejected at
 pre-flight: the defaults are retained and a warning is logged, since an empty pathspec list
-would silently turn off the Test-changes check rather than widen it.
+would silently turn off the Test-changes check rather than widen it. Pre-flight also runs
+`git ls-files -- <the pathspecs>` once: when the defaults (or the declared list) match no tracked
+file, as in a language whose tests live inline in source files (Rust `#[cfg(test)]`), every
+`Test changes: none` is vacuous — declare `testPaths` (for inline tests, the source globs that
+hold them) or note in friction that the check is blind for this project.
+
+`sweepBaseline` is **optional**: `true` runs the sweep once at the starting tip, before any work
+(a `Sweep baseline:` ledger line), and the Finish sweep then names the tests that fail now but did
+not at the start. Off by default (it doubles the sweep cost) and never under `deferSweep`.
 
 `integrationWorktree` is **optional** — additive and non-breaking: the path of the integration branch's checkout. When omitted, the script derives it from
 `integrationBranch` alone by the fixed pre-flight convention (see "Pre-flight" below), with any
@@ -481,9 +491,9 @@ Round-based with refill (each `bd ready` batch is, by definition, mutually indep
    parent to walk to); otherwise recorded parent-child links (`bd list --all --json`'s
    `dependencies` entries with `type: "parent-child"`), followed transitively, must reach `epicId`.
    The id-prefix convention is never consulted — a hand-created bead can violate the naming but
-   can't fake the recorded link. Same contract as SKILL.md's manual mode — the coordinator changes
-   *who runs it* and adds the scoping filter a human operator applies implicitly by only ever
-   running the command against their own tree.
+   can't fake the recorded link. The scoping filter does what a human operator does implicitly by
+   only ever running `bd ready` against their own tree. (bd 1.2.2 omits `.parent` from `bd show`;
+   the scripts read both it and the `parent-child` dependency.)
 6. **Refill** — landing tasks unblocks dependents; most dispatch mid-round via step 4's graph
    readiness (or its top-up), and the loop back to step 1 remains the authority for the rest:
    beads a null top-up missed, beads whose `deps` the planner did not report, and beads with no
@@ -540,7 +550,12 @@ re-read) echo `scripts/ledger-digest`, never the file itself: it keeps the `Merg
 `Task` line's state tokens and drops the free text (`minor (deferred)` prose, reasons, notes), which
 is most of a long ledger. A verbatim echo of a ~90 KB ledger was refused by model safeguards on
 every launch once the epic grew; the digest of the same ledger is ~12 KB, and the coordinator's
-parsers read it exactly as they read the raw file.
+parsers read it exactly as they read the raw file. Its first line, `# ledger-digest: <kept> of
+<total> lines`, lets the coordinator tell an empty ledger from a lost or truncated echo: text
+without that header, or with fewer lines than it counts, is an unavailable read (retried once),
+never content — an empty echo once seeded 1 of 29 completions on Resume. The digest also keeps
+each minor's `[class]` tag and each blocker's `[cause: …]`, from which Resume re-seeds the
+recurrence counts.
 
 - **Workspace, one per epic:** I7 fix — every epic's plan file used to be named literally
   `plan.md`, so `scripts/sdd-workspace`'s basename-derived directory
@@ -877,7 +892,12 @@ is safe because a `bd ready` batch is mutually independent by definition):
    overlapping files once and records them), then re-dispatches the merge as seam-cleared. No
    overlap → no extra dispatch. The seam review is an integration check, not a second task review:
    it looks only at how the task composes with what landed meanwhile. A rebase whose conflicts the
-   merge agent resolved always overlaps, so the resolution itself gets this review.
+   merge agent resolved always overlaps, so the resolution itself gets this review. **A consumed
+   producer counts as overlap too:** when an in-tree blocker this task depends on (not a stack
+   parent, whose code it was cut on) landed after the task branched, the merge agent reports a
+   `consumes <id>` entry even with no file in common, and the seam review checks the consumer
+   against the interface that producer now presents. Composition defects sit in the consumers of an
+   interface, not in its file, and before this only the whole-epic review ever saw them.
 3. **Clean integration worktree, then a verified merge.** Before merging, `git status --porcelain
    --untracked-files=all` in the integration worktree must be empty (git-ignored files don't appear;
    projects should gitignore build artefacts rather than have them special-cased here). The one
@@ -892,7 +912,11 @@ is safe because a `bd ready` batch is mutually independent by definition):
    fix), with the merge staged, the merge agent runs `config.mergeCheck`
    exactly as declared on the merged tree. It compiles or typechecks; it never runs tests (the
    implementer ran the task's tests; the sweep at Finish runs the full suite). No declared check →
-   nothing runs. **A failing check routes to the seam machinery first**, because it is usually a
+   nothing runs. A check killed before its verdict (the agent's tool timeout, a signal) is
+   `check aborted`: no result, never a failure — the merge is re-dispatched once with no fix,
+   triage or blocker, and a second abort leaves the task unsettled for the next round (a slowness
+   item). A killed test gate once read as a failure and escalated finished work. **A failing check
+   routes to the seam machinery first**, because it is usually a
    semantic seam in a file this task did not touch (another task's test or call site still using a
    signature this task changed), which the textual merge and the same-file seam review both miss.
    The merge agent aborts and reports the error output (no bead). The coordinator dispatches one
@@ -1085,8 +1109,12 @@ reviewer is told to triage those lines *first* and name the class. Measured: 1,3
 correct deferrals on one run hid a single line recurring ~40 times — the pipeline reporting its
 own empty-review-package defect once per merge, never heard — and ~30 unfalsifiable-assertion
 findings that nobody owned as a class; per-epic triage would not have surfaced either, since the
-distribution was even across nine sub-epics. The threshold is deliberately mechanical (verbatim
-or near-verbatim recurrence); it does not try to cluster paraphrases.
+distribution was even across nine sub-epics. The key is the reviewer's `[class]` tag on each minor
+(two to four task-independent words, `./task-reviewer-prompt.md`), else the normalised text:
+free-text matching never clustered one class worded five ways ("full suite not run",
+"whole-suite tests not run", …) on a run where it hit seven tasks. The counts survive relaunches:
+minors and pending-retry/BLOCKED lines carry their tag on the ledger, and Resume seeds the clusters
+from them.
 **Blocker entries feed the same detector** (issue #5 defect 7): every triaged blocker — RESOLVE or
 ESCALATE — is counted under the triage agent's `cause` (a short root-cause phrase the TRIAGE schema
 now carries; `detail` is the fallback), in its own `blocker:` namespace with the same threshold,
@@ -1115,11 +1143,12 @@ dispatch appends them, in this order:
 Metrics: merges M · merge-failed Mf · rebase-conflicts C · seam-reviews S (fixed F) · check-fails G (fixed H)
 Metrics: completions — review clean A · after fix pass B · parked P · re-entry closes R · dispatched early E · cancelled K
 Metrics: fix-pass — entered E · FIXED X · BLOCKED Y
-Metrics: ledger-check <ok | M≠completed: M vs N> · append-failed K · append-retried J
+Metrics: ledger-check <ok | landed≠completed: L vs N — <likeliest cause> | METRICS INVALID — …> · append-failed K · append-retried J
 ```
 
 Stub keys: `read-ledger:finish` and `ledger-append:metrics`. It runs even on a run that merged
-nothing. A null re-read writes `Metrics: UNAVAILABLE …` lines instead of zero counts.
+nothing. A null re-read (after its one retry) writes `Metrics: UNAVAILABLE …` lines instead of
+zero counts, each carrying this invocation's own buckets, labelled `this invocation only`.
 
 - `M` counts success-path `Merge:` lines (no trailing marker); `Mf` counts the ` → blocker` and
   ` → auth-refused` lines. `C`, `S`, `F` come from `Merge:` lines on both paths; `G` counts lines whose check failed
@@ -1129,8 +1158,13 @@ nothing. A null re-read writes `Metrics: UNAVAILABLE …` lines instead of zero 
   parent), `K` counts `cancelled` lines (stacked attempts stopped because a parent did not merge).
 - `E`/`X`/`Y` count `fix pass` lines, all of them (a retried task's second fix pass is a real
   dispatch).
-- `ledger-check` cross-checks `M` against the coordinator's in-memory `completed.size` rather than
-  treating the lossy ledger as authoritative: a discrepancy is reported, never papered over.
+- `ledger-check` cross-checks the ids the ledger shows landed — success-path `Merge:` lines plus
+  re-entry closes, which land without a `Merge:` line — against the in-memory `completed.size`,
+  rather than treating the lossy ledger as authoritative. A mismatch names its likeliest cause: a
+  failed append, a completion settled without its line, an incomplete Resume read (the ledger shows
+  more), or — no landing lines at all while tasks completed — a failed reader, written `METRICS
+  INVALID` because every count on the block is then wrong. Before this split, every legitimate
+  re-entry close read as a mismatch.
 
 The return carries `metrics`, the same four strings.
 
@@ -1253,11 +1287,15 @@ something the code did not do, and the risk a maintainer reintroduces it outlive
    first-time RESOLVE candidate even though it already got a full triage verdict in the prior run.
    Seeding `pendingRetry` from `BLOCKED` lines would fix it; not attempted here because the same
    restart path is being reworked by the blocked-task redesign (item 1).
-3. **`ALREADY_MERGED` is relayed by the implementer's workspace setup, not computed by the
-   coordinator.** The check is `scripts/already-merged` (git only: the branch tip is the second
-   parent of a merge on the integration branch), and the setup reports its output; the script
-   cannot run git itself, so a mis-relayed result could still close a bead whose work never merged.
-   The same holds for `base`, which only the setup can find.
+3. **`ALREADY_MERGED` is relayed by an agent, not computed by the coordinator.** The check is
+   `scripts/already-merged` (git only: the branch tip is the second parent of a merge on the
+   integration branch); the coordinator cannot run git itself. A relayed false positive did close
+   a headline bead with no work done on a live run, so the close-only dispatch now re-runs the
+   script before `bd close` and closes nothing when it does not print true, and a review re-entry
+   whose branch has no commits past the integration branch trusts only the script (else
+   `SETUP_FAILED`). Two agents would have to misreport the same git fact for a false close. The
+   same holds for `base`, which only the setup can find; a base that is not a hex commit id reaches
+   the reviewer as `UNVERIFIED`, and its BASE CHECK recomputes it.
 4. **A cancelled stacked task's work is discarded, not salvaged.** When a stack parent does not
    merge, every task stacked on it loses its worktree and re-implements from scratch on the
    parent's next attempt — even when the parent's eventual fix would not have touched what the
@@ -1269,6 +1307,22 @@ something the code did not do, and the risk a maintainer reintroduces it outlive
    blocker landed this round, so a row bd already refused at the round head is never dispatched on
    graph state alone, but a new mid-round edge into a row JS considers satisfied is missed until
    the next planning round re-reads the graph.
+
+## Positions on proposals not adopted
+
+- **The final review's must-fix items are not filed as beads by super-code.** The final review is
+  report-only; a caller that owns a fix loop (super-auto phase 5) consumes them. A standalone run
+  hands them to the human with the finish menu.
+- **No exclusive file ownership.** `hotFileCap` stays a count. Ordering two beads that rewrite one
+  file's body goes through the dependency graph (`missingEdges`, a triage `waitFor`, or the design's
+  own edge), not a per-file lock.
+- **Deferred minors stay minors.** No new severity floor: the reviewer rubric already grades a
+  weakened or skipped test Important and data loss Critical, with explicit examples; a minor that
+  names one is a misclassification the final review is told to look for. Minors are tagged by
+  class (for recurrence), handed to a later task whose files they name, and counted in the report.
+- **Deferred and operational work stays out of the tree.** The tree stops at merge-ready work
+  (super-design §Decomposition); holds go behind gate beads (super-auto). super-code drains what is
+  in the tree and has no notion of a deferred child.
 
 ## What autonomous mode changes (summary)
 
@@ -1495,7 +1549,10 @@ prove **nothing** about:
 
 **What a dryRun can and cannot prove.** It proves what the *script* owns: round order, the Close
 fixpoint check, the `bd ready` scoping flags baked into the dispatched prompt text, disjoint-file
-bucketing, the pipeline/merge/triage sequencing, and every schema. It proves nothing about the
+bucketing, and the pipeline/merge/triage sequencing. It does **not** prove the schemas: a stub
+returns its canned object whatever `schema:` the dispatch passed, so a dispatch that lost its
+schema (and would return free text live) passes every dryRun — that is how a schema-less ledger
+read zeroed every Finish `Metrics:` line on a live run. It proves nothing about the
 judgment calls made *inside* a dispatched agent — whether an implementer's fix actually addresses
 a finding, whether a triage verdict is the *correct* RESOLVE/ESCALATE call, whether a merge's
 auto-resolve attempt would really succeed. Those are exercised only by a live run; the canned
@@ -1718,9 +1775,12 @@ it even by coincidence. The figures were real and unaltered — and still not ev
 run never executed. That is the failure the rule generalizes.
 
 **Schema-less dispatches — the harness's "N empty results" is expected, not a defect.** `notify`,
-`clarify`, the ledger appends (`ledger:<id>`, `ledger-append:*`, `ledger-recurring:*`), `sweep` and
-`final-review` carry no `schema:`. The coordinator reads the first three only for null; `sweep`'s and `final-review`'s strings are returned verbatim as
-`sweep`/`review`. Don't add schemas to force them into a shape they don't need.
+`clarify`, the ledger appends (`ledger:<id>`, `ledger-append:*`, `ledger-recurring:*`) and
+`final-review` carry no `schema:`. The coordinator reads the first three only for null; `final-review`'s
+string is returned verbatim as `review`. `sweep` carries `SWEEP_SUMMARY`, and its line must match a
+measurement form (counts, `PASS|FAIL` for a non-test command, or `MEASUREMENT INVALID:`) or it is
+recorded as `SWEEP UNAVAILABLE` — an agent's interim status once reached the final reviewer as the
+branch's measurement. Don't add schemas to force the rest into a shape they don't need.
 
 **What this dryRun proves and does not prove:** it proves **coordinator topology** — dispatch
 order, the sliding-window scheduler, the serial merge gate, blocker-bead routing (ESCALATE and

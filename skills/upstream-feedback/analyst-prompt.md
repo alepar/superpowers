@@ -13,7 +13,7 @@ entire output is the findings list below.
 ## Plugin version
 [VERSION]
 
-## Friction log (events the run recorded as they happened; may be empty)
+## Friction log (events the run recorded as they happened; `none recorded` means the log was kept and is empty, `not recorded` means it was never created)
 [FRICTION_LOG]
 
 ## Run ledger (per-task terminal outcomes)
@@ -33,6 +33,9 @@ entire output is the findings list below.
 
 ## Run metrics
 [RUN_METRICS]
+
+## Missing sources (a ledger, detector lines or Metrics lines absent while the branch has merges; `ledger incomplete` counts)
+[MISSING_SOURCES]
 
 ## Your three lenses
 

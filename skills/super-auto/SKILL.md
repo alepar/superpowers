@@ -61,7 +61,7 @@ backgrounded `tail -f`.
 
 The stops you want form a closed list (§Invariants I1 (closed stop list)); under `autonomous` none of them is mid-run:
 
-1. The pre-flight hard stops (no tracker, a stale skill cache) and an ambiguous resume, all before any work is in flight.
+1. The pre-flight hard stops (no tracker, no `Workflow` tool, a stale skill cache) and an ambiguous resume, all before any work is in flight.
 2. The phase-7 hand-back: the report is written, every bead is terminal, and the merge into `base` is the human's (§Invariants I5 (human-owned merge)).
 3. With `planOneShot` and without `autonomous`: the design-ready stop at the end of phase 2 (§Autonomous mode).
 4. With `planOneShot` and without `autonomous`, in place of stop 3: the `capped-blocking` stop, when the design roast's extension round still ends Blocking (§Roast caps).
@@ -82,10 +82,14 @@ A beads (`bd`) tracker is required; check it first, before the flags, the run di
 > drive it by hand with `superpowers:super-design`, which in no-beads mode plans and executes the
 > tree itself.
 
+Then check that `Workflow` is in your own loaded function list: phase 3, every fix-loop re-entry and every roast run as Workflows. ToolSearch sees only deferred tools, so it is no test. If it is missing (super-auto was delegated to a subagent, say), stop and hand back to the caller: the run needs a session that has the `Workflow` tool. Never degrade silently to lanes run by hand. If a phase nevertheless runs its coordinator or roast by any other mechanism, record the mechanism and why in `<run-dir>/friction.md`.
+
 Then check, once and before Resume, that the skills this session loaded are current. The loaded `<marketplace>` and `<version>` come from this skill's base directory (`<cache>/<marketplace>/superpowers/<version>/skills/super-auto`); the latest `version` comes from `.claude-plugin/plugin.json` on the default branch of `<marketplace>.source.repo` in `~/.claude/plugins/known_marketplaces.json` (`gh api repos/<owner>/<repo>/contents/.claude-plugin/plugin.json --jq .content | base64 -d`). Don't read a local checkout of the plugin repo: it shows what is on disk, not what this session loaded.
 
 - Equal: say so in one line and go on.
-- Different: run `claude plugin marketplace update <marketplace>` then `claude plugin update superpowers@<marketplace> -y`; both touch only this plugin, so they run unattended too, while an update that would touch every plugin is skipped in an unattended run. Then stop and tell the user the loaded and installed versions and to start a new session and re-invoke `super-auto`, because the CLI applies an update only on restart. This is the one pre-flight stop that needs no answer, only a restart. Degrade-don't-stop governs the run from launch onward; pre-flight checks are the exception, because a human is present at launch and continuing would run the whole job on known-stale instructions.
+- Different: run `claude plugin marketplace update <marketplace>` then `claude plugin update superpowers@<marketplace> -y`; both touch only this plugin, so they run unattended too, while an update that would touch every plugin is skipped in an unattended run. The CLI applies an update to the session only on restart, so the session-loaded text is now older than the installed cache.
+  - Decided: the run may proceed without a restart if it follows the cache files by absolute path. Record `skillSource: <cache>/<marketplace>/superpowers/<installed version>/skills @ <sha> (<installed version>)` (`<sha>`: the `v<installed version>` tag's commit) in `run.md` once it exists (step 4), re-read each skill file (this one, a sibling skill, a prompt template) from that path before acting on it, never from the session-loaded text, and pass the path as `skillsRoot` to every skill you invoke, as in resume.md §Switching definitions mid-run.
+  - Otherwise stop and tell the user the loaded and installed versions and to start a new session and re-invoke `super-auto`. This is the one pre-flight stop that needs no answer, only a restart. Degrade-don't-stop governs the run from launch onward; pre-flight checks are the exception, because a human is present at launch and continuing would run the whole job on known-stale instructions.
 - Lookup failed (offline, no `gh`): warn with the errors and continue on the loaded version; a stale skill is a degraded run, not a blocked one.
 
 When the human points the run at another skill source mid-run, follow resume.md §Switching definitions mid-run.
@@ -110,6 +114,8 @@ Once `bd` and the skill version are confirmed, work in this order: steps 3 and 4
    ```
 
    Every later field uses the names and line formats in run-state.md §Field table (§Invariants I6 (run.md field names)).
+
+   In the same commit, create `<run-dir>/friction.md` holding one header line, `# friction log — YYYY-MM-DD-<slug>`, so a log with no events reads differently from one never created.
 
 Creating the branch before step 1 would collide a resumed run with its own existing branch, and
 `run.md` cannot be written before step 2 because the flags are among the first things it records.
@@ -146,8 +152,8 @@ own, or the flags strand and the sequence is lost. Each row's parenthetical is t
 |---|---|---|---|
 | 1 | Design (`design`) | `super-design` | Pass: the goal (on a resume, `run.md`'s recorded `idea:`), the artifact-directory override, the `run.md` path together with run-state.md, whose field names and formats govern every write (a co-writer that never sees the contract invents an incompatible one), the `roast-design` phase token to write when that stage begins, the design mode (Mode B when `planOneShot` or `autonomous` is set), `autonomous` and `skipPlanRoast`, and — resuming mid-roast — the starting round. Say the hand-off is `super-auto`'s. It drives the root brainstorm, decomposition, every subepic brainstorm, the coverage loop and the design roast, recording into `run.md` as it goes. |
 | 2 | Design roast (`roast-design`) | `super-roast` (design) | Runs inside phase 1's `super-design` invocation, via its own offer; fix loop capped per run-state.md item 5 (Roast iteration counts), cap handling in §Roast caps. In a one-shot run without `autonomous`, the run stops after this phase for design review (§Autonomous mode). `super-auto` holds no control while it runs, so `super-design` writes `phase: roast-design`, the report paths and `roastDesignRound` into `run.md` itself, per `super-design` §Run-State File (when a caller supplies one) and §Who writes run.md. After the roast loop, `super-design`'s parallelism pass reshapes the bead graph (safe edge cuts applied, the rest parked as `graph-change` items) and records its `graph-pass:` line before handing back. |
-| 3 | Code (`code`) | `super-code` | The integration branch is this run's branch, and its integration worktree is this run's worktree — both exist already, from pre-flight (§Run directory). Create nothing; pass them — the worktree's real path explicitly, as `integrationWorktree`, never left for `super-code` to derive: the run branch `super-auto/<slug>` contains a slash, and `super-code`'s no-arg fallback derives a slash-collapsed `.worktrees/` path that matches no worktree this run ever created. (`branch` was recorded at run-directory creation.) Autonomous or interactive per flag; under `autonomous`, pass `config.edgeCuts: 'apply-safe'` so the coordinator's edge audit may apply safe edge cuts. Say in the invocation that `super-auto` owns the finish — there is no config flag, and without it `super-code` merges and deletes the worktree the report still needs. Also pass the friction-log path — the git-ignored `<run worktree>/.superpowers/sdd/<epic>-plan/friction-pending.md`, never `<run-dir>/friction.md` (see the friction rule under §Phase 6 — report — report) — so phase 3 can append to it, `processRoots: [<absolute run dir>]` so super-code's Finish process sweep covers the run directory too, and `deferSweep: true` on this and every fix-loop re-entry: the one full-suite sweep runs in phase 6 (each merge inside `super-code` still runs its build-only `mergeCheck` — compile/typecheck, no tests). |
-| 4 | Code roast (`roast-code`) | `super-roast` (PR) | Against the live integration branch, diffed against `run.md`'s `base`. Pass the run directory as the report-location override, the iteration number from `roastCodeRound` (without it round 2's report overwrites round 1's file), `autonomous` when the run is (without it super-roast pauses for a human at its loop exits), and on rounds ≥2 the prior report — without which the round re-litigates what the last one already cleared |
+| 3 | Code (`code`) | `super-code` | The integration branch is this run's branch, and its integration worktree is this run's worktree — both exist already, from pre-flight (§Run directory). Create nothing; pass them — the worktree's real path explicitly, as `integrationWorktree`, never left for `super-code` to derive: the run branch `super-auto/<slug>` contains a slash, and `super-code`'s no-arg fallback derives a slash-collapsed `.worktrees/` path that matches no worktree this run ever created. (`branch` was recorded at run-directory creation.) Autonomous or interactive per flag; under `autonomous`, pass `config.edgeCuts: 'apply-safe'` so the coordinator's edge audit may apply safe edge cuts. Say in the invocation that `super-auto` owns the finish — there is no config flag, and without it `super-code` merges and deletes the worktree the report still needs. Also pass the friction-log path — the git-ignored `<run worktree>/.superpowers/sdd/<epic>-plan/friction-pending.md`, never `<run-dir>/friction.md` (see the friction rule under §Phase 6 — report — report) — so phase 3 can append to it, `processRoots: [<absolute run dir>]` so super-code's Finish process sweep covers the run directory too, and `deferSweep: true` on this and every fix-loop re-entry: the one full-suite sweep runs in phase 6 (each merge inside `super-code` still runs its build-only `mergeCheck` — compile/typecheck, no tests). Its final review is consumed per §Final-review items. |
+| 4 | Code roast (`roast-code`) | `super-roast` (PR) | Against the live integration branch, diffed against `run.md`'s `base`. Pass the run directory as the report-location override, the iteration number from `roastCodeRound` (without it round 2's report overwrites round 1's file), `autonomous` when the run is (without it super-roast pauses for a human at its loop exits), and on rounds ≥2 the prior report — without which the round re-litigates what the last one already cleared — and the prior round's punch-list file (§Step 2 — scope filter), which super-roast passes to its `scripts/assemble-args` as `--punch-listed` so the round reports those keys as open, not new |
 | 5 | Fix loop (`fix-loop`) | — | Per round: step-back, scope filter, fix beads, re-enter `super-code`, loop to phase 4; see §Phase 5 — the code fix loop. |
 | 6 | Report (`report`) | — | Sweep, sweep-fix pass, report, upstream-feedback; see §Phase 6 — report. |
 | 7 | Finish (`finish`→`done`) | `finishing-a-development-branch` | Merge + clean up, once, gated by §Invariants I2 (phase-7 gate). Invoke it from this run's worktree, supplying `run.md`'s `branch` as the feature branch to merge and `base` as its destination, so neither is asked nor inferred from the cwd. Open the hand-back with `report.md`'s status line verbatim and its path, then the menu, with any parked upstream-feedback draft at the same menu (report-prompt.md §Output shape). The menu itself is always the human's, autonomous or not (§Invariants I5 (human-owned merge)). If the suite fails there, rewrite `report.md`'s status line with `report-status --stalled finish` (report-prompt.md §The status block) before stopping, since the report on disk says otherwise. Before removing this run's worktree, remove the task worktrees nested under it: `bash <skills-root>/super-code/scripts/remove-task-worktree --sweep <run worktree>/.worktrees <branch>` from the run worktree, which stops their processes and keeps anything uncommitted or unmerged (list what it kept to the human). Then stop the run's remaining processes, including any watcher you started on the ledger or run directory: `bash <skills-root>/super-code/scripts/stop-run-processes <run worktree> <run dir>`, run from outside the run worktree, and list any `survived:` line to the human. |
@@ -170,14 +176,29 @@ the gate and re-enter `super-code` once (`deferSweep: true`) to run the gated le
 phase 6. Running it in phase 3 instead buys the roast nothing (it reviews code, not evidence) and makes
 every phase-5 fix either a full rerun or a recorded deviation.
 
+**Spikes that need a privileged or live run.** Decided: a spike bead whose answer needs a privileged
+or live run (a live harness capture, credentials) either declares in its description a read-only
+fallback it runs when that access is refused, or sits behind a gate bead (above) off the critical
+chain, so no other bead waits on access the run may never get (`super-design` §Decomposition). The
+graph pass's proposal to split such a spike stays parked as a `graph-change` by default.
+
 **Base drift.** When `base` moves materially mid-run, absorb it once, after phase 5 exits and before
 phase 6's sweep, unless the run cannot proceed without the upstream change. You own it: merge `base`
 into the run branch in the run worktree (`git merge`, never a rebase of the run's history), dispatching
 one implementer-tier subagent for the conflict pass with the conflicting files and both sides' intent.
 The phase-6 sweep and any gated final-SHA leaf then judge the combined tree. Record `baseAbsorbed:
-<base sha> → <merge sha>, <N> conflicted files` in `run.md` (run-state.md item 7 (Design decisions)),
-and list conflicts resolved in files this run changed in `report.md`'s Remaining as not reviewed by a
-roast.
+<base sha> → <merge sha>, <N> conflicted files` in `run.md` (run-state.md item 7 (Design decisions)).
+
+**Changes landed after the loop.** Decided: when a base merge or the phase-6 sweep-fix beads land
+after the code-roast loop exited and change behaviour (anything beyond mechanical conflict
+resolution), run one scoped PR roast over that diff, from the tip the last code roast reviewed to the
+current tip, once, after phase 6's sweep-fix pass (§Phase 6 — report step 2):
+iteration `post-cap audit`, which `super-roast` accepts, with the punch-list file as in phase 4. Append its report path to
+`roast-code:`. It starts no fix loop: a Blocking finding it confirms goes into `roastCodeCapped:`
+(§Cap disposition), so the status line counts it, and the rest go to the punch list. When nothing
+beyond mechanical conflict resolution landed, run no roast and list the conflict-resolved hunks in
+files this run changed in `report.md`'s Remaining as not roast-reviewed. A run with `skipCodeRoast`
+lists them the same way.
 
 ### Who writes run.md
 
@@ -193,7 +214,9 @@ Each round starts from the round's roast report.
 
 #### Loop exits
 
-The loop ends without fixing when the roast verdict carries `[converged]` (zero Blocking of any provenance on a non-degraded round; remaining sub-Blocking findings go to `report.md` as a punch list), when the Blocking count did not shrink from the last round (thrash), or when the cap in run-state.md item 5 (Roast iteration counts) is reached.
+The loop ends without fixing when the roast verdict carries `[converged]` (zero Blocking of any provenance on a non-degraded round; remaining sub-Blocking findings go to `report.md` as a punch list), when the Blocking count did not shrink from the last round (thrash), or when the cap in run-state.md item 5 (Roast iteration counts) is reached. In an attended run the operator may also end it early; a Blocking finding still open then follows §Cap disposition as at the cap.
+
+When the loop ends, write `roastCodeExit: converged | thrash | capped | operator-skipped (<reason>)` to `run.md` (run-state.md item 5 (Roast iteration counts)) before anything else, the regression-only pass included, so a resume knows the loop is over.
 
 #### Regression-only pass
 
@@ -203,7 +226,7 @@ Otherwise, in order:
 
 #### Step 1 — step back
 
-First write the step-back keys file beside the round's report as `…-roast-pr-<N>-step-back-keys.txt`: the pre-dissolution key set, every round's confirmed finding keys so far, one `rN [SEV] <location>` per line, from each `roast-code` report's `## Confirmed findings`. Its one consumer is `scripts/step-back-check`.
+First write the step-back keys file beside the round's report as `…-roast-pr-<N>-step-back-keys.txt`: the pre-dissolution key set, every round's confirmed finding keys so far, one `rN [SEV] <location>` per line, from each `roast-code` report's `## Confirmed findings`, plus the final-review items keyed per §Final-review items. Its one consumer is `scripts/step-back-check`.
 
 Dispatch the step-back per §Subagent dispatch (step-back row), using `<skills-root>/super-design/step-back-prompt.md` (`<skills-root>` is this skill's base directory's parent) in its `code` mode. Where you fill the template's roast reports, add this line, because the check below rejects any other key: `Your dissolves: and remains: may name only keys listed in <absolute path of the step-back keys file>.` Save its output verbatim beside the round's report as `…-roast-pr-<N>-step-back.md`.
 
@@ -219,6 +242,8 @@ Before acting on it, check it with `bash <this skill's dir>/scripts/step-back-ch
 - `redesign` in an interactive run: present it with your recommendation and follow the
   human's choice (`applied` or `declined`).
 
+Declined: requiring every mechanism a fix adds to cite a verified premise, counting added and removed mechanisms per fix pass, or applying the step-back's class list as a checklist to the fix beads' own diffs. The step-back's `pattern:` and `clusters:` (each cluster's `rule:` carried into its bead) and the `regression` lane already cover what those would catch.
+
 The step-back also runs when the loop exits at thrash or the cap with Blocking findings open.
 There a redesign is recorded as `parked` and surfaced, never applied.
 
@@ -232,16 +257,29 @@ Dispatch the scope filter per §Subagent dispatch (scope filter row), filling sc
 instruction and produce the same lines). It matches the filter's entries to the findings on the
 exact `[SEV] <location>` key, routes every `[Blocking]` key and every key with no exact entry
 in-scope, and pulls each cluster with an in-scope member in as a unit (except a member with a
-`clusterOverride`). Record its output in `run.md` as `scopeFilter-round-<N>` (run-state.md item 7 (Design decisions)), aggregate line included. Punch-list findings
+`clusterOverride`). Record its output in `run.md` as `scopeFilter-round-<N>` (run-state.md item 7 (Design decisions)), its `cluster dropped: <cluster id> — <rule>` lines (a cluster whose members were all punch-listed) and aggregate line included. Punch-list findings
 go to `report.md`'s Remaining, tagged `out of scope (filtered)`, and are never filed.
+
+Then write the punch-list file beside the round's report as `…-roast-pr-<N>-punch-list.txt`: every key punch-listed so far, this round's plus the previous round's file, one `[SEV] <location>` per line. The next roast round (and any `post-cap audit`) gets it as its punch-listed input (§Phase sequence, phase 4), so a punch-listed finding the roast meets again is reported as open, not as new.
 
 #### Step 3 — file fix beads
 
-Reopen the epic (`bd update <epicId> --status open`). File in-scope findings and any applied redesign as beads (an in-scope cluster as one bead covering all its members) using `super-design` §Decomposition's fields, including the files-touched hint (without it every fix bead runs alone), and the description in §Fix-bead template.
+Reopen the epic (`bd update <epicId> --status open`). File in-scope findings and any applied redesign as beads (an in-scope cluster as one bead covering all its members) using `super-design` §Decomposition's fields, including the files-touched hint (without it every fix bead runs alone), and the description in §Fix-bead template. File the final-review items §Final-review items routes to fix beads the same way. Any `bd dep add` between fix beads carries the dependent's `blocked-by <id>: consumes <artifact>` description line (`super-design` §Decomposition).
 
 #### Step 4 — re-enter super-code
 
-Re-enter `super-code` with the new beads and `deferSweep: true`, then loop to phase 4.
+Re-enter `super-code` with the new beads and `deferSweep: true`, then loop to phase 4 with this round's punch-list file.
+
+#### Final-review items
+
+Every `super-code` invocation ends with its own final whole-epic review, verdict `ready` or `not ready (<summary>)`, recorded as `codeBuckets.review` (run-state.md item 6 (Code buckets)). Under `deferSweep` each is informational when it returns: it judged a tree no full suite had run on. The one that counts is the final review of the last `super-code` invocation, read after the phase-6 sweep has measured that tree; `report.md` uses that one.
+
+Its Must-fix and untested-scope items, and any bead a task filed outside the epic's `sp:<epic>` label, feed the next round's step-back as findings: key each `rN [Must-fix] <location>` (an untested scope as `[Must-fix] untested: <scope>`, an off-label bead as `[Must-fix] bead <id>`), add it to the step-back keys file, and pass the review's text beside the roast reports. Then:
+
+- An item a roast panel already rejected stays rejected, unless the final review cites evidence that panel's report did not have (the same narrow exception `super-roast`'s reporter applies).
+- In an autonomous run, while the loop is still running, an item no panel saw becomes a fix bead in §Step 3 — file fix beads, unless an applied redesign dissolved it. In an interactive run it goes through the scope filter with the round's findings, its key added to the scope keys file.
+- After the loop has exited (a review from a phase-6 re-entry, or from the re-entry before a converged round), it goes to the punch list, tagged `final review`.
+- With `skipCodeRoast` there is no loop: file the items as fix beads once, re-enter `super-code` once, and do not review again.
 
 #### Cap disposition
 
@@ -259,10 +297,12 @@ with a fabricated round number.
 Every `super-code` invocation ran with `deferSweep: true` (its `sweep` reads `SWEEP DEFERRED (caller-owned)` and its merges ran only the build-only `mergeCheck`), so the run's one full-suite sweep happens here, after phase 5 exits, against the tip the roast cleared. In order:
 
 1. Sweep. Run the command `super-code`'s ledger `Launch:` line records (the declared `config.sweep`, else the project's full test command under its `AGENTS.md` envelope), and record its one-line result as `codeBuckets.sweep` in the form run-state.md §Field table gives (`super-code`'s sweep form, or `MEASUREMENT INVALID: <cause>`), stamped ` @ <sha>` with the SHA it measured. Run it, and any other full-suite command, only while no roast or coordinator Workflow is in flight on this host: a timing-sensitive suite fails under that load, and a failure seen under it is unconfirmed until it reproduces with the host quiet. Which stamps still count as at the tip is defined in report-prompt.md §The status block. When this branch does not land alone (a prerequisite branch lands with it, or the base moved materially), run the sweep, and any other once-per-branch verification such as a readiness gate, against the exact SHA that will land, after reviewing that combined tree's conflicts and its clean auto-merges.
-2. Sweep-fix pass, once. A failing sweep gets one fix pass, whether or not a regression pass ran just before it: file the failing tests as fix beads (tests sharing one cause in one bead) per §Fix-bead template, each linking the sweep output; re-enter `super-code` with them and `deferSweep: true`; re-run the sweep once at the new tip, write its result to `codeBuckets.sweep` as in step 1 (replacing the `SWEEP DEFERRED (caller-owned)` the re-entry's bucket overwrite left), and record `sweepFix:` (run-state.md item 6 (Code buckets)). A second failure is reported as it stands. A `MEASUREMENT INVALID` sweep is not a failure to fix; report it.
-3. Write `report.md` per `./report-prompt.md`, before anything is torn down. You write and commit the file; a drafter is dispatched per §Subagent dispatch (report drafter row). The first write's `metrics:` line reads `metrics: pending (upstream-feedback not yet run)`. Its status line comes from `scripts/report-status`, run as report-prompt.md §The status block says, which also defines the `--tip` it is passed.
-4. Invoke `superpowers:upstream-feedback`, once: this run is the outermost invocation. In an autonomous run its proposal parks and surfaces at the phase-7 menu, never mid-run; an attended run is asked directly.
-5. After it returns, rewrite only `report.md`'s `metrics:` line in place, per report-prompt.md §The status block.
+2. Sweep-fix pass, once. A failing sweep gets one fix pass, whether or not a regression pass ran just before it: file the failing tests as fix beads (tests sharing one cause in one bead) per §Fix-bead template, each linking the sweep output; re-enter `super-code` with them and `deferSweep: true`; re-run the sweep once at the new tip, write its result to `codeBuckets.sweep` as in step 1 (replacing the `SWEEP DEFERRED (caller-owned)` the re-entry's bucket overwrite left), and record `sweepFix:` (run-state.md item 6 (Code buckets)). Decided: a re-run failure in a test that was green in the previous sweep, which the sweep-fix pass therefore caused, gets exactly one regression-only fix bead and one more sweep re-run, mirroring §Regression-only pass (only those tests, no step-back, no scope filter), recorded in the same `sweepFix:` line. Any other second failure, and any failure after that re-run, is reported as it stands. A `MEASUREMENT INVALID` sweep is not a failure to fix; report it.
+3. Changes landed after the loop: run the scoped `post-cap audit` roast, or list the conflict-resolved hunks instead, per §Gates, final-SHA evidence and base drift (changes landed after the loop). The items of a phase-6 re-entry's final review go to the punch list (§Final-review items).
+4. Before the report, record in `run.md` `friction: <N> events` (the `- [` lines in `<run-dir>/friction.md`) or `friction: none recorded` (header only). If the final review that counts (§Final-review items) reads `not ready` only because the branch was unmeasured under the deferred sweep, and step 1's sweep (or the sweep-fix re-run) passed at the tip, rewrite `codeBuckets.review` to `ready (after the phase-6 sweep @ <sha>)`; if the sweep did not pass, leave it. Any other degraded verdict that a passing sweep at the tip resolves is parked ending ` · resolves-on: sweep`, which `scripts/report-status` drops once that sweep is stamped.
+5. Write `report.md` per `./report-prompt.md`, before anything is torn down. You write and commit the file; a drafter is dispatched per §Subagent dispatch (report drafter row). The first write's `metrics:` line reads `metrics: pending (upstream-feedback not yet run)`. Its status line comes from `scripts/report-status`, run as report-prompt.md §The status block says, which also defines the `--tip` it is passed.
+6. Invoke `superpowers:upstream-feedback`, once: this run is the outermost invocation. In an autonomous run its proposal parks and surfaces at the phase-7 menu, never mid-run; an attended run is asked directly.
+7. After it returns, rewrite only `report.md`'s `metrics:` line in place, per report-prompt.md §The status block.
 
 Throughout all phases, append friction events to `<run-dir>/friction.md` the moment they happen, per `upstream-feedback` §The friction log (written by the enclosing run, read here), and commit it with the `run.md` writes. **Except while a `super-code` Workflow runs** (phase 3 and each fix-loop re-entry): the run worktree is then its integration worktree, where an uncommitted file holds every merge and a commit can race one. In that window, write nothing tracked there — append friction to `<run worktree>/.superpowers/sdd/<epic>-plan/friction-pending.md` (inside super-code's git-ignored workspace) and leave `run.md` alone; when the Workflow returns, move those lines into `<run-dir>/friction.md`, delete the pending file, and commit with that phase's `run.md` write.
 
@@ -374,6 +414,11 @@ phase 1 — via `superpowers:using-git-worktrees`, on a branch named for the run
 the workspace decision as a declared preference when you invoke it — that skill asks for consent
 only when no preference was given, and asking is the first thing a user who said "run it
 autonomously" would see.
+When the repo has no remote (`git remote` prints nothing), a native worktree tool that bases on
+`origin/<default>` cannot work: create it yourself with
+`git worktree add .worktrees/<branch> -b <branch> <base>`, check that `.worktrees` is git-ignored
+(`git check-ignore -q .worktrees`; if not, add it to `.gitignore` and commit, as
+`using-git-worktrees` does), and enter it by path.
 Record the branch it was cut from as `base`. Then create the run directory and `run.md` inside that
 worktree, on that branch, and do every subsequent write there: specs, roast reports, further
 `run.md` writes, `report.md`.

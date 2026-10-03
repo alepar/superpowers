@@ -5,7 +5,7 @@ description: Use when executing a beads (`bd`) epic as a work queue — autonomo
 
 # super-code
 
-Drive a beads epic to completion: an epic-scoped `bd ready` loop, sliding-window parallel dispatch with single-flight merge-back, per-task worktrees off an epic integration branch, and blocker beads for anything that can't proceed — autonomous (Workflow-coordinated) or interactive (manual ready-driven loop), same contract either way.
+Drive a beads epic to completion: an epic-scoped `bd ready` loop, sliding-window parallel dispatch with single-flight merge-back, per-task worktrees off an epic integration branch, and blocker beads for anything that can't proceed — autonomous or interactive, always through the shipped Workflow coordinator; interactive only means a human answers blocked tasks and edge changes.
 
 **Core principle:** tasks coordinate only through beads and the integration branch, never through session memory. An interrupted epic resumes from the ledger, not from coordinator memory.
 
@@ -75,7 +75,7 @@ super-code owns the epic-level machinery and its per-task prompts; it uses
 
 | super-code owns | Uses from `subagent-driven-development` |
 |---|---|
-| The coordinator (Workflow-coordinated autonomous loop, or the manual ready-driven fallback) | The helper scripts `scripts/task-brief`, `scripts/review-package`, `scripts/sdd-workspace`, always invoked as `bash <abs path>/scripts/<name>` |
+| The Workflow coordinator (`./coordinator.js`), in both modes | The helper scripts `scripts/task-brief`, `scripts/review-package`, `scripts/sdd-workspace`, always invoked as `bash <abs path>/scripts/<name>` |
 | The per-task pipeline: implementer (workspace setup and `task-brief`, then implementation) → `review-package` → one task review → at most one fix pass → merge — four agents for a clean task | The plan-scoped workspace and ledger header format |
 | Its implementer and task-reviewer prompts (`./implementer-prompt.md`, `./task-reviewer-prompt.md`), adapted from SDD's | |
 | The epic-scoped `bd ready` loop, refilled to a fixpoint | |
@@ -92,7 +92,14 @@ does not re-run them. No tests run per merge; each merge runs only a build-only 
 
 ## Trigger rule
 
-Any beads-backed execution. `subagent-driven-development` handles plan-file execution. The moment there is a `bd` epic, super-code runs it — autonomous or interactive, same coordinator contract.
+Any beads-backed execution. `subagent-driven-development` handles plan-file execution. The moment there is a `bd` epic, super-code runs it — autonomous or interactive, same coordinator.
+
+**The Workflow tool is required.** Available means `Workflow` is in your own loaded function list;
+ToolSearch sees only deferred tools, so a miss there proves nothing. Without it, do not drive the
+epic by hand: the ledger, `Merge:` lines, detector lines and `Metrics:` exist only inside the
+coordinator, and a hand-run loop silently drops them. Hand back to your caller (or tell the user)
+that this session cannot run super-code. A super-* skill delegated to a subagent can lose the tool
+this way; run it in the session that has it.
 
 ## Invocation
 
@@ -103,14 +110,15 @@ A caller supplies these — none are inferable from the repo:
 | `epicId` | the root epic to drain, and **the epic whose closure means this run is done**. It is the root the design used — **never a child narrowed to at execution time**: draining a sub-epic closes the sub-epic and leaves the real root open, so the run can never report completion however much work landed (`super-design`'s §The run's root epic). Its tree is the scope — see `./coordinator-workflow.md`'s Ready phase for how membership is resolved when the `sp:` label is absent |
 | `integrationBranch` | conventionally `epic-<epicId>-integration`. **The caller creates the branch; this skill creates neither it nor its worktree**, and fails if either is missing |
 | integration worktree | the checkout of `integrationBranch` this skill works in — passed as `integrationWorktree` in the coordinator contract (optional, additive). A caller that created the worktree itself (`super-auto`'s run worktree, any native-tool worktree) **must pass its path**: when omitted, the coordinator derives `.worktrees/<integrationBranch>` with any `/` in the branch name collapsed to `-`, which only matches worktrees created by this skill's own pre-flight convention — a slashed branch like `super-auto/<slug>` makes the derived path wrong by construction for any externally-created worktree (`./coordinator-workflow.md`'s "Coordinator contract") |
-| mode | autonomous or interactive. Same contract either way — mode changes who answers a blocked task, never what gets reviewed |
+| mode | autonomous or interactive — both run the Workflow coordinator. Mode changes who answers a blocked task and whether safe edge cuts apply, never what gets reviewed |
 | who owns the finish | **state it explicitly if the caller owns it.** There is no config flag. Left unsaid, this skill runs its own Finish: it merges the integration branch and deletes the worktree — taking the ledger and the per-task reports with it, which is where a caller's report gets its sources |
 | `config.models`, `config.efforts`, `config.concurrency`, `config.runtimeSlots`, `config.hotFileCap`, `config.topUpQueryCap`, `config.edgeAuditCap`, `config.earlyUnblock`, `config.edgeCuts` | optional; see Model tiering and Parallelism below for what they default to and why an explicit map is preferred. Pre-flight resolves `config.runtimeSlots` (the runtime's `min(16, cores-2)` agent slots) |
 | `config.sweep` | optional: the exact full-suite command Finish runs once against the integration tip, envelope included (`nice`, thread caps — whatever `AGENTS.md` requires of every command). Undeclared, pre-flight resolves the project's full test command into it, so the `Launch:` line records it. The sweep always runs when work landed (`./coordinator-workflow.md`'s "Finish"). There is no per-merge gate; a `config.gate` is ignored with a log line |
 | `config.mergeCheck` | optional: the exact BUILD-ONLY command (compile/typecheck, envelope included — `cargo check --all-targets`, `tsc --noEmit`, `go build ./...`) the merge agent runs on the merged tree at every serial merge. **Never a test command.** Undeclared, pre-flight resolves the project's build/typecheck step into it, or `'none'` when the project has none (then no check runs); the `Launch:` line records which. It covers every build configuration the CI matrix compiles (Cargo: at least default features and `--all-features`), since one configuration alone misses breaks in the others. A failing check gets one merge-check fix (the task's one seam fix) and a scoped review of it, then re-runs; still failing → the blocker path |
 | `processRoots` | optional: absolute paths the caller owns for this run (e.g. `super-auto`'s run directory), added to the Finish process sweep's roots. Never a shared location: every process referencing a root is stopped |
 | `deferSweep` | optional: `true` when the caller runs the full-suite sweep itself (`super-auto` does, after its fix loop). Finish skips the sweep, the final review is told it was deferred, and `sweep` returns `SWEEP DEFERRED (caller-owned)` |
-| `config.testPaths` | optional, additive: an array of git pathspecs that **replaces** the default test-file pathspec list wholesale for the `Test changes` check the task review and the seam review run. An empty array is rejected at pre-flight (defaults retained, a warning logged) rather than silently disabling the check |
+| `config.testPaths` | optional, additive: an array of git pathspecs that **replaces** the default test-file pathspec list wholesale for the `Test changes` check the task review and the seam review run. An empty array is rejected at pre-flight (defaults retained, a warning logged) rather than silently disabling the check Pre-flight warns when the pathspecs match no tracked file (inline tests, e.g. Rust `#[cfg(test)]`): declare it for such projects |
+| `config.sweepBaseline` | optional: `true` runs the sweep once at the starting tip too, and the Finish sweep names what fails now but did not at the start. Off by default; ignored under `deferSweep` |
 | standing authorisation | the operation classes every dispatched agent will run — worktree add/remove, rebase, `merge --no-ff`, `branch -D`, `bd create`/`close`/`comment` (plus `bd dep`/`update` under `config.edgeCuts: 'apply-safe'`), the project's setup step, build/typecheck (`mergeCheck`) and test commands — must be allowed before launch. Pre-flight step 5 probes each one side-effect-free. A refusal mid-run is not recoverable by any agent: the task is quarantined for the run with a `BLOCKED-AUTH` ledger line and reported as untested scope |
 
 It returns six buckets — `completed`, `escalated`, `pendingRetry`, `parked`, `stalled`, `review` —
@@ -128,7 +136,7 @@ or off its branch: the merge lane was held for the rest of the run, no blocker b
 held tasks left for a relaunch), or `ready-unavailable` / `plan-unavailable` (infrastructure outage:
 the `bd ready` or planner dispatch kept dying on terminal API errors, with nothing mapped left to run; a clean round-boundary stop). The last three are **never**
 completion — never treat a stop as "done" without checking `stopReason`
-(`./coordinator-workflow.md`'s "Null dispatch policy"). Three additive fields: **`authRefused`** —
+(`./coordinator-workflow.md`'s "Null dispatch policy"). Additive fields: **`authRefused`** —
 tasks quarantined because the harness permission layer refused their commands (also in
 `escalated`); a caller's report lists them as untested scope — **`sweep`**, the full-suite
 sweep's one-line result, starting with the tip SHA it measured, whenever work landed
@@ -140,7 +148,7 @@ worktree is gone) — **`processSweep`**, `{ stopped, survived }`: the run's pro
 sweep found still running (any process whose cwd, executable or HOME/TMPDIR is under a task
 worktree, the run temp root, or a caller's `processRoots`, or an orphan with an argument there),
 stopped, any kept because it holds or hosts an interactive terminal, and any that survived being
-killed — a caller's report lists the survivors — **`slowness`**, the slowness signals the coordinator noticed and what it did about each (hot-file
+killed — a caller's report lists the survivors — **`humanActions`**, cleanup a task could not do because the permission layer refused it (the task still landed; each says what a human should do) — **`slowness`**, the slowness signals the coordinator noticed and what it did about each (hot-file
 cap raises, a graph-bound audit, edge cuts applied or left for an operator, a merge backlog, a
 recurring blocker); and **`metrics`**, an array of exactly four `Metrics:` ledger-line strings (merge/rebase/seam/
 check-failure counts; completion kinds, with early dispatches and cancellations; fix-pass outcomes; and a ledger-check cross-checking the merge count

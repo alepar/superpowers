@@ -190,6 +190,10 @@ catches only the bottleneck case, so Step A's job is to not fuse work that could
   subagents, so work that needs fresh agents — behavioral probes, skill evals, scenario runs
   against a model — is not a leaf. Route it to the orchestrator's own phase (`super-auto`'s
   report phase, or a step the caller runs after execution) and leave the leaf the code it tests.
+  A spike leaf whose answer needs a privileged or live run (a live harness capture, credentials)
+  declares in its description a read-only fallback it runs when that access is refused, or is
+  gated off the critical chain (`super-auto` §Gates, final-SHA evidence and base drift), so no
+  other bead waits on access the run may never get.
 - **Floor:** execution spends roughly five dispatches of ceremony per bead (brief → implement →
   review → merge, plus ledger writes), so never split below one coherent
   reviewable change — a bead whose implementation is smaller than its own ceremony merges into a
@@ -437,7 +441,10 @@ spec appended under `## Full spec: <id>`; the re-run's output replaces the origi
 that changed the tree — a round 1 with nothing to apply is the loop's clean exit. Round 2
 re-runs the root pass on the updated tree with the changed ids. Once round 2's fixes are applied
 the loop ends: **there is no round 3, and round 2's own fixes are never re-reviewed.** That is
-the priced cost of a fixed cap, and the root integration sweep below absorbs it. **Round 2
+the priced cost of a fixed cap, and the root integration sweep below absorbs it. **Declined: a
+round 3 when round 2 widens** (divergence observation below). The cap stays at two rounds: the
+design roast that follows (§Adversarial Review Loop (root only)) reviews the settled tree, round
+2's fixes included, so it covers that ground. **Round 2
 dispatches only once every round-1 fix is fully applied** — a new-subepic `GAP`'s nested subtree
 included, which means waiting for that subtree to finish designing.
 
@@ -552,6 +559,11 @@ patch this round's findings, and surface it at the loop exit. Applying a redesig
 the spec(s) where the changed decision is stated and restructuring the affected tasks through
 step 2; its `dissolves` findings get no fix task (the step-back file records why), its `remains`
 findings go through step 1, and step 3 re-roasts, since a design decision changed.
+
+**Declined: offering a split when findings concentrate in one subsystem.** A step-back redesign
+can already target that one decision, and a split is a new design the human starts. **Declined:
+counting recurring classes in the roast delta.** The step-back's `pattern:` and `clusters:` carry
+recurrence; the delta stays an instance count.
 
 1. **Create one task per confirmed finding that needs code or other build work** (a fix that only amends spec or bead text is applied inline under step 2 and recorded in the run-state file — a task for it would enter the execution tree as already-done work) — or one per step-back cluster (the step-back file's `clusters:` lines), covering every member and carrying the cluster's `rule:` for all its instances, cited or not — with §Decomposition's full `bd create` flag triple (`--parent <root-epic-id> --no-inherit-labels -l sp:<root-epic-id>`) — a fix task outside the epic's descendant tree lets `bd epic close-eligible` close the epic mid-fix. **When an `Integration sweep:` bead already exists for this root, also `bd dep add <sweep> <fix-task>` for each fix task created here** — so the sweep still runs last — pairing each with `blocked-by <fix-task-id>: consumes all leaves (integration sweep)` in the sweep's description, the same fixed artifact token every sweep edge uses.
 2. **Fix per the normal ladder** — inline for small fixes; design work in the run's mode for large

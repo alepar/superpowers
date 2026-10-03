@@ -11,12 +11,14 @@ roast-code
 skillSource
 migrated
 feedback
+friction
 parked
 graph-pass
 roastDesignRound
 roastCodeRound
 roastDesignCapped
 roastCodeCapped
+roastCodeExit
 codeBuckets
 codeBuckets.completed
 codeBuckets.escalated
@@ -38,3 +40,4 @@ stepBackDesign-round-<N>
 scopeFilter-round-<N>
 scope-filter
 regressionPass-round-<N>
+baseAbsorbed

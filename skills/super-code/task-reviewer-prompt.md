@@ -48,12 +48,17 @@ return INVALID, as for an empty package.
 
 ## Test evidence
 
-Don't run tests. Check that the report carries the command and output of a test run that plausibly
+Don't run tests. The epic's full suite runs once at its end, so the implementer ran only the tests
+relevant to this task: "the full suite was not run" is never a finding; missing targeted tests are.
+Check that the report carries the command and output of a test run that plausibly
 covers this task's changes: the right files or tests, a pass summary, and no failure the report
 glosses over. Missing or implausible evidence (no command, a run that failed to start, output for
 unrelated tests) is Important. Warnings in the output are Minor.
-A failure the report calls pre-existing, unrelated or identical at base is glossed over unless the
-report also shows that test's result at [BASE]: without it, Important.
+A failure the report calls pre-existing, unrelated, identical at base, environment-dependent or flaky
+is glossed over unless the report also shows that test's result at [BASE] (or, for flaky, repeated
+runs): without it, Important.
+A check you were told to run but could not (a sandbox refused the diff, a file would not open) means
+the review did not happen: return INVALID with what failed — never CLEAN with the gap as a minor.
 A process the report's "Test hygiene" says a test run leaked is a test-suite defect: Minor, or
 Important when the leaked process is a daemon or server, or when it survived being stopped.
 
@@ -70,13 +75,16 @@ Important when the leaked process is a daemon or server, or when it survived bei
    search for sibling call sites still on the superseded form. A tested wrapper nothing calls, or a
    fix applied to one of two call sites, is Important.
 4. An assertion the type makes unfailable (a length check on a fixed-size array, a value compared to
-   itself) is Minor.
+   itself) is Minor — unless it is the only test of one of the brief's acceptance criteria, which is
+   then untested: Important.
 
 ## Severity
 
-- **Critical:** breaks the task's requirements, or corrupts behavior or data other code depends on.
+- **Critical:** breaks the task's requirements, or corrupts behavior or data other code depends on —
+  including a path that loses or overwrites user data.
 - **Important:** the task can't be trusted until it is fixed: a missed requirement, incorrect or
-  fragile behavior, missing or implausible test evidence, a weakened test. If the plan or brief
+  fragile behavior, missing or implausible test evidence, a weakened test — including a test marked
+  ignored or skipped because the product behaves wrongly. If the plan or brief
   explicitly mandates something this rubric calls a defect, report it as Important and label it
   plan-mandated.
 - **Minor:** everything else, including polish, naming, broader coverage, and style. Minor findings
@@ -99,4 +107,8 @@ Then return:
   INVALID per the package and Test changes rules above.
 - `finding`: when NEEDS_FIX, every ❌ item and every Critical or Important issue, one per line, each
   with file:line. The fix pass works from this text and [REVIEW_FILE].
-- `minors`: every Minor issue and every ⚠️ item, one line each. An empty list means you found none.
+- `minors`: every Minor issue and every ⚠️ item, one line each, each starting with a `[class]` tag —
+  two to four lowercase words, joined by hyphens, naming the kind of issue in words another task's
+  reviewer would also use (`[doc-drift]`, `[naming]`, `[missing-edge-case-test]`), never this task's
+  specifics. The tag is how the run notices one smell recurring across tasks. An empty list means
+  you found none.

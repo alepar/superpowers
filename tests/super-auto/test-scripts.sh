@@ -52,14 +52,21 @@ scopeFilter-round-2: [Should-fix] hook.rs:716 in-scope — goal path
 scopeFilter-round-2: [Nit] fmt.rs:3 punch-list — style
 scopeFilter-round-2: [Should-fix] x.rs:9 in-scope — unrouted by filter — defaulted in-scope
 scopeFilter-round-2: [Should-fix] y.rs:4 punch-list — hardening
+cluster dropped: b — no member in scope, so nothing is pulled in
 scope-filter: 4 in-scope · 3 punch-listed'
-assert_eq "$out" "$expected" "Blocking/unrouted defaults, cluster pull-in, override, all-punch cluster untouched"
+assert_eq "$out" "$expected" "Blocking/unrouted defaults, cluster pull-in, override, all-punch cluster untouched and reported dropped"
 
 run bash "$S" --round 2 --findings "$T/keys" --filter "$T/filter.json"
 assert_eq "$(printf '%s\n' "$out" | grep 'store/mod.rs:838')" "scopeFilter-round-2: [Should-fix] store/mod.rs:838 punch-list — not goal-named" "no step-back file: no cluster pull-in"
 
 run bash "$S" --round 3 --findings "$T/keys" --filter "$T/filter.json" --step-back "$T/sb.md"
 assert_eq "$(printf '%s\n' "$out" | tail -1)" "scope-filter: 3 in-scope · 4 punch-listed" "cluster members of another round are ignored"
+assert_eq "$(printf '%s\n' "$out" | grep -c '^cluster dropped:' || true)" "0" "a cluster with no member in this round is not reported dropped"
+printf '[Should-fix] store/mod.rs:838\n[Should-fix] hook.rs:716\n' > "$T/keys-dropped"
+printf '{"findings":[{"key":"[Should-fix] store/mod.rs:838","disposition":"punch-list","reason":"x"},{"key":"[Should-fix] hook.rs:716","disposition":"punch-list","reason":"y"}]}\n' > "$T/filter-dropped.json"
+run bash "$S" --round 2 --findings "$T/keys-dropped" --filter "$T/filter-dropped.json" --step-back "$T/sb.md"
+assert_eq "$(printf '%s\n' "$out" | tail -2)" "cluster dropped: a — page every list query with a bounded cursor
+scope-filter: 0 in-scope · 2 punch-listed" "every present member punch-listed: cluster dropped line, with its rule, before the summary"
 
 run bash "$S" --round x --findings "$T/keys" --filter "$T/filter.json"
 assert_eq "$code" 2 "non-numeric round exits 2"
@@ -72,6 +79,7 @@ run env PATH="$nojq" bash "$S" --round 2 --findings "$T/keys" --filter "$T/filte
 rm -rf "$nojq"
 assert_eq "$code" 4 "missing jq exits 4"
 assert_eq "$(printf '%s' "$out" | cut -c1-15)" "JQ_UNAVAILABLE:" "missing jq prints the manual-computation line"
+assert_eq "$(printf '%s' "$out" | grep -c 'cluster dropped: <id> — ' || true)" "1" "the manual-computation line includes the cluster dropped rule"
 
 echo
 echo "step-back-check"
@@ -159,6 +167,16 @@ echo 'limit = 20' > "$G/src/limiter.conf"
 gitq add -A; gitq commit -q -m 'code after the sweep'
 echo '- more' >> "$GR/friction.md"; gitq add -A; gitq commit -q -m friction
 assert_eq "$(rs_status "$GR/run.md" --tip "$(git -C "$G" rev-parse HEAD)")" "status: clean [degraded: sweep: not at tip — ${SW//3f9c2e1/$stamp}]" "a code commit between the sweep stamp and --tip is a qualifier"
+RV="$RF/degraded-resolves-on-sweep.md"
+assert_eq "$(rs_status "$RV" --tip 3f9c2e1)" "status: clean [degraded: panel-capped: 1 unverified]" "a resolves-on: sweep degraded verdict is skipped when the sweep passes at --tip; others stay"
+assert_eq "$(rs_status "$RV")" "status: clean [degraded: low coverage, panel-capped: 1 unverified]" "without --tip a resolves-on: sweep degraded verdict keeps its qualifier"
+assert_eq "$(rs_status "$RV" --tip abcdef0)" "status: clean [degraded: low coverage, panel-capped: 1 unverified, sweep: not at tip — $SW]" "a sweep not at the tip does not resolve it"
+sed "s/^  sweep: .*/  sweep: SWEEP DEFERRED (caller-owned)/" "$RV" > "$T/resolves-deferred.md"
+assert_eq "$(rs_status "$T/resolves-deferred.md" --tip 3f9c2e1)" "status: clean [degraded: low coverage, panel-capped: 1 unverified, sweep: SWEEP DEFERRED (caller-owned)]" "a sweep that is not a pass does not resolve it"
+sed "s/^  review: .*/  review: not ready (2 Should-fix open)/" "$RF/clean.md" > "$T/review-not-ready.md"
+assert_eq "$(rs_status "$T/review-not-ready.md" --tip 3f9c2e1)" "status: clean [degraded: final review: not ready (2 Should-fix open)]" "review: not ready (...) is a qualifier; review: ready is clean"
+sed "s/^  review: .*/  review: ready (after the phase-6 sweep @ 3f9c2e1)/" "$RF/clean.md" > "$T/review-ready-after.md"
+assert_eq "$(rs_status "$T/review-ready-after.md" --tip 3f9c2e1)" "status: clean" "review: ready (after the phase-6 sweep @ sha) is clean"
 assert_eq "$(rs_status --stalled finish "$RF/clean.md")" "status: stalled at phase finish" "--stalled before RUN_MD"
 run bash "$RS" "$RF/roast-skipped.md" --stalled roast-code
 assert_eq "$out" "status: stalled at phase roast-code

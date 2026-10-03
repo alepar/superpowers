@@ -12,8 +12,9 @@
 # (unrouted); otherwise the filter's disposition. Then each cluster with an in-scope member pulls
 # every other member in, except a member whose entry carries `clusterOverride`.
 #
-# Prints the `scopeFilter-round-N:` lines in KEYS_FILE order, then the aggregate line
-# `scope-filter: <in> in-scope · <punch> punch-listed`.
+# Prints the `scopeFilter-round-N:` lines in KEYS_FILE order; then, for each cluster with a
+# member among the keys and no in-scope member, `cluster dropped: <id> — <rule text>`; then the
+# aggregate line `scope-filter: <in> in-scope · <punch> punch-listed`.
 # Exit 0 ok, 2 bad input, 4 jq unavailable (prints a JQ_UNAVAILABLE: line on stdout).
 set -euo pipefail
 
@@ -34,7 +35,7 @@ done
 [ -z "$stepback" ] || [ -f "$stepback" ] || { echo "step-back file not found: $stepback" >&2; exit 2; }
 
 command -v jq >/dev/null 2>&1 || {
-  echo "JQ_UNAVAILABLE: jq is not installed, so compute the round-${round} scope dispositions by hand. For each key in ${keys} (one \`[SEV] <location>\` per line, in order): a key starting \`[Blocking]\` is \`in-scope — Blocking, always in-scope\`; a key with no entry in ${filter} whose \`key\` matches exactly is \`in-scope — unrouted by filter — defaulted in-scope\`; otherwise use that entry's \`disposition\` and \`reason\`. Then read the \`clusters:\` lines of ${stepback:-the step-back file (none given: skip this step)} (\`- <id>: <keys, each rN [SEV] <location>, comma-separated> | rule: …\`), keeping members whose prefix is r${round} and dropping that prefix. For each cluster with an in-scope member, every other member that is punch-list becomes \`in-scope — cluster <id>\`, unless its filter entry has a \`clusterOverride\`, in which case it is \`punch-list — cluster override: <clusterOverride>\`. Output one line per key, \`scopeFilter-round-${round}: <key> <in-scope|punch-list> — <reason>\`, then \`scope-filter: <in-scope count> in-scope · <punch-list count> punch-listed\`."
+  echo "JQ_UNAVAILABLE: jq is not installed, so compute the round-${round} scope dispositions by hand. For each key in ${keys} (one \`[SEV] <location>\` per line, in order): a key starting \`[Blocking]\` is \`in-scope — Blocking, always in-scope\`; a key with no entry in ${filter} whose \`key\` matches exactly is \`in-scope — unrouted by filter — defaulted in-scope\`; otherwise use that entry's \`disposition\` and \`reason\`. Then read the \`clusters:\` lines of ${stepback:-the step-back file (none given: skip this step)} (\`- <id>: <keys, each rN [SEV] <location>, comma-separated> | rule: …\`), keeping members whose prefix is r${round} and dropping that prefix. For each cluster with an in-scope member, every other member that is punch-list becomes \`in-scope — cluster <id>\`, unless its filter entry has a \`clusterOverride\`, in which case it is \`punch-list — cluster override: <clusterOverride>\`. Output one line per key, \`scopeFilter-round-${round}: <key> <in-scope|punch-list> — <reason>\`; then, for each cluster with a member among the keys and no in-scope member, \`cluster dropped: <id> — <the text after rule:>\`; then \`scope-filter: <in-scope count> in-scope · <punch-list count> punch-listed\`."
   exit 4
 }
 
@@ -46,8 +47,8 @@ if [ -n "$stepback" ]; then
     on && /^[[:space:]]*[a-z]+:/ { on = 0 }
   ' "$stepback" | jq -R -s --arg r "r$round " '
     split("\n") | map(select(length > 0))
-    | map(capture("^\\s*- (?<id>[^:]+):\\s*(?<members>.*?)\\s*\\|\\s*rule:")
-          | {id, members: ([.members | splits(",\\s*(?=r[0-9]+ \\[)")]
+    | map(capture("^\\s*- (?<id>[^:]+):\\s*(?<members>.*?)\\s*\\|\\s*rule:\\s*(?<rule>.*?)\\s*$")
+          | {id, rule, members: ([.members | splits(",\\s*(?=r[0-9]+ \\[)")]
                            | map(gsub("^\\s+|\\s+$"; "")) | map(select(startswith($r))) | map(ltrimstr($r)))})
     | map(select(.members | length > 0))')
 fi
@@ -69,5 +70,8 @@ jq -r -n --rawfile keys "$keys" --slurpfile f "$filter" --argjson clusters "$clu
         else . end) as $out
   | ($ks | map($out[.])) as $rows
   | ($rows[] | "scopeFilter-round-\($n): \(.key) \(.d) — \(.reason)"),
+    ($clusters[] | select([.members[] | $out[.] | select(. != null) | .d] as $ds
+                          | ($ds | length > 0) and (any($ds[]; . == "in-scope") | not))
+                 | "cluster dropped: \(.id) — \(.rule)"),
     "scope-filter: \($rows | map(select(.d == "in-scope")) | length) in-scope · \($rows | map(select(.d == "punch-list")) | length) punch-listed"
 '

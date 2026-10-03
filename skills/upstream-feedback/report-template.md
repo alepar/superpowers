@@ -28,7 +28,9 @@ Plugin: <version>. Run: <scale — bead count / rounds / duration if known>, <da
 ### Merge-back
 <!-- the `Metrics: merges` line (including check-fails and how many were fixed) and the
      `ledger-check` line; count of `Merge:` lines with conflict / seam-review fired /
-     check fail→fixed / check fail / → blocker -->
+     check fail→fixed / check fail / → blocker; `ledger incomplete: <N> merge commits vs <M>
+     Merge: lines` when the branch's first-parent merge commits outnumber the success-path
+     `Merge:` lines -->
 ### Coverage
 <!-- the `requirements:` line per coverage round and the `scope-filter:` line per fix round -->
 ### Bead graph

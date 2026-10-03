@@ -43,7 +43,8 @@ append. A standalone run is its own outermost.
 
 ## The Process
 
-1. **Gather** (no dispatch): the friction log; the run ledger (when available — a standalone
+1. **Gather** (no dispatch): the friction log (a missing file is `not recorded`; a file holding
+   only its header line is `none recorded` — never conflate the two); the run ledger (when available — a standalone
    super-design run has none); the parallelism detector lines — the ledger's `Detector: round N — …`
    lines, with its `Slowness:`, `Edge audit:` and `Edge cut:` lines (a round with `complete` lines
    but no `Detector:` line is unmeasured); roast verdict/`delta vs prior`
@@ -54,6 +55,9 @@ append. A standalone run is its own outermost.
      and its `independence:` line (the main confounder when comparing agreement across runs);
    - the ledger's `Merge:` lines (the success path and the `→ blocker` / `→ auth-refused` failure paths) and
      the four-line `Metrics:` block;
+   - the integration branch's merge count, `git log --merges --first-parent <base>..<branch>`,
+     against the ledger's success-path `Merge:` lines. A shortfall goes under Merge-back as
+     `ledger incomplete: <N> merge commits vs <M> Merge: lines`;
    - each coverage round's `requirements:` line and each fix round's `scope-filter:` line from
      `run.md`;
    - a bead-graph dump: `bd list --label sp:<root> --json --status all --limit 0` —
@@ -63,7 +67,9 @@ append. A standalone run is its own outermost.
      `blocked-by <id>:` description line, or `unstated` when that line is absent.
 
    Gather what exists; name what was unavailable in the report's `## Not established` section
-   rather than silently omitting it. A subsection of `## Run metrics` with no source renders
+   rather than silently omitting it. A missing ledger, missing detector lines or missing `Metrics:`
+   lines while merges exist on the branch is itself a candidate finding (the run took a path that
+   skipped them), handed to the analyst as evidence, not rendered as a bare `none`. A subsection of `## Run metrics` with no source renders
    `none`, with the absent source named in `## Not established` — a missing source never blocks
    filing. A standalone super-design run (no ledger) renders Fix loop and Merge-back as `none`.
 2. **Analyze** — dispatch ONE fresh-context subagent, **model: opus, or the strongest

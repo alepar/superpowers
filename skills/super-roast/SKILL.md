@@ -52,17 +52,22 @@ line when writing the report file (e.g. `mode: PR (assumed — input is a branch
 | report-location override | directory the report is written to instead of the default below |
 | iteration `N` | printed in the report header (`iteration: N of 3`); this skill is stateless, so the caller carries the count. A caller running a whole-branch roast *after* its fix loop's cap has tripped passes the literal `post-cap audit` instead of a number — the header accepts it, and the run is never counted as a fourth round |
 | prior report path (rounds ≥ 2) | lets the run skip re-litigating what `## Rejected (with reason)` already settled — and switches the run into its late-round shape: scouts get the iterations-≥2 materiality bar ("no material findings" is a valid, expected outcome; manufacturing marginal findings is the failure mode) in place of round 1's high-recall section, and a `regression` lens/lane joins the roster to review what the fixes themselves touched (see the scout prompt files' "Iteration stance" sections) |
+| punch-listed keys (optional, rounds ≥ 2) | the prior round's confirmed findings the caller's scope filter deliberately left unfixed, one `[SEV] <location>` key per line (`assemble-args --punch-listed FILE`). A prior finding on this list that the round does not re-surface is reported `punch-listed (open)`, never resolved |
 | autonomous (optional) | see Mode selection above and the Handoff exception in The Process step 7 |
 
 Only mode and the artifact are required; a bare invocation gets defaults for the rest.
 
 ## The Process
 
-Run via the `Workflow` tool when available (subagent fan-out otherwise; inline as last resort —
-see the capability ladder in `./super-roast-workflow.md`). Full procedure, schemas, and the
-engine script: **`./super-roast-workflow.md`**. Assemble the engine's `args` with
-`bash <this skill's dir>/scripts/assemble-args` rather than by hand — it applies the round's
-stance, recall policy and `regression` lane from the prompt files below.
+Run via the `Workflow` tool when available: `Workflow` is in your own loaded function list
+(ToolSearch sees only deferred tools, so its silence proves nothing). Subagent fan-out
+otherwise; inline as last resort — see the capability ladder in `./super-roast-workflow.md`.
+The report's `independence:` line ends with the rung actually used (` · rung: Workflow`,
+` · rung: manual fan-out`, ` · rung: inline`); inside a caller's run, also append that rung to
+the run's friction log. Full procedure, schemas, and the engine script:
+**`./super-roast-workflow.md`**. Assemble the engine's `args` with `bash <this skill's
+dir>/scripts/assemble-args` rather than by hand — it applies the round's stance, recall policy
+and `regression` lane from the prompt files below.
 
 1. **Pre-flight** — resolve mode, inputs, and the project's environment profile (blast radius:
    prototype / internal / production / regulated). PR inputs are the branch diff + working
@@ -173,9 +178,9 @@ super-roast verdict: <Blocking (n confirmed) | Should-fix (n confirmed) | clean 
 mode: design | PR        iteration: N of 3
 profile (assumed): <2–4 sentence inferred profile>
 inputs: <spec paths | branch@sha vs base@sha [+dirty] | PR#>
-delta vs prior: <X> new confirmed (<xB> Blocking) · <Y> carried (<yB> Blocking) · <Z> resolved · <W> regressed (<wB> Blocking)   ← iterations ≥ 2 only
+delta vs prior: <X> new confirmed (<xB> Blocking) · <Y> carried (<yB> Blocking) · <Z> resolved · <W> regressed (<wB> Blocking) · <P> punch-listed (open)   ← iterations ≥ 2 only
 coverage: <lanes ran> · <raw → deduped → panel/spot-checked counts> · <judge completion %> · remainder-capped: N
-independence: <derived from the seats as invoked: same-family (<family>) — seat-differentiated panel | cross-family (<families>) — seat-differentiated panel | none (inline)>
+independence: <derived from the seats as invoked: same-family (<family>) — seat-differentiated panel | cross-family (<families>) — seat-differentiated panel | partial (subagent scouts, inline verification) | none (inline)> · rung: <Workflow | manual fan-out | inline>
 seat-agreement: panels N · rr 0.78 · rg 0.89 · fg 0.67 · unanimous 0.56 · ground-loo 0.83 (n=6) · reproduce 7/2/0 · refute 5/4/0 · ground 6/3/0   ← omitted entirely when N == 0
 
 ## Confirmed findings            ← consumed by super-design, one task per finding
@@ -215,8 +220,10 @@ from the rest of a converged round's punch list.
 
 **`delta vs prior` and `[converged]` are the loop's convergence signal** (iterations ≥ 2
 only; both absent on iteration 1). The delta line counts confirmed findings as new / carried /
-resolved / regressed against the prior report, with Blocking sub-counts. `[converged]` appears
-on the verdict when a non-degraded round ≥ 2 confirms **zero Blocking of any provenance** —
+resolved / regressed / punch-listed (open) against the prior report, with Blocking sub-counts.
+A punch-listed (open) finding was left unfixed on purpose: it never counts as resolved for any
+convergence or thrash reading, and, being sub-Blocking by construction, leaves `[converged]`
+unchanged. `[converged]` appears on the verdict when a non-degraded round ≥ 2 confirms **zero Blocking of any provenance** —
 no new, no regressed, no carried — and is never emitted alongside `[low coverage]` or
 `[panel-capped]` (a degraded round finding nothing is absence of evidence, not convergence).
 A round ≥ 2 whose scouts all returned and found nothing is the opposite case: the engine marks it
@@ -231,6 +238,12 @@ Full semantics: `./reporter-prompt.md` Steps 3–4.
 as a count the engine keeps — so it gets the "## Beyond remainder cap" count line and the
 `remainder-capped: N` term on the coverage line. Neither is ever silently
 dropped; they are just recoverable to different depths.
+
+**Every rung writes every header line.** The manual fan-out and inline rungs write the verdict,
+`mode:`, `profile (assumed):`, `inputs:`, `delta vs prior:` (iterations ≥ 2), `coverage:`,
+`independence:` and `seat-agreement:` (when any full panel ran) lines too. A line the run cannot
+compute gets an explicit degraded literal — e.g. `coverage: unavailable — manual run, no
+coverage object` — never an omitted line or a raw `{{TOKEN}}`.
 
 Full template and field semantics: `./reporter-prompt.md`.
 

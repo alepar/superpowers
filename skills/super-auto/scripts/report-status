@@ -25,7 +25,8 @@
 # Fields read, each with its writer and what its absent or other form gives:
 #   flags (skipPlanRoast, skipCodeRoast): SKILL.md §Pre-flight step 4. No line, or a key missing: exit 2.
 #   phase: SKILL.md §Who writes run.md. No line, or not a run-state.md token: exit 2.
-#   parked: super-design (phases 1-2), super-auto (phase 3 on). Absent: no records.
+#   parked: super-design (phases 1-2), super-auto (phase 3 on). Absent: no records. A
+#     `degraded-verdict` record may end ` · resolves-on: sweep`.
 #   roastDesignCapped: super-design §Adversarial Review Loop (root only). Absent: nothing; a last
 #     slot other than `stopped` counts as `proceeded`.
 #   roastCodeCapped: SKILL.md §Cap disposition, on a cap or thrash exit with Blocking open. Absent: nothing.
@@ -37,10 +38,12 @@
 #
 # Qualifiers, in this order, each once: `design roast capped-blocking` (roastDesignCapped not
 # stopped); each parked `degraded-verdict` record's qualifier (the bracketed text in its part before
-# ` — `, else that part); `plan roast skipped` / `code roast skipped` (flags); then the codeBuckets
-# ones: missing-bucket qualifiers, `code findings parked` (parked non-empty), `tasks pending retry`
-# (pendingRetry non-empty), `final review: <review>` (review not CLEAN;
-# `none recorded` when empty), then the sweep:
+# ` — `, else that part), skipped for a ` · resolves-on: sweep` record when --tip is given and the
+# sweep is a stamped pass at the tip (the sweep rules below give it no qualifier); `plan roast
+# skipped` / `code roast skipped` (flags); then the codeBuckets ones: missing-bucket qualifiers,
+# `code findings parked` (parked non-empty), `tasks pending retry` (pendingRetry non-empty),
+# `final review: <review>` (review not `CLEAN` or `ready`, so the `<verdict> (<N> confirmed)` and
+# `not ready (<summary>)` forms; `none recorded` when empty), then the sweep:
 #   `sweep: <sweep>`              it is not a pass: it carries a failing signal (a non-zero failed
 #                                 or errors count, FAIL, DEFERRED, INVALID, UNAVAILABLE) or lacks
 #                                 the pass form `<P> passed, 0 failed, 0 errors`;
@@ -133,10 +136,12 @@ RS_RUNDIR=$rundir awk -v stalled="$stalled" -v tip="$tip" '
   /^roastCodeCapped:/ { split(after($0, "roastCodeCapped:"), p, / · /); blocking += countkeys(p[1]); next }
   block == "parked" && /^[ \t]*- / {
     n = split($0, p, / · /)
+    res = (n > 3 && trim(p[n]) ~ /^resolves-on:[ \t]*sweep$/)
+    if (res) n--
     kind = trim(p[2]); text = p[3]
     for (i = 4; i <= n; i++) text = text " · " p[i]
     if (kind == "escalation") esc++
-    else if (kind == "degraded-verdict") dv[++ndv] = verdictq(text)
+    else if (kind == "degraded-verdict") { dv[++ndv] = verdictq(text); dvsweep[ndv] = res }
     next
   }
   block == "cb" && /^[ \t]+[A-Za-z]+:/ {
@@ -149,7 +154,8 @@ RS_RUNDIR=$rundir awk -v stalled="$stalled" -v tip="$tip" '
     if (!("skipPlanRoast" in flag) || !("skipCodeRoast" in flag)) { print "flags: line lacks skipPlanRoast= or skipCodeRoast=" > "/dev/stderr"; exit 2 }
     if (phase !~ /^(design|roast-design|capped-blocking|code|roast-code|fix-loop|report|finish|done)$/) { print "not a phase token: " phase > "/dev/stderr"; exit 2 }
     if (dcapped) addq("design roast capped-blocking")
-    for (i = 1; i <= ndv; i++) addq(dv[i])
+    sweepok = tip != "" && havecb && trim(cb["sweep"]) != "" && sweepq(trim(cb["sweep"])) == ""
+    for (i = 1; i <= ndv; i++) if (!(dvsweep[i] && sweepok)) addq(dv[i])
     if (truthy(flag["skipPlanRoast"])) addq("plan roast skipped")
     if (truthy(flag["skipCodeRoast"])) addq("code roast skipped")
     if (havecb) {
@@ -160,7 +166,7 @@ RS_RUNDIR=$rundir awk -v stalled="$stalled" -v tip="$tip" '
       if (pending) addq("tasks pending retry")
       esc += countids(cb["escalated"])
       review = trim(cb["review"])
-      if (review != "CLEAN") addq("final review: " (review == "" ? "none recorded" : review))
+      if (review != "CLEAN" && review !~ /^ready( |$)/) addq("final review: " (review == "" ? "none recorded" : review))
       addq(sweepq(trim(cb["sweep"])))
       codestalled = truthy(cb["stalled"])
     } else if (phase == "report" || phase == "finish" || phase == "done") {

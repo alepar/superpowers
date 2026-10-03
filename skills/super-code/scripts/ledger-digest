@@ -6,8 +6,12 @@
 #   - `Merge:` lines, verbatim (fixed-format, short);
 #   - `Task <n> (<id>): <state>` lines whose state the coordinator acts on, reduced to their state
 #     tokens: `complete[, already merged][, review clean][, fix pass][, parked]`, `pending retry`,
-#     `BLOCKED…` (first word), `cancelled (` / `cancelled`, `stacked on <id>`, `fix pass <OUTCOME>`.
-# Every other line (header, `minor (deferred)`, `Detector:`, `Launch:`, `Metrics:`, …) is dropped.
+#     `BLOCKED…` (first word), `cancelled (` / `cancelled`, `stacked on <id>`, `fix pass <OUTCOME>`;
+#     a `[cause: …]` tag after `pending retry` / `BLOCKED…` is kept, and a `minor (deferred)` line
+#     whose text starts with a `[class]` tag becomes `minor [class]` (recurrence counts for Resume).
+# Every other line (header, untagged minors, `Detector:`, `Launch:`, `Metrics:`, …) is dropped.
+# The first line printed is always `# ledger-digest: <kept> of <total> lines`, so a reader can tell
+# an empty ledger from a lost or truncated echo.
 # Line order is kept: the last line per id wins on resume.
 #
 # Usage: bash ledger-digest LEDGER_PATH
@@ -22,9 +26,11 @@ fi
 
 awk '
 function trim(s) { sub(/^[ \t\r]+/, "", s); sub(/[ \t\r]+$/, "", s); return s }
+function cause(r) { return match(r, /\[cause: [^]]*\]/) ? " " substr(r, RSTART, RLENGTH) : "" }
 {
+  total++
   line = trim($0)
-  if (line ~ /^Merge:[ \t]/) { print line; next }
+  if (line ~ /^Merge:[ \t]/) { out[++kept] = line; next }
   if (line !~ /^Task[ \t]+[^ \t]+[ \t]+\([^)]+\):/) next
   head = line; sub(/\):.*$/, ")", head)            # "Task <n> (<id>)"
   rest = line; sub(/^[^)]*\):[ \t]*/, "", rest)    # the state text
@@ -35,12 +41,17 @@ function trim(s) { sub(/^[ \t\r]+/, "", s); sub(/[ \t\r]+$/, "", s); return s }
     if (index(rest, "review clean")) s = s ", review clean"
     if (index(rest, "fix pass")) s = s ", fix pass"
     if (index(rest, "parked")) s = s ", parked"
-  } else if (rest ~ /^pending retry/) s = "pending retry"
-  else if (rest ~ /^BLOCKED/) s = w[1]
+  } else if (rest ~ /^pending retry/) s = "pending retry" cause(rest)
+  else if (rest ~ /^BLOCKED/) s = w[1] cause(rest)
   else if (rest ~ /^cancelled \(/) s = "cancelled ("
   else if (rest ~ /^cancelled/) s = "cancelled"
   else if (rest ~ /^stacked on/) s = "stacked on " w[3]
   else if (rest ~ /^fix pass/) s = "fix pass " w[3]
+  else if (rest ~ /^minor \(deferred\): \[[A-Za-z0-9][A-Za-z0-9 -]*\]/) { match(rest, /\[[^]]*\]/); s = "minor " tolower(substr(rest, RSTART, RLENGTH)) }
   else next
-  print head ": " s
+  out[++kept] = head ": " s
+}
+END {
+  print "# ledger-digest: " kept + 0 " of " total + 0 " lines"
+  for (i = 1; i <= kept; i++) print out[i]
 }' "$1"

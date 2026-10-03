@@ -35,6 +35,12 @@ clarification, or your dispatch points there: any path outside [WORKTREE] that y
 as a write target is read-only. A stray file in the integration worktree blocks every later merge.
 This applies to the fix pass too.
 
+Evidence the brief asks you to keep (a capture, a log a reviewer needs) goes where the brief names,
+else under `evidence/[TASK_ID]/` in [WORKTREE]. Never name a deliverable `findings.md` or
+`report.md`: a harness classifier has refused those names to subagents. A test you commit must not
+depend on this machine's paths, live data or the current merge-base: those pass here and fail
+everywhere else.
+
 ## Your job
 
 Work in [WORKTREE] (branch `[BRANCH]`, cut from `[INTEGRATION_BRANCH]`).
@@ -84,11 +90,13 @@ already scheduled after you report.
   itself), the assertion is decoration: replace it. An assertion after a failing one in the same
   test body did not run; record it as unmeasured, not green.
 - Test output should be pristine. Fix warnings you caused, or report them.
-- A failing test you believe your change did not cause is yours until shown otherwise. To show it,
+- A failing test you believe your change did not cause — "pre-existing", "unrelated",
+  "environment-dependent", "flaky" — is yours until shown otherwise. To show it,
   run that test at [BASE] in a throwaway checkout under your temp root (`git worktree add --detach
   $TMPDIR/base [BASE]`, run only that test there, then `git worktree remove $TMPDIR/base`) and report
-  both results. "Pre-existing", "fails identically at base" or "unrelated" without that result is
-  not evidence: fix the failure or report it as a concern.
+  both results. "Pre-existing", "fails identically at base", "unrelated" or "env-dependent" without
+  that result is not evidence (for "flaky", show repeated runs): fix the failure or report it as a
+  concern.
 
 ## Self-review
 

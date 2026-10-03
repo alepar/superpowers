@@ -3,7 +3,9 @@ resumeChange: YYYY-MM-DD · "<the ask, verbatim>" · <what it changes>
 design | roast-design | capped-blocking | code | roast-code | fix-loop | report | finish | done
 skillSource: <abs skills path> @ <sha>[+dirty:<hash>] (<version>)
 feedback: <issue-url>
+friction: <N> events | none recorded
 roastDesignCapped: <unresolved finding ids> · <extension report path> · stopped | proceeded
+roastCodeExit: converged | thrash | capped | operator-skipped (<reason>)
 top-split · human | auto
 design-review · pending | approved
 scope-filter: <in-scope> in-scope · <punch> punch-listed

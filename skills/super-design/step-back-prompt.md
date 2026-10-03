@@ -94,8 +94,8 @@ Task tool (general-purpose), model: opus:
     For `redesign` only:
     changes: <the decision or approach that changes, and where it is stated (spec §, file, bead)>
     to: <what replaces it, concretely enough to write into the spec>
-    dissolves: <finding keys this makes moot>
-    remains: <finding keys that still need patch fixes>
+    dissolves: <finding keys this makes moot, comma-separated, each `rN [SEV] <location>` verbatim (a key may itself contain `; `)>
+    remains: <finding keys that still need patch fixes, comma-separated, each `rN [SEV] <location>` verbatim (a key may itself contain `; `)>
     scope: inside | outside — <the goal / non-goal clause it touches, quoted; "inside" means
       the root goal and non-goals stand unchanged>
     recommendation: <one or two sentences: why this redesign over continued patching>
