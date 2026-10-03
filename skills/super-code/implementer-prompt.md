@@ -84,6 +84,11 @@ already scheduled after you report.
   itself), the assertion is decoration: replace it. An assertion after a failing one in the same
   test body did not run; record it as unmeasured, not green.
 - Test output should be pristine. Fix warnings you caused, or report them.
+- A failing test you believe your change did not cause is yours until shown otherwise. To show it,
+  run that test at [BASE] in a throwaway checkout under your temp root (`git worktree add --detach
+  $TMPDIR/base [BASE]`, run only that test there, then `git worktree remove $TMPDIR/base`) and report
+  both results. "Pre-existing", "fails identically at base" or "unrelated" without that result is
+  not evidence: fix the failure or report it as a concern.
 
 ## Self-review
 

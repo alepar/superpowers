@@ -154,6 +154,31 @@ own, or the flags strand and the sequence is lost. Each row's parenthetical is t
 
 Phase 7 is entered only through §Invariants I2 (phase-7 gate).
 
+### Gates, final-SHA evidence and base drift
+
+**Gates.** A hold that someone outside `super-code` releases is a gate bead: `bd create --type task
+--labels sp:gate,sp:<epic>` with a `Gate: <condition>` title, added as a blocker of every bead that
+waits on it (`bd dep add <waiting> <gate>`, plus the waiting bead's `blocked-by <gate>: <condition>`
+description line). `super-code` never dispatches a gate (its `ready-in-tree` and planner skip type
+`gate` and the labels `sp:gate`, `human-gate`, `human`), and you close it when the condition holds.
+Create it before the bead it holds could become ready: one filed after a launch can lose that race.
+
+**Final-SHA evidence runs after the fix loop.** A leaf whose acceptance needs evidence measured at the
+final code SHA (a native or hardware matrix, a release-readiness run: anything a later fix would make
+stale) is gated on `Gate: fix loop exited` before the first phase-3 launch. When phase 5 exits, close
+the gate and re-enter `super-code` once (`deferSweep: true`) to run the gated leaves, then go on to
+phase 6. Running it in phase 3 instead buys the roast nothing (it reviews code, not evidence) and makes
+every phase-5 fix either a full rerun or a recorded deviation.
+
+**Base drift.** When `base` moves materially mid-run, absorb it once, after phase 5 exits and before
+phase 6's sweep, unless the run cannot proceed without the upstream change. You own it: merge `base`
+into the run branch in the run worktree (`git merge`, never a rebase of the run's history), dispatching
+one implementer-tier subagent for the conflict pass with the conflicting files and both sides' intent.
+The phase-6 sweep and any gated final-SHA leaf then judge the combined tree. Record `baseAbsorbed:
+<base sha> → <merge sha>, <N> conflicted files` in `run.md` (run-state.md item 7 (Design decisions)),
+and list conflicts resolved in files this run changed in `report.md`'s Remaining as not reviewed by a
+roast.
+
 ### Who writes run.md
 
 A match resumes from its recorded phase (run-state.md item 2 (Current phase)). `run.md` is created the moment the run directory exists, with `phase: design` and the flags already written — before `super-design` itself runs — so a crash mid-run still resumes without re-asking. It is written again after every phase transition and after every roast round: by `super-auto` for phases 3–7, and by `super-design` for phases 1–2, which run inside its invocation.

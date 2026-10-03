@@ -1635,7 +1635,7 @@ async function main() {
     check(taskLedgerLine(out.trace, 'bd-101', /BLOCKED-AUTH/)?.includes('(bd-101): BLOCKED-AUTH — permission refused'), 'ledger line starts with BLOCKED')
     check(out.logs.some(l => l.startsWith('AUTH-REFUSED bd-101')), 'logged loudly')
     const impl = promptOf(out.trace, 'impl:bd-101')
-    check(!!impl && impl.includes('PERMISSION REFUSALS') && impl.includes('BLOCKED_AUTH') && impl.includes('ONE equivalent form'), 'implementer carries the auth-refusal rule')
+    check(!!impl && impl.includes('PERMISSION REFUSALS') && impl.includes('BLOCKED_AUTH') && impl.includes('NARROW COMMANDS ONLY') && impl.includes('pkill') && impl.includes('git update-ref') && impl.includes('never a re-spelling'), 'implementer carries the auth-refusal rule')
     assertBucketsDisjoint(out.result)
   }
 
@@ -1882,6 +1882,7 @@ async function main() {
     const cfix = promptOf(fixed.trace, 'fix:bd-101:check')
     check(!!cfix && cfix.includes(ERR) && cfix.includes(CHECK) && cfix.includes(`[BRIEF_FILE] = ${PLANDIR}/task-1-brief.md`) && cfix.includes(`[REPORT_FILE] = ${PLANDIR}/task-1-report.md`), 'merge-check fix gets the command, the error output, and the brief/report paths', cfix)
     check(!!cfix && /edit whatever files the errors name/.test(cfix) && /do not delete, skip, or loosen any test assertion/.test(cfix) && /smallest change/.test(cfix), 'merge-check fix is fenced: any named file, smallest change, no weakened tests')
+    check(!!cfix && /merge-base --is-ancestor epic-\S+ HEAD. fails[\s\S]*rebase onto it[\s\S]*still occur on the current tip/.test(cfix), 'merge-check fix first re-checks against the current tip and fixes only errors that persist there', cfix)
     const crev = promptOf(fixed.trace, 'seam-review:bd-101:check')
     check(!!crev && /READ-ONLY/.test(crev) && crev.includes(`${SHA('c')}..HEAD`) && crev.includes('<build-errors>'), 'one scoped read-only review of the fix diff')
     check(promptOf(fixed.trace, 'merge:bd-101:check-fixed')?.includes(CHECK), 'the check re-runs on the re-dispatched merge')
@@ -2605,7 +2606,7 @@ esac
         let r = runScript(dir, 'ready-in-tree', ['R'])
         check(r.code === 0 && r.stdout.trim() === '{"ids":["A"],"reviews":[]}', 'fast path: the labelled ids, as one JSON object with an empty reviews list', JSON.stringify(r))
         const fastCalls = calls(dir).filter(c => c.startsWith('ready'))
-        check(/--exclude-type=epic --exclude-label blocker,sp:review --label sp:R --limit 500 --json/.test(fastCalls[0]) && !fastCalls.slice(1).some(c => c.includes('--exclude-label')), 'the work query runs labelled first, excluding epics, blocker beads and review beads', fastCalls.join(' | '))
+        check(/--exclude-type=epic,gate --exclude-label blocker,sp:review,sp:gate,human-gate,human --label sp:R --limit 500 --json/.test(fastCalls[0]) && !fastCalls.slice(1).some(c => c.includes('--exclude-label')), 'the work query runs labelled first, excluding epics, gates, blocker beads and review beads', fastCalls.join(' | '))
         check(fastCalls.length === 3 && /--label sp:review --label sp:R/.test(fastCalls[1]) && /--label sp:review --limit/.test(fastCalls[2]), 'review beads: a labelled query, then the repo-global one when it comes back empty', fastCalls.join(' | '))
         rmSync(dir, { recursive: true, force: true })
 
@@ -2613,7 +2614,7 @@ esac
         r = runScript(dir, 'ready-in-tree', ['R'])
         check(r.code === 0 && r.stdout.trim() === '{"ids":["B","zz-1"],"reviews":[]}', 'empty fast path falls back to the repo-global set filtered by structure, bd order kept', JSON.stringify(r))
         const readyCalls = calls(dir).filter(c => c.startsWith('ready'))
-        check(!readyCalls[1].includes('--label') && readyCalls[1].includes('--exclude-label blocker,sp:review'), 'fallback query is repo-global and still excludes blocker and review beads', readyCalls.join(' | '))
+        check(!readyCalls[1].includes('--label') && readyCalls[1].includes('--exclude-label blocker,sp:review,sp:gate,human-gate,human'), 'fallback query is repo-global and still excludes blocker, review and gate beads', readyCalls.join(' | '))
         rmSync(dir, { recursive: true, force: true })
 
         dir = newFixture({ readyLabel: [], readyAll: [] })

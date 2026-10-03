@@ -281,7 +281,11 @@ Done by the main session, not the Workflow:
    and no `deferSweep` — the project's full test command (from `AGENTS.md`, the README, or CI
    config, with its execution envelope) as `config.sweep`; and, when no `config.mergeCheck` was
    declared, the project's build-only compile/typecheck command (never a test command) as
-   `config.mergeCheck`, or `'none'` when the project has no such step.
+   `config.mergeCheck`, or `'none'` when the project has no such step. Read it off the CI build
+   matrix when there is one, and cover every build configuration CI compiles, chained with `&&`
+   (for Cargo at least the default features and `--all-features`: either alone misses a break the
+   other catches). Whether resolved or declared, if `mergeCheck` covers fewer configurations than
+   CI builds, say which are missing in a friction note before launching.
 2. Create the **epic integration branch on its own worktree**, following
    `superpowers:using-git-worktrees` (project-local `.worktrees/`, verified git-ignored), **at the
    path `.worktrees/<integrationBranch>`, with any `/` in the branch name replaced by `-`** —
@@ -328,7 +332,8 @@ Done by the main session, not the Workflow:
      with `--help` or a collect-only flag.
    Never probe with a real push, delete, or close. If a class is refused, ask the user to allow it
    before launching; never edit permission settings yourself. Mid-run, the decided policy is *work
-   around once, then accept the loss*: an agent that is refused tries one equivalent form; refused
+   around once, then accept the loss*: an agent that is refused takes the narrow path to the same result (one file edit per hunk, one
+   plain git command, `scripts/stop-run-processes` — never a re-spelled bulk command); refused
    again, it reports `BLOCKED_AUTH`, the coordinator logs it, quarantines that task for the run,
    and continues (see "Escalation = notify + quarantine + continue"). The coverage loss is
    reported as untested scope.
@@ -690,7 +695,12 @@ Rules the dispatched agents carry, each from a measured failure:
   status `INVALID`, meaning *the review did not happen*. The coordinator re-dispatches it once; a
   second `INVALID` becomes `BLOCKED` through the ordinary blocker path, so triage sees a pipeline
   defect. `INVALID` never reaches the fix pass.
-- **A permission refusal is `BLOCKED_AUTH`, not `BLOCKED`**: one equivalent form is tried, then the
+- **Bulk commands are named as forbidden in every task prompt** (`authRefusalRule`): scripted
+  multi-file edits over conflicted files, rewriting a branch ref other than the task's own, and
+  stopping processes by name or pattern (`pkill`, `killall`). Live runs saw each refused and
+  quarantined as `BLOCKED-AUTH` although a narrow path (a per-hunk edit, reporting the state, the
+  stop script) existed.
+- **A permission refusal is `BLOCKED_AUTH`, not `BLOCKED`**: the narrow path is tried, then the
   agent stops and reports the refused command; no blocker bead. See Pre-flight step 5 and
   "Escalation = notify + quarantine + continue".
 - **Assertion discipline and reachability** are in the implementer's and reviewer's briefs.
@@ -995,7 +1005,7 @@ so a fixed blocker's task is no longer permanently filtered out of every future 
 
 **`BLOCKED-AUTH` is quarantine without escalation** (issue #3 defect 3, decided policy: work
 around once, then accept the loss). A task whose agent was refused by the permission layer — the
-porcelain command and one equivalent form both declined, nothing executed — is settled into
+command and its narrow path both declined, nothing executed — is settled into
 `escalated` for this run (its dependents stay unready), gets a `BLOCKED-AUTH — permission
 refused, coverage lost this run: <command>` ledger line and a loud log line, and is listed in the
 return value's `authRefused`. No blocker bead, no triage, no notification: there is no judgment

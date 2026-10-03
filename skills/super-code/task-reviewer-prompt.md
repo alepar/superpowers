@@ -52,6 +52,8 @@ Don't run tests. Check that the report carries the command and output of a test 
 covers this task's changes: the right files or tests, a pass summary, and no failure the report
 glosses over. Missing or implausible evidence (no command, a run that failed to start, output for
 unrelated tests) is Important. Warnings in the output are Minor.
+A failure the report calls pre-existing, unrelated or identical at base is glossed over unless the
+report also shows that test's result at [BASE]: without it, Important.
 A process the report's "Test hygiene" says a test run leaked is a test-suite defect: Minor, or
 Important when the leaked process is a daemon or server, or when it survived being stopped.
 
