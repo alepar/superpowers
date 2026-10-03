@@ -186,6 +186,10 @@ catches only the bottleneck case, so Step A's job is to not fuse work that could
 
 - **Cohesion:** a leaf is one merge-worthy deliverable a reviewer accepts or rejects as a
   unit. A description that needs "and then" is two beads.
+- **Executable by one implementer:** super-code's implementer works alone and spawns no
+  subagents, so work that needs fresh agents — behavioral probes, skill evals, scenario runs
+  against a model — is not a leaf. Route it to the orchestrator's own phase (`super-auto`'s
+  report phase, or a step the caller runs after execution) and leave the leaf the code it tests.
 - **Floor:** execution spends roughly five dispatches of ceremony per bead (brief → implement →
   review → merge, plus ledger writes), so never split below one coherent
   reviewable change — a bead whose implementation is smaller than its own ceremony merges into a
@@ -549,7 +553,7 @@ the spec(s) where the changed decision is stated and restructuring the affected 
 step 2; its `dissolves` findings get no fix task (the step-back file records why), its `remains`
 findings go through step 1, and step 3 re-roasts, since a design decision changed.
 
-1. **Create one task per confirmed finding** — or one per step-back cluster (the step-back file's `clusters:` lines), covering every member and carrying the cluster's `rule:` for all its instances, cited or not — with §Decomposition's full `bd create` flag triple (`--parent <root-epic-id> --no-inherit-labels -l sp:<root-epic-id>`) — a fix task outside the epic's descendant tree lets `bd epic close-eligible` close the epic mid-fix. **When an `Integration sweep:` bead already exists for this root, also `bd dep add <sweep> <fix-task>` for each fix task created here** — so the sweep still runs last — pairing each with `blocked-by <fix-task-id>: consumes all leaves (integration sweep)` in the sweep's description, the same fixed artifact token every sweep edge uses.
+1. **Create one task per confirmed finding that needs code or other build work** (a fix that only amends spec or bead text is applied inline under step 2 and recorded in the run-state file — a task for it would enter the execution tree as already-done work) — or one per step-back cluster (the step-back file's `clusters:` lines), covering every member and carrying the cluster's `rule:` for all its instances, cited or not — with §Decomposition's full `bd create` flag triple (`--parent <root-epic-id> --no-inherit-labels -l sp:<root-epic-id>`) — a fix task outside the epic's descendant tree lets `bd epic close-eligible` close the epic mid-fix. **When an `Integration sweep:` bead already exists for this root, also `bd dep add <sweep> <fix-task>` for each fix task created here** — so the sweep still runs last — pairing each with `blocked-by <fix-task-id>: consumes all leaves (integration sweep)` in the sweep's description, the same fixed artifact token every sweep edge uses.
 2. **Fix per the normal ladder** — inline for small fixes; design work in the run's mode for large
    ones (a Mode B nested brainstorm when unattended; may itself promote/nest); a dispatched fixer
    (Sonnet-class is fine) for delegable work. Whoever fixes gets every round's report path and

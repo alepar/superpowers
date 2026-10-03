@@ -703,6 +703,11 @@ Rules the dispatched agents carry, each from a measured failure:
   stopping processes by name or pattern (`pkill`, `killall`). Live runs saw each refused and
   quarantined as `BLOCKED-AUTH` although a narrow path (a per-hunk edit, reporting the state, the
   stop script) existed.
+  Decided for conflicts in a shared file such as a test runner two tasks appended to: the merge
+  agent resolves them hunk by hunk with file edits. The planner does not serialize beads that
+  touch one test file (the hot-file cap already bounds that churn, and serializing gives up the
+  width it allows), and a refused resolution is not re-implemented on the new base: the refusals
+  seen live were of scripted bulk rewrites, which the narrow rule removes.
 - **A permission refusal is `BLOCKED_AUTH`, not `BLOCKED`**: the narrow path is tried, then the
   agent stops and reports the refused command; no blocker bead. See Pre-flight step 5 and
   "Escalation = notify + quarantine + continue".
@@ -992,7 +997,27 @@ Anything that cannot proceed becomes a beads issue, never a silent retry and nev
     before it quarantines, never indefinitely. This also closes I6: an id parked in `escalated`
     permanently is filtered out of every future `bd ready` batch and guarantees the round-based
     no-progress guard sees real termination, where an unbounded RESOLVE would not.
+  - `RESOLVE` with `waitFor: <bead>` → the task needs that in-tree bead to land first, not a
+    clarification. The coordinator adds the edge (below), writes `waiting on <bead>` to the ledger,
+    and holds the task until the bead lands; the one-retry budget is not spent. Before this, a
+    correct "re-dispatch only after X merges" was re-dispatched at once, blocked again, and the
+    one-retry bound quarantined it.
   - `ESCALATE: <summary + decision needed>` → escalation (below).
+
+**Added edges.** A dependency the bead graph lacks — a planner's `missingEdges` entry, or a triage
+`waitFor` — is honored in memory the moment it is reported: the dependent is held out of every
+dispatch path (round head, `bd ready` top-up) until its blocker merges, then graph readiness
+releases it. A background `edge-add:<k>` dispatch writes it to bd (`bd dep add` plus a
+`blocked-by` line, after checking both beads are open), an `Edge add: <dependent> <- <blocker>
+(<source>) — <reason>` line goes to the ledger, and Finish awaits the writes. Adding an edge counts
+as progress for the no-progress guard.
+
+**Edge-audit memory.** An edge an audit judged not safe is not judged again: each audit reads the
+ledger's earlier `Edge audit:` lines and is handed this run's own unsafe verdicts, and returns such
+an edge only when one of its beads' text changed in a way that bears on the reason. The same edge
+was otherwise re-judged "safe no" on every launch. The safe class itself stays as super-design's
+graph pass defines it: a wait on a name the spec fixes (a heading, a key) is not safe to cut, since
+a rename during implementation would surface only at the end.
 
 ## Escalation = notify + quarantine + continue
 

@@ -48,11 +48,14 @@ Task tool (general-purpose), model: opus:
 
     - **RESOLVE** — the answer is genuinely derivable from the plan/spec/beads already provided
       (a misread requirement, a detail that IS specified, a mechanical fix the implementer
-      missed). Provide the specific clarification to inject into a re-dispatch.
+      missed). Provide the specific clarification to inject into a re-dispatch. When the task
+      only needs another in-tree bead to land first (a dependency the graph does not record),
+      that is still RESOLVE: name the bead in `waitFor`, and the coordinator holds the task until
+      it lands instead of re-dispatching it at once.
 
     - **ESCALATE** — the blocker needs the user: a real ambiguity the spec doesn't settle,
       a decision the user owns, OR work discovered outside the beads graph (new requirement
-      or dependency). Do NOT invent scope to avoid escalating.
+      or dependency outside this tree). Do NOT invent scope to avoid escalating.
 
     Bias: only RESOLVE when you are confident the clarification is correct and grounded in
     the provided materials. A wrong RESOLVE wastes a full re-dispatch and can corrupt the
@@ -65,7 +68,7 @@ Task tool (general-purpose), model: opus:
 
     ## Output Contract (exact)
 
-    Return structured output with three fields, `decision`, `detail` and `cause`:
+    Return structured output with `decision`, `detail` and `cause`, plus `waitFor` when it applies:
 
     - `decision`: `RESOLVE` or `ESCALATE`.
     - `detail`:
@@ -81,4 +84,6 @@ Task tool (general-purpose), model: opus:
       the run (≥5 occurrences or ≥3 distinct tasks is reported as a `Recurring blocker:` ledger
       line), which is how a pipeline defect that files one false blocker per task gets noticed as
       one pattern rather than N incidents.
+    - `waitFor` (optional, RESOLVE only): the id of the in-tree bead that must merge before this
+      task can succeed. Omit it when the task can be re-dispatched now.
 ```

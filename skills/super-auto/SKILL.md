@@ -312,6 +312,12 @@ The design gates are in `super-design` §Gates by Mode; the flags pick the row.
   amendment. A resume that finds `design-review · pending` is handled per resume.md §Resuming at a phase.
 - Neither flag: the human approves the top split when `super-design` asks.
 
+**Reserved decisions.** When the user launches an autonomous run but reserves topics ("ask me only
+about X"), settle them before launch: ask the questions you can already foresee, and get consent to
+apply the recommended option and park it for anything that comes up later. A session that cannot
+pause mid-run (a Stop hook that forbids ending a turn, say) cannot honor a mid-run question, and you
+may not be able to detect that in advance. Record each consent or answer under `approvals:`.
+
 Say this when confirming the flags. `autonomous` means no questions from launch to the
 finished report; it implies one-shot (Mode B) design. `planOneShot` alone means no questions until the design is ready, then a
 stop for review.

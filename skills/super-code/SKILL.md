@@ -37,6 +37,13 @@ the plugin-cache path (`./coordinator-workflow.md` Pre-flight step 4) — with `
 args) without asking. The ledger and `bd ready` carry the recovery; `resumeFromRunId` only replays
 calls made before the first concurrent fan-out. Other copies of this rule are pointers here.
 
+**A hung Workflow is relaunched the same way.** When no task is in flight and the only running call
+(a planner, a ready query) has produced nothing for 30 minutes, stop the Workflow (`TaskStop`) and
+relaunch it as above, recording `Slowness: <call> silent 30 min, nothing in flight → relaunched`.
+The coordinator sets no deadline of its own: a slow planner on a large epic is valid work, and only
+the session can see that nothing else is moving. A null or a terminal API error already returns on
+its own; this covers a call that never returns.
+
 **Watch for slowness while it runs.** Whenever you are woken during a run (a notification, a
 relaunch, a check-in), read the ledger's newest `Detector:`, `Edge audit:`, `Edge cut:` and
 `Recurring blocker:` lines (and, once returned, the `slowness` list). Look for a merge-queue peak
@@ -58,8 +65,8 @@ Watch with the Monitor tool or a bounded loop that exits when the Workflow ends,
 `tail -f`. When the run ends (and at Finish, when this skill owns it), stop every watcher you
 started that references the run's paths: the ledger, the integration worktree, a run directory.
 
-No re-plans, no edits to running tasks, and never a stop: a signal you cannot act on cheaply is
-noted and the run goes on.
+No re-plans, no edits to running tasks, and never a stop (a hung Workflow, above, is the one
+exception): a signal you cannot act on cheaply is noted and the run goes on.
 
 ## Boundary
 

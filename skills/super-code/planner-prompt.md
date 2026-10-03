@@ -110,6 +110,11 @@ Task tool (general-purpose), model: opus:
        (closed ones from earlier rounds) get neither. If it prints a line starting
        `JQ_UNAVAILABLE:`, follow that instruction by hand; if it fails any other way, leave `deps`
        and `opaque` off every row.
+    6. If, while planning, you see that one bead needs another in-tree bead's output and the graph
+       records no such dependency (it is absent from that bead's `deps`), report it in
+       `missingEdges` rather than only in the plan's prose: prose is not read by the scheduler, and
+       the dependent would be dispatched before its blocker. Name only dependencies the beads'
+       text makes concrete (a function, file, schema or interface one creates and the other uses).
 
     ## Constraints
 
@@ -135,4 +140,7 @@ Task tool (general-purpose), model: opus:
     - `unplanned`: one `{id, missingDecision}` entry per bead you left out under step 4 (omit or
       leave empty when none). The coordinator files a blocker bead for each, carrying your
       `missingDecision` text.
+    - `missingEdges`: one `{dependent, blocker, reason}` entry per dependency found under step 6
+      (omit or leave empty when none). The coordinator holds the dependent until the blocker lands
+      and adds the edge to the tracker.
 ```
