@@ -1,7 +1,8 @@
 # Coordinator Workflow (Autonomous Beads Execution)
 
 Reference for `super-code`'s coordinator, which runs every epic, autonomous or interactive. The
-`Workflow` tool is required (SKILL.md's "Trigger rule"): there is no hand-driven fallback. The Workflow
+When `Workflow` is available, use this engine (SKILL.md's "Trigger rule"). Without it, use the
+supported ordinary-subagent procedure in `coordinator-subagents.md`. The Workflow
 script is the *mechanical* coordinator; every judgment call is delegated to a short-lived
 `agent()`. The per-task prompts are this skill's own (`./implementer-prompt.md`,
 `./task-reviewer-prompt.md`); the brief, review-package and workspace scripts are

@@ -30,6 +30,7 @@ codeBuckets.sweep
 codeBuckets.slowness
 codeBuckets.worktreesKept
 codeBuckets.processSweep
+codeMechanism
 sweepFix
 approvals
 approvals · top-split
