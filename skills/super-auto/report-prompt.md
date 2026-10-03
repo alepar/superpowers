@@ -8,7 +8,7 @@ The orchestrator writes and commits the file. A drafting subagent (SKILL.md §Su
 
 Build every section from these sources, and name in each section the source each item came from, so a reader can check the report instead of taking it on faith:
 
-- `run.md`: its pointers, `parked` records, `codeBuckets`, `sweepFix`, `roastDesignCapped`, `roastCodeCapped`, `resumeChange` lines, and the `stepBack-round-<N>`, `scopeFilter-round-<N>` and `regressionPass-round-<N>` records;
+- `run.md`: its pointers, `parked` records, `codeBuckets`, `sweepFix`, `roastDesignCapped`, `roastCodeCapped`, `resumeChange` lines, and the `stepBackCode-round-<N>`, `scopeFilter-round-<N>` and `regressionPass-round-<N>` records;
 - the roast reports `run.md` points to, and each round's step-back file beside its report;
 - the beads under the run's epic, including blocker beads;
 - `super-code`'s ledger and implementer reports (the ledger path is part of `super-code`'s return). They live git-ignored inside the integration worktree, so the report is written before that worktree is torn down;
@@ -51,7 +51,7 @@ After the status block come these sections, each item ending with the source it 
 |---|---|---|
 | Implemented | What landed, task by task | beads closed under the run's epic (skip `review: <id>` bookkeeping beads, label `sp:review`); `codeBuckets.completed` (run-state.md item 6 (Code buckets)); the ledger's completion lines, each with its commit range |
 | Remaining | What did not land, and why | `codeBuckets.escalated` and `pendingRetry`; parked escalations; Blocking findings still unjudged at the panel cap; the findings named in `roastDesignCapped` (when `proceeded`) and `roastCodeCapped`, the roast caps being run-state.md item 5 (Roast iteration counts); every `punch-list` entry of the `scopeFilter-round-<N>` records, tagged `out of scope (filtered)` with its recorded reason, since these never became beads; every parked graph change with its `graph-pass:` line; every `codeBuckets.worktreesKept` entry (a task worktree left in place because it holds uncommitted or unmerged work); every process in `codeBuckets.processSweep`'s survivors (a run process that outlived being killed); a goal change a resume recorded as `resumeChange:`, as follow-up scope |
-| Gotchas & surprises | Where reality diverged from the design | roast findings that changed a design decision; blocker beads that were triaged; plan-defect findings; anything that forced a nested brainstorm; `stepBack-round-<N>` redesigns, applied or proposed; `codeBuckets.slowness` items and the ledger's `Slowness:` / `Edge cut:` lines |
+| Gotchas & surprises | Where reality diverged from the design | roast findings that changed a design decision; blocker beads that were triaged; plan-defect findings; anything that forced a nested brainstorm; `stepBackCode-round-<N>` redesigns, applied or proposed; `codeBuckets.slowness` items and the ledger's `Slowness:` / `Edge cut:` lines |
 | Entrypoints | Where to start reading, in order | the task tree's dependency order and the diff against `base`: root-most module first, then its public interface, then the primary caller |
 | Smells | Code the run is uneasy about, each with a one-line "the smell" | parked findings; parked `degraded-verdict` records; `DONE_WITH_CONCERNS` implementer reports; tasks whose one review needed a fix pass, which merged without re-review; the fixes of a `regressionPass-round-<N>` record, which merged with no re-roast; the fixes of a `sweepFix:` pass, and its re-run result |
 

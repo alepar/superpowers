@@ -50,7 +50,8 @@ The schema home for `run.md`: every field's name and line format. The numbered i
 | `approvals · top-split` | `- top-split · human \| auto · <child id> LEAF \| PROMOTE, …` | 7 | super-design |
 | `approvals · design-review` | `- design-review · pending \| approved` | 7 | super-auto |
 | `approvals · coverage-round-<N>` | `- coverage-round-<N> · <each finding's disposition, marked auto \| human>`; round 1 also carries the canonical R-list and the `requirements: N · mapped: M · unmapped: K (…)` line | 7 | super-design |
-| `stepBack-round-<N>` | the line format `super-design/step-back-prompt.md` defines | 7 | super-auto (code roast); super-design (design roast) |
+| `stepBackCode-round-<N>` | the line format `super-design/step-back-prompt.md` defines | 7 | super-auto |
+| `stepBackDesign-round-<N>` | the line format `super-design/step-back-prompt.md` defines | 7 | super-design |
 | `scopeFilter-round-<N>` | `scopeFilter-round-<N>: [SEV] <location> in-scope \| punch-list — <reason>`, one line per finding | 7 | super-auto |
 | `scope-filter` | `scope-filter: <in-scope> in-scope · <punch> punch-listed`, ending each round's block | 7 | super-auto |
 | `regressionPass-round-<N>` | `regressionPass-round-<N>: <K> filed · <keys> · no re-roast` | 7 | super-auto |
@@ -121,14 +122,19 @@ The schema home for `run.md`: every field's name and line format. The numbered i
      (…)` line unioned by id from the two reviewers. Round 2 reads the R-list
      back from round 1's record rather than re-deriving it, appending only new
      `R-new` ids — existing ones are never renumbered.
-   - `stepBack-round-<N>` — the phase-5 step-back decision for that code-roast round, one
+   - `stepBackCode-round-<N>` — the phase-5 step-back decision for that code-roast round, one
      line in the format `super-design/step-back-prompt.md` defines, written before the scope
      filter runs. The full output sits beside that round's report as
      `…-roast-pr-<N>-step-back.md`, and every fix bead of the round links it:
 
      ```
-     stepBack-round-2: redesign — applied: token refresh in each handler → one refresh middleware (dissolves 3)
+     stepBackCode-round-2: redesign — applied: token refresh in each handler → one refresh middleware (dissolves 3)
      ```
+
+     The design roast's step-back records are `stepBackDesign-round-<N>`, written by `super-design`;
+     the two loops count rounds separately, so one shared key would collide. A `run.md` written
+     before this split has `stepBack-round-<N>` for both: a resume reads the code round's decision
+     from its `…-roast-pr-<N>-step-back.md` file instead.
 
      A resume replays it: a recorded step-back is not re-dispatched, and an `applied`
      redesign's spec amendment is applied from the record if it is not yet committed.

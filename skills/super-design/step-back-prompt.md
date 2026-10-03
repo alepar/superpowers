@@ -14,11 +14,12 @@ Two loops dispatch it, with different artifacts; everything else is identical:
 
 The caller saves the output verbatim beside the round's roast report, named after it with
 `-step-back` appended (`…-roast-design-2.md` → `…-roast-design-2-step-back.md`), and records one
-line per round in its run-state file:
+line per round in its run-state file, keyed by loop (`stepBackDesign` in `design` mode, `stepBackCode`
+in `code` mode, since the two loops number their rounds independently):
 
 ```
-stepBack-round-<N>: patch — <why no higher-level correction fits>
-stepBack-round-<N>: redesign — <applied | parked | declined>: <decision changed> → <replacement> (dissolves <K>)
+stepBack<Design|Code>-round-<N>: patch — <why no higher-level correction fits>
+stepBack<Design|Code>-round-<N>: redesign — <applied | parked | declined>: <decision changed> → <replacement> (dissolves <K>)
 ```
 
 `<N>` is the roast round number. The output's `clusters:` lines are machine-read by the caller:
@@ -85,7 +86,7 @@ Task tool (general-purpose), model: opus:
     ## Output (exactly these fields)
 
     decision: patch | redesign
-    summary: <one line — becomes the caller's `stepBack-round-<N>` record>
+    summary: <one line — becomes the caller's `stepBack<Design|Code>-round-<N>` record>
     pattern: <the recurrence or cluster you found, citing finding keys; "none" if none>
     clusters: <"none", or one line per cluster of findings that share one cause and one fix:
       `- <cluster-id>: <member keys, comma-separated, each `rN [SEV] <location>` verbatim> | rule: <the one fix that applies to every instance, including instances the roast did not cite>`>

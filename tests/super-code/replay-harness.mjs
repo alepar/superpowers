@@ -363,8 +363,8 @@ async function main() {
   {
     const scan = scanTemplateSpans(scriptBody)
     check(scan.clean, 'scanner ends in code state (no unterminated literal, string, or ${})')
-    check(scan.spans.length === 342,
-      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 342 — 215 after the D4 loop rewrite, +10 for the merge-evidence contract (clean-check and merge steps, mergeEvidence's diagnoses and logs, the Merge-cleanup line) and writeFence(), +17 for the failing-mergeCheck seam route (the check-fix and fix-review dispatch keys/labels, their logs and blocker findings, the re-merge, fixPrompt's check branch, checkFixReviewPrompt), +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log, −7 for batched ledger writes (per-line ledger keys and labels out, the per-task flush key, the merge agent's LEDGER step and its line templates, the runtime-slot logs, the per-site null-merge logs and the background edge audit in), +46 for early unblock and graph readiness (the split/reopen/discard dispatch keys, labels, prompts and logs, the cancel and graph-dispatch logs, the stacked/re-entry brief and implementer wording, the stacked rebase and review-bead close, the held-back and re-entry logs, the reconcile split note, the detector and Metrics fields, the resume note), +33 for proactive slowness handling (noteSlowness and its items, the hot-file raise, the graph-bound arming and its audit reason, the detector's lane fields, the act-capable edge audit: change formatting, the edge-cuts dispatch key/label/prompt, the Edge cut: lines and their elided variants, effDeps' cut key), +8 for the round-1 planning split (planPrompt's walk and three scopes, the plan-rest key/label, its logs), +1 when the brief folded into the implementer (workspaceSetup's re-entry branch and the setup/no-base findings in, the brief dispatch key/label out), +1 for the planner-null degrade log, +5 for task-worktree cleanup (the task-worktree root, the merge's cleanup command and step, the worktree-sweep log and prompt), +4 for process cleanup (the run temp root, processHygiene's command and rule, the process-sweep log), +1 for the ledger-read retry label, +1 for the detached-HEAD merge diagnosis, +3 for the short task temp root (its root, taskTmp, processHygiene's roots); update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
+    check(scan.spans.length === 350,
+      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 350 — 215 after the D4 loop rewrite, +10 for the merge-evidence contract (clean-check and merge steps, mergeEvidence's diagnoses and logs, the Merge-cleanup line) and writeFence(), +17 for the failing-mergeCheck seam route (the check-fix and fix-review dispatch keys/labels, their logs and blocker findings, the re-merge, fixPrompt's check branch, checkFixReviewPrompt), +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log, −7 for batched ledger writes (per-line ledger keys and labels out, the per-task flush key, the merge agent's LEDGER step and its line templates, the runtime-slot logs, the per-site null-merge logs and the background edge audit in), +46 for early unblock and graph readiness (the split/reopen/discard dispatch keys, labels, prompts and logs, the cancel and graph-dispatch logs, the stacked/re-entry brief and implementer wording, the stacked rebase and review-bead close, the held-back and re-entry logs, the reconcile split note, the detector and Metrics fields, the resume note), +33 for proactive slowness handling (noteSlowness and its items, the hot-file raise, the graph-bound arming and its audit reason, the detector's lane fields, the act-capable edge audit: change formatting, the edge-cuts dispatch key/label/prompt, the Edge cut: lines and their elided variants, effDeps' cut key), +8 for the round-1 planning split (planPrompt's walk and three scopes, the plan-rest key/label, its logs), +1 when the brief folded into the implementer (workspaceSetup's re-entry branch and the setup/no-base findings in, the brief dispatch key/label out), +1 for the planner-null degrade log, +5 for task-worktree cleanup (the task-worktree root, the merge's cleanup command and step, the worktree-sweep log and prompt), +4 for process cleanup (the run temp root, processHygiene's command and rule, the process-sweep log), +1 for the ledger-read retry label, +1 for the detached-HEAD merge diagnosis, +3 for the short task temp root (its root, taskTmp, processHygiene's roots), +1 for the auth-refused Merge: line, +1 for the review-base substitution log, +6 for the integration-blocked hold (the held/skip/stop logs, the hold reasons, its Merge: line and slowness item); update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
     // self-test: inject a raw backtick mid-way through the first literal's content and assert
     // the detector actually fires — a detector that cannot catch the known failure is decoration
     const [s, e] = scan.spans[0]
@@ -1363,6 +1363,11 @@ async function main() {
     out = await run({ args: liveArgs({ config: cfg({ efforts: { mechanical: 'medium', implementer: 'high' } }) }), canned })
     assertNoThrow(out)
     check(opt(out, 'bd-ready').effort === 'medium' && opt(out, 'impl:bd-101').effort === 'high' && opt(out, 'plan').effort === 'high', 'config.efforts overrides per role; unset roles keep their default', JSON.stringify([opt(out, 'bd-ready'), opt(out, 'impl:bd-101')]))
+    out = await run({ args: liveArgs({ config: { concurrency: 4 } }), canned })
+    assertNoThrow(out)
+    check(opt(out, 'plan').model === 'opus' && opt(out, 'impl:bd-101').model === 'sonnet' && opt(out, 'bd-ready').model === 'sonnet' && opt(out, 'final-review').model === 'opus', 'a live run with no config.models uses the tiering table, not a crash', JSON.stringify([opt(out, 'plan'), opt(out, 'impl:bd-101')]))
+    out = await run({ args: liveArgs({ config: cfg({ models: { implementer: 'opus' } }) }), canned })
+    check(opt(out, 'impl:bd-101').model === 'opus' && opt(out, 'review:bd-101').model === 'sonnet', 'a partial config.models overrides only the roles it names')
     const dry = await run({ args: extractJsonBlocks()[0] })
     check(dry.trace.every(t => t.opts.model === 'haiku' && !('effort' in t.opts)), 'dryRun stubs: haiku, no effort override')
   }
@@ -1654,6 +1659,21 @@ async function main() {
     const merge = promptOf(out.trace, 'merge:bd-101')
     check(!!merge && merge.includes('authRefused') && merge.includes('merge-base SHA of the failed attempt'), 'merge prompt maps refusals to authRefused and stamps blockers with the merge-base', merge?.slice(-400))
     assertBucketsDisjoint(out.result)
+    const conflicted = await run({ args: liveArgs(), canned: oneTaskCanned({ 'merge:bd-101': { id: 'bd-101', merged: false, rebaseConflictFiles: 2, authRefused: 'python3 heredoc rewriting conflicted hunks' } }) })
+    check(taskLedgerLine(conflicted.trace, 'bd-101', /^Merge: /) === 'Merge: bd-101 — rebase conflict: 2 files · seam-review none · check none → auth-refused', 'a refused merge still writes its Merge: line, conflict count included', JSON.stringify(taskLedgerLine(conflicted.trace, 'bd-101', /^Merge: /)))
+  }
+
+  scenario('review base: a branch rebased after setup gets its base recomputed by the reviewer, and the chain adopts it')
+  {
+    const out = await run({ args: liveArgs(), canned: oneTaskCanned({
+      'review:bd-101': { id: 'bd-101', status: 'NEEDS_FIX', finding: 'x', base: SHA('9') } }) })
+    assertNoThrow(out)
+    const rp = promptOf(out.trace, 'review:bd-101') ?? ''
+    check(/BASE CHECK[\s\S]*merge-base --is-ancestor[\s\S]*stack: [\s\S]*plus base: the \[BASE\] you used/.test(rp), 'the reviewer checks the carried base is an ancestor and recomputes it when not', rp)
+    check(out.logs.some(l => l.includes('not an ancestor') && l.includes(SHA('9'))), 'the substitution is logged')
+    check((promptOf(out.trace, 'fix:bd-101') ?? '').includes(`[BASE] = ${SHA('9')}`), 'the fix pass uses the recomputed base')
+    const same = await run({ args: liveArgs(), canned: oneTaskCanned({ 'review:bd-101': { id: 'bd-101', status: 'CLEAN', base: SHA('a') } }) })
+    check(!same.logs.some(l => l.includes('not an ancestor')), 'an unchanged base logs nothing')
   }
 
   scenario('detector persistence: every completed round writes a Detector: ledger line')
@@ -1954,16 +1974,24 @@ async function main() {
     const dirty = await run({ args: liveArgs({ config: cfg({ mergeCheck: CHECK }) }), canned: oneTaskCanned({
       'merge:bd-101': { id: 'bd-101', merged: false, check: 'none', dirty: ['?? evidence/host-recovery-validation/report.md'] }, ...tail }) })
     assertNoThrow(dirty)
-    check(JSON.stringify(dirty.result?.escalated) === '["bd-101"]' && !dirty.result?.completed.length, 'dirty worktree: no merge, blocker path', JSON.stringify(dirty.result))
-    check(/is dirty/.test(promptOf(dirty.trace, 'missing-blocker:bd-101') ?? '') && (promptOf(dirty.trace, 'missing-blocker:bd-101') ?? '').includes('evidence/host-recovery-validation/report.md'), 'dirty worktree: the bead names the stray paths', promptOf(dirty.trace, 'missing-blocker:bd-101'))
-    check(taskLedgerLine(dirty.trace, 'bd-101', /^Merge: .*→ blocker$/)?.endsWith('check none → blocker'), 'dirty worktree: Merge: line says check none → blocker')
+    check(dirty.result?.stopReason === 'integration-blocked' && !dirty.result?.completed.length && !dirty.result?.escalated.length, 'dirty worktree: no merge, no quarantine; the run stops integration-blocked', JSON.stringify(dirty.result))
+    check(!dirty.trace.some(t => /^(missing-blocker|triage|notify):/.test(t.label)), 'dirty worktree: no blocker bead, triage or notify')
+    check(taskLedgerLine(dirty.trace, 'bd-101', /^Merge: /)?.endsWith('check none → held: integration worktree .worktrees/' + BRANCH + ' dirty: ?? evidence/host-recovery-validation/report.md') ?? false, 'dirty worktree: the Merge: line names the stray paths', taskLedgerLine(dirty.trace, 'bd-101', /^Merge: /))
     check(!dirty.trace.some(t => t.label === 'fix:bd-101:check'), 'dirty worktree: never routed to a merge-check fix')
+    check((dirty.result?.slowness ?? []).some(x => /integration blocked/.test(x)), 'dirty worktree: surfaced once in slowness')
+
+    const two = await run({ args: liveArgs({ config: cfg({ mergeCheck: CHECK }) }), canned: manyTaskCanned(['bd-101', 'bd-102'], {
+      'merge:bd-101': { id: 'bd-101', merged: false, check: 'none', dirty: [' M friction.md'] },
+      'merge:bd-102': { id: 'bd-102', merged: false, check: 'none', dirty: [' M friction.md'] } }) })
+    assertNoThrow(two)
+    check((two.counts['merge:bd-101'] ?? 0) + (two.counts['merge:bd-102'] ?? 0) === 1, 'one dirty report holds the lane: the second merge is never dispatched', JSON.stringify(two.counts))
+    check(two.result?.stopReason === 'integration-blocked' && !two.trace.some(t => /^(missing-blocker|triage):/.test(t.label)), 'one stop for the whole run, no per-task triage', JSON.stringify(two.result?.stopReason))
 
     const detached = await run({ args: liveArgs({ config: cfg({ mergeCheck: CHECK }) }), canned: oneTaskCanned({
       'merge:bd-101': { id: 'bd-101', merged: false, check: 'none', detachedHead: 'detached at a4688e9' }, ...tail }) })
     assertNoThrow(detached)
-    check(JSON.stringify(detached.result?.escalated) === '["bd-101"]' && !detached.result?.completed.length, 'detached integration HEAD: no merge, blocker path', JSON.stringify(detached.result))
-    check(/not on .*detached at a4688e9.*no bead was closed/.test(promptOf(detached.trace, 'missing-blocker:bd-101') ?? ''), 'detached integration HEAD: the bead names the state', promptOf(detached.trace, 'missing-blocker:bd-101'))
+    check(detached.result?.stopReason === 'integration-blocked' && !detached.result?.completed.length && !detached.result?.escalated.length, 'detached integration HEAD: no merge, run stops integration-blocked', JSON.stringify(detached.result))
+    check(/not on .*detached at a4688e9/.test(taskLedgerLine(detached.trace, 'bd-101', /^Merge: /) ?? ''), 'detached integration HEAD: the Merge: line names the state')
     const mp = promptOf(detached.trace, 'merge:bd-101') ?? ''
     check(/BRANCH CHECK[\s\S]*symbolic-ref -q HEAD[\s\S]*PRE-MERGE CLEAN CHECK/.test(mp) && /git branch -f/.test(mp) && /git update-ref/.test(mp), 'the merge prompt checks the branch first and forbids ref repair')
 
@@ -2051,6 +2079,7 @@ async function main() {
       'Merge: bd-101 — rebase clean · seam-review none · check fail→fixed',
       'Merge: bd-102 — rebase conflict: 3 files · seam-review fixed · check pass',
       'Merge: bd-103 — rebase conflict: 2 files · seam-review cleared · check fail → blocker',
+      'Merge: bd-104 — rebase conflict: 1 files · seam-review none · check none → auth-refused',
       'Task 1 (bd-101): complete (commits aaaaaaa..bbbbbbb, review clean)',
       'Task 2 (bd-102): fix pass FIXED (finding A; commits ccccccc..ddddddd)',
       'Task 2 (bd-102): complete (commits aaaaaaa..eeeeeee, fix pass)',
@@ -2067,7 +2096,7 @@ async function main() {
     const out = await run({ args: liveArgs(), canned: manyTaskCanned(['bd-101', 'bd-102'], { 'read-ledger:finish': { text: knownLedger } }) })
     assertNoThrow(out)
     const lines = extractLedgerLines(promptOf(out.trace, 'ledger-append:metrics'))
-    check(lines[0] === 'Metrics: merges 2 · merge-failed 1 · rebase-conflicts 2 · seam-reviews 2 (fixed 1) · check-fails 2 (fixed 1)', 'line 1: success-path merges only; conflicts, seam reviews and check failures on both paths', lines[0])
+    check(lines[0] === 'Metrics: merges 2 · merge-failed 2 · rebase-conflicts 3 · seam-reviews 2 (fixed 1) · check-fails 2 (fixed 1)', 'line 1: success-path merges only; conflicts, seam reviews and check failures on both paths', lines[0])
     check(lines[1] === 'Metrics: completions — review clean 1 · after fix pass 2 · parked 1 · re-entry closes 1 · dispatched early 1 · cancelled 1', 'line 2: completion kinds (parked counted within fix pass), early dispatches and cancellations', lines[1])
     check(lines[2] === 'Metrics: fix-pass — entered 4 · FIXED 3 · BLOCKED 1', 'line 3: every fix-pass line counted, a retried task twice', lines[2])
     check(lines[3] === 'Metrics: ledger-check ok · append-failed 0 · append-retried 0', "line 4: M (2) matches this run's completed.size (2)", lines[3])

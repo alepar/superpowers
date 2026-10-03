@@ -540,7 +540,7 @@ report. The report file is the only cross-iteration state. **Three of its sectio
 **Step back before fixing.** Every round whose report has confirmed findings, before step 1,
 dispatch `./step-back-prompt.md` (mode `design`, model opus, fresh context, never an agent that
 does the fixes) with every roast report of this loop so far, the settled tree, and every prior
-step-back record. Save its output beside the report and record `stepBack-round-<N>` in the
+step-back record. Save its output beside the report and record `stepBackDesign-round-<N>` in the
 run-state file, both as the template specifies. On `patch`, continue with step 1. On `redesign`:
 interactive (§Gates by Mode), present it with its recommendation and let the human choose;
 unattended, apply it when its `scope` is `inside`, and when it is `outside` record it as `parked`,
@@ -701,7 +701,7 @@ Write these, each as it happens:
 | each roast report path | `super-roast` returns it |
 | the roast round count | incremented **per round**, before the next round starts |
 | a parked escalation, beyond-cap item, verdict qualifier, or graph change | the round or pass that produced it |
-| `stepBack-round-<N>: patch \| redesign — <one line>` (format: `./step-back-prompt.md`), one line per round, appended | that round's step-back decision is made |
+| `stepBackDesign-round-<N>: patch \| redesign — <one line>` (format: `./step-back-prompt.md`), one line per round, appended | that round's step-back decision is made |
 | the caller's phase token, if it supplied one for this stage | entering that stage |
 | **each top-split decision, asked or applied, with the shape it covers** | the moment it is made |
 | `capped-blocking`, with the unresolved Blocking ids, the extension report, and stopped or proceeded | the extension round ends Blocking |

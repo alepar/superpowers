@@ -33,7 +33,8 @@ approvals
 approvals · top-split
 approvals · design-review
 approvals · coverage-round-<N>
-stepBack-round-<N>
+stepBackCode-round-<N>
+stepBackDesign-round-<N>
 scopeFilter-round-<N>
 scope-filter
 regressionPass-round-<N>

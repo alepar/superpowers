@@ -26,11 +26,14 @@ if (!epicId || !integrationBranch || !config || !skillsRoot) throw new Error('co
 log('coordinator: epic=' + epicId + ' branch=' + integrationBranch + ' skillsRoot=' + skillsRoot + ' dryRun=' + !!dryRun)
 // Model and reasoning effort per role: mechanical dispatches run low, planner/triage/final review
 // high, implementer and reviewer inherit the session. `config.efforts` overrides per role.
+// Model per role defaults to SKILL.md's tiering table; `config.models` overrides per role.
+const MODEL_DEFAULTS = { planner: 'opus', triage: 'opus', finalReview: 'opus', implementer: 'sonnet', reviewer: 'sonnet', mechanical: 'sonnet' }
 const EFFORT_DEFAULTS = { mechanical: 'low', planner: 'high', triage: 'high', finalReview: 'high' }
 const tier = role => {
   if (dryRun) return { model: 'haiku' }
+  const model = (config.models && config.models[role]) || MODEL_DEFAULTS[role]
   const effort = (config.efforts && config.efforts[role]) || EFFORT_DEFAULTS[role]
-  return effort ? { model: config.models[role], effort } : { model: config.models[role] }
+  return effort ? { model, effort } : { model }
 }
 if (config.models && config.models.fixEscalation) log('config.models.fixEscalation is ignored — there are no fix-escalation rounds (one fix pass per task, on the implementer tier)')
 const sddScripts = `${skillsRoot}/subagent-driven-development/scripts`
@@ -409,6 +412,10 @@ if (resumed.size) log(`resume: reconstructed from ${ledgerPath} — ${completed.
 // ready set, root open), 'stalled' (no-progress guard), 'ready-unavailable' / 'plan-unavailable'
 // (outage after the bounded null-retry — never completion).
 let stopReason = null
+// A dirty or detached integration worktree blocks every merge, not one task: the first merge that
+// reports it holds the merge lane for the rest of the run (no blocker bead, no triage), and the run
+// stops at the round boundary with 'integration-blocked' for the caller to clear and relaunch.
+let integrationBlocked = null
 // The mapping is cumulative, so it is retained across rounds and a round whose ready ids are all
 // mapped skips the planner. In memory only: a restarted run plans on its first round.
 let lastPlanned = null
@@ -583,6 +590,7 @@ while (true) {
     // `seamOutcome` feeds the `Merge:` ledger line's `seam-review` field — `none` unless the seam
     // branch below runs, `cleared` if the scoped review came back CLEAN, `fixed` if its one fix ran.
     let seamOutcome = 'none'
+    if (integrationBlocked) { log(`merge:${r.id} not attempted — the merge lane is held: ${integrationBlocked}; ${r.id} stays unsettled for the relaunch`); return }
     let m = await dispatch(() => mergePrompt(r, integrationBranch, integrationWorktree, blockerBeadOf.get(r.id), mergeCheckCommand, mergeLedger(r, 'none', false)), `merge:${r.id}`,
       { label: `merge:${r.id}`, phase: 'Integrate', ...tier('reviewer'), schema: MERGE })
     // Post-rebase seam check: a rebase onto sibling changes in the same files gets one scoped seam
@@ -614,18 +622,30 @@ while (true) {
     if (!m) { log(`merge for ${r.id} unavailable (null dispatch) — no merge happened; leaving ${r.id} unsettled this round`); return }
     // The merge itself was refused by the permission layer — the command never ran, so this is
     // neither a failed merge nor blocker-worthy. Log, quarantine, continue; see handleAuthRefusal.
-    if (!m.merged && m.authRefused) return () => handleAuthRefusal(r, m.authRefused)
+    // A refused merge still gets its `Merge:` line (an unresolved rebase conflict counts), ending
+    // `→ auth-refused`, so Metrics see every attempt.
+    const authMerge = mm => { noteLedger(r.id, `Merge: ${r.id} — rebase ${mm.rebaseConflictFiles ? 'conflict: ' + mm.rebaseConflictFiles + ' files' : 'clean'} · seam-review ${seamOutcome} · check none → auth-refused`); return () => handleAuthRefusal(r, mm.authRefused) }
+    if (!m.merged && m.authRefused) return authMerge(m)
+    const holdLane = mm => {
+      const held = typeof mm.detachedHead === 'string' && mm.detachedHead.trim() ? `integration worktree ${integrationWorktree} not on ${integrationBranch} (${mm.detachedHead.trim()})`
+        : Array.isArray(mm.dirty) && mm.dirty.length ? `integration worktree ${integrationWorktree} dirty: ${mm.dirty.join('; ')}` : null
+      if (!held) return false
+      integrationBlocked = held
+      log(`INTEGRATION BLOCKED at merge:${r.id} — ${held}. No merge was attempted and no bead closed; the merge lane is held for the rest of this run (no per-task blocker beads), no new task starts, and the run stops at the round boundary with stopReason 'integration-blocked'`)
+      noteSlowness(`integration blocked: ${held} → merge lane held; clear it and relaunch`)
+      noteLedger(r.id, `Merge: ${r.id} — rebase ${mm.rebaseConflictFiles ? 'conflict: ' + mm.rebaseConflictFiles + ' files' : 'clean'} · seam-review ${seamOutcome} · check none → held: ${held}`)
+      return true
+    }
+    if (holdLane(m)) return
     // A failing merge check is usually a seam in a file this task didn't touch. One merge-check fix
     // scoped to the build errors, one review of it, then the check re-runs — this is the task's one seam
     // fix, so a prior same-file seam fix goes straight to the blocker path.
     let checkFixed = false
     let blockerFinding
     let mergeEvidenceBad = false
-    // Merge evidence, fail closed: a detached integration HEAD, a dirty worktree, a non-zero merge exit, or no MERGE_HEAD is a merge
+    // Merge evidence, fail closed (a dirty or detached worktree is held above): a non-zero merge exit, or no MERGE_HEAD is a merge
     // failure, and a `merged`/`check` result without that evidence is not trusted.
     const mergeEvidence = mm => {
-      if (typeof mm.detachedHead === 'string' && mm.detachedHead.trim()) return `the integration worktree ${integrationWorktree} is not on ${integrationBranch} (git symbolic-ref HEAD: ${mm.detachedHead.trim()}), so the merge was not attempted and no bead was closed — check out ${integrationBranch} there (fast-forwarding it to any merge commits made on the detached HEAD) before relaunching`
-      if (Array.isArray(mm.dirty) && mm.dirty.length) return `the integration worktree ${integrationWorktree} is dirty, so the merge was not attempted (files left in place for a human; nothing was deleted except byte-identical copies): ${mm.dirty.join('; ')}`
       const claimsMerge = mm.merged || mm.check === 'pass' || mm.check === 'fail'
       if (claimsMerge && (mm.mergeExit !== 0 || mm.mergeHead !== true)) return `the merge agent reported ${mm.merged ? 'merged' : `check ${mm.check}`} without a successful merge (mergeExit ${mm.mergeExit ?? 'missing'}, MERGE_HEAD ${mm.mergeHead === true ? 'present' : mm.mergeHead === false ? 'absent' : 'not reported'}) — a refused or no-op merge; any check result is void`
       if (!mm.merged && typeof mm.mergeExit === 'number' && (mm.mergeExit !== 0 || mm.mergeHead === false)) return `git merge --no-ff --no-commit ${taskBranch(r.id)} failed in ${integrationWorktree} (exit ${mm.mergeExit}, MERGE_HEAD ${mm.mergeHead ? 'present' : 'absent'})`
@@ -665,7 +685,8 @@ while (true) {
             m = await dispatch(() => mergePrompt({ ...r, seamCleared: true }, integrationBranch, integrationWorktree, blockerBeadOf.get(r.id), mergeCheckCommand, mergeLedger(r, seamOutcome, true)), `merge:${r.id}:check-fixed`,
               { label: `merge:${r.id}:check-fixed`, phase: 'Integrate', ...tier('reviewer'), schema: MERGE })
             if (!m) { log(`merge for ${r.id} after its merge-check fix unavailable (null dispatch) — no merge happened; leaving ${r.id} unsettled this round`); return }
-            if (!m.merged && m.authRefused) return () => handleAuthRefusal(r, m.authRefused)
+            if (!m.merged && m.authRefused) return authMerge(m)
+            if (holdLane(m)) return
             const again = mergeEvidence(m)
             if (again) { log(`merge:${r.id}:check-fixed — ${again}; merge failure`); warnRejectedAppend(m); blockerFinding = again; mergeEvidenceBad = true; m = { ...m, merged: false } }
             else if (m.merged) checkFixed = true
@@ -921,6 +942,7 @@ while (true) {
   }
 
   const runTask = async (id, { reentry = false } = {}) => {
+    if (integrationBlocked) { log(`${id}: not started — the merge lane is held (${integrationBlocked})`); return }
     const att = startAttempt(id, reentry)
     let r = null
     let integrate = false
@@ -1188,6 +1210,11 @@ while (true) {
     pendingAudits.push(runEdgeAudit(edgeAuditsRun, roundNo, `the dispatched frontier was ${dispatched.size} against a cap of ${cap} for the second consecutive round, so either the graph is nearly drained or its depth, not the cap, is bounding throughput`))
   }
 
+  if (integrationBlocked) {
+    stopReason = 'integration-blocked'
+    log(`stopping: the merge lane is held — ${integrationBlocked}. Clear it (commit or remove the caller's own stray files, or check ${integrationBranch} out again, fast-forwarding it to any merge commits made on a detached HEAD) and relaunch; the held tasks re-enter from bd`)
+    break
+  }
   // No-progress guard: stop when a round merged nothing, closed no epic, quarantined nothing new and
   // RESOLVEd nothing new. A first RESOLVE counts as progress so its retry gets to run; a grown
   // `escalated` counts because it already guarantees termination. closedThisRun lags one round, which
@@ -1242,7 +1269,7 @@ if (!metricsLedger) {
   const metricsLines = (metricsLedger.text || '').split('\n').map(l => l.trim()).filter(Boolean)
   // `Merge:` lines, raw, on BOTH paths. `M` counts success-path lines only: `completed` never holds
   // a failed merge's id, so a both-paths count would mismatch ledger-check on every failed merge.
-  const MERGE_METRICS_RE = /^Merge:\s+\S+\s+—\s+rebase\s+(clean|conflict:\s*\d+\s*files?)\s+·\s+seam-review\s+(none|cleared|fixed)\s+·\s+check\s+(pass|fail→fixed|fail|none)(\s+→\s+blocker)?$/
+  const MERGE_METRICS_RE = /^Merge:\s+\S+\s+—\s+rebase\s+(clean|conflict:\s*\d+\s*files?)\s+·\s+seam-review\s+(none|cleared|fixed)\s+·\s+check\s+(pass|fail→fixed|fail|none)(\s+→\s+(?:blocker|auth-refused|held:.*))?$/
   let mMerges = 0, mMergeFailed = 0, mConflicts = 0, mSeamReviews = 0, mSeamFixed = 0, mCheckFails = 0, mCheckFixed = 0
   let cClean = 0, cFixPass = 0, cParked = 0, cReentry = 0, cStacked = 0, cCancelled = 0
   let fEntered = 0, fFixed = 0, fBlocked = 0
@@ -1250,7 +1277,8 @@ if (!metricsLedger) {
     const mm = MERGE_METRICS_RE.exec(line)
     if (mm) {
       const [, rebase, seam, chk, blocker] = mm
-      if (blocker) mMergeFailed++; else mMerges++
+      if (!blocker) mMerges++
+      else if (!/held:/.test(blocker)) mMergeFailed++   // a held merge was never attempted: neither
       if (rebase.startsWith('conflict')) mConflicts++
       if (seam !== 'none') { mSeamReviews++; if (seam === 'fixed') mSeamFixed++ }
       if (chk.startsWith('fail')) { mCheckFails++; if (chk === 'fail→fixed') mCheckFixed++ }
@@ -1440,7 +1468,7 @@ function taskReviewPrompt(im, planPath, art) {
   // One light review per task; BASE is the base the coordinator carried. The reviewer writes its
   // review to art.review for the fix pass and does not re-run tests.
   const specs = testPathspecs.map(p => `'${p}'`).join(' ')
-  return `You are the task reviewer for task ${im.id}. Read ${tpl.reviewer} and follow it, with these parameter values: [TASK_ID] = ${im.id}; [N] = ${im.n}; [WORKTREE] = ${im.branch}; [PLAN_FILE] = ${planPath}; [BASE] = ${im.base}; [SDD_SCRIPTS] = ${sddScripts}; [BRIEF_FILE] = ${art.brief}; [REPORT_FILE] = ${art.report}; [DIFF_FILE] = ${art.diff('initial')}; [REVIEW_FILE] = ${art.review}; [TEST_PATHSPECS] = ${specs}. Return id, status (CLEAN, NEEDS_FIX, or INVALID), finding, and minors as the template's Output section describes.`
+  return `You are the task reviewer for task ${im.id}. Read ${tpl.reviewer} and follow it, with these parameter values: [TASK_ID] = ${im.id}; [N] = ${im.n}; [WORKTREE] = ${im.branch}; [PLAN_FILE] = ${planPath}; [BASE] = ${im.base}; [SDD_SCRIPTS] = ${sddScripts}; [BRIEF_FILE] = ${art.brief}; [REPORT_FILE] = ${art.report}; [DIFF_FILE] = ${art.diff('initial')}; [REVIEW_FILE] = ${art.review}; [TEST_PATHSPECS] = ${specs}. BASE CHECK, before the template's first step: in ${im.branch} run \`git merge-base --is-ancestor ${im.base} HEAD\`. If it fails, the branch was rebased after setup and ${im.base} is no longer its base: recompute it — the newest first-parent \`stack: \` merge (\`git log --first-parent --grep='^stack: ' -n 1 --format=%H HEAD\`), else \`git merge-base ${integrationBranch} HEAD\` — and use that as [BASE] everywhere. Return id, status (CLEAN, NEEDS_FIX, or INVALID), finding, and minors as the template's Output section describes, plus base: the [BASE] you used.`
 }
 
 function fixPrompt(r, finding, art, kind) {
@@ -1791,6 +1819,12 @@ async function reviewAndFix(im, planPath, art, isCancelled = () => false) {
   // this round"; the next ready query re-surfaces the id and the idempotent workspace setup re-enters.
   const reviewRes = await validReview(() => taskReviewPrompt(im, planPath, art), `review:${im.id}`)
   if (!reviewRes) return null
+  // A branch rebased after setup has a new base; the reviewer recomputed it, and the fix pass and the
+  // merge (stacked --onto, seam check) use it from here.
+  if (typeof reviewRes.base === 'string' && /^[0-9a-f]{7,40}$/.test(reviewRes.base) && im.base && !reviewRes.base.startsWith(im.base) && !im.base.startsWith(reviewRes.base)) {
+    log(`review:${im.id} — ${im.base} is not an ancestor of the branch head (rebased after setup); the review used the recomputed base ${reviewRes.base}, and the rest of the chain does too`)
+    im.base = reviewRes.base
+  }
   const minors = [...new Set(reviewRes.minors ?? [])]
   const rv = { ...stamp(reviewRes), minors }
   if (rv.status === 'BLOCKED') return rv

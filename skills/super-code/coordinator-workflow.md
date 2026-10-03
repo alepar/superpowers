@@ -307,9 +307,12 @@ Done by the main session, not the Workflow:
    over-admitting cap would park merges behind implementers. `config.concurrency` defaults to 16;
    pass a smaller value only to throttle further (budget, or a repo where many concurrent
    worktrees hurt).
-4. Run step 5's permission check, then launch the Workflow (background) from the shipped script:
-   `Workflow({scriptPath: '<skillsRoot>/super-code/coordinator.js', args})`, with the args from
-   "Coordinator contract" above. Progress is visible via `/workflows`. The main session stays on
+4. Run step 5's permission check, then launch the Workflow (background) from the shipped script.
+   The Workflow tool refuses a `scriptPath` in the plugin cache ("must be a script path this tool
+   returned, or a file you can already read"), so first copy it, byte for byte, to your scratchpad
+   (or the integration workspace, which is git-ignored) and launch the copy:
+   `Workflow({scriptPath: '<copy>/coordinator.js', args})`, with the args from "Coordinator
+   contract" above. Relaunches reuse that copy; make a fresh one only after a definitions switch. Progress is visible via `/workflows`. The main session stays on
    the run and does not end its turn at launch (SKILL.md's "Unattended runs"): it appends
    friction-log entries from the coordinator's log (Finish, "Friction capture"), and when the
    Workflow returns it reads `stopReason` — `root-closed`, `ready-drained` or `stalled` go on to
@@ -908,7 +911,12 @@ is safe because a `bd ready` batch is mutually independent by definition):
    lines go on a `Cleanup: <id> — …` ledger line, which the Resume and Metrics parsers skip. An
    already-merged re-entry close runs the same script, and a cancelled task's discard runs it with
    `--discard` (force, because that work is abandoned by design).
-6. Blocker path: a dirty integration worktree or a failed / no-op merge files the bead through the
+6. Held, not blocked: a dirty integration worktree, or one not on its branch, is a run-wide
+   condition, so the first merge that reports it (`dirty` / `detachedHead`) holds the merge lane:
+   no blocker bead, no triage, a `Merge: … → held: <cause>` ledger line, no further merge or new
+   task this run, and `stopReason: 'integration-blocked'` at the round boundary. One cause once cost
+   six triage passes and six blocker beads when it was triaged per task.
+   Blocker path: a failed / no-op merge files the bead through the
    coordinator's missing-bead fallback, with the diagnosis. Otherwise: if the conflict resolution fails, the merge agent files a blocker bead
    (label-only rule, as in every filing prompt) stating the merge-base SHA and the conflicted
    files. If the merge check still fails after its fix, or the fix reports BLOCKED, or its review
@@ -922,7 +930,9 @@ is safe because a `bd ready` batch is mutually independent by definition):
 Merge: <bead-id> — rebase <clean | conflict: N files> · seam-review <none | cleared | fixed> · check <pass | fail→fixed | fail | none>
 ```
 
-with a trailing ` → blocker` on the failure path. On success the merge agent appends it itself,
+with a trailing ` → blocker` on the failure path, or ` → auth-refused` when the permission layer
+refused the merge agent's commands (written before the quarantine, so an unresolved rebase conflict
+still counts). On success the merge agent appends it itself,
 with the completion line, as the last step of its dispatch (`mergePrompt`'s LEDGER step: the
 coordinator hands it both lines with `<REBASE>` and `<RANGE>` left for the values only it
 measures, and leaves out the completion line for a parked task, whose line carries fixer free
@@ -1086,8 +1096,8 @@ Metrics: ledger-check <ok | M≠completed: M vs N> · append-failed K · append-
 Stub keys: `read-ledger:finish` and `ledger-append:metrics`. It runs even on a run that merged
 nothing. A null re-read writes `Metrics: UNAVAILABLE …` lines instead of zero counts.
 
-- `M` counts success-path `Merge:` lines (no trailing ` → blocker`); `Mf` counts the ` → blocker`
-  lines. `C`, `S`, `F` come from `Merge:` lines on both paths; `G` counts lines whose check failed
+- `M` counts success-path `Merge:` lines (no trailing marker); `Mf` counts the ` → blocker` and
+  ` → auth-refused` lines. `C`, `S`, `F` come from `Merge:` lines on both paths; `G` counts lines whose check failed
   at least once (`fail` and `fail→fixed`), `H` the `fail→fixed` ones.
 - `A`/`B`/`P`/`R` count `complete` lines by variant: `review clean`, `fix pass` (parked included),
   `parked`, `already merged`. `E` counts `stacked on` lines (tasks dispatched on an unmerged
@@ -1253,7 +1263,7 @@ and workspace scripts. Kept from this skill's predecessor:
 
 **Canonical, not illustrative:** `./coordinator.js` is the executable Workflow script every dryRun
 baseline in this document was recorded against, and the one the coordinator launches
-(`Workflow({scriptPath: '<skills-root>/super-code/coordinator.js', args})`). Adapt names/prompts to
+(`Workflow({scriptPath: '<copy>/coordinator.js', args})` on a scratchpad copy — see Pre-flight step 4). Adapt names/prompts to
 the epic; the structure is not a sketch. Every `agent()` call carries the real I/O; the script only
 sequences. Model and effort are set per role from `config.models` / `config.efforts`.
 

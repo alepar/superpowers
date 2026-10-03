@@ -21,7 +21,8 @@ One append-only file per run, one line per event, written **the moment something
 - [<date> <phase/round>] <what happened> — <why it might be upstream-worthy>
 ```
 
-Locations: super-auto run → `<run-dir>/friction.md`; standalone super-code run →
+Locations: super-auto run → `<run-dir>/friction.md` (while its super-code Workflow runs, a git-ignored
+`friction-pending.md` in super-code's workspace, folded into `friction.md` when it returns); standalone super-code run →
 `<workspace>/friction.md` beside the ledger; standalone super-design run →
 `<artifact-directory>/friction.md`. Nested super-* invocations append to the enclosing run's
 log; a standalone super-roast skips it (its report is already the feedback channel). **Durability
@@ -51,7 +52,7 @@ append. A standalone run is its own outermost.
    Also gather, for `## Run metrics`:
    - every roast report's `seat-agreement:` line, together with that report's mode, iteration,
      and its `independence:` line (the main confounder when comparing agreement across runs);
-   - the ledger's `Merge:` lines (both the success path and the `→ blocker` failure path) and
+   - the ledger's `Merge:` lines (the success path and the `→ blocker` / `→ auth-refused` failure paths) and
      the four-line `Metrics:` block;
    - each coverage round's `requirements:` line and each fix round's `scope-filter:` line from
      `run.md`;
