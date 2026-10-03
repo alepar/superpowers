@@ -26,6 +26,7 @@ The schema home for `run.md`: every field's name and line format. The numbered i
 | `roast-design` | `roast-design: <report path>, <report path>, …` | 3 | super-design |
 | `roast-code` | `roast-code: <report path>, <report path>, …` | 3 | super-auto |
 | `skillSource` | `skillSource: <abs skills path> @ <sha>[+dirty:<hash>] (<version>)`, only after a mid-run definitions switch or a pre-flight that proceeded on the updated cache | 3 | super-auto |
+| `codeMechanism` | `codeMechanism: Workflow \| ordinary-subagents`, chosen from the calling session's loaded tools, updated before a code re-entry when capability changes | 3 | super-auto |
 | `migrated` | `migrated: <recorded field or ledger line> → <what it maps to now, or dropped>`, beside `skillSource` | 3 | super-auto |
 | `feedback` | `feedback: <issue-url>`, optional: present only when upstream-feedback filed an issue | 3 | super-auto, from `superpowers:upstream-feedback` |
 | `friction` | `friction: <N> events \| none recorded` | 3 | super-auto (SKILL.md §Phase 6 — report step 4) |
@@ -61,7 +62,7 @@ The schema home for `run.md`: every field's name and line format. The numbered i
 
 ## Required contents
 
-`run.md` holds the fields in §Field table as they become known. At creation, before phase 1, it holds `flags`, `phase`, `idea`, `branch` and `base` (the caller created the workspace in pre-flight); each other field is added when the phase that produces it returns. Omitted is not the same as empty: a resume reading no `epic:` line knows phase 1 never got that far, while an `epic:` with a blank value is a malformed file. Every field is read back on resume and trusted, so dropping one lets a resume redo work or reverse a decision already made.
+`run.md` holds the fields in §Field table as they become known. At creation, before phase 1, it holds `flags`, `phase`, `codeMechanism`, `idea`, `branch` and `base` (the caller created the workspace in pre-flight); each other field is added when the phase that produces it returns. Omitted is not the same as empty: a resume reading no `epic:` line knows phase 1 never got that far, while an `epic:` with a blank value is a malformed file. Every field is read back on resume and trusted, so dropping one lets a resume redo work or reverse a decision already made.
 
 1. **Flags** — `planOneShot`, `skipPlanRoast`, `skipCodeRoast`, `autonomous`, asked once per SKILL.md §Inputs and recorded so a resume never re-asks: re-asking would let a resume flip a decision the run is partway through acting on.
 
@@ -194,6 +195,7 @@ code roast.
 
 flags: planOneShot=false skipPlanRoast=false skipCodeRoast=false autonomous=true
 phase: roast-code
+codeMechanism: ordinary-subagents
 
 idea: add a per-tenant rate limiter to the public API
 spec: 2026-07-31-per-tenant-rate-limiter-design.md
