@@ -67,8 +67,9 @@ if [ -f "$ledger" ]; then
   ledger_keys=$(awk -F ' · ' 'NF >= 4 && $3 == "flag-sweep" { gsub(/^ +| +$/, "", $4); print $4 }' "$ledger")
 fi
 
-printf '%s\n' "$rows" | awk -F '\t' -v ledgerKeys="$ledger_keys" '
-  BEGIN { n = split(ledgerKeys, lk, "\n"); for (i = 1; i <= n; i++) if (lk[i] != "") swept[lk[i]] = 1 }
+# The keys go through the environment: BSD awk rejects a newline inside a -v value.
+printf '%s\n' "$rows" | LEDGER_KEYS="$ledger_keys" awk -F '\t' '
+  BEGIN { n = split(ENVIRON["LEDGER_KEYS"], lk, "\n"); for (i = 1; i <= n; i++) if (lk[i] != "") swept[lk[i]] = 1 }
   $1 == "N" { known[$2] = 1; next }
   $1 == "P" { if (!(($2, $3) in seenP)) { seenP[$2, $3] = 1; np[$2]++; par[$2, np[$2]] = $3 }; next }
   $1 == "B" { nb[$2]++; blk[$2, nb[$2]] = $3; nE++; eDep[nE] = $2; eBlk[nE] = $3; eOk[nE] = $4; next }

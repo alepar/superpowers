@@ -2,9 +2,9 @@
 # Remove a finished task's worktree and branch, after stopping the processes started from it.
 #
 # Usage:
-#   bash remove-task-worktree [--keep-branch] WORKTREE BRANCH INTEGRATION_BRANCH
-#   bash remove-task-worktree --discard WORKTREE BRANCH
-#   bash remove-task-worktree --sweep ROOT INTEGRATION_BRANCH [BRANCH...]
+#   bash remove-task-worktree [--keep-branch] [--tmp DIR] WORKTREE BRANCH INTEGRATION_BRANCH
+#   bash remove-task-worktree --discard [--tmp DIR] WORKTREE BRANCH
+#   bash remove-task-worktree --sweep [--tmp DIR] ROOT INTEGRATION_BRANCH [BRANCH...]
 #
 # Default mode keeps the worktree (exit 3, nothing changed) when it has uncommitted or untracked
 # non-ignored files (its .tmp/ is excluded), or when BRANCH is not an ancestor of INTEGRATION_BRANCH.
@@ -15,13 +15,15 @@
 # work is abandoned by design: it skips both guards and removes with --force / -D.
 # --sweep runs the default mode on every worktree under ROOT, then `git branch -d` on each listed
 # BRANCH that still exists without a worktree.
+# --tmp DIR names the task's temp root (or, with --sweep, the run's), which must be /tmp/sp-<hex>[/<name>]:
+# once the worktree is gone (--sweep: once nothing was kept) its processes are stopped and DIR is deleted.
 #
 # Output, one fact per line: `stopped:` / `survived: <pid> <command> — <why>`, `removed: <worktree>`,
 # `deleted: <branch>`, `kept: <worktree-or-branch> — <reason>`.
 # Exit 0 done, 2 bad input, 3 something was kept.
 set -euo pipefail
 
-usage() { echo "usage: remove-task-worktree [--keep-branch|--discard] WORKTREE BRANCH [INTEGRATION_BRANCH] | --sweep ROOT INTEGRATION_BRANCH [BRANCH...]" >&2; exit 2; }
+usage() { echo "usage: remove-task-worktree [--keep-branch|--discard] [--tmp DIR] WORKTREE BRANCH [INTEGRATION_BRANCH] | --sweep [--tmp DIR] ROOT INTEGRATION_BRANCH [BRANCH...]" >&2; exit 2; }
 
 here=$(cd "$(dirname "$0")" && pwd)
 stop_processes() {  # $1 = absolute worktree path; one implementation, shared with the Finish sweep
@@ -74,13 +76,24 @@ remove_one() {  # $1 mode (default|keep-branch|discard) $2 worktree $3 branch $4
   if [ -n "$idir" ] && git -C "$idir" branch -d "$br" >/dev/null 2>&1; then echo "deleted: $br"; else echo "kept: $br — git branch -d refused"; return 3; fi
 }
 
-mode=default
-case "${1:-}" in
-  --keep-branch) mode=keep-branch; shift ;;
-  --discard) mode=discard; shift ;;
-  --sweep) mode=sweep; shift ;;
-  -*) usage ;;
-esac
+clean_tmp() {  # $1 = the --tmp DIR (validated); stop what runs under it, then delete it
+  [ -n "$1" ] && [ -e "$1" ] || return 0
+  stop_processes "$1"
+  rm -rf "$1" && echo "removed: $1"
+}
+
+mode=default tmp=
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --keep-branch) mode=keep-branch; shift ;;
+    --discard) mode=discard; shift ;;
+    --sweep) mode=sweep; shift ;;
+    --tmp) [ $# -ge 2 ] || usage; tmp=$2; shift 2
+           [[ "$tmp" =~ ^(/private)?/tmp/sp-[0-9a-f]+(/[^/]+)?$ ]] || { echo "--tmp must be /tmp/sp-<hex>[/<name>]: $tmp" >&2; exit 2; } ;;
+    -*) usage ;;
+    *) break ;;
+  esac
+done
 
 if [ "$mode" = sweep ]; then
   [ $# -ge 2 ] || usage
@@ -110,10 +123,18 @@ if [ "$mode" = sweep ]; then
     idir=$(integ_dir "$integ")
     if [ -n "$idir" ] && git -C "$idir" branch -d "$br" >/dev/null 2>&1; then echo "deleted: $br"; else echo "kept: $br — git branch -d refused"; rc=3; fi
   done
+  if [ -n "$tmp" ] && [ -e "$tmp" ]; then
+    if [ $rc -eq 0 ]; then clean_tmp "$tmp"; else echo "kept: $tmp — a worktree or branch above was kept"; fi
+  fi
   exit $rc
 fi
 
 if [ "$mode" = discard ]; then [ $# -eq 2 ] || usage; else [ $# -eq 3 ] || usage; fi
 git rev-parse --verify -q "refs/heads/$2" >/dev/null || { [ "$mode" = discard ] || { echo "unknown branch: $2" >&2; exit 2; }; }
 [ "$mode" = discard ] || git rev-parse --verify -q "$3" >/dev/null || { echo "unknown branch: $3" >&2; exit 2; }
-remove_one "$mode" "$1" "$2" "${3:-}"
+rc=0
+remove_one "$mode" "$1" "$2" "${3:-}" || rc=$?
+if [ -n "$tmp" ]; then
+  if [ ! -d "$1" ]; then clean_tmp "$tmp"; elif [ -e "$tmp" ]; then echo "kept: $tmp — its worktree was kept"; fi
+fi
+exit $rc

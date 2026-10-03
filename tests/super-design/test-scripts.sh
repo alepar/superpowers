@@ -40,6 +40,17 @@ summary: flag-sweep 1 · unstated 1 · citations 6 (dependent 1, unwired 1, unkn
   run bash "$S/coverage-precheck" --from "$F/tree.json" r "$F/no-ledger-yet.md"
   assert_eq "$(printf '%s\n' "$out" | grep -c '^flag-sweep:')" 2 "missing ledger excludes nothing"
 
+  # Two flag-sweep entries put a newline in the key list; BSD awk (macOS /usr/bin/awk) rejects that
+  # in a -v value, so run the system awk first on PATH when there is one.
+  two=$(mktemp)
+  { cat "$F/ledger.md"; echo "L2 · r1 · flag-sweep · r.4 · applied — kept"; } > "$two"
+  awkdir=$(mktemp -d)
+  [ -x /usr/bin/awk ] && ln -s /usr/bin/awk "$awkdir/awk"
+  run env PATH="$awkdir:$PATH" bash "$S/coverage-precheck" --from "$F/tree.json" r "$two"
+  assert_eq "$code" 0 "two ledger keys: exit 0 under the system awk"
+  assert_eq "$(printf '%s\n' "$out" | grep -c '^flag-sweep:' || true)" 0 "two ledger keys: both flags excluded"
+  rm -rf "$two" "$awkdir"
+
   run bash "$S/coverage-precheck" --from "$F/tree.json" nope "$F/ledger.md"
   assert_eq "$code" 2 "unknown root exits 2"
 else

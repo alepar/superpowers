@@ -363,8 +363,8 @@ async function main() {
   {
     const scan = scanTemplateSpans(scriptBody)
     check(scan.clean, 'scanner ends in code state (no unterminated literal, string, or ${})')
-    check(scan.spans.length === 338,
-      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 338 — 215 after the D4 loop rewrite, +10 for the merge-evidence contract (clean-check and merge steps, mergeEvidence's diagnoses and logs, the Merge-cleanup line) and writeFence(), +17 for the failing-mergeCheck seam route (the check-fix and fix-review dispatch keys/labels, their logs and blocker findings, the re-merge, fixPrompt's check branch, checkFixReviewPrompt), +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log, −7 for batched ledger writes (per-line ledger keys and labels out, the per-task flush key, the merge agent's LEDGER step and its line templates, the runtime-slot logs, the per-site null-merge logs and the background edge audit in), +46 for early unblock and graph readiness (the split/reopen/discard dispatch keys, labels, prompts and logs, the cancel and graph-dispatch logs, the stacked/re-entry brief and implementer wording, the stacked rebase and review-bead close, the held-back and re-entry logs, the reconcile split note, the detector and Metrics fields, the resume note), +33 for proactive slowness handling (noteSlowness and its items, the hot-file raise, the graph-bound arming and its audit reason, the detector's lane fields, the act-capable edge audit: change formatting, the edge-cuts dispatch key/label/prompt, the Edge cut: lines and their elided variants, effDeps' cut key), +8 for the round-1 planning split (planPrompt's walk and three scopes, the plan-rest key/label, its logs), +1 when the brief folded into the implementer (workspaceSetup's re-entry branch and the setup/no-base findings in, the brief dispatch key/label out), +1 for the planner-null degrade log, +5 for task-worktree cleanup (the task-worktree root, the merge's cleanup command and step, the worktree-sweep log and prompt), +4 for process cleanup (the run temp root, processHygiene's command and rule, the process-sweep log), +1 for the ledger-read retry label; update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
+    check(scan.spans.length === 342,
+      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 342 — 215 after the D4 loop rewrite, +10 for the merge-evidence contract (clean-check and merge steps, mergeEvidence's diagnoses and logs, the Merge-cleanup line) and writeFence(), +17 for the failing-mergeCheck seam route (the check-fix and fix-review dispatch keys/labels, their logs and blocker findings, the re-merge, fixPrompt's check branch, checkFixReviewPrompt), +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log, −7 for batched ledger writes (per-line ledger keys and labels out, the per-task flush key, the merge agent's LEDGER step and its line templates, the runtime-slot logs, the per-site null-merge logs and the background edge audit in), +46 for early unblock and graph readiness (the split/reopen/discard dispatch keys, labels, prompts and logs, the cancel and graph-dispatch logs, the stacked/re-entry brief and implementer wording, the stacked rebase and review-bead close, the held-back and re-entry logs, the reconcile split note, the detector and Metrics fields, the resume note), +33 for proactive slowness handling (noteSlowness and its items, the hot-file raise, the graph-bound arming and its audit reason, the detector's lane fields, the act-capable edge audit: change formatting, the edge-cuts dispatch key/label/prompt, the Edge cut: lines and their elided variants, effDeps' cut key), +8 for the round-1 planning split (planPrompt's walk and three scopes, the plan-rest key/label, its logs), +1 when the brief folded into the implementer (workspaceSetup's re-entry branch and the setup/no-base findings in, the brief dispatch key/label out), +1 for the planner-null degrade log, +5 for task-worktree cleanup (the task-worktree root, the merge's cleanup command and step, the worktree-sweep log and prompt), +4 for process cleanup (the run temp root, processHygiene's command and rule, the process-sweep log), +1 for the ledger-read retry label, +1 for the detached-HEAD merge diagnosis, +3 for the short task temp root (its root, taskTmp, processHygiene's roots); update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
     // self-test: inject a raw backtick mid-way through the first literal's content and assert
     // the detector actually fires — a detector that cannot catch the known failure is decoration
     const [s, e] = scan.spans[0]
@@ -1958,6 +1958,14 @@ async function main() {
     check(taskLedgerLine(dirty.trace, 'bd-101', /^Merge: .*→ blocker$/)?.endsWith('check none → blocker'), 'dirty worktree: Merge: line says check none → blocker')
     check(!dirty.trace.some(t => t.label === 'fix:bd-101:check'), 'dirty worktree: never routed to a merge-check fix')
 
+    const detached = await run({ args: liveArgs({ config: cfg({ mergeCheck: CHECK }) }), canned: oneTaskCanned({
+      'merge:bd-101': { id: 'bd-101', merged: false, check: 'none', detachedHead: 'detached at a4688e9' }, ...tail }) })
+    assertNoThrow(detached)
+    check(JSON.stringify(detached.result?.escalated) === '["bd-101"]' && !detached.result?.completed.length, 'detached integration HEAD: no merge, blocker path', JSON.stringify(detached.result))
+    check(/not on .*detached at a4688e9.*no bead was closed/.test(promptOf(detached.trace, 'missing-blocker:bd-101') ?? ''), 'detached integration HEAD: the bead names the state', promptOf(detached.trace, 'missing-blocker:bd-101'))
+    const mp = promptOf(detached.trace, 'merge:bd-101') ?? ''
+    check(/BRANCH CHECK[\s\S]*symbolic-ref -q HEAD[\s\S]*PRE-MERGE CLEAN CHECK/.test(mp) && /git branch -f/.test(mp) && /git update-ref/.test(mp), 'the merge prompt checks the branch first and forbids ref repair')
+
     const refused = await run({ args: liveArgs({ config: cfg({ mergeCheck: CHECK }) }), canned: oneTaskCanned({
       'merge:bd-101': { id: 'bd-101', merged: false, mergeExit: 128, mergeHead: false, check: 'none' }, ...tail }) })
     assertNoThrow(refused)
@@ -2111,7 +2119,7 @@ async function main() {
     const parentMerge = promptOf(out.trace, 'merge:bd-101') ?? '', childMerge = promptOf(out.trace, 'merge:bd-102') ?? ''
     check(parentMerge.includes(`bash ${SKILLS}/super-code/scripts/remove-task-worktree --keep-branch `) && parentMerge.includes(' task-bd-101 ' + BRANCH) && /CLEANUP, only after the merge is committed/.test(parentMerge), 'the stack parent\'s merge removes its worktree but keeps its branch (a dependent may still merge it by name)', parentMerge)
     check(childMerge.includes(`bash ${SKILLS}/super-code/scripts/remove-task-worktree `) && !childMerge.includes('--keep-branch') && childMerge.includes('`Cleanup: bd-102 — '), 'the leaf dependent\'s merge removes its worktree and branch, and records a Cleanup: ledger line', childMerge)
-    check((promptOf(out.trace, 'worktree-sweep') ?? '').includes('remove-task-worktree --sweep ') && (promptOf(out.trace, 'worktree-sweep') ?? '').endsWith && /--sweep \S+ \S+ task-bd-101/.test(promptOf(out.trace, 'worktree-sweep') ?? ''), 'the Finish sweep is handed the split parent\'s kept branch to delete with -d', promptOf(out.trace, 'worktree-sweep'))
+    check((promptOf(out.trace, 'worktree-sweep') ?? '').includes('remove-task-worktree --sweep ') && (promptOf(out.trace, 'worktree-sweep') ?? '').endsWith && /--sweep --tmp \/tmp\/sp-[0-9a-f]{8} \S+ \S+ task-bd-101/.test(promptOf(out.trace, 'worktree-sweep') ?? ''), 'the Finish sweep is handed the split parent\'s kept branch to delete with -d', promptOf(out.trace, 'worktree-sweep'))
     check(taskLedgerLines(out.trace, 'bd-102').includes('Task 2 (bd-102): stacked on bd-101 (dispatched at implementation-done)'), 'the dependent\'s ledger flush carries its stacked-on line', JSON.stringify(taskLedgerLines(out.trace, 'bd-102')))
     check(out.logs.some(l => /parallelism: 1 ready · topped-up 1 · .* · stacked 1/.test(l)), 'the detector counts the graph dispatch and names the stacked one')
     assertBucketsDisjoint(out.result)
@@ -2125,12 +2133,13 @@ async function main() {
     const out = await run({ args: liveArgs({ processRoots: [RUN, 'relative/ignored'] }), canned: oneTaskCanned({ 'worktree-sweep': { lines: [], processLines: [`stopped: 4242 herdr server — env HOME=${WTR}/x--task-bd-101/.tmp/home`, `survived: 4343 stuck-daemon — args/env`] } }) })
     assertNoThrow(out)
     const impl = promptOf(out.trace, 'impl:bd-101') ?? ''
-    check(impl.includes('TMPDIR=') && impl.includes('/.tmp') && impl.includes(`${STOP} --check `) && /Test hygiene/.test(impl) && /tail -f/.test(impl), 'the implementer is given the .tmp temp-state rule, the post-test leak check, and the stop-before-return rule', impl)
+    check(/TMPDIR=\/tmp\/sp-[0-9a-f]{8}\/bd-101 /.test(impl) && /never put temp state in the worktree/.test(impl) && new RegExp(`${STOP} --check \\S+ /tmp/sp-[0-9a-f]{8}/bd-101`).test(impl) && /Test hygiene/.test(impl) && /tail -f/.test(impl), 'the implementer is given the short per-task temp root, the post-test leak check, and the stop-before-return rule', impl)
     const m = promptOf(out.trace, 'merge:bd-101') ?? ''
     const stopAt = m.indexOf(`${STOP} `), closeAt = m.indexOf('`bd close bd-101`'), cleanAt = m.indexOf('CLEANUP')
+    check(/remove-task-worktree --tmp \/tmp\/sp-[0-9a-f]{8}\/bd-101 /.test(m), 'the merge cleanup removes the task\'s temp root with its worktree', m)
     check(stopAt !== -1 && closeAt !== -1 && stopAt < closeAt && closeAt < cleanAt, 'the merge agent stops the task\'s processes before closing its bead, and removes the worktree after', m)
     const sw = promptOf(out.trace, 'worktree-sweep') ?? ''
-    check(sw.includes(`${STOP} ${WTR} .worktrees/${BRANCH}/.superpowers/sdd/${EPIC}-plan/tmp ${RUN}`) && !sw.includes('relative/ignored') && /Process sweep: <N> stopped · <M> survived/.test(sw), 'the Finish sweep stops processes under the task worktrees, the run temp root and the caller\'s absolute processRoots, and writes the Process sweep ledger line', sw)
+    check(new RegExp(`${STOP} ${WTR} \\.worktrees/${BRANCH}/\\.superpowers/sdd/${EPIC}-plan/tmp /tmp/sp-[0-9a-f]{8} ${RUN}`).test(sw) && !sw.includes('relative/ignored') && /Process sweep: <N> stopped · <M> survived/.test(sw), 'the Finish sweep stops processes under the task worktrees, the run temp roots and the caller\'s absolute processRoots, and writes the Process sweep ledger line', sw)
     check(JSON.stringify(out.result?.processSweep) === JSON.stringify({ stopped: [`4242 herdr server — env HOME=${WTR}/x--task-bd-101/.tmp/home`], survived: ['4343 stuck-daemon — args/env'] }), 'processSweep returns what was stopped and what survived', JSON.stringify(out.result?.processSweep))
     const out2 = await run({ args: liveArgs(), canned: oneTaskCanned({ 'worktree-sweep': null }) })
     check(/^PROCESS SWEEP UNAVAILABLE/.test(out2.result?.processSweep?.survived?.[0] ?? ''), 'a null sweep reports the process sweep as unavailable, never as nothing left', JSON.stringify(out2.result?.processSweep))
@@ -2142,7 +2151,7 @@ async function main() {
     const out = await run({ args: liveArgs(), canned: oneTaskCanned({ 'worktree-sweep': { lines: [`removed: ${WTR}/x--task-bd-9`, `kept: ${WTR}/x--task-bd-7 — uncommitted or untracked changes`] } }) })
     assertNoThrow(out)
     const p = promptOf(out.trace, 'worktree-sweep') ?? ''
-    check(out.counts['worktree-sweep'] === 1 && p.includes(`bash ${SKILLS}/super-code/scripts/remove-task-worktree --sweep ${WTR} ${BRANCH}`), 'one Finish sweep over the task-worktree root', p)
+    check(out.counts['worktree-sweep'] === 1 && new RegExp(`bash ${SKILLS}/super-code/scripts/remove-task-worktree --sweep --tmp /tmp/sp-[0-9a-f]{8} ${WTR} ${BRANCH}`).test(p), 'one Finish sweep over the task-worktree root', p)
     check(/never remove anything yourself or force/.test(p) && /Exit 0 and exit 3 are both normal/.test(p), 'the sweep agent is told never to force, and that exit 3 (kept) is normal', p)
     check(JSON.stringify(out.result?.worktreesKept) === JSON.stringify([`${WTR}/x--task-bd-7 — uncommitted or untracked changes`]), 'the dirty worktree is kept and returned in worktreesKept', JSON.stringify(out.result?.worktreesKept))
     const out2 = await run({ args: liveArgs(), canned: oneTaskCanned({ 'worktree-sweep': null }) })
@@ -2258,6 +2267,7 @@ async function main() {
     check(out.counts['impl:bd-101'] === 1 && out.counts['review:bd-101'] === 1, 'the re-entered task runs setup once, then its review')
     check(/review re-entry/.test(promptOf(out.trace, 'impl:bd-101') ?? '') && /Do NOT implement anything/.test(promptOf(out.trace, 'impl:bd-101') ?? '') && (promptOf(out.trace, 'impl:bd-101') ?? '').includes('bd reopen bd-101'), 'its setup knows it is a re-entry: no re-implementation on an existing branch, the reopen path when the branch is gone')
     check(out.logs.some(l => l.includes('bd-101: review re-entry') && l.includes('nothing re-implemented')), 'the re-entry is logged as reviewed, not re-implemented')
+    check(/merge-base and equals head[\s\S]*ALREADY_MERGED[\s\S]*never IMPLEMENTED with an empty range/.test(promptOf(out.trace, 'impl:bd-101') ?? ''), 'a re-entry whose merge-base is the branch tip reports ALREADY_MERGED, not an empty review range')
     check((promptOf(out.trace, 'review:bd-101') ?? '').includes(`[BASE] = ${SHA('a')}`), 'the review uses the base the brief found')
     check((promptOf(out.trace, 'plan') ?? '').includes('Review re-entries this round') && (promptOf(out.trace, 'plan') ?? '').includes('"bd-101"'), 'the planner is told to keep the re-entry\'s row')
     check((promptOf(out.trace, 'merge:bd-101') ?? '').includes('then `bd close bd-150`'), 'its merge closes the review bead from the ready set')
@@ -2688,12 +2698,22 @@ esac
         check(r.code === 0 && /^stopped: \d+ sleep/m.test(r.out) && /^removed: .*\/t1$/m.test(r.out) && /^deleted: t1$/m.test(r.out) && !alive && !existsSync(wt('t1')), 'a clean merged worktree: its process is stopped, then worktree and branch are removed', JSON.stringify(r))
         r = rtw(wt('t2'), 't2', 'integ')
         check(r.code === 3 && /^kept: .*t2 — t2 is not merged into integ$/m.test(r.out) && existsSync(wt('t2')), 'an unmerged branch is kept, nothing changed', JSON.stringify(r))
-        r = rtw(wt('t3'), 't3', 'integ')
+        const tmpRoot = `/tmp/sp-${process.pid.toString(16)}ff`
+        const tmpOf = t => { const p = `${tmpRoot}/${t}`; mkdirSync(p, { recursive: true }); writeFileSync(`${p}/sock`, ''); return p }
+        r = rtw('--tmp', tmpOf('t3'), wt('t3'), 't3', 'integ')
         check(r.code === 3 && /uncommitted or untracked changes/.test(r.out) && existsSync(path.join(wt('t3'), 'stray.txt')), 'a worktree with uncommitted files is kept, its files untouched', JSON.stringify(r))
-        r = rtw('--keep-branch', wt('t4'), 't4', 'integ')
+        check(existsSync(`${tmpRoot}/t3/sock`) && /^kept: \/tmp\/sp-\S+\/t3 — its worktree was kept$/m.test(r.out), '--tmp: a kept worktree keeps its temp root', JSON.stringify(r))
+        r = rtw('--keep-branch', '--tmp', tmpOf('t4'), wt('t4'), 't4', 'integ')
         check(r.code === 0 && !existsSync(wt('t4')) && g(d, 'branch', '--list', 't4').trim() !== '', '--keep-branch removes the worktree and keeps the branch', JSON.stringify(r))
-        r = rtw('--sweep', path.join(integ, '.worktrees'), 'integ', 't4')
+        check(!existsSync(`${tmpRoot}/t4`) && /^removed: \/tmp\/sp-\S+\/t4$/m.test(r.out), '--tmp: the temp root goes with its worktree', JSON.stringify(r))
+        check(rtw('--tmp', '/etc', wt('t4'), 't4', 'integ').code === 2 && rtw('--tmp', `${tmpRoot}/../x`, wt('t4'), 't4', 'integ').code === 2, '--tmp outside /tmp/sp-<hex> exits 2')
+        r = rtw('--sweep', '--tmp', tmpRoot, path.join(integ, '.worktrees'), 'integ', 't4')
         check(r.code === 3 && /^deleted: t4$/m.test(r.out) && /kept: .*t2/.test(r.out) && /kept: .*t3/.test(r.out) && existsSync(wt('t2')) && existsSync(wt('t3')), 'the sweep deletes the kept merged branch and keeps the unmerged and the dirty worktrees', JSON.stringify(r))
+        check(existsSync(tmpRoot) && /kept: \/tmp\/sp-\S+ — a worktree or branch above was kept/.test(r.out), '--sweep --tmp keeps the run temp root while anything was kept', JSON.stringify(r))
+        rmSync(path.join(wt('t3'), 'stray.txt')); g(wt('t2'), 'checkout', '-q', '--detach'); rmSync(wt('t2'), { recursive: true, force: true }); g(d, 'worktree', 'prune')
+        r = rtw('--sweep', '--tmp', tmpRoot, path.join(integ, '.worktrees'), 'integ')
+        check(r.code === 0 && !existsSync(tmpRoot) && /^removed: \/tmp\/sp-\S+$/m.test(r.out), '--sweep --tmp removes the run temp root once nothing was kept', JSON.stringify(r))
+        g(d, 'worktree', 'add', '-q', '.worktrees/integ/.worktrees/t2', 't2')
         const src = readFileSync(path.join(scriptsDir, 'remove-task-worktree'), 'utf8')
         const forced = src.split('\n').filter(l => /--force|branch -D/.test(l) && !/^\s*#/.test(l))
         check(forced.length > 0 && forced.every(l => /discard/.test(l) || /git worktree remove --force "\$wt" && echo|git branch -D "\$br"/.test(l)), 'force flags appear only on the --discard path', forced.join(' | '))
