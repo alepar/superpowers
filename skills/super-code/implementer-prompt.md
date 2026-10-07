@@ -110,9 +110,16 @@ exercising real behavior rather than mocks.
 
 ## Commit
 
-COMMIT IS THE LAST STEP. Commit on `[BRANCH]` in [WORKTREE]. Then `git status --short` must come
-back empty (commit anything it lists that belongs to this task). Then `git rev-parse HEAD` is the
-`head` you report. A head equal to [BASE] means nothing was committed; the coordinator checks this,
+COMMIT IS THE LAST STEP. Commit on `[BRANCH]` in [WORKTREE]. Then, unless step 0 reported stacked,
+rebase onto the current integration tip, `git rebase [INTEGRATION_BRANCH]` in [WORKTREE], so the
+branch merges cleanly and tasks that build on it start from current code. Resolve any conflicts
+keeping both sides' intent; if you can't, `git rebase --abort` and say so under "Concerns". If
+[INTEGRATION_BRANCH] had moved past [BASE], re-run step 3's tests on the rebased branch: that is
+your final run for the report; fix and commit anything it shows. Your base is now
+`git merge-base [INTEGRATION_BRANCH] HEAD`; report that. A stacked branch is never rebased here: it
+carries its parents' unmerged commits, and its merge replays only its own. Then `git status --short`
+must come back empty (commit anything it lists that belongs to this task). Then
+`git rev-parse HEAD` is the `head` you report. A head equal to the base you report means nothing was committed; the coordinator checks this,
 and uncommitted work is never reviewed or merged.
 
 ## Blocked
@@ -140,7 +147,7 @@ workspace, which is where the reviewer reads it; don't write a copy anywhere els
 - Assumptions, and Concerns
 
 Then return: `id`, `status` (IMPLEMENTED or BLOCKED, or BLOCKED_AUTH per your dispatch's
-permission rule), `files` touched, `base` (from step 0), `head`, `stacked` / `reopened` when step 0
+permission rule), `files` touched, `base` (from step 0, or after the rebase in "Commit"), `head`, `stacked` / `reopened` when step 0
 reported them, and `blockerBead` when BLOCKED.
 
 ## Fix pass
@@ -163,7 +170,8 @@ the task gets; it merges after you, without another review.
 - Append a section to [REPORT_FILE], headed "## Fix pass", or the heading your dispatch names
   ("## Seam fix", "## Merge-check fix"): what you changed for each finding, declined findings with their
   reasons, and the test command and output.
-- Commit as in "Commit". If you declined everything and changed nothing, there is nothing to commit.
+- Commit as in "Commit", without its rebase. If you declined everything and changed nothing, there
+  is nothing to commit.
 
 The "Unattended run", "Scope", "Tests and verification", and "Blocked" sections apply to this pass
 too.

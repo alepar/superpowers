@@ -595,7 +595,7 @@ recurrence counts.
   see "Plan materialization" — has no ordinal and is logged as `Task ? (<bead id>): ...` instead):
   - `Task <N> (<bead id>): complete (commits <base7>..<head7>, review clean)` — merged; the task
     review found no Critical/Important issue. `<base7>` is `m.mergeBase`, the POST-rebase
-    merge-base the merge agent captures, never `r.base` (the pre-rebase base the implementer's workspace setup found): after
+    merge-base the merge agent captures, never `r.base` (the pre-merge base the implementer reported): after
     the rebase, `r.base..head` would include every commit other tasks merged meanwhile. `r.base`
     stays the BASE arg for `review-package`, which runs before the rebase. `short(sha)` is the
     first 7 characters.
@@ -847,9 +847,20 @@ blocker filing, commit last). Two conventions the coordinator owns:
   A setup that re-enters an existing stacked branch finds that base again from the newest
   first-parent `stack: ` commit.
 - **Commit is the implementer's last step:** the implementer reports `head` (`git rev-parse HEAD`
-  after its commit, with `git status --short` empty); a `head` equal to the `base` its setup found means
+  after its commit, with `git status --short` empty); a `head` equal to the `base` it reports means
   nothing was committed, and the coordinator sends one bounded commit nudge before treating the
   task as BLOCKED with a finding that names the cause.
+- **An unstacked implementer rebases before reporting:** after committing, it runs
+  `git rebase <integration branch>`, resolves any conflicts, re-runs its relevant tests if the
+  integration branch had moved past its base, and reports `base` as the new merge-base. Its review
+  then reads code composed with what landed meanwhile, the merge's seam check counts only siblings
+  that landed after that rebase, and dependents stack on a branch already on the current tip. A
+  stacked task does not rebase: its branch carries its parents' pre-review commits below `base`,
+  and its merge replays only its own commits (`--onto`). Neither does a fix pass. The coordinator
+  carries whatever `base` the implementer reports, and the reviewer's BASE CHECK recomputes one a
+  later rebase invalidated. The composed review (`consumes <id>`) still counts producers that
+  landed after the attempt started, so it can re-check a producer the implementer already rebased
+  onto.
 
 An implementer that cannot proceed within its own dispatch (a missing dependency, a plan
 contradiction) files the blocker bead itself and reports BLOCKED with its id; the coordinator's
