@@ -1,0 +1,139 @@
+{
+ "t0": "2026-10-05T00:00:00Z",
+ "idPrefix": "e",
+ "launch": {
+  "epicId": "rc",
+  "config": {
+   "concurrency": 4,
+   "runtimeSlots": 6,
+   "earlyUnblock": true
+  }
+ },
+ "agents": [
+  {
+   "label": "read-ledger",
+   "phase": "Resume",
+   "start": 0,
+   "end": 3
+  },
+  {
+   "label": "ledger-append:launch",
+   "phase": "Resume",
+   "start": 1,
+   "end": 2
+  },
+  {
+   "label": "bd-ready",
+   "phase": "Ready",
+   "start": 3,
+   "end": 5,
+   "result": {
+    "ids": [
+     "rc.1",
+     "rc.2"
+    ]
+   }
+  },
+  {
+   "label": "plan",
+   "phase": "Plan",
+   "start": 5,
+   "end": 20,
+   "result": {
+    "planPath": "/w/.superpowers/sdd/rc-plan/rc-plan.md",
+    "mapping": [
+     {
+      "n": 1,
+      "id": "rc.1",
+      "files": [],
+      "deps": []
+     },
+     {
+      "n": 2,
+      "id": "rc.2",
+      "files": [],
+      "deps": []
+     }
+    ]
+   }
+  },
+  {
+   "label": "impl:rc.1",
+   "start": 20,
+   "end": 200,
+   "result": {
+    "status": "IMPLEMENTED"
+   }
+  },
+  {
+   "label": "impl:rc.2",
+   "start": 20,
+   "end": 150,
+   "result": {
+    "status": "IMPLEMENTED"
+   }
+  },
+  {
+   "label": "review:rc.2",
+   "start": 150,
+   "end": 160,
+   "result": {
+    "status": "CLEAN"
+   }
+  },
+  {
+   "label": "merge:rc.2",
+   "phase": "Integrate",
+   "start": 160,
+   "end": 180,
+   "result": {
+    "merged": true
+   }
+  },
+  {
+   "label": "review:rc.1",
+   "start": 200,
+   "end": 220,
+   "result": {
+    "status": "CLEAN"
+   }
+  },
+  {
+   "label": "merge:rc.1",
+   "phase": "Integrate",
+   "start": 220,
+   "end": 240,
+   "result": {
+    "merged": true
+   }
+  },
+  {
+   "label": "bd-ready",
+   "phase": "Ready",
+   "start": 300,
+   "end": 305,
+   "result": {
+    "ids": [
+     "rc.1"
+    ]
+   }
+  },
+  {
+   "label": "impl:rc.1",
+   "start": 310,
+   "end": 320,
+   "result": {
+    "status": "ALREADY_MERGED"
+   }
+  },
+  {
+   "label": "close-only:rc.1",
+   "phase": "Integrate",
+   "start": 320,
+   "end": 330,
+   "result": {
+    "status": "CLOSED"
+   }
+  }
+ ]
+}

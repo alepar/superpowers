@@ -120,6 +120,7 @@ This repository is the `alepar` fork. Its versions are `<upstream version>-alepa
 
 1. **Verify on a clean `main`.** Run the tests:
    - `node tests/super-code/replay-harness.mjs`
+   - `bash tests/super-code/test-run-profile.sh`
    - `bash tests/super-design/test-scripts.sh`
    - `bash tests/super-roast/test-assemble-args.sh`
    - `bash tests/super-auto/test-scripts.sh`

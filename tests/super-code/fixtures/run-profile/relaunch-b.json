@@ -1,0 +1,13 @@
+{ "t0": "2026-10-06T00:20:00Z", "idPrefix": "B",
+  "launch": { "epicId": "c", "config": { "concurrency": 2, "runtimeSlots": 4, "earlyUnblock": true }, "dryRun": false },
+  "agents": [
+    { "label": "read-ledger", "phase": "Resume", "start": 0, "end": 5 },
+    { "label": "ledger-append:launch", "phase": "Resume", "start": 1, "end": 3 },
+    { "label": "close-epics", "phase": "Close", "start": 6, "end": 10, "result": { "rootClosed": false, "closedThisRun": [] } },
+    { "label": "bd-ready", "phase": "Ready", "start": 6, "end": 10.5, "result": { "ids": ["c.2"] } },
+    { "label": "plan", "phase": "Plan", "start": 12, "end": 40, "result": { "planPath": "/w/.superpowers/sdd/c-plan/c-plan.md", "mapping": [
+      { "n": 1, "id": "c.2", "files": ["b.ts"], "deps": [] } ] } },
+    { "label": "impl:c.2", "start": 42, "end": 600, "result": { "status": "IMPLEMENTED", "base": "aaaaaaa" } },
+    { "label": "review:c.2", "start": 600, "end": 660, "result": { "status": "CLEAN" } },
+    { "label": "merge:c.2", "phase": "Integrate", "start": 660, "end": 700, "result": { "merged": true } }
+  ] }

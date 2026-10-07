@@ -1,0 +1,13 @@
+{ "t0": "2026-10-06T07:00:00Z", "idPrefix": "s",
+  "launch": { "epicId": "s", "config": { "concurrency": 2, "runtimeSlots": 4, "earlyUnblock": true, "sweepBaseline": true }, "dryRun": false },
+  "agents": [
+    { "label": "read-ledger", "phase": "Resume", "start": 0, "end": 5 },
+    { "label": "ledger-append:launch", "phase": "Resume", "start": 1, "end": 3 },
+    { "label": "sweep:baseline", "phase": "Resume", "start": 5, "end": 305, "result": { "summary": "ok" } },
+    { "label": "close-epics", "phase": "Close", "start": 306, "end": 313, "result": { "rootClosed": false, "closedThisRun": [] } },
+    { "label": "bd-ready", "phase": "Ready", "start": 306, "end": 314, "result": { "ids": ["s.1"] } },
+    { "label": "plan", "phase": "Plan", "start": 315, "end": 340, "result": { "planPath": "/w/.superpowers/sdd/s-plan/s-plan.md", "mapping": [ { "n": 1, "id": "s.1", "files": ["a.ts"], "deps": [] } ] } },
+    { "label": "impl:s.1", "start": 340, "end": 600, "result": { "status": "IMPLEMENTED", "base": "aaaaaaa" } },
+    { "label": "review:s.1", "start": 600, "end": 630, "result": { "status": "CLEAN" } },
+    { "label": "merge:s.1", "phase": "Integrate", "start": 630, "end": 660, "result": { "merged": true } }
+  ] }
