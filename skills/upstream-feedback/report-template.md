@@ -33,6 +33,12 @@ Plugin: <version>. Run: <scale — bead count / rounds / duration if known>, <da
      `Merge:` lines -->
 ### Coverage
 <!-- the `requirements:` line per coverage round and the `scope-filter:` line per fix round -->
+### Timing
+<!-- per coordinator invocation, the ledger's `Profile:` header, `bound`, `critical path`,
+     `bottleneck`, `waits`, `merge lane` and `what-if` lines; `Profile: unavailable — …` when that
+     is what the ledger has. What-if lines are a schedule model's estimates, not measurements:
+     quote them with the `bound` line's model-vs-actual figure. -->
+
 ### Bead graph
 | id | type | title | what (first sentence of description) |
 | --- | --- | --- | --- |

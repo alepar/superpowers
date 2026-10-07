@@ -1,0 +1,17 @@
+{ "t0": "2026-10-06T10:00:00Z", "idPrefix": "h",
+  "launch": { "epicId": "h", "config": { "concurrency": 4, "runtimeSlots": 6, "earlyUnblock": true }, "dryRun": false },
+  "agents": [
+    { "label": "read-ledger", "phase": "Resume", "start": 0, "end": 5 },
+    { "label": "ledger-append:launch", "phase": "Resume", "start": 1, "end": 3 },
+    { "label": "close-epics", "phase": "Close", "start": 5, "end": 12, "result": { "rootClosed": false, "closedThisRun": [] } },
+    { "label": "bd-ready", "phase": "Ready", "start": 5, "end": 13, "result": { "ids": ["h.1"] } },
+    { "label": "plan", "phase": "Plan", "start": 14, "end": 40, "result": { "planPath": "/w/.superpowers/sdd/h-plan/h-plan.md", "mapping": [
+      { "n": 1, "id": "h.1", "files": ["src/a.ts"], "deps": [] }, { "n": 2, "id": "h.2", "files": ["src/a.ts", "src/b.ts"], "deps": [], "opaque": true } ] } },
+    { "label": "impl:h.1", "start": 40, "end": 300, "result": { "status": "IMPLEMENTED", "base": "aaaaaaa" } },
+    { "label": "review:h.1", "start": 300, "end": 330, "result": { "status": "CLEAN" } },
+    { "label": "merge:h.1", "phase": "Integrate", "start": 330, "end": 360, "result": { "merged": true } },
+    { "label": "bd-ready-topup", "phase": "Implement", "start": 329, "end": 338, "result": { "ids": ["h.2"] } },
+    { "label": "impl:h.2", "start": 340, "end": 700, "result": { "status": "IMPLEMENTED", "base": "aaaaaaa" } },
+    { "label": "review:h.2", "start": 700, "end": 730, "result": { "status": "CLEAN" } },
+    { "label": "merge:h.2", "phase": "Integrate", "start": 730, "end": 760, "result": { "merged": true } }
+  ] }

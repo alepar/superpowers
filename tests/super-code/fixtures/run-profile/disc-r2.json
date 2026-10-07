@@ -1,0 +1,80 @@
+{
+ "t0": "2026-10-03T10:06:00Z",
+ "idPrefix": "r",
+ "launch": {
+  "epicId": "dz",
+  "config": {
+   "concurrency": 4,
+   "runtimeSlots": 6,
+   "earlyUnblock": true
+  },
+  "dryRun": false
+ },
+ "agents": [
+  {
+   "label": "read-ledger",
+   "phase": "Resume",
+   "start": 0,
+   "end": 3
+  },
+  {
+   "label": "ledger-append:launch",
+   "phase": "Resume",
+   "start": 1,
+   "end": 2
+  },
+  {
+   "label": "bd-ready",
+   "phase": "Ready",
+   "start": 3,
+   "end": 5,
+   "result": {
+    "ids": [
+     "dz.2"
+    ]
+   }
+  },
+  {
+   "label": "plan",
+   "phase": "Plan",
+   "start": 5,
+   "end": 20,
+   "result": {
+    "planPath": "/w/.superpowers/sdd/dz-plan/dz-plan.md",
+    "mapping": [
+     {
+      "n": 1,
+      "id": "dz.2",
+      "files": [],
+      "deps": []
+     }
+    ]
+   }
+  },
+  {
+   "label": "impl:dz.2",
+   "start": 20,
+   "end": 200,
+   "result": {
+    "status": "IMPLEMENTED"
+   }
+  },
+  {
+   "label": "review:dz.2",
+   "start": 200,
+   "end": 220,
+   "result": {
+    "status": "CLEAN"
+   }
+  },
+  {
+   "label": "merge:dz.2",
+   "phase": "Integrate",
+   "start": 220,
+   "end": 240,
+   "result": {
+    "merged": true
+   }
+  }
+ ]
+}

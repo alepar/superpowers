@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# run-profile — per-bead timing profile of a finished super-code Workflow run: graph shape, each
+# bead's timeline, the realized critical path and its bottleneck bead, and simulated reshaping
+# what-ifs, from the Workflow runtime's run directories. Usage: bash run-profile --help
+# Exit codes: 0 ok, 2 bad input, 3 no timing source, 4 node unavailable.
+set -euo pipefail
+here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+command -v node >/dev/null 2>&1 || {
+  echo "NODE_UNAVAILABLE: no profile. Record \`Profile: unavailable — node is not installed\` and continue; nothing else reads these files."
+  exit 4
+}
+exec node "$here/run-profile.mjs" "$@"

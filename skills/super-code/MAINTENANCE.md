@@ -170,6 +170,63 @@ re-adopt from a stale reading. None of them is an open gap.
 > may waste up to two pipeline passes on an id that's still genuinely blocked before re-quarantining
 > it — see "Known limitations" below).
 
+## Run profile (`scripts/run-profile`)
+
+**Why after the fact.** A Workflow script throws on `Date.now()` (it would break resume), and the
+ledger carries no timestamps, so the coordinator cannot time anything. Stamping times through
+agents would cost a dispatch or a prompt change per event in tuned prompts. The Workflow runtime
+already records what timing needs, so the profile reads it after the run and changes nothing in
+the run.
+
+**What it reads, and how it breaks.** Per run directory: `journal.jsonl` (`started` rows with
+`agentId`, `label`, `phase`; `result` and `failed` rows), `agent-<id>.meta.json` (`description` is
+the label, plus `workflowPhase` and `model`) and `agent-<id>.jsonl` (a timestamp on every row;
+`tool_use` / `tool_result` pairs give tool spans). From results it uses PLANNED rows (`deps`,
+`files`, `opaque`) as the graph, RESULT `status` (`IMPLEMENTED`, `STACK_CONFLICT`), MERGE `merged`
+and `seamOverlap`, and EDGE_CUTS `applied`. From the launch append's prompt it reads `Launch: args`
+(`epicId`, `config.concurrency`, `runtimeSlots`, `earlyUnblock`, `dryRun`). These files are
+harness-internal and undocumented. The tests use synthetic copies, so a harness change passes them.
+After a Claude Code update, re-check against a real run (`--discover --epic <recent epic>`).
+
+**Coupling to the coordinator.** Timing per bead depends on the label grammar
+`<kind>:<bead>[:<suffix>]` and on `stageOf()`'s map from kind to stage. The merge lane is
+`merge`, `seam-review` and suffixed `fix` (`:seam`, `:check`). The test's last check fails when
+`coordinator.js` gains a literal `label:` kind the profiler does not classify. The labels built
+indirectly (`review:`, `ledger:`, `read-ledger`) are listed in that check by hand.
+
+**The schedule model's assumptions.** Landed beads only, with their final attempt's measured
+times. A slot is held from the implementer's start to the end of review and fix. One FIFO merge
+lane, with a task's seam work inside its lane turn. A stacked task merges after its parents.
+Dependents start at a blocker's implementation, except over edges where this run's dependent
+waited for the merge (a stack conflict, or early unblock not taken). Planner timing is kept as it
+ran. Hot-file caps, the top-up query budget, runtime-slot queueing and attempts that never landed
+are not modelled. The `Profile: bound` line prints the model's makespan against the measured one.
+
+**Validated on 2026-10-07**, after an independent review fixed the critical-path walk: a
+predecessor must start before its step, attempt heads get slot, ready-query and planner
+candidates, and waits are clamped to their invocation. The check ran against the 52 coordinator
+runs still on the maintainer's disk, from 2026-10-01 to 2026-10-03: 34 real invocations across nine
+epics in four projects, plus 18 small fixture runs. None crashed. On 29 of the 32 real invocations
+that landed work, the model came within 10% of the measured task graph. The worst fit (59%) was a
+run whose critical path ran through a bead that never landed; the model leaves such attempts out.
+The next two were 80% and 85%. `--summarize` over the 34 real profiles gives the baseline:
+- Implement is 64% of critical-path time and the planners 20%.
+- Stack conflicts bounced 32 of the 112 landed beads that had in-run blockers.
+- Seam work took 55% of the merge lane's busy time.
+- Tests plus polling for background test runs took 65% of the bottleneck beads' implement time.
+
+On the largest run (76 planned beads, 455 agents, a 7h55m task graph), the model reached 96% of
+actual once late edges were calibrated. Before that it was 83%, because it assumed early unblock
+always applied. That run's profile also surfaced:
+- Stack conflicts bounced 16 of the 29 dependents dispatched at an implementation, costing 7h43m
+  of summed waiting.
+- Seam reviews and seam fixes took 70% of the merge lane's busy time.
+- The modelled saving from taking every early unblock was −1h04m.
+
+**Not covered.** The ordinary-subagent procedure has no Workflow run files, so it records
+`Profile: unavailable`. Its calling session has a clock and could stamp its own dispatches; that
+is a separate change. Other harnesses keep no such files either.
+
 ## Rationale archived from the coordinator script
 
 Each entry is the comment that used to sit above the named line of `coordinator.js`.

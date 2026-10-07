@@ -1188,6 +1188,19 @@ inputs the analysis pass needs and cannot recover once they are gone.
 Context compaction handles long runs: keep watching until the Workflow returns rather than wrapping
 up as context fills. Friction entries already written to the log survive compaction.
 
+**The run profile is the invoking session's job too.** The script has no clock and the ledger no
+timestamps, so per-bead timing is measured after the fact from the Workflow runtime's own run
+files. When the Workflow returns with a `stopReason` (not a budget-cap or first-outage return you
+relaunch), run `bash <this skill's dir>/scripts/run-profile --workflow <dir> … --out
+<workspace>/profile-<runId>` with one `--workflow` per run of this invocation, relaunches included
+(each launch result prints its `Transcript dir:`; after a compaction, `--discover --epic <epicId>
+--latest` finds them), and append its stdout to the ledger. Those `Profile:` lines give the bead
+graph's shape, the realized critical path and its bottleneck bead with what its time went to, each
+bead's ready-to-start wait and cause, the merge lane's load and conflict files, and modelled
+what-ifs. It dispatches nothing. Where the harness keeps no such files it prints one `Profile:
+unavailable — …` line (exit 3); append that instead. Run it before the hand-off removes the
+integration worktree.
+
 ## Local adaptations (porting the script to a project)
 
 A project run typically adapts `./coordinator.js` — extra reporters, project gates, tuned prompts.

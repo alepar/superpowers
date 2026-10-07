@@ -200,6 +200,9 @@ command against the exact integration tip, with no active agent or build check, 
 interrupted sweep is unmeasured, never green. Under `deferSweep`, write `Sweep: SWEEP DEFERRED
 (caller-owned)`; super-auto owns its phase-6 sweep and any bounded sweep-fix pass.
 
+There is no run profile in this mode: `scripts/run-profile` reads a Workflow run's files. Append
+`Profile: unavailable — ordinary-subagent mode (no Workflow run files)` so the absence is recorded.
+
 Re-read the ledger; compute and append the **four** `Metrics:` lines in
 `coordinator-workflow.md` Finish, including `ledger-check`. An unknown count is `METRICS
 INVALID`, not zero. Count a merge only when git shows the merge and the ledger has one success

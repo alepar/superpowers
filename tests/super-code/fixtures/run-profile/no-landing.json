@@ -1,0 +1,14 @@
+{ "t0": "2026-10-06T06:00:00Z", "idPrefix": "n",
+  "launch": { "epicId": "n", "config": { "concurrency": 2, "runtimeSlots": 4, "earlyUnblock": true }, "dryRun": false },
+  "agents": [
+    { "label": "read-ledger", "phase": "Resume", "start": 0, "end": 5 },
+    { "label": "ledger-append:launch", "phase": "Resume", "start": 1, "end": 3 },
+    { "label": "close-epics", "phase": "Close", "start": 5, "end": 12, "result": { "rootClosed": false, "closedThisRun": [] } },
+    { "label": "bd-ready", "phase": "Ready", "start": 5, "end": 13, "result": { "ids": ["n.1", "n.2"] } },
+    { "label": "plan", "phase": "Plan", "start": 14, "end": 40, "result": { "planPath": "/w/.superpowers/sdd/n-plan/n-plan.md", "mapping": [
+      { "n": 1, "id": "n.1", "files": ["a.ts"], "deps": [] }, { "n": 2, "id": "n.2", "files": ["b.ts"], "deps": [] } ] } },
+    { "label": "impl:n.1", "start": 40, "end": 2000, "result": { "status": "BLOCKED", "finding": "x" } },
+    { "label": "impl:n.2", "start": 40, "end": 100, "result": { "status": "BLOCKED", "finding": "y" } },
+    { "label": "triage:n.2", "phase": "Triage", "start": 100, "end": 150, "result": { "verdict": "ESCALATE" } },
+    { "label": "ledger:n.2", "phase": "Integrate", "start": 160, "end": 165 }
+  ] }

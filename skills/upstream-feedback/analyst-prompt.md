@@ -48,7 +48,10 @@ entire output is the findings list below.
 3. **Speed** — serialization the evidence shows was unnecessary, dead time between phases,
    dispatches spent on results nothing consumed, caps that bound the wrong quantity. The
    detector lines and the graph shape are your instruments: peak-vs-cap gaps, thin multi-round
-   tails, hot-file deferrals, top-up query usage.
+   tails, hot-file deferrals, top-up query usage. So are the `Profile:` lines in the run metrics
+   (measured after the run): the realized critical path and the bead that held it, wait causes,
+   merge-lane load, and modelled what-ifs, which are estimates to weigh against the `bound` line's
+   model-vs-actual figure.
 
 ## The worthiness bar — apply to every candidate
 

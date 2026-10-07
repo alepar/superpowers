@@ -55,6 +55,8 @@ append. A standalone run is its own outermost.
      and its `independence:` line (the main confounder when comparing agreement across runs);
    - the ledger's `Merge:` lines (the success path and the `→ blocker` / `→ auth-refused` failure paths) and
      the four-line `Metrics:` block;
+   - the ledger's `Profile:` lines, one block per coordinator invocation (`super-code`'s run
+     profile: critical path, bottleneck bead, wait causes, merge lane, what-ifs);
    - the integration branch's merge count, `git log --merges --first-parent <base>..<branch>`,
      against the ledger's success-path `Merge:` lines. A shortfall goes under Merge-back as
      `ledger incomplete: <N> merge commits vs <M> Merge: lines`;
