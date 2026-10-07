@@ -1,7 +1,7 @@
 # Refinement log — response to critique 1
 
-Inputs: [critique-1.md](critique-1.md) (independent critic), [recommendations-v1.md](recommendations-v1.md)
-and [report-v1.md](report-v1.md) (the drafts it reviewed). Outputs: [../recommendations.md](../recommendations.md)
+Inputs: [critique-1.md](critique-1.md) (independent critic), `critique/recommendations-v1.md`
+and `critique/report-v1.md` (the drafts it reviewed; both on branch `research/oop-design-scouts` at commit `a4ee3d5`, which is not on `main`). Outputs: [../recommendations.md](../recommendations.md)
 (v2) and [../report.md](../report.md) (revised). Before accepting any objection the lead re-checked
 its evidence: every repository citation the critic used was read at the cited lines, and every
 literature claim was looked up in the evidence ledger (`tools/claim_tool.py find`). No objection

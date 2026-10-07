@@ -2,12 +2,12 @@
 
 Stream 2 of the 2026-10-07 OOP-design research: eight fresh-context auditors (A1–A8) reviewed
 the CURRENT Superpowers repository (worktree `research/oop-design-scouts`, base `main` eb0462b,
-6.4.2-alepar4.16) read-only, under the [audit protocol](PROTOCOL.md). Every finding cites a
+6.4.2-alepar4.16) read-only, under the audit protocol (`audit/PROTOCOL.md`, on branch `research/oop-design-scouts` at commit `a4ee3d5`, which is not on `main`). Every finding cites a
 `path:line`, commit, or recorded run artifact and is labelled observed / inference / gap. The
 lead spot-checked the load-bearing citations of every auditor ([VERIFICATION.md](VERIFICATION.md))
-and machine-checked all 617 citations ([citation-check.txt](citation-check.txt): 596 located at
+and machine-checked all 617 citations (596 located at
 the cited lines, 1 line drift, 20 non-verbatim summary excerpts reviewed by hand; no fabricated
-citation found). This map cites repository artifacts only; external literature lives in the
+citation found; full output in `audit/citation-check.txt`, on branch `research/oop-design-scouts` at commit `a4ee3d5`, which is not on `main`). This map cites repository artifacts only; external literature lives in the
 research ledgers one directory up.
 
 ## Coverage

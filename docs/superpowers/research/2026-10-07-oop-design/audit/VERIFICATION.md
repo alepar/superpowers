@@ -102,7 +102,7 @@ used in the synthesis. "Confirmed" means the cited lines say what the finding cl
 
 `tools/check_audit_citations.py` checked every citation in `audit/A*-evidence.jsonl` (617):
 file/commit exists, cited lines within the file, excerpt fragments present within ±3 lines.
-Result (full output in [citation-check.txt](citation-check.txt)): 596 located at the cited
+Result (full output in `audit/citation-check.txt`, on branch `research/oop-design-scouts` at commit `a4ee3d5`, which is not on `main`): 596 located at the cited
 lines, 1 found elsewhere in the same file (line drift), 20 not matched verbatim. The lead
 reviewed the 20: they are summary-style excerpts (e.g. "c7..c25: 14 UNOWNED-SEAM lines, 12
 applied, 2 rejected" — recounted by the lead from the ledger and correct), grep descriptions,
