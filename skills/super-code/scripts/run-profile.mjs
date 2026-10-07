@@ -118,7 +118,7 @@ function launchArgs(rows) {
 }
 
 // ---- labels: `<kind>:<bead>[:<suffix>]` for per-task dispatches, `<kind>[:<suffix>]` for run-level ----
-const BEAD_KINDS = new Set(['impl', 'commit-nudge', 'review', 'fix', 'seam-review', 'merge', 'review-bead', 'triage',
+const BEAD_KINDS = new Set(['brief', 'impl', 'commit-nudge', 'review', 'fix', 'seam-review', 'merge', 'review-bead', 'triage',
   'clarify', 'notify', 'missing-blocker', 'unplanned-blocker', 'close-only', 'reopen', 'discard', 'ledger'])
 function parseLabel(label) {
   const i = label.indexOf(':')
@@ -134,7 +134,7 @@ function parseLabel(label) {
 // all run inside one lane turn (stages `merge` and `seam`).
 function stageOf(kind, suffix) {
   switch (kind) {
-    case 'impl': case 'commit-nudge': return 'implement'
+    case 'brief': case 'impl': case 'commit-nudge': return 'implement'  // `brief:` is older coordinators' setup step
     case 'review': return 'review'
     case 'fix': return suffix ? 'seam' : 'fix'
     case 'seam-review': return 'seam'
@@ -342,6 +342,8 @@ if (opt.summarize) {
   out.push(`Baseline: early unblock — ${withDeps.length} landed beads had in-run blockers · stacked on an implementation ${withDeps.filter(b => b.stackParents.length).length} · bounced on a stack conflict ${withDeps.filter(b => b.waitCause === 'stack-conflict').length} · waited for a merge ${withDeps.filter(b => b.waitCause === 'waited-for-merge').length}`)
   const busy = sum(ps.map(x => x.lane.busyMs)), seam = sum(ps.map(x => x.lane.seamMs))
   out.push(`Baseline: merge lane — busy ${H(busy)} · seam reviews and fixes ${pct(seam, busy)}% of it · queue wait ${H(sum(ps.map(x => x.lane.queueWaitMs)))} summed · first try not merged ${sum(ps.map(x => x.lane.firstTryFailed))} of ${sum(ps.map(x => x.lane.firstTryKnown ?? x.beads.filter(b => b.landed).length))}`)
+  const tsum = k => sum(ps.map(x => x.tests?.[k] ?? 0))
+  if (tsum('busyMs')) out.push(`Baseline: tests — implementers and fixers, summed: ${H(tsum('testMs'))} running tests and ${H(tsum('pollMs'))} polling background runs, ${pct(tsum('testMs') + tsum('pollMs'), tsum('busyMs'))}% of their ${H(tsum('busyMs'))} · ${tsum('cappedCalls')} Bash call(s) at the 10-minute tool limit`)
   const tools = {}
   let implMs = 0
   for (const x of ps) if (x.bottleneck) { for (const [k, v] of Object.entries(x.bottleneck.implByTool ?? {})) add(tools, k, v); implMs += x.beads.find(b => b.id === x.bottleneck.bead)?.implMs ?? 0 }
@@ -451,7 +453,8 @@ const depsAt = (id, t) => [...(rows.get(id)?.deps ?? [])].filter(d => rows.has(d
 const dependentsOf = new Map()
 for (const r of rows.values()) for (const d of r.deps) { if (!dependentsOf.has(d)) dependentsOf.set(d, new Set()); dependentsOf.get(d).add(r.id) }
 
-// ---- per-bead attempts; every attempt starts with an `impl` dispatch (a review re-entry re-runs setup) ----
+// ---- per-bead attempts; every attempt starts with an `impl` dispatch (a review re-entry re-runs setup),
+// or with the `brief:` that preceded it in older coordinators ----
 const beads = new Map()
 for (const a of timed) if (a.bead) {
   if (!beads.has(a.bead)) beads.set(a.bead, { id: a.bead, n: rows.get(a.bead)?.n, agents: [], attempts: [] })
@@ -461,7 +464,8 @@ const hasJournal = run => runs.find(r => r.runId === run)?.journal
 for (const b of beads.values()) {
   let cur = null
   for (const a of b.agents) {
-    if (a.kind === 'impl' || !cur) { cur = { bead: b.id, agents: [] }; b.attempts.push(cur) }
+    const afterBrief = cur && cur.agents.at(-1)?.kind === 'brief'
+    if (!cur || a.kind === 'brief' || (a.kind === 'impl' && !afterBrief)) { cur = { bead: b.id, agents: [] }; b.attempts.push(cur) }
     cur.agents.push(a)
     a.attempt = cur
   }
@@ -470,7 +474,8 @@ for (const b of beads.values()) {
     const head = at.agents[0]
     at.start = head.start
     at.run = head.run
-    at.status = head.kind === 'impl' ? (head.result?.status ?? (head.failed ? 'FAILED' : null)) : null
+    const implHead = at.agents.find(a => a.kind === 'impl')
+    at.status = implHead ? (implHead.result?.status ?? (implHead.failed ? 'FAILED' : null)) : null
     at.impl = by('implement'); at.review = by('review'); at.fix = by('fix'); at.lane = at.agents.filter(a => LANE.has(a.stage))
     at.split = by('split')[0] ?? null
     at.blocker = by('blocker')
@@ -489,7 +494,10 @@ for (const b of beads.values()) {
       ?? (merges.length && !hasJournal(merges.at(-1).run) ? merges.at(-1) : null)
       ?? at.agents.filter(a => a.stage === 'close' && (a.result?.status === 'CLOSED' || !hasJournal(a.run))).at(-1) ?? null
   }
-  b.final = b.attempts.filter(at => at.landing).at(-1) ?? b.attempts.at(-1)
+  // The landing is the real merge. A later close-only of an already-merged branch (its bead close was
+  // lost) is bookkeeping, counted apart as a re-entry close.
+  b.final = b.attempts.filter(at => at.landing?.kind === 'merge').at(-1) ?? b.attempts.filter(at => at.landing).at(-1) ?? b.attempts.at(-1)
+  b.reentryCloses = b.attempts.filter(at => at.start > b.final.start && at.landing && at.landing.kind !== 'merge')
   b.landed = !!b.final.landing
 }
 const landingOf = id => beads.get(id)?.final?.landing ?? null
@@ -639,7 +647,7 @@ function predecessors(a) {
     const b = beads.get(a.bead)
     const idx = b.attempts.indexOf(at)
     const bouncedBefore = b.attempts.slice(0, idx).some(x => x.status === 'STACK_CONFLICT' && x.run === a.run)
-    if (a.kind === 'impl') for (const d of depsAt(a.bead, a.start)) {
+    if (a.kind === 'impl' || a.kind === 'brief') for (const d of depsAt(a.bead, a.start)) {
       const u = usableBy(d, a.start), l = landedBy(d, a.start)
       add(u, 'dep')
       if (l && l !== u) add(l, bouncedBefore ? 'stack-conflict' : 'dep')
@@ -894,9 +902,10 @@ else if (simInput.size) {
 
 // ---- report ----
 const lines = []
-const finishMs = Math.max(0, runEnd - graphEnd)
+let testTotals = null
+const afterMs = Math.max(0, runEnd - graphEnd)
 const catText = (obj, order = CAT_ORDER) => [...order, ...Object.keys(obj).filter(k => !order.includes(k)).sort()].filter(k => obj[k] >= 1000).map(k => `${k} ${fmtDur(obj[k])}`).join(' · ')
-lines.push(`Profile: ${epic ?? '(epic unknown)'} · ${invocations.length} invocation${invocations.length === 1 ? '' : 's'} · ${fmtTime(windowStart)} → ${fmtTime(runEnd)} · wall ${fmtDur(runEnd - windowStart)} (task graph ${fmtDur(actualGraphMs)}${finishMs ? `, finish ${fmtDur(finishMs)}` : ''}) · agents ${allAgents.length} (timed ${timed.length}) · beads dispatched ${beads.size}, landed ${landed.length}, planned ${rows.size}`)
+lines.push(`Profile: ${epic ?? '(epic unknown)'} · ${invocations.length} invocation${invocations.length === 1 ? '' : 's'} · ${fmtTime(windowStart)} → ${fmtTime(runEnd)} · wall ${fmtDur(runEnd - windowStart)} (task graph ${fmtDur(actualGraphMs)}${afterMs ? `, after the last landing ${fmtDur(afterMs)}` : ''}) · agents ${allAgents.length} (timed ${timed.length}) · beads dispatched ${beads.size}, landed ${landed.length}, planned ${rows.size}`)
 const fan = shape.fanOut[0]
 lines.push(`Profile: shape — ${shape.beads} beads · ${shape.edges} edges · depth ${shape.depth} · width ${shape.width} · beads per level ${shape.levels.join('/') || '-'}${fan ? ` · widest fan-out ${fan.id} (${fan.direct} direct, ${fan.transitive} transitive dependents)` : ''}${cuts.length ? ` · ${cuts.length} edge cut(s) applied mid-run` : ''}`)
 if (sim?.failed) lines.push(`Profile: bound — model failed: the planner rows hold a dependency cycle or an edge nothing satisfies${shape.cycles.length ? ` (${shape.cycles.slice(0, 3).join(', ')})` : ''}`)
@@ -966,10 +975,21 @@ if (bottleneck) {
 {
   // Time in attempts that did not land: earlier attempts of landed beads, and beads that never landed.
   const lost = [...beads.values()].map(b => {
-    const atts = b.attempts.filter(x => x !== b.final || !b.landed)
+    const atts = b.attempts.filter(x => (x !== b.final || !b.landed) && !b.reentryCloses.includes(x))
     return { id: b.id, ms: sum(atts.map(x => sum(x.agents.filter(a => a.stage !== 'ledger').map(a => a.dur)))), how: atts.map(x => x.status ?? '?').join(', '), landed: b.landed }
   }).filter(x => x.ms >= 1000).sort((x, y) => y.ms - x.ms)
-  if (lost.length) lines.push(`Profile: rework — ${fmtDur(sum(lost.map(x => x.ms)))} of dispatch time in attempts that did not land — ${lost.slice(0, 3).map(x => `${x.id} ${fmtDur(x.ms)} (${x.how}${x.landed ? '; landed later' : '; never landed'})`).join(' · ')}${lost.length > 3 ? ` · ${lost.length - 3} more` : ''}`)
+  const closes = [...beads.values()].filter(b => b.reentryCloses.length)
+  const closeText = closes.length ? ` · ${closes.length} merged bead(s) re-dispatched only to close (a lost bead close), ${fmtDur(sum(closes.map(b => b.reentryCloses[0].start - b.final.landing.end)))} after their merge` : ''
+  if (lost.length || closes.length) lines.push(`Profile: rework — ${fmtDur(sum(lost.map(x => x.ms)))} of dispatch time in attempts that did not land${lost.length ? ' — ' + lost.slice(0, 3).map(x => `${x.id} ${fmtDur(x.ms)} (${x.how}${x.landed ? '; landed later' : '; never landed'})`).join(' · ') : ''}${lost.length > 3 ? ` · ${lost.length - 3} more` : ''}${closeText}`)
+}
+{
+  // Test time across every implementer and fixer (summed: they run at the same time).
+  const coders = timed.filter(a => a.kind === 'impl' || a.kind === 'commit-nudge' || a.kind === 'fix')
+  const busy = sum(coders.map(a => a.dur))
+  const test = sum(coders.map(a => a.byCat?.test ?? 0)), poll = sum(coders.map(a => a.byCat?.poll ?? 0))
+  const capped = coders.flatMap(a => a.calls ?? []).filter(x => x.name === 'Bash' && x.ms >= 595000)
+  if (busy >= 1000) lines.push(`Profile: tests — implementers and fixers, summed: ${fmtDur(test)} running tests and ${fmtDur(poll)} polling background runs, ${pct(test + poll, busy)}% of their ${fmtDur(busy)} · ${capped.length} Bash call(s) ran into the 10-minute tool limit`)
+  testTotals = { busyMs: busy, testMs: test, pollMs: poll, cappedCalls: capped.length }
 }
 {
   const parts = [['stack-conflict', 'stack-conflict re-cuts'], ['retry', 'retries'], ['cancelled', 'cancelled re-dispatches']].filter(([k]) => redo[k].ms >= 1000)
@@ -1011,7 +1031,7 @@ if (opt.out) {
     criticalPath: { ms: pathMs, byCategory: byCat, laneContentionMs, redo, segments: segments.map(s => ({ kind: s.kind, bead: s.bead, label: s.label, via: s.why ?? null, start: T(s.start), ms: s.ms })) },
     bottleneck: bottleneck ? { bead: bottleneck[0], ms: bottleneck[1].total, share: pathMs ? bottleneck[1].total / pathMs : 0, byCategory: bottleneck[1].byCat,
       implByTool: beads.get(bottleneck[0]).implByCat, calls: beads.get(bottleneck[0]).final.impl.flatMap(a => a.calls ?? []).sort((x, y) => y.ms - x.ms).slice(0, 10) } : null,
-    lane, runtime, conflicts: hotConflicts.slice(0, 20), simulation: sim, unmeasured, summary: lines,
+    lane, runtime, tests: testTotals, conflicts: hotConflicts.slice(0, 20), simulation: sim, unmeasured, summary: lines,
   }
   writeFileSync(`${opt.out}.json`, JSON.stringify(json, null, 2) + '\n')
   const md = [`# Run profile — ${epic ?? 'unknown epic'}`, '', '```', ...lines, '```', '']

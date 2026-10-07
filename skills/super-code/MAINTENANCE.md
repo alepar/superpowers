@@ -206,14 +206,16 @@ are not modelled. The `Profile: bound` line prints the model's makespan against 
 predecessor must start before its step, attempt heads get slot, ready-query and planner
 candidates, and waits are clamped to their invocation. The check ran against the 52 coordinator
 runs still on the maintainer's disk, from 2026-10-01 to 2026-10-03: 34 real invocations across nine
-epics in four projects, plus 18 small fixture runs. None crashed. On 29 of the 32 real invocations
-that landed work, the model came within 10% of the measured task graph. The worst fit (59%) was a
+epics in four projects, plus 18 small fixture runs. None crashed. On 30 of the 32 real invocations
+that landed work, the model came within 10% of the measured task graph. The worst fit (60%) was a
 run whose critical path ran through a bead that never landed; the model leaves such attempts out.
-The next two were 80% and 85%. `--summarize` over the 34 real profiles gives the baseline:
-- Implement is 64% of critical-path time and the planners 20%.
+The next was 85%. `--summarize` over the 34 real profiles gives the baseline:
+- Implement is 65% of critical-path time and the planners 20%.
 - Stack conflicts bounced 32 of the 112 landed beads that had in-run blockers.
 - Seam work took 55% of the merge lane's busy time.
-- Tests plus polling for background test runs took 65% of the bottleneck beads' implement time.
+- Tests plus polling for background test runs took 65% of the bottleneck beads' implement time,
+  and 60% of all implementer and fixer time. Almost all of it was focused runs: 28 of about 2,600
+  test commands were unfiltered whole-suite runs, and 197 of 198 backgrounded runs were targeted.
 
 On the largest run (76 planned beads, 455 agents, a 7h55m task graph), the model reached 96% of
 actual once late edges were calibrated. Before that it was 83%, because it assumed early unblock

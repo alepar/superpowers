@@ -28,7 +28,7 @@ echo "run-profile: chain (A → B, A → C, B+C → D; E alone; cap 2, early unb
 build chain "$T/chain"
 run bash "$P" --workflow "$T/chain" --out "$T/chain-p"
 assert_eq "$code" 0 "exits 0"
-assert_has "$out" "Profile: ep · 1 invocation · 2026-10-01T00:00Z → 2026-10-01T00:35Z · wall 35m (task graph 33m, finish 2m) · agents 26 (timed 26) · beads dispatched 5, landed 5, planned 5" "header line"
+assert_has "$out" "Profile: ep · 1 invocation · 2026-10-01T00:00Z → 2026-10-01T00:35Z · wall 35m (task graph 33m, after the last landing 2m) · agents 26 (timed 26) · beads dispatched 5, landed 5, planned 5" "header line"
 assert_eq "$(q "$T/chain-p.json" "d.window.graphMs")" "2004000" "task graph: first dispatch to last landing"
 assert_eq "$(q "$T/chain-p.json" "d.criticalPath.ms")" "2004000" "critical path segments sum to the task graph's wall time"
 assert_eq "$(q "$T/chain-p.json" "JSON.stringify(d.criticalPath.byCategory)")" '{"startup":10000,"ready":10000,"planning":60000,"implement":1800000,"dispatch":4000,"review":60000,"merge":60000}' "critical path by category"
@@ -187,6 +187,22 @@ assert_has "$out" "Profile: shape — 5 beads · 4 edges" "graph from journal re
 pd tools
 run bash "$P" --workflow "$T/tools" --out "$T/tl"
 assert_eq "$(q "$T/tl.json" "JSON.stringify(d.beads[0].implByTool)")" '{"git":10000,"install":10000,"test":60000,"read":20000,"poll":20000,"build":10000,"shell":10000}' "tool categories per sub-command (tests run as target/*/deps binaries, tail -f as polling, a pipe to tail stays shell)"
+
+echo "run-profile: bookkeeping re-entries, older coordinators, test time"
+# A merged bead whose close was lost comes back at the next round only to close: its landing is the
+# merge, and the close is counted apart.
+pd reentry-close
+run bash "$P" --workflow "$T/reentry-close" --out "$T/rc"
+assert_eq "$(q "$T/rc.json" "(b => [b.landedAt.slice(11, 19), b.attempts.length, b.waitCause].join(' '))(d.beads.find(b => b.id === 'rc.1'))")" "00:04:00 2 none" "re-entry close: the landing is the merge at 240s, not the close at 330s"
+assert_eq "$(q "$T/rc.json" "d.window.graphMs")" "240000" "re-entry close: the task graph ends at the last real merge"
+assert_has "$out" "1 merged bead(s) re-dispatched only to close (a lost bead close), 1m after their merge" "re-entry close: counted on the rework line"
+assert_eq "$(q "$T/rc.json" "JSON.stringify(d.criticalPath.redo.retry)")" '{"ms":0,"beads":[]}' "re-entry close: not a retry on the critical path"
+# Older coordinators dispatched `brief:` before `impl:`; both are one attempt's implement time.
+pd brief-step
+run bash "$P" --workflow "$T/brief-step" --out "$T/br"
+assert_eq "$(q "$T/br.json" "(b => b.attempts.length + ' ' + b.implMs)(d.beads[0])")" "1 180000" "brief step: one attempt, implement 10s + 170s"
+# Test time across implementers and fixers.
+assert_has "$(cat "$T/chain-p.md")" "Profile: tests — implementers and fixers, summed: 3m running tests and 3m polling background runs, 17% of their 40m · 0 Bash call(s) ran into the 10-minute tool limit" "tests line: summed test and poll time over every implementer"
 
 echo "run-profile: arguments"
 run bash "$P" --help
