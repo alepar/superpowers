@@ -1,8 +1,8 @@
 # Porting Superpowers to a New Harness
 
 This guide explains how to add support for a new harness — an IDE, CLI, or
-agent runner that isn't Claude Code — so that Superpowers skills auto-trigger
-there the same way they do natively.
+agent runner that isn't Claude Code — so that Superpowers skills are available
+there through its native tools.
 
 It is written in two layers. **Part 1–3** explain how the system works and how
 to tell whether a harness can be supported at all; read these before you touch
@@ -15,6 +15,11 @@ The integration mechanism differs across harnesses, and it will keep changing.
 This guide deliberately teaches the **invariants** — the things that must be
 true no matter the mechanism — and points you at a live reference implementation
 to copy. When this guide and the code disagree, the code wins; fix the guide.
+
+This fork intentionally uses optional guidance. Its acceptance checks are routine
+work without automatic brainstorming and successful explicitly requested skill
+loading. Upstream PR requirements in AGENTS.md and the PR template describe a
+different policy; fork-only changes are not submitted upstream.
 
 ## Before you start
 
@@ -48,11 +53,9 @@ into the harness's native tools. Three components:
 
 3. **Bootstrap (per-harness).** At the start of every session, the full
    `skills/using-superpowers/SKILL.md` is injected into the model's context,
-   wrapped in `<EXTREMELY_IMPORTANT>` tags, with the tool mapping appended. That
-   injected skill is what teaches the model that skills exist and that it must
-   check for a relevant skill before acting. **The bootstrap is the entire
-   integration.** Without it, the skill files are inert — present on disk, never
-   invoked.
+   with the tool mapping appended where needed. This fork supplies an optional
+   skill catalog, without priority tags, compulsory skill checks, or automatic
+   brainstorming. Native discovery and explicit skill loading remain available.
 
 ### Two rules that make this work
 
@@ -145,8 +148,9 @@ A port is finished when **all** of these are true:
 
    > Let's make a react todo list
 
-   auto-triggers the `brainstorming` skill *before any code is written*. Capture
-   the full transcript — the PR requires it.
+   proceeds without unsolicited brainstorming or a design approval pause. Also
+   verify that `Please use brainstorming to design a todo list` loads the skill.
+   Capture both transcripts for the fork integration evidence.
 5. Tests cover the integration (Part 5) and pass.
 6. A real user can install it through the harness's own mechanism (not by
    hand-copying files), and the version is tracked in `.version-bump.json` where
@@ -350,16 +354,14 @@ ones in spirit:
 ### Step 3 — Wire the bootstrap injection
 
 This is the heart of the port. The shared goal: at session start, get the
-`using-superpowers` skill content (wrapped in `<EXTREMELY_IMPORTANT>` tags) plus
-the harness's tool mapping in front of the model, with a note that the skill is
-already active so the model doesn't try to load it again. *How* you do that —
+`using-superpowers` optional catalog plus the harness's tool mapping in front
+of the model. Supplying the catalog does not select a workflow. *How* you do that —
 and what you assemble vs. what the harness loads raw — depends entirely on your
 shape. Do **not** apply one shape's recipe to another.
 
 **Shape A — a script reads `SKILL.md` and prints the harness's JSON.** The
 dispatched script (`hooks/session-start`) `cat`s the whole `SKILL.md` (frontmatter
-included — that's fine; it's emitted verbatim), wraps it with the "You have
-superpowers… for all other skills use the Skill tool" preamble, escapes it, and
+included — that's fine; it's emitted verbatim), escapes it, and
 prints the harness's JSON shape. The tool mapping for Shape A does **not** go
 inline here — it lives in `references/<harness>-tools.md` (Step 4). Get the JSON
 output shape exactly right. `hooks/session-start`
@@ -409,12 +411,9 @@ real branch.
 
 **Shape B — assemble the string in code, then inject as a user message.** Here
 you build the bootstrap yourself: read `SKILL.md`, strip its YAML frontmatter,
-and assemble `<EXTREMELY_IMPORTANT>` + a short preamble that the skill is already
-loaded and must not be re-invoked + the stripped body + the inline tool mapping +
-`</EXTREMELY_IMPORTANT>`. One subtlety the references disagree on: OpenCode's
-preamble says "do NOT use the skill tool…" (assumes a `skill` tool exists), while
-pi's just says "do not try to load using-superpowers again." If your harness has
-no skill tool, use pi's wording, not OpenCode's.
+and assemble a neutral catalog heading or harness-specific marker, the stripped
+body, and the inline tool mapping. Do not add priority tags or instructions
+that declare workflows mandatory or already selected.
 
 Inject the result as a **user-role message, not a system message** — system
 messages bloat tokens when repeated every turn (#750) and multiple system
@@ -423,9 +422,9 @@ messages break some models (#894). Three things you must replicate:
 - **Dedup guard.** The lifecycle callback can fire repeatedly (OpenCode's
   transform runs on *every* agent step; pi's `context` fires per turn). Before
   injecting, check whether a bootstrap marker is already present and skip if so.
-  (The references pick different markers — pi a custom string, OpenCode the
-  `EXTREMELY_IMPORTANT` tag; matching the tag is more robust since it needs no
-  harness-specific constant.) Cache the bootstrap content at module level so
+  (Pi uses a harness-specific bootstrap marker; OpenCode uses its catalog
+  heading. Match the integration's own marker, not arbitrary user text.) Cache
+  the bootstrap content at module level so
   you're not re-reading and re-parsing `SKILL.md` on every call (#1202).
 - **Compaction.** If the harness compacts/summarizes history, re-inject
   afterward. pi sets an `injectBootstrap` flag on `session_start` and
@@ -445,11 +444,11 @@ wrapped string. The context file your extension ships (declared by the manifest 
 skill and the harness's tool-mapping reference. `GEMINI.md`
 does this with two `@`-includes (`@./skills/using-superpowers/SKILL.md` and
 `@./skills/using-superpowers/references/<harness>-tools.md`); the harness loads
-them raw, frontmatter and all, and `SKILL.md` already carries its own
-`<EXTREMELY-IMPORTANT>` block internally. If your harness has no include syntax,
+them raw, frontmatter and all. The shared catalog describes optional workflows.
+If your harness has no include syntax,
 inline the content into the instructions file instead. Gemini ships **no**
 "already loaded, don't re-invoke" preamble — for an `@`-include harness the
-content is the active instruction set, not a skill the model would re-load. If
+content is the optional catalog, not a selected workflow. If
 you find your harness does try to re-invoke, add that note as a literal line in
 the instructions file (you have no code to add it any other way).
 
@@ -508,12 +507,8 @@ harness is listed.)
 
 ### Step 5 — Handle a harness with no native skill tool
 
-`using-superpowers/SKILL.md` tells the model to *never read skill files manually
-with file tools — always use your platform's skill-loading mechanism.* The point
-is "don't bypass the mechanism," not "never use file-read." What counts as "your
-platform's mechanism" depends on the harness — and for a harness with no skill
-tool, the documented mechanism *is* reading `SKILL.md`. So reading it there
-honors the rule rather than breaking it. Distinguish three cases:
+Use native skill loading where available, or read `SKILL.md` on harnesses
+without a loader. Distinguish three cases:
 
 1. **Native `Skill`-style tool** (Claude Code, Copilot CLI, Gemini's
    `activate_skill`): point the mapping at that tool.
@@ -538,7 +533,7 @@ honors the rule rather than breaking it. Distinguish three cases:
    triggers the model to load it. This is softer than a declared context file;
    two things it does **not** give you, versus a context file / hook / in-process
    injector — account for both:
-   - **It bootstraps *triggering*, not the *tool mapping*.** An injector prepends
+   - **It supplies discovery, not the tool mapping.** An injector prepends
      `<harness>-tools.md` alongside `using-superpowers` every session. Here nothing
      injects the mapping — the model only sees skill *descriptions* and must *read*
      your `references/<harness>-tools.md` when it needs tool names. It works
@@ -546,28 +541,24 @@ honors the rule rather than breaking it. Distinguish three cases:
      it's softer than injection. Make sure the mapping is reachable from what the
      model loads — e.g. linked from `SKILL.md`'s Platform Adaptation section and
      installed alongside the skills — not just sitting in the repo.
-   - **There's no structural guarantee the trigger fires.** No `<EXTREMELY_IMPORTANT>`
-     wrapper, no dedup, no re-injection after compaction — firing depends on the
-     model choosing to act on a description it sees in the index. This is exactly
-     why the acceptance test is mandatory here: it is the *only* guarantee, so run
-     it on the model(s) your users will actually use, not just the strongest one.
+   - **Verify explicit loading and ordinary work separately.** Discovery should
+     make requested skills accessible while routine tasks proceed directly.
+     Run both acceptance prompts on the models your users will actually use.
 3. **No skill system at all:** there is nothing to register, and the *only*
    mechanism is the model reading `SKILL.md` on demand. But the model can't read
-   what it can't find: `using-superpowers/SKILL.md` does **not** enumerate the
-   available skills, so on its own the model won't know which skills exist or
-   their triggers. You must supply a discovery path. Two options, and they differ
+   what it can't find: the shared catalog names the workflows, but the model also
+   needs their installed paths. Supply a discovery path. Two options, and they differ
    in durability: (a) generate a skill index (each `skills/*/SKILL.md`'s `name` +
-   `description` frontmatter) and place it *inside* the `<EXTREMELY_IMPORTANT>`
-   wrapper alongside the tool mapping (Shape B recipe above) so it's covered by
+   `description` frontmatter) and place it alongside the optional catalog and
+   tool mapping (Shape B recipe above) so it's covered by
    the dedup guard — but a build-time index goes stale as skills are added; or
    (b) instruct the model to list `skills/*/SKILL.md` at runtime and read their
    frontmatter to find a match — slower but never stale. Prefer (b) unless you
    have a reason not to. Without either, a no-skill-system port loads the
    bootstrap but silently never triggers any other skill.
 
-In cases 2 and 3, say plainly in your tool mapping that reading `SKILL.md` is the
-blessed path, so the model doesn't think it's violating the "never read skill
-files" rule. Don't go hunting for a `skillPaths`-style registration API in a
+In cases 2 and 3, document direct `SKILL.md` reads in the tool mapping. Don't go
+hunting for a `skillPaths`-style registration API in a
 harness that has no skill system — case 3 has none.
 
 ### Step 6 — Add tests
@@ -647,7 +638,7 @@ tmux capture-pane -t port-test -p          # reply should show it knows its skil
 tmux send-keys -t port-test 'Let'\''s make a react todo list'; sleep 0.4; tmux send-keys -t port-test Enter
 # poll until the turn finishes — re-capture every few seconds, don't capture once
 sleep 8
-tmux capture-pane -t port-test -p          # PASS = brainstorming triggers BEFORE any code
+tmux capture-pane -t port-test -p          # PASS = routine work proceeds without unsolicited brainstorming
 
 # 5. Save the transcript for the PR, then clean up
 tmux capture-pane -t port-test -p > /tmp/port-smoke/transcript.txt
@@ -693,19 +684,19 @@ Then:
     `contextFileName`-style field (an extension-declared file it loads every
     session), that is the strongest clean bootstrap: declare it, and the installer
     preserves it *and* the harness loads it. Generate it at install time from the
-    live `using-superpowers/SKILL.md` + the tool mapping (wrapped in
-    `<EXTREMELY_IMPORTANT>`) so the installed bootstrap never drifts. This is what
+    live `using-superpowers/SKILL.md` + the tool mapping so the installed
+    optional catalog never drifts. This is what
     `.antigravity-plugin/install.sh` does — `agy plugin install` reports
     `✔ context : ANTIGRAVITY.md`, and a clean session reads `using-superpowers`'s
-    SKILL.md, loads `brainstorming`, and enters the brainstorming flow before any
-    code. **Verify with a marker** that the installer keeps the file and the
+    SKILL.md and can load explicitly requested workflows. **Verify with a marker**
+    that the installer keeps the file and the
     harness loads it: one porter wrongly concluded it couldn't, because they
     shipped the file *without* declaring `contextFileName` and it was stripped as
     unrecognized.
   - **Otherwise lean on the installed `using-superpowers` skill itself.** If the
     harness surfaces each installed skill's name + description at session start,
-    the `using-superpowers` description ("Use when starting any conversation…")
-    can prompt the model to load it — installing the skill *is* the bootstrap.
+    the `using-superpowers` description can help the model find the optional
+    catalog when needed — installing the skill supplies discovery.
     Softer (no guaranteed wrapper; it carries triggering but not the tool mapping
     — see Step 5), so prefer the declared context file when available.
   - If neither works, the harness cannot be cleanly supported yet — **say so**
@@ -767,7 +758,7 @@ dispatcher pattern.
 - Target the **`dev`** branch. One harness per PR.
 - Fill in the PR template's **"New harness support"** section and paste the
   complete acceptance-test transcript (the "Let's make a react todo list"
-  session showing `brainstorming` auto-triggering). A PR without this proof will
+  session showing ordinary work, plus an explicit brainstorming request). A PR without this proof will
   be closed.
 - Superpowers is a zero-dependency plugin. Don't add a third-party runtime
   dependency. Adding a new harness is the one carve-out the contributor rules
@@ -817,10 +808,8 @@ Use this as the live index; when in doubt, read the files, not this table.
   reads `SKILL.md` on demand. Don't assume a `skillPaths` equivalent exists.
 - **Mapping in two places.** For in-process plugins the mapping may live both
   inline and in a `references/` file (pi). Update both.
-- **The "never read skill files" line.** It means "don't bypass your platform's
-  skill-loading mechanism," not "never use file-read." On a no-skill-tool harness
-  that mechanism *is* reading `SKILL.md` — say so explicitly in the mapping
-  (Part 5).
+- **Skill loading.** Use native loading where available. On a harness without
+  a loader, document direct `SKILL.md` reads in the mapping (Part 5).
 - **`.sh` on Windows.** Keep hook scripts extensionless (Part 7).
 - **Unregistered version.** A new manifest not added to `.version-bump.json`
   ships stale (Part 6).

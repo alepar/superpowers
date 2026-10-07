@@ -77,8 +77,8 @@ class TestBootstrapInjection:
         assert isinstance(result, dict)
         content = result["context"]
         assert BOOTSTRAP_MARKER in content
-        assert content.startswith("<EXTREMELY_IMPORTANT>")
-        assert content.rstrip().endswith("</EXTREMELY_IMPORTANT>")
+        assert content.startswith(BOOTSTRAP_MARKER)
+        assert "EXTREMELY_IMPORTANT" not in content
 
     def test_later_turns_return_none(self, mock_ctx):
         plugin = _load_plugin()

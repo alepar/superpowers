@@ -119,6 +119,12 @@ if (typeof context !== "string" || context.trim() === "") {
   fail("injected context was empty");
 }
 
+for (const forbidden of ["EXTREMELY_IMPORTANT", "EXTREMELY-IMPORTANT", "ABSOLUTELY MUST", "1% chance", "BEFORE any response", "brainstorming first"]) {
+  if (context.includes(forbidden)) fail(`compulsory guidance: ${forbidden}`);
+}
+if (!context.includes("consider `super-auto`")) fail("missing optional super-auto suggestion");
+if (!context.includes("Routine coding and debugging can proceed")) fail("missing optional-workflow guidance");
+
 const expectedText = process.env.EXPECT_CONTAINS || "";
 if (expectedText && !context.includes(expectedText)) {
   fail(`context did not contain expected text: ${expectedText}`);

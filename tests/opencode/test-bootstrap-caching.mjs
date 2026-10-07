@@ -35,6 +35,18 @@ const transform = plugin['experimental.chat.messages.transform'];
 const firstOutput = makeOutput(`${scenario} bootstrap first step`);
 await transform({}, firstOutput);
 const afterFirst = { existsCount, readCount };
+// The same in-memory array must not acquire a second catalog part.
+await transform({}, firstOutput);
+if (scenario === 'present' && countBootstrapParts(firstOutput) !== 1) {
+  throw new Error('repeated transform duplicated the optional catalog');
+}
+if (scenario === 'present') {
+  const text = bootstrapText(firstOutput);
+  if (/EXTREMELY[_-]IMPORTANT|ABSOLUTELY MUST|Follow it now/.test(text)) {
+    throw new Error('OpenCode injected compulsory skill guidance');
+  }
+  if (!text.includes('consider `super-auto`')) throw new Error('missing optional workflow suggestion');
+}
 
 const secondOutput = makeOutput(`${scenario} bootstrap second step`);
 await transform({}, secondOutput);
@@ -83,13 +95,13 @@ function makeOutput(text) {
 
 function countBootstrapParts(output) {
   return output.messages[0].parts.filter(
-    (part) => part.type === 'text' && part.text.includes('EXTREMELY_IMPORTANT')
+    (part) => part.type === 'text' && part.text.startsWith('Superpowers skill catalog for OpenCode\n')
   ).length;
 }
 
 function bootstrapText(output) {
   return output.messages[0].parts.find(
-    (part) => part.type === 'text' && part.text.includes('EXTREMELY_IMPORTANT')
+    (part) => part.type === 'text' && part.text.startsWith('Superpowers skill catalog for OpenCode\n')
   )?.text || '';
 }
 

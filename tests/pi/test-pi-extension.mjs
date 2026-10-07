@@ -84,13 +84,15 @@ test('startup context injects the bootstrap as one user message until agent_end'
 
   assert.equal(result.messages.length, 2);
   assert.equal(result.messages[0].role, 'user');
-  assert.match(textOf(result.messages[0]), /You have superpowers/);
+  assert.match(textOf(result.messages[0]), /Superpowers is a collection of optional workflows/);
   assert.match(textOf(result.messages[0]), /Pi tool mapping/);
+  assert.doesNotMatch(textOf(result.messages[0]), /EXTREMELY[_-]IMPORTANT|Follow it now|ABSOLUTELY MUST/);
+  assert.match(textOf(result.messages[0]), /consider `super-auto`/);
   assert.equal(result.messages[1], originalMessages[0]);
 
   const repeatedProviderRequest = await context({ type: 'context', messages: originalMessages }, {});
   assert.equal(repeatedProviderRequest.messages.length, 2);
-  assert.match(textOf(repeatedProviderRequest.messages[0]), /You have superpowers/);
+  assert.match(textOf(repeatedProviderRequest.messages[0]), /Superpowers is a collection of optional workflows/);
 
   const alreadyInjected = await context({ type: 'context', messages: result.messages }, {});
   assert.equal(alreadyInjected, undefined, 'bootstrap should not duplicate when already present');
@@ -114,7 +116,7 @@ test('session_compact injects bootstrap after compaction summaries, not before c
   assert.equal(result.messages.length, 3);
   assert.equal(result.messages[0], summary);
   assert.equal(result.messages[1].role, 'user');
-  assert.match(textOf(result.messages[1]), /You have superpowers/);
+  assert.match(textOf(result.messages[1]), /Superpowers is a collection of optional workflows/);
   assert.equal(result.messages[2], user);
 });
 
