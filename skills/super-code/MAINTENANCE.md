@@ -773,9 +773,11 @@ Each entry is the comment that used to sit above the named line of `coordinator.
 ### `let topUpHook = () => {}`
 
 > Single-flight merge queue: each task's integration joins it the instant the task's chain
-> ends, and exactly one merge touches the integration worktree at a time — guaranteed by
-> promise chaining, not batching. Drain order is completion order (a `bd ready` batch is
-> mutually independent). Only merge work rides the queue: blocker triage, permission refusals
+> ends, and exactly one merge touches the integration worktree at a time — guaranteed by one
+> queue worker (`pumpMerge`), not batching. Drain order is completion order (a `bd ready` batch is
+> mutually independent), except that the next merge is the queued task with the most live
+> attempts waiting on its landing (stacked on it, or bounced on a stack conflict), first-come
+> among equals. `mergeChain` is a promise that settles when the lane is idle and empty. Only merge work rides the queue: blocker triage, permission refusals
 > and already-merged closes run outside it (none touches the integration branch, and `bd`
 > writes are safe beside a merge), and ledger lines go to the ledger chain. A merge that ends
 > on the blocker path returns that follow-up as a thunk, which runs after the queue moves on.

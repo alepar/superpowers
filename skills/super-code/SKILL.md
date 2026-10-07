@@ -192,8 +192,9 @@ pre-flight resolves `runtimeSlots`, the Workflow runtime's `min(16, cores-2)` ag
 queue every call over them in one shared queue — the two kept free stop merges and top-ups from
 queueing behind implementers, so every admitted chain is a running agent) as a **sliding window** — never as batches with
 barriers between them — and each task's integration joins a **single-flight merge queue the
-instant its own chain ends**, draining in completion order while siblings still run. Exactly one
-merge touches the integration branch at any moment, guaranteed by chaining, not batching.
+instant its own chain ends**, draining in completion order while siblings still run, except that
+a task whose stacked or bounced dependents wait on its landing merges first. Exactly one merge
+touches the integration branch at any moment, guaranteed by a single queue worker, not batching.
 The ordinary-subagent procedure runs one chain at a time and re-queries ready after each
 chain (`./coordinator-subagents.md`).
 
