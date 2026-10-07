@@ -530,6 +530,12 @@ async function main() {
   scenario('templates: implementer and reviewer carry the D4 contract')
   {
     check(/COMMIT IS THE LAST STEP/.test(implementerTemplate) && /git status --short/.test(implementerTemplate), 'implementer: commit last, clean tree')
+    {
+      const commitSec = implementerTemplate.split('## Commit')[1]?.split('\n## ')[0] ?? ''
+      check(/unless step 0 reported stacked/.test(commitSec) && commitSec.includes('`git rebase [INTEGRATION_BRANCH]`') && commitSec.includes('`git merge-base [INTEGRATION_BRANCH] HEAD`') && /A stacked branch is never rebased/.test(commitSec), 'implementer: an unstacked task rebases onto the integration tip after committing and reports the new merge-base; a stacked one does not', commitSec)
+      check(/moved past \[BASE\], re-run step 3's tests/.test(commitSec) && /git rebase --abort/.test(commitSec), 'implementer: tests re-run only when the tip moved; an unresolvable rebase is aborted and reported')
+      check(/Commit as in "Commit", without its rebase/.test(implementerTemplate), 'fix pass: commits without the rebase')
+    }
     check(/bd comments \[TASK_ID\]/.test(implementerTemplate), 'implementer: reads recorded clarifications')
     check(/No one can answer questions during this run/.test(implementerTemplate) && !/Ask them now/.test(implementerTemplate) && !/Don't guess/.test(implementerTemplate), 'implementer: unattended default reading, no ask-now / no-guess')
     check(/Do not run the whole suite/.test(implementerTemplate) && /command and output/.test(implementerTemplate), 'implementer: task-relevant tests once, command + output in the report')

@@ -244,9 +244,9 @@ const READY   = { type: 'object', properties: { ids: { type: 'array', items: { t
 // gates it; readyFromGraph uses them. A mapping with no deps falls back to the `bd ready` top-up.
 const PLANNED = { type: 'object', properties: { planPath: {type:'string'}, mapping: { type:'array', items: { type:'object', properties: { n:{type:'integer'}, id:{type:'string'}, files:{type:'array', items:{type:'string'}}, deps:{type:'array', items:{type:'string'}}, opaque:{type:'boolean'} }, required:['n','id','files'] } }, unplanned: { type:'array', items: { type:'object', properties: { id:{type:'string'}, missingDecision:{type:'string'} }, required:['id'] } }, missingEdges: { type:'array', items: { type:'object', properties: { dependent:{type:'string'}, blocker:{type:'string'}, reason:{type:'string'} }, required:['dependent','blocker'] } } }, required: ['planPath','mapping'] }
 // `finding`: the review's finding text on NEEDS_FIX, so the fix pass has something to work from.
-// `base`: the commit review-package diffs from — the pre-implementer commit on a fresh cut, the
-// merge-base on a re-entered or stacked branch. Only the workspace step can learn it; later stages
-// carry it in JS. Never use HEAD~1, which drops all but the last commit.
+// `base`: the commit review-package diffs from — the pre-implementer commit on a fresh cut (or the
+// integration tip an unstacked implementer rebased onto before reporting), the merge-base on a
+// re-entered or stacked branch. Only the implementer can learn it; later stages carry it in JS. Never use HEAD~1, which drops all but the last commit.
 // `head`: the commit tip after the implementer's or fixer's commit. `declined`: fix-pass findings not
 // fixed, with reasons; non-empty merges the task as parked. `stacked`: the branch carries its stack
 // parents' merges. `reopened`: a review re-entry found no branch and reopened the task bead.
