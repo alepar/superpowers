@@ -182,9 +182,10 @@ delta vs prior: <X> new confirmed (<xB> Blocking) · <Y> carried (<yB> Blocking)
 coverage: <lanes ran> · <raw → deduped → panel/spot-checked counts> · <judge completion %> · remainder-capped: N
 independence: <derived from the seats as invoked: same-family (<family>) — seat-differentiated panel | cross-family (<families>) — seat-differentiated panel | partial (subagent scouts, inline verification) | none (inline)> · rung: <Workflow | manual fan-out | inline>
 seat-agreement: panels N · rr 0.78 · rg 0.89 · fg 0.67 · unanimous 0.56 · ground-loo 0.83 (n=6) · reproduce 7/2/0 · refute 5/4/0 · ground 6/3/0   ← omitted entirely when N == 0
+lane-yield (found/confirmed/unique/refuted): correctness 5/2/1/1 · security 0/0/0/0 · …   ← engine-inserted, one entry per lane
 
 ## Confirmed findings            ← consumed by super-design, one task per finding
-- [SEV] <location> — <claim> [fix-regression]   ← tag only on findings a regression scout raised
+- [SEV] <location> — <claim> [lanes: correctness, premortem] [fix-regression]   ← lanes engine-added after judging; fix-regression only on findings a regression scout raised
   verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)
   evidence: <strongest seat evidence, file:line / URL+quote>
   fix-shape hint: <one advisory line>

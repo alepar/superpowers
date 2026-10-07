@@ -1,6 +1,6 @@
 // Runs a super-roast engine script produced by `assemble-args --script` against a mock agent()
 // and checks how the assembled prompts reach each stage. Usage: node engine-mock.mjs <script> <scenario>
-// Scenarios: pr-r1, pr-r2, pr-r2-empty, design-r1. Prints PASS/FAIL lines; exits 1 on any failure.
+// Scenarios: pr-r1, pr-r1-yield, pr-r2, pr-r2-empty, design-r1. Prints PASS/FAIL lines; exits 1 on any failure.
 import { readFileSync } from 'node:fs'
 import assert from 'node:assert/strict'
 
@@ -20,6 +20,13 @@ const agent = async (prompt, o) => {
   seen.push({ label: o.label, prompt, o })
   if (o.label === 'triage') return { lanes: scenario.startsWith('pr') ? ['testing'] : [], domains: scenario.startsWith('design') ? ['queueing'] : [] }
   if (scenario === 'pr-r2-empty' && o.label.startsWith('scout:')) return { findings: [] }
+  if (scenario === 'pr-r1-yield') {
+    if (o.label === 'scout:security') return null
+    if (o.label === 'scout:testing') return { findings: [F('flaky assert', 't.js:9', 'testing')] }
+    if (o.label === 'dedupe') return { groups: [{ ids: [0, 1], suggestedSeverity: 'Should-fix', rank: 1 }, { ids: [2], suggestedSeverity: 'Should-fix', rank: 2 }] }
+    if (o.label.startsWith('judge:')) return V(prompt.includes('t.js:9') ? 'REJECT' : 'CONFIRM', 'Should-fix')
+    if (o.label === 'reporter') return null
+  }
   if (scenario === 'pr-r2-empty' && o.label === 'reporter') return { verdict: 'clean (0 nits) [low coverage]', reportMarkdown: 'super-roast verdict: x', confirmedCount: 0, escalations: [] }
   if (o.label === 'scout:correctness' || o.label === 'scout:premortem') return { findings: [F('core defect', 'c.js:1', o.label.slice(6))] }
   if (o.label === 'scout:regression') return { findings: [F('fix broke caller', 'r.js:5', 'regression')] }
@@ -62,6 +69,31 @@ if (scenario === 'pr-r1') {
   check('triage-activated lane dispatched', () => assert.ok(scoutLabels.includes('testing')))
   check('no fix-regression tag on round 1', () => { assert.ok(!r.reportMarkdown.includes('[fix-regression]')); assert.deepEqual(r.fixRegressions, []) })
 }
+if (scenario === 'pr-r1') {
+  check('confirmed entries tagged with every lane that found their location', () => {
+    const lines = r.reportMarkdown.split('\n').filter(l => l.includes('c.js:1'))
+    assert.equal(lines.length, 2)
+    for (const l of lines) assert.ok(l.endsWith('[lanes: correctness, premortem]'), l)
+  })
+  check('lane-yield header line and coverage.laneYield', () => {
+    assert.ok(r.reportMarkdown.split('\n').includes('lane-yield (found/confirmed/unique/refuted): correctness 1/1/1/0 · security 0/0/0/0 · premortem 1/1/1/0 · simplicity-design 0/0/0/0 · hot-path-perf 0/0/0/0 · concurrency-async 0/0/0/0 · testing 0/0/0/0'))
+    assert.deepEqual(r.coverage.laneYield.premortem, { found: 1, confirmed: 1, unique: 1, refuted: 0 })
+  })
+}
+if (scenario === 'pr-r1-yield') {
+  check('agent count unchanged: 7 scouts + triage + dedupe + 2 panels + 2 reporter tries', () => assert.equal(seen.length, 1 + 7 + 1 + 6 + 2))
+  check('merged finding: shared lanes count confirmed, not unique; dead scout and refuted lane shown', () => {
+    assert.deepEqual(r.coverage.laneYield.correctness, { found: 1, confirmed: 1, unique: 0, refuted: 0 })
+    assert.deepEqual(r.coverage.laneYield.testing, { found: 1, confirmed: 0, unique: 0, refuted: 1 })
+    assert.ok(r.reportMarkdown.includes('lane-yield (found/confirmed/unique/refuted): correctness 1/1/0/0 · security dead · premortem 1/1/0/0 ·'))
+  })
+  check('fallback report tags confirmed entries with lanes, not rejected ones', () => {
+    assert.equal(r.reporterFailed, true)
+    const lines = r.reportMarkdown.split('\n')
+    assert.ok(lines.some(l => l.startsWith('- [Should-fix] c.js:1 — core defect [lanes: correctness, premortem]')))
+    assert.ok(lines.some(l => l.includes('t.js:9') && !l.includes('[lanes: ')))
+  })
+}
 if (scenario === 'pr-r2') {
   check('round 2: materiality bar and the prior report reach every scout', () => {
     for (const s of seen.filter(s => s.label.startsWith('scout:'))) {
@@ -72,7 +104,7 @@ if (scenario === 'pr-r2') {
   check('regression scout dispatched as a core lane', () => assert.ok(scoutLabels.includes('regression')))
   check('regression finding tagged [fix-regression]; core finding not', () => {
     const lines = r.reportMarkdown.split('\n')
-    assert.ok(lines.some(l => l.includes('r.js:5') && l.endsWith('[fix-regression]')))
+    assert.ok(lines.some(l => l.includes('r.js:5') && l.endsWith('[lanes: regression] [fix-regression]')))
     assert.ok(lines.some(l => l.includes('c.js:1') && !l.includes('[fix-regression]')))
   })
   check('fixRegressions return field names the regression finding', () => assert.deepEqual(r.fixRegressions.map(f => f.location), ['r.js:5']))
