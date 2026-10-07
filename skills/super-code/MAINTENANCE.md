@@ -196,7 +196,8 @@ indirectly (`review:`, `ledger:`, `read-ledger`) are listed in that check by han
 
 **The schedule model's assumptions.** Landed beads only, with their final attempt's measured
 times. A slot is held from the implementer's start to the end of review and fix. One FIFO merge
-lane, with a task's seam work inside its lane turn. A stacked task merges after its parents.
+lane, with a task's seam work inside its lane turn (since 2026-10-07 the coordinator merges a task
+with waiting dependents first; the model does not). A stacked task merges after its parents.
 Dependents start at a blocker's implementation, except over edges where this run's dependent
 waited for the merge (a stack conflict, or early unblock not taken). Planner timing is kept as it
 ran. Hot-file caps, the top-up query budget, runtime-slot queueing and attempts that never landed
