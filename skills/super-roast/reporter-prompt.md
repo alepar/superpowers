@@ -19,7 +19,8 @@ lines), and the run facts `{{MODE}}`, `{{ITERATION}}`, `{{INPUTS}}` — plus one
 orchestrator-rendered token, `{{INDEPENDENCE}}`, filled before the engine runs (see
 `./super-roast-workflow.md` "Prompt contract"). After the reporter returns, the engine
 re-applies the coverage-derived verdict qualifiers, overwrites the verdict, `coverage:`,
-`independence:` and `seat-agreement:` header lines with its own values, appends any escalate
+`independence:` and `seat-agreement:` header lines with its own values, inserts a `lane-yield:`
+line and `[lanes: …]` tags on Confirmed entries, appends any escalate
 route the reporter left out, and rewrites a `preExisting` entry placed above FYI to FYI; if the
 reporter fails twice, the engine renders a minimal report from the default routes instead.
 

@@ -77,7 +77,7 @@ assert_eq "$code" 4 "missing node exits 4"
 assert_eq "$(printf '%s' "$out" | cut -c1-17)" "NODE_UNAVAILABLE:" "missing node prints the manual-assembly line"
 
 echo "engine run of the assembled script (mock agents)"
-for s in pr-r1:pr1 pr-r2:pr2 pr-r2-empty:pr2 design-r1:d1; do
+for s in pr-r1:pr1 pr-r1-yield:pr1 pr-r2:pr2 pr-r2-empty:pr2 design-r1:d1; do
   set +e; node "$SCRIPT_DIR/engine-mock.mjs" "$T/${s#*:}.js" "${s%%:*}"; rc=$?; set -e
   [ "$rc" -eq 0 ] || FAILURES=$((FAILURES + 1))
 done

@@ -108,7 +108,8 @@ one of the three where a harness offers one, and label it so.
 `seat-agreement:` — a panel-agreement summary (pairwise seat agreement, unanimity,
 leave-one-out ground vs. the reproduce/refute pair, and per-seat C/R/U counts) over the
 full panel/promoted-tier packets, printed immediately after `independence:` and omitted
-entirely when there are none. Every rung writes every applicable line; `delta vs prior:` is
+entirely when there are none — then `lane-yield:`, the engine's per-lane
+found/confirmed/unique/refuted counts (below). Every rung writes every applicable line; `delta vs prior:` is
 `<X> new confirmed (<xB> Blocking) · <Y> carried (<yB> Blocking) · <Z> resolved · <W> regressed
 (<wB> Blocking) · <P> punch-listed (open)`, where `punch-listed (open)` counts prior confirmed
 findings on the caller's punch-listed list (`args.punchListed`) that this round did not
@@ -116,7 +117,17 @@ re-surface: they are not resolved. The engine renders the `coverage:` and `seat-
 and re-applies the coverage-derived verdict qualifiers. The reporter copies the lines verbatim,
 and after it returns the engine overwrites the `super-roast verdict:`, `coverage:`,
 `independence:` and `seat-agreement:` lines with its own values anyway (inserting any that are
-missing), so a miscopied header line cannot reach the caller.
+missing), so a miscopied header line cannot reach the caller. It also inserts `lane-yield:` and
+tags each `## Confirmed findings` entry `[lanes: <a>, <b>]` with the lanes of every finding at
+that location (before any `[fix-regression]` tag).
+
+**Lane attribution** measures which lanes earn their cost. Each merged finding's `lanes` is
+stripped before the seats judge, and both outputs are computed after judging. Per lane:
+`found` counts the raw findings whose `category` is that lane, `confirmed` the findings with a
+`confirmed` default route that carry it, `unique` those of them no other lane raised, and
+`refuted` the `rejected` default routes plus Nit spot checks that came back REJECT. The counts use
+default routes, so a reporter overrule does not move them; the entry tags follow the final
+report. A dead scout reads `<lane> dead`. The counts are also returned as `coverage.laneYield`.
 
 ## Key constraints
 
@@ -171,7 +182,7 @@ loop's cap tripped passes `post-cap audit`), and `args.inputs` (the spec paths, 
 `{{COVERAGE_JSON}}` carries the coverage object the script computes **before** the reporter
 call — scout dispatch/dead counts, `unknownLanes`, `domainsDropped`, the raw→deduped funnel,
 `dedupeOrphans`, `beyondCap`, `beyondPanelCap`, `dedupeDead`, panel/spot/promoted counts,
-`judgeLost`, `spotLost`, and the qualifier inputs `lowCoverage`, `panelCappedTag`,
+`judgeLost`, `spotLost`, `laneYield`, and the qualifier inputs `lowCoverage`, `panelCappedTag`,
 `emptyLateRound`, `convergenceEligible`. `emptyLateRound` is true on a round ≥ 2 with every scout
 alive and zero raw findings: the engine then drops a reporter-added `[low coverage]` and sets
 `[converged]` itself, since nothing confirmed means no Blocking of any provenance. Only panel-tier seat losses, a lost judge dispatch, a dead triage, scout
@@ -395,7 +406,8 @@ const blind = f => omit(f, 'suggestedSeverity', 'previouslyRejected', 'lanes')
 // Fix-regression provenance: a finding any `regression` scout raised (rounds ≥ 2) is damage the
 // previous round's fixes did. The engine tags its report entries `[fix-regression]` so a caller's
 // fix loop can tell it apart mechanically.
-const isFixRegression = f => (f.lanes ?? [f.category]).includes('regression')
+const lanesOf = f => f.lanes ?? [f.category]
+const isFixRegression = f => lanesOf(f).includes('regression')
 
 // site: 'panel' | 'spot' — stub keys are call-site qualified (seat:<name>:<site>) so one canned
 // value per key stays deterministic. The re-dispatch uses `prompts.seatsSafe[name]` when supplied
@@ -462,6 +474,23 @@ const packets = [
 ].map(p => ({ ...p, defaultRoute: defaultRoute(p) }))
 const routeCounts = packets.reduce((a, p) => ({ ...a, [p.defaultRoute]: (a[p.defaultRoute] ?? 0) + 1 }), {})
 
+// Per-lane yield, computed after judging from each finding's lanes (the seats never saw them):
+// found = raw findings the lane raised; confirmed = `confirmed` default routes it shares; unique =
+// those no other lane raised; refuted = `rejected` routes plus spot checks that REJECTed.
+const laneYield = {}
+for (const l of [...scoutNames, ...raw.map(f => f.category)]) if (l && !laneYield[l]) laneYield[l] = { found: 0, confirmed: 0, unique: 0, refuted: 0 }
+raw.forEach(f => { if (f.category) laneYield[f.category].found++ })
+for (const p of packets) {
+  const ls = lanesOf(p.finding).filter(l => laneYield[l])
+  const refuted = p.defaultRoute === 'rejected' || (p.tier === 'spot' && p.votes[0]?.verdict === 'REJECT')
+  for (const l of ls) {
+    if (p.defaultRoute === 'confirmed') { laneYield[l].confirmed++; if (ls.length === 1) laneYield[l].unique++ }
+    if (refuted) laneYield[l].refuted++
+  }
+}
+const laneYieldLine = `lane-yield (found/confirmed/unique/refuted): ${Object.entries(laneYield)
+  .map(([l, y]) => deadScouts.includes(l) ? `${l} dead` : `${l} ${y.found}/${y.confirmed}/${y.unique}/${y.refuted}`).join(' · ')}`
+
 // Seat agreement over full panels (panel/promoted tier, all three seats returned), votes
 // positional [reproduce, refute, ground]. Empty string when there are none — the line is omitted.
 function seatAgreementLine() {
@@ -497,7 +526,7 @@ const coverage = {
   panelCount: judged.filter(j => j.tier === 'panel').length,
   spotCount: judged.filter(j => j.tier === 'spot').length,
   promotedCount: judged.filter(j => j.tier === 'promoted').length,
-  judgeLost, spotLost,
+  judgeLost, spotLost, laneYield,
   judgeCompletionPct: totalSeats ? Math.round(100 * validSeats / totalSeats) : 0,
   lowCoverage, panelCappedTag, emptyLateRound,
   convergenceEligible: String(priorReport).trim() !== '' && !lowCoverage && !panelCappedTag,
@@ -553,7 +582,7 @@ function fallbackReport() {
   const confirmed = of('confirmed'), nits = of('unverified-nit'), lostSpots = of('not-verified:dead-spot')
   const top = confirmed.length ? SEV[Math.min(...confirmed.map(p => SEV.indexOf(seatSev(p))))] : null
   const verdict = qualify(`${top ? `${top} (${confirmed.length} confirmed)` : `clean (${nits.length} nits)`} [low coverage]`, false, true)
-  const line = (p, sev) => `- [${sev}] ${p.finding.location} — ${p.finding.claim}${isFixRegression(p.finding) ? ' [fix-regression]' : ''}`
+  const line = (p, sev, withLanes) => `- [${sev}] ${p.finding.location} — ${p.finding.claim}${withLanes ? ` [lanes: ${lanesOf(p.finding).join(', ')}]` : ''}${isFixRegression(p.finding) ? ' [fix-regression]' : ''}`
   const section = (heading, lines) => ['', heading, ...(lines.length ? lines : ['- none'])]
   const escalations = engineEscalated.map(escalationLine)
   const reportMarkdown = [
@@ -564,7 +593,8 @@ function fallbackReport() {
     coverageLine,
     `independence: ${indep ?? 'unknown — reporter failed'}`,
     ...(seatAgreement ? [seatAgreement] : []),
-    ...section('## Confirmed findings', confirmed.map(p => line(p, seatSev(p)))),
+    laneYieldLine,
+    ...section('## Confirmed findings', confirmed.map(p => line(p, seatSev(p), true))),
     ...section('## Not verified (beyond panel cap)', of('not-verified').map(p => line(p, `suggested ${p.finding.suggestedSeverity}`))),
     ...section('## Not verified (dedupe failed or judge lost)', [...of('not-verified:dedupe-failed'), ...of('not-verified:judge-lost')].map(pipelineLossLine)),
     ...section('## Beyond remainder cap (count only)', beyondCap ? [`- ${beyondCap} candidates dropped by the remainder cap — raise config.remainderCap and re-run to see them`] : []),
@@ -597,10 +627,21 @@ function enforce(rep) {
     const top = sevs.length ? SEV[Math.min(...sevs.map(s => SEV.indexOf(s)))] : null
     if (top) verdict = verdict.replace(/^(Blocking|Should-fix|Nit|FYI)(?= \()/, top)
   }
+  const entryRe = loc => new RegExp(`^\\s*- \\[[^\\]]+\\] ${loc.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')} — `)
+  // Lane tag on each Confirmed entry: the lanes of every packet whose location the entry names.
+  const cStart = lines.findIndex(l => l.startsWith('## Confirmed findings'))
+  const cEnd = cStart < 0 ? -1 : lines.findIndex((l, i) => i > cStart && l.startsWith('## '))
+  let laneTagged = 0
+  lines = lines.map((l, i) => {
+    if (cStart < 0 || i <= cStart || (cEnd >= 0 && i >= cEnd) || l.includes('[lanes: ')) return l
+    const ls = [...new Set(packets.filter(p => entryRe(p.finding.location).test(l)).flatMap(p => lanesOf(p.finding)).filter(Boolean))]
+    return ls.length ? (laneTagged++, `${l} [lanes: ${ls.join(', ')}]`) : l
+  })
+  if (laneTagged) enforcement.push(`lanes: ${laneTagged} confirmed entr${laneTagged === 1 ? 'y' : 'ies'} tagged`)
   // Fix-regression tag, matched on the same `- [SEV] <location> — ` entry line.
   let tagged = 0
   for (const p of packets.filter(p => isFixRegression(p.finding))) {
-    const re = new RegExp(`^\\s*- \\[[^\\]]+\\] ${p.finding.location.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')} — `)
+    const re = entryRe(p.finding.location)
     lines = lines.map(l => re.test(l) && !l.includes('[fix-regression]') ? (tagged++, `${l} [fix-regression]`) : l)
   }
   if (tagged) enforcement.push(`fix-regression: ${tagged} entr${tagged === 1 ? 'y' : 'ies'} tagged`)
@@ -619,6 +660,7 @@ function enforce(rep) {
   put('coverage:', coverageLine, ['super-roast verdict:', 'mode:', 'profile (assumed):', 'inputs:', 'delta vs prior:'])
   if (indep) put('independence:', `independence: ${indep}`, ['coverage:'])
   put('seat-agreement:', seatAgreement || null, ['independence:', 'coverage:'])
+  put('lane-yield', laneYieldLine, ['seat-agreement:', 'independence:', 'coverage:'])
   // Escalate routes are final: any the reporter omitted are appended.
   const escalations = [...(rep.escalations ?? [])]
   const missing = engineEscalated.filter(p => !escalations.some(e => e.includes(p.finding.location)))
@@ -741,7 +783,10 @@ depend on the label.
   `routeCounts` deep-equals `{confirmed: 5}`, and `seatAgreement === "seat-agreement: panels 5 ·
   rr 0.60 · rg 1.00 · fg 0.60 · unanimous 0.60 · ground-loo 1.00 (n=3) · reproduce 5/0/0 ·
   refute 3/2/0 · ground 5/0/0"` (one line). `reportMarkdown` is the stub's `# stub report` with
-  the engine's verdict, `coverage:`, `independence:` and `seat-agreement:` header lines inserted.
+  the engine's verdict, `coverage:`, `independence:`, `seat-agreement:` and `lane-yield:` header
+  lines inserted. With each stub finding's `category` set to its scout's lane, `coverage.laneYield`
+  is `<core-1>` 4/4/3/0, `<core-2>` 4/2/1/0, `<core-3>` and `data-migrations` 0/0/0/0 (the
+  two beyond-cap findings are core-2's and never reach a packet).
 - **Dead-reporter variant:** 23 agents (reporter dispatched twice), `reporterFailed === true`,
   `verdict === "Blocking (5 confirmed) [low coverage]"`, `reportMarkdown` starts with
   `super-roast verdict: Blocking (5 confirmed) [low coverage]` and carries every report heading.
@@ -779,10 +824,11 @@ should cover, beyond the canonical topology and the two variants above:
 | design domains | triage returns `q, q, r, s, t` | 3 domain scouts (Set-deduped), `domainsDropped` `["t"]`, no widening; dryRun effort `low` on every call |
 | triage overlap | triage resolves only after a core scout is dispatched | core scouts dispatched before the activated lane |
 | fix-regression | round 2: a `regression` scout finding and a core finding, both confirmed; the reporter returns plain entry lines | only the regression entry ends `[fix-regression]`; `fixRegressions` names it; seat prompts carry no `lanes` |
+| lane attribution | two lanes flag one location; a merged group; a REJECTed panel; a dead scout; a dead reporter | each Confirmed entry carries the union of its location's lanes; a shared finding counts confirmed but not unique; the rejected lane counts refuted; `<lane> dead`; the fallback report tags Confirmed entries only; agent count unchanged |
 
 `tests/super-roast/test-assemble-args.sh` runs the assembled round-1/round-2 PR and round-1
 design scripts through such a mock (`tests/super-roast/engine-mock.mjs`), including the
-fix-regression case.
+fix-regression and lane-attribution cases.
 
 ### Passing baseline (recorded, not illustrative)
 
