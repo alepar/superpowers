@@ -8,8 +8,9 @@
 # Waits follow bd ready: a bead waits on its `blocks` dependencies; a bead blocked by an epic waits
 # for that epic's whole subtree; every bead under an epic waits on that epic's own blockers.
 # A candidate edge is a `blocks` edge that lies on a longest chain, or that has an epic at either
-# end. Edges whose dependent states them as `consumes boundary contract` (a seam contract) or
-# `consumes all leaves (integration sweep)` are exempt and never listed.
+# end. Edges whose dependent states them as `consumes boundary contract` (a seam contract),
+# `consumes file split` (a hot-file split) or `consumes all leaves (integration sweep)` are exempt
+# and never listed.
 #
 # Usage: bash graph-shape [--from DUMP_FILE] ROOT_EPIC_ID
 #   --from reads a saved `bd list --label sp:ROOT_EPIC_ID --all --json --limit 0` dump instead of
@@ -36,7 +37,7 @@ fi
 root=$1
 
 command -v jq >/dev/null 2>&1 || {
-  echo "JQ_UNAVAILABLE: jq is not installed, so compute this by hand over \`bd list --label sp:${root} --all --json --limit 0\`. Keep beads whose \`status\` is not \"closed\" and whose \`labels\` do not include \"blocker\". leaves = kept beads whose \`issue_type\` is not \"epic\". A bead's blocking edges are its \`dependencies\` entries with \`type\` \"blocks\" (it waits on \`depends_on_id\`); its parent is the \`parent\` field. A bead waits on its blockers; a bead blocked by an epic waits for every bead under that epic; every bead under an epic also waits on that epic's blockers. depth = the most non-epic beads on any chain of waits; width = leaves/depth to one decimal. Skip any edge whose dependent's description contains \`blocked-by <blocker>: consumes boundary contract\` or \`blocked-by <blocker>: consumes all leaves (integration sweep)\`. Of the rest, list each edge that lies on a longest chain or has an epic at either end, with the depth you get when only that edge is removed. Output: \`shape: leaves N · depth D · width W · critical path: <ids in execution order joined by ' → '>\`, then one \`edge: <dependent> <- <blocker> · leaf|epic · critical yes|no · depth D→D'\` line per listed edge, then \`summary: edges <all blocks edges> · exempt <n> · candidates <n> (critical <n>, epic-level <n>)\`."
+  echo "JQ_UNAVAILABLE: jq is not installed, so compute this by hand over \`bd list --label sp:${root} --all --json --limit 0\`. Keep beads whose \`status\` is not \"closed\" and whose \`labels\` do not include \"blocker\". leaves = kept beads whose \`issue_type\` is not \"epic\". A bead's blocking edges are its \`dependencies\` entries with \`type\` \"blocks\" (it waits on \`depends_on_id\`); its parent is the \`parent\` field. A bead waits on its blockers; a bead blocked by an epic waits for every bead under that epic; every bead under an epic also waits on that epic's blockers. depth = the most non-epic beads on any chain of waits; width = leaves/depth to one decimal. Skip any edge whose dependent's description contains \`blocked-by <blocker>: consumes boundary contract\`, \`blocked-by <blocker>: consumes file split\` or \`blocked-by <blocker>: consumes all leaves (integration sweep)\`. Of the rest, list each edge that lies on a longest chain or has an epic at either end, with the depth you get when only that edge is removed. Output: \`shape: leaves N · depth D · width W · critical path: <ids in execution order joined by ' → '>\`, then one \`edge: <dependent> <- <blocker> · leaf|epic · critical yes|no · depth D→D'\` line per listed edge, then \`summary: edges <all blocks edges> · exempt <n> · candidates <n> (critical <n>, epic-level <n>)\`."
   exit 4
 }
 
@@ -53,7 +54,7 @@ rows=$(printf '%s' "$dump" | jq -r '
   ( .parent // empty | "P\t\($id)\t\(.)" ),
   ( (.dependencies // [])[] | select(.type == "parent-child") | "P\t\($id)\t\(.depends_on_id)" ),
   ( (.dependencies // [])[] | select(.type == "blocks") | .depends_on_id as $b |
-    "B\t\($id)\t\($b)\t\(if ($desc | index("blocked-by " + $b + ": consumes boundary contract")) or ($desc | index("blocked-by " + $b + ": consumes all leaves (integration sweep)")) then 1 else 0 end)" )
+    "B\t\($id)\t\($b)\t\(if ($desc | index("blocked-by " + $b + ": consumes boundary contract")) or ($desc | index("blocked-by " + $b + ": consumes file split")) or ($desc | index("blocked-by " + $b + ": consumes all leaves (integration sweep)")) then 1 else 0 end)" )
 ') || { echo "could not parse the bd list dump" >&2; exit 2; }
 
 grep -q "^N	${root}	" <<<"$rows" || { echo "root epic not in the dump: $root" >&2; exit 2; }

@@ -114,6 +114,14 @@ summary: edges 11 · exempt 7 · candidates 3 (critical 3, epic-level 1)" \
   assert_eq "$(printf '%s\n' "$out" | head -1)" "shape: leaves 2 · depth 2 · width 1.0 · critical path: c.2 → c.1" "cycle edge ignored"
   rm -f "$cyc"
 
+  split=$(mktemp)
+  printf '%s' '[{"id":"s","issue_type":"epic","status":"open","labels":["sp:s"]},{"id":"s.0","issue_type":"task","status":"open","parent":"s","description":"Split file: src/app.rs"},{"id":"s.1","issue_type":"task","status":"open","parent":"s","description":"blocked-by s.0: consumes file split","dependencies":[{"depends_on_id":"s.0","type":"blocks"}]},{"id":"s.2","issue_type":"task","status":"open","parent":"s","description":"blocked-by s.0: consumes file split","dependencies":[{"depends_on_id":"s.0","type":"blocks"}]},{"id":"s.3","issue_type":"task","status":"open","parent":"s","description":"blocked-by s.0: consumes file split","dependencies":[{"depends_on_id":"s.0","type":"blocks"}]},{"id":"s.4","issue_type":"task","status":"open","parent":"s","description":"blocked-by s.1: consumes the router","dependencies":[{"depends_on_id":"s.1","type":"blocks"}]}]' > "$split"
+  run bash "$S/graph-shape" --from "$split" s
+  assert_eq "$out" "shape: leaves 5 · depth 3 · width 1.7 · critical path: s.0 → s.1 → s.4
+edge: s.4 <- s.1 · leaf · critical yes · depth 3→2
+summary: edges 4 · exempt 3 · candidates 1 (critical 1, epic-level 0)" "a file-split edge is exempt even on the critical path"
+  rm -f "$split"
+
   run bash "$S/graph-shape" --from "$F/graph.json" nope
   assert_eq "$code" 2 "unknown root exits 2"
 fi
