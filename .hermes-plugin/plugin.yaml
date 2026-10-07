@@ -1,5 +1,5 @@
 name: superpowers
-version: 6.4.2-alepar4.19
+version: 6.4.2-alepar4.20
 description: Superpowers skills and workflow bootstrap for Hermes Agent
 author: obra
 provides_hooks:
