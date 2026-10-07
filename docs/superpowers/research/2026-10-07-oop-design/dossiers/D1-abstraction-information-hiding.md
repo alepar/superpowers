@@ -148,7 +148,7 @@ Everything in this section is R1's inference from the findings above. None of it
   - the secret(s) it hides;
   - the assumptions other beads may rely on;
   - the likely changes it absorbs without an interface change.
-  
+
   This is Parnas, Clements and Weiss's criterion in checkable form. The supporting evidence is an experience report, so treat it as a hypothesis worth testing.
 - State which observable behaviors are promised and which are deliberately not. Examples are ordering, error types and messages, timing, and wrapping of underlying errors. Go's and Rust's official guidance and Hyrum's law all point here. Choosing not to wrap, or randomizing unpromised behavior, is the documented mitigation.
 - Do not ask beads to hide stable, well-defined concepts or to build abstractions ahead of real use. The Go review guidance, the stable-library coupling result, and the practitioner over-decomposition warnings all argue against speculative interfaces.
