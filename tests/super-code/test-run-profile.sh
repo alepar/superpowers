@@ -11,6 +11,10 @@ FX="$SCRIPT_DIR/fixtures/run-profile"
 BUILD="$SCRIPT_DIR/run-profile-fixture.mjs"
 T=$(mktemp -d)
 trap 'rm -rf "$T"' EXIT
+# Discovery reads ~/.claude and ~/.codex by default: keep it to the fixtures.
+export HOME="$T/home"
+mkdir -p "$HOME"
+ORD="$SCRIPT_DIR/run-profile-ordinary-fixture.mjs"
 FAILURES=0
 
 pass() { echo "  [PASS] $1"; }
@@ -203,6 +207,72 @@ run bash "$P" --workflow "$T/brief-step" --out "$T/br"
 assert_eq "$(q "$T/br.json" "(b => b.attempts.length + ' ' + b.implMs)(d.beads[0])")" "1 180000" "brief step: one attempt, implement 10s + 170s"
 # Test time across implementers and fixers.
 assert_has "$(cat "$T/chain-p.md")" "Profile: tests — implementers and fixers, summed: 3m running tests and 3m polling background runs, 17% of their 40m · 0 Bash call(s) ran into the 10-minute tool limit" "tests line: summed test and poll time over every implementer"
+
+echo "run-profile: ordinary-subagent coordinator on Codex (one chain at a time; outcomes from the ledger, graph from bd)"
+# cx.2 needs cx.1. plan 0–60; cx.1 impl 60–360, review 362–422, the coordinator merges 425–507 (its
+# first `git rebase` naming task-cx.1 to the ledger append naming cx.1); cx.2 impl 510–1110, review,
+# fix to 1272, merge 1275–1335; cx.3 impl 1340–1640, review, merge 1705–1745; cx.4 blocked twice
+# (impl, triage, impl__2); final_review 1900–1960. A scratch_probe child (two tasks, 2–12 and 1000–1010)
+# follows no naming rule; a grandchild and a guardian are not the coordinator's dispatches.
+COORD=$(node "$ORD" "$FX/ordinary.json" codex "$T/ord")
+run bash "$P" --codex "$COORD" --codex-home "$T/ord/codex" --ledger "$T/ord/progress.md" --beads "$T/ord/beads.json" --out "$T/ox"
+assert_eq "$code" 0 "exits 0"
+assert_has "$out" "Profile: cx · 1 invocation · 2026-10-01T00:00Z → 2026-10-01T00:32Z · wall 33m (task graph 29m, after the last landing 4m) · agents 14 (timed 14) · beads dispatched 4, landed 3, planned 4" "header: 14 task spans of direct children; cx.4 (BLOCKED in the ledger) did not land; bd's 4 in-tree leaves"
+assert_eq "$(q "$T/ox.json" "d.beads.map(b => b.id + '<' + b.deps.join('+')).join(' ')")" "cx.1< cx.2<cx.1 cx.3< cx.4<" "graph from bd: in-tree leaves only (no epic, blocker or out-of-tree bead), cx.2 blocked by cx.1"
+assert_eq "$(q "$T/ox.json" "d.window.graphMs + ' ' + d.criticalPath.ms")" "1745000 1745000" "task graph ends at cx.3's merge (1745s), and the path spans it"
+assert_eq "$(q "$T/ox.json" "JSON.stringify(d.criticalPath.byCategory)")" '{"planning":60000,"implement":1200000,"dispatch":18000,"review":180000,"merge":182000,"fix":100000,"slot":5000}' "critical path: three chains back to back; merges 82+60+40s; cx.3 waited 5s for cx.2's chain to end"
+assert_eq "$(q "$T/ox.json" "d.criticalPath.segments.filter(s => s.kind === 'merge').map(s => s.start.slice(14, 19) + '+' + s.ms / 1000).join(' ')")" "07:05+82 21:15+60 28:25+40" "coordinator merges: first git rebase/merge naming task-<id> to the last command naming the bead (bd show cx.10 does not count)"
+assert_eq "$(q "$T/ox.json" "d.bottleneck.bead + ' ' + d.bottleneck.ms")" "cx.2 828000" "bottleneck: cx.2 (600s implement, review, fix, merge and the gaps before them)"
+assert_eq "$(q "$T/ox.json" "JSON.stringify(d.bottleneck.implByTool)")" '{"test":200000,"edit":10000,"poll":60000}' "Codex tool calls: exec_command test, apply_patch edit, write_stdin poll"
+assert_eq "$(q "$T/ox.json" "d.beads.find(b => b.id === 'cx.1').implByTool.test")" "100000" "a forked child's replayed call at its spawn instant is not its own"
+assert_eq "$(q "$T/ox.json" "(b => b.waitCause + ' ' + b.waitMs)(d.beads.find(b => b.id === 'cx.3'))")" "slot 1280000" "cx.3, ready at planning, waited 1280s for the one chain slot (held through cx.2's merge)"
+assert_eq "$(q "$T/ox.json" "d.beads.find(b => b.id === 'cx.2').waitCause")" "none" "cx.2 started 3s after cx.1 merged: no early unblock in this mode"
+assert_eq "$(q "$T/ox.json" "[d.cap, d.earlyUnblock, d.simulation.asRunMs, d.simulation.lowerBoundMs, d.simulation.unlimitedSlotsMs, d.simulation.fit].join(' ')")" "1 false 1600000 1322000 1322000 0.92" "model: cap 1, merges before dependents; 1600s vs a 1322s bound"
+assert_has "$out" "→ slot-bound: 5m of the 5m above the graph's bound is the slot cap" "verdict: slot-bound (one chain at a time)"
+assert_eq "$(q "$T/ox.json" "['unlimited slots', 'faster cx.2'].map(t => d.simulation.whatIfs.find(w => w.target === t)?.savingMs).join(' ')")" "278000 300000" "what-ifs: parallel chains, a faster cx.2"
+assert_eq "$(q "$T/ox.json" "d.beads.find(b => b.id === 'cx.4').attempts.join(',')")" ",BLOCKED" "cx.4: two attempts (impl_cx_4, impl_cx_4__2), the last BLOCKED per the ledger"
+assert_has "$out" "Profile: rework — 2m of dispatch time in attempts that did not land — cx.4 2m" "rework names the blocked bead"
+assert_eq "$(q "$T/ox.json" "JSON.stringify(d.concurrency.byActive) + ' ' + d.concurrency.dispatches + ' ' + d.concurrency.busyMs")" '{"0":220000,"1":1720000,"2":20000} 14 1740000' "concurrency over 1960s: 220s idle, 1720s one dispatch, 20s two (scratch_probe's two tasks)"
+assert_has "$out" "Profile: concurrency — 14 dispatches over 33m · a dispatch running 29m (89%) · dispatches at once: 0 for 11% · 1 for 88% · 2 for 1% of the time · peak 2" "concurrency line"
+assert_has "$out" "Profile: dispatch time by kind, summed — impl 22m (5) · review 3m (3) · fix 2m (1) · plan 1m (1) · final-review 1m (1) · triage 30s (1) · not named for a bead: scratch 20s (2) · merges run by the coordinator 3m (3)" "time per kind; unnamed dispatches apart; the coordinator's own merges"
+assert_has "$out" "2 dispatch(es) not named for a bead of cx" "unnamed dispatches are named on the unmeasured line"
+run bash "$P" --codex "$(ls "$T"/ord/codex/sessions/*/*/*/*"$COORD".jsonl)" --codex-home "$T/ord/codex" --ledger "$T/ord/progress.md" --beads "$T/ord/beads.json"
+assert_has "$out" "Profile: cx · 1 invocation" "the coordinator's rollout file works as input too"
+run bash "$P" --codex 01c0ffee-dead --codex-home "$T/ord/codex" --epic cx
+assert_eq "$code" 2 "an unknown thread: exit 2"
+run bash "$P" --codex "$COORD" --codex-home "$T/ord/codex" --beads "$T/ord/beads.json"
+assert_eq "$code" 2 "no epic and no ledger: exit 2"
+run bash "$P" --codex "$COORD" --codex-home "$T/ord/codex" --beads "$T/ord/beads.json" --epic cx --out "$T/onl"
+assert_eq "$(q "$T/onl.json" "d.beads.filter(b => b.landed).length")" "3" "no ledger: every coordinator merge counts as landed"
+assert_has "$out" "no ledger (--ledger)" "and says so"
+run bash "$P" --codex "$COORD" --codex-home "$T/ord/codex" --ledger "$T/ord/progress.md" --beads "$HOME/none.json"
+assert_eq "$code" 2 "an unreadable --beads: exit 2"
+echo '[]' > "$T/nobeads.json"
+run bash "$P" --codex "$COORD" --codex-home "$T/ord/codex" --ledger "$T/ord/progress.md" --beads "$T/nobeads.json"
+assert_has "$out" "Profile: cx · 1 invocation" "bead ids from the ledger alone still map the names"
+assert_has "$out" "no dependency graph" "and the missing graph is named"
+
+echo "run-profile: ordinary-subagent coordinator on Claude Code (the same run, Agent descriptions as labels)"
+SUB=$(node "$ORD" "$FX/ordinary.json" claude "$T/ordc")
+run bash "$P" --subagents "$SUB" --ledger "$T/ordc/progress.md" --beads "$T/ordc/beads.json" --out "$T/oc"
+assert_eq "$code" 0 "exits 0"
+assert_eq "$(q "$T/oc.json" "JSON.stringify([d.criticalPath.byCategory, d.bottleneck.ms, d.bottleneck.implByTool, d.simulation.asRunMs, d.concurrency.byActive])")" "$(q "$T/ox.json" "JSON.stringify([d.criticalPath.byCategory, d.bottleneck.ms, d.bottleneck.implByTool, d.simulation.asRunMs, d.concurrency.byActive])")" "the same profile as the Codex run"
+run bash "$P" --discover --epic cx --projects "$T/ordc/projects" --codex-home "$T/ord/codex" --ledger "$T/ord/progress.md" --beads "$T/ord/beads.json"
+assert_has "$out" "Profile: cx · 2 invocations" "discover finds both coordinators by the ledger path their commands name"
+run bash "$P" --subagents "$SUB" --beads "$T/ordc/beads.json" --epic cx
+assert_has "$out" "no ledger (--ledger)" "the ledger path the coordinator named is not on disk: no ledger"
+
+echo "run-profile: dispatch names that follow no rule (an older Codex run)"
+# implement 0–100, review 100–150, implement 120–300, adapter 400–500: 100s idle, 370s one, 30s two.
+COORD2=$(node "$ORD" "$FX/ordinary-adhoc.json" codex "$T/adhoc")
+run bash "$P" --codex "$COORD2" --codex-home "$T/adhoc/codex" --beads "$T/adhoc/beads.json" --epic cx --out "$T/ah"
+assert_eq "$code" 0 "exits 0 with the run-level lines"
+assert_has "$out" "Profile: concurrency — 4 dispatches over 8m · a dispatch running 7m (80%) · dispatches at once: 0 for 20% · 1 for 74% · 2 for 6% of the time · peak 2" "concurrency"
+assert_has "$out" "Profile: dispatch time by kind, summed — not named for a bead: implement 5m (2) · adapter 2m (1) · review 50s (1)" "time per name's first word"
+assert_has "$out" "Profile: unmeasured — no per-bead profile: no dispatch is named for a bead of cx" "and why there is no more"
+assert_eq "$(q "$T/ah.json" "d.partial + ' ' + JSON.stringify(d.concurrency.byActive)")" 'true {"0":100000,"1":370000,"2":30000}' "a partial --out profile"
+run bash "$P" --summarize "$T/ah.json"
+assert_eq "$code" 2 "a partial profile cannot join a baseline"
 
 echo "run-profile: arguments"
 run bash "$P" --help

@@ -1,0 +1,16 @@
+{
+  "t0": "2026-10-02T00:00:00Z",
+  "end": 600,
+  "epic": "cx",
+  "cwd": "/w",
+  "beads": [
+    { "id": "cx", "issue_type": "epic", "status": "open" },
+    { "id": "cx.1", "issue_type": "task", "status": "open", "parent": "cx" }
+  ],
+  "agents": [
+    { "codex": "implement_adapter_task1", "label": "Implement adapter task 1", "start": 0, "end": 100 },
+    { "codex": "review_adapter_task1", "label": "Review adapter task 1", "start": 100, "end": 150 },
+    { "codex": "implement_adapter_task2", "label": "Implement adapter task 2", "start": 120, "end": 300 },
+    { "codex": "adapter_impl_3", "label": "Adapter impl 3", "start": 400, "end": 500 }
+  ]
+}

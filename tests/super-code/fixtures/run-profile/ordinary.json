@@ -1,0 +1,70 @@
+{
+  "t0": "2026-10-01T00:00:00Z",
+  "end": 2000,
+  "epic": "cx",
+  "cwd": "/w",
+  "ledger": [
+    "# SDD ledger — plan: /w/.superpowers/sdd/cx-plan/cx-plan.md",
+    "Launch: mechanism ordinary-subagents · epic cx · branch epic-cx · integrationWorktree /w · sweep deferred · mergeCheck cargo build",
+    "Fallback: cx.1 · implementing · branch task-cx.1 · base none · head none · reviewedHead none · invalidReviews 0 · taskFix 0 · seamFix 0 · seamOutcome none · check none · checkAborts 0 · brief none · report none · review none",
+    "Merge: cx.1 — rebase clean · seam-review none · check pass",
+    "Task 1 (cx.1): complete (commits aaaaaaa..bbbbbbb, review clean)",
+    "Task 2 (cx.2): fix pass FIXED (missing test; commits ccccccc..ddddddd)",
+    "Merge: cx.2 — rebase clean · seam-review none · check fail→fixed",
+    "Task 2 (cx.2): complete (commits ccccccc..ddddddd, fix pass)",
+    "Merge: cx.3 — rebase clean · seam-review none · check pass",
+    "Task 3 (cx.3): complete (commits eeeeeee..fffffff, review clean)",
+    "Task 4 (cx.4): pending retry — RESOLVE: clarified the schema",
+    "Task 4 (cx.4): BLOCKED — needs a schema decision"
+  ],
+  "beads": [
+    { "id": "cx", "issue_type": "epic", "status": "open" },
+    { "id": "cx.1", "issue_type": "task", "status": "closed", "dependencies": [{ "issue_id": "cx.1", "depends_on_id": "cx", "type": "parent-child" }] },
+    { "id": "cx.2", "issue_type": "task", "status": "closed", "dependencies": [{ "issue_id": "cx.2", "depends_on_id": "cx", "type": "parent-child" }, { "issue_id": "cx.2", "depends_on_id": "cx.1", "type": "blocks" }] },
+    { "id": "cx.3", "issue_type": "task", "status": "closed", "parent": "cx" },
+    { "id": "cx.4", "issue_type": "task", "status": "open", "dependencies": [{ "issue_id": "cx.4", "depends_on_id": "cx", "type": "parent-child" }] },
+    { "id": "cx.5", "issue_type": "task", "status": "open", "labels": ["blocker"], "dependencies": [{ "issue_id": "cx.5", "depends_on_id": "cx", "type": "parent-child" }] },
+    { "id": "zz.1", "issue_type": "task", "status": "open", "dependencies": [{ "issue_id": "zz.1", "depends_on_id": "cx.1", "type": "blocks" }] }
+  ],
+  "caller": [
+    { "cmd": "printf 'Launch: mechanism ordinary-subagents · epic cx · branch epic-cx\\n' >> /w/.superpowers/sdd/cx-plan/progress.md", "start": -50, "end": -49 },
+    { "cmd": "bd update cx.1 --claim", "start": 59, "end": 60 },
+    { "cmd": "git -C /w/.worktrees/epic-cx--task-cx.1 rebase epic-cx", "start": 425, "end": 430 },
+    { "cmd": "git merge --no-ff --no-commit task-cx.1", "start": 430, "end": 440 },
+    { "cmd": "cargo build", "start": 440, "end": 500 },
+    { "cmd": "git commit --no-edit", "start": 500, "end": 505 },
+    { "cmd": "bd close cx.1", "start": 505, "end": 506 },
+    { "cmd": "printf 'Merge: cx.1 — rebase clean · seam-review none · check pass\\n' >> /w/.superpowers/sdd/cx-plan/progress.md", "start": 506, "end": 507 },
+    { "cmd": "bd show cx.10 cx.2", "start": 508, "end": 509 },
+    { "cmd": "git -C /w/.worktrees/epic-cx--task-cx.2 rebase epic-cx", "start": 1275, "end": 1280 },
+    { "cmd": "git merge --no-ff --no-commit task-cx.2", "start": 1280, "end": 1290 },
+    { "cmd": "cargo build", "start": 1290, "end": 1330 },
+    { "cmd": "git commit --no-edit && bd close cx.2", "start": 1330, "end": 1334 },
+    { "cmd": "printf 'Merge: cx.2 — rebase clean · seam-review none · check fail→fixed\\n' >> /w/.superpowers/sdd/cx-plan/progress.md", "start": 1334, "end": 1335 },
+    { "cmd": "git -C /w/.worktrees/epic-cx--task-cx.3 rebase epic-cx", "start": 1705, "end": 1710 },
+    { "cmd": "git merge --no-ff --no-commit task-cx.3", "start": 1710, "end": 1715 },
+    { "cmd": "cargo build", "start": 1715, "end": 1740 },
+    { "cmd": "git commit --no-edit; bd close cx.3; printf 'Merge: cx.3 — rebase clean\\n' >> /w/.superpowers/sdd/cx-plan/progress.md", "start": 1740, "end": 1745 }
+  ],
+  "agents": [
+    { "codex": "plan", "label": "plan", "start": 0, "end": 60 },
+    { "codex": "scratch_probe", "label": "Scratch probe", "tasks": [[2, 12], [1000, 1010]] },
+    { "codex": "impl_cx_1", "label": "impl:cx.1", "start": 60, "end": 360, "inherited": true, "tools": [
+      { "kind": "exec", "cmd": "cd /w/.worktrees/epic-cx--task-cx.1 && cargo test", "start": 100, "end": 200 } ] },
+    { "codex": "helper", "parent": "impl_cx_1", "start": 100, "end": 150 },
+    { "codex": "guardian", "guardian": true, "start": 300, "end": 301 },
+    { "codex": "review_cx_1", "label": "review:cx.1", "start": 362, "end": 422 },
+    { "codex": "impl_cx_2", "label": "impl:cx.2", "start": 510, "end": 1110, "tools": [
+      { "kind": "exec", "cmd": "cd /w && cargo test", "start": 600, "end": 800 },
+      { "kind": "apply_patch", "start": 800, "end": 810 },
+      { "kind": "write_stdin", "start": 900, "end": 960 } ] },
+    { "codex": "review_cx_2", "label": "review:cx.2", "start": 1112, "end": 1172 },
+    { "codex": "fix_cx_2", "label": "fix:cx.2", "start": 1172, "end": 1272 },
+    { "codex": "impl_cx_3", "label": "impl:cx.3", "start": 1340, "end": 1640 },
+    { "codex": "review_cx_3", "label": "review:cx.3", "start": 1642, "end": 1702 },
+    { "codex": "impl_cx_4", "label": "impl:cx.4", "start": 1750, "end": 1850 },
+    { "codex": "triage_cx_4", "label": "triage:cx.4", "start": 1852, "end": 1882 },
+    { "codex": "impl_cx_4__2", "label": "impl:cx.4", "start": 1884, "end": 1894 },
+    { "codex": "final_review", "label": "final-review", "start": 1900, "end": 1960 }
+  ]
+}
