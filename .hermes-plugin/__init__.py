@@ -51,12 +51,7 @@ def _build_bootstrap(skills_dir: str) -> str:
         tool_mapping = f.read().strip()
 
     return (
-        f"<EXTREMELY_IMPORTANT>\n"
         f"{BOOTSTRAP_MARKER}\n\n"
-        f"You have superpowers.\n\n"
-        f"The using-superpowers skill content is included below and is already "
-        f"loaded for this Hermes session. Follow it now. "
-        f"Do not try to load using-superpowers again.\n\n"
         f"{body}\n\n"
         f"## Loading Superpowers Skills on Hermes\n\n"
         f"Superpowers skills are registered with Hermes' native skill loader: "
@@ -67,7 +62,6 @@ def _build_bootstrap(skills_dir: str) -> str:
         f'`read_file("{skills_dir}/skill-name/SKILL.md")`\n\n'
         f"The superpowers skills directory is: `{skills_dir}`\n\n"
         f"{tool_mapping}\n"
-        f"</EXTREMELY_IMPORTANT>"
     )
 
 

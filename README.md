@@ -104,7 +104,7 @@ This is a personal fork ([alepar/superpowers](https://github.com/alepar/superpow
 
 ## How it works
 
-It starts from the moment you fire up your coding agent. As soon as it sees that you're building something, it *doesn't* just jump into trying to write code. Instead, it steps back and asks you what you're really trying to do. 
+This fork supplies a compact catalog of optional workflows at session start. Routine coding and debugging proceed with normal reasoning and tools. Explicitly request brainstorming when you want collaborative design; the following describes that selected workflow.
 
 Once it's teased a spec out of the conversation, it shows it to you in chunks short enough to actually read and digest. 
 
@@ -112,7 +112,7 @@ After you've signed off on the design, your agent puts together an implementatio
 
 Next up, once you say "go", it launches a *subagent-driven-development* process, having agents work through each engineering task, inspecting and reviewing their work, and continuing forward. It's not uncommon for your agent to work autonomously for a couple hours at a time without deviating from the plan you put together.
 
-There's a bunch more to it, but that's the core of the system. And because the skills trigger automatically, you don't need to do anything special. Your coding agent just has Superpowers.
+There's a bunch more to it, but that's the core of the system. In this fork, skills are optional workflows. Routine work can proceed directly; request a skill when its structure would help.
 
 ## Commercial Services
 
@@ -318,23 +318,23 @@ Restart any active Hermes sessions after installing. Note: Hermes has no
 post-compaction hook, so a very long session that compacts over its first
 turn loses the bootstrap — start a fresh session if skills stop triggering.
 
-## The Basic Workflow
+## An Optional Workflow
 
-1. **brainstorming** - Activates before writing code. Refines rough ideas through questions, explores alternatives, presents design in sections for validation. Saves design document.
+1. **brainstorming** - When requested, Refines rough ideas through questions, explores alternatives, presents design in sections for validation. Saves design document.
 
-2. **using-git-worktrees** - Activates after design approval. Creates isolated workspace on new branch, runs project setup, verifies clean test baseline.
+2. **using-git-worktrees** - After design approval, Creates isolated workspace on new branch, runs project setup, verifies clean test baseline.
 
-3. **writing-plans** - Activates with approved design. Breaks work into bite-sized tasks (2-5 minutes each). Every task has exact file paths, complete code, verification steps.
+3. **writing-plans** - With an approved design, Breaks work into bite-sized tasks (2-5 minutes each). Every task has exact file paths, complete code, verification steps.
 
-4. **subagent-driven-development** or **executing-plans** - Activates with plan. Dispatches fresh subagent per task with a task review (spec compliance + code quality) plus a broad final review, or executes in batches with human checkpoints.
+4. **subagent-driven-development** or **executing-plans** - With a plan, Dispatches fresh subagent per task with a task review (spec compliance + code quality) plus a broad final review, or executes in batches with human checkpoints.
 
-5. **test-driven-development** - Activates during implementation. Enforces RED-GREEN-REFACTOR: write failing test, watch it fail, write minimal code, watch it pass, commit. Deletes code written before tests.
+5. **test-driven-development** - During implementation, Enforces RED-GREEN-REFACTOR: write failing test, watch it fail, write minimal code, watch it pass, commit. Deletes code written before tests.
 
-6. **requesting-code-review** - Activates between tasks. Reviews against plan, reports issues by severity. Critical issues block progress.
+6. **requesting-code-review** - Between tasks, Reviews against plan, reports issues by severity. Critical issues block progress.
 
-7. **finishing-a-development-branch** - Activates when tasks complete. Verifies tests, presents options (merge/PR/keep/discard), cleans up worktree.
+7. **finishing-a-development-branch** - When tasks complete, Verifies tests, presents options (merge/PR/keep/discard), cleans up worktree.
 
-**The agent checks for relevant skills before any task.** Mandatory workflows, not suggestions.
+Choose this workflow when useful; routine work does not require automatic brainstorming or a skill check. For substantial combined design and implementation, consider `super-auto` in a repo with a beads tracker.
 
 ## Community
 
