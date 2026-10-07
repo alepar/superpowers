@@ -90,6 +90,10 @@ already scheduled after you report.
   itself), the assertion is decoration: replace it. An assertion after a failing one in the same
   test body did not run; record it as unmeasured, not green.
 - Test output should be pristine. Fix warnings you caused, or report them.
+- A test command that takes more than a few minutes is slow. Before running it, pick the narrowest
+  filter that still exercises the change, and don't re-run it for unrelated checks; never skip the
+  test that exercises the change. Name each slow command and its duration with your test output.
+  If the test setup itself is slow, report it under "Concerns" instead of fixing it in this task.
 - A failing test you believe your change did not cause — "pre-existing", "unrelated",
   "environment-dependent", "flaky" — is yours until shown otherwise. To show it,
   run that test at [BASE] in a throwaway checkout under your temp root (`git worktree add --detach

@@ -207,6 +207,18 @@ run bash "$P" --workflow "$T/brief-step" --out "$T/br"
 assert_eq "$(q "$T/br.json" "(b => b.attempts.length + ' ' + b.implMs)(d.beads[0])")" "1 180000" "brief step: one attempt, implement 10s + 170s"
 # Test time across implementers and fixers.
 assert_has "$(cat "$T/chain-p.md")" "Profile: tests — implementers and fixers, summed: 3m running tests and 3m polling background runs, 17% of their 40m · 0 Bash call(s) ran into the 10-minute tool limit" "tests line: summed test and poll time over every implementer"
+# Slow tests: one test command's runs grouped across the implementer and the fixer, worktree and temp
+# paths, redirections and the test-binary hash normalized away, a $VAR binary resolved; runs whose
+# longest is under a minute stay in the JSON but off the line.
+pd slow-tests
+run bash "$P" --workflow "$T/slow-tests" --out "$T/st"
+assert_has "$out" "Profile: slow tests — cargo test --locked --lib store:: 5m (2 runs, longest 3m) · target/debug/deps/svc-* --test-threads 1 5m (1 run, longest 5m)" "slow tests line: summed per normalized command, slowest first"
+assert_eq "$(q "$T/st.json" "d.slowTests.map(e => e.cmd + ' ' + e.ms + ' ' + e.runs).join(' | ')")" "cargo test --locked --lib store:: 300000 2 | target/debug/deps/svc-* --test-threads 1 290000 1 | npm test 30000 1" "slow tests JSON: every test command, with summed time and runs"
+assert_has "$(cat "$T/chain-p.md")" "Profile: slow tests — cargo test --lib 3m (1 run, longest 3m)" "slow tests line: the cd prefix is dropped"
+run bash "$P" --workflow "$T/brief-step"
+if printf '%s\n' "$out" | grep -q "Profile: slow tests"; then fail "no slow tests line without test calls"; else pass "no slow tests line without test calls"; fi
+run bash "$P" --summarize "$T/chain-p.json" "$T/st.json"
+assert_has "$out" "Baseline: slow tests — cargo test --locked --lib store:: 5m (2 runs, longest 3m) · target/debug/deps/svc-* --test-threads 1 5m (1 run, longest 5m) · cargo test --lib 3m (1 run, longest 3m)" "summarize: slow tests merged across profiles"
 
 echo "run-profile: ordinary-subagent coordinator on Codex (one chain at a time; outcomes from the ledger, graph from bd)"
 # cx.2 needs cx.1. plan 0–60; cx.1 impl 60–360, review 362–422, the coordinator merges 425–507 (its
@@ -225,6 +237,7 @@ assert_eq "$(q "$T/ox.json" "d.criticalPath.segments.filter(s => s.kind === 'mer
 assert_eq "$(q "$T/ox.json" "d.bottleneck.bead + ' ' + d.bottleneck.ms")" "cx.2 828000" "bottleneck: cx.2 (600s implement, review, fix, merge and the gaps before them)"
 assert_eq "$(q "$T/ox.json" "JSON.stringify(d.bottleneck.implByTool)")" '{"test":200000,"edit":10000,"poll":60000}' "Codex tool calls: exec_command test, apply_patch edit, write_stdin poll"
 assert_eq "$(q "$T/ox.json" "d.beads.find(b => b.id === 'cx.1').implByTool.test")" "100000" "a forked child's replayed call at its spawn instant is not its own"
+assert_has "$out" "Profile: slow tests — cargo test 5m (2 runs, longest 3m)" "slow tests from Codex exec_command calls, the cd prefix dropped"
 assert_eq "$(q "$T/ox.json" "(b => b.waitCause + ' ' + b.waitMs)(d.beads.find(b => b.id === 'cx.3'))")" "slot 1280000" "cx.3, ready at planning, waited 1280s for the one chain slot (held through cx.2's merge)"
 assert_eq "$(q "$T/ox.json" "d.beads.find(b => b.id === 'cx.2').waitCause")" "none" "cx.2 started 3s after cx.1 merged: no early unblock in this mode"
 assert_eq "$(q "$T/ox.json" "[d.cap, d.earlyUnblock, d.simulation.asRunMs, d.simulation.lowerBoundMs, d.simulation.unlimitedSlotsMs, d.simulation.fit].join(' ')")" "1 false 1600000 1322000 1322000 0.92" "model: cap 1, merges before dependents; 1600s vs a 1322s bound"
