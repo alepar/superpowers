@@ -186,7 +186,7 @@ the label, plus `workflowPhase` and `model`) and `agent-<id>.jsonl` (a timestamp
 and `seamOverlap`, and EDGE_CUTS `applied`. From the launch append's prompt it reads `Launch: args`
 (`epicId`, `config.concurrency`, `runtimeSlots`, `earlyUnblock`, `dryRun`). These files are
 harness-internal and undocumented. The tests use synthetic copies, so a harness change passes them.
-After a Claude Code update, re-check against a real run (`--discover --epic <recent epic>`).
+After a Claude Code or Codex update, re-check against a real run (`--discover --epic <recent epic>`).
 
 **Coupling to the coordinator.** Timing per bead depends on the label grammar
 `<kind>:<bead>[:<suffix>]` and on `stageOf()`'s map from kind to stage. The merge lane is
@@ -225,9 +225,42 @@ always applied. That run's profile also surfaced:
 - Seam reviews and seam fixes took 70% of the merge lane's busy time.
 - The modelled saving from taking every early unblock was −1h04m.
 
-**Not covered.** The ordinary-subagent procedure has no Workflow run files, so it records
-`Profile: unavailable`. Its calling session has a clock and could stamp its own dispatches; that
-is a separate change. Other harnesses keep no such files either.
+**Ordinary-subagent runs** (`--codex`, `--subagents`). There is no journal, so each input comes
+from somewhere else:
+- **Dispatches.** On Codex, the coordinator's rollout is
+  `~/.codex/sessions/YYYY/MM/DD/rollout-<ts>-<thread id>.jsonl`. Its children are the rollouts whose
+  first row (`session_meta`) has `source.subagent.thread_spawn.parent_thread_id` equal to that
+  thread id. The task name is the last segment of `agent_path`. Guardian reviewers
+  (`source.subagent.other`) and grandchildren are left out. A dispatch is one task, from
+  `task_started` to `task_complete` or `turn_aborted`, so a `followup_task` adds a second dispatch
+  under the same name. A forked child replays its parent's history at its spawn instant, so
+  calls that open and close at that instant are dropped. Tool spans pair `function_call` and
+  `custom_tool_call` rows with their `*_output` rows by `call_id`. Code mode's `exec` cell is
+  JavaScript, so its commands are read out of the `tools.exec_command({cmd: …})` calls inside it.
+  The coordinator's `spawn_agent` messages are encrypted and are not read.
+- **Claude Code.** The calling session's `<session>/subagents/agent-<id>.{jsonl,meta.json}` have the
+  Workflow format without a journal. The session's own transcript is `<session>.jsonl`.
+- **Labels.** Labels come from the names in `coordinator-subagents.md`'s rule. Codex rejects any
+  task name outside `[a-z0-9_]` ("agent_name must use only lowercase letters, digits, and
+  underscores", 0.160.1). So `codexLabel()` matches `<kind>_<normalized id>` against the epic's ids
+  (bd's leaves plus the ledger's ids), takes the longest id that matches, and drops ids that
+  normalize alike. Names that follow no rule (every Codex run before 2026-10-07) get only the
+  run-level `concurrency` and `dispatch time by kind` lines. There, the kind is the name's first
+  word.
+- **Outcomes and graph.** Outcomes come from `--ledger`: a success `Merge:` line or `Task … complete`
+  means landed, and `Task … BLOCKED` means blocked. By default the ledger is the `progress.md`
+  path that the coordinator's commands name. The graph is `bd list --all --json --limit 0`, run in
+  the coordinator's directory, or `--beads`. It follows tree-deps' rules over every status, because
+  the beads are closed by then.
+- **Merges.** The coordinator merges itself, so a lane turn is synthesized from its own commands.
+  It runs from the first `git merge|rebase` that names `task-<id>` to the last command that names
+  the bead before the next dispatch. A seam review splits it into two turns.
+- **Schedule model.** The run has cap 1 and no early unblock. A slot is held through the merge.
+
+Validated read-only on 2026-10-07 against Codex 0.160.1 sessions on the maintainer's disk.
+herdr-threads coordinator `01a10505-dd5c-…` had 518 dispatches by 326 children over 87.5h. At most
+one dispatch was running 91.6% of the time: none for 56.8% and one for 34.8%. Its names follow no
+rule, so it profiles at run level only. No Claude Code fallback run existed to check against.
 
 ## Rationale archived from the coordinator script
 

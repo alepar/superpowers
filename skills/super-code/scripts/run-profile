@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# run-profile — per-bead timing profile of a finished super-code Workflow run: graph shape, each
-# bead's timeline, the realized critical path and its bottleneck bead, and simulated reshaping
-# what-ifs, from the Workflow runtime's run directories. Usage: bash run-profile --help
+# run-profile — per-bead timing profile of a finished super-code run: graph shape, each bead's
+# timeline, the realized critical path and its bottleneck bead, and simulated reshaping what-ifs,
+# from a Workflow run's directories or an ordinary-subagent coordinator's Codex or Claude Code
+# session logs. Usage: bash run-profile --help
 # Exit codes: 0 ok, 2 bad input, 3 no timing source, 4 node unavailable.
 set -euo pipefail
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

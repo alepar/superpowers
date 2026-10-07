@@ -1,28 +1,43 @@
-// run-profile.mjs — per-bead timing profile of a finished super-code Workflow run: the bead graph's
-// shape, each bead's timeline and why it started when it did, the realized critical path, the
-// bottleneck bead and what it spent its time on, and simulated reshaping what-ifs.
+// run-profile.mjs — per-bead timing profile of a finished super-code run: the bead graph's shape, each
+// bead's timeline and why it started when it did, the realized critical path, the bottleneck bead and
+// what it spent its time on, and simulated reshaping what-ifs.
 // Invoked through ./run-profile (bash wrapper, checks for node). Usage: --help.
 // Exit codes: 0 ok, 2 bad input, 3 no timing source (prints a `Profile: unavailable — …` line).
 //
-// The coordinator script cannot read a clock (Workflow scripts throw on Date.now()) and the ledger
-// carries no timestamps, so timing comes from the Workflow runtime's run directory: journal.jsonl
-// (each dispatch's label, phase and result), agent-<id>.meta.json (label, model) and agent-<id>.jsonl
-// (the agent's transcript, a timestamp on every row). These are harness-internal files, read
-// best-effort: what is missing is named on the `Unmeasured:` line, never guessed. The dependency
-// graph is the planners' own `deps` rows (PLANNED results in the journal).
-import { readFileSync, readdirSync, writeFileSync, statSync } from 'node:fs'
-import { basename, join } from 'node:path'
+// The coordinator cannot read a clock (Workflow scripts throw on Date.now()) and the ledger carries
+// no timestamps, so timing comes from the harness's own session files, read best-effort: what is
+// missing is named on the `Unmeasured:` line, never guessed.
+// - A Workflow run directory: journal.jsonl (each dispatch's label, phase and result),
+//   agent-<id>.meta.json (label, model) and agent-<id>.jsonl (the agent's transcript, a timestamp on
+//   every row). The graph is the planners' own `deps` rows (PLANNED results in the journal).
+// - The ordinary-subagent coordinator (coordinator-subagents.md), which names every dispatch from the
+//   label grammar: on Codex, the coordinator's rollout and its children's under ~/.codex/sessions; on
+//   Claude Code, the calling session's subagents/ directory and transcript. There is no journal:
+//   outcomes come from the ledger, the graph from bd, and the merges, which the coordinator runs
+//   itself, from its own git commands.
+import { readFileSync, readdirSync, writeFileSync, statSync, openSync, readSync, closeSync, existsSync } from 'node:fs'
+import { basename, dirname, join } from 'node:path'
+import { execFileSync } from 'node:child_process'
 import { homedir } from 'node:os'
 
-const USAGE = `usage: run-profile (--workflow <dir>... | --discover --epic <id>) [options]
+const USAGE = `usage: run-profile (--workflow <dir>... | --codex <thread>... | --subagents <dir>... | --discover --epic <id>) [options]
 
   --workflow <dir>    a Workflow run directory (journal.jsonl, agent-*.jsonl); repeat for each
                       invocation of the same epic (relaunches), in any order
-  --discover          find every run directory under --projects whose Launch: line names --epic
+  --codex <thread>    an ordinary-subagent coordinator on Codex: its thread id, or its rollout file
+  --subagents <dir>   an ordinary-subagent coordinator on Claude Code: the calling session's
+                      <projects>/<project>/<session>/subagents directory
+  --discover          find every run of --epic: Workflow runs whose Launch: line names it, and
+                      ordinary-subagent coordinators whose log names its ledger
   --epic <id>         the root epic (required with --discover; otherwise read from the runs)
-  --projects <dir>    where --discover looks (default: ~/.claude/projects)
+  --projects <dir>    where --discover looks for Claude Code sessions (default: ~/.claude/projects)
+  --codex-home <dir>  where Codex keeps sessions/ (default: ~/.codex)
+  --ledger <file>     the run's progress.md, for ordinary-subagent runs (default: the one the
+                      coordinator's commands name): merge and task outcomes
+  --beads <file>      a saved \`bd list --all --json --limit 0\` dump, for ordinary-subagent runs
+                      (default: run bd in the coordinator's directory): the dependency graph
   --cap <N>           the coordinator's slot cap (default: min(concurrency, runtimeSlots - 2) from
-                      the Launch: line, else unlimited)
+                      the Launch: line; 1 for an ordinary-subagent run; else unlimited)
   --out <prefix>      also write <prefix>.md (tables, critical path, timeline) and <prefix>.json
   --include-dry-run   keep invocations launched with dryRun: true (skipped by default)
 
@@ -33,12 +48,14 @@ const USAGE = `usage: run-profile (--workflow <dir>... | --discover --epic <id>)
 
 Prints the summary on stdout as ledger-ready lines, \`Profile: <epic> · …\` then
 \`Profile: <key> — …\` for shape, bound, critical path, critical chain, bottleneck, waits, early
-unblock, rework, merge lane, conflicts, runtime, what-if (one line each) and unmeasured.`
+unblock, rework, merge lane, conflicts, runtime, what-if (one line each) and unmeasured; an
+ordinary-subagent run adds concurrency and per-kind dispatch time, and when its dispatch names
+do not map to the epic's beads, prints only those run-level lines.`
 
 const die = (code, msg) => { process.stderr.write(`run-profile: ${msg}\n`); process.exit(code) }
 
 // ---- argv ----
-const opt = { workflow: [] }
+const opt = { workflow: [], codex: [], subagents: [] }
 const argv = process.argv.slice(2)
 for (let i = 0; i < argv.length; i++) {
   const a = argv[i]
@@ -49,11 +66,11 @@ for (let i = 0; i < argv.length; i++) {
   if (a === '--summarize') { opt.summarize = []; while (i + 1 < argv.length && !argv[i + 1].startsWith('--')) opt.summarize.push(argv[++i]); continue }
   if (!a.startsWith('--') || i + 1 >= argv.length) die(2, `bad argument '${a}'\n${USAGE}`)
   const k = a.slice(2)
-  if (k === 'workflow') opt.workflow.push(argv[++i])
-  else if (['epic', 'projects', 'cap', 'out'].includes(k)) opt[k] = argv[++i]
+  if (['workflow', 'codex', 'subagents'].includes(k)) opt[k].push(argv[++i])
+  else if (['epic', 'projects', 'cap', 'out', 'codex-home', 'ledger', 'beads'].includes(k)) opt[k] = argv[++i]
   else die(2, `unknown option ${a}`)
 }
-if (!opt.discover && !opt.workflow.length && !opt.summarize) die(2, `give --workflow <dir>, --discover --epic <id> or --summarize <json>…\n${USAGE}`)
+if (!opt.discover && !opt.workflow.length && !opt.codex.length && !opt.subagents.length && !opt.summarize) die(2, `give --workflow <dir>, --codex <thread>, --subagents <dir>, --discover --epic <id> or --summarize <json>…\n${USAGE}`)
 if (opt.summarize && !opt.summarize.length) die(2, '--summarize needs at least one profile .json')
 if (opt.discover && !opt.epic) die(2, '--discover needs --epic <id>')
 if (opt.cap !== undefined && !(Number(opt.cap) >= 1)) die(2, '--cap must be a positive number')
@@ -265,7 +282,7 @@ function readRunMeta(dir) {
   // A coordinator run reads its ledger, queries ready work or plans; other workflows that reuse
   // labels like `impl:` do not.
   const coordinator = [...agents.values()].some(a => /^(read-ledger|bd-ready|close-epics|plan|plan-rest|ledger-append:launch)$/.test(a.label ?? ''))
-  return { dir, runId: basename(dir), journal: !!journal, agents, launch, coordinator }
+  return { source: 'workflow', dir, runId: basename(dir), journal: !!journal, agents, launch, coordinator }
 }
 function readRun(dir) {
   const run = readRunMeta(dir)
@@ -302,6 +319,252 @@ function discover(projects, epic) {
   }
   return found
 }
+
+// ---- ordinary-subagent runs (coordinator-subagents.md): Codex rollouts, Claude Code subagent directories ----
+// Dispatch names follow the label grammar. On Claude Code the Agent description is the label itself
+// (`impl:<bead>`). Codex task names allow only [a-z0-9_], so there it is `<kind>_<bead>[_<suffix>]`
+// with every other character of the bead id written `_`, and `__<n>` appended to a repeated name.
+const normName = s => String(s).toLowerCase().replace(/[^a-z0-9_]/g, '_')
+const RUN_KINDS = ['plan', 'plan-rest', 'final-review', 'sweep', 'worktree-sweep', 'reconcile-buckets', 'bd-ready', 'close-epics',
+  'edge-audit', 'edge-cuts', 'edge-add', 'read-ledger', 'ledger-append']
+const KINDS_LONGEST_FIRST = [...BEAD_KINDS].sort((a, b) => b.length - a.length)
+// The label a Codex task name stands for; byNorm maps a normalized bead id to the id (null when two
+// ids normalize alike). Null when the name does not follow the rule.
+function codexLabel(name, byNorm) {
+  const n = String(name ?? '').replace(/__\d+$/, '')
+  for (const kind of KINDS_LONGEST_FIRST) {
+    const pre = normName(kind) + '_'
+    if (!n.startsWith(pre)) continue
+    const rest = n.slice(pre.length)
+    let best = null
+    for (const [k, id] of byNorm) if (id && (rest === k || rest.startsWith(k + '_')) && (!best || k.length > best[0].length)) best = [k, id]
+    if (best) { const suf = rest.slice(best[0].length + 1); return `${kind}:${best[1]}${suf ? `:${suf}` : ''}` }
+  }
+  for (const kind of RUN_KINDS) { const k = normName(kind); if (n === k || n.startsWith(k + '_')) return n === k ? kind : `${kind}:${n.slice(k.length + 1)}` }
+  return null
+}
+// The first line of a (possibly large) JSONL file.
+function firstRow(file) {
+  let fd
+  try { fd = openSync(file, 'r') } catch { return null }
+  const chunks = [], buf = Buffer.alloc(65536)
+  try {
+    for (let n; (n = readSync(fd, buf, 0, buf.length, null)) > 0;) {
+      const i = buf.subarray(0, n).indexOf(10)
+      chunks.push(Buffer.from(buf.subarray(0, i >= 0 ? i : n)))
+      if (i >= 0) break
+    }
+  } finally { closeSync(fd) }
+  try { return JSON.parse(Buffer.concat(chunks).toString('utf8')) } catch { return null }
+}
+const codexHome = () => opt['codex-home'] ?? join(homedir(), '.codex')
+// Every rollout's session_meta: thread id, and for a spawned agent its parent and task name.
+let codexIdx = null
+function codexIndex() {
+  if (codexIdx) return codexIdx
+  codexIdx = []
+  const walk = d => {
+    for (const f of ls(d)) {
+      const p = join(d, f)
+      if (/^rollout-.*\.jsonl$/.test(f)) {
+        const m = firstRow(p)?.payload
+        if (!m?.id) continue
+        const sp = m.source?.subagent?.thread_spawn
+        codexIdx.push({ file: p, id: m.id, parent: sp?.parent_thread_id ?? null, name: sp ? String(sp.agent_path ?? '').split('/').pop() : null, sub: !!m.source?.subagent, cwd: m.cwd })
+      } else if (isDir(p)) walk(p)
+    }
+  }
+  walk(join(codexHome(), 'sessions'))
+  return codexIdx
+}
+const tsOf = r => Date.parse(r?.timestamp)
+// What one Codex tool call ran. Code mode's `exec` cell calls `tools.exec_command({cmd: "…"})`, one or
+// more; other builds call exec_command or shell directly.
+const CODEX_RANK = ['poll', 'test', 'build', 'install', 'edit', 'shell', 'git', 'bd', 'read', 'subagent', 'other']
+function codexCall(name, input) {
+  const cmds = [], kinds = new Set()
+  if (name === 'exec') {
+    const src = String(input ?? '')
+    for (const m of src.matchAll(/tools\.(\w+)\(/g)) kinds.add(m[1])
+    for (const m of src.matchAll(/\bcmd\s*:\s*("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|`(?:[^`\\]|\\.)*`)/g)) {
+      const q = m[1]
+      let v = q.slice(1, -1)
+      if (q[0] === '"') try { v = JSON.parse(q) } catch { /* keep the raw text */ }
+      cmds.push(v)
+    }
+  } else {
+    kinds.add(name)
+    let args = {}
+    try { args = typeof input === 'string' ? JSON.parse(input) : input ?? {} } catch { /* a patch body, not JSON */ }
+    const c = args?.cmd ?? args?.command
+    if (c !== undefined) cmds.push(Array.isArray(c) ? c.join(' ') : String(c))
+  }
+  const cats = []
+  if (cmds.length) cats.push(bashCategory(cmds.join('\n')))
+  else if (kinds.has('exec_command') || kinds.has('shell')) cats.push('shell')
+  if (kinds.has('apply_patch')) cats.push('edit')
+  if (['write_stdin', 'sleep', 'wait', 'wait_agent'].some(k => kinds.has(k))) cats.push('poll')
+  if (kinds.has('spawn_agent') || kinds.has('followup_task')) cats.push('subagent')
+  const cat = cats.sort((a, b) => CODEX_RANK.indexOf(a) - CODEX_RANK.indexOf(b))[0] ?? 'other'
+  return { cat, text: cmds.join('\n'), what: cmds.length ? commandHead({ command: cmds[0] }) : [...kinds].join(', ') }
+}
+function codexCalls(rows) {
+  const open = new Map(), calls = []
+  for (const r of rows) {
+    const p = r.payload, t = tsOf(r)
+    if (r.type !== 'response_item' || !p || !Number.isFinite(t)) continue
+    if ((p.type === 'function_call' || p.type === 'custom_tool_call') && p.call_id) open.set(p.call_id, { name: p.name, input: p.type === 'custom_tool_call' ? p.input : p.arguments, t })
+    else if ((p.type === 'function_call_output' || p.type === 'custom_tool_call_output') && open.has(p.call_id)) {
+      const u = open.get(p.call_id)
+      open.delete(p.call_id)
+      calls.push({ name: u.name, ...codexCall(u.name, u.input), start: u.t, end: t })
+    }
+  }
+  return calls
+}
+// A child's dispatches: each task it ran (task_started to task_complete or turn_aborted); a
+// follow-up task is a second dispatch under the same name.
+function codexTasks(rows) {
+  let lo = Infinity, hi = -Infinity, open = null
+  const spans = []
+  for (const r of rows) {
+    const t = tsOf(r)
+    if (!Number.isFinite(t)) continue
+    lo = Math.min(lo, t); hi = Math.max(hi, t)
+    const k = r.type === 'event_msg' ? r.payload?.type : null
+    if (k === 'task_started' && open === null) open = t
+    else if ((k === 'task_complete' || k === 'turn_aborted') && open !== null) { spans.push([open, t]); open = null }
+  }
+  if (open !== null) spans.push([open, hi])
+  const out = spans.filter(([s, e]) => e > s)
+  return out.length || hi <= lo ? out : [[lo, hi]]
+}
+function spanTiming(start, end, calls) {
+  const cs = calls.filter(x => x.start >= start && x.start <= end)
+  const clip = x => [x.start, Math.min(x.end, end)]
+  const byCat = {}
+  for (const cat of new Set(cs.map(x => x.cat))) byCat[cat] = unionMs(cs.filter(x => x.cat === cat).map(clip))
+  return { start, end, dur: end - start, toolMs: unionMs(cs.map(clip)), byCat, calls: cs.map(x => ({ name: x.name, cat: x.cat, what: x.what, ms: x.end - x.start })) }
+}
+function readCodex(input) {
+  const idx = codexIndex()
+  let id = input
+  if (existsSync(input) && !isDir(input)) {
+    const m = firstRow(input)?.payload
+    if (!m?.id) die(2, `not a Codex rollout: ${input}`)
+    id = m.id
+    if (!idx.some(e => e.file === input)) idx.push({ file: input, id, parent: null, name: null, sub: !!m.source?.subagent, cwd: m.cwd })
+  }
+  const own = idx.filter(e => e.id === id)
+  if (!own.length) die(2, `no Codex rollout for thread ${id} under ${codexHome()}/sessions`)
+  const rows = own.flatMap(e => readJsonl(e.file) ?? []).sort((a, b) => tsOf(a) - tsOf(b))
+  const agents = new Map()
+  for (const c of idx.filter(e => e.parent === id)) {
+    const crow = readJsonl(c.file) ?? []
+    // A forked child replays its parent's history at its spawn instant; those calls are not its own.
+    const t0 = tsOf(crow[0])
+    const calls = codexCalls(crow).filter(x => !(x.start === t0 && x.end === t0))
+    codexTasks(crow).forEach(([s, e], k) => agents.set(`${c.id}#${k}`, { id: `${c.id}#${k}`, run: id, name: c.name, ...spanTiming(s, e, calls) }))
+  }
+  return { source: 'codex', dir: own[0].file, runId: id, journal: false, agents, launch: null, coordinator: true, callerCalls: codexCalls(rows), cwd: own[0].cwd }
+}
+function claudeCallerCalls(rows) {
+  const open = new Map(), calls = []
+  for (const r of rows) {
+    const t = tsOf(r), c = r.message?.content
+    if (!Number.isFinite(t) || !Array.isArray(c)) continue
+    for (const x of c) {
+      if (x?.type === 'tool_use' && x.id) open.set(x.id, { name: x.name, input: x.input ?? {}, t })
+      else if (x?.type === 'tool_result' && open.has(x.tool_use_id)) {
+        const u = open.get(x.tool_use_id)
+        open.delete(x.tool_use_id)
+        calls.push({ name: u.name, text: u.name === 'Bash' ? String(u.input.command ?? '') : '', start: u.t, end: t })
+      }
+    }
+  }
+  return calls
+}
+// <projects>/<project>/<session>/subagents: agent-<id>.meta.json (`description` is the label) and
+// agent-<id>.jsonl; the calling session's own transcript is <projects>/<project>/<session>.jsonl.
+function readSubagents(dir) {
+  const d = dir.replace(/\/+$/, '')
+  const session = basename(dirname(d))
+  const agents = new Map()
+  for (const f of ls(d)) {
+    const m = /^agent-(.+)\.meta\.json$/.exec(f)
+    if (!m) continue
+    let meta
+    try { meta = JSON.parse(readFileSync(join(d, f), 'utf8')) } catch { continue }
+    const t = transcriptTiming(readJsonl(join(d, `agent-${m[1]}.jsonl`)) ?? [])
+    agents.set(m[1], { id: m[1], run: session, name: meta.description ?? '', model: meta.model, ...(t ?? {}) })
+  }
+  const rows = readJsonl(`${dirname(d)}.jsonl`) ?? []
+  return { source: 'subagents', dir: d, runId: session, journal: false, agents, launch: null, coordinator: true, callerCalls: claudeCallerCalls(rows), cwd: rows.find(r => r.cwd)?.cwd }
+}
+const LEDGER_RE = /(\/[^\s"'`]*\/\.superpowers\/sdd\/([^/\s"'`]+)-plan\/progress\.md)/g
+function discoverOrdinary(projects, epic) {
+  const marker = `sdd/${epic}-plan/`
+  const subagents = []
+  for (const p of ls(projects)) {
+    const pd = join(projects, p)
+    for (const f of ls(pd)) {
+      const sub = join(pd, f.replace(/\.jsonl$/, ''), 'subagents')
+      if (!f.endsWith('.jsonl') || !ls(sub).some(x => /^agent-.+\.meta\.json$/.test(x))) continue
+      let text = ''
+      try { text = readFileSync(join(pd, f), 'utf8') } catch { continue }
+      if (text.includes('mechanism ordinary-subagents') && text.includes(marker)) subagents.push(sub)
+    }
+  }
+  const idx = codexIndex()
+  const parents = new Set(idx.map(e => e.parent).filter(Boolean))
+  const codex = [...new Set(idx.filter(e => !e.sub && parents.has(e.id)).filter(e => { try { return readFileSync(e.file, 'utf8').includes(marker) } catch { return false } }).map(e => e.id))]
+  return { subagents, codex }
+}
+// The ledger's outcomes: a bead landed on a success `Merge:` line (no ` → blocker|auth-refused|held`)
+// or a `Task … complete` line, and is blocked on `Task … BLOCKED`.
+function readLedger(file) {
+  let text
+  try { text = readFileSync(file, 'utf8') } catch { return null }
+  const landed = new Set(), blocked = new Set(), ids = new Set()
+  let epic = null
+  for (const line of text.split('\n')) {
+    let m
+    if ((m = /^Launch: mechanism \S+ · epic (\S+)/.exec(line))) epic = m[1]
+    else if ((m = /^# SDD ledger — plan: \S*?([^/\s]+)-plan\.md/.exec(line))) epic ??= m[1]
+    else if ((m = /^Merge: (\S+) — (.*)$/.exec(line))) { ids.add(m[1]); if (!/\s→\s/.test(m[2])) landed.add(m[1]) }
+    else if ((m = /^Task \d+ \(([^)]+)\): (complete|BLOCKED)\b/.exec(line))) { ids.add(m[1]); (m[2] === 'complete' ? landed : blocked).add(m[1]) }
+    else if ((m = /^Task \d+ \(([^)]+)\):/.exec(line))) ids.add(m[1])
+  }
+  return { file, epic, landed, blocked, ids }
+}
+function bdDump(cwd) {
+  if (!cwd || !isDir(cwd)) return null
+  try { return JSON.parse(execFileSync('bd', ['list', '--all', '--json', '--limit', '0'], { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 60000, maxBuffer: 1 << 28 })) } catch { return null }
+}
+// The epic's leaves and their in-tree blockers, as tree-deps defines them but over every status (the
+// run is over, so most are closed): in-tree by parent links, not epics, not blocker or review beads.
+function bdLeaves(dump, epic) {
+  const byId = new Map(dump.filter(b => b?.id).map(b => [b.id, b]))
+  const parents = b => [...(b.dependencies ?? []).filter(d => d.type === 'parent-child').map(d => d.depends_on_id), ...(b.parent ? [b.parent] : [])]
+  const inTree = id => {
+    const seen = new Set(), q = [id]
+    while (q.length && seen.size < 1000) {
+      const x = q.shift()
+      if (x === epic) return true
+      if (seen.has(x)) continue
+      seen.add(x)
+      q.push(...parents(byId.get(x) ?? {}))
+    }
+    return false
+  }
+  const leaves = new Map()
+  for (const b of byId.values()) if (b.id !== epic && b.issue_type !== 'epic' && !(b.labels ?? []).some(l => l === 'blocker' || l === 'sp:review') && inTree(b.id)) leaves.set(b.id, [])
+  for (const id of leaves.keys()) leaves.set(id, (byId.get(id).dependencies ?? []).filter(d => d.type === 'blocks' && leaves.has(d.depends_on_id) && d.depends_on_id !== id).map(d => d.depends_on_id))
+  return leaves
+}
+const escRe = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+// A bead id inside free text, not as a prefix of a longer id (`cx.1` in `task-cx.1`, not in `cx.10`).
+const idRe = (id, pre = '') => new RegExp(`(?<![A-Za-z0-9_.])${pre}${escRe(id)}(?![A-Za-z0-9_]|\\.[A-Za-z0-9])`)
 
 // ---- --summarize: a baseline over earlier profiles ----
 if (opt.summarize) {
@@ -360,9 +623,13 @@ if (opt.summarize) {
 }
 
 // ---- load ----
-const dirs = [...new Set([...opt.workflow, ...(opt.discover ? discover(opt.projects ?? join(homedir(), '.claude', 'projects'), opt.epic) : [])])]
-for (const d of dirs) if (!isDir(d)) die(2, `not a directory: ${d}`)
-let runs = dirs.map(readRun)
+const projectsDir = opt.projects ?? join(homedir(), '.claude', 'projects')
+const dirs = [...new Set([...opt.workflow, ...(opt.discover ? discover(projectsDir, opt.epic) : [])])]
+const found = opt.discover ? discoverOrdinary(projectsDir, opt.epic) : { subagents: [], codex: [] }
+const codexIn = [...new Set([...opt.codex, ...found.codex])]
+const subIn = [...new Set([...opt.subagents, ...found.subagents])]
+for (const d of [...dirs, ...subIn]) if (!isDir(d)) die(2, `not a directory: ${d}`)
+let runs = [...dirs.map(readRun), ...codexIn.map(readCodex), ...subIn.map(readSubagents)]
 const notCoordinator = runs.filter(r => !r.coordinator)
 if (notCoordinator.length) die(2, `not a super-code coordinator run (no ledger read, ready query or planner dispatch): ${notCoordinator.map(r => r.dir).join(', ')}`)
 const skippedDry = runs.filter(r => r.launch?.dryRun === true && !opt.includeDryRun)
@@ -383,6 +650,73 @@ if (opt.latest && runs.length > 1) {
     runs = keep.map(x => x.r)
   }
 }
+
+// ---- ordinary-subagent runs: labels from dispatch names, outcomes from the ledger, the graph from bd,
+// and the merges, which the coordinator runs itself, from its own commands ----
+const ordinary = runs.filter(r => r.source !== 'workflow')
+const serialRuns = new Set(ordinary.map(r => r.runId))
+let ledger = null, leaves = null, noLaneTiming = 0
+if (ordinary.length) {
+  const named = [...new Set(ordinary.flatMap(r => r.callerCalls.flatMap(c => [...c.text.matchAll(LEDGER_RE)].map(m => m[1]))))]
+  const ledgerPath = opt.ledger ?? named.find(f => existsSync(f) && (!opt.epic || f.includes(`/${opt.epic}-plan/`)))
+  ledger = ledgerPath ? readLedger(ledgerPath) : null
+  if (opt.ledger && !ledger) die(2, `cannot read the ledger: ${opt.ledger}`)
+  const ep = opt.epic ?? ledger?.epic
+  if (!ep) die(2, 'an ordinary-subagent run needs --epic <id> (or a --ledger whose Launch: line names it)')
+  let dump = null
+  if (opt.beads) { try { dump = JSON.parse(readFileSync(opt.beads, 'utf8')) } catch { die(2, `not a bd list JSON dump: ${opt.beads}`) } }
+  else for (const r of ordinary) if ((dump = bdDump(r.cwd))) break
+  leaves = Array.isArray(dump) ? bdLeaves(dump, ep) : null
+  const ids = new Set([...(leaves?.keys() ?? []), ...(ledger?.ids ?? [])])
+  const byNorm = new Map()
+  for (const id of ids) { const k = normName(id); byNorm.set(k, byNorm.has(k) && byNorm.get(k) !== id ? null : id) }
+  for (const r of ordinary) {
+    r.launch = { epicId: ep, mechanism: 'ordinary-subagents', config: { concurrency: 1, earlyUnblock: false } }
+    r.journal = !!ledger
+    for (const a of r.agents.values()) {
+      const label = r.source === 'codex' ? codexLabel(a.name, byNorm) : a.name
+      const p = parseLabel(label ?? '')
+      a.mapped = !!label && ((!!p.bead && (!ids.size || ids.has(p.bead))) || RUN_KINDS.includes(p.kind))
+      if (a.mapped) { Object.assign(a, { label }, p); a.stage = stageOf(a.kind, a.suffix) }
+      else Object.assign(a, { label: a.name || '(unnamed)', kind: /[a-z0-9]+/i.exec(a.name ?? '')?.[0]?.toLowerCase() ?? '?', bead: null, suffix: '', stage: 'other' })
+    }
+    // A lane turn per bead: from the coordinator's first `git merge|rebase` naming task-<id> to its
+    // last command naming the bead before the next dispatch (a seam review splits it in two).
+    const real = [...r.agents.values()].filter(a => a.start !== undefined)
+    const starts = real.map(a => a.start).sort((x, y) => x - y)
+    for (const id of new Set(real.filter(a => a.bead).map(a => a.bead))) {
+      if (real.some(a => a.bead === id && a.kind === 'merge')) continue
+      const from = Math.min(...real.filter(a => a.bead === id).map(a => a.start))
+      const re = idRe(id), taskRe = idRe(id, 'task-')
+      const opens = r.callerCalls.filter(c => c.start >= from && /\bgit\b[\s\S]*\b(?:merge|rebase)\b/.test(c.text) && taskRe.test(c.text)).sort((x, y) => x.start - y.start)
+      for (let i = 0, k = 0; i < opens.length; k++) {
+        const s = opens[i].start, stop = starts.find(t => t > s) ?? Infinity
+        const end = Math.max(...r.callerCalls.filter(c => c.start >= s && c.start < stop && re.test(c.text)).map(c => c.end))
+        const m = { id: `${r.runId}:merge:${id}:${k}`, run: r.runId, label: `merge:${id}`, synthetic: true, mapped: true, start: s, end, dur: end - s, toolMs: 0, byCat: {}, calls: [] }
+        Object.assign(m, parseLabel(m.label)); m.stage = 'merge'
+        r.agents.set(m.id, m)
+        while (i < opens.length && opens[i].start < stop) i++
+      }
+    }
+  }
+  if (ledger) {
+    const all = ordinary.flatMap(r => [...r.agents.values()]).filter(a => a.bead && a.start !== undefined).sort((x, y) => x.start - y.start)
+    for (const id of new Set(all.map(a => a.bead))) {
+      const as = all.filter(a => a.bead === id), merges = as.filter(a => a.kind === 'merge'), impls = as.filter(a => a.kind === 'impl')
+      const ok = ledger.landed.has(id)
+      merges.forEach((a, i) => { a.result = { merged: ok && i === merges.length - 1 } })
+      if (impls.length) impls.at(-1).result = { status: ok ? 'IMPLEMENTED' : ledger.blocked.has(id) ? 'BLOCKED' : null }
+      if (ok && !merges.length) {
+        // Landed, but no merge in the coordinator's log: a zero-length landing where its chain ended.
+        const last = latest(as), r = ordinary.find(x => x.runId === last.run)
+        const m = { id: `${r.runId}:merge:${id}:end`, run: r.runId, label: `merge:${id}`, synthetic: true, mapped: true, start: last.end, end: last.end, dur: 0, toolMs: 0, byCat: {}, calls: [], result: { merged: true } }
+        Object.assign(m, parseLabel(m.label)); m.stage = 'merge'
+        r.agents.set(m.id, m)
+        noLaneTiming++
+      }
+    }
+  }
+}
 const epicOf = r => r.launch?.epicId ?? planEpic(r)
 const epic = opt.epic ?? runs.map(epicOf).find(Boolean) ?? null
 const foreign = runs.filter(r => epic && epicOf(r) && epicOf(r) !== epic)
@@ -395,10 +729,11 @@ for (const r of runs) for (const a of r.agents.values()) {
   if (!prev || (prev.start === undefined && a.start !== undefined)) agentById.set(a.id, a)
 }
 const allAgents = [...agentById.values()]
+const realAgents = allAgents.filter(a => !a.synthetic)
 const timed = allAgents.filter(a => a.start !== undefined && a.label).sort((a, b) => a.start - b.start || a.end - b.end)
 const untimed = allAgents.filter(a => a.start === undefined)
-if (!timed.some(a => a.bead)) {
-  const why = !dirs.length ? `no Workflow run directory found${opt.epic ? ` for ${opt.epic}` : ''} (this harness keeps none, or they were cleaned up)`
+if (!timed.some(a => a.bead) && !timed.some(a => serialRuns.has(a.run))) {
+  const why = !dirs.length && !codexIn.length && !subIn.length ? `no Workflow run directory found${opt.epic ? ` for ${opt.epic}` : ''}, nor an ordinary-subagent coordinator's log (this harness keeps none, or they were cleaned up)`
     : !runs.length ? `every run given was a dryRun launch (${skippedDry.map(r => r.runId).join(', ')})`
     : 'no timed task dispatch in the runs given (transcripts missing)'
   console.log(`Profile: unavailable — ${why}`)
@@ -406,7 +741,7 @@ if (!timed.some(a => a.bead)) {
 }
 const invocations = runs.map(r => {
   const as = timed.filter(a => a.run === r.runId)
-  return { runId: r.runId, dir: r.dir, journal: r.journal, launch: r.launch, agents: r.agents.size, timed: as.length,
+  return { runId: r.runId, dir: r.dir, source: r.source, journal: r.journal, launch: r.launch, agents: [...r.agents.values()].filter(a => !a.synthetic).length, timed: as.length,
     start: as.length ? as[0].start : null, end: as.length ? Math.max(...as.map(a => a.end)) : null }
 }).filter(v => v.start !== null).sort((a, b) => a.start - b.start)
 const launch = invocations.map(v => v.launch).filter(Boolean).at(-1) ?? null
@@ -417,6 +752,49 @@ const cap = opt.cap !== undefined ? Number(opt.cap)
   : Number(cfg.concurrency) > 0 && runtimeSlots > 2 ? Math.min(Number(cfg.concurrency), runtimeSlots - 2)
   : Number(cfg.concurrency) > 0 ? Number(cfg.concurrency) : Infinity
 const windowStart = invocations[0].start
+
+// ---- run level, for ordinary-subagent runs: how many dispatches ran at once (3 and more counted
+// together), and time per kind.
+// Needs no bead mapping, so it also covers dispatches whose names do not follow the label grammar ----
+const runLevel = (() => {
+  const ds = timed.filter(a => !a.synthetic && serialRuns.has(a.run))
+  if (!ds.length) return null
+  const s0 = Math.min(...ds.map(a => a.start)), s1 = Math.max(...ds.map(a => a.end))
+  const byActive = {}
+  let n = 0, prev = s0, peak = 0
+  for (const [t, d] of ds.flatMap(a => [[a.start, 1], [a.end, -1]]).sort((x, y) => x[0] - y[0] || x[1] - y[1])) {
+    if (t > prev) byActive[Math.min(n, 3)] = (byActive[Math.min(n, 3)] ?? 0) + t - prev
+    n += d; prev = t; peak = Math.max(peak, n)
+  }
+  const kinds = {}
+  for (const a of ds) { const k = kinds[a.kind + (a.mapped ? '' : '?')] ??= { kind: a.kind, mapped: a.mapped, ms: 0, n: 0 }; k.ms += a.dur; k.n++ }
+  const merges = timed.filter(a => a.synthetic && serialRuns.has(a.run))
+  const wall = s1 - s0, busy = unionMs(ds.map(a => [a.start, a.end]))
+  const kt = ks => { ks.sort((x, y) => y.ms - x.ms); const rest = ks.slice(8); return [...ks.slice(0, 8).map(k => `${k.kind} ${fmtDur(k.ms)} (${k.n})`), ...(rest.length ? [`${rest.length} more ${fmtDur(sum(rest.map(k => k.ms)))} (${sum(rest.map(k => k.n))})`] : [])].join(' · ') }
+  const mapped = Object.values(kinds).filter(k => k.mapped), unmapped = Object.values(kinds).filter(k => !k.mapped)
+  return {
+    unmapped: ds.filter(a => !a.mapped).length,
+    json: { dispatches: ds.length, wallMs: wall, busyMs: busy, byActive, peak, kinds: Object.values(kinds), coordinatorMergeMs: sum(merges.map(a => a.dur)) },
+    lines: [
+      `Profile: concurrency — ${ds.length} dispatches over ${fmtDur(wall)} · a dispatch running ${fmtDur(busy)} (${pct(busy, wall)}%) · dispatches at once: ${Object.entries(byActive).map(([k, v]) => `${k === '3' ? '3+' : k} for ${pct(v, wall)}%`).join(' · ')} of the time · peak ${peak}`,
+      `Profile: dispatch time by kind, summed — ${[kt(mapped), unmapped.length ? `not named for a bead: ${kt(unmapped)}` : '', merges.length ? `merges run by the coordinator ${fmtDur(sum(merges.map(a => a.dur)))} (${merges.length})` : ''].filter(Boolean).join(' · ')}`,
+    ],
+  }
+})()
+const RULE = 'coordinator-subagents.md names dispatches <kind>_<bead id> on Codex, <kind>:<bead id> on Claude Code'
+if (!timed.some(a => a.bead)) {
+  // No dispatch maps to a bead: only the run-level lines.
+  const end = Math.max(...timed.map(a => a.end))
+  const lines = [`Profile: ${epic ?? '(epic unknown)'} · ${invocations.length} invocation${invocations.length === 1 ? '' : 's'} · ${fmtTime(windowStart)} → ${fmtTime(end)} · wall ${fmtDur(end - windowStart)} · agents ${realAgents.length} (timed ${realAgents.filter(a => a.start !== undefined).length}) · beads dispatched 0${leaves ? `, planned ${leaves.size}` : ''}`,
+    ...runLevel.lines,
+    `Profile: unmeasured — no per-bead profile: no dispatch is named for a bead of ${epic} (${RULE})`]
+  console.log(lines.join('\n'))
+  if (opt.out) {
+    writeFileSync(`${opt.out}.json`, JSON.stringify({ version: 1, epic, partial: true, invocations: invocations.map(v => ({ runId: v.runId, dir: v.dir, source: v.source, start: new Date(v.start).toISOString(), end: new Date(v.end).toISOString(), agents: v.agents, timed: v.timed })), concurrency: runLevel.json, summary: lines }, null, 2) + '\n')
+    writeFileSync(`${opt.out}.md`, [`# Run profile — ${epic ?? 'unknown epic'}`, '', '```', ...lines, '```', ''].join('\n'))
+  }
+  process.exit(0)
+}
 
 // ---- the graph: every planner row seen, read from journal results (a planner cached on resume has
 // no transcript). Deps are the open in-tree blockers at that planning, so the union is the run's
@@ -445,6 +823,12 @@ for (const a of allAgents.filter(x => /^(plan|plan-rest|edge-cuts)$/.test(x.kind
     cuts.push({ dependent: c.dependent, blocker: c.blocker, kind: c.kind, at, agent })
     for (const e of c.add ?? []) if (e?.dependent && e?.blocker) rows.get(e.dependent)?.deps.add(e.blocker)
   }
+}
+// An ordinary-subagent run has no planner rows in a journal: its graph is bd's, released when its
+// first planner returned.
+if (leaves) {
+  const plan0 = timed.filter(a => serialRuns.has(a.run) && a.stage === 'planning').sort((x, y) => x.end - y.end)[0] ?? null
+  for (const [id, deps] of leaves) if (!rows.has(id)) rows.set(id, { id, n: undefined, deps: new Set(deps), files: new Set(), opaque: false, graph: true, mappings: [{ at: plan0 ? plan0.end : windowStart, agent: plan0 }] })
 }
 // The planning a dispatch at time t followed: the bead's latest mapping by then.
 const mappingFor = (id, t) => { const ms = rows.get(id)?.mappings ?? []; return ms.filter(m => m.at <= t + EPS).at(-1) ?? ms[0] ?? null }
@@ -509,10 +893,14 @@ const usableBy = (d, t) => (earlyUnblock && implementedBy(d, t)) || landedBy(d, 
 
 // ---- slots and ready queries, for explaining waits ----
 const hotFileCap = Math.max(1, Number(cfg.hotFileCap) || 3)
-const slotSpans = [...beads.values()].flatMap(b => b.attempts.flatMap(at => [
-  ...(at.chainEndAgent ? [{ bead: b.id, start: at.start, end: at.chainEndAgent.end, agent: at.chainEndAgent }] : []),
-  ...(at.afterLane.length ? [{ bead: b.id, start: at.afterLane[0].start, end: latest(at.afterLane).end, agent: latest(at.afterLane) }] : []),
-]))
+// The ordinary-subagent coordinator runs one chain at a time, merge included: its slot is the whole attempt.
+const slotSpans = [...beads.values()].flatMap(b => b.attempts.flatMap(at => {
+  if (serialRuns.has(at.run)) { const a = latest(at.agents.filter(x => x.stage !== 'ledger')); return a ? [{ bead: b.id, start: at.start, end: a.end, agent: a }] : [] }
+  return [
+    ...(at.chainEndAgent ? [{ bead: b.id, start: at.start, end: at.chainEndAgent.end, agent: at.chainEndAgent }] : []),
+    ...(at.afterLane.length ? [{ bead: b.id, start: at.afterLane[0].start, end: latest(at.afterLane).end, agent: latest(at.afterLane) }] : []),
+  ]
+}))
 // What freed the start of bead `id` at `start`: a chain ending just before it while every slot was
 // busy, or while `hotFileCap` in-flight chains declared a file it shares.
 function slotRelease(id, start, after) {
@@ -611,7 +999,7 @@ const lane = {
 }
 const runtime = { slots: runtimeSlots, peak: 0, fullMs: 0 }
 {
-  const ev = timed.flatMap(a => [[a.start, 1], [a.end, -1]]).sort((x, y) => x[0] - y[0] || x[1] - y[1])
+  const ev = timed.filter(a => !a.synthetic).flatMap(a => [[a.start, 1], [a.end, -1]]).sort((x, y) => x[0] - y[0] || x[1] - y[1])
   let n = 0, prev = null
   for (const [t, d] of ev) {
     if (prev !== null && runtimeSlots && n >= runtimeSlots) runtime.fullMs += t - prev
@@ -905,11 +1293,11 @@ const lines = []
 let testTotals = null
 const afterMs = Math.max(0, runEnd - graphEnd)
 const catText = (obj, order = CAT_ORDER) => [...order, ...Object.keys(obj).filter(k => !order.includes(k)).sort()].filter(k => obj[k] >= 1000).map(k => `${k} ${fmtDur(obj[k])}`).join(' · ')
-lines.push(`Profile: ${epic ?? '(epic unknown)'} · ${invocations.length} invocation${invocations.length === 1 ? '' : 's'} · ${fmtTime(windowStart)} → ${fmtTime(runEnd)} · wall ${fmtDur(runEnd - windowStart)} (task graph ${fmtDur(actualGraphMs)}${afterMs ? `, after the last landing ${fmtDur(afterMs)}` : ''}) · agents ${allAgents.length} (timed ${timed.length}) · beads dispatched ${beads.size}, landed ${landed.length}, planned ${rows.size}`)
+lines.push(`Profile: ${epic ?? '(epic unknown)'} · ${invocations.length} invocation${invocations.length === 1 ? '' : 's'} · ${fmtTime(windowStart)} → ${fmtTime(runEnd)} · wall ${fmtDur(runEnd - windowStart)} (task graph ${fmtDur(actualGraphMs)}${afterMs ? `, after the last landing ${fmtDur(afterMs)}` : ''}) · agents ${realAgents.length} (timed ${realAgents.filter(a => a.start !== undefined).length}) · beads dispatched ${beads.size}, landed ${landed.length}, planned ${rows.size}`)
 const fan = shape.fanOut[0]
 lines.push(`Profile: shape — ${shape.beads} beads · ${shape.edges} edges · depth ${shape.depth} · width ${shape.width} · beads per level ${shape.levels.join('/') || '-'}${fan ? ` · widest fan-out ${fan.id} (${fan.direct} direct, ${fan.transitive} transitive dependents)` : ''}${cuts.length ? ` · ${cuts.length} edge cut(s) applied mid-run` : ''}`)
 if (sim?.failed) lines.push(`Profile: bound — model failed: the planner rows hold a dependency cycle or an edge nothing satisfies${shape.cycles.length ? ` (${shape.cycles.slice(0, 3).join(', ')})` : ''}`)
-else if (!sim) lines.push(`Profile: bound — no model: ${!rows.size ? 'no planner rows, so the graph is unknown' : 'nothing landed'}`)
+else if (!sim) lines.push(`Profile: bound — no model: ${!rows.size ? (ordinary.length ? 'no dependency graph' : 'no planner rows, so the graph is unknown') : 'nothing landed'}`)
 else {
   const above = sim.asRunMs - sim.lowerBoundMs
   const lanesGain = sim.asRunMs - sim.unlimitedLanesMs, slotsGain = sim.asRunMs - sim.unlimitedSlotsMs
@@ -997,14 +1385,18 @@ if (bottleneck) {
 }
 lines.push(`Profile: merge lane — busy ${fmtDur(lane.busyMs)} of ${fmtDur(lane.spanMs)} (${pct(lane.busyMs, lane.spanMs)}%) · seam reviews and fixes ${fmtDur(lane.seamMs)} (${pct(lane.seamMs, lane.busyMs)}% of busy) · ${lane.merges} merge dispatches, first try not merged for ${lane.firstTryKnown ? `${lane.firstTryFailed} of ${lane.firstTryKnown}` : 'unknown (no merge results)'} · queue wait ${fmtDur(lane.queueWaitMs)} total, peak ${lane.peakQueue} waiting · stack-parent wait ${fmtDur(lane.stackWaitMs)}`)
 if (hotConflicts.length) lines.push(`Profile: conflicts — ${hotConflicts.slice(0, 4).map(c => `${c.file} (stack conflicts ${c.stackConflicts}, seam overlaps ${c.seamOverlaps}, declared by ${c.declaredBy})`).join(' · ')}`)
+if (runLevel) lines.push(...runLevel.lines)
 lines.push(`Profile: runtime — peak ${runtime.peak} agents at once${runtimeSlots ? ` of ${runtimeSlots} runtime slots · full ${pct(runtime.fullMs, runEnd - windowStart)}% of the run` : ''} · slot cap ${Number.isFinite(cap) ? cap : 'unknown'}`)
 for (const w of sim?.whatIfs.slice(0, 6) ?? []) lines.push(`Profile: what-if — ${w.target} → ${fmtDur(w.ms)} (−${fmtDur(w.savingMs)}, ${pct(w.savingMs, sim.asRunMs)}%) — ${w.note}`)
 if (sim && !sim.failed && !sim.whatIfs.length) lines.push(`Profile: what-if — none saves more than 1% of the modelled ${fmtDur(sim.asRunMs)}`)
 const unmeasured = []
 if (untimed.length) unmeasured.push(`${untimed.length} agent(s) without a transcript (cached on resume, or cleaned up)`)
-const noJournal = invocations.filter(v => !v.journal)
+const noJournal = invocations.filter(v => !v.journal && v.source === 'workflow')
 if (noJournal.length) unmeasured.push(`${noJournal.length} invocation(s) without journal.jsonl: no planner graph or merge results there`)
-if (!rows.size) unmeasured.push('no planner rows: the graph is unknown, so dependency waits and what-ifs are missing')
+if (ordinary.length && !ledger) unmeasured.push('no ledger (--ledger): outcomes not read, so every merge the coordinator ran counts as landed')
+if (noLaneTiming) unmeasured.push(`${noLaneTiming} landed bead(s) with no merge in the coordinator's log: lane time 0`)
+if (runLevel?.unmapped) unmeasured.push(`${runLevel.unmapped} dispatch(es) not named for a bead of ${epic}, in the run-level lines only (${RULE})`)
+if (!rows.size) unmeasured.push(ordinary.length ? 'no dependency graph (bd gave none; pass --beads): dependency waits and what-ifs are missing' : 'no planner rows: the graph is unknown, so dependency waits and what-ifs are missing')
 if (skippedDry.length) unmeasured.push(`${skippedDry.length} dryRun invocation(s) skipped`)
 if (!launch) unmeasured.push(`no Launch: line: cap ${Number.isFinite(cap) ? cap : 'unknown'}, early unblock assumed on`)
 if (shape.cycles.length) unmeasured.push(`dependency cycle(s) in the planner rows, skipped for the shape: ${shape.cycles.slice(0, 3).join(', ')}`)
@@ -1020,7 +1412,7 @@ if (opt.out) {
   const beadRows = [...beads.values()].sort((a, b) => a.dispatchedAt - b.dispatchedAt)
   const json = {
     version: 1, epic, cap: Number.isFinite(cap) ? cap : null, earlyUnblock, runtimeSlots,
-    invocations: invocations.map(v => ({ runId: v.runId, dir: v.dir, start: T(v.start), end: T(v.end), agents: v.agents, timed: v.timed, journal: v.journal })),
+    invocations: invocations.map(v => ({ runId: v.runId, dir: v.dir, source: v.source, start: T(v.start), end: T(v.end), agents: v.agents, timed: v.timed, journal: v.journal })),
     window: { start: T(windowStart), lastLanding: T(lastLanding?.end), end: T(runEnd), graphMs: actualGraphMs, wallMs: runEnd - windowStart },
     shape, cuts: cuts.map(c => ({ dependent: c.dependent, blocker: c.blocker, kind: c.kind, at: T(c.at) })),
     beads: beadRows.map(b => ({ id: b.id, n: b.n ?? null, deps: b.deps, dependents: [...(dependentsOf.get(b.id) ?? [])], attempts: b.attempts.map(x => x.status), landed: b.landed,
@@ -1031,7 +1423,7 @@ if (opt.out) {
     criticalPath: { ms: pathMs, byCategory: byCat, laneContentionMs, redo, segments: segments.map(s => ({ kind: s.kind, bead: s.bead, label: s.label, via: s.why ?? null, start: T(s.start), ms: s.ms })) },
     bottleneck: bottleneck ? { bead: bottleneck[0], ms: bottleneck[1].total, share: pathMs ? bottleneck[1].total / pathMs : 0, byCategory: bottleneck[1].byCat,
       implByTool: beads.get(bottleneck[0]).implByCat, calls: beads.get(bottleneck[0]).final.impl.flatMap(a => a.calls ?? []).sort((x, y) => y.ms - x.ms).slice(0, 10) } : null,
-    lane, runtime, tests: testTotals, conflicts: hotConflicts.slice(0, 20), simulation: sim, unmeasured, summary: lines,
+    lane, runtime, concurrency: runLevel?.json ?? null, tests: testTotals, conflicts: hotConflicts.slice(0, 20), simulation: sim, unmeasured, summary: lines,
   }
   writeFileSync(`${opt.out}.json`, JSON.stringify(json, null, 2) + '\n')
   const md = [`# Run profile — ${epic ?? 'unknown epic'}`, '', '```', ...lines, '```', '']
