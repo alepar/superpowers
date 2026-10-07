@@ -57,8 +57,8 @@ Task tool (general-purpose), model: opus:
        to look for it: the whole tree was executed and the goal still was not met — why? Check
        too that some thin set of tasks runs end to end, not only that every part exists.
     2. **ORPHAN.** A task that serves no goal outcome. Tasks titled `Seam contract:`,
-       `Seam integration:`, `Integration sweep:` or `Configuration smoke:` serve the boundary or
-       tree they name and are never orphans.
+       `Seam integration:`, `Split file:`, `Integration sweep:` or `Configuration smoke:` serve
+       the boundary, file or tree they name and are never orphans.
     3. **UNOWNED-SEAM.** Two tasks exchange a named thing (one defines a config value the other
        reads, one exposes an interface the other calls, one writes a format the other parses)
        and no task's `owns:` line names that boundary. Name both task ids and the exchanged

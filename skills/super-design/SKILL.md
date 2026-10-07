@@ -281,7 +281,8 @@ step that adds the line also updates or deletes it. Four worked examples, one pe
 | Sweep | `bd dep add proj-99 proj-52` | `blocked-by proj-52: consumes all leaves (integration sweep)` |
 
 A seam-contract edge (§Coverage's `UNOWNED-SEAM` wiring) uses the fixed artifact token
-`boundary contract`: `blocked-by proj-60: consumes boundary contract`. A sweep edge — the root
+`boundary contract`: `blocked-by proj-60: consumes boundary contract`. A hot-file split edge (below)
+uses `file split`: `blocked-by proj-61: consumes file split`. A sweep edge — the root
 integration sweep depending on every leaf, or a post-round fix task wired under an
 already-existing sweep — always uses the fixed token `all leaves (integration sweep)`, as above,
 regardless of which specific leaf produced the edge. Every other edge kind names the actual
@@ -293,8 +294,26 @@ wide body with a long thin tail — a finishing layer written as wire-up → ver
 decomposition smell: tails usually re-decompose into per-feature integration beads that run
 abreast. And a tail whose beads all declare the same file serializes on execution's hot-file cap
 regardless of what the graph permits — declared-file overlap inside an intended-parallel layer
-means the file should be split or assigned to a single bead. §Parallelism Pass measures this on
-the settled tree and removes what it safely can; at decomposition, aim to need it little.
+means the file should be split or assigned to a single bead. Decide which here, because
+§Parallelism Pass only proposes splits and never applies them:
+
+- **Split it** when 3 or more leaves meant to run in parallel declare the same file and each edits
+  a separate concern in it (its own functions, section or sub-module). Module roots and wiring
+  files are the usual case: `mod.rs`, `ports.rs`, `app.rs`, a CLI dispatch. Create one leaf
+  **`Split file: <path>`** with the standard flag triple. It is a move-only, behavior-preserving
+  split along those concerns: code moves to new files, re-exports keep every caller compiling,
+  and no logic changes. Acceptance: it compiles, the suite is green, and behavior is unchanged.
+  Add an edge from each of those leaves onto it (`bd dep add <leaf> <split>`, with
+  `blocked-by <split-id>: consumes file split`), and point their files-touched hints at the new
+  files.
+- **Don't split** when the leaves change the same logic in the file. That is a semantic conflict
+  a split cannot remove: give the logic to one owner bead the others depend on, or extract a
+  `Seam contract:` bead. Don't split an append-only registry either (a module list, a route
+  table, a variant enum): give its lines to one owner bead, or to the seam contract, which can
+  declare every entry up front.
+
+§Parallelism Pass measures what remains on the settled tree and removes what it safely can; at
+decomposition, aim to need it little.
 
 - **Beads:** for every child, `bd create ... --parent <id> --no-inherit-labels -l sp:<root-epic-id>` — both flags together, every time. `--no-inherit-labels` alone still strips the wanted root label; without it, parent labels (including `sp:needs-design`) smear onto every leaf. The root invocation creates the epic first, labeled `sp:<its-own-id>`.
 - **No beads:** the same fields as a task-table row — see §No-Beads Mode for the columns it must carry.
@@ -639,7 +658,7 @@ never scope, and creates no beads.
    starting `JQ_UNAVAILABLE:`, follow its instruction and produce the same output format). It
    prints the `shape:` line (leaves, depth, width = leaves/depth, the critical path), one
    `edge:` line per candidate with the depth if only that edge were removed, and a summary.
-   Seam-contract and integration-sweep edges are exempt by construction. With zero candidates,
+   Seam-contract, file-split and integration-sweep edges are exempt by construction. With zero candidates,
    record the result (step 4) and stop here.
 2. **Judge.** Dispatch `./graph-pass-prompt.md` (model opus, fresh context) with the script
    output, the dump path, and this skill's "Blocking deps encode genuine blocking" paragraph and
