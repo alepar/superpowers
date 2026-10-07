@@ -225,6 +225,17 @@ always applied. That run's profile also surfaced:
 - Seam reviews and seam fixes took 70% of the merge lane's busy time.
 - The modelled saving from taking every early unblock was −1h04m.
 
+**Slow tests.** `Profile: slow tests` names up to five test commands by summed time over every
+implementer and fixer, with run count and longest run, among commands with a run of a minute or
+more. A command is its test sub-command with worktree and temp paths, redirections and
+test-binary hashes dropped, and a `$VAR` binary resolved; filters are kept, since the narrowest
+filter is what the implementer prompt asks for. Only foreground runs have a command: a
+backgrounded run's time shows as polling on the `tests` line. The JSON keeps the top 20 as
+`slowTests`, which `--summarize` merges by command. Over the same profiles (35 invocations, six
+epics, re-run 2026-10-07), the five costliest commands were Rust `cargo test --lib` runs, some
+filtered, taking 3h07m of 24h08m of foreground test time. The time is spread over many focused
+commands rather than one slow suite, and 36 calls hit the 10-minute tool limit.
+
 **Ordinary-subagent runs** (`--codex`, `--subagents`). There is no journal, so each input comes
 from somewhere else:
 - **Dispatches.** On Codex, the coordinator's rollout is

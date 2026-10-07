@@ -48,9 +48,9 @@ const USAGE = `usage: run-profile (--workflow <dir>... | --codex <thread>... | -
 
 Prints the summary on stdout as ledger-ready lines, \`Profile: <epic> · …\` then
 \`Profile: <key> — …\` for shape, bound, critical path, critical chain, bottleneck, waits, early
-unblock, rework, merge lane, conflicts, runtime, what-if (one line each) and unmeasured; an
-ordinary-subagent run adds concurrency and per-kind dispatch time, and when its dispatch names
-do not map to the epic's beads, prints only those run-level lines.`
+unblock, rework, tests, slow tests, merge lane, conflicts, runtime, what-if (one line each) and
+unmeasured; an ordinary-subagent run adds concurrency and per-kind dispatch time, and when its
+dispatch names do not map to the epic's beads, prints only those run-level lines.`
 
 const die = (code, msg) => { process.stderr.write(`run-profile: ${msg}\n`); process.exit(code) }
 
@@ -92,6 +92,7 @@ function readJsonl(file) {
 }
 const textOf = c => typeof c === 'string' ? c : Array.isArray(c) ? c.map(x => (x && typeof x.text === 'string') ? x.text : '').join('\n') : ''
 const oneLine = (s, n = 70) => { const t = String(s ?? '').replace(/\s+/g, ' ').trim(); return t.length > n ? t.slice(0, n - 1) + '…' : t }
+function slowTestText(e) { return `${e.cmd} ${fmtDur(e.ms)} (${e.runs} run${e.runs === 1 ? '' : 's'}, longest ${fmtDur(e.longestMs)})` }
 function fmtDur(ms) {
   if (!Number.isFinite(ms)) return '?'
   const s = Math.round(Math.max(0, ms) / 1000)
@@ -225,6 +226,20 @@ function toolCategory(name, input) {
   return 'other'
 }
 const commandHead = input => oneLine(subCommands(String(input?.command ?? '').split('\n')[0])[0] ?? String(input?.command ?? ''), 60)
+// A test call's command, normalized so runs of one command group across tasks: the test sub-command
+// only, worktree and temp paths and test-binary hashes dropped, redirections stripped.
+function testKey(command) {
+  const subs = subCommands(command)
+  const vars = new Map(subs.map(y => /^([A-Za-z_]\w*)=(\S+)$/.exec(y)).filter(Boolean).map(m => [m[1], m[2].replace(/^["']|["']$/g, '')]))
+  const run = subs.filter(y => !/^[A-Za-z_]\w*=\S*$/.test(y))
+    .map(y => y.replace(/^"?\$\{?(\w+)\}?"?/, (m, v) => vars.get(v) ?? m))
+  const x = run.find(y => TEST_RE.test(y) || TEST_BIN_RE.test(y)) ?? run[0] ?? subs[0] ?? ''
+  return oneLine(x
+    .replace(/\s*\d*>>?\s*\S*/g, '')
+    .replace(/(?:\/[^\s'"/]+)*\/\.worktrees\/[^\s'"/]+\//g, '')
+    .replace(/(?:\/private)?\/tmp\/[^\s'"]*/g, '<tmp>')
+    .replace(/(target\/(?:debug|release)\/deps\/[\w-]+?)-[0-9a-f]{16}\b/g, '$1-*'), 90)
+}
 
 // ---- one Workflow run directory ----
 function transcriptTiming(rows) {
@@ -244,7 +259,7 @@ function transcriptTiming(rows) {
         const u = open.get(x.tool_use_id)
         open.delete(x.tool_use_id)
         const cat = toolCategory(u.name, u.input)
-        if (cat) calls.push({ name: u.name, cat, what: u.name === 'Bash' ? (oneLine(u.input.description) || commandHead(u.input)) : '', start: u.t, end: t })
+        if (cat) calls.push({ name: u.name, cat, what: u.name === 'Bash' ? (oneLine(u.input.description) || commandHead(u.input)) : '', ...(cat === 'test' && u.name === 'Bash' ? { test: testKey(u.input.command) } : {}), start: u.t, end: t })
       }
     }
   }
@@ -252,7 +267,7 @@ function transcriptTiming(rows) {
   const byCat = {}
   for (const cat of new Set(calls.map(x => x.cat))) byCat[cat] = unionMs(calls.filter(x => x.cat === cat).map(x => [x.start, x.end]))
   return { start, end, dur: end - start, toolMs: unionMs(calls.map(x => [x.start, x.end])), byCat,
-    calls: calls.map(x => ({ name: x.name, cat: x.cat, what: x.what, ms: x.end - x.start })) }
+    calls: calls.map(x => ({ name: x.name, cat: x.cat, what: x.what, ...(x.test ? { test: x.test } : {}), ms: x.end - x.start })) }
 }
 
 function readRunMeta(dir) {
@@ -406,7 +421,7 @@ function codexCall(name, input) {
   if (['write_stdin', 'sleep', 'wait', 'wait_agent'].some(k => kinds.has(k))) cats.push('poll')
   if (kinds.has('spawn_agent') || kinds.has('followup_task')) cats.push('subagent')
   const cat = cats.sort((a, b) => CODEX_RANK.indexOf(a) - CODEX_RANK.indexOf(b))[0] ?? 'other'
-  return { cat, text: cmds.join('\n'), what: cmds.length ? commandHead({ command: cmds[0] }) : [...kinds].join(', ') }
+  return { cat, text: cmds.join('\n'), what: cmds.length ? commandHead({ command: cmds[0] }) : [...kinds].join(', '), ...(cat === 'test' ? { test: testKey(cmds.join('\n')) } : {}) }
 }
 function codexCalls(rows) {
   const open = new Map(), calls = []
@@ -444,7 +459,7 @@ function spanTiming(start, end, calls) {
   const clip = x => [x.start, Math.min(x.end, end)]
   const byCat = {}
   for (const cat of new Set(cs.map(x => x.cat))) byCat[cat] = unionMs(cs.filter(x => x.cat === cat).map(clip))
-  return { start, end, dur: end - start, toolMs: unionMs(cs.map(clip)), byCat, calls: cs.map(x => ({ name: x.name, cat: x.cat, what: x.what, ms: x.end - x.start })) }
+  return { start, end, dur: end - start, toolMs: unionMs(cs.map(clip)), byCat, calls: cs.map(x => ({ name: x.name, cat: x.cat, what: x.what, ...(x.test ? { test: x.test } : {}), ms: x.end - x.start })) }
 }
 function readCodex(input) {
   const idx = codexIndex()
@@ -607,6 +622,14 @@ if (opt.summarize) {
   out.push(`Baseline: merge lane — busy ${H(busy)} · seam reviews and fixes ${pct(seam, busy)}% of it · queue wait ${H(sum(ps.map(x => x.lane.queueWaitMs)))} summed · first try not merged ${sum(ps.map(x => x.lane.firstTryFailed))} of ${sum(ps.map(x => x.lane.firstTryKnown ?? x.beads.filter(b => b.landed).length))}`)
   const tsum = k => sum(ps.map(x => x.tests?.[k] ?? 0))
   if (tsum('busyMs')) out.push(`Baseline: tests — implementers and fixers, summed: ${H(tsum('testMs'))} running tests and ${H(tsum('pollMs'))} polling background runs, ${pct(tsum('testMs') + tsum('pollMs'), tsum('busyMs'))}% of their ${H(tsum('busyMs'))} · ${tsum('cappedCalls')} Bash call(s) at the 10-minute tool limit`)
+  const st = new Map()
+  for (const e of ps.flatMap(x => x.slowTests ?? [])) {
+    const t = st.get(e.cmd) ?? { cmd: e.cmd, ms: 0, runs: 0, longestMs: 0 }
+    t.ms += e.ms; t.runs += e.runs; t.longestMs = Math.max(t.longestMs, e.longestMs)
+    st.set(e.cmd, t)
+  }
+  const stShown = [...st.values()].filter(e => e.longestMs >= 60000).sort((a, b) => b.ms - a.ms).slice(0, 5)
+  if (stShown.length) out.push(`Baseline: slow tests — ${stShown.map(slowTestText).join(' · ')}`)
   const tools = {}
   let implMs = 0
   for (const x of ps) if (x.bottleneck) { for (const [k, v] of Object.entries(x.bottleneck.implByTool ?? {})) add(tools, k, v); implMs += x.beads.find(b => b.id === x.bottleneck.bead)?.implMs ?? 0 }
@@ -1290,7 +1313,7 @@ else if (simInput.size) {
 
 // ---- report ----
 const lines = []
-let testTotals = null
+let testTotals = null, slowTests = []
 const afterMs = Math.max(0, runEnd - graphEnd)
 const catText = (obj, order = CAT_ORDER) => [...order, ...Object.keys(obj).filter(k => !order.includes(k)).sort()].filter(k => obj[k] >= 1000).map(k => `${k} ${fmtDur(obj[k])}`).join(' · ')
 lines.push(`Profile: ${epic ?? '(epic unknown)'} · ${invocations.length} invocation${invocations.length === 1 ? '' : 's'} · ${fmtTime(windowStart)} → ${fmtTime(runEnd)} · wall ${fmtDur(runEnd - windowStart)} (task graph ${fmtDur(actualGraphMs)}${afterMs ? `, after the last landing ${fmtDur(afterMs)}` : ''}) · agents ${realAgents.length} (timed ${realAgents.filter(a => a.start !== undefined).length}) · beads dispatched ${beads.size}, landed ${landed.length}, planned ${rows.size}`)
@@ -1378,6 +1401,16 @@ if (bottleneck) {
   const capped = coders.flatMap(a => a.calls ?? []).filter(x => x.name === 'Bash' && x.ms >= 595000)
   if (busy >= 1000) lines.push(`Profile: tests — implementers and fixers, summed: ${fmtDur(test)} running tests and ${fmtDur(poll)} polling background runs, ${pct(test + poll, busy)}% of their ${fmtDur(busy)} · ${capped.length} Bash call(s) ran into the 10-minute tool limit`)
   testTotals = { busyMs: busy, testMs: test, pollMs: poll, cappedCalls: capped.length }
+  // The test commands that cost the most, summed over every implementer and fixer run of them.
+  const byCmd = new Map()
+  for (const x of coders.flatMap(a => a.calls ?? []).filter(x => x.test)) {
+    const e = byCmd.get(x.test) ?? { cmd: x.test, ms: 0, runs: 0, longestMs: 0 }
+    e.ms += x.ms; e.runs++; e.longestMs = Math.max(e.longestMs, x.ms)
+    byCmd.set(x.test, e)
+  }
+  slowTests = [...byCmd.values()].sort((a, b) => b.ms - a.ms).slice(0, 20)
+  const shown = slowTests.filter(e => e.longestMs >= 60000).slice(0, 5)
+  if (shown.length) lines.push(`Profile: slow tests — ${shown.map(slowTestText).join(' · ')}`)
 }
 {
   const parts = [['stack-conflict', 'stack-conflict re-cuts'], ['retry', 'retries'], ['cancelled', 'cancelled re-dispatches']].filter(([k]) => redo[k].ms >= 1000)
@@ -1423,7 +1456,7 @@ if (opt.out) {
     criticalPath: { ms: pathMs, byCategory: byCat, laneContentionMs, redo, segments: segments.map(s => ({ kind: s.kind, bead: s.bead, label: s.label, via: s.why ?? null, start: T(s.start), ms: s.ms })) },
     bottleneck: bottleneck ? { bead: bottleneck[0], ms: bottleneck[1].total, share: pathMs ? bottleneck[1].total / pathMs : 0, byCategory: bottleneck[1].byCat,
       implByTool: beads.get(bottleneck[0]).implByCat, calls: beads.get(bottleneck[0]).final.impl.flatMap(a => a.calls ?? []).sort((x, y) => y.ms - x.ms).slice(0, 10) } : null,
-    lane, runtime, concurrency: runLevel?.json ?? null, tests: testTotals, conflicts: hotConflicts.slice(0, 20), simulation: sim, unmeasured, summary: lines,
+    lane, runtime, concurrency: runLevel?.json ?? null, tests: testTotals, slowTests, conflicts: hotConflicts.slice(0, 20), simulation: sim, unmeasured, summary: lines,
   }
   writeFileSync(`${opt.out}.json`, JSON.stringify(json, null, 2) + '\n')
   const md = [`# Run profile — ${epic ?? 'unknown epic'}`, '', '```', ...lines, '```', '']
