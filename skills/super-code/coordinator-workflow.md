@@ -442,11 +442,15 @@ Round-based with refill (each `bd ready` batch is, by definition, mutually indep
    SKILL.md §Parallelism and the Implement-phase comment in `./coordinator.js` for
    the numbers and the recorded counter-evidence.
 4. **Single-flight merge queue** — each task's integration is enqueued **the instant its own
-   chain ends** and drains in completion order, with **exactly one merge in flight, ever**
-   (guaranteed by promise chaining, not batching — see `enqueueIntegration` in `./coordinator.js`).
-   Completion order loses nothing dependency-wise: a `bd ready` batch is mutually independent by
-   definition (step 1), and a task dispatched on an unmerged parent (below) enqueues only after
-   that parent merged. A successful merge does `bd close <id>` — a leaf-task close, plus the
+   chain ends**, with **exactly one merge in flight, ever** (a single worker drains the queue,
+   not batching — see `enqueueIntegration` in `./coordinator.js`). Drain order is completion
+   order, except that the next merge is the queued task with the most live attempts waiting on
+   its landing — stacked on it, or bounced on a stack conflict and waiting for it — with
+   completion order among equals; a jump logs `merge lane: <id> goes ahead of …`. (Run ht-p03:
+   one task waited 28 minutes in the FIFO queue while 8 dependents that had bounced on it waited
+   42–55 minutes each.) Either order loses nothing dependency-wise: a `bd ready` batch is
+   mutually independent by definition (step 1), and a task dispatched on an unmerged parent
+   (below) enqueues only after that parent merged. A successful merge does `bd close <id>` — a leaf-task close, plus the
    task's review bead when it was split; epic closure is the separate step below. Only merge
    work rides the queue: a BLOCKED or permission-refused task, an unmapped id, and an
    already-merged re-entry are handled where the chain ends, beside the merges and inside a
@@ -877,8 +881,9 @@ brief asks and is safe to build on.
 ## Serial merge-back
 
 In the integration worktree, for **one task at a time — exactly one merge in flight, ever** —
-in completion order off the single-flight queue ("The coordinator loop" step 4; completion order
-is safe because a `bd ready` batch is mutually independent by definition):
+off the single-flight queue, in completion order with tasks that dependents wait on first ("The
+coordinator loop" step 4; either order is safe because a `bd ready` batch is mutually
+independent by definition):
 
 1. Update the integration branch; rebase the task branch onto it — a stacked task (early unblock)
    rebases only its own commits, `git rebase --onto <integration> <stacked base> <task branch>`,
@@ -1346,8 +1351,8 @@ and workspace scripts. Kept from this skill's predecessor:
 
 - Per-task worktrees branched off the **epic integration branch** (not off `main` and not off a
   local plan-file branch).
-- **Single-flight merge-back in completion order**, exactly one merge in flight ever, enqueued
-  per task the instant its chain ends — never concurrent merges, and never a round barrier.
+- **Single-flight merge-back in completion order** (a task its stacked or bounced dependents wait
+  on goes first), exactly one merge in flight ever, enqueued per task the instant its chain ends — never concurrent merges, and never a round barrier.
 - The **blocker-bead escalation path** — notify, quarantine, continue — that lets a Workflow run
   survive a stuck task instead of freezing, because autonomous mode has no synchronous human
   partner to stop for.
@@ -1405,7 +1410,8 @@ narratives that used to accompany each row are in git history; nothing here depe
 | Proactive slowness (hot-file cap raised for a file holding back two tasks with a slot free; graph-bound early edge-audit arming; merge-queue peak, idle slots and waiting rows on the detector line; act-capable edge audit over `scripts/tree-shape` + super-design's graph-pass rules, applying safe cuts under `config.edgeCuts: 'apply-safe'`; `slowness` return field) | replay 48/0 | replay 18/0 | replay 20/0 |
 | **Script in `./coordinator.js` (comments trimmed, history to `./MAINTENANCE.md`); round-1 planning split (`plan` for the ready ids, `plan-rest` for the rest of the tree beside them); workspace setup folded into the implementer (no `brief:<id>` dispatch; `SETUP_FAILED` / `ALREADY_MERGED` / `STACK_CONFLICT` early returns) | replay 43/0 | replay 18/0 | replay 20/0 |
 | **Task-worktree cleanup (merge agent runs `scripts/remove-task-worktree` after the merge and bead close — processes stopped, `git worktree remove` + `git branch -d`, never forced, `--keep-branch` for split tasks; close-only re-entries clean up too; discards go through `--discard`; Finish `worktree-sweep` backstop returning `worktreesKept`)** | replay 44/0 | replay 19/0 | replay 21/0 |
-| **Process cleanup (scripts/stop-run-processes: cwd, executable or exact HOME=/TMPDIR= under a run root, orphan argument paths, no kinship expansion, interactive terminals kept, epic/integration roots refused; task temp state in a short `/tmp/sp-<hash>/<task id>` root, removed with the worktree (`remove-task-worktree --tmp`); implementer/fixer leak check after test runs; processes stopped before a task's bead closes; the Finish `worktree-sweep` dispatch also runs the final process sweep and writes the `Process sweep:` ledger line, returning `processSweep`) — CURRENT** | **replay 44/0** | **replay 19/0** | **replay 21/0** |
+| **Process cleanup (scripts/stop-run-processes: cwd, executable or exact HOME=/TMPDIR= under a run root, orphan argument paths, no kinship expansion, interactive terminals kept, epic/integration roots refused; task temp state in a short `/tmp/sp-<hash>/<task id>` root, removed with the worktree (`remove-task-worktree --tmp`); implementer/fixer leak check after test runs; processes stopped before a task's bead closes; the Finish `worktree-sweep` dispatch also runs the final process sweep and writes the `Process sweep:` ledger line, returning `processSweep`)** | replay 44/0 | replay 19/0 | replay 21/0 |
+| **Merge-lane priority (the next merge is the queued task with the most live stacked or bounced dependents waiting on its landing, first-come among equals; one queue worker replaces the promise chain) — CURRENT** | **replay 44/0** | **replay 19/0** | **replay 21/0** |
 
 The current row's figures come from the offline replay harness (`tests/super-code/`): it replays
 the three `args` blocks below and runs the live-sim, null-injection, parallelism, seam,

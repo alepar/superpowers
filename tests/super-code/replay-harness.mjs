@@ -370,8 +370,8 @@ async function main() {
   {
     const scan = scanTemplateSpans(scriptBody)
     check(scan.clean, 'scanner ends in code state (no unterminated literal, string, or ${})')
-    check(scan.spans.length === 398,
-      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 398 — 215 after the D4 loop rewrite, +10 for the merge-evidence contract (clean-check and merge steps, mergeEvidence's diagnoses and logs, the Merge-cleanup line) and writeFence(), +17 for the failing-mergeCheck seam route (the check-fix and fix-review dispatch keys/labels, their logs and blocker findings, the re-merge, fixPrompt's check branch, checkFixReviewPrompt), +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log, −7 for batched ledger writes (per-line ledger keys and labels out, the per-task flush key, the merge agent's LEDGER step and its line templates, the runtime-slot logs, the per-site null-merge logs and the background edge audit in), +46 for early unblock and graph readiness (the split/reopen/discard dispatch keys, labels, prompts and logs, the cancel and graph-dispatch logs, the stacked/re-entry brief and implementer wording, the stacked rebase and review-bead close, the held-back and re-entry logs, the reconcile split note, the detector and Metrics fields, the resume note), +33 for proactive slowness handling (noteSlowness and its items, the hot-file raise, the graph-bound arming and its audit reason, the detector's lane fields, the act-capable edge audit: change formatting, the edge-cuts dispatch key/label/prompt, the Edge cut: lines and their elided variants, effDeps' cut key), +8 for the round-1 planning split (planPrompt's walk and three scopes, the plan-rest key/label, its logs), +1 when the brief folded into the implementer (workspaceSetup's re-entry branch and the setup/no-base findings in, the brief dispatch key/label out), +1 for the planner-null degrade log, +5 for task-worktree cleanup (the task-worktree root, the merge's cleanup command and step, the worktree-sweep log and prompt), +4 for process cleanup (the run temp root, processHygiene's command and rule, the process-sweep log), +1 for the ledger-read retry label, +1 for the detached-HEAD merge diagnosis, +3 for the short task temp root (its root, taskTmp, processHygiene's roots), +1 for the auth-refused Merge: line, +1 for the review-base substitution log, +6 for the integration-blocked hold (the held/skip/stop logs, the hold reasons, its Merge: line and slowness item), +14 for added edges (addEdge's logs, ledger line, key and label, the waiting log, the waitFor ledger lines, edgeAddPrompt), +3 for edge-audit memory (the carried-verdict list), +30 for the open-issues sweep (already-merged re-check, ledger-check causes and the in-memory Metrics fallback, digest header check, class and cause tags, the graph-bound re-check, peak-based streak, aborted merge check, sweep-line validation and baseline, run-to-completion rule, HOME/XDG, human actions, deferred minors, composed review, base check, planner cwd), +1 for the final-review Metrics block; update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
+    check(scan.spans.length === 399,
+      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 399 — 215 after the D4 loop rewrite, +10 for the merge-evidence contract (clean-check and merge steps, mergeEvidence's diagnoses and logs, the Merge-cleanup line) and writeFence(), +17 for the failing-mergeCheck seam route (the check-fix and fix-review dispatch keys/labels, their logs and blocker findings, the re-merge, fixPrompt's check branch, checkFixReviewPrompt), +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log, −7 for batched ledger writes (per-line ledger keys and labels out, the per-task flush key, the merge agent's LEDGER step and its line templates, the runtime-slot logs, the per-site null-merge logs and the background edge audit in), +46 for early unblock and graph readiness (the split/reopen/discard dispatch keys, labels, prompts and logs, the cancel and graph-dispatch logs, the stacked/re-entry brief and implementer wording, the stacked rebase and review-bead close, the held-back and re-entry logs, the reconcile split note, the detector and Metrics fields, the resume note), +33 for proactive slowness handling (noteSlowness and its items, the hot-file raise, the graph-bound arming and its audit reason, the detector's lane fields, the act-capable edge audit: change formatting, the edge-cuts dispatch key/label/prompt, the Edge cut: lines and their elided variants, effDeps' cut key), +8 for the round-1 planning split (planPrompt's walk and three scopes, the plan-rest key/label, its logs), +1 when the brief folded into the implementer (workspaceSetup's re-entry branch and the setup/no-base findings in, the brief dispatch key/label out), +1 for the planner-null degrade log, +5 for task-worktree cleanup (the task-worktree root, the merge's cleanup command and step, the worktree-sweep log and prompt), +4 for process cleanup (the run temp root, processHygiene's command and rule, the process-sweep log), +1 for the ledger-read retry label, +1 for the detached-HEAD merge diagnosis, +3 for the short task temp root (its root, taskTmp, processHygiene's roots), +1 for the auth-refused Merge: line, +1 for the review-base substitution log, +6 for the integration-blocked hold (the held/skip/stop logs, the hold reasons, its Merge: line and slowness item), +14 for added edges (addEdge's logs, ledger line, key and label, the waiting log, the waitFor ledger lines, edgeAddPrompt), +3 for edge-audit memory (the carried-verdict list), +30 for the open-issues sweep (already-merged re-check, ledger-check causes and the in-memory Metrics fallback, digest header check, class and cause tags, the graph-bound re-check, peak-based streak, aborted merge check, sweep-line validation and baseline, run-to-completion rule, HOME/XDG, human actions, deferred minors, composed review, base check, planner cwd), +1 for the final-review Metrics block, +1 for the merge-lane priority log; update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
     // self-test: inject a raw backtick mid-way through the first literal's content and assert
     // the detector actually fires — a detector that cannot catch the known failure is decoration
     const [s, e] = scan.spans[0]
@@ -2499,6 +2499,48 @@ async function main() {
     check(!second.includes('-m "stack:') && (promptOf(out.trace, 'impl:bd-103') ?? '').includes('-m "stack: bd-101"') && (promptOf(out.trace, 'impl:bd-103') ?? '').includes('-m "stack: bd-102"'), 'the first brief stacked both parents; the fresh one stacks none')
     check(!out.counts['discard:bd-103'] && !taskLedgerLines(out.trace, 'bd-103').some(l => /cancelled/.test(l)), 'a stack conflict is a wait, not a cancellation')
     assertBucketsDisjoint(out.result)
+  }
+
+  scenario('merge-lane priority: a queued task its stacked or bounced dependents wait on merges ahead of earlier-queued tasks')
+  {
+    const pause = ms => new Promise(r => setTimeout(r, ms))
+    const mergeOrder = out => out.trace.map(t => t.label).filter(l => /^merge:bd-\d+$/.test(l))
+    // bd-101's merge holds the lane until bd-102, then bd-103, have queued and bd-104 is stacked on bd-103.
+    const stackedCanned = () => graphCanned([{ id: 'bd-101' }, { id: 'bd-102' }, { id: 'bd-103' }, { id: 'bd-104', deps: ['bd-103'] }], {
+      'bd-ready': [{ ids: ['bd-101', 'bd-102', 'bd-103'] }, { ids: [] }],
+      'review:bd-103': async ctx => { await ctx.waitFor('review:bd-102'); await pause(20); return { id: 'bd-103', status: 'CLEAN' } },
+      'impl:bd-104': async ctx => { await ctx.waitFor('merge:bd-103'); return { id: 'bd-104', status: 'IMPLEMENTED', base: SHA('e'), files: [], head: SHA('c'), stacked: true } },
+      'merge:bd-101': async ctx => { await ctx.waitFor('impl:bd-104'); await pause(60); return { id: 'bd-101', merged: true, mergeExit: 0, mergeHead: true, head: SHA('b'), mergeBase: SHA('a') } },
+    })
+    const out = await run({ args: liveArgs(), canned: stackedCanned() })
+    assertNoThrow(out)
+    check(out.result?.completed.length === 4, 'all four land', JSON.stringify(out.result))
+    check(JSON.stringify(mergeOrder(out)) === '["merge:bd-101","merge:bd-103","merge:bd-102","merge:bd-104"]', 'bd-103, which a stacked dependent waits on, merges ahead of the earlier-queued bd-102', JSON.stringify(mergeOrder(out)))
+    check(out.logs.some(l => l === 'merge lane: bd-103 goes ahead of 1 earlier-queued task(s) — 1 stacked or bounced dependent(s) wait on its landing'), 'the jump is logged')
+    check(out.maxOpen.merge === 1, 'single-flight held')
+
+    // bd-104 bounced on a stack conflict between bd-103 and bd-105 and waits for both; bd-102 has no waiter.
+    const bounced = graphCanned([{ id: 'bd-101' }, { id: 'bd-102' }, { id: 'bd-103' }, { id: 'bd-105' }, { id: 'bd-104', deps: ['bd-103', 'bd-105'] }], {
+      'bd-ready': [{ ids: ['bd-101', 'bd-102', 'bd-103', 'bd-105'] }, { ids: [] }],
+      'review:bd-103': async ctx => { await ctx.waitFor('review:bd-102'); await pause(20); return { id: 'bd-103', status: 'CLEAN' } },
+      'review:bd-105': async ctx => { await ctx.waitFor('review:bd-103'); await pause(20); return { id: 'bd-105', status: 'CLEAN' } },
+      'impl:bd-104': [{ id: 'bd-104', status: 'STACK_CONFLICT', finding: 'task-bd-103 and task-bd-105 both rewrite src/x.js' }, tick({ id: 'bd-104', status: 'IMPLEMENTED', base: SHA('a'), files: [], head: SHA('c') })],
+      'merge:bd-101': async ctx => { await ctx.waitFor('impl:bd-104'); await ctx.waitFor('review:bd-105'); await pause(60); return { id: 'bd-101', merged: true, mergeExit: 0, mergeHead: true, head: SHA('b'), mergeBase: SHA('a') } },
+    })
+    const o2 = await run({ args: liveArgs(), canned: bounced })
+    assertNoThrow(o2)
+    check(o2.result?.completed.length === 5, 'all five land', JSON.stringify(o2.result))
+    const order = mergeOrder(o2)
+    check(order.indexOf('merge:bd-102') > order.indexOf('merge:bd-103') && order.indexOf('merge:bd-102') > order.indexOf('merge:bd-105'), 'both parents the bounced dependent waits on merge ahead of the earlier-queued bd-102', JSON.stringify(order))
+    check(order.indexOf('merge:bd-103') < order.indexOf('merge:bd-105'), 'equal waiters keep first-come order', JSON.stringify(order))
+
+    // No waiters anywhere: completion order, as before.
+    const fifo = await run({ args: liveArgs(), canned: graphCanned([{ id: 'bd-101' }, { id: 'bd-102' }, { id: 'bd-103' }], {
+      'review:bd-103': async ctx => { await ctx.waitFor('review:bd-102'); await pause(20); return { id: 'bd-103', status: 'CLEAN' } },
+      'merge:bd-101': async ctx => { await ctx.waitFor('review:bd-103'); await pause(60); return { id: 'bd-101', merged: true, mergeExit: 0, mergeHead: true, head: SHA('b'), mergeBase: SHA('a') } },
+    }) })
+    assertNoThrow(fifo)
+    check(JSON.stringify(mergeOrder(fifo)) === '["merge:bd-101","merge:bd-102","merge:bd-103"]' && !fifo.logs.some(l => l.startsWith('merge lane:')), 'without waiters the lane stays first-come', JSON.stringify(mergeOrder(fifo)))
   }
 
   scenario('edge audit: with edgeCuts apply-safe, only the audit\'s safe changes are applied, recorded, and honored by graph readiness at once')

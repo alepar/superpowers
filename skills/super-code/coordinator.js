@@ -620,9 +620,11 @@ while (true) {
   }
 
   // Single-flight merge queue: a task joins when its chain ends; exactly one merge touches the
-  // integration worktree at a time, by promise chaining. Only merge work rides it — triage, permission
-  // refusals and already-merged closes run outside, and a merge that ends on the blocker path returns
-  // that follow-up as a thunk run after the queue moves on.
+  // integration worktree at a time. Only merge work rides it — triage, permission refusals and
+  // already-merged closes run outside, and a merge that ends on the blocker path returns that
+  // follow-up as a thunk run after the queue moves on. The next merge is the queued task with the
+  // most live attempts waiting on its landing (stacked on it, or bounced on a stack conflict and
+  // waiting for it), first-come among equals.
   // topUpHook fires without awaiting after each landing, so a newly unblocked bead dispatches this
   // round.
   let topUpHook = () => {}
@@ -631,15 +633,30 @@ while (true) {
   let resolveRetryHook = () => {}
   const onResolve = id => resolveRetryHook(id)
   let integrateAnnounced = false
-  let mergeChain = Promise.resolve()
+  let mergeChain = Promise.resolve()   // settles when the lane is idle with nothing queued
   let mergeQueued = 0, mergeQueuePeak = 0   // tasks waiting for or in the merge lane, this round
+  const mergeWaiting = []
+  let mergeBusy = false, mergeIdle = () => {}
+  const waitersOn = r => [...attemptOf.values()].filter(a => !a.ended && !a.cancelledBy && r.att && a.parentAttempts.includes(r.att)).length
+  const pumpMerge = () => {
+    if (mergeBusy) return
+    if (!mergeWaiting.length) { mergeIdle(); return }
+    let best = 0, bestW = waitersOn(mergeWaiting[0].r)
+    for (let i = 1; i < mergeWaiting.length; i++) { const w = waitersOn(mergeWaiting[i].r); if (w > bestW) { best = i; bestW = w } }
+    const [job] = mergeWaiting.splice(best, 1)
+    if (best > 0) log(`merge lane: ${job.r.id} goes ahead of ${best} earlier-queued task(s) — ${bestW} stacked or bounced dependent(s) wait on its landing`)
+    mergeBusy = true
+    const run = Promise.resolve().then(() => integrateOne(job.r))
+    run.then(job.resolve, job.reject)
+    run.then(() => {}, () => {}).then(() => { mergeBusy = false; mergeQueued--; pumpMerge() })   // a throw must not poison the queue
+  }
   // A failed merge's attempt ends (its stacked dependents cancelled, its task bead reopened) before
   // its blocker path runs, so a RESOLVE retry starts from a settled attempt.
   const enqueueIntegration = r => {
     mergeQueued++; mergeQueuePeak = Math.max(mergeQueuePeak, mergeQueued)
-    const run = mergeChain.then(() => integrateOne(r))
-    mergeChain = run.then(() => {}, () => {})   // settled either way: a throw must not poison the queue
-    mergeChain.then(() => { mergeQueued-- })
+    if (!mergeBusy && !mergeWaiting.length) mergeChain = new Promise(res => { mergeIdle = res })
+    const run = new Promise((resolve, reject) => { mergeWaiting.push({ r, resolve, reject }) })
+    pumpMerge()
     return run.then(after => (typeof after === 'function'
       ? withSlot(r.id, async () => { await failAttempt(r.att, { failure: 'blocked', reopen: true }); return after() })
       : undefined))
