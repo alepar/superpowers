@@ -5,7 +5,8 @@
 #
 # Usage: bash coverage-inputs [--from DUMP_FILE] ROOT_EPIC_ID ROOT_SPEC [SUBEPIC_SPEC...]
 #   --from reads a saved `bd list --label sp:ROOT_EPIC_ID --all --json --limit 0` dump instead of
-#   running bd. A subepic spec is matched to its epic by the bead id named in its first 15 lines
+#   running bd. A subepic spec is matched by its explicit Bead: owner in its first 15 lines,
+#   or its first exact tree id when unmarked (ambiguous headers warn)
 #   (§Conventions: each nested spec's header links its bead id).
 # Output (stdout), two sections ready to paste into the reviewer prompt:
 #   ## Goals         root goal, then per epic: `### <id> — <title>`, its spec's Goal section (or
@@ -14,6 +15,7 @@
 #                    `- <id> · <title> · <first sentence> · deps: <blocking ids>|none`, epics marked
 #                    `(epic)`; under it, the bead's `owns:` / `consumes:` / `boundary contract:` lines
 # stderr: `coverage-inputs: <bytes> bytes (target ≤ 60000)`, plus `over-target:` when above it,
+#         `ambiguous-spec: <file>` for ambiguous ownership,
 #         and `unmatched-spec: <file>` for a subepic spec that names no bead in the tree.
 # Exit 0 ok, 2 bad input, 4 jq unavailable (prints a JQ_UNAVAILABLE: line on stdout).
 set -euo pipefail
@@ -56,8 +58,6 @@ out=$(mktemp)
 map=$(mktemp)
 trap 'rm -f "$out" "$map"' EXIT
 
-ids=$(echo "$dump" | jq -r '.[].id')
-
 {
   echo "## Goals"
   echo
@@ -65,17 +65,30 @@ ids=$(echo "$dump" | jq -r '.[].id')
   g=$(goal_section "$root_spec")
   if [ -n "$g" ]; then echo "$g"; else echo "(root spec has no ## Goal section)"; fi
 
-  # Match each subepic spec to the first tree id its header names; longest ids first, so
-  # `r.10` is not read as `r.1`.
-  sorted_ids=$(echo "$ids" | awk '{ print length, $0 }' | sort -rn | cut -d' ' -f2-)
+  # An explicit Bead owner wins over incidental sibling references. Legacy headers
+  # fall back to their first exact tree id in reading order, with ambiguity visible.
   for f in "$@"; do
     hdr=$(head -n 15 "$f")
-    hit=
-    while IFS= read -r id; do
-      [ -n "$id" ] || continue
-      [ "$id" = "$root" ] && continue
-      if printf '%s\n' "$hdr" | grep -qE "(^|[^A-Za-z0-9._-])$(printf '%s' "$id" | sed 's/[.]/\\./g')([^A-Za-z0-9_-]|\\.[^0-9]|\\.?$)"; then hit=$id; break; fi
-    done <<< "$sorted_ids"
+    match=$(printf '%s\n' "$hdr" | jq -Rrs --argjson beads "$dump" --arg root "$root" '
+      def distinct: reduce .[] as $x ([]; if index($x) == null then . + [$x] else . end);
+      def id: "[A-Za-z0-9_-]+(?:\\.[A-Za-z0-9_-]+)*";
+      ($beads | map(.id) | map(select(. != $root))) as $ids
+      | gsub("[*`]"; "") as $header
+      | ([$header | match("(?<![A-Za-z0-9_])Bead:[ \\t]*(?<owner>[^ \\t\\r\\n]*)"; "g")
+          | .captures[0].string] | distinct) as $owners
+      | if ($owners | length) > 0 then
+          if ($owners | length) > 1 then ["ambiguous", ""]
+          elif ($ids | index($owners[0])) != null then ["explicit", $owners[0]]
+          else ["unknown", ""] end
+        else
+          ([$header | scan(id) | select(. as $x | $ids | index($x) != null)] | distinct) as $hits
+          | [if ($hits | length) > 1 then "fallback-ambiguous" else "fallback" end, ($hits[0] // "")]
+        end | @tsv')
+    kind=${match%%$'\t'*}
+    hit=${match#*$'\t'}
+    case "$kind" in
+      ambiguous|fallback-ambiguous) echo "ambiguous-spec: $f ($kind)" >&2 ;;
+    esac
     if [ -n "$hit" ]; then printf '%s\t%s\n' "$hit" "$f" >> "$map"; else echo "unmatched-spec: $f" >&2; fi
   done
 
@@ -103,8 +116,12 @@ ids=$(echo "$dump" | jq -r '.[].id')
   echo "$dump" | jq -r --arg r "$root" '
     def first_sentence: (. // "") | split("\n") | map(select(test("^\\s*(-\\s*)?(blocked-by|owns:|consumes:|boundary contract:)") | not))
       | map(select(test("\\S"))) | (.[0] // "") | sub("^\\s+"; "") | (capture("^(?<s>.*?[.!?])(\\s|$)").s // .) | .[0:160] | if . == "" then "(no description)" else . end;
-    def decls: (. // "") | split("\n") | map(select(test("^\\s*(-\\s*)?(owns:|consumes:|boundary contract:)")))
-      | map(sub("^\\s*(-\\s*)?"; "") | .[0:160]);
+    def decls: (. // "") | split("\n") | map(
+      gsub("[*`]"; "") as $line
+      | [$line | match("(?<![A-Za-z0-9_])(?:owns:|consumes:|boundary contract:)"; "g")] as $labels
+      | range(0; $labels | length) as $i
+      | $line[$labels[$i].offset:($labels[$i + 1].offset // ($line | length))]
+      | sub("[; \\t]+$"; ""));
     def idkey: split(".") | map(tonumber? // .);
     . as $all
     | (reduce $all[] as $b ({}; .[$b.id] = $b)) as $byid

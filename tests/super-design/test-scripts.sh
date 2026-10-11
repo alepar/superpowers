@@ -163,6 +163,44 @@ summary: Persist per-tenant quotas.
   assert_eq "$(printf '%s\n' "$err" | grep -c '^unmatched-spec: .*stray.md$')" 1 "a spec naming no tree bead is reported"
   assert_eq "$(printf '%s\n' "$err" | grep -c '^coverage-inputs: [0-9]* bytes (target ≤ 60000)$')" 1 "byte count reported on stderr"
 
+  O="$F/cov-ownership"
+  for scenario in explicit prefix fallback conflict unknown single malformed empty non-id; do
+    run bash "$S/coverage-inputs" --from "$O/tree.json" q "$C/root.md" "$O/$scenario.md"
+    assert_eq "$code" 0 "$scenario ownership input exits 0"
+    goals=$(printf '%s\n' "$out" | sed '/^## Task tree/,$d')
+    case "$scenario" in
+      explicit) owner=q.1; marker=EXPLICIT_GOAL ;;
+      prefix) owner=q.10; marker=PREFIX_GOAL ;;
+      fallback) owner=q.1; marker=FALLBACK_GOAL ;;
+      single) owner=q.1.2; marker=SINGLE_GOAL ;;
+      conflict|unknown|malformed|empty|non-id)
+        assert_eq "$(printf '%s\n' "$goals" | grep -c '_GOAL' || true)" 0 "$scenario explicit owner never guesses a sibling"
+        continue ;;
+    esac
+    assert_eq "$(printf '%s\n' "$goals" | awk -v marker="$marker" '/^### / { heading=$2 } $0 == marker { print heading }')" "$owner" "$scenario goal attaches to correct owner"
+  done
+  for scenario in fallback conflict; do
+    err=$(bash "$S/coverage-inputs" --from "$O/tree.json" q "$C/root.md" "$O/$scenario.md" 2>&1 >/dev/null)
+    assert_eq "$(printf '%s\n' "$err" | grep -c '^ambiguous-spec:' || true)" 1 "$scenario ambiguity is reported"
+  done
+  run bash "$S/coverage-inputs" --from "$O/tree.json" q "$C/root.md"
+  declarations=$(printf '%s\n' "$out" | sed -n '/^      /s/^      //p')
+  assert_eq "$declarations" "owns: AdapterConfig
+consumes: RunnerSpec
+boundary contract: q.9
+owns: An interface description with detailed fields with detailed fields with detailed fields with detailed fields with detailed fields with detailed fields with detailed fields with detailed fields with detailed fields with detailed fields with detailed fields with detailed fields END_OF_OWNERSHIP
+consumes: SharedContext
+boundary contract: q.8" "inline and formatted declarations retain complete ownership and boundary pointers"
+
+  malformed=$(mktemp)
+  printf '{invalid' > "$malformed"
+  run bash "$S/coverage-inputs" --from "$malformed" q "$C/root.md"
+  assert_eq "$code" 2 "malformed dump exits 2"
+  printf '{}' > "$malformed"
+  run bash "$S/coverage-inputs" --from "$malformed" q "$C/root.md"
+  assert_eq "$code" 2 "non-array dump exits 2"
+  rm -f "$malformed"
+
   run bash "$S/coverage-inputs" --from "$F/cov-tree.json" nope "$C/root.md"
   assert_eq "$code" 2 "unknown root exits 2"
 fi
