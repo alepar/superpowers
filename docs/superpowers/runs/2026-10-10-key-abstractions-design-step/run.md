@@ -14,3 +14,4 @@ skillSource: /Users/alepar/.claude/plugins/cache/superpowers-alepar/superpowers/
 
 approvals:
 - top-split · human · super-plan-998.1 LEAF, super-plan-998.2 LEAF, super-plan-998.3 LEAF, super-plan-998.4 LEAF, super-plan-998.5 LEAF, super-plan-998.6 LEAF
+- coverage-round-1 · canonical R-list: see coverage-round-1-requirements.md (R1–R12) · requirements: 12 · mapped: 10 · unmapped: 3 (R6, R9, R12) · auto GAP R12 → applied (sweep + acceptance); auto GAP R9 → applied (.4 ownership); auto UNOWNED-SEAM stated-intent handoff → applied (.4); auto GAP R6 → applied (.3); auto GAP R8 → applied (.3); auto GAP R4 → applied (.3); auto GAP brief carry → rejected (verified); auto UNOWNED-SEAM contract ordering → rejected (spec fixes it); auto UNOWNED-SEAM roast format → rejected; auto GAP R10 → applied (epic acceptance); auto UNOWNED-SEAM TODO writers → applied (.6)
