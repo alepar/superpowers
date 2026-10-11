@@ -10,7 +10,7 @@ spec: 2026-10-10-key-abstractions-design-step-design.md
 epic: super-plan-998
 branch: super-auto/key-abstractions-design-step
 base: main
-roast-design: 2026-10-11-key-abstractions-design-step-roast-design-1.md
+roast-design: 2026-10-11-key-abstractions-design-step-roast-design-1.md, 2026-10-11-key-abstractions-design-step-roast-design-2.md
 skillSource: /Users/alepar/.claude/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar4.21/skills @ 0ea4761c565e121b6b21d19f544c8f48af491426 (6.4.2-alepar4.21)
 
 roastDesignRound: 2
@@ -21,3 +21,4 @@ approvals:
 - coverage-round-2 · R-list read back from round 1, R13–R14 appended (coverage-round-2-requirements.md) · requirements: 14 · mapped: 14 · unmapped: 1 (R13) · divergence: findings 11 → 12, novel 10/12 (83%), widening: yes (cap holds; the design roast reviews the settled tree) · auto GAP eval behaviour → applied (root acceptance); auto GAP R7 → applied (.3); auto GAP R14 → applied (.3, .4); auto GAP nested digests → applied (.3); auto UNOWNED-SEAM .5 placeholders → applied (.5); auto UNOWNED-SEAM TODO item 2 → applied (sweep); auto GAP baseline → applied (.5); auto GAP prompt relay → rejected (assemble-args.mjs:182, :240); auto GAP named fixtures → applied (.5); auto UNOWNED-SEAM nested spec paths → applied (.4); auto UNOWNED-SEAM writing-plans handoff → applied (.3); auto ORPHAN .6 → rejected (serves R11)
 - stepBackDesign-round-1: redesign — applied: digest as an add-only copy written at separate triggers → specs' sections as the single source, one sync regenerating the epic digest, owner-bead entries, no-beads plans and designer input (dissolves 4)
 - design-roast-1 escalation · human · re-entry runs the step when a committed spec lacks the section; a nested sp:needs-design is cleared only after apply and sync
+- design-roast-2 · converged · punch list (4: 3 Should-fix, 1 Nit) · human · applied inline, no re-roast
