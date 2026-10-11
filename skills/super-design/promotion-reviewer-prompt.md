@@ -60,6 +60,9 @@ Task tool (general-purpose):
     - **Complete:** nothing in the spec is unrepresented by a child task.
     - **Correct:** no child contradicts the spec.
     - **Non-duplicative:** no child duplicates a sibling subtree from the provided sibling specs.
+    - **Owned abstractions:** every abstraction the spec's `## Key abstractions` section
+      adds (each one has a `Digest:` line) is created by exactly one child whose `owns:` line
+      names it. Abstractions the section only extends need no owner child.
 
     You are reporting issues, not fixing them — resolving a decomposition issue is the caller's
     job.
