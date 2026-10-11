@@ -1,5 +1,5 @@
 status: clean
-metrics: pending (upstream-feedback not yet run)
+metrics: parked draft — upstream-feedback-draft.md (4 findings; filing awaits the human)
 
 # super-auto report — 2026-10-10-key-abstractions-design-step
 
