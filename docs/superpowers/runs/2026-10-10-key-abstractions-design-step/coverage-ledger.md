@@ -22,3 +22,4 @@ c20 · r2 · GAP · named fixtures not pinned · applied — .5's ownership line
 c21 · r2 · UNOWNED-SEAM · source of nested spec paths · applied — .4 reads every *-design.md from the run directory, where super-design writes all specs via the artifact-directory override
 c22 · r2 · UNOWNED-SEAM · no-beads digest via writing-plans · applied — .3 owns the hand-off instruction; writing-plans already copies spec constraints into Global Constraints (skills/writing-plans/SKILL.md:71-76)
 c23 · r2 · ORPHAN · super-plan-998.6 and MAINTENANCE.md · rejected — .6 serves canonical R11; MAINTENANCE.md is R10's recording location in the root acceptance, not a task
+g1 · graph · GRAPH-EDGE · none · kept — graph-shape found 0 candidates (all 6 edges are integration-sweep edges)
