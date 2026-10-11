@@ -46,7 +46,7 @@ parked:
 
 codeBuckets:
   completed: super-plan-998.1, super-plan-998.2, super-plan-998.3, super-plan-998.4, super-plan-998.5, super-plan-998.6, super-plan-998.8, super-plan-998.9, super-plan-998.10
-  escalated: super-plan-998.7 (closed by the orchestrator: verification-only, no commit)
+  escalated:
   pendingRetry:
   parked:
   stalled: false
