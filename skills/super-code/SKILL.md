@@ -5,7 +5,7 @@ description: Use when executing a beads (`bd`) epic as a work queue — autonomo
 
 # super-code
 
-Drive a beads epic to completion: an epic-scoped `bd ready` loop, per-task worktrees off an epic integration branch, single-flight merge-back, and blocker beads for anything that can't proceed — autonomous or interactive. Use the shipped Workflow coordinator when available; otherwise use the supported ordinary-subagent coordinator in `./coordinator-subagents.md`.
+Drive a beads epic to completion: an epic-scoped `bd ready` loop, per-task worktrees off an epic integration branch, single-flight merge-back, and blocker beads for anything that can't proceed — autonomous or interactive. Use the shipped Workflow coordinator when available; otherwise drive the same loop yourself with ordinary subagents (`./coordinator-subagents.md`).
 
 **Core principle:** tasks coordinate only through beads and the integration branch, never through session memory. An interrupted epic resumes from the ledger, not from coordinator memory.
 
@@ -31,8 +31,8 @@ End your turn only for:
    your own (a friction-log or run-state append you have not committed), commit them, or check the
    integration branch out again for a detached HEAD, and relaunch; anything else goes to the user.
 
-The following relaunch and monitoring rules apply to Workflow mode. In ordinary-subagent mode,
-use `./coordinator-subagents.md`'s checkpoint, resume, and detector procedure.
+The following relaunch and monitoring rules apply to Workflow mode. In ordinary-subagent mode you
+are the coordinator, so resume from the ledger, beads and git (`./coordinator-subagents.md`).
 
 When the Workflow ends on the agent-budget cap (no return value, no `stopReason`) or with a first
 `ready-unavailable`/`plan-unavailable`, relaunch it yourself (`Workflow({scriptPath:
@@ -79,7 +79,7 @@ super-code owns the epic-level machinery and its per-task prompts; it uses
 
 | super-code owns | Uses from `subagent-driven-development` |
 |---|---|
-| The Workflow coordinator (`./coordinator.js`) or ordinary-subagent procedure (`./coordinator-subagents.md`) | The helper scripts `scripts/task-brief`, `scripts/review-package`, `scripts/sdd-workspace`, always invoked as `bash <abs path>/scripts/<name>` |
+| The Workflow coordinator (`./coordinator.js`) or the ordinary-subagent loop (`./coordinator-subagents.md`) | The helper scripts `scripts/task-brief`, `scripts/review-package`, `scripts/sdd-workspace`, always invoked as `bash <abs path>/scripts/<name>` |
 | The per-task pipeline: implementer (workspace setup and `task-brief`, then implementation) → `review-package` → one task review → at most one fix pass → merge — four agents for a clean task | The plan-scoped workspace and ledger header format |
 | Its implementer and task-reviewer prompts (`./implementer-prompt.md`, `./task-reviewer-prompt.md`), adapted from SDD's | |
 | The epic-scoped `bd ready` loop, refilled to a fixpoint | |
@@ -100,8 +100,8 @@ Any beads-backed execution. `subagent-driven-development` handles plan-file exec
 
 Select by the calling session's loaded tools, not ToolSearch (which sees only deferred tools).
 When `Workflow` is present, run `./coordinator.js` using `./coordinator-workflow.md`. Otherwise,
-when ordinary subagent spawn/wait/result tools are present, run `./coordinator-subagents.md` in
-the calling session. That procedure is the supported fallback and writes the same plan, ledger,
+when ordinary subagent spawn/wait/result tools are present, drive the loop in the calling session
+per `./coordinator-subagents.md`, under the same contract and writing the same plan, ledger,
 `Merge:`, detector, `Metrics:`, sweep, and final-review artifacts. Record the mechanism at launch
 and preserve it on resume. If neither capability exists, report the missing tools to the caller.
 
@@ -114,7 +114,7 @@ A caller supplies these — none are inferable from the repo:
 | `epicId` | the root epic to drain, and **the epic whose closure means this run is done**. It is the root the design used — **never a child narrowed to at execution time**: draining a sub-epic closes the sub-epic and leaves the real root open, so the run can never report completion however much work landed (`super-design`'s §The run's root epic). Its tree is the scope — see `./coordinator-workflow.md`'s Ready phase for how membership is resolved when the `sp:` label is absent |
 | `integrationBranch` | conventionally `epic-<epicId>-integration`. A parent caller such as `super-auto` creates the branch and worktree; on a standalone invocation, the calling session creates them during pre-flight. The coordinator never creates a second integration worktree |
 | integration worktree | the checkout of `integrationBranch` this skill works in — passed as `integrationWorktree` in the coordinator contract (optional, additive). A caller that created the worktree itself (`super-auto`'s run worktree, any native-tool worktree) **must pass its path**: when omitted, the coordinator derives `.worktrees/<integrationBranch>` with any `/` in the branch name collapsed to `-`, which only matches worktrees created by this skill's own pre-flight convention — a slashed branch like `super-auto/<slug>` makes the derived path wrong by construction for any externally-created worktree (`./coordinator-workflow.md`'s "Coordinator contract") |
-| mode | autonomous or interactive — Workflow uses the script; ordinary subagents use `coordinator-subagents.md`. Mode changes who answers a blocked task, never what gets reviewed |
+| mode | autonomous or interactive — Workflow uses the script; ordinary subagents run the loop by hand (`coordinator-subagents.md`). Mode changes who answers a blocked task, never what gets reviewed |
 | who owns the finish | **state it explicitly if the caller owns it.** There is no config flag. Left unsaid, this skill runs its own Finish: it merges the integration branch and deletes the worktree — taking the ledger and the per-task reports with it, which is where a caller's report gets its sources |
 | `config.models`, `config.efforts`, `config.concurrency`, `config.runtimeSlots`, `config.hotFileCap`, `config.topUpQueryCap`, `config.edgeAuditCap`, `config.earlyUnblock`, `config.edgeCuts` | optional; see Model tiering and Parallelism below for what they default to and why an explicit map is preferred. Pre-flight resolves `config.runtimeSlots` (the runtime's `min(16, cores-2)` agent slots) |
 | `config.sweep` | optional: the exact full-suite command Finish runs once against the integration tip, envelope included (`nice`, thread caps — whatever `AGENTS.md` requires of every command). Undeclared, pre-flight resolves the project's full test command into it, so the `Launch:` line records it. The sweep always runs when work landed (`./coordinator-workflow.md`'s "Finish"). There is no per-merge gate; a `config.gate` is ignored with a log line |
@@ -199,8 +199,8 @@ barriers between them — and each task's integration joins a **single-flight me
 instant its own chain ends**, draining in completion order while siblings still run, except that
 a task whose stacked or bounced dependents wait on its landing merges first. Exactly one merge
 touches the integration branch at any moment, guaranteed by a single queue worker, not batching.
-The ordinary-subagent procedure runs one chain at a time and re-queries ready after each
-chain (`./coordinator-subagents.md`).
+The ordinary-subagent loop follows the same window and merge rules, without early unblock
+(`./coordinator-subagents.md`).
 
 `filesTouched` (from the planner's per-task mapping) survives as one scheduling constraint: at
 most `config.hotFileCap` (default 3) in-flight tasks may declare the same file, which bounds
@@ -252,9 +252,8 @@ and judges candidate edges by super-design's `graph-pass-prompt.md`. With `confi
 'apply-safe'` (autonomous runs pass it) the safe-class changes are re-checked and applied mid-run,
 each on an `Edge cut:` ledger line; everything else, and every change in an interactive run, is
 left for an operator. Three audits on one run took the critical path 16 → 11 → 9 → 8 rounds.
-The ordinary-subagent procedure records its serial detector lines but does not run this optional
-background edge audit; `config.edgeCuts` and `config.edgeAuditCap` have no effect there. Its
-`slowness` return names that scheduling limitation rather than claiming an audit ran.
+The ordinary-subagent loop does not run this optional background edge audit;
+`config.edgeCuts` and `config.edgeAuditCap` have no effect there.
 Rationale, measured evidence, and counter-evidence for the Workflow dispatch model:
 `./coordinator-workflow.md`'s Implement-phase relaxation comment.
 
@@ -300,7 +299,7 @@ Throughout a run, append friction events (defects hit, workarounds, guidance tha
 ## Reference
 
 - `./coordinator-workflow.md` — full Workflow-coordinated autonomous procedure: coordinator contract, the coordinator loop, plan materialization, per-task pipeline, serial merge-back, the blocker-bead path, finish. Its "Known limitations" section lists real, shipped gaps — read it before assuming any of them already work. Validation is dryRun/replay-based (`tests/super-code/test-coordinator-replay.sh` — replays the recorded scenarios plus null-injection and prompt-text checks no dryRun can express); anything beyond what that harness asserts is live-run territory. Its "Finish" section documents a caller-owned-finish mode: a caller may keep the merge-and-cleanup hand-off for itself, in which case the coordinator stops after its final review and leaves the integration worktree and ledger intact.
-- `./coordinator-subagents.md` — supported procedure when Workflow is absent and ordinary subagents are present. It shares the artifact and gate contracts, with a serial scheduler owned by the calling session.
+- `./coordinator-subagents.md` — the ordinary-subagent loop, used when Workflow is absent: the calling session drives the epic by hand under `coordinator-workflow.md`'s contract, keeping the `Launch:` line, ledger outcomes and dispatch names that resume and `run-profile` read.
 - `./coordinator.js` — the canonical Workflow script, launched by `scriptPath` from a scratchpad copy (the Workflow tool refuses plugin-cache paths); the procedure and its dryRun baselines are in `./coordinator-workflow.md`.
 - `./planner-prompt.md` — dispatch the per-epic planner (opus) that materializes `<epicId>-plan.md` from the beads tree.
 - `./implementer-prompt.md` — the implementer's brief (sonnet): workspace setup, implementation, and the fix pass.

@@ -114,6 +114,28 @@ re-adopt from a stale reading. None of them is an open gap.
    the script's structure while adapting it to a real epic would silently invalidate every baseline
    recorded in this document without any signal that they had done so.
 
+- **Serial ordinary-subagent procedure stalled long Codex runs (2026-10-03 to 2026-10-11).**
+  Before 2026-10-03, `coordinator-subagents.md` did not exist. Codex ran the "manual ready-driven
+  loop" that SKILL.md named, improvising it from `coordinator-workflow.md`. `01983d6` made Workflow
+  mandatory. `7836b58` then added a fully specified fallback. That fallback ran one task chain at a
+  time and wrote a `Fallback:` checkpoint before and after every dispatch, all in the calling
+  session's context. Day-long super-auto runs on it stalled with very slow progress, and a handoff
+  plus a fresh session cleared each stall. Child-rollout concurrency, measured under
+  `~/.codex/sessions` on both machines, counting code-phase dispatches only:
+  - herdr-threads, 2026-09-26, improvised loop: an average of 2.74 agents at once while any ran,
+    and 2.3 h with none running against 20.4 h busy.
+  - herdr-threads, 2026-10-03 (4.15): 1.45 at once, 31.4 h idle against 33.2 h busy.
+  - Two runs on 2026-10-07 (4.20): 1.85 and 1.23 at once. One implementer ran 17.7 h.
+  - durak, 2026-10-05, on blacky: 1.00 at once, 25.7 h idle against 3.5 h busy.
+  
+  The model changed at the same time (gpt-6-astra and gpt-6-sol to gpt-6.1-sol). No run used
+  gpt-6.1-sol with the improvised loop, so the two causes are not separated. The serial schedule
+  is the skill's own, though. The fix restored the improvised loop. `coordinator-subagents.md` now
+  states only the contract pointer, the Parallelism rules, and the three things `run-profile` and
+  resume read: the `Launch:` line (now with `concurrency <N>`, which `run-profile` uses as the slot
+  cap), the ledger outcome lines, and the dispatch names. Do not reintroduce per-dispatch
+  checkpoints or a serial schedule without a long-horizon Codex run that shows they don't stall.
+
 ## Resume rationale (moved from coordinator-workflow.md's "Workspace and ledger")
 
 > (Fix-round-1, review: this used to also filter the Ready-phase `ids` by

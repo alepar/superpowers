@@ -37,7 +37,8 @@ const USAGE = `usage: run-profile (--workflow <dir>... | --codex <thread>... | -
   --beads <file>      a saved \`bd list --all --json --limit 0\` dump, for ordinary-subagent runs
                       (default: run bd in the coordinator's directory): the dependency graph
   --cap <N>           the coordinator's slot cap (default: min(concurrency, runtimeSlots - 2) from
-                      the Launch: line; 1 for an ordinary-subagent run; else unlimited)
+                      the Launch: line; for an ordinary-subagent run, its Launch: concurrency,
+                      else 1; else unlimited)
   --out <prefix>      also write <prefix>.md (tables, critical path, timeline) and <prefix>.json
   --include-dry-run   keep invocations launched with dryRun: true (skipped by default)
 
@@ -541,16 +542,16 @@ function readLedger(file) {
   let text
   try { text = readFileSync(file, 'utf8') } catch { return null }
   const landed = new Set(), blocked = new Set(), ids = new Set()
-  let epic = null
+  let epic = null, concurrency = null
   for (const line of text.split('\n')) {
     let m
-    if ((m = /^Launch: mechanism \S+ · epic (\S+)/.exec(line))) epic = m[1]
+    if ((m = /^Launch: mechanism \S+ · epic (\S+)/.exec(line))) { epic = m[1]; concurrency = Number(/ · concurrency (\d+)/.exec(line)?.[1]) || concurrency }
     else if ((m = /^# SDD ledger — plan: \S*?([^/\s]+)-plan\.md/.exec(line))) epic ??= m[1]
     else if ((m = /^Merge: (\S+) — (.*)$/.exec(line))) { ids.add(m[1]); if (!/\s→\s/.test(m[2])) landed.add(m[1]) }
     else if ((m = /^Task \d+ \(([^)]+)\): (complete|BLOCKED)\b/.exec(line))) { ids.add(m[1]); (m[2] === 'complete' ? landed : blocked).add(m[1]) }
     else if ((m = /^Task \d+ \(([^)]+)\):/.exec(line))) ids.add(m[1])
   }
-  return { file, epic, landed, blocked, ids }
+  return { file, epic, concurrency, landed, blocked, ids }
 }
 function bdDump(cwd) {
   if (!cwd || !isDir(cwd)) return null
@@ -694,7 +695,7 @@ if (ordinary.length) {
   const byNorm = new Map()
   for (const id of ids) { const k = normName(id); byNorm.set(k, byNorm.has(k) && byNorm.get(k) !== id ? null : id) }
   for (const r of ordinary) {
-    r.launch = { epicId: ep, mechanism: 'ordinary-subagents', config: { concurrency: 1, earlyUnblock: false } }
+    r.launch = { epicId: ep, mechanism: 'ordinary-subagents', config: { concurrency: ledger?.concurrency ?? 1, earlyUnblock: false } }
     r.journal = !!ledger
     for (const a of r.agents.values()) {
       const label = r.source === 'codex' ? codexLabel(a.name, byNorm) : a.name
@@ -916,7 +917,7 @@ const usableBy = (d, t) => (earlyUnblock && implementedBy(d, t)) || landedBy(d, 
 
 // ---- slots and ready queries, for explaining waits ----
 const hotFileCap = Math.max(1, Number(cfg.hotFileCap) || 3)
-// The ordinary-subagent coordinator runs one chain at a time, merge included: its slot is the whole attempt.
+// An ordinary-subagent coordinator runs each merge itself, so a chain's slot is the whole attempt, merge included.
 const slotSpans = [...beads.values()].flatMap(b => b.attempts.flatMap(at => {
   if (serialRuns.has(at.run)) { const a = latest(at.agents.filter(x => x.stage !== 'ledger')); return a ? [{ bead: b.id, start: at.start, end: a.end, agent: a }] : [] }
   return [

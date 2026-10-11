@@ -2,7 +2,7 @@
 
 Reference for `super-code`'s coordinator, which runs every epic, autonomous or interactive. The
 When `Workflow` is available, use this engine (SKILL.md's "Trigger rule"). Without it, use the
-supported ordinary-subagent procedure in `coordinator-subagents.md`. The Workflow
+ordinary-subagent loop in `coordinator-subagents.md`, which drives this same contract by hand. The Workflow
 script is the *mechanical* coordinator; every judgment call is delegated to a short-lived
 `agent()`. The per-task prompts are this skill's own (`./implementer-prompt.md`,
 `./task-reviewer-prompt.md`); the brief, review-package and workspace scripts are

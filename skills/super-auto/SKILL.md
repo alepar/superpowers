@@ -84,8 +84,8 @@ A beads (`bd`) tracker is required; check it first, before the flags, the run di
 
 Then check your own loaded function list (ToolSearch sees only deferred tools). Prefer Workflow
 for phase 3, each fix-loop re-entry, and roast. If Workflow is absent but ordinary subagent
-spawn/wait/result tools are present, select the supported `super-code/coordinator-subagents.md`
-procedure for execution and the `super-roast` manual fan-out rung for review. Record
+spawn/wait/result tools are present, phase 3 and each re-entry run super-code's ordinary-subagent
+loop (`super-code/coordinator-subagents.md`) and the `super-roast` manual fan-out rung for review. Record
 `codeMechanism: ordinary-subagents` in `run.md` and the selected rung in `<run-dir>/friction.md`;
 pass the mechanism to every super-code re-entry. This is a supported mode, not an exception.
 If neither Workflow nor ordinary subagents are available, hand back with the missing capability.
