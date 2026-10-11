@@ -115,7 +115,7 @@ function replaceAll(block, marker, value, where) {
 function fillCategory(block, name, noun, where) {
   const re = /- \*\*category:\*\*[^\n]*(\n {2,}[^\n]*)*/
   if (!re.test(block)) drift(`${where}: category bullet not found`)
-  return block.replace(re, `- **category:** \`${name}\` — this dispatch's ${noun} name, verbatim (required)`)
+  return block.replace(re, () => `- **category:** \`${name}\` — this dispatch's ${noun} name, verbatim (required)`)
 }
 const MARKERS = ['[LANE]', '[LENS]', '[ITERATION_STANCE]', '[RECALL_POLICY]', '[SEAT PROCEDURE]', '[SPEC_FILE_PATH', '[REQUIREMENTS / EPIC]', '[DIFF FILE LIST']
 function assertClean(text, where) {
@@ -179,7 +179,7 @@ if (mode === 'pr') {
   base = replaceLine(base, '[RECALL_POLICY]', recall, file)
   const diffLine = '- The diff (patch/hunks) under review.'
   if (!base.includes(diffLine)) drift(`${file}: inputs diff line not found`)
-  base = base.replace(diffLine, `- The diff under review: ${artifact}${diffCmd ? ` (\`${diffCmd}\`)` : ''}.`)
+  base = base.replace(diffLine, () => `- The diff under review: ${artifact}${diffCmd ? ` (\`${diffCmd}\`)` : ''}.`)
   for (const sec of secs.filter(s => s.heading.startsWith('Lane: '))) {
     const name = sec.heading.slice('Lane: '.length).split(/[\s(]/)[0]
     if (name === 'regression' && !late) continue
@@ -224,7 +224,7 @@ if (mode === 'pr') {
   const t = firstFence(triageMd)
   const line = t.split('\n').find(l => l.startsWith('[SPEC_FILE_PATH') && l.includes('[DIFF FILE LIST'))
   if (!line) drift('triage-prompt.md: input marker line not found')
-  prompts.triage = t.replace(line, triageInput())
+  prompts.triage = t.replace(line, () => triageInput())
   assertClean(prompts.triage, 'triage')
 }
 prompts.dedupe = firstFence(read('dedupe-prompt.md'))
@@ -266,8 +266,8 @@ const independence = opt.independence ?? `same-family (${family(config.models.ju
   if (!re.test(r)) drift('reporter-prompt.md: template line `independence: {{INDEPENDENCE}}` not found')
   // Render the template line and the sentence that quotes it; the sentence about an unrendered
   // token (`the literal text {{INDEPENDENCE}}`) keeps the token on purpose.
-  prompts.reporter = r.replace(re, `independence: ${independence}`)
-    .replace('The `independence:` line is `{{INDEPENDENCE}}` exactly as the', `The \`independence:\` line is \`${independence}\` exactly as the`)
+  prompts.reporter = r.replace(re, () => `independence: ${independence}`)
+    .replace('The `independence:` line is `{{INDEPENDENCE}}` exactly as the', () => `The \`independence:\` line is \`${independence}\` exactly as the`)
 }
 
 // ---- args ----
@@ -293,7 +293,7 @@ if (opt.script) {
   const engine = doc.slice(a + '```javascript\n'.length, b)
   const hook = "const A = typeof args === 'string' ? JSON.parse(args) : args"
   if (engine.split(hook).length !== 2) drift('super-roast-workflow.md: args line not found exactly once')
-  writeFileSync(opt.script, engine.replace(hook, `const A = ${JSON.stringify(args)}`) + '\n')
+  writeFileSync(opt.script, engine.replace(hook, () => `const A = ${JSON.stringify(args)}`) + '\n')
 }
 if (opt.out) writeFileSync(opt.out, json + '\n')
 if (!opt.out && !opt.script) process.stdout.write(json + '\n')

@@ -46,6 +46,66 @@ assert_eq "$(q "$T/d1.json" "d.prompts.scoutDomainTemplate.includes('{{DOMAIN}}'
 run bash "$A" --mode design --inputs "docs/spec.md" --spec /abs/spec.md --out "$T/d1-manual.json"
 assert_eq "$(q "$T/d1-manual.json" "d.independence.endsWith(' · rung: manual fan-out') && d.prompts.reporter.includes('independence: same-family (Claude) — seat-differentiated panel · rung: manual fan-out')")" "true" "without --script, independence names the manual fan-out rung"
 
+echo "assemble-args: literal replacement metacharacters"
+# Exercise the real generator: string replacements must not interpret caller/report text.
+set +e
+node --input-type=module - "$A" "$T" "$SCRIPT_DIR/engine-mock.mjs" <<'NODE'
+import assert from 'node:assert/strict'
+import { readFileSync, writeFileSync } from 'node:fs'
+import { spawnSync } from 'node:child_process'
+const [assembler, dir, mock] = process.argv.slice(2)
+const literal = "$& $` $' $$"
+const prior = `PRIOR-REPORT-MARKER\nPrior report: ${literal}\n`
+writeFileSync(`${dir}/literal-prior.md`, prior)
+const AsyncFunction = (async () => {}).constructor
+let failures = 0
+const check = (name, fn) => {
+  try { fn(); console.log(`  [PASS] ${name}`) }
+  catch (e) { failures++; console.log(`  [FAIL] ${name} — ${e.message}`) }
+}
+for (const scenario of ['prior', 'inputs', 'independence']) {
+  const customIndependence = scenario === 'independence'
+  const stem = `${dir}/literal-${scenario}`
+  const artifact = scenario === 'inputs' ? `Caller artifact: ${literal}` : 'b@2 vs m@0'
+  const diffStat = scenario === 'inputs' ? `Caller diff stat: ${literal}` : 'M a.js'
+  const independence = `Caller independence: ${literal}`
+  const result = spawnSync('bash', [assembler, '--mode', 'pr', '--inputs', artifact,
+    '--artifact', artifact, '--diff-stat', diffStat, '--iteration', '2',
+    '--prior-report', `${dir}/literal-prior.md`, '--punch-listed', `${dir}/punch.txt`,
+    '--out', `${stem}.json`, '--script', `${stem}.js`,
+    ...(customIndependence ? ['--independence', independence] : [])], { encoding: 'utf8' })
+  check(`${scenario}: generator accepts literal input`, () => assert.equal(result.status, 0, result.stderr))
+  if (result.status !== 0) continue
+  const args = JSON.parse(readFileSync(`${stem}.json`, 'utf8'))
+  check('prior report keeps all replacement metacharacters in args', () => assert.equal(args.priorReport, prior))
+  check('caller diff stat keeps all replacement metacharacters in triage', () => assert.ok(args.prompts.triage.includes(diffStat)))
+  check('caller artifact keeps all replacement metacharacters in every scout', () => {
+    for (const prompt of Object.values(args.prompts.scouts)) assert.ok(prompt.includes(artifact))
+  })
+  if (customIndependence) check('caller independence stays literal in both reporter insertions', () => {
+    assert.ok(args.prompts.reporter.includes(`independence: ${independence}`))
+    assert.ok(args.prompts.reporter.includes(`The \`independence:\` line is \`${independence}\` exactly as the`))
+  })
+  const source = readFileSync(`${stem}.js`, 'utf8')
+  check('generated script parses with replacement metacharacters', () => {
+    new AsyncFunction('args', 'agent', 'parallel', 'log', 'phase', source.replace('export const meta', 'const meta'))
+  })
+  check('generated script embeds args verbatim', () => {
+    const embedded = source.match(/^const A = (.*)$/m)
+    assert.ok(embedded, 'embedded args declaration missing')
+    assert.deepEqual(JSON.parse(embedded[1]), args)
+  })
+  if (!customIndependence) check('generated literal-input script executes against existing mocks', () => {
+    const execution = spawnSync(process.execPath, [mock, `${stem}.js`, 'pr-r2'], { encoding: 'utf8' })
+    assert.equal(execution.status, 0, execution.stdout + execution.stderr)
+  })
+}
+process.exit(failures ? 1 : 0)
+NODE
+rc=$?
+set -e
+[ "$rc" -eq 0 ] || FAILURES=$((FAILURES + 1))
+
 echo "assemble-args: validation"
 run bash "$A" --mode pr --inputs x --iteration 2 --diff-stat x
 assert_eq "$code" 2 "round 2 without a prior report exits 2"
