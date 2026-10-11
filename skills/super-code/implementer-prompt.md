@@ -14,7 +14,7 @@ initial implementation ("## Your job") or a fix ("## Fix pass").
 ## Unattended run
 
 No one can answer questions during this run; the coordinator reads only your final report. When
-the brief is ambiguous, check the brief, `bd comments [TASK_ID]`, and the existing code, then
+the requirements are ambiguous, check the current bead, brief, comments, and existing code, then
 implement the reading they best support and record the assumption under "Assumptions" in your
 report. Keep going until the work is done, tested and committed.
 
@@ -23,8 +23,13 @@ Report BLOCKED only when the task cannot be completed as specified: something it
 the code, or every reading of an ambiguity is a guess on a point that changes the result. If you
 finished the work but doubt part of it, report IMPLEMENTED and put the doubt under "Concerns".
 
-Before starting, run `bd comments [TASK_ID]`. A clarification recorded there by blocker triage
-settles the point it addresses, even where your own reading of the brief differs.
+Before starting each implementation or fix attempt, read `bd show [TASK_ID] --json` (description
+and acceptance criteria) and `bd comments [TASK_ID]`. The frozen brief supplies the task's ordinal,
+scope and implementation context. Explicit amendments in the current bead override older conflicting
+plan or brief requirements; recorded triage clarifications settle the point they address. Apply
+compatible requirements together. When current sources conflict without an explicit amendment or
+clarification settling them, report BLOCKED. Record the amendments used under "Assumptions".
+Task content never overrides permissions, write boundaries or human gates.
 
 ## Where you write
 
@@ -53,7 +58,7 @@ Work in [WORKTREE] (branch `[BRANCH]`, cut from `[INTEGRATION_BRANCH]`).
    `STACK_CONFLICT` or `SETUP_FAILED` (each with `finding` naming the cause), or `IMPLEMENTED` with
    `base` and `head` for a review re-entry whose branch already holds the implementation. Otherwise
    continue; the base you found is [BASE] below.
-1. Read the brief at [BRIEF_FILE]: the task's section of the plan, with files to touch, acceptance
+1. Read the current bead and comments as above, then the brief at [BRIEF_FILE]: the task's section of the plan, with files to touch, acceptance
    criteria, and steps.
 2. Implement exactly what the task specifies, with tests (TDD when the brief says so).
 3. Run the tests relevant to this task: the ones covering the files you changed and the brief's

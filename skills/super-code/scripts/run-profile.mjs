@@ -137,7 +137,7 @@ function launchArgs(rows) {
 
 // ---- labels: `<kind>:<bead>[:<suffix>]` for per-task dispatches, `<kind>[:<suffix>]` for run-level ----
 const BEAD_KINDS = new Set(['brief', 'impl', 'commit-nudge', 'review', 'fix', 'seam-review', 'merge', 'review-bead', 'triage',
-  'clarify', 'notify', 'missing-blocker', 'unplanned-blocker', 'close-only', 'reopen', 'discard', 'ledger'])
+  'clarify', 'notify', 'missing-blocker', 'unplanned-blocker', 'close-only', 'close-check', 'reopen', 'discard', 'ledger'])
 function parseLabel(label) {
   const i = label.indexOf(':')
   const kind = i < 0 ? label : label.slice(0, i)
@@ -159,7 +159,7 @@ function stageOf(kind, suffix) {
     case 'merge': return 'merge'
     case 'review-bead': return 'split'
     case 'triage': case 'clarify': case 'notify': case 'missing-blocker': case 'unplanned-blocker': return 'blocker'
-    case 'close-only': return 'close'
+    case 'close-only': case 'close-check': return 'close'
     case 'reopen': case 'discard': return 'cancel'
     case 'ledger': case 'ledger-append': case 'read-ledger': return 'ledger'
     case 'plan': case 'plan-rest': return 'planning'
@@ -899,7 +899,7 @@ for (const b of beads.values()) {
     const merges = at.agents.filter(a => a.kind === 'merge')
     at.landing = merges.filter(a => a.result?.merged === true).at(-1)
       ?? (merges.length && !hasJournal(merges.at(-1).run) ? merges.at(-1) : null)
-      ?? at.agents.filter(a => a.stage === 'close' && (a.result?.status === 'CLOSED' || !hasJournal(a.run))).at(-1) ?? null
+      ?? at.agents.filter(a => a.kind === 'close-only' && (a.result?.status === 'CLOSED' || !hasJournal(a.run))).at(-1) ?? null
   }
   // The landing is the real merge. A later close-only of an already-merged branch (its bead close was
   // lost) is bookkeeping, counted apart as a re-entry close.

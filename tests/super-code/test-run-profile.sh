@@ -163,6 +163,31 @@ assert_has "$out" "Profile: bottleneck — n.1 (did not land)" "no landing: the 
 pd overlap-split
 run bash "$P" --workflow "$T/overlap-split" --out "$T/os"
 assert_eq "$(q "$T/os.json" "d.criticalPath.segments.filter(s => s.bead === 'q.1' && s.label.indexOf('→') < 0).map(s => s.kind).join(',')")" "implement,review,fix,merge" "overlap: implement → review → fix → merge, no split on the path"
+# A tracker observation consumes task time but never proves a merge, even without a journal.
+node - "$FX/close-unconfirmed.json" "$T/check-only.json" <<'JS'
+const fs = require('fs'), d = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'))
+d.agents.at(-1).label = 'close-check:x.1'
+d.agents.at(-1).result = { closed: [] }
+fs.writeFileSync(process.argv[3], JSON.stringify(d))
+JS
+node "$BUILD" "$T/check-only.json" "$T/check-only"
+run bash "$P" --workflow "$T/check-only" --out "$T/check-only-p"
+assert_eq "$(q "$T/check-only-p.json" "d.criticalPath.byCategory.close")" "20000" "close-check: 20s observation is timed as closure work"
+assert_has "$out" "beads dispatched 1, landed 0" "close-check: observation alone is no landing"
+rm "$T/check-only/journal.jsonl"
+run bash "$P" --workflow "$T/check-only" --out "$T/check-only-no-journal"
+assert_has "$out" "beads dispatched 1, landed 0" "close-check without journal: never fabricates landing"
+assert_eq "$(q "$T/check-only-no-journal.json" "d.criticalPath.byCategory.close")" "20000" "close-check without journal: observation time retained"
+# A later observation must preserve a real merge as the graph landing.
+node - "$FX/relaunch-a.json" "$T/merge-check.json" <<'JS'
+const fs = require('fs'), d = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'))
+d.agents.push({ label: 'close-check:c.1', start: 1100, end: 1120, result: { closed: ['c.1'] } })
+fs.writeFileSync(process.argv[3], JSON.stringify(d))
+JS
+node "$BUILD" "$T/merge-check.json" "$T/merge-check"
+run bash "$P" --workflow "$T/merge-check" --out "$T/merge-check-p"
+assert_eq "$(q "$T/merge-check-p.json" "d.window.graphMs")" "1100000" "close-check: graph ends at real merge, not later observation"
+assert_has "$out" "beads dispatched 1, landed 1" "close-check: real merge remains landed"
 # A close-only that did not confirm the merge is not a landing.
 pd close-unconfirmed
 run bash "$P" --workflow "$T/close-unconfirmed"

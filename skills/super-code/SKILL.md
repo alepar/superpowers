@@ -25,7 +25,8 @@ End your turn only for:
 2. **A protected resource:** the base-branch merge in `finishing-a-development-branch`.
 3. **A risky or destructive action** outside the declared operation classes.
 4. **This skill's hard stops:** Finish completed after `stopReason` `root-closed`, `ready-drained`
-   or `stalled`, a second consecutive `ready-unavailable`/`plan-unavailable` stop, or an
+   or `stalled`, a `closure-unconfirmed` stop (report unresolved tracker closure; preserve the integration
+   worktree and never claim completion or automatically merge it), a second consecutive `ready-unavailable`/`plan-unavailable` stop, or an
    `integration-blocked` stop whose cause is not yours to clear. When the named stray files are
    your own (a friction-log or run-state append you have not committed), commit them, or check the
    integration branch out again for a detached HEAD, and relaunch; anything else goes to the user.
@@ -136,10 +137,13 @@ these verbatim. The return also carries **`stopReason`** — `root-closed` (the 
 completion), `ready-drained` (empty ready set, root still open: quarantined blockers remain),
 `stalled` (no-progress guard), `integration-blocked` (a merge found the integration worktree dirty
 or off its branch: the merge lane was held for the rest of the run, no blocker beads filed, the
-held tasks left for a relaunch), or `ready-unavailable` / `plan-unavailable` (infrastructure outage:
-the `bd ready` or planner dispatch kept dying on terminal API errors, with nothing mapped left to run; a clean round-boundary stop). The last three are **never**
+held tasks left for a relaunch), or `closure-unconfirmed` (confirmed merged code whose task, review or resolved blocker closure
+could not be confirmed; preserve the integration worktree and report the unresolved IDs), or
+`ready-unavailable` / `plan-unavailable` (infrastructure outage:
+the `bd ready` or planner dispatch kept dying on terminal API errors, with nothing mapped left to run; a clean round-boundary stop). These degraded stops are **never**
 completion — never treat a stop as "done" without checking `stopReason`
-(`./coordinator-workflow.md`'s "Null dispatch policy"). Additive fields: **`authRefused`** —
+(`./coordinator-workflow.md`'s "Null dispatch policy"). Additive fields: **`closureUnconfirmed`** — reported landing IDs with unresolved tracker closure, kept out of
+`completed`; verified merged code still receives the Finish sweep/review — **`authRefused`** —
 tasks quarantined because the harness permission layer refused their commands (also in
 `escalated`); a caller's report lists them as untested scope — **`sweep`**, the full-suite
 sweep's one-line result, starting with the tip SHA it measured, whenever work landed

@@ -326,7 +326,7 @@ Done by the main session, not the Workflow:
    contract" above. Relaunches reuse that copy; make a fresh one only after a definitions switch. Progress is visible via `/workflows`. The main session stays on
    the run and does not end its turn at launch (SKILL.md's "Unattended runs"): it appends
    friction-log entries from the coordinator's log (Finish, "Friction capture"), and when the
-   Workflow returns it reads `stopReason` — `root-closed`, `ready-drained` or `stalled` go on to
+   Workflow returns it reads `stopReason` — `root-closed`, `ready-drained`, `stalled` or `closure-unconfirmed` go on to
    Finish; an agent-budget-cap end or a first outage stop gets a relaunch with `resumeFromRunId`.
    Recovery is driven by the ledger and `bd ready`, not the Workflow cache: `resumeFromRunId` replays
    only the agent calls before the first concurrent fan-out, so it is an optimization, not the
@@ -819,6 +819,47 @@ abandon the delegation by hand-rolling briefs from the mapping table instead of 
 script: `task-brief` still owns the awk extraction, the brief-file naming, and the "task not
 found" failure signal; the mapping table only supplies the `N` it needs.
 
+### Current task requirements and confirmed closure
+
+Plan ordinals, mapping rows and existing sections stay frozen, including sections already read by
+in-flight tasks. Every implementer attempt, fixer, task reviewer and blocker triage reads the current
+`bd show <task> --json` description and acceptance criteria and `bd comments <task>` before applying
+the frozen brief. Explicit current bead amendments override older conflicting plan/brief requirements;
+recorded triage clarifications settle the point they address. Compatible requirements compose.
+Unsettled source conflicts produce BLOCKED (review: NEEDS_FIX). These inputs never override
+permissions, write boundaries or human gates. The report/verdict records amendments used.
+
+`merged:true` confirms code integration only after the existing merge evidence checks. It does not
+confirm tracker closure. `close-check:<task>` reads exact tracker statuses for the task, its review
+bead and its resolved blocker bead where present. All must be closed before settling completed or
+releasing stacked merges. There are at most two observations per attempt and one close-only repair;
+a null read means unknown and gets one observation retry, with no speculative close. Close-only
+re-verifies the merge with `scripts/already-merged` using the known landed tip (so a removed task
+branch does not prevent verification), then closes beads and cleans up only after successful closes.
+Close-only obtains its own current status observation before any write and closes only observed-open
+beads. An unavailable lookup closes nothing, stops no processes and performs no cleanup. Thus a
+later recovery attempt does not infer open status from an earlier null observation. There are at
+most three no-progress rounds under the existing null policy. Permission refusals retain BLOCKED_AUTH
+routing; no triage can grant them. Their ledger lines are followed by the durable pending-landing
+record so another invocation retains the tip, review and blocker pointers.
+
+Deferred minors and declined findings are recorded for confirmed merged code even when tracker
+closure is unknown. A `parked finding` line retains the reason and finding for final review; the
+pending landing carries its parked modifier through digest/resume, while the `parked` return bucket
+remains a modifier of confirmed completion.
+
+Known landed work routes directly to closure on later ready observations, including historical
+completion IDs. Persisted unresolved landing records also re-enter closure when no work is ready
+or the root epic is already closed. Later pending-retry, BLOCKED or cancelled states supersede
+earlier historical landing records; a range-less completion retains a prior tip candidate. It never re-implements or re-merges. An unconfirmed landing writes a `landed
+(commits …, tracker closure unconfirmed)` ledger line for resume. Historical ledger claims alone
+do not prove a merge; close-only must verify them. Round stall/null bounds still apply. Confirmed
+merged code receives the Finish sweep and final review even if closure remains unknown; such runs
+return `closureUnconfirmed` IDs (reported landings awaiting verification or closure) and stopReason `closure-unconfirmed`, without counting those IDs as
+completed. The invoking session treats this as a hard stop with unresolved tracker state: report
+the IDs and closure evidence, preserve the integration worktree, and do not present the epic as
+finished or merge it automatically. The original session's close failure cause remains unknown.
+
 ### Dispatching the implementer
 
 One dispatch per task sets the workspace up and implements. It names `./implementer-prompt.md` by
@@ -1111,7 +1152,7 @@ to `superpowers:finishing-a-development-branch`, which merges the integration br
 user's base branch and cleans up the integration worktree. **When the caller owns the finish**
 (e.g. `super-auto`, which still needs this run's ledger and per-task reports after this loop ends),
 the coordinator returns its buckets (`completed`, `escalated`, `pendingRetry`, `parked`, `stalled`,
-`review`, plus `stopReason` and `slowness` — the slowness signals it noticed and what it did about
+`review`, `closureUnconfirmed`, plus `stopReason` and `slowness` — the slowness signals it noticed and what it did about
 each) to the caller and stops, leaving the integration worktree, its branch,
 and its ledger intact. **Deferred minors reach the final reviewer through the ledger.** The task
 review reports Minor and ⚠️ items in `RESULT.minors`, and the merge gate writes one
@@ -1422,7 +1463,8 @@ narratives that used to accompany each row are in git history; nothing here depe
 | **Script in `./coordinator.js` (comments trimmed, history to `./MAINTENANCE.md`); round-1 planning split (`plan` for the ready ids, `plan-rest` for the rest of the tree beside them); workspace setup folded into the implementer (no `brief:<id>` dispatch; `SETUP_FAILED` / `ALREADY_MERGED` / `STACK_CONFLICT` early returns) | replay 43/0 | replay 18/0 | replay 20/0 |
 | **Task-worktree cleanup (merge agent runs `scripts/remove-task-worktree` after the merge and bead close — processes stopped, `git worktree remove` + `git branch -d`, never forced, `--keep-branch` for split tasks; close-only re-entries clean up too; discards go through `--discard`; Finish `worktree-sweep` backstop returning `worktreesKept`)** | replay 44/0 | replay 19/0 | replay 21/0 |
 | **Process cleanup (scripts/stop-run-processes: cwd, executable or exact HOME=/TMPDIR= under a run root, orphan argument paths, no kinship expansion, interactive terminals kept, epic/integration roots refused; task temp state in a short `/tmp/sp-<hash>/<task id>` root, removed with the worktree (`remove-task-worktree --tmp`); implementer/fixer leak check after test runs; processes stopped before a task's bead closes; the Finish `worktree-sweep` dispatch also runs the final process sweep and writes the `Process sweep:` ledger line, returning `processSweep`)** | replay 44/0 | replay 19/0 | replay 21/0 |
-| **Merge-lane priority (the next merge is the queued task with the most live stacked or bounced dependents waiting on its landing, first-come among equals; one queue worker replaces the promise chain) — CURRENT** | **replay 44/0** | **replay 19/0** | **replay 21/0** |
+| **Merge-lane priority (the next merge is the queued task with the most live stacked or bounced dependents waiting on its landing, first-come among equals; one queue worker replaces the promise chain) ** | replay 44/0 | replay 19/0 | replay 21/0 |
+| **Current requirements and tracker closure confirmation — CURRENT** | **replay 47/0** | **replay 19/0** | **replay 22/0** |
 
 The current row's figures come from the offline replay harness (`tests/super-code/`): it replays
 the three `args` blocks below and runs the live-sim, null-injection, parallelism, seam,
@@ -1759,7 +1801,7 @@ missing-bead fallback (`missing-blocker:<id>`) are not exercised by these scenar
   `review` 4 + `fix` 1 + `merge` 4 + `triage` 3 + `notify` 2 + `clarify` 1 + task ledger flushes 5
   (`ledger:bd-101`, `ledger:bd-103`, `ledger:bd-104` ×2, `ledger:bd-105`) + `ledger-append:detector` 1 +
   `sweep` 1 + `ledger-append:sweep` 1 + `read-ledger:finish` 1 + `ledger-append:metrics` 1 +
-  `final-review` 1 + `reconcile-buckets` 1 + `worktree-sweep` 1 = **44 agent calls, 0 errors**, terminal shape
+  `final-review` 1 + `reconcile-buckets` 1 + `worktree-sweep` 1 + `close-check` 3 = **47 agent calls, 0 errors**, terminal shape
   `{completed:["bd-102","bd-101","bd-105"], escalated:["bd-103","bd-104"], pendingRetry:[], parked:[],
   stalled:false, stopReason:"ready-drained"}` (bucket order follows completion order).
 
@@ -1769,7 +1811,7 @@ re-run before committing the fix.
 ### Baselines for the canonical scenario (recorded, not illustrative)
 
 **Confirmed for the current revision by the offline replay harness**
-(`tests/super-code/replay-harness.mjs`, run via `test-coordinator-replay.sh`): 44 agent calls,
+(`tests/super-code/replay-harness.mjs`, run via `test-coordinator-replay.sh`): 47 agent calls,
 0 errors, the terminal shape above. No Workflow-hosted run has been recorded against this
 revision yet. (The script-in-file batch's 43 is superseded by this one's added `worktree-sweep`; the early-unblock batch's 48 by the script-in-file batch; the off-critical-path
 batch's 44 by the early-unblock batch; the D4 loop's 50 by the off-critical-path batch.)
@@ -1868,8 +1910,11 @@ To reproduce or re-verify after a structural edit, run the Workflow tool with th
       "review-bead:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"reviewBead\":\"bd-112\",\"implClosed\":true,\"created\":true}",
       "fix:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/a.js\"],\"head\":\"fefefef1111111111111111111111111111111\"}",
       "ledger:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "close-check:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"closed\":[\"bd-101\"]}",
       "merge:bd-101": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-101\",\"merged\":true,\"mergeExit\":0,\"mergeHead\":true,\"head\":\"a1a1a1a1111111111111111111111111111111\",\"mergeBase\":\"aaaaaaa1111111111111111111111111111111\",\"rebaseConflictFiles\":0,\"ledgerAppended\":true}",
+      "close-check:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"closed\":[\"bd-102\",\"bd-112\"]}",
       "merge:bd-102": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-102\",\"merged\":true,\"mergeExit\":0,\"mergeHead\":true,\"head\":\"b2b2b2b2222222222222222222222222222222\",\"mergeBase\":\"bbbbbbb2222222222222222222222222222222\",\"rebaseConflictFiles\":0,\"ledgerAppended\":true}",
+      "close-check:bd-105": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"closed\":[\"bd-105\"]}",
       "merge:bd-105": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-105\",\"merged\":true,\"mergeExit\":0,\"mergeHead\":true,\"head\":\"e5e5e5e5555555555555555555555555555555\",\"mergeBase\":\"b2b2b2b2222222222222222222222222222222\",\"rebaseConflictFiles\":0,\"ledgerAppended\":true}",
       "ledger:bd-105": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "merge:bd-103": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-103\",\"merged\":false,\"blockerBead\":\"bd-108\",\"rebaseConflictFiles\":2}",
@@ -1981,7 +2026,7 @@ the parked variant carrying the reason and the finding, and the final review tri
 **Assertions:** no `triage`, `notify`, or blocker-filing key dispatches (a declined finding never
 reaches the blocker path); `completed` `["bd-301"]`, `parked` `["bd-301"]`, `escalated` `[]`,
 `pendingRetry` `[]`; the Finish log line reads `Parked (merged with fix-pass-declined findings): 1`.
-Expected dispatch count: **21 agent calls, 0 errors** — confirmed by the offline replay harness at
+Expected dispatch count: **22 agent calls, 0 errors** — confirmed by the offline replay harness at
 the current revision.
 
 ```json
@@ -2015,6 +2060,7 @@ the current revision.
       "review:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"NEEDS_FIX\",\"files\":[\"src/y.js\"],\"finding\":\"the retry backoff constant is duplicated verbatim in src/y.js:12 and src/y.js:40 (plan-mandated)\"}",
       "fix:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"n\":1,\"status\":\"FIXED\",\"files\":[\"src/y.js\"],\"head\":\"dddddd1111111111111111111111111111111d\",\"declined\":\"duplicated backoff constant \\u2014 plan-mandated: the brief requires each call site to carry its own constant\"}",
       "ledger:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
+      "close-check:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"closed\":[\"bd-301\"]}",
       "merge:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"merged\":true,\"mergeExit\":0,\"mergeHead\":true,\"head\":\"f6f6f6f6666666666666666666666666666666\",\"mergeBase\":\"eeeeeee5555555555555555555555555555555\",\"rebaseConflictFiles\":0,\"ledgerAppended\":true}",
       "worktree-sweep": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"lines\":[]}",
       "read-ledger:finish": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"text\":\"\"}",

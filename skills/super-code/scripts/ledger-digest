@@ -5,7 +5,8 @@
 # prints only:
 #   - `Merge:` lines, verbatim (fixed-format, short);
 #   - `Task <n> (<id>): <state>` lines whose state the coordinator acts on, reduced to their state
-#     tokens: `complete[, already merged][, review clean][, fix pass][, parked]`, `pending retry`,
+#     tokens: `complete[, already merged][, review clean][, fix pass][, parked][, commits base..tip]`,
+#     `landed, commits base..tip[, review id][, blocker id]`, `pending retry`,
 #     `BLOCKED…` (first word), `cancelled (` / `cancelled`, `stacked on <id>`, `fix pass <OUTCOME>`;
 #     a `[cause: …]` tag after `pending retry` / `BLOCKED…` is kept, and a `minor (deferred)` line
 #     whose text starts with a `[class]` tag becomes `minor [class]` (recurrence counts for Resume).
@@ -26,6 +27,8 @@ fi
 
 awk '
 function trim(s) { sub(/^[ \t\r]+/, "", s); sub(/[ \t\r]+$/, "", s); return s }
+function range(r) { return match(r, /commits [a-fA-F0-9]+\.\.[a-fA-F0-9]+/) ? ", " substr(r, RSTART, RLENGTH) : "" }
+function closure(r, kind) { return match(r, kind " [A-Za-z0-9_.-]+") ? ", " substr(r, RSTART, RLENGTH) : "" }
 function cause(r) { return match(r, /\[cause: [^]]*\]/) ? " " substr(r, RSTART, RLENGTH) : "" }
 {
   total++
@@ -41,7 +44,9 @@ function cause(r) { return match(r, /\[cause: [^]]*\]/) ? " " substr(r, RSTART, 
     if (index(rest, "review clean")) s = s ", review clean"
     if (index(rest, "fix pass")) s = s ", fix pass"
     if (index(rest, "parked")) s = s ", parked"
-  } else if (rest ~ /^pending retry/) s = "pending retry" cause(rest)
+    s = s range(rest)
+  } else if (rest ~ /^landed/) s = "landed" range(rest) closure(rest, "review") closure(rest, "blocker") (index(rest, "parked") ? ", parked" : "")
+  else if (rest ~ /^pending retry/) s = "pending retry" cause(rest)
   else if (rest ~ /^BLOCKED/) s = w[1] cause(rest)
   else if (rest ~ /^cancelled \(/) s = "cancelled ("
   else if (rest ~ /^cancelled/) s = "cancelled"
