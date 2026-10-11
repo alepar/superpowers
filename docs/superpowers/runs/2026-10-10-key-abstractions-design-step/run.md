@@ -10,6 +10,7 @@ spec: 2026-10-10-key-abstractions-design-step-design.md
 epic: super-plan-998
 branch: super-auto/key-abstractions-design-step
 base: main
+roast-design: 2026-10-11-key-abstractions-design-step-roast-design-1.md
 skillSource: /Users/alepar/.claude/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar4.21/skills @ 0ea4761c565e121b6b21d19f544c8f48af491426 (6.4.2-alepar4.21)
 
 roastDesignRound: 1
