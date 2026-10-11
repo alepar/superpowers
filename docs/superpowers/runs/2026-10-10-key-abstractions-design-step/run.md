@@ -25,6 +25,20 @@ approvals:
 - stepBackDesign-round-1: redesign — applied: digest as an add-only copy written at separate triggers → specs' sections as the single source, one sync regenerating the epic digest, owner-bead entries, no-beads plans and designer input (dissolves 4)
 - design-roast-1 escalation · human · re-entry runs the step when a committed spec lacks the section; a nested sp:needs-design is cleared only after apply and sync
 - design-roast-2 · converged · punch list (4: 3 Should-fix, 1 Nit) · human · applied inline, no re-roast
+- stepBackCode-round-1: patch — three local causes (stale hand-offs into the new step, the sync as a second owner-bead creator, rubric (c) shape); clusters stale-step-routing, sync-owner-bead-path, rubric-extend-only
+scopeFilter-round-1: [Should-fix] skills/super-design/SKILL.md:106 in-scope — The root spec skips the Key abstractions step, so the root gets no section, owner beads or digest. The goal names the root explicitly.
+scopeFilter-round-1: [Should-fix] skills/super-design/SKILL.md:196-202 in-scope — Duplicate owner beads are incorrect behavior on the path where the section reaches the beads, which the goal names.
+scopeFilter-round-1: [Should-fix] skills/super-design/SKILL.md:308 in-scope — A sync-created owner bead is not wired into the sweep, so the sweep can run before the abstraction exists.
+scopeFilter-round-1: [Should-fix] tests/super-design/key-abstractions-eval/rubric.md:19 in-scope — Rubric X1 would fail a correct extend-only answer for case (c).
+scopeFilter-round-1: [Nit] skills/super-design/SKILL.md:74; skills/super-design/SKILL.md:176 punch-list — Clarity issue only; Precedence is unconditional.
+scopeFilter-round-1: [Nit] skills/super-design/SKILL.md:293-296; skills/super-design/SKILL.md:293; skills/super-design/key-abstractions-prompt.md:119 punch-list — Template-wording improvement, not a correctness defect.
+scopeFilter-round-1: [Nit] skills/super-design/SKILL.md:283-286; skills/super-design/SKILL.md:283 in-scope — Fixers following the roast-fix and step-back sections leave the digest and owner beads stale.
+scopeFilter-round-1: [Nit] skills/super-design/promotion-reviewer-prompt.md:63 punch-list — Extra hardening; callers pass descriptions containing the owns: line.
+scopeFilter-round-1: [Nit] skills/super-design/SKILL.md:306 punch-list — cluster override: The sync still rewrites the entry correctly without markers; robustness, not a wrong result.
+scopeFilter-round-1: [Nit] skills/super-design/SKILL.md:452 punch-list — cluster override: Confined to the no-beads path and a crash window the re-entry row recovers.
+scopeFilter-round-1: [Must-fix] skills/super-design/SKILL.md §Root Brainstorm hand-off and its §Re-entry row in-scope — The root hand-off skips Key abstractions.
+scopeFilter-round-1: [Must-fix] tests/super-design/key-abstractions-eval/rubric.md X1 in-scope — X1 contradicts the template's extend-only output.
+scope-filter: 7 in-scope · 5 punch-listed
 
 parked:
 - final review (super-code) · degraded-verdict · "super-plan-998.7 integration sweep closed by the orchestrator without a commit (verification-only, no no-change completion path); phase-6 sweep re-measures" · resolves-on: sweep
