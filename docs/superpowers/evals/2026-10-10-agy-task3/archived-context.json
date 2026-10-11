@@ -1,0 +1,26 @@
+[
+  {
+    "snapshot": "baseline-coordinator.js",
+    "sha256": "246876af0ece248d60942e619dbca2b8561a06dfa7b2f0be29c286d9a192c7d3",
+    "original_source": "skills/super-code/coordinator.js",
+    "scratch_path": "/tmp/2026-10-10-agy-task3-full-context/baseline-coordinator.js"
+  },
+  {
+    "snapshot": "baseline-coordinator-workflow.md",
+    "sha256": "c5afe5ad0c567c6dd7e299f23556702c315fd10d3db70d7ed6f63234a6714e71",
+    "original_source": "skills/super-code/coordinator-workflow.md",
+    "scratch_path": "/tmp/2026-10-10-agy-task3-full-context/baseline-coordinator-workflow.md"
+  },
+  {
+    "snapshot": "after-coordinator.js",
+    "sha256": "7739a237847eb4e4ac6dba2d07dfe339453b373c973c71ff6d887db6b39a3f4e",
+    "original_source": "skills/super-code/coordinator.js",
+    "scratch_path": "/tmp/2026-10-10-agy-task3-full-context/after-coordinator.js"
+  },
+  {
+    "snapshot": "after-coordinator-workflow.md",
+    "sha256": "97e74c7be500ac3248eade9adbc1e55608e60b59c972764639b11144343cf3fe",
+    "original_source": "skills/super-code/coordinator-workflow.md",
+    "scratch_path": "/tmp/2026-10-10-agy-task3-full-context/after-coordinator-workflow.md"
+  }
+]

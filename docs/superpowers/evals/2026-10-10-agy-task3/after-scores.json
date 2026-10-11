@@ -1,0 +1,72 @@
+[
+  {
+    "sample": "after_initial_1",
+    "pass": true,
+    "description_read": true,
+    "selected_cutoff_days": 7,
+    "evidence": "after_initial_1-response.md"
+  },
+  {
+    "sample": "after_initial_2",
+    "pass": true,
+    "description_read": true,
+    "selected_cutoff_days": 7,
+    "evidence": "after_initial_2-response.md"
+  },
+  {
+    "sample": "after_initial_3",
+    "pass": true,
+    "description_read": true,
+    "selected_cutoff_days": 7,
+    "evidence": "after_initial_3-response.md"
+  },
+  {
+    "sample": "after_initial_4",
+    "pass": true,
+    "description_read": true,
+    "selected_cutoff_days": 7,
+    "evidence": "after_initial_4-response.md"
+  },
+  {
+    "sample": "after_initial_5",
+    "pass": true,
+    "description_read": true,
+    "selected_cutoff_days": 7,
+    "evidence": "after_initial_5-response.md"
+  },
+  {
+    "sample": "after_triage_1",
+    "pass": true,
+    "description_read": true,
+    "selected_cutoff_days": 7,
+    "evidence": "after_triage_1-response.md"
+  },
+  {
+    "sample": "after_triage_2",
+    "pass": true,
+    "description_read": true,
+    "selected_cutoff_days": 7,
+    "evidence": "after_triage_2-response.md"
+  },
+  {
+    "sample": "after_triage_3",
+    "pass": true,
+    "description_read": true,
+    "selected_cutoff_days": 7,
+    "evidence": "after_triage_3-response.md"
+  },
+  {
+    "sample": "after_triage_4",
+    "pass": true,
+    "description_read": true,
+    "selected_cutoff_days": 7,
+    "evidence": "after_triage_4-response.md"
+  },
+  {
+    "sample": "after_triage_5",
+    "pass": true,
+    "description_read": true,
+    "selected_cutoff_days": 7,
+    "evidence": "after_triage_5-response.md"
+  }
+]

@@ -1,0 +1,3 @@
+# Baseline harness
+
+Controlled fixture, no live tracker mutation. Agents receive unchanged full role template via snapshot path, actual dispatch builder / workflow snapshots available for context, an append-only task plan and existing source. The task description has a post-plan amendment, comments are empty. Reads are simulated by `python3 docs/superpowers/evals/2026-10-10-agy-task3/fixture.py bd ...`; no command forces a task-description read. No source changes are requested. Five independent fresh-context repetitions each for initial dispatch and blocker triage. Exact final responses are captured separately.

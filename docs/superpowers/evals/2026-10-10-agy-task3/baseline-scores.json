@@ -1,0 +1,72 @@
+[
+  {
+    "sample": "initial_1",
+    "pass": false,
+    "description_read": false,
+    "selected_cutoff_days": 30,
+    "evidence": "initial_1-response.md"
+  },
+  {
+    "sample": "initial_2",
+    "pass": false,
+    "description_read": false,
+    "selected_cutoff_days": 30,
+    "evidence": "initial_2-response.md"
+  },
+  {
+    "sample": "initial_3",
+    "pass": false,
+    "description_read": false,
+    "selected_cutoff_days": 30,
+    "evidence": "initial_3-response.md"
+  },
+  {
+    "sample": "initial_4",
+    "pass": false,
+    "description_read": false,
+    "selected_cutoff_days": 30,
+    "evidence": "initial_4-response.md"
+  },
+  {
+    "sample": "initial_5",
+    "pass": true,
+    "description_read": true,
+    "selected_cutoff_days": 7,
+    "evidence": "initial_5-response.md"
+  },
+  {
+    "sample": "triage_1",
+    "pass": true,
+    "description_read": true,
+    "selected_cutoff_days": 7,
+    "evidence": "triage_1-response.md"
+  },
+  {
+    "sample": "triage_2",
+    "pass": true,
+    "description_read": true,
+    "selected_cutoff_days": 7,
+    "evidence": "triage_2-response.md"
+  },
+  {
+    "sample": "triage_3",
+    "pass": true,
+    "description_read": true,
+    "selected_cutoff_days": 7,
+    "evidence": "triage_3-response.md"
+  },
+  {
+    "sample": "triage_4",
+    "pass": true,
+    "description_read": true,
+    "selected_cutoff_days": 7,
+    "evidence": "triage_4-response.md"
+  },
+  {
+    "sample": "triage_5",
+    "pass": true,
+    "description_read": true,
+    "selected_cutoff_days": 7,
+    "evidence": "triage_5-response.md"
+  }
+]

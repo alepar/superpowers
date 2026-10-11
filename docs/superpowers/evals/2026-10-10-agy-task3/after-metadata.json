@@ -1,0 +1,21 @@
+{
+  "date": "2026-10-10",
+  "harness": "Codex collaboration.spawn_agent",
+  "model": "inherited; exact model identifier not exposed in tool output",
+  "fresh_context": "fork_turns=none; one independent agent per repetition; instructed not to read previous samples or scores",
+  "scenario_count": 2,
+  "repetitions_per_scenario": 5,
+  "snapshot_sha256": {
+    "after-coordinator-workflow.md": "97e74c7be500ac3248eade9adbc1e55608e60b59c972764639b11144343cf3fe",
+    "after-triage-prompt.md": "a8868e4c6fb76cd0149861bb60ba19aa6c9bd413df875b98d55f9cbc1e5db32d",
+    "after-implementer-prompt.md": "0ac594354b6bcbf34b9735c5ebc367dacde7dbbe0d2080d83522cae2ae544594",
+    "after-triage-prompt.txt": "e50042ac09a312023510d2e09b41c7c9c4c317826af5785e441954504c597948",
+    "after-initial-prompt.txt": "2cd0de089e6ecf6cd0b7f12ea208fd066d82fe644045a08f938574d71348428d",
+    "after-coordinator.js": "7739a237847eb4e4ac6dba2d07dfe339453b373c973c71ff6d887db6b39a3f4e"
+  },
+  "limitations": [
+    "after_initial_3 also read harness.md; it contains fixture/method description but no results. Its direct bd task read still supplies primary requirement evidence.",
+    "This is a read-selection/requirements-decision eval; no actual source implementation or retry execution.",
+    "Full role template read from path; large coordinator/workflow snapshots available but not forcibly injected."
+  ]
+}

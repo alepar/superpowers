@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-10",
+  "harness": "Codex collaboration.spawn_agent",
+  "model": "inherited; exact model identifier not exposed in tool output",
+  "fresh_context": "fork_turns=none; one independent agent per repetition",
+  "no_reviewers": true,
+  "scenario_count": 2,
+  "repetitions_per_scenario": 5,
+  "snapshot_sha256": {
+    "baseline-implementer-prompt.md": "15f211d05dd505eac7088af3e4881f8bcfbef0563b60c4f6a4da14a02d8c78ce",
+    "baseline-triage-prompt.md": "a8868e4c6fb76cd0149861bb60ba19aa6c9bd413df875b98d55f9cbc1e5db32d",
+    "baseline-coordinator-workflow.md": "c5afe5ad0c567c6dd7e299f23556702c315fd10d3db70d7ed6f63234a6714e71",
+    "baseline-coordinator.js": "246876af0ece248d60942e619dbca2b8561a06dfa7b2f0be29c286d9a192c7d3"
+  }
+}
