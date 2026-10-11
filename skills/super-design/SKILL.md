@@ -103,7 +103,7 @@ is done-vs-not: check for the artifact a step would produce before producing it.
 
 | Step | Adopt instead of re-producing |
 |---|---|
-| §Root Brainstorm | a committed root spec already in the artifact directory (or named by the run-state file's spec pointer) — read it and go to §Decomposition |
+| §Root Brainstorm | a committed root spec already in the artifact directory (or named by the run-state file's spec pointer) — read it and go to §Key Abstractions, then §Decomposition |
 | §Key Abstractions | a committed spec that already has a `## Key abstractions` section — adopt it without re-dispatching the designer, and run the sync (§Decomposition); a committed spec without one (a crash between the brainstorm's commit and this step) runs the step before §Decomposition. A nested level's `sp:needs-design` is cleared only after its section is applied and the sync has run |
 | §Decomposition, root | an epic already labelled `sp:<its-own-id>` for this goal (or named by the run-state file's epic pointer) — adopt it; **never `bd create` a second root epic** |
 | §Decomposition, children | children already under that epic — decompose only what has none |
@@ -118,7 +118,7 @@ markers §Durable State already relies on. Anything half-made gets finished, not
 
 ## Root Brainstorm
 
-Root only. Invoke `superpowers:brainstorming` on the goal or raw idea handed to this invocation — no parent spec, no ancestor-goal chain, no sibling specs to hand in, since none exist yet. Brainstorming runs its full process (worktree, mode selection, questions or one-shot reasoning, design doc, self-review) and returns with a written, committed spec. It does **not** offer adversarial review to a caller-invoked run — that offer is this skill's, once, on the settled tree (§Adversarial Review Loop), so a run has exactly one design-mode roast. Take that spec forward into §Decomposition.
+Root only. Invoke `superpowers:brainstorming` on the goal or raw idea handed to this invocation — no parent spec, no ancestor-goal chain, no sibling specs to hand in, since none exist yet. Brainstorming runs its full process (worktree, mode selection, questions or one-shot reasoning, design doc, self-review) and returns with a written, committed spec. It does **not** offer adversarial review to a caller-invoked run — that offer is this skill's, once, on the settled tree (§Adversarial Review Loop), so a run has exactly one design-mode roast. Take that spec forward into §Key Abstractions, then §Decomposition.
 
 ## The run's root epic
 
@@ -421,7 +421,7 @@ means the file should be split or assigned to a single bead. Decide which here, 
 §Parallelism Pass measures what remains on the settled tree and removes what it safely can; at
 decomposition, aim to need it little.
 
-- **Beads:** for every child, `bd create ... --parent <id> --no-inherit-labels -l sp:<root-epic-id>` — both flags together, every time. `--no-inherit-labels` alone still strips the wanted root label; without it, parent labels (including `sp:needs-design`) smear onto every leaf. The root invocation creates the epic first, labeled `sp:<its-own-id>`.
+- **Beads:** for every child, `bd create ... --parent <id> --no-inherit-labels -l sp:<root-epic-id>` — both flags together, every time. `--no-inherit-labels` alone still strips the wanted root label; without it, parent labels (including `sp:needs-design`) smear onto every leaf. The root invocation creates the epic first, labeled `sp:<its-own-id>`, then runs the first Key abstractions sync on it (§Key Abstractions) before it creates any child.
 - **No beads:** the same fields as a task-table row — see §No-Beads Mode for the columns it must carry.
 
 ## Promotion Review
@@ -459,7 +459,7 @@ until its dependents are re-pointed:
 ## Applying Promotions
 
 - **Beads:** `bd update <id> -t epic` (in-place, same id — preserves existing deps), then `bd update <id> --set-metadata sp_depth=<N>` and `--set-metadata sp_order=<per-parent ordinal in dependency order>` (underscores — bd's metadata-key validator rejects hyphens), then label `sp:needs-design`.
-- **No beads:** mark the row `sub-plan: <spec path>` (or `needs-design` until the spec is written).
+- **No beads:** mark the row `sub-plan: <spec path>` (or `needs-design` until the spec is written and its Key abstractions section is applied and synced).
 
 Then run the nested brainstorm on the promoted child.
 
@@ -683,7 +683,8 @@ interactive (§Gates by Mode), present it with its recommendation and let the hu
 unattended, apply it when its `scope` is `inside`, and when it is `outside` record it as `parked`,
 patch this round's findings, and surface it at the loop exit. Applying a redesign means amending
 the spec(s) where the changed decision is stated and restructuring the affected tasks through
-step 2; its `dissolves` findings get no fix task (the step-back file records why), its `remains`
+step 2; an amendment that touches a `## Key abstractions` section is applied and synced
+(§Decomposition, "Key abstractions sync"); its `dissolves` findings get no fix task (the step-back file records why), its `remains`
 findings go through step 1, and step 3 re-roasts, since a design decision changed.
 
 **Declined: offering a split when findings concentrate in one subsystem.** A step-back redesign
@@ -696,7 +697,8 @@ recurrence; the delta stays an instance count.
    ones (a Mode B nested brainstorm when unattended; may itself promote/nest); a dispatched fixer
    (Sonnet-class is fine) for delegable work. Whoever fixes gets every round's report path and
    every applied redesign, not just this round's, so a patch does not reopen what an earlier round
-   closed or undo a chosen redesign.
+   closed or undo a chosen redesign. A fix that touches a `## Key abstractions` section is applied
+   and synced: commit the amended spec, then run the sync (§Decomposition, "Key abstractions sync").
 3. **Auto-decide re-roast by fix scope:**
    - Mechanical, single-file fixes with no design change → done, no re-roast.
    - Fixes that changed a design decision, changed data handling, or resolved multiple Blocking
@@ -810,7 +812,7 @@ is the caller's to make: `super-code` in beads mode, or, in no-beads mode, `writ
 
 ## No-Beads Mode
 
-Same decomposition/promotion/coverage, on paper. Each task-table row needs: a stable id (`<epic-slug>.<ordinal>`), a **depth column**, and a **deps column listing blocker row-ids** — as table data, not prose, or the cursor rule above is unreconstructable. Promoted rows are marked `sub-plan: <spec path>` (or `needs-design` until written). The cursor eligibility rule and tripwire counts run over these columns exactly as beads mode runs them over labels/metadata. Seam machinery included: an accepted `UNOWNED-SEAM` adds `Seam contract:` / `Seam integration:` rows to the task table with their own dependency columns, each participant row gains a `boundary contract: <row>` note, and the root sweep is a final row depending on every leaf row. Key abstractions travel the same way: when §Hand-off runs `writing-plans`, tell it to copy the tree-wide digest (the `Digest:` lines of every committed spec, in tree order, as the sync collects them in §Decomposition) into each plan's `## Global Constraints`; `writing-plans` itself does not change.
+Same decomposition/promotion/coverage, on paper. Each task-table row needs: a stable id (`<epic-slug>.<ordinal>`), a **depth column**, and a **deps column listing blocker row-ids** — as table data, not prose, or the cursor rule above is unreconstructable. Promoted rows are marked `sub-plan: <spec path>` (or `needs-design` until the spec is written and its Key abstractions section is applied and synced). The cursor eligibility rule and tripwire counts run over these columns exactly as beads mode runs them over labels/metadata. Seam machinery included: an accepted `UNOWNED-SEAM` adds `Seam contract:` / `Seam integration:` rows to the task table with their own dependency columns, each participant row gains a `boundary contract: <row>` note, and the root sweep is a final row depending on every leaf row. Key abstractions travel the same way: when §Hand-off runs `writing-plans`, tell it to copy the tree-wide digest (the `Digest:` lines of every committed spec, in tree order, as the sync collects them in §Decomposition) into each plan's `## Global Constraints`; `writing-plans` itself does not change.
 
 ## Artifact Location
 
