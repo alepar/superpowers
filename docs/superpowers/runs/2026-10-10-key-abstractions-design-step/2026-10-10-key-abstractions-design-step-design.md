@@ -44,7 +44,14 @@ The research rejected a separate super-auto "interface model" phase (option D-a)
 
 ### 2. The designer's brief
 
-`skills/super-design/key-abstractions-prompt.md` is a dispatch template, like the promotion reviewer's. The designer answers these questions briefly and skips what doesn't apply:
+`skills/super-design/key-abstractions-prompt.md` is a dispatch template, like the promotion reviewer's. Its input placeholders are fixed here, so the template and the SKILL.md dispatch that fills it agree:
+
+- `[SPEC_FILE_PATH — read it]`: this level's spec;
+- `[DISTILLATE_PATH — read it]`: the distillate;
+- `[REPO_ROOT]`: the repository to read;
+- `[KEY_ABSTRACTIONS_SO_FAR]`: each ancestor's section, root first, then each earlier sibling's; at the root, `none — this is the root spec`.
+
+The designer answers these questions briefly and skips what doesn't apply:
 
 1. **Abstractions.** Which new abstractions does this design need, and which existing ones should it extend? Read the code first. Callers that branch on a kind, type or name signal a missing abstraction. Reuse or extend the abstractions handed in from above; never redefine one.
 2. **Responsibilities.** For each one: what it owns, the decision it hides, and what it must not do.
@@ -137,11 +144,11 @@ Digest:
   - `bd update --description` replaces the description wholesale, so read the epic first and re-send its full text with the lines added.
   - super-code's planner already copies an epic's Global Constraints verbatim into every task brief (`skills/super-code/planner-prompt.md:93`). The task reviewer checks the brief against them. super-code doesn't change.
   - In no-beads mode, the digest lines go into each plan's `## Global Constraints` (writing-plans): one line in §No-Beads Mode.
-- **Promotion review.** One criterion is added to the decomposition verdict in `skills/super-design/promotion-reviewer-prompt.md`: every abstraction in this spec's section is created by exactly one child whose `owns:` line names it. An `ISSUES` verdict is fixed inline, as today. The reviewer already reads the whole spec, so this adds no pass.
+- **Promotion review.** One criterion is added to the decomposition verdict in `skills/super-design/promotion-reviewer-prompt.md`: every abstraction this spec's section adds (each one has a digest line) is created by exactly one child whose `owns:` line names it. Abstractions the section only extends need no owner child. An `ISSUES` verdict is fixed inline, as today. The reviewer already reads the whole spec, so this adds no pass.
 - **Nested brainstorms.** They already receive the parent spec and earlier siblings' specs. One line in §Nested Brainstorms makes the ancestors' Key abstractions the frame the nested design builds within. An explicit decision that goes against one wins at that level, and that level's section notes it.
 - **Code roast.**
   - super-auto's phase 4 passes the run's spec paths, root and nested, to the PR roast as the change's stated intent, as a pointer only.
-  - super-roast gains an optional PR-mode input, `stated intent`, which it appends to `scripts/assemble-args`' `--artifact` text. Scouts and judges already read that text (`skills/super-roast/scripts/assemble-args.mjs:182`, `:240`).
+  - super-roast gains an optional PR-mode input, `stated intent`, which it appends to `scripts/assemble-args`' `--artifact` text. Scouts and judges already read that text (`skills/super-roast/scripts/assemble-args.mjs:182`, `:240`). `--artifact` already exists, so only super-roast's `SKILL.md` changes: no script, and not the engine file `super-roast-workflow.md`.
   - Judges in PR mode already weigh stated intent (`skills/super-roast/judge-seat-prompts.md:146-148`). `simplicity-design` items 5 and 7 already look for logic living outside its concept's abstraction and for one decision baked into several modules.
   - This is TODO item 2 (probe R-c0).
 - **Unchanged:** super-code's prompts, the roast lanes and super-auto's phase set. No new review pass, gate or stop.
@@ -155,7 +162,7 @@ Digest:
   - the two stale "in progress" rows under "Related" (implementer rebase, hot-file split) corrected to shipped in 6.4.2-alepar4.20.
 - **Eval.** super-auto's phase 6 runs it as an orchestrator step, because a leaf's implementer cannot dispatch model runs. One leaf builds the fixtures.
   - **Fixtures**, in `tests/super-design/key-abstractions-eval/`: one tiny synthetic CLI with two integrations whose callers branch on the integration name, and three specs:
-    - (a) add a third integration; this spec also plants one explicit decision the designer must respect;
+    - (a) add a third integration; its brainstorm input states one explicit design decision as fixed, which the designer must respect;
     - (b) add a flag to one command;
     - (c) a nested subepic spec that is handed a pre-written root section.
   - **Rubric**, written before any run:
@@ -163,9 +170,17 @@ Digest:
     - (b) answers "no new abstractions" and invents nothing;
     - (c) extends the given abstraction without redefining it;
     - all three give no method signatures.
-  - **Arms.** "Before" is a one-shot (Mode B) brainstorm spec for the fixture, which is what decomposition reads today. "After" is that same spec plus the step's section. The rubric is applied to both arms. Three reps each; (c) runs after-only. 15 runs in all.
-  - **Grading.** By hand against the rubric. Results and token cost go to `docs/superpowers/runs/2026-10-10-key-abstractions-design-step/key-abstractions-eval.md`, summarized in a new `skills/super-design/MAINTENANCE.md` and in the TODO item.
+  - **Arms.** "Before" is a fresh one-shot (Mode B) brainstorm spec for the fixture in each rep, which is what decomposition reads today. "After" runs the designer on that same spec. The rubric is applied to both arms. Three reps each; (c) runs after-only. 15 runs in all.
+  - **The planted decision must survive.** If a "before" spec for (a) drops it, that brainstorm rep is re-run, so both arms share a spec that carries it.
+  - **Grading.** By hand against the rubric, recording each run's token cost. Results and token cost go to `docs/superpowers/runs/2026-10-10-key-abstractions-design-step/key-abstractions-eval.md`, summarized in a new `skills/super-design/MAINTENANCE.md` and in the TODO item.
 - **Tests.** No scripts change, so the release suites in `AGENTS.md` must stay green. If the super-auto phase-4 wording trips `tests/super-auto/test-contract-lint.sh`, the same bead updates the lint.
+- **Not exercised by this run.** The eval grades only what the designer writes. These skill-text rules run only in real super-design runs:
+  - the mode flows (Mode A showing the section for edits, unattended runs applying it);
+  - re-entry adoption;
+  - digest placement in the root epic, and in no-beads plans;
+  - the owner-bead and promotion-review rules.
+
+  The design and code roasts review their text, and the next real super-auto runs are the first to exercise them.
 - **Release.** Nothing is pushed or tagged from the run. After the merge, the feedback tab cuts the release.
 
 ## Decisions made with the human partner
