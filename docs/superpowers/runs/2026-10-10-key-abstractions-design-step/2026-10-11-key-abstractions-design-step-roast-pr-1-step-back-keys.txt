@@ -1,0 +1,12 @@
+r1 [Should-fix] skills/super-design/SKILL.md:106
+r1 [Should-fix] skills/super-design/SKILL.md:196-202
+r1 [Should-fix] skills/super-design/SKILL.md:308
+r1 [Should-fix] tests/super-design/key-abstractions-eval/rubric.md:19
+r1 [Nit] skills/super-design/SKILL.md:74; skills/super-design/SKILL.md:176
+r1 [Nit] skills/super-design/SKILL.md:293-296; skills/super-design/SKILL.md:293; skills/super-design/key-abstractions-prompt.md:119
+r1 [Nit] skills/super-design/SKILL.md:283-286; skills/super-design/SKILL.md:283
+r1 [Nit] skills/super-design/promotion-reviewer-prompt.md:63
+r1 [Nit] skills/super-design/SKILL.md:306
+r1 [Nit] skills/super-design/SKILL.md:452
+r1 [Must-fix] skills/super-design/SKILL.md §Root Brainstorm hand-off and its §Re-entry row
+r1 [Must-fix] tests/super-design/key-abstractions-eval/rubric.md X1
