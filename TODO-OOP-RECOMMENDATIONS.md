@@ -2,7 +2,7 @@
 
 This is the actionable list from the 2026-10-07 research on three questions: how super-design and super-code can encourage good OOP and software design, how super-roast can enforce it, and whether contract-first decomposition (interface beads before parallel work) pays off. It covers every recommendation in the research plan, with the plan's evidence, ordering, evaluations and each item's status. The plan is v2, revised after an independent critique whose 14 objections were all accepted.
 
-Three Phase 0 measurement items have landed (0.1, 0.3 and 0.4). Nothing else in the plan has been implemented or evaluated. Every expected effect below is a hypothesis for the [evaluations](#evaluations).
+Three Phase 0 measurement items have landed (0.1, 0.3 and 0.4), and item 2 has landed through the Key abstractions step (K), whose eval is pending. Nothing else in the plan has been implemented or evaluated. Every expected effect below is a hypothesis for the [evaluations](#evaluations).
 
 ## Where the research lives
 
@@ -18,7 +18,7 @@ The raw files are not on `main`: the ledgers (`*.jsonl`, `*.json`), `research-pl
 
 ## How to read this file
 
-- **Status:** done · in progress (with the herdr tab doing it) · open · decision (waits on a §13 decision) · deferred (the plan says wait).
+- **Status:** done · in progress (with the herdr tab doing it) · implemented; eval pending (the change is merged and its evaluation has not run yet) · open · decision (waits on a §13 decision) · deferred (the plan says wait).
 - **References:** `§N` is a section of recommendations.md. `[N]` is a source in its [bibliography](docs/superpowers/research/2026-10-07-oop-design/recommendations.md#bibliography). `A4-F15` is a finding in audit report A4. "Critique #N" is objection N in the critique and the refinement log. `E1`–`E9` and `S` are the evaluations.
 - **Repository citations** are `path:line` on `main` at `24c38a1`. Where the research cites the same place at `eb0462b` on a different line, its line is marked "(was :N)".
 - **Terms.** A *lane* is a super-roast PR scout specialty; in design mode it is a *lens*. *Seats* are the judges on a finding's panel: three for each Blocking or Should-fix candidate, one for a Nit or FYI spot check. A *seam contract* is a `Seam contract:` bead that delivers compilable boundary code (interfaces, types, signatures and wiring, with inert stubs) and blocks every participant. *Early unblock* starts dependents at a blocker's implementation commit, stacked on its unmerged branch; those dependents are *stacked consumers*. *Shadow mode* runs and judges a lane but never files its findings as fix beads. In an eval, *RED* is the current behavior and *GREEN* the changed one. The *fallback* is super-code's ordinary-subagent procedure, for sessions with no Workflow tool.
@@ -38,18 +38,19 @@ The raw files are not on `main`: the ledgers (`*.jsonl`, `*.json`), `research-pl
 | 1c | Design `[class]` tags at Minor in the task reviewer | §6.6 | open |
 | 1d | Planner/reviewer wording drift fix | A3-F16 | open |
 | 1e | Implementer error-contract line | §6.5 | open |
-| 2 | Probe R-c0: the spec path as stated intent for PR roasts | §5.2 | open |
+| 2 | Probe R-c0: the spec path as stated intent for PR roasts | §5.2 | done (Key abstractions step); E3 open |
 | 3a | Contract digest and a shadow `contract-conformance` lane (R-c1) | §5.3 | open, only if 2 fails |
 | 3b | Error-propagation pilot inside `correctness` | §5.4 | open |
 | 3c | Minimal `simplicity-design` edits | §5.5 | open |
 | 4 | Cross-bead seam notes and a promotion-review criterion | §6.2, §6.3 | open |
 | 4L | Design-mode `interfaces-and-ownership` lens | §5.6 | decision (§13.3) |
+| K | Key abstractions step in super-design | [spec](docs/superpowers/runs/2026-10-10-key-abstractions-design-step/2026-10-10-key-abstractions-design-step-design.md) | implemented; eval pending |
 | 5a | Engine fix for stacked-consumer drift (C-b) | §8 Phase 5 | decision (§13.4), data-gated |
 | 5b | Proactive seam-contract triggers, Workflow mode only (C-a) | §4, §8 Phase 5 | deferred until 5a |
 | O1 | A second independent critique of the plan | refinement log | open, optional |
 | O2 | Seam notes and `[class]` clusters as inputs to the in-round step-back | §12 | open, separate work |
 
-Counts: 3 done, 15 open, 2 waiting on a decision, 1 deferred. Separately: six [open decisions](#open-decisions-for-the-human-partner-13), one of them largely overtaken; four [related items](#related-from-the-2026-10-07-run-profile-baseline), two done and two in progress in the small-fixes tab; and four [drift items outside the plan](#outside-the-plan-drift-the-audit-recorded).
+Counts: 4 done, 14 open, 1 implemented with its eval pending, 2 waiting on a decision, 1 deferred. Separately: six [open decisions](#open-decisions-for-the-human-partner-13), one of them largely overtaken; four [related items](#related-from-the-2026-10-07-run-profile-baseline), all done; and four [drift items outside the plan](#outside-the-plan-drift-the-audit-recorded).
 
 ## Rules that bound every item
 
@@ -153,8 +154,9 @@ Each is its own branch and adds no run-time agents. E6, a directional evolvabili
 
 ## Phase 2: zero-code probe
 
-### 2 Probe R-c0: the spec path as stated intent for PR roasts (open)
+### 2 Probe R-c0: the spec path as stated intent for PR roasts (done; E3 open)
 
+- **Status:** done by the Key abstractions step (K). super-auto's phase 4 now passes every spec in the run directory (root first, then nested) as super-roast's new optional PR-mode `stated intent` input, relayed into `assemble-args`' `--artifact` (`skills/super-roast/SKILL.md`, `skills/super-auto/SKILL.md` phase 4 row). E3, the evaluation, is still open.
 - **Do:** have super-auto's phase-4 invocation (skills/super-auto/SKILL.md:164) pass the run's root spec path in the roast's `--artifact` text or PR description, as a pointer only (§5.2).
 - **Why:** PR judges already count "the change's stated intent" and can read the repository (skills/super-roast/judge-seat-prompts.md:146-150), yet PR roasts receive no design-time contracts (A4-F19; skills/super-roast/scripts/assemble-args.mjs:19-20). In recorded roasts, interface findings were confirmed when a written contract existed, while other design findings mostly ended rejected, demoted or unverified (A4-F18). super-code's final whole-epic review already reads the spec and checks cross-task seams (skills/super-code/coordinator.js:1877, was :1860); it stays the code-time backstop.
 - **Worked when:** E3: confirmations of contract-anchored findings rise and trap confirmations do not. The super-auto contract lint passes. If the probe works, 3a is unnecessary.
@@ -212,6 +214,7 @@ Independent branches. E4 guards all three against late-round noise: after round-
 - **Why:** in Parnas's method, the modular structure describes every decision that affects more than one module before independent work begins [1], and in field studies incomplete specifications hid divergent assumptions until integration [165]. Autonomous runs force Mode B specs (skills/super-design/SKILL.md:42), which have no component, interface or error section (skills/brainstorming/SKILL.md:266-272). The criterion rides the pass that already reads the full spec, as SPLIT did (docs/superpowers/specs/2026-08-26-leaf-sizing-design.md:13-15). The narrow trigger answers critique #5: v1's "Units and interfaces" section was a design ceremony in disguise.
 - **Worked when:** E8: on a 2–3-unit change against a control, no invented interfaces, and spec length and questions to the human stay within a pre-registered margin. The super-design tests and the super-auto contract-lint pointers pass.
 - **Cost:** no agents; short spec entries.
+- **Overlap:** the Key abstractions step (K) already gives each new abstraction one owner bead (`owns:` / `consumes:`) and adds an owned-abstractions criterion to the promotion review's decomposition verdict; reconcile the seam-note criterion with it rather than adding a second.
 
 ### 4L Design-mode `interfaces-and-ownership` lens (decision §13.3)
 
@@ -219,6 +222,17 @@ Independent branches. E4 guards all three against late-round noise: after round-
 - **Why:** design mode has no design-quality or abstraction lens (A8-F04), and `maintainer` widens only when triage names zero domains (A4-F05).
 - **Cost:** roughly 15–20 agents per design round: one opus scout plus ~16 seats at the recorded design rate (~126 seats for 8 scouts, A4-F07).
 - **Worked when:** the plan names no eval. Evaluating the lens takes design roasts (~7.8M tokens each, A7-F16), which the §9 budget does not include.
+
+## Key abstractions step (revisits D-a)
+
+### K Key abstractions step in super-design (implemented; eval pending)
+
+- **Do:** super-design runs a fresh-context designer on every spec it handles, root and nested, before decomposition. The designer writes a short `## Key abstractions` section: which abstractions the design needs, what each owns and must not do, what varies and the one place kinds are chosen, and a digest line per new abstraction. Decomposition gives each new abstraction one owner bead, which writes a responsibility comment on the type. One sync copies the digest into the root epic's Global Constraints, so every task brief carries it, and super-auto's code roast gets the run's specs as stated intent (item 2). [Spec](docs/superpowers/runs/2026-10-10-key-abstractions-design-step/2026-10-10-key-abstractions-design-step-design.md).
+- **Why:** agent-written code tends to miss abstractions and blur responsibilities (dossier D9). In the motivating case, kept generic here, a CLI tool added a second and then a third integration, and its callers branched on the integration's name in many places across its core files. Those branches kept growing after a later run designed a proper adapter and registry, because no written rule said where new per-integration behavior belonged. Nothing in the pipeline asked the abstraction questions before decomposition.
+- **Revisits D-a:** D-a's objections concerned a separate super-auto phase placed after the design roast, which neither the roast nor the one-shot review stop would see and which broke the phase set. This step runs inside super-design before decomposition, so the design roast reviews it and super-auto's phase set is unchanged.
+- **Overlap with 4:** the owner beads and the digest overlap with item 4's cross-bead seam notes and its promotion-review criterion. This step adds an "owned abstractions" criterion to the same decomposition verdict. When 4 is taken up, reconcile the two so that one rule covers both, rather than adding a second.
+- **Status:** implemented; eval pending. super-auto's phase 6 runs the eval (`tests/super-design/key-abstractions-eval/README.md`: three cases, 15 runs, before and after) and records the results here and in `skills/super-design/MAINTENANCE.md`.
+- **Worked when:** the eval's after arm passes each case in at least 2 of 3 reps.
 
 ## Phase 5: engine, only if Phase 0–3 data warrant it
 
@@ -263,7 +277,7 @@ From §4 and the refinement log:
 | Option | Verdict | Reason |
 |---|---|---|
 | R-a: a new always-on "OOP design" PR lane | rejected | duplicates `simplicity-design`, which already carries the human partner's OOP priorities (A8-F04); developers discount OO-practice smells [209], and judges rejected or demoted taste findings (A4-F18) |
-| D-a: a new super-auto "interface model" phase | rejected | breaks `report-status`'s phase set (skills/super-auto/scripts/report-status:72-75) and the frozen phase baseline (tests/super-auto/test-contract-lint.sh:172-173); placed after phase 2, it would follow the design roast and the one-shot review stop, so neither would see it (A5-F08) |
+| D-a: a new super-auto "interface model" phase | revisited | breaks `report-status`'s phase set (skills/super-auto/scripts/report-status:72-75) and the frozen phase baseline (tests/super-auto/test-contract-lint.sh:172-173); placed after phase 2, it would follow the design roast and the one-shot review stop, so neither would see it (A5-F08). Revisited by K: those objections concerned a separate super-auto phase after the design roast; the Key abstractions step runs inside super-design before decomposition, so the design roast reviews it and the phase set is unchanged |
 | D-b: a new super-design interface-review pass | rejected | "no new review passes" (leaf-sizing-design.md:13-15) |
 | D-e: implementer reuse and refactor lines (v1 §6.5) | dropped | "reuse or extend" nudges toward generalized producers that leave consumers behind, and the refactor line would reverse tuned scope text (skills/super-code/implementer-prompt.md:72-74) (critique #10, #11) |
 | C-a: proactive seam contracts, through SPLIT routing and v1's two other creation routes | deferred, see 5b | silent stacked-consumer drift (A3-F12); no gain in the fallback; [165] |
@@ -320,14 +334,14 @@ Not carried into the plan: each dossier's "Implications" section holds finer-gra
 
 ## Related, from the 2026-10-07 run-profile baseline
 
-The human partner picked these four items today from the run-profile baseline. They are not in the research plan, but each touches it. Merge-lane priority and slow-test guidance landed while this file was being written; the other two are in progress in the small-fixes tab.
+The human partner picked these four items today from the run-profile baseline. They are not in the research plan, but each touches it. Merge-lane priority and slow-test guidance landed while this file was being written; the other two shipped in 6.4.2-alepar4.20.
 
 | Item | Status | Touches |
 |---|---|---|
 | Merge-lane priority | done (`ed91f8b`, released in 6.4.2-alepar4.17) | 5a, whose consumes-seam review for stack parents would add work to the same lane. The next merge is now the queued task with the most live attempts waiting on its landing, and run-profile's schedule model still assumes a FIFO lane (commit `7483d90`) |
-| Implementer rebase onto the integration tip before reporting | in progress (small-fixes tab) | the stacked-consumer path, where the silent-drift gap (A3-F12) and the discard risk (A2-F09) sit: 1a, 5a, 5b and E7 |
+| Implementer rebase onto the integration tip before reporting | done (`cc948b4`, released in 6.4.2-alepar4.20) | the stacked-consumer path, where the silent-drift gap (A3-F12) and the discard risk (A2-F09) sit: 1a, 5a, 5b and E7 |
 | Slow-test guidance | done (`24c38a1`, released in 6.4.2-alepar4.19) | the rule that a contract-first speed-up must be measured on the critical path (§7, 5b), most of which is implement time, much of it tests. Implementers now narrow slow test runs, and the profile names the costliest test commands in a `Profile: slow tests` line (commit `3548bfb`) |
-| Splitting hot shared files up front at design time | in progress (small-fixes tab) | design-time decomposition (4); the graph-pass decision on cuts over a shared file (13.2); the UNOWNED-SEAM findings rejected as "shared file, not a dataflow boundary" (A2-F03); it is bound by the no-new-pass rule (D-b) |
+| Splitting hot shared files up front at design time | done (`f9a5b68`, released in 6.4.2-alepar4.20) | design-time decomposition (4); the graph-pass decision on cuts over a shared file (13.2); the UNOWNED-SEAM findings rejected as "shared file, not a dataflow boundary" (A2-F03); it is bound by the no-new-pass rule (D-b) |
 
 The baseline facts behind them, from skills/super-code/MAINTENANCE.md, section "Run profile":
 
@@ -360,7 +374,7 @@ Every section of recommendations.md and every critique objection maps to an entr
 
 | recommendations.md | Here |
 |---|---|
-| §1 decision summary | items 1–10 → D-a and D-b rejected; Phase 0; 1a–1c; 2 and 3a; 3b; 3c; 4; 5a and 5b; the rules on severity; the delivery rule |
+| §1 decision summary | items 1–10 → D-a revisited (K), D-b rejected; Phase 0; 1a–1c; 2 and 3a; 3b; 3c; 4; 5a and 5b; the rules on severity; the delivery rule |
 | §2 evidence base, §3 what exists | the "Why" lines; the rules |
 | §4 options | the items and the options table |
 | §5.1–§5.7 | 0.1–0.6; 2; 3a; 3b; 3c; 4L; expected severities |
