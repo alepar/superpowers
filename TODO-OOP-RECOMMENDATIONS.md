@@ -44,13 +44,13 @@ The raw files are not on `main`: the ledgers (`*.jsonl`, `*.json`), `research-pl
 | 3c | Minimal `simplicity-design` edits | §5.5 | open |
 | 4 | Cross-bead seam notes and a promotion-review criterion | §6.2, §6.3 | open |
 | 4L | Design-mode `interfaces-and-ownership` lens | §5.6 | decision (§13.3) |
-| K | Key abstractions step in super-design | [spec](docs/superpowers/runs/2026-10-10-key-abstractions-design-step/2026-10-10-key-abstractions-design-step-design.md) | implemented; eval pending |
+| K | Key abstractions step in super-design | [spec](docs/superpowers/runs/2026-10-10-key-abstractions-design-step/2026-10-10-key-abstractions-design-step-design.md) | implemented; eval passed (2026-10-11) |
 | 5a | Engine fix for stacked-consumer drift (C-b) | §8 Phase 5 | decision (§13.4), data-gated |
 | 5b | Proactive seam-contract triggers, Workflow mode only (C-a) | §4, §8 Phase 5 | deferred until 5a |
 | O1 | A second independent critique of the plan | refinement log | open, optional |
 | O2 | Seam notes and `[class]` clusters as inputs to the in-round step-back | §12 | open, separate work |
 
-Counts: 4 done, 14 open, 1 implemented with its eval pending, 2 waiting on a decision, 1 deferred. Separately: six [open decisions](#open-decisions-for-the-human-partner-13), one of them largely overtaken; four [related items](#related-from-the-2026-10-07-run-profile-baseline), all done; and four [drift items outside the plan](#outside-the-plan-drift-the-audit-recorded).
+Counts: 4 done, 14 open, 1 implemented with its eval passed, 2 waiting on a decision, 1 deferred. Separately: six [open decisions](#open-decisions-for-the-human-partner-13), one of them largely overtaken; four [related items](#related-from-the-2026-10-07-run-profile-baseline), all done; and four [drift items outside the plan](#outside-the-plan-drift-the-audit-recorded).
 
 ## Rules that bound every item
 
@@ -225,13 +225,13 @@ Independent branches. E4 guards all three against late-round noise: after round-
 
 ## Key abstractions step (revisits D-a)
 
-### K Key abstractions step in super-design (implemented; eval pending)
+### K Key abstractions step in super-design (implemented; eval passed)
 
 - **Do:** super-design runs a fresh-context designer on every spec it handles, root and nested, before decomposition. The designer writes a short `## Key abstractions` section: which abstractions the design needs, what each owns and must not do, what varies and the one place kinds are chosen, and a digest line per new abstraction. Decomposition gives each new abstraction one owner bead, which writes a responsibility comment on the type. One sync copies the digest into the root epic's Global Constraints, so every task brief carries it, and super-auto's code roast gets the run's specs as stated intent (item 2). [Spec](docs/superpowers/runs/2026-10-10-key-abstractions-design-step/2026-10-10-key-abstractions-design-step-design.md).
 - **Why:** agent-written code tends to miss abstractions and blur responsibilities (dossier D9). In the motivating case, kept generic here, a CLI tool added a second and then a third integration, and its callers branched on the integration's name in many places across its core files. Those branches kept growing after a later run designed a proper adapter and registry, because no written rule said where new per-integration behavior belonged. Nothing in the pipeline asked the abstraction questions before decomposition.
 - **Revisits D-a:** D-a's objections concerned a separate super-auto phase placed after the design roast, which neither the roast nor the one-shot review stop would see and which broke the phase set. This step runs inside super-design before decomposition, so the design roast reviews it and super-auto's phase set is unchanged.
 - **Overlap with 4:** the owner beads and the digest overlap with item 4's cross-bead seam notes and its promotion-review criterion. This step adds an "owned abstractions" criterion to the same decomposition verdict. When 4 is taken up, reconcile the two so that one rule covers both, rather than adding a second.
-- **Status:** implemented; eval pending. super-auto's phase 6 runs the eval (`tests/super-design/key-abstractions-eval/README.md`: three cases, 15 runs, before and after) and records the results here and in `skills/super-design/MAINTENANCE.md`.
+- **Status:** implemented; eval passed 2026-10-11 ([results](docs/superpowers/runs/2026-10-10-key-abstractions-design-step/key-abstractions-eval.md)): (a) third integration 2/3, (b) one-flag change 3/3, (c) nested extension 3/3, 15 runs, 772k tokens. The one-shot brainstorm baseline already named the abstraction on (a), so this fixture does not show the step catching one a brainstorm missed; it does show responsibility-level designs (no signatures in 8 of 9 after reps vs 0 of 6 before), cited exceptions and explicit "no new abstractions" answers. A replay on a real project remains the follow-up. Summary in `skills/super-design/MAINTENANCE.md`.
 - **Worked when:** the eval's after arm passes each case in at least 2 of 3 reps.
 
 ## Phase 5: engine, only if Phase 0–3 data warrant it
