@@ -50,8 +50,9 @@ codeBuckets:
   pendingRetry:
   parked:
   stalled: false
-  review: not ready (no full-suite sweep at 3035708; phase-6 eval and MAINTENANCE.md owed; recommended: handed-in root first-sync clause)
-  sweep: SWEEP DEFERRED (caller-owned)
+  review: ready (after the phase-6 sweep @ 92e38a7)
+  sweep: 92e38a7 — 8 passed, 0 failed, 0 errors, 0 skipped; failing: none; command: the 8 release suites in AGENTS.md (Cutting a Fork Release, step 1) @ 92e38a7
   slowness: graph-bound (critical path 26m, 15m planning); 19m in the no-commit sweep attempts; fix round: see profile-wf_e589716d-a1a
   worktreesKept:
   processSweep: stopped 0 · survived 0
+friction: 3 events
