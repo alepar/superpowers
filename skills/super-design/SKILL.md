@@ -266,7 +266,9 @@ paraphrase ("this child is responsible for…") reads as unowned and produces a 
 any sibling omits the declaration entirely — there is no `owns: none` filler to write.
 
 **Each abstraction the spec's `## Key abstractions` section adds gets one owner bead** — the
-bead that creates it in code. It builds the type (trait, interface or class), the place where
+bead that creates it in code. Until this level's children exist, this rule is the only creator
+of owner beads, and it adopts a bead that already says `owns: <Abstraction>` rather than
+creating a second. It builds the type (trait, interface or class), the place where
 kinds are chosen if there is one (a registry or factory), and the type's responsibility
 comment. Its description says `owns: <Abstraction>` and carries the section's full entry for
 it, kept current by the sync below. Its acceptance includes the comment on the type: what it
@@ -304,10 +306,18 @@ It rewrites:
   replaces the description wholesale: `bd show` the epic first and re-send its full text with
   only the block changed.
 - **Owner beads.** Rewrite the entry text of each owner bead whose abstraction changed,
-  through the same wholesale `bd update --description` rule. An abstraction in the digest that
-  no bead owns, as after one is added or renamed after decomposition, gets an owner on the
-  spot: a new owner bead with the standard flag triple, or an `owns:` line plus the comment
-  acceptance on an existing bead that already builds it. On a rename, re-key the beads'
+  through the same wholesale `bd update --description` rule. The sync creates owner beads only
+  once the children of the level whose section adds the abstraction exist; before that (a
+  nested level's first sync, or the root's at epic creation) it creates none, and
+  §Decomposition's owner-bead rule above is the only creator. After that, an abstraction in
+  the digest that no bead owns, as after one is added or renamed, gets an owner on the spot:
+  an `owns:` line plus the comment acceptance on an existing bead that already builds it, or
+  a new owner bead made like an §Adversarial Review Loop step-1 fix task — §Decomposition's
+  flag triple (`--parent <that level's epic> --no-inherit-labels -l sp:<root-epic-id>`) and,
+  before hand-off, when an `Integration sweep:` bead already exists for this root,
+  `bd dep add <sweep> <owner>` paired with
+  `blocked-by <owner-id>: consumes all leaves (integration sweep)` in the sweep's
+  description. On a rename, re-key the beads'
   `consumes:` lines to the new name. An owner bead whose abstraction is gone is restructured
   like any other task under the roast loop's existing rule.
 - **No-beads plans** carry the same tree-wide set (§No-Beads Mode).
