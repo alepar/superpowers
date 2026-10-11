@@ -1,1 +1,3 @@
 # friction log — 2026-10-10-key-abstractions-design-step
+- [2026-10-11] super-code · verification-only bead cannot complete · The root integration sweep (super-plan-998.7) found nothing to change and reported IMPLEMENTED twice with no commit; the coordinator treats head == base as BLOCKED, filed blocker super-plan-zvd, and returned ready-drained. Workaround: the orchestrator closed both by hand, relying on the phase-6 sweep. Ask: a no-change completion outcome for verification-only beads.
+- [2026-10-11] super-design · new section's hand-off text not updated · the final review found §Root Brainstorm and its §Re-entry row still say "go to §Decomposition", skipping the new step 2; no bead owned older hand-off text the renumbering made stale.
