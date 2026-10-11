@@ -115,10 +115,12 @@ Task tool (general-purpose), model: opus:
           <what callers never do>.
 
     - Give one entry per abstraction, new or extended, and leave out bullets that don't apply.
+      Extended entries appear only beside at least one new abstraction.
     - The `Digest:` block has exactly one line per abstraction this section **adds**, with
       continuation lines indented. Extended abstractions get no digest line.
-    - When nothing new is needed, the whole answer is the heading and the one-liner, with no
-      `Digest:` block:
+    - An answer that adds no abstraction, including one that only extends existing ones,
+      takes the one-liner form: the heading and the one-liner, naming every abstraction it
+      extends, with no entries and no `Digest:` block:
 
         ## Key abstractions
 
