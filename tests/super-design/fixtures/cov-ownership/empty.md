@@ -1,5 +1,5 @@
 # Sibling q.1
-Bead: 
+Bead:
 
 ## Goal
 INVALID_GOAL
