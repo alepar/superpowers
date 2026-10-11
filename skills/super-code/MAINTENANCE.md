@@ -127,7 +127,7 @@ re-adopt from a stale reading. None of them is an open gap.
   - herdr-threads, 2026-10-03 (4.15): 1.45 at once, 31.4 h idle against 33.2 h busy.
   - Two runs on 2026-10-07 (4.20): 1.85 and 1.23 at once. One implementer ran 17.7 h.
   - durak, 2026-10-05, on blacky: 1.00 at once, 25.7 h idle against 3.5 h busy.
-  
+
   The model changed at the same time (gpt-6-astra and gpt-6-sol to gpt-6.1-sol). No run used
   gpt-6.1-sol with the improvised loop, so the two causes are not separated. The serial schedule
   is the skill's own, though. The fix restored the improvised loop. `coordinator-subagents.md` now
