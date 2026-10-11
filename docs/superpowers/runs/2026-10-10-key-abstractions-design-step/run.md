@@ -13,9 +13,11 @@ base: main
 roast-design: 2026-10-11-key-abstractions-design-step-roast-design-1.md
 skillSource: /Users/alepar/.claude/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar4.21/skills @ 0ea4761c565e121b6b21d19f544c8f48af491426 (6.4.2-alepar4.21)
 
-roastDesignRound: 1
+roastDesignRound: 2
 
 approvals:
 - top-split · human · super-plan-998.1 LEAF, super-plan-998.2 LEAF, super-plan-998.3 LEAF, super-plan-998.4 LEAF, super-plan-998.5 LEAF, super-plan-998.6 LEAF
 - coverage-round-1 · canonical R-list: see coverage-round-1-requirements.md (R1–R12) · requirements: 12 · mapped: 10 · unmapped: 3 (R6, R9, R12) · auto GAP R12 → applied (sweep + acceptance); auto GAP R9 → applied (.4 ownership); auto UNOWNED-SEAM stated-intent handoff → applied (.4); auto GAP R6 → applied (.3); auto GAP R8 → applied (.3); auto GAP R4 → applied (.3); auto GAP brief carry → rejected (verified); auto UNOWNED-SEAM contract ordering → rejected (spec fixes it); auto UNOWNED-SEAM roast format → rejected; auto GAP R10 → applied (epic acceptance); auto UNOWNED-SEAM TODO writers → applied (.6)
 - coverage-round-2 · R-list read back from round 1, R13–R14 appended (coverage-round-2-requirements.md) · requirements: 14 · mapped: 14 · unmapped: 1 (R13) · divergence: findings 11 → 12, novel 10/12 (83%), widening: yes (cap holds; the design roast reviews the settled tree) · auto GAP eval behaviour → applied (root acceptance); auto GAP R7 → applied (.3); auto GAP R14 → applied (.3, .4); auto GAP nested digests → applied (.3); auto UNOWNED-SEAM .5 placeholders → applied (.5); auto UNOWNED-SEAM TODO item 2 → applied (sweep); auto GAP baseline → applied (.5); auto GAP prompt relay → rejected (assemble-args.mjs:182, :240); auto GAP named fixtures → applied (.5); auto UNOWNED-SEAM nested spec paths → applied (.4); auto UNOWNED-SEAM writing-plans handoff → applied (.3); auto ORPHAN .6 → rejected (serves R11)
+- stepBackDesign-round-1: redesign — applied: digest as an add-only copy written at separate triggers → specs' sections as the single source, one sync regenerating the epic digest, owner-bead entries, no-beads plans and designer input (dissolves 4)
+- design-roast-1 escalation · human · re-entry runs the step when a committed spec lacks the section; a nested sp:needs-design is cleared only after apply and sync

@@ -33,13 +33,13 @@ The research rejected a separate super-auto "interface model" phase (option D-a)
   - this level's spec;
   - the distillate (§3);
   - read access to the repository;
-  - every `## Key abstractions` section already written: each ancestor's, from the root down to the parent, and each sibling's designed before it (depth-first order guarantees those are finished).
+  - every `## Key abstractions` section already committed anywhere in the tree, in tree order (root first, then depth-first by `sp_order`), with this level's ancestors marked as the frame it builds within.
 - **Output.** The section, plus one digest line per abstraction it adds (§2).
 - **Applying.** super-design inserts the section before `## Post-Implementation Notes` and commits the spec.
   - Interactive (Mode A): the human sees the section before the commit and may edit it. This is part of the design dialog, like the top-split question.
   - Unattended (one-shot or `autonomous`): applied without asking. It joins §Unattended Runs' list of asks answered by default. The design roast reviews it with the rest of the spec. No new stop.
 - **Precedence.** The spec's explicit decisions win, and the section fills gaps only. Where an explicit decision forces something that looks like a misstep, such as a deliberate per-caller branch, the section says so in one line and cites the spec section. The code roast then reads it as intended rather than as leakage.
-- **Re-entry.** A committed spec that already has the section is adopted, not re-dispatched, and any of its digest lines missing from the root epic are added (§4): one new row in §Re-entry.
+- **Re-entry.** A committed spec that already has the section is adopted, not re-dispatched, and the sync runs (§4). A committed spec without the section, as after a crash between the brainstorm's commit and this step, runs the step before decomposition. A nested level's `sp:needs-design` label is cleared only after its section is applied and the sync has run. One new row in §Re-entry.
 - **Cost.** One opus dispatch per spec.
 
 ### 2. The designer's brief
@@ -49,11 +49,11 @@ The research rejected a separate super-auto "interface model" phase (option D-a)
 - `[SPEC_FILE_PATH — read it]`: this level's spec;
 - `[DISTILLATE_PATH — read it]`: the distillate;
 - `[REPO_ROOT]`: the repository to read;
-- `[KEY_ABSTRACTIONS_SO_FAR]`: each ancestor's section, root first, then each earlier sibling's; at the root, `none — this is the root spec`.
+- `[KEY_ABSTRACTIONS_SO_FAR]`: every section already committed in the tree, in tree order, with this level's ancestors marked as the frame; at the root, `none — this is the root spec`.
 
 The designer answers these questions briefly and skips what doesn't apply:
 
-1. **Abstractions.** Which new abstractions does this design need, and which existing ones should it extend? Read the code first. Callers that branch on a kind, type or name signal a missing abstraction. Reuse or extend the abstractions handed in from above; never redefine one.
+1. **Abstractions.** Which new abstractions does this design need, and which existing ones should it extend? Read the code first. Callers that branch on a kind, type or name signal a missing abstraction. Reuse or extend the abstractions handed in; never redefine one, whichever branch of the tree defined it.
 2. **Responsibilities.** For each one: what it owns, the decision it hides, and what it must not do.
 3. **Relationships.** Composition, delegation, a shared interface, or inheritance, which is only for true substitution: a subtype that can stand in anywhere its parent is used. Which way do dependencies point?
 4. **Variation.** What varies, now or in the spec's plans?
@@ -133,17 +133,17 @@ Digest:
 
 - **Decomposition: one owner bead per new abstraction.** This is the bead that creates the abstraction in code.
   - It builds the type (trait, interface or class), the place where kinds are chosen if there is one (a registry or factory), and the responsibility comment.
-  - Its description says `owns: <Abstraction>` and carries the section's full entry.
+  - Its description says `owns: <Abstraction>` and carries the section's full entry, kept current by the sync (below).
   - Its acceptance includes the comment on the type: what it owns, what it doesn't, where new behavior goes, and the pattern or role it plays.
   - By the bottleneck rule it stays small and lands first, which is the shape of a `Seam contract:` bead. When several beads need it before it exists, the existing seam-contract machinery applies.
   - Beads that use the abstraction say `consumes: <Abstraction>`. In the generic example, each integration's adapter is its own parallel bead, and one more bead moves the existing callers behind the registry.
   - Owning doesn't lock the type. A bead that needs new per-kind behavior adds a method to the interface, which is where the comment says new behavior goes.
   - An existing abstraction that the design only extends has no owner bead. Whichever bead changes its responsibilities updates its comment.
-- **The digest.** The digest lines go into the root epic's description, under a `## Global Constraints` heading.
-  - At the root, the step runs before the epic exists, so §Decomposition writes the root's lines when it creates the epic. At a nested level, the step adds that level's lines to the same block once its section is applied.
-  - `bd update --description` replaces the description wholesale, so read the epic first and re-send its full text with the lines added.
+- **Single source, one sync.** Each spec's `## Key abstractions` section, with its `Digest:` block, is the only source. Every other copy is regenerated from the committed sections, never appended to. One sync rule runs whenever any section is applied or changed: this step's apply, an interactive edit, a design-roast fix or step-back redesign that touches a section, and re-entry. It rewrites:
+  - **The digest:** the `Digest:` lines of every committed spec in tree order, replacing the digest block under `## Global Constraints` in the root epic's description. The block is created when absent, whether decomposition just created the epic or the run adopted a handed-in one, and merged under an existing `## Global Constraints` heading rather than adding a second one. At the root the step runs before the epic exists, so the first sync runs when §Decomposition creates the epic. `bd update --description` replaces the description wholesale, so read the epic first and re-send its full text.
+  - **Owner beads:** the entry text of each owner bead whose abstraction changed. An owner bead whose abstraction is gone is restructured like any other task under the roast loop's existing rule.
   - super-code's planner already copies an epic's Global Constraints verbatim into every task brief (`skills/super-code/planner-prompt.md:93`). The task reviewer checks the brief against them. super-code doesn't change.
-  - In no-beads mode, the digest lines go into each plan's `## Global Constraints` (writing-plans): one line in §No-Beads Mode.
+  - **No-beads plans:** in no-beads mode, each plan's `## Global Constraints` (writing-plans) carries the same tree-wide set: one line in §No-Beads Mode.
 - **Promotion review.** One criterion is added to the decomposition verdict in `skills/super-design/promotion-reviewer-prompt.md`: every abstraction this spec's section adds (each one has a digest line) is created by exactly one child whose `owns:` line names it. Abstractions the section only extends need no owner child. An `ISSUES` verdict is fixed inline, as today. The reviewer already reads the whole spec, so this adds no pass.
 - **Nested brainstorms.** They already receive the parent spec and earlier siblings' specs. One line in §Nested Brainstorms makes the ancestors' Key abstractions the frame the nested design builds within. An explicit decision that goes against one wins at that level, and that level's section notes it.
 - **Code roast.**
@@ -171,7 +171,9 @@ Digest:
     - (c) extends the given abstraction without redefining it;
     - all three give no method signatures.
   - **Arms.** "Before" is a fresh one-shot (Mode B) brainstorm spec for the fixture in each rep, which is what decomposition reads today. "After" runs the designer on that same spec. The rubric is applied to both arms. Three reps each; (c) runs after-only. 15 runs in all.
+  - **Isolation.** Each run's `[REPO_ROOT]` is a scratch copy of the fixture CLI alone, without the rubric, the specs' expected answers or the run docs.
   - **The planted decision must survive.** If a "before" spec for (a) drops it, that brainstorm rep is re-run, so both arms share a spec that carries it.
+  - **Pass rule.** The after arm passes a case when at least 2 of its 3 reps pass the rubric. On a failed case, the orchestrator files one fix bead against the template or distillate and re-runs that case once, then reports what still fails.
   - **Grading.** By hand against the rubric, recording each run's token cost. Results and token cost go to `docs/superpowers/runs/2026-10-10-key-abstractions-design-step/key-abstractions-eval.md`, summarized in a new `skills/super-design/MAINTENANCE.md` and in the TODO item.
 - **Tests.** No scripts change, so the release suites in `AGENTS.md` must stay green. If the super-auto phase-4 wording trips `tests/super-auto/test-contract-lint.sh`, the same bead updates the lint.
 - **Not exercised by this run.** The eval grades only what the designer writes. These skill-text rules run only in real super-design runs:
