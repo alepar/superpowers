@@ -38,6 +38,11 @@ assert_eq "$(q "$T/pr2.json" "JSON.stringify(d.punchListed)")" '"[Should-fix] c.
 assert_eq "$(q "$T/pr2.json" "d.prompts.reporter.includes('<punch_listed>\\n{{PUNCH_LISTED}}\\n</punch_listed>')")" "true" "reporter prompt keeps the {{PUNCH_LISTED}} slot for the engine"
 assert_eq "$(q "$T/pr1.json" "d.punchListed")" "" "no --punch-listed: empty punchListed"
 assert_eq "$(q "$T/pr1.json" "d.independence")" "same-family (Claude) — seat-differentiated panel · rung: Workflow" "independence names the Workflow rung with --script"
+run bash "$A" --mode pr --inputs "b@1 vs m@0" \
+  --artifact "b@1 vs m@0 — stated intent: docs/r/x-design.md, docs/r/x--y-design.md" \
+  --diff-stat "M a.js" --out "$T/pr-intent.json"
+assert_eq "$code" 0 "pr with a stated intent exits 0"
+assert_eq "$(q "$T/pr-intent.json" "[...Object.values(d.prompts.scouts), ...Object.values(d.prompts.seats)].every(p => p.includes('b@1 vs m@0 — stated intent: docs/r/x-design.md, docs/r/x--y-design.md'))")" "true" "stated intent appended to --artifact reaches every scout and judge-seat prompt"
 
 run bash "$A" --mode design --inputs "docs/spec.md" --spec /abs/spec.md --context "Epic bd-1" --out "$T/d1.json" --script "$T/d1.js"
 assert_eq "$code" 0 "design round 1 exits 0"

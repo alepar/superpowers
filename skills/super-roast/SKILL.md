@@ -54,6 +54,7 @@ line when writing the report file (e.g. `mode: PR (assumed — input is a branch
 | prior report path (rounds ≥ 2) | lets the run skip re-litigating what `## Rejected (with reason)` already settled — and switches the run into its late-round shape: scouts get the iterations-≥2 materiality bar ("no material findings" is a valid, expected outcome; manufacturing marginal findings is the failure mode) in place of round 1's high-recall section, and a `regression` lens/lane joins the roster to review what the fixes themselves touched (see the scout prompt files' "Iteration stance" sections) |
 | punch-listed keys (optional, rounds ≥ 2) | the prior round's confirmed findings the caller's scope filter deliberately left unfixed, one `[SEV] <location>` key per line (`assemble-args --punch-listed FILE`). A prior finding on this list that the round does not re-surface is reported `punch-listed (open)`, never resolved |
 | autonomous (optional) | see Mode selection above and the Handoff exception in The Process step 7 |
+| stated intent (optional, PR mode) | pointer text saying what the change is meant to do, such as the paths of the specs it implements (a caller with a design tree lists the root spec first, then the nested ones). Relayed into `assemble-args`' `--artifact` (The Process), which every scout and judge already reads as the change's stated intent. Paths, never pasted content |
 
 Only mode and the artifact are required; a bare invocation gets defaults for the rest.
 
@@ -68,6 +69,7 @@ the run's friction log. Full procedure, schemas, and the engine script:
 **`./super-roast-workflow.md`**. Assemble the engine's `args` with `bash <this skill's
 dir>/scripts/assemble-args` rather than by hand — it applies the round's stance, recall policy
 and `regression` lane from the prompt files below.
+In PR mode with a stated intent (Inputs), pass `--artifact "<branch@sha> vs <base@sha> — stated intent: <stated intent>"`, the default naming with the stated intent appended; without one, leave `--artifact` off and it defaults to `--inputs`.
 
 1. **Pre-flight** — resolve mode, inputs, and the project's environment profile (blast radius:
    prototype / internal / production / regulated). PR inputs are the branch diff + working
