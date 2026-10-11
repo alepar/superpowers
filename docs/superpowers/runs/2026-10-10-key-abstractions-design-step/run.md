@@ -11,3 +11,6 @@ epic: super-plan-998
 branch: super-auto/key-abstractions-design-step
 base: main
 skillSource: /Users/alepar/.claude/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar4.21/skills @ 0ea4761c565e121b6b21d19f544c8f48af491426 (6.4.2-alepar4.21)
+
+approvals:
+- top-split · human · super-plan-998.1 LEAF, super-plan-998.2 LEAF, super-plan-998.3 LEAF, super-plan-998.4 LEAF, super-plan-998.5 LEAF, super-plan-998.6 LEAF
