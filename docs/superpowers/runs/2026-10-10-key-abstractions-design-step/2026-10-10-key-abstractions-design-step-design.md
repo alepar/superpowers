@@ -225,4 +225,11 @@ Digest:
 
 ## Post-Implementation Notes
 
+**Changes vs. original design (2026-10-11):**
+- Design roast round 1 → step-back redesign (approved by the human partner): the specs' `## Key abstractions` sections are the single source, and one sync regenerates the epic digest (between begin/end markers), owner-bead entries, no-beads plans and the designer's input; every designer sees every committed section in tree order.
+- Re-entry runs a skipped step; a nested level is marked done only after apply and sync.
+- The sync creates owner beads only after a level's decomposition, wired into the integration sweep like a roast fix task; a phase-5 redesign that touches a section also triggers it.
+- Extend-only answers take the one-liner form; rubric X1 matches.
+- Eval: all three cases pass (2/3, 3/3, 3/3); the one-shot baseline already found the abstraction on (a). See `key-abstractions-eval.md`.
+
 > *As this design is implemented and iterated on — bug fixes, adjustments, anything that diverged from the assumptions above — append a dated note here, whether or not a formal debugging skill was used.*
