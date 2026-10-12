@@ -542,16 +542,20 @@ function readLedger(file) {
   let text
   try { text = readFileSync(file, 'utf8') } catch { return null }
   const landed = new Set(), blocked = new Set(), ids = new Set()
-  let epic = null, concurrency = null
+  let epic = null, concurrency = null, earlyUnblock = false
   for (const line of text.split('\n')) {
     let m
-    if ((m = /^Launch: mechanism \S+ · epic (\S+)/.exec(line))) { epic = m[1]; concurrency = Number(/ · concurrency (\d+)/.exec(line)?.[1]) || concurrency }
+    if ((m = /^Launch: mechanism \S+ · epic (\S+)/.exec(line))) {
+      epic = m[1]
+      concurrency = Number(/ · concurrency (\d+)/.exec(line)?.[1]) || concurrency
+      earlyUnblock = / · earlyUnblock on\b/.test(line)
+    }
     else if ((m = /^# SDD ledger — plan: \S*?([^/\s]+)-plan\.md/.exec(line))) epic ??= m[1]
     else if ((m = /^Merge: (\S+) — (.*)$/.exec(line))) { ids.add(m[1]); if (!/\s→\s/.test(m[2])) landed.add(m[1]) }
     else if ((m = /^Task \d+ \(([^)]+)\): (complete|BLOCKED)\b/.exec(line))) { ids.add(m[1]); (m[2] === 'complete' ? landed : blocked).add(m[1]) }
     else if ((m = /^Task \d+ \(([^)]+)\):/.exec(line))) ids.add(m[1])
   }
-  return { file, epic, concurrency, landed, blocked, ids }
+  return { file, epic, concurrency, earlyUnblock, landed, blocked, ids }
 }
 function bdDump(cwd) {
   if (!cwd || !isDir(cwd)) return null
@@ -695,7 +699,7 @@ if (ordinary.length) {
   const byNorm = new Map()
   for (const id of ids) { const k = normName(id); byNorm.set(k, byNorm.has(k) && byNorm.get(k) !== id ? null : id) }
   for (const r of ordinary) {
-    r.launch = { epicId: ep, mechanism: 'ordinary-subagents', config: { concurrency: ledger?.concurrency ?? 1, earlyUnblock: false } }
+    r.launch = { epicId: ep, mechanism: 'ordinary-subagents', config: { concurrency: ledger?.concurrency ?? 1, earlyUnblock: !!ledger?.earlyUnblock } }
     r.journal = !!ledger
     for (const a of r.agents.values()) {
       const label = r.source === 'codex' ? codexLabel(a.name, byNorm) : a.name

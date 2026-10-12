@@ -199,7 +199,7 @@ barriers between them — and each task's integration joins a **single-flight me
 instant its own chain ends**, draining in completion order while siblings still run, except that
 a task whose stacked or bounced dependents wait on its landing merges first. Exactly one merge
 touches the integration branch at any moment, guaranteed by a single queue worker, not batching.
-The ordinary-subagent loop follows the same window and merge rules, without early unblock
+The ordinary-subagent loop follows the same window, merge and early-unblock rules
 (`./coordinator-subagents.md`).
 
 `filesTouched` (from the planner's per-task mapping) survives as one scheduling constraint: at

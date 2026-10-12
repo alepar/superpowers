@@ -1,0 +1,106 @@
+#!/usr/bin/env bash
+# Tests for skills/super-code/scripts/dispatch-text: the ordinary-subagent coordinator's dispatch
+# text comes from coordinator.js's own prompt builders, with run facts read from the ledger's
+# Launch: line.
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+D="$REPO_ROOT/skills/super-code/scripts/dispatch-text"
+T=$(mktemp -d)
+trap 'rm -rf "$T"' EXIT
+FAILURES=0
+
+pass() { echo "  [PASS] $1"; }
+fail() { echo "  [FAIL] $1"; FAILURES=$((FAILURES + 1)); }
+assert_eq() { if [ "$1" = "$2" ]; then pass "$3"; else fail "$3"; echo "    expected: $2"; echo "    got:      $1"; fi; }
+assert_has() { if printf '%s\n' "$1" | grep -qF -- "$2"; then pass "$3"; else fail "$3"; echo "    missing: $2"; fi; }
+assert_lacks() { if printf '%s\n' "$1" | grep -qF -- "$2"; then fail "$3"; echo "    unexpected: $2"; else pass "$3"; fi; }
+run() { set +e; out=$("$@" 2>"$T/err"); code=$?; set -e; }
+
+W=/r/wt
+mkdir -p "$T/ws"
+L="$T/ws/progress.md"
+printf '%s\n' '# SDD ledger — plan: ep-plan.md' \
+  "Launch: mechanism ordinary-subagents · epic ep · branch feat/x · integrationWorktree $W · concurrency 4 · earlyUnblock on · sweep deferred · mergeCheck cargo check --all-targets" > "$L"
+TW="$W/.worktrees/feat-x--task-ep.2"
+
+echo "dispatch-text: implement"
+run bash "$D" --ledger "$L" implement --id ep.2 --n 2
+assert_eq "$code" 0 "exits 0"
+assert_eq "$out" "$T/ws/dispatch/impl-ep.2.md" "writes <ledger dir>/dispatch/<label>.md and prints only its path"
+txt=$(cat "$T/ws/dispatch/impl-ep.2.md")
+assert_has "$txt" "You are the implementer for task ep.2." "the implementer dispatch"
+assert_has "$txt" "[WORKTREE] = $TW" "task worktree under the Launch: line's integration worktree"
+assert_has "$txt" "[BRIEF_FILE] = $T/ws/task-2-brief.md" "artifacts in the ledger's directory, by ordinal"
+assert_has "$txt" "git worktree add $TW -b task-ep.2 feat/x" "workspace setup cuts from the integration branch"
+assert_has "$txt" "PROCESSES AND TEMP STATE" "process hygiene the implementer template points at"
+assert_has "$txt" "CURRENT REQUIREMENTS" "current requirements"
+assert_lacks "$txt" "stack: ep.1" "no stacking without --parents"
+run bash "$D" --ledger "$L" --stdout implement --id ep.2 --n 2 --parents ep.1
+assert_has "$out" 'git merge --no-ff -m "stack: ep.1" task-ep.1' "--parents stacks on the parent's branch"
+assert_has "$out" "STACK_CONFLICT" "and names the stack-conflict return"
+run bash "$D" --ledger "$L" --stdout implement --id ep.2 --n 2 --reentry
+assert_has "$out" "This is a review re-entry" "--reentry: the review re-entry setup"
+
+echo "dispatch-text: review, fix, seam review, check-fix review"
+run bash "$D" --ledger "$L" --stdout review --id ep.2 --n 2 --base abc1234
+assert_has "$out" "BASE CHECK" "review carries the base check"
+assert_has "$out" "[BASE] = abc1234" "and the reported base"
+printf 'error[E0061]: this function takes 2 arguments\n' > "$T/err.txt"
+run bash "$D" --ledger "$L" --stdout fix --id ep.2 --n 2 --base abc1234 --kind check --finding-file "$T/err.txt"
+assert_has "$out" "This is the merge-check fix" "fix --kind check: the merge-check fix scope"
+assert_has "$out" "cargo check --all-targets" "with the Launch: line's mergeCheck"
+assert_has "$out" "error[E0061]" "and the build errors as data"
+run bash "$D" --ledger "$L" --stdout seam-review --id ep.2 --n 2 --base abc1234 --merge-base def5678 --head 9999999 --overlap src/a.rs,"consumes ep.1"
+assert_has "$out" "READ-ONLY post-rebase seam review for task ep.2" "seam review"
+assert_has "$out" "A \`consumes <id>\` entry" "a consumes entry gets the composed-review text"
+run bash "$D" --ledger "$L" --stdout check-fix-review --id ep.2 --n 2 --pre-fix-head abc1234 --errors-file "$T/err.txt"
+assert_has "$out" "READ-ONLY review of a merge-check fix" "check-fix review"
+
+echo "dispatch-text: merge"
+run bash "$D" --ledger "$L" --stdout merge --id ep.2 --n 2 --base abc1234
+assert_has "$out" "rebase \`task-ep.2\` onto feat/x" "an unstacked merge rebases the whole branch"
+assert_has "$out" "BRANCH CHECK" "fail-closed branch and clean checks"
+assert_has "$out" "\`cargo check --all-targets\`" "the merge check"
+assert_lacks "$out" "LEDGER, last" "the merge leaves the ledger lines to the coordinator"
+assert_lacks "$out" "--keep-branch" "an unsplit task's branch is removed"
+run bash "$D" --ledger "$L" --stdout merge --id ep.2 --n 2 --base abc1234 --stacked --review-bead ep.9
+assert_has "$out" "git rebase --onto feat/x abc1234 task-ep.2" "--stacked rebases only the task's own commits"
+assert_has "$out" "then \`bd close ep.9\`" "--review-bead closes the review bead after the task bead"
+assert_has "$out" "--keep-branch" "and keeps a split task's branch for its dependents"
+
+echo "dispatch-text: plan, triage"
+run bash "$D" --ledger "$L" --stdout plan --ids ep.1,ep.2 --mode ready
+assert_has "$out" "plan ONLY the confirmed-ready ids" "plan --mode ready"
+run bash "$D" --ledger "$L" --stdout plan --ids ep.1 --mode rest
+assert_has "$out" "APPENDING only" "plan --mode rest appends"
+run bash "$D" --ledger "$L" --stdout triage --id ep.2 --blocker ep.7
+assert_has "$out" "blocker bead ep.7, filed against task ep.2" "triage"
+assert_has "$out" "waitFor" "and its waitFor field"
+
+echo "dispatch-text: run facts and bad input"
+printf '%s\n' 'Launch: args {"epicId":"ep","integrationBranch":"feat/y","integrationWorktree":"/r/wy","config":{"mergeCheck":"none"}}' > "$T/ws/wf.md"
+run bash "$D" --ledger "$T/ws/wf.md" --stdout merge --id ep.2 --n 2 --base abc1234
+assert_has "$out" "the integration branch feat/y is checked out in /r/wy" "a Workflow Launch: args line is read too"
+assert_has "$out" "No merge check is declared" "mergeCheck none: no check step"
+run bash "$D" --ledger "$T/ws/wf.md" --stdout --branch feat/z merge --id ep.2 --n 2 --base abc1234
+assert_has "$out" "the integration branch feat/z" "--branch overrides the Launch: line"
+printf '# SDD ledger\n' > "$T/ws/empty.md"
+run bash "$D" --ledger "$T/ws/empty.md" implement --id ep.2 --n 2
+assert_eq "$code" 2 "no Launch: line and no overrides: exit 2"
+run bash "$D" --ledger "$L" review --id ep.2 --n 2
+assert_eq "$code" 2 "a missing required option: exit 2"
+run bash "$D" --ledger "$L" bogus
+assert_eq "$code" 2 "an unknown kind: exit 2"
+
+echo "dispatch-text: every kind --help lists is one it builds"
+missing=""
+for k in $(grep -oE '^  [a-z][a-z-]* ' <(bash "$D" --help) | tr -d ' '); do
+  run bash "$D" --ledger "$L" "$k"
+  [ "$code" = 2 ] && grep -q "needs --" "$T/err" || missing="$missing $k(not-a-kind)"
+done
+assert_eq "${missing:-none}" "none" "the help's kinds all parse (missing:${missing:- none})"
+
+echo
+if [ "$FAILURES" -eq 0 ]; then echo "dispatch-text: all tests passed"; else echo "dispatch-text: $FAILURES failure(s)"; exit 1; fi

@@ -136,6 +136,26 @@ re-adopt from a stale reading. None of them is an open gap.
   cap), the ledger outcome lines, and the dispatch names. Do not reintroduce per-dispatch
   checkpoints or a serial schedule without a long-horizon Codex run that shows they don't stall.
 
+- **Workflow throughput features ported to the improvised loop (2026-10-11).** Between 09-30 and
+  10-07 the Workflow coordinator gained early unblock, merge-lane priority, the ready-first planning
+  split, immediate edge adds and the hot-file raise. The ordinary-subagent loop had none of them,
+  and early unblock was switched off there explicitly. Most of the prompt text those features need
+  existed only as strings in `coordinator.js`, so an improvised coordinator had to rebuild it from
+  `coordinator-workflow.md`'s prose. `coordinator-subagents.md` now names each feature in a line or
+  two, with the scripts that carry its state (`review-bead`, `tree-deps`, `ready-in-tree`'s
+  `reviews`, `stack:` commits, `remove-task-worktree --discard`). `scripts/dispatch-text` writes
+  the text `coordinator.js` would send, by loading the script with stubbed runtime hooks and
+  calling its builders. That way the two paths share one source of prompt text.
+  - `dispatch-text` puts a `return` of the builders just before the script's first top-level
+    `while (true) {` round loop. The builders and the state they read must stay declared above
+    that loop, or the loader breaks. `tests/super-code/test-dispatch-text.sh` catches both.
+  - The coordinator writes the merge's ledger lines itself: `dispatch-text merge` passes no
+    ledger lines to the merge agent.
+  - `run-profile` reads `earlyUnblock on` from an ordinary-subagent `Launch:` line. Its slot model
+    for these runs still holds a slot through the merge.
+  - Not evaluated: no Codex run has used the ported rules yet. Compare `run-profile`'s concurrency
+    and early-unblock lines on the next long run against the 2.74 baseline above.
+
 ## Resume rationale (moved from coordinator-workflow.md's "Workspace and ledger")
 
 > (Fix-round-1, review: this used to also filter the Ready-phase `ids` by
@@ -289,7 +309,8 @@ from somewhere else:
 - **Merges.** The coordinator merges itself, so a lane turn is synthesized from its own commands.
   It runs from the first `git merge|rebase` that names `task-<id>` to the last command that names
   the bead before the next dispatch. A seam review splits it into two turns.
-- **Schedule model.** The run has cap 1 and no early unblock. A slot is held through the merge.
+- **Schedule model.** The cap is the `Launch:` line's concurrency (default 1), and early unblock
+  is on only when that line says `earlyUnblock on`. A slot is held through the merge.
 
 Validated read-only on 2026-10-07 against Codex 0.160.1 sessions on the maintainer's disk.
 herdr-threads coordinator `01a10505-dd5c-…` had 518 dispatches by 326 children over 87.5h. At most
