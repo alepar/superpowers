@@ -156,6 +156,45 @@ re-adopt from a stale reading. None of them is an open gap.
   - Not evaluated: no Codex run has used the ported rules yet. Compare `run-profile`'s concurrency
     and early-unblock lines on the next long run against the 2.74 baseline above.
 
+- **Outage relaunches redid a landed task and cancelled its dependent (2026-10-14).** Run
+  2026-10-13-message-priority-delivery, a super-auto run on the Workflow mechanism, was relaunched
+  twice with `resumeFromRunId` after network outages. During an outage one task's merge landed in
+  git, but its `bd close` and the coordinator's ledger append both failed, so the landing existed
+  only in git. Resume seeded `landed` only from `Task …: complete|landed` lines, so the relaunch cut
+  the task fresh (its branch was deleted), re-implemented and re-reviewed it. The merge then had
+  nothing to merge (`mergeHead false`), which took the blocker path and cancelled the stacked
+  dependent, discarding its worktree. `scripts/already-merged` could not help: it answered only "is
+  this ref a merge's second parent", so a deleted branch name or a merge-commit SHA always failed.
+  The same gap left the landed id `closure-unconfirmed` for good: close-only's git VERIFY ran before
+  it read bd, and the Finish reconcile, which ran after `closureUnconfirmed` was fixed, never asked
+  about landed ids. Resume also re-wrote `Human action:` and `Edge add:` lines, because the digest
+  dropped them. Changes:
+  - `already-merged` also accepts a landing merge's SHA, and finds a branch by the subject of its
+    merge (`Merge branch '<branch>'`), so a deleted branch still answers. A branch name never counts
+    by rule 2, since a fresh cut from a merge tip sits on that merge. An existing branch counts by
+    the subject rule only while the integration branch contains it, so a re-cut branch of the same
+    name with new commits is never reported as landed (no in-skill flow lands one branch name
+    twice; this guards a human reopen). `--landed` lists the `task-*` merges on the integration
+    branch's first-parent history, under the same limit. The merge re-runs the check once when the
+    rebase left nothing to merge.
+  - The Resume ledger read also echoes `--landed`, in the same dispatch, so no dispatch count
+    changed. An id is seeded into `landed` only when bd reports it ready, because the first-parent
+    history can reach merges from other epics. The workspace setup runs `already-merged` before a
+    fresh cut, and the merge prompt runs it first and reports `alreadyMerged`. Either way the task
+    goes to `closeAlreadyMerged`, never the blocker path.
+  - Close-only reads bd first and reports `CLOSED` with no git re-check when every required bead is
+    closed. The Finish reconcile includes landed-not-completed ids (with their blocker beads), and
+    `closureUnconfirmed` is computed after it. An id it settles gets a `complete (already merged …)`
+    line, so the next resume does not check it again.
+  - `ledger-digest` keeps `Human action:` lines verbatim and `Edge add:` lines without their
+    reason. Resume seeds `addedDeps` and a seen-line set from them. A seeded edge that the planner
+    reports missing again is written to bd once more, because its earlier bd write may have failed,
+    but its ledger line is not.
+  - SKILL.md's "Unattended runs" now requires one coordinator Workflow per epic: before any
+    relaunch, `TaskStop` an earlier one that is still running.
+  - Harness: four `outage resume` / `closure` scenarios, one resume-dedupe scenario, and a real-git
+    `already-merged` script case.
+
 ## Resume rationale (moved from coordinator-workflow.md's "Workspace and ledger")
 
 > (Fix-round-1, review: this used to also filter the Ready-phase `ids` by

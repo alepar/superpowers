@@ -48,6 +48,11 @@ The coordinator sets no deadline of its own: a slow planner on a large epic is v
 the session can see that nothing else is moving. A null or a terminal API error already returns on
 its own; this covers a call that never returns.
 
+**One coordinator Workflow per epic.** Before any relaunch (an outage stop, the budget cap, a hung
+or a planned one), confirm in `/workflows` or the task list that no earlier coordinator Workflow
+for this epic is still running, and `TaskStop` it first. Two coordinators on one epic race for the
+same beads, worktrees and merge lane.
+
 **Watch for slowness while it runs.** Whenever you are woken during a run (a notification, a
 relaunch, a check-in), read the ledger's newest `Detector:`, `Edge audit:`, `Edge cut:` and
 `Recurring blocker:` lines (and, once returned, the `slowness` list). Look for a merge-queue peak
@@ -307,8 +312,8 @@ Throughout a run, append friction events (defects hit, workarounds, guidance tha
 - `./triage-prompt.md` — dispatch the blocker triage agent (opus): RESOLVE vs ESCALATE.
 - `./scripts/stop-run-processes` — `bash` helper that finds (`--check`) or stops this user's processes belonging to given roots: cwd, executable, or exactly `HOME=`/`TMPDIR=` under a root, or (orphans reparented to PID 1 only) an argument path under a root. It never expands to a match's children or parents, never stops a process holding or hosting an interactive terminal (reported `kept:`), and refuses a root that holds a worktree with worktrees nested under it (an epic/integration or main checkout) or contains the caller's working directory. Never PID 1, its own process tree, or anything that references no root.
 - `./scripts/remove-task-worktree` — `bash` helper that stops a finished task's processes and removes its worktree and branch, keeping uncommitted or unmerged work (`--keep-branch`, `--discard` for a cancelled task, `--sweep` for the Finish backstop; `--tmp` also removes the task's or run's short temp root once its worktree is gone).
-- `./scripts/already-merged` — `bash` helper the implementer's workspace setup runs to answer whether a re-entered task branch is already merged.
-- `./scripts/ledger-digest` — reduces the ledger to its `Merge:` lines and `Task` state tokens; the Resume and Metrics ledger reads echo it instead of the whole file.
+- `./scripts/already-merged` — `bash` helper that answers whether a task already landed on the integration branch (by its branch, its tip, its landing merge, or a deleted branch's merge subject); `--landed` lists the task merges git holds, for Resume.
+- `./scripts/ledger-digest` — reduces the ledger to its `Merge:`, `Human action:` and `Edge add:` lines and `Task` state tokens; the Resume and Metrics ledger reads echo it instead of the whole file.
 - `./scripts/run-profile` — after a run, the per-bead timing profile from the harness's session files (a Workflow run's journal and agent transcripts; in ordinary-subagent mode, the Codex rollouts or Claude Code subagent transcripts, with outcomes from the ledger and the graph from `bd`): graph shape, the realized critical path and its bottleneck bead, wait causes, merge-lane load and conflict files, and modelled what-ifs, as ledger-ready `Profile:` lines plus `--out` Markdown and JSON; `--summarize` aggregates saved profiles into `Baseline:` lines. Needs `node`.
 - `./scripts/epic-tree`, `./scripts/ready-in-tree`, `./scripts/close-in-tree-epics`, `./scripts/tree-shape`, `./scripts/tree-deps`, `./scripts/review-bead` — `bash` helpers for structural tree membership, the epic-scoped ready query (work and ready review beads, apart), the in-tree epic-closure fixpoint, the edge audit's graph numbers (super-design's `graph-shape` over the open tree), each open bead's leaf blockers for graph readiness, and the early-unblock split and its undo. They parse `bd` JSON with `jq` when it is installed; without it they print a `JQ_UNAVAILABLE:` line telling the agent how to compute the same result by hand.
 - `./trigger-micro-test.md` — the frontmatter description's probe set; re-run it before changing the description. Maintenance-only, deliberately outside this file.

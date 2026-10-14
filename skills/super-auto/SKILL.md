@@ -53,8 +53,8 @@ notices. In that zone, don't end a turn in any of these ways:
 Status notes are welcome. Put them in the same message as your next tool call. Context compaction
 is automatic; after one, follow §Invariants I7 (after compaction).
 
-While a `super-code` Workflow runs (phase 3 and each fix-loop re-entry), watch it for slowness
-exactly as `super-code`'s "Unattended runs" says — one cheap action per check from its closed
+While a `super-code` Workflow runs (phase 3 and each fix-loop re-entry), relaunch it (one
+coordinator Workflow per epic) and watch it for slowness exactly as `super-code`'s "Unattended runs" says — one cheap action per check from its closed
 list, never a re-plan or a stop — and record each action in the friction log (its pending file while the Workflow runs, per the
 friction rule under §Phase 6 — report) as well as the ledger. Watch with the Monitor tool or a bounded loop that exits when the Workflow ends, never a
 backgrounded `tail -f`.

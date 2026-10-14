@@ -1,26 +1,71 @@
 #!/usr/bin/env bash
-# Is a task branch already merged into the integration branch?
-# "Merged" means the task branch's tip is the SECOND parent of a merge commit on the integration
-# branch (what `git merge --no-ff <task>` produces). A task tip equal to the integration tip, or one
-# that appears only as a first parent, is not merged.
+# Has a task already landed on the integration branch?
+# "Merged" means any of:
+#   - REF's commit is the SECOND parent of a merge commit on the integration branch (what
+#     `git merge --no-ff <task>` produces);
+#   - REF is a commit id (not a branch name) of a merge commit on the integration branch's
+#     first-parent history: REF names the landing merge itself;
+#   - REF is a branch name, and a merge commit on the integration branch's first-parent history has
+#     the subject `Merge branch '<REF>'` (git's default merge message, with or without ` into …`).
+#     This answers for a branch that was deleted after it landed. A branch that still exists counts
+#     only while it has no commit the integration branch lacks, so new work on a re-cut branch of
+#     the same name is never reported as landed.
+# A task branch whose tip equals the integration tip, or appears only as a first parent, is not
+# merged by the first two rules (a fresh cut from a merge tip is not that merge).
 #
-# Usage: bash already-merged INTEGRATION_BRANCH TASK_BRANCH
-# Prints "true" or "false" and exits 0 either way; exits 2 on a bad argument or unknown ref.
+# Usage: bash already-merged INTEGRATION_BRANCH REF
+#   Prints "true" or "false" and exits 0 either way; a REF that resolves to nothing is checked by
+#   the subject rule alone. Exits 2 on a bad argument or an unknown INTEGRATION_BRANCH.
+# Usage: bash already-merged --landed INTEGRATION_BRANCH
+#   Prints one line `<branch> <second-parent sha> <merge sha>` per `task-*` branch named by a merge
+#   subject on the integration branch's first-parent history, newest first, each branch once —
+#   except a branch that still exists with commits the integration branch lacks (rule 3's limit).
 set -euo pipefail
 
-if [ $# -ne 2 ]; then
-  echo "usage: already-merged INTEGRATION_BRANCH TASK_BRANCH" >&2
-  exit 2
+usage() { echo "usage: already-merged INTEGRATION_BRANCH REF | already-merged --landed INTEGRATION_BRANCH" >&2; exit 2; }
+
+# Each line: <merge sha> <parents…><TAB><subject>, first-parent merges only, newest first. The awk
+# readers below consume their whole input (no early exit), so pipefail never sees a SIGPIPE'd git.
+first_parent_merges() { git log --first-parent --merges --format='%H %P%x09%s' "$1"; }
+
+if [ "${1:-}" = --landed ]; then
+  [ $# -eq 2 ] || usage
+  integ_sha=$(git rev-parse --verify --quiet "${2}^{commit}") || { echo "unknown ref: $2" >&2; exit 2; }
+  first_parent_merges "$integ_sha" | awk -F '\t' '
+    match($2, /^Merge branch '\''task-[^'\'']+'\''/) {
+      b = substr($2, 15, RLENGTH - 15); split($1, p, " ")
+      if (!(b in seen)) { seen[b] = 1; print b, p[3], p[1] }
+    }' | while read -r b t m; do
+      # An existing branch carrying commits the integration branch lacks is new work, not this landing.
+      cur=$(git rev-parse --verify --quiet "refs/heads/$b" || true)
+      if [ -z "$cur" ] || git merge-base --is-ancestor "$cur" "$integ_sha"; then echo "$b $t $m"; fi
+    done
+  exit 0
 fi
 
+[ $# -eq 2 ] || usage
 integ=$1
-task=$2
+ref=$2
 integ_sha=$(git rev-parse --verify --quiet "${integ}^{commit}") || { echo "unknown ref: $integ" >&2; exit 2; }
-tip=$(git rev-parse --verify --quiet "${task}^{commit}") || { echo "unknown ref: $task" >&2; exit 2; }
+tip=$(git rev-parse --verify --quiet "${ref}^{commit}" || true)
 
-# Each line: <merge sha> <parent1> <parent2> [...]; field 3 is the second parent.
-if git rev-list --parents --merges "$integ_sha" | awk -v t="$tip" '$3 == t { found = 1; exit } END { exit !found }'; then
-  echo true
-else
-  echo false
+found=false
+if [ -n "$tip" ]; then
+  # Rule 1: field 3 of `--parents` output is the second parent. Rule 2: the landing merge itself,
+  # for a commit id only.
+  if [ "$(git rev-list --parents --merges "$integ_sha" | awk -v t="$tip" '$3 == t { n++ } END { print n + 0 }')" != 0 ]; then
+    found=true
+  elif ! git show-ref --verify --quiet "refs/heads/$ref" \
+    && [ "$(git rev-list --first-parent --merges "$integ_sha" | awk -v t="$tip" '$1 == t { n++ } END { print n + 0 }')" != 0 ]; then
+    found=true
+  fi
 fi
+# Rule 3. A full SHA is never a branch name; an existing branch must be contained in the integration
+# branch.
+if [ "$found" = false ] && ! printf '%s' "$ref" | grep -Eqx '[0-9a-fA-F]{40}' \
+  && { [ -z "$tip" ] || git merge-base --is-ancestor "$tip" "$integ_sha"; }; then
+  if [ "$(first_parent_merges "$integ_sha" | awk -F '\t' -v want="Merge branch '$ref'" '$2 == want || index($2, want " into ") == 1 { n++ } END { print n + 0 }')" != 0 ]; then
+    found=true
+  fi
+fi
+echo "$found"

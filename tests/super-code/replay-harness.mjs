@@ -371,8 +371,8 @@ async function main() {
   {
     const scan = scanTemplateSpans(scriptBody)
     check(scan.clean, 'scanner ends in code state (no unterminated literal, string, or ${})')
-    check(scan.spans.length === 401,
-      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 401 (+1 closure verification contract, +1 current requirements contract; recovery marker uses concatenation) — 215 after the D4 loop rewrite, +10 for the merge-evidence contract (clean-check and merge steps, mergeEvidence's diagnoses and logs, the Merge-cleanup line) and writeFence(), +17 for the failing-mergeCheck seam route (the check-fix and fix-review dispatch keys/labels, their logs and blocker findings, the re-merge, fixPrompt's check branch, checkFixReviewPrompt), +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log, −7 for batched ledger writes (per-line ledger keys and labels out, the per-task flush key, the merge agent's LEDGER step and its line templates, the runtime-slot logs, the per-site null-merge logs and the background edge audit in), +46 for early unblock and graph readiness (the split/reopen/discard dispatch keys, labels, prompts and logs, the cancel and graph-dispatch logs, the stacked/re-entry brief and implementer wording, the stacked rebase and review-bead close, the held-back and re-entry logs, the reconcile split note, the detector and Metrics fields, the resume note), +33 for proactive slowness handling (noteSlowness and its items, the hot-file raise, the graph-bound arming and its audit reason, the detector's lane fields, the act-capable edge audit: change formatting, the edge-cuts dispatch key/label/prompt, the Edge cut: lines and their elided variants, effDeps' cut key), +8 for the round-1 planning split (planPrompt's walk and three scopes, the plan-rest key/label, its logs), +1 when the brief folded into the implementer (workspaceSetup's re-entry branch and the setup/no-base findings in, the brief dispatch key/label out), +1 for the planner-null degrade log, +5 for task-worktree cleanup (the task-worktree root, the merge's cleanup command and step, the worktree-sweep log and prompt), +4 for process cleanup (the run temp root, processHygiene's command and rule, the process-sweep log), +1 for the ledger-read retry label, +1 for the detached-HEAD merge diagnosis, +3 for the short task temp root (its root, taskTmp, processHygiene's roots), +1 for the auth-refused Merge: line, +1 for the review-base substitution log, +6 for the integration-blocked hold (the held/skip/stop logs, the hold reasons, its Merge: line and slowness item), +14 for added edges (addEdge's logs, ledger line, key and label, the waiting log, the waitFor ledger lines, edgeAddPrompt), +3 for edge-audit memory (the carried-verdict list), +30 for the open-issues sweep (already-merged re-check, ledger-check causes and the in-memory Metrics fallback, digest header check, class and cause tags, the graph-bound re-check, peak-based streak, aborted merge check, sweep-line validation and baseline, run-to-completion rule, HOME/XDG, human actions, deferred minors, composed review, base check, planner cwd), +1 for the final-review Metrics block, +1 for the merge-lane priority log; update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
+    check(scan.spans.length === 410,
+      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 410 (+9 for the outage-resume fixes: the Resume read's git landings step and its seeding log, the merge's already-landed log, the seeded-edge keys and the edge re-write key, the reconcile's blocker note, the reconciled completion line and its key; +1 closure verification contract, +1 current requirements contract; recovery marker uses concatenation) — 215 after the D4 loop rewrite, +10 for the merge-evidence contract (clean-check and merge steps, mergeEvidence's diagnoses and logs, the Merge-cleanup line) and writeFence(), +17 for the failing-mergeCheck seam route (the check-fix and fix-review dispatch keys/labels, their logs and blocker findings, the re-merge, fixPrompt's check branch, checkFixReviewPrompt), +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log, −7 for batched ledger writes (per-line ledger keys and labels out, the per-task flush key, the merge agent's LEDGER step and its line templates, the runtime-slot logs, the per-site null-merge logs and the background edge audit in), +46 for early unblock and graph readiness (the split/reopen/discard dispatch keys, labels, prompts and logs, the cancel and graph-dispatch logs, the stacked/re-entry brief and implementer wording, the stacked rebase and review-bead close, the held-back and re-entry logs, the reconcile split note, the detector and Metrics fields, the resume note), +33 for proactive slowness handling (noteSlowness and its items, the hot-file raise, the graph-bound arming and its audit reason, the detector's lane fields, the act-capable edge audit: change formatting, the edge-cuts dispatch key/label/prompt, the Edge cut: lines and their elided variants, effDeps' cut key), +8 for the round-1 planning split (planPrompt's walk and three scopes, the plan-rest key/label, its logs), +1 when the brief folded into the implementer (workspaceSetup's re-entry branch and the setup/no-base findings in, the brief dispatch key/label out), +1 for the planner-null degrade log, +5 for task-worktree cleanup (the task-worktree root, the merge's cleanup command and step, the worktree-sweep log and prompt), +4 for process cleanup (the run temp root, processHygiene's command and rule, the process-sweep log), +1 for the ledger-read retry label, +1 for the detached-HEAD merge diagnosis, +3 for the short task temp root (its root, taskTmp, processHygiene's roots), +1 for the auth-refused Merge: line, +1 for the review-base substitution log, +6 for the integration-blocked hold (the held/skip/stop logs, the hold reasons, its Merge: line and slowness item), +14 for added edges (addEdge's logs, ledger line, key and label, the waiting log, the waitFor ledger lines, edgeAddPrompt), +3 for edge-audit memory (the carried-verdict list), +30 for the open-issues sweep (already-merged re-check, ledger-check causes and the in-memory Metrics fallback, digest header check, class and cause tags, the graph-bound re-check, peak-based streak, aborted merge check, sweep-line validation and baseline, run-to-completion rule, HOME/XDG, human actions, deferred minors, composed review, base check, planner cwd), +1 for the final-review Metrics block, +1 for the merge-lane priority log; update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
     // self-test: inject a raw backtick mid-way through the first literal's content and assert
     // the detector actually fires — a detector that cannot catch the known failure is decoration
     const [s, e] = scan.spans[0]
@@ -736,7 +736,7 @@ async function main() {
       'close-only:bd-101': { id: 'bd-101', status: 'BLOCKED', finding: 'already-merged re-check printed false: not closed' } }) })
     assertNoThrow(out)
     check(!out.result?.completed.length && !out.result?.escalated.length, 'nothing settled when the re-check fails', JSON.stringify(out.result))
-    check(/VERIFY FIRST[\s\S]*scripts\/already-merged epic-\S+ task-bd-101[\s\S]*close nothing/.test(promptOf(out.trace, 'close-only:bd-101') ?? ''), 'the close-only prompt runs the script before closing')
+    check(/VERIFY before any write[\s\S]*scripts\/already-merged epic-\S+ task-bd-101[\s\S]*close nothing/.test(promptOf(out.trace, 'close-only:bd-101') ?? ''), 'the close-only prompt runs the script before closing')
     check(out.logs.some(l => l.includes('re-check did not confirm')), 'the refusal is logged')
   }
 
@@ -1306,7 +1306,7 @@ async function main() {
     check(!out.result?.completed.includes('bd-101'), 'unknown closure is not completion')
     check(out.counts['close-check:bd-101'] === 6 && out.counts['bd-ready'] === 3 && out.counts['close-only:bd-101'] === 2, 'three bounded rounds, two independent observations each, one recovery per later round')
     const repair = promptOf(out.trace, 'close-only:bd-101') ?? ''
-    check(/STATUS CHECK before any write:[\s\S]*bd show <id> --json[\s\S]*If any lookup fails[\s\S]*do not close beads, stop processes or clean up/.test(repair) && repair.indexOf('STATUS CHECK') < repair.indexOf('bd close bd-101'), 'recovery requires its own status evidence before writes and preserves unknown state')
+    check(/STATUS CHECK FIRST, before anything else:[\s\S]*bd show <id> --json[\s\S]*If any lookup fails[\s\S]*do not close beads, stop processes or clean up/.test(repair) && repair.indexOf('STATUS CHECK') < repair.indexOf('bd close bd-101'), 'recovery requires its own status evidence before writes and preserves unknown state')
     const firstRepair = out.trace.findIndex(t => t.label === 'close-only:bd-101')
     check(out.trace.slice(0, firstRepair).filter(t => t.label === 'close-check:bd-101').length === 2, 'initial null observations trigger no speculative close in that attempt')
     check(out.counts['merge:bd-101'] === 1, 'landed work never remerged')
@@ -2830,6 +2830,119 @@ async function main() {
     assertBucketsDisjoint(out.result)
   }
 
+  // The Finish re-read answers with the real digest of every line this run appended, so the Metrics
+  // ledger-check measures what this run actually wrote.
+  const finishDigest = ctx => {
+    const dir = mkdtempSync(path.join(os.tmpdir(), 'finish-digest-'))
+    try {
+      const lines = ctx.trace.filter(t => /^ledger(-append)?:/.test(t.label)).flatMap(t => extractLedgerLines(t.prompt))
+      writeFileSync(path.join(dir, 'progress.md'), lines.join('\n') + '\n')
+      return { text: execFileSync('bash', [path.join(skillDir, 'scripts/ledger-digest'), path.join(dir, 'progress.md')], { encoding: 'utf8' }) }
+    } finally { rmSync(dir, { recursive: true, force: true }) }
+  }
+  const noCancel = out => !out.trace.filter(t => /^ledger/.test(t.label)).flatMap(t => extractLedgerLines(t.prompt)).some(l => /: cancelled/.test(l))
+
+  scenario('outage resume: a merge git holds but the ledger lost (branch deleted) is closed only — no re-implement, re-merge, blocker or cancelled dependent')
+  {
+    const canned = graphCanned([{ id: 'bd-101' }, { id: 'bd-102', deps: ['bd-101'] }], {
+      'read-ledger': { text: '', landed: [`task-bd-101 ${SHA('b')} ${SHA('d')}`, `task-bd-999 ${SHA('e')} ${SHA('f')}`] },
+      'bd-ready': [{ ids: ['bd-101'] }, { ids: [] }],
+      'close-only:bd-101': { id: 'bd-101', status: 'CLOSED' },
+      'read-ledger:finish': finishDigest,
+    })
+    const out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    check(/already-merged --landed epic-bd-100-integration/.test(promptOf(out.trace, 'read-ledger') ?? ''), 'the Resume read also lists the task merges git holds')
+    check(!out.counts['impl:bd-101'] && !out.counts['review:bd-101'] && !out.counts['merge:bd-101'] && out.counts['close-only:bd-101'] === 1, 'the landed task is closed only: no implement, review or merge', JSON.stringify(out.counts))
+    check(promptOf(out.trace, 'close-only:bd-101')?.includes(SHA('b')), 'closure verifies the tip git reported')
+    check(!out.counts['triage:bd-101'] && noCancel(out) && out.counts['merge:bd-102'] === 1, 'no blocker; the dependent is not cancelled and merges')
+    check(JSON.stringify([...(out.result?.completed ?? [])].sort()) === '["bd-101","bd-102"]' && !out.result?.closureUnconfirmed.length, 'both completed, nothing left unconfirmed', JSON.stringify(out.result))
+    check(/^Metrics: ledger-check ok/.test(out.result?.metrics?.[3] ?? ''), 'ledger-check: landed == completed', out.result?.metrics?.[3])
+    check(!out.trace.some(t => t.prompt.includes('bd-999')), 'a git merge for an id bd never reports ready is ignored')
+  }
+
+  scenario('outage resume: without git landings from Resume, the fresh cut checks first and returns ALREADY_MERGED')
+  {
+    const canned = graphCanned([{ id: 'bd-101' }, { id: 'bd-102', deps: ['bd-101'] }], {
+      'read-ledger': null,
+      'read-ledger:retry': null,
+      'bd-ready': [{ ids: ['bd-101'] }, { ids: [] }],
+      'impl:bd-101': { id: 'bd-101', status: 'ALREADY_MERGED', base: SHA('d') },
+      'close-only:bd-101': { id: 'bd-101', status: 'CLOSED' },
+      'read-ledger:finish': finishDigest,
+    })
+    const out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    check(/If NEITHER exists: run the ALREADY-MERGED CHECK below first[\s\S]*return ALREADY_MERGED and create nothing/.test(promptOf(out.trace, 'impl:bd-101') ?? ''), 'a fresh cut runs already-merged before creating the worktree')
+    check(!out.counts['review:bd-101'] && !out.counts['merge:bd-101'] && out.counts['close-only:bd-101'] === 1 && noCancel(out) && out.counts['merge:bd-102'] === 1, 'closed only; the dependent merges uncancelled', JSON.stringify(out.counts))
+    check(JSON.stringify([...(out.result?.completed ?? [])].sort()) === '["bd-101","bd-102"]' && /^Metrics: ledger-check ok/.test(out.result?.metrics?.[3] ?? ''), 'both completed; ledger-check ok', out.result?.metrics?.[3])
+  }
+
+  scenario('outage resume: a merge that finds the task already landed closes it — never the blocker path, never a cancelled stacked dependent')
+  {
+    const canned = graphCanned([{ id: 'bd-101' }, { id: 'bd-102', deps: ['bd-101'] }], {
+      'bd-ready': [{ ids: ['bd-101'] }, { ids: [] }],
+      'review:bd-101': async ctx => { await ctx.waitFor('impl:bd-102'); return { id: 'bd-101', status: 'CLEAN' } },
+      'impl:bd-102': tick({ id: 'bd-102', status: 'IMPLEMENTED', base: SHA('e'), files: [], head: SHA('c'), stacked: true }),
+      'merge:bd-101': { id: 'bd-101', merged: false, alreadyMerged: true, mergeExit: 0, mergeHead: false, check: 'none' },
+      'close-only:bd-101': { id: 'bd-101', status: 'CLOSED' },
+      'read-ledger:finish': finishDigest,
+    })
+    const out = await run({ args: liveArgs(), canned })
+    assertNoThrow(out)
+    check(/LANDED CHECK, first:[\s\S]*scripts\/already-merged epic-bd-100-integration task-bd-101[\s\S]*alreadyMerged true/.test(promptOf(out.trace, 'merge:bd-101') ?? ''), 'the merge checks for an earlier landing before rebasing')
+    check(/nothing to merge[\s\S]*run the LANDED CHECK command once more[\s\S]*alreadyMerged true/.test(promptOf(out.trace, 'merge:bd-101') ?? ''), 'a merge with nothing left to merge after the rebase re-runs the landed check')
+    check(!out.counts['triage:bd-101'] && !out.counts['missing-blocker:bd-101'] && !out.counts['reopen:bd-101'] && out.counts['close-only:bd-101'] === 1, 'routed to closure, not the blocker path', JSON.stringify(out.counts))
+    check(noCancel(out) && !out.counts['discard:bd-102'] && out.counts['merge:bd-102'] === 1 && out.counts['impl:bd-102'] === 1, 'the stacked dependent keeps its work and merges')
+    check(JSON.stringify([...(out.result?.completed ?? [])].sort()) === '["bd-101","bd-102"]' && /^Metrics: ledger-check ok/.test(out.result?.metrics?.[3] ?? ''), 'both completed; ledger-check ok', JSON.stringify(out.result?.metrics))
+  }
+
+  scenario('closure: bd showing the landed bead closed settles it even when the git re-check fails')
+  {
+    const out = await run({ args: liveArgs(), canned: oneTaskCanned({
+      'read-ledger': { text: `Task 1 (bd-101): landed, commits ${SHA('a').slice(0, 7)}..${SHA('b').slice(0, 7)}` },
+      'bd-ready': { ids: [] },
+      'close-only:bd-101': { id: 'bd-101', status: 'BLOCKED', finding: 'already-merged re-check printed false: not closed' },
+      'reconcile-buckets': { closed: ['bd-101'] },
+      'ledger-append:reconciled:bd-101': { appended: true },
+    }) })
+    assertNoThrow(out)
+    const p = promptOf(out.trace, 'close-only:bd-101') ?? ''
+    check(p.indexOf('STATUS CHECK FIRST') !== -1 && p.indexOf('STATUS CHECK FIRST') < p.indexOf('scripts/already-merged') && /If every one of them is "closed"[\s\S]*status CLOSED and touch nothing else/.test(p), 'close-only reads bd before the git re-check, and an all-closed tracker needs no re-check', p)
+    check((promptOf(out.trace, 'reconcile-buckets') ?? '').includes('bd-101'), 'the Finish reconcile asks bd about the landed-not-completed id')
+    check(out.result?.completed.includes('bd-101') && !out.result?.closureUnconfirmed.includes('bd-101') && out.result?.stopReason !== 'closure-unconfirmed', 'it settles completed and is not reported closure-unconfirmed', JSON.stringify(out.result))
+    check(/^Task 1 \(bd-101\): complete \(already merged into \S+ — tracker reports closed/.test(extractLedgerLine(promptOf(out.trace, 'ledger-append:reconciled:bd-101')) ?? ''), 'a completion line goes to the ledger for the next resume')
+    const blk = await run({ args: liveArgs(), canned: oneTaskCanned({
+      'read-ledger': { text: `Task 1 (bd-101): landed, commits ${SHA('a').slice(0, 7)}..${SHA('b').slice(0, 7)}, blocker bd-109` },
+      'bd-ready': { ids: [] },
+      'close-only:bd-101': { id: 'bd-101', status: 'BLOCKED', finding: 'already-merged re-check printed false: not closed' },
+    }) })
+    check(/bd-101 \(blocker bead bd-109\)/.test(promptOf(blk.trace, 'reconcile-buckets') ?? '') && blk.result?.closureUnconfirmed.includes('bd-101'), 'a landed id with an open RESOLVE blocker stays unconfirmed until that bead is closed too', promptOf(blk.trace, 'reconcile-buckets'))
+  }
+
+  scenario('resume: Human action and Edge add lines already on the ledger are honored, never written again')
+  {
+    const dir = mkdtempSync(path.join(os.tmpdir(), 'resume-dedupe-'))
+    const file = path.join(dir, 'progress.md')
+    try {
+      writeFileSync(file, ['Edge add: bd-102 <- bd-101 (planner) — bd-102 calls the parser bd-101 adds',
+        'Human action: bd-101 — rm -rf ~/.config/product (refused): remove the probe state by hand'].join('\n') + '\n')
+      const text = execFileSync('bash', [path.join(skillDir, 'scripts/ledger-digest'), file], { encoding: 'utf8' })
+      const out = await run({ args: liveArgs({ config: cfg({ earlyUnblock: false }) }), canned: manyTaskCanned(['bd-101', 'bd-102'], {
+        'read-ledger': { text },
+        'plan': { planPath: PLANPATH, mapping: [{ n: 1, id: 'bd-101', files: ['src/a.js'], deps: [] }, { n: 2, id: 'bd-102', files: ['src/b.js'], deps: [] }],
+          missingEdges: [{ dependent: 'bd-102', blocker: 'bd-101', reason: 'bd-102 calls the parser bd-101 adds' }] },
+        'impl:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', base: SHA('a'), files: [], humanAction: 'rm -rf ~/.config/product (refused): remove the probe state by hand' },
+        'edge-add:bd-102<-bd-101': { added: true } }) })
+      assertNoThrow(out)
+      const written = out.trace.filter(t => /^ledger/.test(t.label)).flatMap(t => extractLedgerLines(t.prompt))
+      check(!written.some(l => /^(Edge add|Human action):/.test(l)) && !out.counts['ledger-append:edge-add:1'] && !out.counts['ledger-append:human-action:1'], 'neither line is appended again', JSON.stringify(written))
+      check(out.trace.findIndex(t => t.label === 'impl:bd-102') > out.trace.findIndex(t => t.label === 'merge:bd-101'), 'the seeded edge holds the dependent until its blocker merged')
+      check(out.counts['edge-add:bd-102<-bd-101'] === 1 && !out.counts['edge-add:1'], 'a seeded edge the planner reports missing again is re-written to bd once, under its own key')
+      check((out.result?.humanActions ?? []).some(h => h.startsWith('bd-101: rm -rf')), 'the human action is still returned to the caller')
+    } finally { rmSync(dir, { recursive: true, force: true }) }
+  }
+
   scenario('round head: a ready id whose blocker this run quarantined is held back (a lost reopen), and an all-held-back round drains')
   {
     const canned = graphCanned([{ id: 'bd-101' }, { id: 'bd-102', deps: ['bd-101'] }], {
@@ -2998,6 +3111,8 @@ esac
         'Task 5 (bd-5): complete (already merged at 1234567)',
         'Task 6 (bd-6): complete (commits c..d, review clean)',
         'Task 7 (bd-7): landed (commits aaaaaaa..bbbbbbb, review bd-17, blocker bd-27, tracker closure unconfirmed)',
+        'Edge add: bd-9 <- bd-1 (triage) — wait until the parser (bd-1) merges',
+        'Human action: bd-2 — rm -rf ~/.cache/x (refused): remove it by hand',
         'Detector: round 1 — frontier 3',
         'Metrics: merges 1',
       ].join('\n') + '\n'
@@ -3005,7 +3120,7 @@ esac
       const r = runScript(dir, 'ledger-digest', [f])
       check(r.code === 0, 'exits 0', JSON.stringify(r))
       check(r.stdout === [
-        '# ledger-digest: 12 of 17 lines',
+        '# ledger-digest: 14 of 19 lines',
         'Task 1 (bd-1): stacked on bd-0',
         'Task 1 (bd-1): fix pass FIXED',
         'Task 1 (bd-1): complete, fix pass, parked, commits a..b',
@@ -3018,11 +3133,43 @@ esac
         'Task 5 (bd-5): complete, already merged',
         'Task 6 (bd-6): complete, review clean, commits c..d',
         'Task 7 (bd-7): landed, commits aaaaaaa..bbbbbbb, review bd-17, blocker bd-27',
-      ].join('\n') + '\n', 'a counting header, then state tokens, cause tags, minor class tags and Merge: lines, in order; untagged minors, Detector:, Launch:, Metrics: and the ledger header dropped', r.stdout)
+        'Edge add: bd-9 <- bd-1 (triage)',
+        'Human action: bd-2 — rm -rf ~/.cache/x (refused): remove it by hand',
+      ].join('\n') + '\n', 'a counting header, then state tokens, cause tags, minor class tags, Merge: and Human action: lines and reason-free Edge add: lines, in order; untagged minors, Detector:, Launch:, Metrics: and the ledger header dropped', r.stdout)
       const missing = runScript(dir, 'ledger-digest', [path.join(dir, 'nope.md')])
       check(missing.code === 0 && missing.stdout === '', 'a missing ledger prints nothing and exits 0', JSON.stringify(missing))
       check(runScript(dir, 'ledger-digest', []).code === 2, 'no argument exits 2')
       rmSync(dir, { recursive: true, force: true })
+    }
+
+    scenario('scripts: already-merged — a second parent, a landing merge SHA, a deleted branch by its merge subject, and --landed')
+    {
+      const dir = mkdtempSync(path.join(os.tmpdir(), 'am-'))
+      const git = (...a) => execFileSync('git', ['-C', dir, ...a], { encoding: 'utf8', env: { ...process.env, GIT_AUTHOR_NAME: 't', GIT_AUTHOR_EMAIL: 't@t', GIT_COMMITTER_NAME: 't', GIT_COMMITTER_EMAIL: 't@t' } }).trim()
+      const am = (...a) => { const r = spawnSync(bashPath, [path.join(scriptsDir, 'already-merged'), ...a], { cwd: dir, encoding: 'utf8' }); return { code: r.status, out: (r.stdout ?? '').trim() } }
+      try {
+        git('init', '-q', '-b', 'integ'); git('commit', '-q', '--allow-empty', '-m', 'base')
+        git('checkout', '-q', '-b', 'task-bd-1'); git('commit', '-q', '--allow-empty', '-m', 'one')
+        const tip = git('rev-parse', 'HEAD')
+        git('checkout', '-q', 'integ'); git('merge', '-q', '--no-ff', '--no-edit', 'task-bd-1')
+        const merge = git('rev-parse', 'HEAD')
+        git('checkout', '-q', '-b', 'task-bd-10'); git('checkout', '-q', 'integ')
+        check(am('integ', 'task-bd-1').out === 'true' && am('integ', tip).out === 'true', 'the task tip (by branch or SHA) is a merge\'s second parent: true')
+        check(am('integ', merge).out === 'true' && am('integ', merge.slice(0, 7)).out === 'true', 'the landing merge commit\'s SHA: true')
+        check(am('integ', 'task-bd-10').out === 'false' && am('integ', 'integ').out === 'false', 'a branch cut fresh at a merge tip (and the integration branch itself) is not that merge: false')
+        git('branch', '-q', '-D', 'task-bd-1')
+        check(am('integ', 'task-bd-1').out === 'true' && am('integ', 'task-bd-2').out === 'false', 'a deleted branch is found by its merge subject; an unknown one prints false')
+        check(am('integ', git('rev-parse', 'HEAD~1')).out === 'false', 'a first-parent non-merge commit: false')
+        git('checkout', '-q', '-b', 'task-bd-1'); git('commit', '-q', '--allow-empty', '-m', 'new work on a re-cut branch'); git('checkout', '-q', 'integ')
+        check(am('integ', 'task-bd-1').out === 'false', 'a re-cut branch of a landed name with new commits is not landed (no double landing dropped)')
+        check(am('--landed', 'integ').out === '', '--landed leaves out a landed name whose re-cut branch carries new work')
+        git('branch', '-q', '-f', 'task-bd-1', 'integ')
+        check(am('integ', 'task-bd-1').out === 'true', 'a re-cut branch with nothing the integration branch lacks is found by its merge subject')
+        git('branch', '-q', '-D', 'task-bd-1')
+        const landed = am('--landed', 'integ')
+        check(landed.code === 0 && landed.out === `task-bd-1 ${tip} ${merge}`, '--landed lists each task merge as <branch> <tip> <merge>', JSON.stringify(landed))
+        check(am('nope', 'task-bd-1').code === 2 && am('integ').code === 2, 'an unknown integration branch or a missing argument exits 2')
+      } finally { rmSync(dir, { recursive: true, force: true }) }
     }
 
     if (!hasJq) {

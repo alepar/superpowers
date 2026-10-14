@@ -327,7 +327,8 @@ Done by the main session, not the Workflow:
    the run and does not end its turn at launch (SKILL.md's "Unattended runs"): it appends
    friction-log entries from the coordinator's log (Finish, "Friction capture"), and when the
    Workflow returns it reads `stopReason` — `root-closed`, `ready-drained`, `stalled` or `closure-unconfirmed` go on to
-   Finish; an agent-budget-cap end or a first outage stop gets a relaunch with `resumeFromRunId`.
+   Finish; an agent-budget-cap end or a first outage stop gets a relaunch with `resumeFromRunId`,
+   once no earlier coordinator Workflow for the epic is still running (SKILL.md's "Unattended runs").
    Recovery is driven by the ledger and `bd ready`, not the Workflow cache: `resumeFromRunId` replays
    only the agent calls before the first concurrent fan-out, so it is an optimization, not the
    recovery path.
@@ -551,8 +552,9 @@ Workflow run can be killed, restarted, or simply lose its place across a long ep
 what lets the *next* invocation pick up exactly where the last one left off instead of
 re-querying beads state and guessing. `readLedgerPrompt` / `ledgerAppendPrompt` and the
 Resume-phase block in `./coordinator.js` implement it. Both reads (Resume and the Finish Metrics
-re-read) echo `scripts/ledger-digest`, never the file itself: it keeps the `Merge:` lines and each
-`Task` line's state tokens and drops the free text (`minor (deferred)` prose, reasons, notes), which
+re-read) echo `scripts/ledger-digest`, never the file itself: it keeps the `Merge:` and `Human
+action:` lines, each `Edge add:` line without its reason, and each `Task` line's state tokens, and
+drops the free text (`minor (deferred)` prose, reasons, notes), which
 is most of a long ledger. A verbatim echo of a ~90 KB ledger was refused by model safeguards on
 every launch once the epic grew; the digest of the same ledger is ~12 KB, and the coordinator's
 parsers read it exactly as they read the raw file. Its first line, `# ledger-digest: <kept> of
@@ -560,7 +562,9 @@ parsers read it exactly as they read the raw file. Its first line, `# ledger-dig
 without that header, or with fewer lines than it counts, is an unavailable read (retried once),
 never content — an empty echo once seeded 1 of 29 completions on Resume. The digest also keeps
 each minor's `[class]` tag and each blocker's `[cause: …]`, from which Resume re-seeds the
-recurrence counts.
+recurrence counts. The Resume read also echoes `scripts/already-merged --landed`: the
+`task-<id>` merges git holds on the integration branch, so a landing whose ledger lines were lost
+(an outage during its append) is still known (see "Resume behavior").
 
 - **Workspace, one per epic:** I7 fix — every epic's plan file used to be named literally
   `plan.md`, so `scripts/sdd-workspace`'s basename-derived directory
@@ -628,7 +632,9 @@ recurrence counts.
     `Detector: round N — …`, `Edge audit: round N — …` (every proposed change, marked safe or not),
     `Edge cut: <dependent> <- <blocker> · <kind> · applied | skipped (<reason>)`, `Recurring
     <kind>: …`, `Sweep: …`, and `Slowness: <signal> → <action>` (written by the watching session,
-    SKILL.md's "Unattended runs").
+    SKILL.md's "Unattended runs"). `Edge add: …` and `Human action: <id> — …` are run-level too,
+    but Resume reads them: an earlier launch's added edge is honored again, and neither line is
+    written twice.
 - **Resume behavior**, on any restart: the script's Resume phase reads `<workspace>/progress.md`
   once, before the round loop starts (see `./coordinator.js`), and reconstructs `completed`,
   `parked`, and `pendingRetry` from the **last** ledger line recorded for each bead id (a split
@@ -657,10 +663,13 @@ recurrence counts.
   invocation, so a restart gives a previously-BLOCKED id a fresh attempt, and a still-blocked one
   is re-quarantined live after up to two wasted passes (see "Known limitations"). `escalated` means
   "quarantined in this process". A bead with no terminal ledger line re-enters the pipeline from its
-  workspace setup. **One re-entry case runs nothing but a close:** when the setup finds the task
-  branch already merged into the integration branch (its tip is the second parent of a merge
-  there), it returns `ALREADY_MERGED` and the coordinator dispatches a close-only step instead of a
-  review of an empty diff. A clean-drain re-invoke ("Escalation = notify + quarantine + continue"
+  workspace setup. **One re-entry case runs nothing but a close:** when the task already landed on
+  the integration branch, the coordinator dispatches a close-only step instead of a review of an
+  empty diff, and nothing stacked on it is cancelled. `scripts/already-merged` decides it (its
+  header has the rules; a deleted branch is found by its merge subject), at three points: Resume's
+  git landings, for an id bd reports ready again with no ledger landing; the setup, on a reused
+  branch and before a fresh cut (it returns `ALREADY_MERGED`); and the merge's first step (it
+  reports `alreadyMerged`). A clean-drain re-invoke ("Escalation = notify + quarantine + continue"
   below) and a mid-flight restart converge on the same fixed point: neither permanently locks out a
   fixed id; a restart may only redo more.
 - **Who writes ledger lines, and when — never on the critical path.** The success-path `Merge:`
@@ -833,11 +842,12 @@ permissions, write boundaries or human gates. The report/verdict records amendme
 confirm tracker closure. `close-check:<task>` reads exact tracker statuses for the task, its review
 bead and its resolved blocker bead where present. All must be closed before settling completed or
 releasing stacked merges. There are at most two observations per attempt and one close-only repair;
-a null read means unknown and gets one observation retry, with no speculative close. Close-only
-re-verifies the merge with `scripts/already-merged` using the known landed tip (so a removed task
-branch does not prevent verification), then closes beads and cleans up only after successful closes.
-Close-only obtains its own current status observation before any write and closes only observed-open
-beads. An unavailable lookup closes nothing, stops no processes and performs no cleanup. Thus a
+a null read means unknown and gets one observation retry, with no speculative close. bd is the
+authority on closure: close-only reads every required bead's status first, and when all are closed
+it reports `CLOSED` with no git re-check. Otherwise it re-verifies the merge with
+`scripts/already-merged` using the known landed tip (or the task branch, found by its merge subject
+once deleted), then closes beads and cleans up only after successful closes. It closes only
+observed-open beads. An unavailable lookup closes nothing, stops no processes and performs no cleanup. Thus a
 later recovery attempt does not infer open status from an earlier null observation. There are at
 most three no-progress rounds under the existing null policy. Permission refusals retain BLOCKED_AUTH
 routing; no triage can grant them. Their ledger lines are followed by the durable pending-landing
@@ -856,7 +866,9 @@ earlier historical landing records; a range-less completion retains a prior tip 
 do not prove a merge; close-only must verify them. Round stall/null bounds still apply. Confirmed
 merged code receives the Finish sweep and final review even if closure remains unknown; such runs
 return `closureUnconfirmed` IDs (reported landings awaiting verification or closure) and stopReason `closure-unconfirmed`, without counting those IDs as
-completed. The invoking session treats this as a hard stop with unresolved tracker state: report
+completed. Finish's `reconcile-buckets` asks bd about those landed ids too (with their review and
+RESOLVEd blocker beads), and `closureUnconfirmed` is computed after it: an id bd shows closed
+settles completed and gets a `complete (already merged …)` line for the next resume. The invoking session treats this as a hard stop with unresolved tracker state: report
 the IDs and closure evidence, preserve the integration worktree, and do not present the epic as
 finished or merge it automatically. The original session's close failure cause remains unknown.
 
@@ -868,7 +880,7 @@ report paths, worktree, branch, integration branch, and `[WORKSPACE_SETUP]` — 
 commands for this attempt (fresh cut, stacked cut, re-cut after a cancellation, reuse on a restart,
 or a review re-entry). The template's step 0 runs them before anything else: cut or reuse the
 worktree and branch, merge any stack parents, find `base`, run `scripts/already-merged` on a reused
-branch, write the brief with `task-brief`, and check that the toolchain resolves inside the
+branch and before a fresh cut, write the brief with `task-brief`, and check that the toolchain resolves inside the
 worktree. It returns before implementing with `ALREADY_MERGED` (closed by a close-only step),
 `STACK_CONFLICT` (the task waits for its parents to merge) or `SETUP_FAILED` (routed to the blocker
 path like any BLOCKED, the cause as its finding); a review re-entry whose branch exists returns
@@ -937,6 +949,11 @@ off the single-flight queue, in completion order with tasks that dependents wait
 coordinator loop" step 4; either order is safe because a `bd ready` batch is mutually
 independent by definition):
 
+0. **Landed already?** The merge agent first runs `scripts/already-merged` on the task branch. A
+   task that landed before this dispatch (a pre-outage merge whose ledger lines were lost) reports
+   `alreadyMerged` and touches nothing (it checks once more when the rebase leaves nothing to
+   merge); the coordinator closes it through the close-only step,
+   never the blocker path, so its stacked dependents still merge.
 1. Update the integration branch; rebase the task branch onto it — a stacked task (early unblock)
    rebases only its own commits, `git rebase --onto <integration> <stacked base> <task branch>`,
    since its stack parents have merged their reviewed versions by then (it enqueues only after they
@@ -1092,7 +1109,9 @@ dispatch path (round head, `bd ready` top-up) until its blocker merges, then gra
 releases it. A background `edge-add:<k>` dispatch writes it to bd (`bd dep add` plus a
 `blocked-by` line, after checking both beads are open), an `Edge add: <dependent> <- <blocker>
 (<source>) — <reason>` line goes to the ledger, and Finish awaits the writes. Adding an edge counts
-as progress for the no-progress guard.
+as progress for the no-progress guard. A relaunch seeds its added edges from those lines and holds
+them the same way; one the planner reports missing again is written to bd once more, never to the
+ledger.
 
 **Edge-audit memory.** An edge an audit judged not safe is not judged again: each audit reads the
 ledger's earlier `Edge audit:` lines and is handed this run's own unsafe verdicts, and returns such
@@ -1359,8 +1378,8 @@ something the code did not do, and the risk a maintainer reintroduces it outlive
    Seeding `pendingRetry` from `BLOCKED` lines would fix it; not attempted here because the same
    restart path is being reworked by the blocked-task redesign (item 1).
 3. **`ALREADY_MERGED` is relayed by an agent, not computed by the coordinator.** The check is
-   `scripts/already-merged` (git only: the branch tip is the second parent of a merge on the
-   integration branch); the coordinator cannot run git itself. A relayed false positive did close
+   `scripts/already-merged` (git only: a merge on the integration branch has the task as its second
+   parent, or names its branch in its subject); the coordinator cannot run git itself. A relayed false positive did close
    a headline bead with no work done on a live run, so the close-only dispatch now re-runs the
    script before `bd close` and closes nothing when it does not print true, and a review re-entry
    whose branch has no commits past the integration branch trusts only the script (else
@@ -1768,7 +1787,7 @@ exercised by the replay harness's live-sim scenarios.
 | `notify:bd-103` / `notify:bd-104` / `clarify:bd-104` / `ledger:bd-104` | fixed | notify on ESCALATE; clarification on RESOLVE; bd-104 flushes once per chain — `pending retry`, then `BLOCKED` |
 | `sweep` / `ledger-append:sweep` | `{summary:"f00dbee — 12 passed, …"}` / `{appended:true}` | the mandatory full-suite sweep at Finish (work landed); the summary names bd-103/bd-104 as not in the measurement |
 | `read-ledger:finish` / `ledger-append:metrics` | `{text:""}` / `{appended:true}` | the Metrics re-read and the one dispatch appending all four lines |
-| `reconcile-buckets` | `{closed:[]}` | Finish reconciliation of escalated ids against the tracker |
+| `reconcile-buckets` | `{closed:[]}` | Finish reconciliation of escalated ids (and any landed id whose closure is unconfirmed) against the tracker |
 | `worktree-sweep` | `{lines:[]}` | the Finish task-worktree backstop (always dispatched) |
 | `final-review` | `{summary,verdict}` | dispatched because `completed.size` is 2 |
 

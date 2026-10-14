@@ -162,11 +162,12 @@ async function dispatch(buildReal, stubKey, opts) {
 }
 // Every ledger read goes through readLedger: the digest echo, retried once on a null (a refusal or a
 // transient death) before the call site's degraded path runs.
-async function readLedger(stubKey, phaseName) {
+// `withLanded` (Resume) also lists the task merges git holds, for landings the ledger never got.
+async function readLedger(stubKey, phaseName, withLanded = false) {
   const opts = { label: stubKey, phase: phaseName, schema: LEDGER_TEXT, ...tier('mechanical') }
-  const out = checkDigest(await dispatch(() => readLedgerPrompt(integrationWorktree, ledgerPath), stubKey, opts), stubKey)
+  const out = checkDigest(await dispatch(() => readLedgerPrompt(integrationWorktree, ledgerPath, withLanded), stubKey, opts), stubKey)
   if (out !== null) return out
-  return checkDigest(await dispatch(() => readLedgerPrompt(integrationWorktree, ledgerPath), stubKey, { ...opts, label: `${stubKey}:retry` }), `${stubKey}:retry`)
+  return checkDigest(await dispatch(() => readLedgerPrompt(integrationWorktree, ledgerPath, withLanded), stubKey, { ...opts, label: `${stubKey}:retry` }), `${stubKey}:retry`)
 }
 // The digest's first line counts what it kept. An echo without it, or with fewer lines than it counts,
 // was lost or truncated in transit — an unavailable read, never an empty ledger (that once seeded 1 of
@@ -264,7 +265,8 @@ const TRIAGE  = { type: 'object', properties: { decision: {type:'string', enum: 
 // `seamOverlap`: files changed on both sides of the rebase; the agent stops before merging so a scoped
 // seam review runs first. `rebaseConflictFiles`: conflicted file count, on every attempt, for the
 // `Merge:` line. `ledgerAppended`: the agent wrote its success-path ledger lines itself.
-const MERGE   = { type: 'object', properties: { id:{type:'string'}, merged:{type:'boolean'}, blockerBead:{type:'string'}, head:{type:'string'}, mergeBase:{type:'string'}, authRefused:{type:'string'}, seamOverlap:{ type:'array', items:{type:'string'} }, rebaseConflictFiles:{type:'number'}, check:{type:'string', enum:['pass','fail','aborted','none']}, checkOutput:{type:'string'}, mergeExit:{type:'number'}, mergeHead:{type:'boolean'}, dirty:{ type:'array', items:{type:'string'} }, detachedHead:{type:'string'}, removedIdentical:{ type:'array', items:{type:'string'} }, ledgerAppended:{type:'boolean'}, cleanup:{ type:'array', items:{type:'string'} } }, required: ['id','merged'] }
+// `alreadyMerged`: the task had landed before this merge began; nothing was merged.
+const MERGE   = { type: 'object', properties: { id:{type:'string'}, merged:{type:'boolean'}, blockerBead:{type:'string'}, head:{type:'string'}, mergeBase:{type:'string'}, authRefused:{type:'string'}, seamOverlap:{ type:'array', items:{type:'string'} }, rebaseConflictFiles:{type:'number'}, check:{type:'string', enum:['pass','fail','aborted','none']}, checkOutput:{type:'string'}, mergeExit:{type:'number'}, mergeHead:{type:'boolean'}, dirty:{ type:'array', items:{type:'string'} }, detachedHead:{type:'string'}, removedIdentical:{ type:'array', items:{type:'string'} }, ledgerAppended:{type:'boolean'}, cleanup:{ type:'array', items:{type:'string'} }, alreadyMerged:{type:'boolean'} }, required: ['id','merged'] }
 // Edge-audit return shape (edgeAuditPrompt): openLeaves and depth from scripts/tree-shape;
 // `changes` use super-design's graph-pass vocabulary, each judged safe or not. Only
 // `config.edgeCuts: 'apply-safe'` applies the safe ones.
@@ -273,8 +275,9 @@ const EDGE_AUDIT = { type: 'object', properties: { openLeaves:{type:'integer'}, 
 const EDGE_CUTS = { type: 'object', properties: { applied:{ type:'array', items: EDGE_CHANGE }, skipped:{ type:'array', items:{ type:'object', properties:{ dependent:{type:'string'}, blocker:{type:'string'}, reason:{type:'string'} }, required:['dependent','blocker','reason'] } } }, required: ['applied','skipped'] }
 const CLOSE   = { type: 'object', properties: { rootClosed: {type:'boolean'}, closedThisRun: { type: 'array', items: { type: 'string' } }, scriptError: {type:'string'} }, required: ['rootClosed','closedThisRun'] }
 // Ledger read returns raw text ('' for a fresh ledger), so parsing stays in this script. Appends are
-// schema-less: only a null return matters (appendLedger's retry-then-mark).
-const LEDGER_TEXT = { type: 'object', properties: { text: { type: 'string' } }, required: ['text'] }
+// schema-less: only a null return matters (appendLedger's retry-then-mark). `landed` (Resume read
+// only): `<branch> <tip> <merge>` lines from scripts/already-merged --landed.
+const LEDGER_TEXT = { type: 'object', properties: { text: { type: 'string' }, landed: { type: 'array', items: { type: 'string' } } }, required: ['text'] }
 const SWEEP_SUMMARY = { type: 'object', properties: { summary: { type: 'string' } }, required: ['summary'] }
 // Early-unblock bookkeeping (scripts/review-bead): the split's review bead and whether the task bead
 // closed; a reopen's list; a cancelled task's worktree removal.
@@ -378,10 +381,16 @@ function noteSlowness(text) { slowness.push(text); log(`SLOWNESS: ${text}`) }
 const humanActions = []
 // Minors merged tasks deferred, handed to a later task whose files they name (in-run only).
 const deferredMinors = []
+// `Human action:` lines already on the ledger (Resume seeds it from earlier launches): a re-run
+// task that reports the same action is not written twice.
+const humanActionLines = new Set()
 function noteHumanAction(id, text) {
   const t = String(text).replace(/\s+/g, ' ').trim()
   humanActions.push(`${id}: ${t}`); log(`HUMAN ACTION ${id}: ${t}`)
-  queueLedger(`Human action: ${id} — ${t}`, `ledger-append:human-action:${humanActions.length}`, 'Implement', `Human action: ${id} — detail elided`)
+  const line = `Human action: ${id} — ${t}`
+  if (humanActionLines.has(line)) return
+  humanActionLines.add(line)
+  queueLedger(line, `ledger-append:human-action:${humanActions.length}`, 'Implement', `Human action: ${id} — detail elided`)
 }
 const minorSignature = s => String(s).toLowerCase()
   .replace(/[\x60"'()[\]{}]/g, '')
@@ -413,24 +422,33 @@ let edgeCutHook = () => {}      // the live round's graph top-up while its chain
 // and written to bd by a background mechanical dispatch. Finish awaits those writes.
 let edgesAdded = 0
 const pendingEdgeAdds = []
+// Edges an earlier launch added (its `Edge add:` lines, seeded on Resume into addedDeps): reported
+// missing again, bd lacks them, so the bd write is repeated once — the ledger line is not.
+const seededEdges = new Set()   // `${dependent}<-${blocker}`
+function writeEdge(dependent, blocker, why, key) {
+  pendingEdgeAdds.push(dispatch(() => edgeAddPrompt(epicId, integrationWorktree, dependent, blocker, why), key,
+    { label: key, phase: 'Plan', ...tier('mechanical') })
+    .then(r => { if (r === null) log(`edge-add ${dependent} <- ${blocker}: the bd write returned null — held in memory this run, and from the ledger on a relaunch`) }))
+}
 function addEdge(dependent, blocker, reason, source) {
   if (!dependent || !blocker || dependent === blocker || completed.has(blocker)) return false
-  if (addedDeps.get(dependent)?.has(blocker)) return false
+  const why = String(reason || 'no reason given').replace(/\s+/g, ' ').trim()
+  if (addedDeps.get(dependent)?.has(blocker)) {
+    if (seededEdges.delete(`${dependent}<-${blocker}`)) writeEdge(dependent, blocker, why, `edge-add:${dependent}<-${blocker}`)
+    return false
+  }
   if (!addedDeps.has(dependent)) addedDeps.set(dependent, new Set())
   addedDeps.get(dependent).add(blocker); cutRows.add(dependent); edgesAdded++
-  const why = String(reason || 'no reason given').replace(/\s+/g, ' ').trim()
   log(`edge added (${source}): ${dependent} <- ${blocker} — ${why}; ${dependent} waits for ${blocker} to land`)
   queueLedger(`Edge add: ${dependent} <- ${blocker} (${source}) — ${why}`, `ledger-append:edge-add:${edgesAdded}`, 'Plan', `Edge add: ${dependent} <- ${blocker} (${source}) — reason elided`)
-  pendingEdgeAdds.push(dispatch(() => edgeAddPrompt(epicId, integrationWorktree, dependent, blocker, why), `edge-add:${edgesAdded}`,
-    { label: `edge-add:${edgesAdded}`, phase: 'Plan', ...tier('mechanical') })
-    .then(r => { if (r === null) log(`edge-add ${dependent} <- ${blocker}: the bd write returned null — held in memory this run only; a relaunch must re-learn it`) }))
+  writeEdge(dependent, blocker, why, `edge-add:${edgesAdded}`)
   return true
 }
 
 // Resume from the ledger, read once before the round loop: after that, this process's own buckets
 // reflect every append. Runs in the integration worktree, which owns the ledger.
 phase('Resume')
-const ledger = await readLedger('read-ledger', 'Resume')
+const ledger = await readLedger('read-ledger', 'Resume', true)
 // Null ledger read: reconstruct nothing, loudly. `bd ready` still guards closed work, but prior
 // pendingRetry bounds are lost.
 if (!ledger) log('resume: ledger read unavailable (null dispatch) — proceeding with an empty reconstruction; bd ready remains the authority on closed work, but prior-run pendingRetry bounds are lost for this run')
@@ -450,6 +468,14 @@ if (config.sweepBaseline === true && !deferSweep) {
 const resumed = new Map()  // id -> kind: 'complete' | 'parked' | 'pendingRetry' | 'blockedHistorically'
 for (const raw of (ledger?.text || '').split('\n')) {
   const line = raw.trim()
+  // Earlier launches' added edges and human actions: honored and never written again.
+  const edge = /^Edge add: (\S+) <- (\S+) \(/.exec(line)
+  if (edge) {
+    if (!addedDeps.has(edge[1])) addedDeps.set(edge[1], new Set())
+    addedDeps.get(edge[1]).add(edge[2]); seededEdges.add(`${edge[1]}<-${edge[2]}`)
+    continue
+  }
+  if (line.startsWith('Human action: ')) { humanActionLines.add(line); continue }
   const m = LEDGER_LINE_RE.exec(line)
   if (!m) continue  // the identity header line, a blank line, or noise
   const [, , id, rest] = m
@@ -494,6 +520,13 @@ for (const [id, kind] of resumed) {
   // the next invocation. The cost is up to two re-attempts of a still-blocked task before it settles
   // back into `escalated`. Resume's only dispatch-gating output is `pendingRetry`; `completed`/`parked`
   // are informational, except that a resumed nonzero `completed` still triggers the final review.
+}
+// Task merges git holds (`task-<id>` -> its tip). A landing whose ledger lines were lost (an outage
+// during its append) is settled from these when bd next reports the id ready: closure only.
+const gitLanded = new Map()
+for (const l of ledger?.landed ?? []) {
+  const g = /^(\S+) ([0-9a-f]{7,40}) [0-9a-f]{7,40}$/.exec(String(l).trim())
+  if (g) gitLanded.set(g[1], g[2])
 }
 if (resumed.size) log(`resume: reconstructed from ${ledgerPath} — ${completed.size} complete (${parked.size} parked), ${pendingRetry.size} pending retry, ${blockedHistoricallyCount} previously-BLOCKED id(s) found (not re-quarantined — each gets a fresh attempt this run; see the resume-reconstruction comment above)${cancelledHistoricallyCount ? `, ${cancelledHistoricallyCount} last cancelled (a stack parent did not merge; each re-enters fresh)` : ''}`)
 
@@ -563,7 +596,13 @@ while (true) {
   for (const rv of reentries) { reviewBeadOf.set(rv.task, rv.id); implClosed.add(rv.task) }
   const reentryIds = [...new Set(reentries.map(rv => rv.task))]
   const ids = [...new Set([...(ready.ids ?? []), ...pendingClosures])].filter(id => !escalated.has(id) && !reentryIds.includes(id))
-  for (const id of [...ids, ...reentryIds]) if (landed.has(id)) { completed.delete(id); parked.delete(id) }
+  for (const id of [...ids, ...reentryIds]) {
+    if (!landed.has(id) && gitLanded.has(taskBranch(id))) {
+      landed.set(id, gitLanded.get(taskBranch(id)))
+      log(`${id}: ${taskBranch(id)} is merged into ${integrationBranch} (git) but the ledger has no landing for it — closure only, nothing re-implemented`)
+    }
+    if (landed.has(id)) { completed.delete(id); parked.delete(id) }
+  }
   // Quarantine exit: the root isn't closed (checked above) but nothing is ready — remaining
   // work is blocked/escalated. Not a clean finish; report below distinguishes the two cases.
   if (ids.length === 0 && reentryIds.length === 0) { stopReason = 'ready-drained'; break }
@@ -675,15 +714,18 @@ while (true) {
     run.then(() => {}, () => {}).then(() => { mergeBusy = false; mergeQueued--; pumpMerge() })   // a throw must not poison the queue
   }
   // A failed merge's attempt ends (its stacked dependents cancelled, its task bead reopened) before
-  // its blocker path runs, so a RESOLVE retry starts from a settled attempt.
+  // its blocker path runs, so a RESOLVE retry starts from a settled attempt. A task found already
+  // landed is closed instead, and its dependents' merges proceed.
+  const ALREADY_LANDED = Symbol('already landed')
   const enqueueIntegration = r => {
     mergeQueued++; mergeQueuePeak = Math.max(mergeQueuePeak, mergeQueued)
     if (!mergeBusy && !mergeWaiting.length) mergeChain = new Promise(res => { mergeIdle = res })
     const run = new Promise((resolve, reject) => { mergeWaiting.push({ r, resolve, reject }) })
     pumpMerge()
-    return run.then(after => (typeof after === 'function'
+    return run.then(after => after === ALREADY_LANDED ? withSlot(r.id, () => closeAlreadyMerged(r))
+      : typeof after === 'function'
       ? withSlot(r.id, async () => { await failAttempt(r.att, { failure: 'blocked', reopen: true }); return after() })
-      : undefined))
+      : undefined)
   }
   // Success-path ledger lines the merge agent writes itself (it fills `<REBASE>` and `<RANGE>`). A
   // parked completion line carries fixer free text, so the coordinator writes that one.
@@ -736,6 +778,9 @@ while (true) {
     // Null merge: no merge happened and it is not the blocker path; the bead stays open and re-enters
     // next round.
     if (!m) { log(`merge for ${r.id} unavailable (null dispatch) — no merge happened; leaving ${r.id} unsettled this round`); return }
+    // The task had landed before this attempt (a pre-outage merge the ledger never recorded): not a
+    // merge failure, so no blocker and no cancelled dependents.
+    if (!m.merged && m.alreadyMerged === true) { log(`merge:${r.id} — ${taskBranch(r.id)} already landed on ${integrationBranch}; nothing merged, closing the bead`); return ALREADY_LANDED }
     // The merge itself was refused by the permission layer — the command never ran, so this is
     // neither a failed merge nor blocker-worthy. Log, quarantine, continue; see handleAuthRefusal.
     // A refused merge still gets its `Merge:` line (an unresolved rebase conflict counts), ending
@@ -1418,11 +1463,6 @@ await Promise.all(pendingAudits)
 await Promise.all(pendingEdgeAdds)
 flushAllLedger('Finish')
 await drainLedger()
-const closureUnconfirmed = [...landed.keys()].filter(id => !completed.has(id))
-if (closureUnconfirmed.length) {
-  stopReason = 'closure-unconfirmed'
-  log('Reported landing with unconfirmed tracker closure: ' + closureUnconfirmed.join(', ') + ' — run completion is degraded; retry closure only')
-}
 log(`Completed: ${completed.size}. Escalated: ${escalated.size}. Pending retry: ${pendingRetry.size}. Parked (merged with fix-pass-declined findings): ${parked.size}. Auth-refused (coverage lost to permission refusals): ${authRefused.length}. Recurring clusters (minor + blocker): ${recurringReported}. Ledger appends failed: ${ledgerAppendFailed.length} (retried and saved: ${ledgerAppendRetried}). Stop reason: ${stopReason}.${stalled ? ' Stalled: true — see the STALLED log line above.' : ''}`)
 // The sweep: the full suite, once, against the tip the final review reads — whenever work landed.
 // Its summary goes to the `Sweep:` line, the final review and the return value.
@@ -1514,18 +1554,34 @@ const reviewRes = (completed.size || confirmedLandings.size)
 const review = reviewRes ?? `FINAL REVIEW UNAVAILABLE — the final-review dispatch returned null (terminal API error after retries). The integration branch has had NO whole-epic review; treat this as a missing review, never as "no findings".`
 // `authRefused` ids are also in `escalated`, so the bucket invariant holds.
 // Reconcile with the tracker before returning: a closed bead is completed whatever the ledger says —
-// except a split task, which counts only when its review bead is closed too. Null returns the buckets
-// as-is.
-const unsettledIds = [...new Set([...escalated, ...pendingRetry])].filter(id => !confirmedLandings.has(id))
+// except a split task, which counts only when its review bead is closed too, and a landed task,
+// whose RESOLVEd blocker bead must be closed too. Landed ids whose closure this run could not confirm
+// are asked as well: bd is the authority on closure, whatever git re-checks said. Null returns the
+// buckets as-is.
+const landedOpen = [...landed.keys()].filter(id => !completed.has(id))
+const unsettledIds = [...new Set([...[...escalated, ...pendingRetry].filter(id => !confirmedLandings.has(id)), ...landedOpen])]
 if (unsettledIds.length) {
-  const rec = await dispatch(() => reconcileBucketsPrompt(unsettledIds, unsettledIds.filter(id => reviewBeadOf.has(id)).map(id => [id, reviewBeadOf.get(id)])), 'reconcile-buckets',
+  const rec = await dispatch(() => reconcileBucketsPrompt(unsettledIds, unsettledIds.filter(id => reviewBeadOf.has(id)).map(id => [id, reviewBeadOf.get(id)]),
+    landedOpen.filter(id => blockerBeadOf.has(id)).map(id => [id, blockerBeadOf.get(id)])), 'reconcile-buckets',
     { label: 'reconcile-buckets', phase: 'Finish', ...tier('mechanical'), schema: RECONCILE })
-  if (!rec) log(`bucket reconciliation unavailable (null dispatch) — returning the in-memory buckets unreconciled; ${unsettledIds.length} escalated/pendingRetry id(s) were NOT checked against the tracker`)
+  if (!rec) log(`bucket reconciliation unavailable (null dispatch) — returning the in-memory buckets unreconciled; ${unsettledIds.length} escalated/pendingRetry/landed id(s) were NOT checked against the tracker`)
   else for (const id of (rec.closed ?? [])) {
     if (!unsettledIds.includes(id)) continue  // never admit an id this run did not ask about
-    log(`reconciled ${id}: tracker reports closed — moved from ${escalated.has(id) ? 'escalated' : 'pendingRetry'} to completed`)
+    log(`reconciled ${id}: tracker reports closed — moved from ${landedOpen.includes(id) ? 'unconfirmed closure' : escalated.has(id) ? 'escalated' : 'pendingRetry'} to completed`)
     settle(id, completed)
+    if (!landedOpen.includes(id)) continue
+    if (landedParked.has(id)) parked.add(id)
+    blockerBeadOf.delete(id)
+    // The completion line a resume reads, so the next launch does not re-check this closure.
+    queueLedger(ledgerLine(lastPlanned?.mapping.find(m => m.id === id)?.n, id, `complete (already merged into ${integrationBranch} — tracker reports closed at Finish reconciliation${landedParked.has(id) ? ', 1 parked' : ''})`),
+      `ledger-append:reconciled:${id}`, 'Finish')
   }
+  await drainLedger()
+}
+const closureUnconfirmed = [...landed.keys()].filter(id => !completed.has(id))
+if (closureUnconfirmed.length) {
+  stopReason = 'closure-unconfirmed'
+  log('Reported landing with unconfirmed tracker closure: ' + closureUnconfirmed.join(', ') + ' — run completion is degraded; retry closure only')
 }
 // Backstop sweep: every task worktree still under the integration worktree goes now, merged and
 // clean only; split tasks' kept branches are deleted with -d. Anything kept is returned.
@@ -1638,13 +1694,13 @@ function workspaceSetup(planPath, n, id, worktree, branchName, integrationBranch
     ? ` An earlier attempt of this task was cancelled and its worktree may not have been removed: if ${worktree} or the branch \`${branchName}\` exists, stop its processes and remove both first (\`bash ${codeSkill}/scripts/stop-run-processes ${worktree} ${taskTmp(id)}\`, \`git worktree remove --force ${worktree}\`, \`git branch -D ${branchName}\`), then treat this as the NEITHER case.`
     : ''
   const neither = reentry
-    ? `If NEITHER exists, this task's implementation is gone: run \`bd reopen ${id} --reason "review re-entry found no task branch"\`, then \`git worktree add ${worktree} -b ${branchName} ${integrationBranch}\`; \`git rev-parse HEAD\` in ${worktree} is base; report reopened true, and implement the task as usual.`
-    : `If NEITHER exists: \`git worktree add ${worktree} -b ${branchName} ${integrationBranch}\`.${stackStep}`
+    ? `If NEITHER exists, run the ALREADY-MERGED CHECK below first (the branch may have been deleted after it landed); if it prints true, return ALREADY_MERGED and reopen or create nothing. Otherwise this task's implementation is gone: run \`bd reopen ${id} --reason "review re-entry found no task branch"\`, then \`git worktree add ${worktree} -b ${branchName} ${integrationBranch}\`; \`git rev-parse HEAD\` in ${worktree} is base; report reopened true, and implement the task as usual.`
+    : `If NEITHER exists: run the ALREADY-MERGED CHECK below first (the branch may have been deleted after it landed); if it prints true, return ALREADY_MERGED and create nothing. Otherwise \`git worktree add ${worktree} -b ${branchName} ${integrationBranch}\`.${stackStep}`
   const both = reentry
     ? `If BOTH exist (the expected case for this review re-entry): reuse them as they are; find the base (\`git log --first-parent --grep='^stack: ' -n 1 --format=%H ${branchName}\` — if it prints a commit, that is base and report stacked true; otherwise base is \`git merge-base ${integrationBranch} ${branchName}\`, run in ${worktree}) and report head as \`git rev-parse ${branchName}\`. Do NOT implement anything: the implementation is already on the branch. If base came from the merge-base and equals head, the branch has no commits of its own past ${integrationBranch} — it either landed (by a merge or a hand fast-forward) or its implementation was lost (the branch reset or recreated): never return IMPLEMENTED with an empty range. Run the already-merged check below; if it prints true, return ALREADY_MERGED. If it prints false, return status SETUP_FAILED with base and \`finding\` "review re-entry: ${branchName} has no commits past ${integrationBranch} and is not merged into it — landed by a fast-forward, or the implementation is gone; nothing was closed". Otherwise run the already-merged check below, then return status IMPLEMENTED with base and head (or ALREADY_MERGED).`
     : `If BOTH exist (a restart re-dispatching this task): reuse them as they are (do not delete, recreate, or re-run \`git worktree add\`); find the base: \`git log --first-parent --grep='^stack: ' -n 1 --format=%H ${branchName}\` — if it prints a commit, that is base and report stacked true; otherwise base is \`git merge-base ${integrationBranch} ${branchName}\` (run in ${worktree}).`
   const reentryNote = reentry ? ` This is a review re-entry: the task was implemented in an earlier attempt and its review bead is open, so the worktree and branch are expected to exist.` : ''
-  return `The task worktree is ${worktree} and the task branch is \`${branchName}\` — use both verbatim; ${worktree} is an absolute path when the integration worktree is one, otherwise relative to the REPOSITORY ROOT, never to your own working directory.${reentryNote}${recutStep} Check whether ${worktree} and the branch \`${branchName}\` already exist (\`git worktree list\`, \`git branch --list ${branchName}\`). ${neither} ${both} ALREADY-MERGED CHECK, on a reused branch: run \`bash ${codeSkill}/scripts/already-merged ${integrationBranch} ${branchName}\`; if it prints true, return status ALREADY_MERGED with base and nothing else. BRIEF: run \`bash ${sddScripts}/task-brief ${planPath} ${n} ${briefFile}\` in ${worktree} (the third argument is the output file; keep it); if it reports "task not found", return status SETUP_FAILED with that as \`finding\`. TOOLCHAIN PROVENANCE, after cutting a FRESH worktree: run the project's setup step in it if it has one (the same install/sync the integration worktree was set up with), then check that the test runner and the package under test both resolve INSIDE ${worktree} (e.g. \`which <runner>\` and the interpreter's import path for the package); if either resolves elsewhere, rebuild the local environment; if it still resolves elsewhere, return status SETUP_FAILED with \`finding\` naming what resolved where. Report base on every return.`
+  return `The task worktree is ${worktree} and the task branch is \`${branchName}\` — use both verbatim; ${worktree} is an absolute path when the integration worktree is one, otherwise relative to the REPOSITORY ROOT, never to your own working directory.${reentryNote}${recutStep} Check whether ${worktree} and the branch \`${branchName}\` already exist (\`git worktree list\`, \`git branch --list ${branchName}\`). ${neither} ${both} ALREADY-MERGED CHECK, on a reused branch and before a fresh cut: run \`bash ${codeSkill}/scripts/already-merged ${integrationBranch} ${branchName}\`; if it prints true, return status ALREADY_MERGED with base and nothing else. BRIEF: run \`bash ${sddScripts}/task-brief ${planPath} ${n} ${briefFile}\` in ${worktree} (the third argument is the output file; keep it); if it reports "task not found", return status SETUP_FAILED with that as \`finding\`. TOOLCHAIN PROVENANCE, after cutting a FRESH worktree: run the project's setup step in it if it has one (the same install/sync the integration worktree was set up with), then check that the test runner and the package under test both resolve INSIDE ${worktree} (e.g. \`which <runner>\` and the interpreter's import path for the package); if either resolves elsewhere, rebuild the local environment; if it still resolves elsewhere, return status SETUP_FAILED with \`finding\` naming what resolved where. Report base on every return.`
 }
 
 function implementPrompt(planPath, id, n, integrationBranch, art, { parents = [], reentry = false, recut = false } = {}) {
@@ -1814,7 +1870,7 @@ function mergePrompt(r, integrationBranch, integrationWorktree, resolvedBead, me
   // cleanliness and merge evidence: the agent reports status lines, mergeExit and mergeHead, and the
   // coordinator validates them fail-closed.
   const cleanStep = `BRANCH CHECK, in ${integrationWorktree}, first: \`git symbolic-ref -q HEAD\` must print exactly refs/heads/${integrationBranch}. If it prints anything else or nothing (a detached HEAD), do NOT merge, commit, close any bead, or repair it — no checkout, \`git switch\`, \`git branch -f\` or \`git update-ref\`: report merged false with detachedHead set to what it printed (or \`detached at\` and \`git rev-parse --short HEAD\`), and check none. Never check out anything else in ${integrationWorktree} at any point of this dispatch. PRE-MERGE CLEAN CHECK, in ${integrationWorktree}: run \`git status --porcelain --untracked-files=all\`. It must be empty before merging. You may remove exactly one kind of entry: an untracked (\`??\`) file that the merge brings in with byte-identical content (\`git cat-file -e ${br}:<path>\` succeeds AND \`git show ${br}:<path> | cmp -s - <path>\` succeeds) — delete only such files, one by one, and list each deleted path in removedIdentical. Delete nothing else, and never \`git stash\` anything away (the stash is shared by every worktree of the repository). If anything else remains (a modified or staged tracked file, or an untracked file that is not an identical copy of the branch's file), do NOT merge: report merged false with dirty set to the remaining status lines verbatim, and check none.`
-  const mergeStep = `MERGE: in ${integrationWorktree}, run \`git merge --no-ff --no-commit ${br}\` and record its exit code as mergeExit; then run \`git rev-parse -q --verify MERGE_HEAD\` and record mergeHead as true if it printed a SHA, false otherwise. If mergeExit is not 0 or mergeHead is false (a refused merge, or one with nothing to merge), do NOT run any check and do NOT commit: \`git merge --abort\` if a merge is in progress, and report merged false with mergeExit, mergeHead, and check none.`
+  const mergeStep = `MERGE: in ${integrationWorktree}, run \`git merge --no-ff --no-commit ${br}\` and record its exit code as mergeExit; then run \`git rev-parse -q --verify MERGE_HEAD\` and record mergeHead as true if it printed a SHA, false otherwise. If mergeExit is not 0 or mergeHead is false (a refused merge, or one with nothing to merge), do NOT run any check and do NOT commit: \`git merge --abort\` if a merge is in progress; when mergeExit was 0, run the LANDED CHECK command once more (the rebase may have dropped every commit as already applied) and add alreadyMerged true if it prints true; report merged false with mergeExit, mergeHead, and check none.`
   const checkStep = mergeCheck
     ? `MERGE CHECK (build only, never tests), only after MERGE succeeded with mergeHead true: run EXACTLY this command on the merged tree in ${integrationWorktree}, unchanged: \`${mergeCheck}\`. If it succeeds, \`git commit --no-edit\` the merge and report check pass. ${runToCompletionRule()} If it was killed before it finished (your tool's timeout, a signal, an out-of-memory kill: no compiler verdict), it did not fail: \`git merge --abort\` and report merged false with check aborted, mergeExit, mergeHead and checkOutput saying how it ended. If it fails, do not edit any code or test to make it pass and do not file a blocker bead: \`git merge --abort\` and report merged false with check fail, mergeExit, mergeHead, head and mergeBase as captured, and checkOutput set to the command and the first 40 lines of its error output (a merge-check fix is dispatched from that text).`
     : `No merge check is declared for this project: after MERGE succeeded with mergeHead true, \`git commit --no-edit\` the merge and report check none.`
@@ -1833,7 +1889,7 @@ function mergePrompt(r, integrationBranch, integrationWorktree, resolvedBead, me
   const seamStep = r.seamCleared
     ? `This branch is ALREADY rebased and its post-rebase seam has been reviewed (and fixed if needed) — do not repeat the seam check; if new integration commits landed meanwhile, rebase once more and continue straight to the merge.`
     : `POST-REBASE SEAM CHECK, after a successful rebase and BEFORE merging: if ${integrationBranch} moved since this task branched (its current tip is not ${r.base}), list the files the sibling commits changed (\`git diff --name-only ${r.base} ${integrationBranch}\`${r.stacked ? ` — ${r.base} holds the stacked parents' pre-review code, so this list includes every file their fix passes changed` : ''}) and the files this task changed (\`git diff --name-only $(git merge-base ${integrationBranch} ${br}) ${br}\`). If the two lists INTERSECT, do NOT merge: capture head and mergeBase as described below and report merged false with seamOverlap as the intersecting file list — a seam review runs and this merge is re-dispatched.${r.composedWith?.length ? ` This task also consumes ${r.composedWith.join(', ')}, which merged after it branched: whether or not the lists intersect, do NOT merge — add \`consumes <id>\` for each of them to seamOverlap and report as above.` : ''} If they do not intersect, or the branch did not move, continue.`
-  return `Task ${r.id}'s branch \`${br}\` is checked out in its worktree ${r.branch}; the integration branch ${integrationBranch} is checked out in ${integrationWorktree}. ${rebaseStep} Count the files the rebase reported as conflicting (0 if it applied cleanly): that is rebaseConflictFiles, reported however the attempt ends. CONFLICTS: make ONE bounded attempt that resolves the conflicted hunks only, keeping both sides' intent; edit nothing outside the conflicted hunks, and do not run, add, delete, skip, or loosen any test. ${seamStep} Then run \`git merge-base ${integrationBranch} ${br}\` (the POST-REBASE merge-base, captured before merging) and \`git rev-parse ${br}\` (the rebased tip). ${cleanStep} ${mergeStep} ${checkStep} Once the merge is committed, stop the task's processes first (\`bash ${codeSkill}/scripts/stop-run-processes ${r.branch} ${taskTmp(r.id)}\`; its output lines go first in cleanup), then run ${taskClose}${beadClose}, and report merged true with head, mergeBase, rebaseConflictFiles, check, mergeExit, mergeHead, and removedIdentical (empty when you deleted nothing).${cleanupStep}${ledgerStep} Run no tests in this dispatch. If the conflict resolution fails, abort the rebase, report check none, and file a blocker bead: ${blockerBeadRule()}, with a body stating the task id, the merge-base SHA of the failed attempt, and the conflicted files, so a later reader can tell a blocker filed against a superseded merge-base from a current one; report merged false with its id as blockerBead, rebaseConflictFiles, and check. ${authRefusalRule()} For THIS dispatch, report a refusal as merged false with authRefused set to the exact refused command(s) instead of a status token.`
+  return `Task ${r.id}'s branch \`${br}\` is checked out in its worktree ${r.branch}; the integration branch ${integrationBranch} is checked out in ${integrationWorktree}. LANDED CHECK, first: in ${integrationWorktree}, run \`bash ${codeSkill}/scripts/already-merged ${integrationBranch} ${br}\`; if it prints true, this task landed before this dispatch — do nothing else (no rebase, merge, bead close or cleanup) and report merged false with alreadyMerged true and check none. ${rebaseStep} Count the files the rebase reported as conflicting (0 if it applied cleanly): that is rebaseConflictFiles, reported however the attempt ends. CONFLICTS: make ONE bounded attempt that resolves the conflicted hunks only, keeping both sides' intent; edit nothing outside the conflicted hunks, and do not run, add, delete, skip, or loosen any test. ${seamStep} Then run \`git merge-base ${integrationBranch} ${br}\` (the POST-REBASE merge-base, captured before merging) and \`git rev-parse ${br}\` (the rebased tip). ${cleanStep} ${mergeStep} ${checkStep} Once the merge is committed, stop the task's processes first (\`bash ${codeSkill}/scripts/stop-run-processes ${r.branch} ${taskTmp(r.id)}\`; its output lines go first in cleanup), then run ${taskClose}${beadClose}, and report merged true with head, mergeBase, rebaseConflictFiles, check, mergeExit, mergeHead, and removedIdentical (empty when you deleted nothing).${cleanupStep}${ledgerStep} Run no tests in this dispatch. If the conflict resolution fails, abort the rebase, report check none, and file a blocker bead: ${blockerBeadRule()}, with a body stating the task id, the merge-base SHA of the failed attempt, and the conflicted files, so a later reader can tell a blocker filed against a superseded merge-base from a current one; report merged false with its id as blockerBead, rebaseConflictFiles, and check. ${authRefusalRule()} For THIS dispatch, report a refusal as merged false with authRefused set to the exact refused command(s) instead of a status token.`
 }
 
 function missingBlockerBeadPrompt(r) {
@@ -1862,10 +1918,12 @@ function commitNudgePrompt(id, n, worktree, branchName, base, reportFile) {
 }
 
 function closeOnlyPrompt(id, integrationWorktree, integrationBranch, resolvedBead, landedHead) {
-  // Already-merged re-entry: close what a lost `bd close` left open.
+  // Already-merged re-entry: close what a lost `bd close` left open. The tracker is the authority on
+  // closure: beads bd already shows closed settle without the git re-check, which a deleted branch
+  // or an unknown tip can fail forever.
   const bead = resolvedBead ? ` Then run \`bd close ${resolvedBead} --reason "resolved: task ${id} merged"\` — the blocker bead a RESOLVE verdict left open for this task's retry.` : ''
   const review = reviewBeadOf.get(id) ? ` (a no-op if it is already closed), then \`bd close ${reviewBeadOf.get(id)}\` (its review bead)` : ''
-  return `In ${integrationWorktree}: task ${id}'s branch was reported already merged into ${integrationBranch} (tracker closure needs reconciliation; its original failure cause is unknown). VERIFY FIRST: run \`bash ${codeSkill}/scripts/already-merged ${integrationBranch} ${landedHead || taskBranch(id)}\`; if it prints anything but true, close nothing, remove nothing, and report id ${id}, status BLOCKED, and finding "already-merged re-check printed <its output>: not closed". Otherwise, STATUS CHECK before any write: run \`bd show <id> --json\` for every required bead (${[id, reviewBeadOf.get(id), resolvedBead].filter(Boolean).join(', ')}). If any lookup fails, is unavailable, or has no status, stop immediately with status BLOCKED and finding "closure status unavailable"; do not close beads, stop processes or clean up. Close only beads whose observed status is not "closed"; skip already-closed beads. Otherwise, first stop its processes: \`bash ${codeSkill}/scripts/stop-run-processes ${taskWorktree(id)} ${taskTmp(id)}\` (its output lines go first in finding). For the beads observed open above, use their corresponding commands only: \`bd close ${id}\`${review}.${bead} Then remove its finished worktree: \`bash ${codeSkill}/scripts/remove-task-worktree ${reviewBeadOf.get(id) ? '--keep-branch ' : ''}--tmp ${taskTmp(id)} ${taskWorktree(id)} ${taskBranch(id)} ${integrationBranch}\` (exit 3 means it kept something on purpose; never force it), and put its output lines in finding. Report id ${id} and status CLOSED only after every close succeeded. ${authRefusalRule()}`
+  return `In ${integrationWorktree}: task ${id}'s branch was reported already merged into ${integrationBranch} (tracker closure needs reconciliation; its original failure cause is unknown). STATUS CHECK FIRST, before anything else: run \`bd show <id> --json\` for every required bead (${[id, reviewBeadOf.get(id), resolvedBead].filter(Boolean).join(', ')}). If any lookup fails, is unavailable, or has no status, stop immediately with status BLOCKED and finding "closure status unavailable"; do not close beads, stop processes or clean up. If every one of them is "closed", the tracker already records the closure: report id ${id} and status CLOSED and touch nothing else. Otherwise VERIFY before any write: run \`bash ${codeSkill}/scripts/already-merged ${integrationBranch} ${landedHead || taskBranch(id)}\`; if it prints anything but true, close nothing, remove nothing, and report id ${id}, status BLOCKED, and finding "already-merged re-check printed <its output>: not closed". Otherwise close only beads whose observed status is not "closed"; skip already-closed beads. First stop its processes: \`bash ${codeSkill}/scripts/stop-run-processes ${taskWorktree(id)} ${taskTmp(id)}\` (its output lines go first in finding). For the beads observed open above, use their corresponding commands only: \`bd close ${id}\`${review}.${bead} Then remove its finished worktree: \`bash ${codeSkill}/scripts/remove-task-worktree ${reviewBeadOf.get(id) ? '--keep-branch ' : ''}--tmp ${taskTmp(id)} ${taskWorktree(id)} ${taskBranch(id)} ${integrationBranch}\` (exit 3 means it kept something on purpose; never force it), and put its output lines in finding. Report id ${id} and status CLOSED only after every close succeeded. ${authRefusalRule()}`
 }
 
 function reviewBeadPrompt(id) {
@@ -1893,10 +1951,11 @@ function worktreeSweepPrompt(branches) {
   return `Working directory: ${integrationWorktree}. 1. Run \`bash ${codeSkill}/scripts/remove-task-worktree --sweep --tmp ${shortTmpRoot} ${taskWorktreeRoot} ${integrationBranch}${branches.length ? ' ' + branches.join(' ') : ''}\` and report every line it prints, verbatim, as lines. Exit 0 and exit 3 are both normal outcomes (3 means it kept something on purpose: uncommitted or unmerged work); report the lines either way, and never remove anything yourself or force. Any other exit: set scriptError to the exit code and the last lines of its stderr and set lines to an empty list. 2. Whatever step 1 did, run \`bash ${codeSkill}/scripts/stop-run-processes ${roots}\` and report every line it prints, verbatim, as processLines (exit 0 or 3 are both normal; an empty output means no run process was left). Stop nothing yourself beyond what it stops. 3. Append one line to ${ledgerPath} in ${integrationWorktree}: \`Process sweep: <N> stopped · <M> survived\`, N and M counting step 2's \`stopped:\` and \`survived:\` lines, followed by \` — \` and the survived lines joined with \`; \` when M is not 0.`
 }
 
-function reconcileBucketsPrompt(ids, reviewPairs) {
+function reconcileBucketsPrompt(ids, reviewPairs, blockerPairs = []) {
   // Mechanical tracker query per id, so the returned buckets match bd after a resume.
   const split = reviewPairs.length ? ` These tasks were split at implementation-done, so a closed task bead alone means implemented, not merged: each counts as closed only when its review bead's status is also exactly "closed" — ${reviewPairs.map(([t, rv]) => `${t} (review bead ${rv})`).join(', ')}.` : ''
-  return `For each of these bead ids run \`bd show <id> --json\` and read its status: ${ids.join(', ')}. Return closed as the list of ids whose status is exactly "closed" (any other status, or a lookup error, is NOT closed — leave it out).${split} Do not modify anything.`
+  const blockers = blockerPairs.length ? ` These tasks count as closed only when the blocker bead their landing closes is also exactly "closed" — ${blockerPairs.map(([t, b]) => `${t} (blocker bead ${b})`).join(', ')}.` : ''
+  return `For each of these bead ids run \`bd show <id> --json\` and read its status: ${ids.join(', ')}. Return closed as the list of ids whose status is exactly "closed" (any other status, or a lookup error, is NOT closed — leave it out).${split}${blockers} Do not modify anything.`
 }
 
 function recordClarificationPrompt(id, detail) {
@@ -1910,10 +1969,12 @@ function notifyPrompt(id, detail) {
   return `Send a notification (PushNotification or the configured messaging tool, if available) that task ${id} is ESCALATED: ${detail}. Report sent true/false.`
 }
 
-function readLedgerPrompt(integrationWorktree, ledgerPath) {
+function readLedgerPrompt(integrationWorktree, ledgerPath, withLanded = false) {
   // MECHANICAL echo of scripts/ledger-digest: the lines this script parses, free text cut, so the
-  // echo stays small however long the ledger grows. Parsing happens here as plain JS.
-  return `Working directory: ${integrationWorktree} (the integration worktree, which owns the ledger). Run \`bash ${codeSkill}/scripts/ledger-digest ${ledgerPath}\` and report everything it prints, verbatim and in order, as \`text\` (empty string when it prints nothing — a fresh epic). Do not read the ledger file yourself, do not create it, do not summarize. ${scriptOutcomeRule()}`
+  // echo stays small however long the ledger grows. Parsing happens here as plain JS. `withLanded`
+  // adds the task merges git holds; that script's failure never voids the ledger read.
+  const landedStep = withLanded ? ` Then run \`bash ${codeSkill}/scripts/already-merged --landed ${integrationBranch}\` and report every line it prints, verbatim and in order, as \`landed\` (an empty list when it prints nothing; if it exits non-zero, report an empty list — it never changes \`text\` or \`scriptError\`).` : ''
+  return `Working directory: ${integrationWorktree} (the integration worktree, which owns the ledger). Run \`bash ${codeSkill}/scripts/ledger-digest ${ledgerPath}\` and report everything it prints, verbatim and in order, as \`text\` (empty string when it prints nothing — a fresh epic). Do not read the ledger file yourself, do not create it, do not summarize. ${scriptOutcomeRule()}${landedStep}`
 }
 
 function ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName, lines) {

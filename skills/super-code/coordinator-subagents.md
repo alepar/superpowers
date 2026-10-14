@@ -31,6 +31,9 @@ Keep the window full. The Workflow coordinator does these, and so do you:
     its worktree (`remove-task-worktree --discard`), and write a `cancelled (parent <id> …)` line.
     Do not dispatch a ready id whose in-tree blocker failed or awaits a retry this run.
   - `STACK_CONFLICT`: re-dispatch the task fresh once the parents it names have merged.
+- **A task that already landed is closed, not failed.** An implementer's `ALREADY_MERGED` or a
+  merge reply with `alreadyMerged true` goes to the close-only step (`coordinator-workflow.md`'s
+  closure rules): bd first, then the git re-check. Nothing stacked on it is cancelled.
 - **Merge what others wait on first.** Among tasks ready to merge, take the one with the most
   live tasks stacked on it or waiting for it; otherwise, the first ready. Triage of a failed merge
   runs beside the merge lane, never in it.
@@ -51,7 +54,10 @@ Three things keep the run measurable and resumable:
   to the ledger. Append another one when you resume.
 - **Ledger outcomes.** Write each task's `Task …` and `Merge: …` lines in `coordinator-workflow.md`'s
   formats as the task settles, and the `Detector:`, `Sweep:` and four `Metrics:` lines at Finish.
-  Resume reads them back, through `scripts/ledger-digest`, together with beads and git.
+  Resume reads them back, through `scripts/ledger-digest`, together with beads and git
+  (`scripts/already-merged --landed <integration branch>` lists the task merges git holds, for
+  landings whose ledger lines were lost). Do not write a `Human action:` or `Edge add:` line the
+  ledger already has.
 - **Dispatch names.** Name every dispatch `<kind>:<bead id>[:<suffix>]` with the Workflow kinds:
   `impl`, `review`, `fix`, `fix:<id>:seam` or `fix:<id>:check`, `seam-review` (`seam-review:<id>:check`
   for a merge-check fix's review), `merge`, `triage`, and `plan`, `plan-rest` or `final-review`
