@@ -90,6 +90,9 @@ Important when the leaked process is a daemon or server, or when it survived bei
 - **Minor:** everything else, including polish, naming, broader coverage, and style. Minor findings
   are not fixed in this pass; they go to the ledger for the final review.
 
+A gap this task leaves for a later task to close is not Minor: it is Important, unless the brief
+defers it, and then the Minor names that later task's bead id.
+
 ## Output
 
 Write your full review to [REVIEW_FILE]:

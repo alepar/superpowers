@@ -230,6 +230,25 @@ re-adopt from a stale reading. None of them is an open gap.
     quarantine-release scenario (with open-blocker and auth-refusal controls), and an
     evidence-only fix pass.
 
+- **The same run: deferred gaps lost, polling hit the tool timeout, tests open to weakening
+  (2026-10-14).** Wording fixes from run 2026-10-13-message-priority-delivery.
+  - A minor that named the later task meant to close it reached that task only if it also named one
+    of the task's files, and then only as optional cleanup. A minor naming a task's bead id (matched
+    whole, so `bd-10` never matches `bd-101`) now goes to that task as an obligation, whatever files
+    it touches; the task reviewer is told such a gap is Important unless the brief defers it, and a
+    deferred one names the later task's bead id. The plan ordinal ("Task N") is not matched: the
+    reviewer is told to name the bead id, which is unique, while an ordinal means something only
+    against one plan file.
+  - `RUN TO COMPLETION` told agents to `wait <pid>`, which fails in a later tool call (a new shell),
+    so agents fell back to unbounded poll loops: five calls hit the 10-minute tool timeout and 2h50m
+    went to polling. It now asks for bounded `kill -0` waits, each call well under the timeout, or a
+    harness background-run notification. `tail --pid` was not used: BSD tail lacks it.
+  - The implementer prompt never forbade weakening a test, and the fix pass merges unreviewed. It
+    now forbids skipping, deleting or loosening a test, or changing its expected values, unless the
+    brief says so; a fix bead naming the test as the defect counts.
+  - Template-literal baseline 415 → 417 (the deferred-to-this-task note and its per-minor literal).
+    dryRun counts unchanged (47/19/22).
+
 ## Resume rationale (moved from coordinator-workflow.md's "Workspace and ledger")
 
 > (Fix-round-1, review: this used to also filter the Ready-phase `ids` by

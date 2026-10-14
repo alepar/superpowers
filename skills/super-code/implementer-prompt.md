@@ -95,6 +95,9 @@ already scheduled after you report.
   itself), the assertion is decoration: replace it. An assertion after a failing one in the same
   test body did not run; record it as unmeasured, not green.
 - Test output should be pristine. Fix warnings you caused, or report them.
+- Don't skip, ignore, delete or loosen an existing test, or change its expected values, unless the
+  brief says to (a fix bead that names the test as the defect does). A test you believe is wrong goes
+  under "Concerns".
 - A test command that takes more than a few minutes is slow. Before running it, pick the narrowest
   filter that still exercises the change, and don't re-run it for unrelated checks; never skip the
   test that exercises the change. Name each slow command and its duration with your test output.
