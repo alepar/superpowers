@@ -371,8 +371,8 @@ async function main() {
   {
     const scan = scanTemplateSpans(scriptBody)
     check(scan.clean, 'scanner ends in code state (no unterminated literal, string, or ${})')
-    check(scan.spans.length === 410,
-      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 410 (+9 for the outage-resume fixes: the Resume read's git landings step and its seeding log, the merge's already-landed log, the seeded-edge keys and the edge re-write key, the reconcile's blocker note, the reconciled completion line and its key; +1 closure verification contract, +1 current requirements contract; recovery marker uses concatenation) — 215 after the D4 loop rewrite, +10 for the merge-evidence contract (clean-check and merge steps, mergeEvidence's diagnoses and logs, the Merge-cleanup line) and writeFence(), +17 for the failing-mergeCheck seam route (the check-fix and fix-review dispatch keys/labels, their logs and blocker findings, the re-merge, fixPrompt's check branch, checkFixReviewPrompt), +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log, −7 for batched ledger writes (per-line ledger keys and labels out, the per-task flush key, the merge agent's LEDGER step and its line templates, the runtime-slot logs, the per-site null-merge logs and the background edge audit in), +46 for early unblock and graph readiness (the split/reopen/discard dispatch keys, labels, prompts and logs, the cancel and graph-dispatch logs, the stacked/re-entry brief and implementer wording, the stacked rebase and review-bead close, the held-back and re-entry logs, the reconcile split note, the detector and Metrics fields, the resume note), +33 for proactive slowness handling (noteSlowness and its items, the hot-file raise, the graph-bound arming and its audit reason, the detector's lane fields, the act-capable edge audit: change formatting, the edge-cuts dispatch key/label/prompt, the Edge cut: lines and their elided variants, effDeps' cut key), +8 for the round-1 planning split (planPrompt's walk and three scopes, the plan-rest key/label, its logs), +1 when the brief folded into the implementer (workspaceSetup's re-entry branch and the setup/no-base findings in, the brief dispatch key/label out), +1 for the planner-null degrade log, +5 for task-worktree cleanup (the task-worktree root, the merge's cleanup command and step, the worktree-sweep log and prompt), +4 for process cleanup (the run temp root, processHygiene's command and rule, the process-sweep log), +1 for the ledger-read retry label, +1 for the detached-HEAD merge diagnosis, +3 for the short task temp root (its root, taskTmp, processHygiene's roots), +1 for the auth-refused Merge: line, +1 for the review-base substitution log, +6 for the integration-blocked hold (the held/skip/stop logs, the hold reasons, its Merge: line and slowness item), +14 for added edges (addEdge's logs, ledger line, key and label, the waiting log, the waitFor ledger lines, edgeAddPrompt), +3 for edge-audit memory (the carried-verdict list), +30 for the open-issues sweep (already-merged re-check, ledger-check causes and the in-memory Metrics fallback, digest header check, class and cause tags, the graph-bound re-check, peak-based streak, aborted merge check, sweep-line validation and baseline, run-to-completion rule, HOME/XDG, human actions, deferred minors, composed review, base check, planner cwd), +1 for the final-review Metrics block, +1 for the merge-lane priority log; update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
+    check(scan.spans.length === 415,
+      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 415 (+5 for the outage and quarantine fixes: the dispatch-unavailable stop log, the quarantine release log, its ledger line and key, the fix pass's evidence-only note; +9 for the outage-resume fixes: the Resume read's git landings step and its seeding log, the merge's already-landed log, the seeded-edge keys and the edge re-write key, the reconcile's blocker note, the reconciled completion line and its key; +1 closure verification contract, +1 current requirements contract; recovery marker uses concatenation) — 215 after the D4 loop rewrite, +10 for the merge-evidence contract (clean-check and merge steps, mergeEvidence's diagnoses and logs, the Merge-cleanup line) and writeFence(), +17 for the failing-mergeCheck seam route (the check-fix and fix-review dispatch keys/labels, their logs and blocker findings, the re-merge, fixPrompt's check branch, checkFixReviewPrompt), +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log, −7 for batched ledger writes (per-line ledger keys and labels out, the per-task flush key, the merge agent's LEDGER step and its line templates, the runtime-slot logs, the per-site null-merge logs and the background edge audit in), +46 for early unblock and graph readiness (the split/reopen/discard dispatch keys, labels, prompts and logs, the cancel and graph-dispatch logs, the stacked/re-entry brief and implementer wording, the stacked rebase and review-bead close, the held-back and re-entry logs, the reconcile split note, the detector and Metrics fields, the resume note), +33 for proactive slowness handling (noteSlowness and its items, the hot-file raise, the graph-bound arming and its audit reason, the detector's lane fields, the act-capable edge audit: change formatting, the edge-cuts dispatch key/label/prompt, the Edge cut: lines and their elided variants, effDeps' cut key), +8 for the round-1 planning split (planPrompt's walk and three scopes, the plan-rest key/label, its logs), +1 when the brief folded into the implementer (workspaceSetup's re-entry branch and the setup/no-base findings in, the brief dispatch key/label out), +1 for the planner-null degrade log, +5 for task-worktree cleanup (the task-worktree root, the merge's cleanup command and step, the worktree-sweep log and prompt), +4 for process cleanup (the run temp root, processHygiene's command and rule, the process-sweep log), +1 for the ledger-read retry label, +1 for the detached-HEAD merge diagnosis, +3 for the short task temp root (its root, taskTmp, processHygiene's roots), +1 for the auth-refused Merge: line, +1 for the review-base substitution log, +6 for the integration-blocked hold (the held/skip/stop logs, the hold reasons, its Merge: line and slowness item), +14 for added edges (addEdge's logs, ledger line, key and label, the waiting log, the waitFor ledger lines, edgeAddPrompt), +3 for edge-audit memory (the carried-verdict list), +30 for the open-issues sweep (already-merged re-check, ledger-check causes and the in-memory Metrics fallback, digest header check, class and cause tags, the graph-bound re-check, peak-based streak, aborted merge check, sweep-line validation and baseline, run-to-completion rule, HOME/XDG, human actions, deferred minors, composed review, base check, planner cwd), +1 for the final-review Metrics block, +1 for the merge-lane priority log; update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
     // self-test: inject a raw backtick mid-way through the first literal's content and assert
     // the detector actually fires — a detector that cannot catch the known failure is decoration
     const [s, e] = scan.spans[0]
@@ -1332,10 +1332,11 @@ async function main() {
     })
     const out = await run({ args: liveArgs(), canned })
     assertNoThrow(out)
-    check(out.result?.stalled === true && out.result?.stopReason === 'closure-unconfirmed', 'stall guard fires while degraded closure takes return-reason precedence', JSON.stringify({ stalled: out.result?.stalled, stopReason: out.result?.stopReason }))
+    // Its only work dispatch (close-only) dies every round, so the no-progress guard reads an outage.
+    check(out.result?.stalled === false && out.result?.stopReason === 'closure-unconfirmed', 'no-progress guard fires (as an outage) while degraded closure takes return-reason precedence', JSON.stringify({ stalled: out.result?.stalled, stopReason: out.result?.stopReason }))
     check(out.counts['bd-ready'] <= 4, `null closure retries stop within four ready observations (got ${out.counts['bd-ready']})`)
     check(JSON.stringify(out.result?.completed) === '[]', 'open historical completion is not left in completed')
-    check(out.logs.some(l => l.startsWith('STALLED')), 'stall is logged')
+    check(out.logs.some(l => l.startsWith('dispatch unavailable')), 'the outage stop is logged')
     assertBucketsDisjoint(out.result)
   }
 
@@ -2918,6 +2919,65 @@ async function main() {
       'close-only:bd-101': { id: 'bd-101', status: 'BLOCKED', finding: 'already-merged re-check printed false: not closed' },
     }) })
     check(/bd-101 \(blocker bead bd-109\)/.test(promptOf(blk.trace, 'reconcile-buckets') ?? '') && blk.result?.closureUnconfirmed.includes('bd-101'), 'a landed id with an open RESOLVE blocker stays unconfirmed until that bead is closed too', promptOf(blk.trace, 'reconcile-buckets'))
+  }
+
+  scenario('outage: no-progress rounds whose work dispatches all die stop as dispatch-unavailable, never stalled')
+  {
+    const out = await run({ args: liveArgs(), canned: oneTaskCanned({ 'bd-ready': { ids: ['bd-101'] }, 'impl:bd-101': null }) })
+    assertNoThrow(out)
+    check(out.result?.stopReason === 'dispatch-unavailable' && out.result?.stalled === false, 'stops as dispatch-unavailable, not stalled', JSON.stringify({ stop: out.result?.stopReason, stalled: out.result?.stalled }))
+    check(out.counts['impl:bd-101'] === 3 && out.counts['bd-ready'] === 3, 'the two bounded null-retries run first', JSON.stringify(out.counts))
+    check(!out.logs.some(l => l.startsWith('STALLED')) && out.logs.some(l => /^dispatch unavailable: .* 1 of its 1 work dispatch/.test(l)), 'logged as an outage with its counts')
+    assertBucketsDisjoint(out.result)
+    // Control: a no-progress round where most work answered is still a stall.
+    const half = await run({ args: liveArgs(), canned: oneTaskCanned({ 'bd-ready': { ids: ['bd-101'] }, 'review:bd-101': null }) })
+    check(half.result?.stopReason === 'stalled' && half.result?.stalled === true, 'a round whose work half answered stalls as before', JSON.stringify({ stop: half.result?.stopReason }))
+  }
+
+  scenario('quarantine release: an escalated id whose blocker bead closes in-run is re-dispatched without a relaunch')
+  {
+    const out = await run({ args: liveArgs(), canned: oneTaskCanned({
+      'bd-ready': [{ ids: ['bd-101'] }, { ids: ['bd-101'] }, { ids: [] }],
+      'impl:bd-101': [{ id: 'bd-101', status: 'BLOCKED', blockerBead: 'bd-190' }, { id: 'bd-101', status: 'IMPLEMENTED', base: SHA('a'), files: ['src/a.js'] }],
+      'triage:bd-101': { decision: 'ESCALATE', detail: 'needs a schema decision' },
+      'notify:bd-101': { sent: true },
+      'blocker-check': { closed: ['bd-190'] },
+      'ledger-append:release:bd-101': { appended: true },
+    }) })
+    assertNoThrow(out)
+    check((promptOf(out.trace, 'blocker-check') ?? '').includes('bd-190'), 'the round head asks bd about the recorded blocker bead')
+    check(out.counts['impl:bd-101'] === 2 && out.counts['merge:bd-101'] === 1 && out.counts.plan === 1, 're-dispatched and merged in the same invocation, not re-planned', JSON.stringify(out.counts))
+    check(JSON.stringify(out.result?.completed) === '["bd-101"]' && out.result?.escalated.length === 0, 'completed, out of escalated', JSON.stringify(out.result))
+    check(/^Task 1 \(bd-101\): released — blocker bead bd-190 closed$/.test(extractLedgerLine(promptOf(out.trace, 'ledger-append:release:bd-101')) ?? ''), 'the release is on the ledger')
+    assertBucketsDisjoint(out.result)
+    // An open blocker keeps the quarantine; a permission refusal records no bead and is never checked.
+    const open = await run({ args: liveArgs(), canned: oneTaskCanned({
+      'bd-ready': { ids: ['bd-101'] },
+      'impl:bd-101': { id: 'bd-101', status: 'BLOCKED', blockerBead: 'bd-190' },
+      'triage:bd-101': { decision: 'ESCALATE', detail: 'needs a schema decision' },
+      'notify:bd-101': { sent: true },
+      'blocker-check': { closed: [] },
+    }) })
+    check(open.counts['impl:bd-101'] === 1 && open.result?.stopReason === 'ready-drained' && JSON.stringify(open.result?.escalated) === '["bd-101"]', 'an open blocker bead keeps the id quarantined', JSON.stringify(open.counts))
+    const auth = await run({ args: liveArgs(), canned: oneTaskCanned({
+      'bd-ready': { ids: ['bd-101'] },
+      'impl:bd-101': { id: 'bd-101', status: 'BLOCKED_AUTH', finding: 'git worktree add' },
+    }) })
+    check(!auth.counts['blocker-check'] && auth.counts['impl:bd-101'] === 1 && JSON.stringify(auth.result?.escalated) === '["bd-101"]', 'an auth refusal stays quarantined, never checked', JSON.stringify(auth.counts))
+  }
+
+  scenario('fix pass: a finding resolved in the report alone ends FIXED with an unchanged head, never BLOCKED')
+  {
+    const out = await run({ args: liveArgs(), canned: oneTaskCanned({
+      'impl:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', base: SHA('a'), files: ['src/a.js'], head: SHA('c') },
+      'review:bd-101': { id: 'bd-101', status: 'NEEDS_FIX', finding: 'the report has no test output' },
+      'fix:bd-101': { id: 'bd-101', status: 'FIXED', head: SHA('c'), evidenceOnly: 'added the test command and output to the report; code unchanged' },
+    }) })
+    assertNoThrow(out)
+    check(/evidenceOnly/.test(promptOf(out.trace, 'fix:bd-101') ?? ''), 'the fix prompt asks for evidenceOnly')
+    check(!out.counts['missing-blocker:bd-101'] && !out.counts['triage:bd-101'] && out.counts['merge:bd-101'] === 1, 'merged, never the blocker path', JSON.stringify(out.counts))
+    check(/^Task 1 \(bd-101\): fix pass FIXED \(the report has no test output; report evidence only: added the test command/.test(taskLedgerLine(out.trace, 'bd-101', /fix pass/) ?? ''), 'the fix-pass line records the evidence-only resolution', taskLedgerLine(out.trace, 'bd-101', /fix pass/))
+    check(JSON.stringify(out.result?.completed) === '["bd-101"]' && out.result?.parked.length === 0, 'completed, not parked', JSON.stringify(out.result))
   }
 
   scenario('resume: Human action and Edge add lines already on the ledger are honored, never written again')

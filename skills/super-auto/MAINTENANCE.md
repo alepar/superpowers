@@ -21,6 +21,7 @@ A runtime file points at a rule's canonical home instead of restating it, copyin
 - Removed the "Recorded decisions replay" paragraph from SKILL.md §Autonomous mode (replay only on an exact match, never widened into a blanket approval); run-state.md item 7 (Design decisions) is its one home.
 - The closed stop list gained stop 4, the `capped-blocking` stop under `planOneShot` without `autonomous` (F3). The fix-bead flag triple moved from Red Flags to SKILL.md §Invariants I3 (F48, decision 5), and the human-owned merge rule's canonical home is SKILL.md §Invariants I5.
 - The Resume section, the "Switching definitions mid-run" paragraph and the `design-review · pending` resume sentence moved to resume.md (F6); numeric counts that pointed at lists were removed (F46, F47, F50, F53).
+- One post-loop fix round for goal-path correctness (2026-10-14). SKILL.md §Final-review items: every item of a final review read after the code-roast loop exited went to the punch list, so a Critical or Important correctness defect in a goal-named path, which the scope filter would have put in-scope during the loop, shipped as a punch-list line. Decided with the user: autonomous runs get one bounded fix round for exactly those items (fix beads, one `super-code` re-entry, a re-check of those findings in the post-cap audit); everything else still goes to the punch list, and interactive runs are unchanged because the human sees the punch list before merging. The bound keeps the cap meaningful: one round per run, only goal-path correctness, and the re-entry's own final-review items never earn a second round.
 
 
 ## run-state.md
@@ -51,6 +52,7 @@ A runtime file points at a rule's canonical home instead of restating it, copyin
 
 
 - The goal is no longer marked as data; only the roast findings text is (F40, decision 3). The Blocking and cluster paragraphs collapsed to one line because `scripts/scope-dispositions` is the gate (F35, F36, decision 4). The `Model: sonnet` line moved to the dispatch table in SKILL.md (F32, decision 7).
+- `clusterOverride` may not punch-list a correctness defect in a goal-named path (2026-10-14). `scripts/scope-dispositions` honoured any override, and the prompt did not forbid one on such a finding. The rule went into the prompt, not the script: the script sees only `[SEV] <location>` keys and the filter's own disposition, so it cannot tell a goal-path correctness defect from a quality nit; only the filter reads the goal and the finding text.
 
 ## Roast resolution (2026-10-01)
 

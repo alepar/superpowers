@@ -57,7 +57,8 @@ punch-list for a correctness defect in something the goal asks for.
   - `reason` (string, required) — one line: which side of the test above it falls on, and
     why. For a Blocking finding this is simply "Blocking — always in-scope."
   - `clusterOverride` (string, optional) — only on a `punch-list` member of a cluster that has
-    an in-scope member: why this member is the exception.
+    an in-scope member: why this member is the exception. Never on a correctness defect in a
+    goal-named path: the test above puts that finding in-scope on its own.
 
 Don't invent a finding, drop one, or re-route one by disagreeing with the roast's severity:
 that disagreement is not yours to act on here.

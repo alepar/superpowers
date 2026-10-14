@@ -250,14 +250,17 @@ Two rules, both mandatory in `./coordinator.js`:
 | `clarify` | Fire-and-forget: logged and continued. The clarification IS the payload, so there is no elided form; the retry then runs without it (a known cost, recorded here). |
 
 **Bounded null-retry (2 rounds).** A round that made no forward progress *while swallowing at least
-one null* is retried up to two consecutive times before the no-progress guard stalls the run — one
+one null* is retried up to two consecutive times before the no-progress guard stops the run — one
 transient failure costs a round, not a run, while a permanently failing dispatch still terminates
-through the same stall guard once the bound is spent. The counter resets on any round that makes
+once the bound is spent. That stop is `stopReason: 'dispatch-unavailable'` (an outage, not a stall:
+`stalled` stays false) when more than half of the third round's work dispatches returned null, and
+`stalled` otherwise. Work dispatches are all but the round's Close/Ready queries, ledger reads and
+writes and the background edge work, which have their own rows above. The counter resets on any round that makes
 real progress. The `bd-ready` and `plan` stops each count only their own consecutive nulls (three
 attempts), so a mixed outage cannot trip either stop early, and each is still bounded. Both stops
 happen at a round boundary: a round drains its chains, top-ups and merge queue before the next
 round's Ready and Plan, so nothing is in flight and the caller relaunches without asking
-(SKILL.md "Unattended runs").
+(SKILL.md "Unattended runs"). `dispatch-unavailable` stops at the same boundary.
 
 ## Authoring pitfalls (plumbing that crashes the coordinator before real work runs)
 
@@ -540,8 +543,8 @@ Round-based with refill (each `bd ready` batch is, by definition, mutually indep
    path 16 → 11 → 9 → 8 rounds while width sat at one agent per bead in flight.
 
 Termination is by the root epic closing, a quarantine drain, the no-progress guard tripping, or a
-bounded infrastructure-outage stop (`ready-unavailable`/`plan-unavailable` — see "Null dispatch
-policy") — **not** by token budget: there is no budget-based pause. Which one happened is returned
+bounded infrastructure-outage stop (`ready-unavailable`/`plan-unavailable`/`dispatch-unavailable` —
+see "Null dispatch policy") — **not** by token budget: there is no budget-based pause. Which one happened is returned
 as `stopReason`, so a caller never has to infer it from the buckets.
 
 ## Workspace and ledger
@@ -617,8 +620,12 @@ recurrence counts. The Resume read also echoes `scripts/already-merged --landed`
   - `Task <N> (<bead id>): BLOCKED — <reason>` — the task is quarantined: triage ESCALATEd (or a
     second RESOLVE for the same id bounced into an ESCALATE), whichever trigger produced the
     blocker. `handleBlocker` writes this line once for every trigger.
-  - `Task <N> (<bead id>): fix pass <FIXED | BLOCKED> (<finding>; commits <a7>..<b7>)` — written by
-    `reviewAndFix` after the fix pass returns, alongside the terminal lines above. Informational
+  - `Task <N> (<bead id>): released — blocker bead <id> closed` — a quarantined id left `escalated`
+    mid-run (see "Escalation"). Not terminal; resume ignores it.
+  - `Task <N> (<bead id>): fix pass <FIXED | BLOCKED> (<finding>[; report evidence only: <what>]; commits <a7>..<b7>)` — written by
+    `reviewAndFix` after the fix pass returns, alongside the terminal lines above. FIXED needs a new
+    head unless the fixer declined every finding or resolved it in the report alone (`evidenceOnly`:
+    the code was right, the report lacked evidence such as test output). Informational
     for Metrics; resume does not use it (a restart re-runs the task from its workspace setup).
   - `Task <N> (<bead id>): minor (deferred): <one-liner>` — one per Minor/⚠️ item, written at the
     merge gate.
@@ -937,7 +944,9 @@ brief asks and is safe to build on.
    finding that is wrong or plan-mandated, with a technical reason; the task then merges as
    **parked** (the `complete` line's parked variant carries the reason and the finding, and the
    final review triages it). A plan-mandated conflict is a human decision, and in an autonomous run
-   the final review is where the human sees it.
+   the final review is where the human sees it. A finding about the report's evidence alone (the
+   code is right) is resolved by amending the report and listed in `evidenceOnly`, so FIXED needs no
+   new commit for it.
 3. **Merge** after the fix pass (`FIXED`), with no re-review. A fixer that reports `BLOCKED` goes to
    the blocker path; `BLOCKED_AUTH` to `handleAuthRefusal`; a null fix pass is no progress this
    round, never an unfixed merge.
@@ -1093,9 +1102,10 @@ Anything that cannot proceed becomes a beads issue, never a silent retry and nev
     `handleBlocker`): if the *same* id triggers the blocker-bead path again after a RESOLVE — the
     clarification didn't fix it — the second occurrence is treated as `ESCALATE` regardless of
     what this round's triage verdict says, so a bad clarification can spin at most one extra round
-    before it quarantines, never indefinitely. This also closes I6: an id parked in `escalated`
-    permanently is filtered out of every future `bd ready` batch and guarantees the round-based
-    no-progress guard sees real termination, where an unbounded RESOLVE would not.
+    before it quarantines, never indefinitely. This also closes I6: an id parked in `escalated` is
+    filtered out of every later `bd ready` batch until its blocker bead is closed outside the run
+    (the coordinator never closes an escalated blocker), so the no-progress guard sees real
+    termination, where an unbounded RESOLVE would not.
   - `RESOLVE` with `waitFor: <bead>` → the task needs that in-tree bead to land first, not a
     clarification. The coordinator adds the edge (below), writes `waiting on <bead>` to the ledger,
     and holds the task until the bead lands; the one-retry budget is not spent. Before this, a
@@ -1130,6 +1140,12 @@ On `ESCALATE`, the run **does not freeze**:
 2. **Quarantine** — leave the blocker bead open. The blocked task stays open, and its dependents
    remain unready in beads automatically, so they are skipped without extra bookkeeping.
 3. **Continue** — keep driving every other ready task to completion.
+
+**Release.** When bd reports a quarantined id ready again, the round head asks bd (one mechanical
+`blocker-check` dispatch) whether the blocker bead it was escalated on is closed. If it is, the id
+leaves `escalated`, gets a `released — blocker bead <id> closed` ledger line and a fresh attempt
+this round, so a blocker a human or the caller closes mid-run needs no relaunch. A null check
+releases nothing. `BLOCKED-AUTH` ids record no blocker bead and stay quarantined.
 
 When the ready set finally drains, the run ends and reports: tasks completed, quarantined
 subtrees (`escalated`), and tasks mid-retry (`pendingRetry` — RESOLVEd once, not yet re-completed

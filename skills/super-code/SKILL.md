@@ -26,7 +26,7 @@ End your turn only for:
 3. **A risky or destructive action** outside the declared operation classes.
 4. **This skill's hard stops:** Finish completed after `stopReason` `root-closed`, `ready-drained`
    or `stalled`, a `closure-unconfirmed` stop (report unresolved tracker closure; preserve the integration
-   worktree and never claim completion or automatically merge it), a second consecutive `ready-unavailable`/`plan-unavailable` stop, or an
+   worktree and never claim completion or automatically merge it), a fourth consecutive outage stop (below), or an
    `integration-blocked` stop whose cause is not yours to clear. When the named stray files are
    your own (a friction-log or run-state append you have not committed), commit them, or check the
    integration branch out again for a detached HEAD, and relaunch; anything else goes to the user.
@@ -34,12 +34,14 @@ End your turn only for:
 The following relaunch and monitoring rules apply to Workflow mode. In ordinary-subagent mode you
 are the coordinator, so resume from the ledger, beads and git (`./coordinator-subagents.md`).
 
-When the Workflow ends on the agent-budget cap (no return value, no `stopReason`) or with a first
-`ready-unavailable`/`plan-unavailable`, relaunch it yourself (`Workflow({scriptPath:
+When the Workflow ends on the agent-budget cap (no return value, no `stopReason`) or with an outage
+stop (`ready-unavailable`, `plan-unavailable`, `dispatch-unavailable`), relaunch it yourself (`Workflow({scriptPath:
 '<copy>/coordinator.js', args})` — the scratchpad copy you launched, since the Workflow tool refuses
 the plugin-cache path (`./coordinator-workflow.md` Pre-flight step 4) — with `resumeFromRunId` and the ledger's `Launch:`
 args) without asking. The ledger and `bd ready` carry the recovery; `resumeFromRunId` only replays
 calls made before the first concurrent fan-out. Other copies of this rule are pointers here.
+Outage stops in a row, with nothing landed between them, back off: relaunch the first at once, wait
+5 minutes before the second relaunch and 15 before the third; the fourth is a hard stop.
 
 **A hung Workflow is relaunched the same way.** When no task is in flight and the only running call
 (a planner, a ready query) has produced nothing for 30 minutes, stop the Workflow (`TaskStop`) and
@@ -144,8 +146,8 @@ completion), `ready-drained` (empty ready set, root still open: quarantined bloc
 or off its branch: the merge lane was held for the rest of the run, no blocker beads filed, the
 held tasks left for a relaunch), or `closure-unconfirmed` (confirmed merged code whose task, review or resolved blocker closure
 could not be confirmed; preserve the integration worktree and report the unresolved IDs), or
-`ready-unavailable` / `plan-unavailable` (infrastructure outage:
-the `bd ready` or planner dispatch kept dying on terminal API errors, with nothing mapped left to run; a clean round-boundary stop). These degraded stops are **never**
+`ready-unavailable` / `plan-unavailable` / `dispatch-unavailable` (infrastructure outage:
+the `bd ready` or planner dispatch, or most of a no-progress round's work dispatches, kept dying on terminal API errors; a clean round-boundary stop). These degraded stops are **never**
 completion — never treat a stop as "done" without checking `stopReason`
 (`./coordinator-workflow.md`'s "Null dispatch policy"). Additive fields: **`closureUnconfirmed`** — reported landing IDs with unresolved tracker closure, kept out of
 `completed`; verified merged code still receives the Finish sweep/review — **`authRefused`** —

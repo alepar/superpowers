@@ -169,17 +169,21 @@ the task gets; it merges after you, without another review.
 - If a finding is wrong, or fixing it would contradict the plan (a plan-mandated item), don't fix
   it. List it under "Declined" with a technical reason. Declined findings go to the ledger and the
   final whole-epic review.
+- If a finding is only about the report's evidence (test output missing from [REPORT_FILE], say)
+  and the code is right, resolve it in the report alone and list it in `evidenceOnly`. Any finding
+  about code or tests needs a commit.
 - Run the tests covering what you changed, plus the tests covering the callers of any function
   whose behavior or signature you changed (grep its call sites), and keep the command and output.
   The PROCESSES AND TEMP STATE rule and leak check in your dispatch apply to these runs too.
 - Append a section to [REPORT_FILE], headed "## Fix pass", or the heading your dispatch names
   ("## Seam fix", "## Merge-check fix"): what you changed for each finding, declined findings with their
   reasons, and the test command and output.
-- Commit as in "Commit", without its rebase. If you declined everything and changed nothing, there
-  is nothing to commit.
+- Commit as in "Commit", without its rebase. If you only declined findings or resolved them in the
+  report, there is nothing to commit.
 
 The "Unattended run", "Scope", "Tests and verification", and "Blocked" sections apply to this pass
 too.
 
-Return: `id`, `status` FIXED (or BLOCKED / BLOCKED_AUTH), `head`, and `declined`: one line per
-declined finding with its reason (omit it when you declined nothing).
+Return: `id`, `status` FIXED (or BLOCKED / BLOCKED_AUTH), `head`, `declined`: one line per
+declined finding with its reason (omit it when you declined nothing), and `evidenceOnly`: one line
+per finding resolved in the report alone (omit it when there is none).

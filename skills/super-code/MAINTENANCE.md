@@ -195,6 +195,41 @@ re-adopt from a stale reading. None of them is an open gap.
   - Harness: four `outage resume` / `closure` scenarios, one resume-dedupe scenario, and a real-git
     `already-merged` script case.
 
+- **The same run: an outage read as a stall, a closed blocker stayed quarantined, an evidence-only
+  fix was BLOCKED (2026-10-14).** Three more gaps from run 2026-10-13-message-priority-delivery.
+  - A transient network outage (ENOTFOUND) stopped the run. `agent()` returns null for any
+    terminal API error, so the script cannot see the cause; once the ready query answered, a
+    no-progress round full of nulls got two immediate retries and then `stalled`, a hard stop, so
+    the orchestrator handed back instead of relaunching. `dispatch()` now counts each round's
+    work dispatches (all but the Close/Ready queries, `blocker-check`, ledger reads and writes and
+    the background edge work, which have their own null rules) and their nulls. When the guard
+    fires after its two retries and more than half of that round's work returned null, the stop is
+    `dispatch-unavailable` with `stalled` false. SKILL.md relaunches it like the other outage stops,
+    and the relaunch rule now backs off (at once, then after 5 and 15 minutes) instead of
+    hard-stopping on a second consecutive outage: the script has no clock, so waiting is the
+    session's job, and degrading beats handing back in an autonomous run. The existing stall-guard
+    scenario whose only work dispatch (close-only) always dies now reads as this outage. A reused
+    worktree's implementer is told to read `git status`/`git log` and continue an earlier
+    attempt's work.
+  - An ESCALATEd id stayed in `escalated` for the whole invocation, so a blocker a human closed
+    mid-run needed a relaunch, and a run whose only ready work was quarantined drained. The
+    blocker bead each ESCALATE quarantined on is now recorded. An escalated id bd reports ready
+    again triggers one mechanical `blocker-check` (the Finish reconcile's prompt, over the recorded
+    beads) at the round head; a closed blocker releases it with a `released` ledger line. It costs
+    nothing when no quarantined id is ready, so no dryRun count changed. Auth refusals record no
+    bead and stay sticky.
+  - Not done: skipping the round-1 planner on a relaunch whose plan file already maps every ready
+    id. The mapping rows carry `deps`/`opaque` from `scripts/tree-deps`, which the plan file does
+    not hold, so a cheap reparse would drop graph readiness; it needs a new script plus a tree-deps
+    run, more than the cost it saves (the planner already skips mapped beads and echoes the table).
+  - A fix pass whose only finding was missing test output in the git-ignored report fixed it in
+    the report, kept the head, and was BLOCKED by the "FIXED needs a new commit" rule. The fixer
+    now lists such findings in `evidenceOnly`; FIXED with an unchanged head is accepted when it is
+    set, and the fix-pass ledger line carries `report evidence only: …`.
+  - Harness: a dispatch-unavailable scenario (with a half-answered round as the stall control), a
+    quarantine-release scenario (with open-blocker and auth-refusal controls), and an
+    evidence-only fix pass.
+
 ## Resume rationale (moved from coordinator-workflow.md's "Workspace and ledger")
 
 > (Fix-round-1, review: this used to also filter the Ready-phase `ids` by
