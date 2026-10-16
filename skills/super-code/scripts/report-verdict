@@ -8,7 +8,9 @@
 #   untested: <item>                         (final-review only: the Untested scope items, same rule,
 #   untested: +N more                         cut to 160 characters, at most 10, then `+N more`)
 #   path: <file as given>
-# Recognisers are tried in this order; the first one whose marker line is in the file wins:
+# Recognisers are tried in this order; the first one whose marker line is in the file wins
+# (exception: an exact `## Verdict` heading selects final-review before step 1, so a final review
+# that quotes a `Status: DONE` line is not read as a task report):
 #   1. task-report  - a `Status: <TOKEN>` line (DONE, DONE_WITH_CONCERNS, BLOCKED, IMPLEMENTED, ...);
 #                     items (unless DONE/IMPLEMENTED/FIXED/CLEAN) are the bullets under the first
 #                     Concern/Blocker/Finding heading or bold label.
@@ -150,6 +152,13 @@ emit() {
 }
 
 status_re='^[[:space:]]*(\*\*)?[Ss]tatus(:\*\*|\*\*:|:)[[:space:]]*\**(DONE_WITH_CONCERNS|DONE|NEEDS_CONTEXT|BLOCKED_AUTH|BLOCKED|IMPLEMENTED|FIXED|CLEAN|NEEDS_FIX|INVALID)\b'
+
+# The exact `## Verdict` heading the final-review prompts require wins before the Status line, so a
+# final review that quotes a task report's `Status: DONE` is not read as a task report.
+if tr -d '\r' < "$f" | grep -qE '^##[[:space:]]+Verdict[[:space:]]*$'; then
+  items_final_review | emit "$(final_review_verdict)" final-review "$(untested_lines)"
+  exit 0
+fi
 
 line=$(tr -d '\r' < "$f" | grep -m1 -E "$status_re" || true)
 if [ -n "$line" ]; then

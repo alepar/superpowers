@@ -64,6 +64,15 @@ kind: final-review
 untested: The Codex entry script was not exercised.
 path: $FX/final-review.md" "Verdict section text, Must fix bullets and untested line"
 
+echo "report-verdict: final review quoting a task Status line"
+run bash "$R" "$FX/final-review-quoted-status.md"
+assert_eq "$code" 0 "exits 0"
+assert_eq "$out" "verdict: not ready (1 must-fix)
+kind: final-review
+- skills/super-code/scripts/report-verdict: the status line wins over the verdict heading.
+untested: None run live.
+path: $FX/final-review-quoted-status.md" "the exact Verdict heading wins over a quoted Status line"
+
 echo "report-verdict: cluster verdict"
 run bash "$R" "$FX/cluster-verdict.md"
 assert_eq "$code" 0 "exits 0"
