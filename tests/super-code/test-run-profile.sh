@@ -336,5 +336,17 @@ missing=""
 for k in $kinds; do grep -qF "case '$k'" "$REPO_ROOT/skills/super-code/scripts/run-profile.mjs" || missing="$missing $k"; done
 assert_eq "${missing:-none}" "none" "coordinator label kinds are all classified (missing:${missing:- none})"
 
+echo "run-profile: context-pass module (synthetic rows)"
+# context-pass-unit.mjs prints `ok <name>` / `not ok <name>` per check over synthetic transcript rows.
+seen=0
+while IFS= read -r line; do
+  case "$line" in
+    "ok "*) pass "context-pass: ${line#ok }"; seen=$((seen + 1)) ;;
+    "not ok "*) fail "context-pass: ${line#not ok }"; seen=$((seen + 1)) ;;
+    *) echo "$line" ;;
+  esac
+done < <(node "$SCRIPT_DIR/context-pass-unit.mjs" 2>&1 || echo "not ok context-pass-unit.mjs exited with an error")
+[ "$seen" -gt 0 ] || fail "context-pass: the unit driver ran no checks"
+
 echo
 if [ "$FAILURES" -eq 0 ]; then echo "run-profile: all tests passed"; else echo "run-profile: $FAILURES failure(s)"; exit 1; fi
