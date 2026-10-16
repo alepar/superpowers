@@ -285,10 +285,10 @@ function stageOf(kind, suffix) {
     case 'close-only': case 'close-check': return 'close'
     case 'reopen': case 'discard': return 'cancel'
     case 'ledger': case 'ledger-append': case 'read-ledger': return 'ledger'
-    case 'plan': case 'plan-rest': return 'planning'
+    case 'plan': case 'plan-rest': case 'split': case 'close-split': return 'planning'
     case 'bd-ready': case 'bd-ready-topup': case 'bd-ready-recheck': case 'blocker-check': case 'close-epics': return 'ready'
     case 'edge-audit': case 'edge-cuts': case 'edge-add': return 'audit'
-    case 'sweep': case 'final-review': case 'reconcile-buckets': case 'worktree-sweep': return 'finish'
+    case 'sweep': case 'final-review': case 'reconcile-buckets': case 'worktree-sweep': case 'assemble': return 'finish'
     default: return 'other'
   }
 }
