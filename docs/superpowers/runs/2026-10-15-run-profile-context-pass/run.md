@@ -1,9 +1,9 @@
 # super-auto run — 2026-10-15-run-profile-context-pass
 
 flags: planOneShot=t skipPlanRoast=f skipCodeRoast=f autonomous=t
-phase: roast-code
+phase: fix-loop
 roastCodeRound: 2
-roast-code: 2026-10-15-run-profile-context-pass-roast-pr-1.md
+roast-code: 2026-10-15-run-profile-context-pass-roast-pr-1.md, 2026-10-15-run-profile-context-pass-roast-pr-2.md
 spec: 2026-10-15-run-profile-context-pass-design.md
 epic: super-plan-fqb
 roastDesignRound: 2
@@ -48,3 +48,5 @@ scopeFilter-round-1: [Nit] skills/super-code/scripts/run-profile.mjs:685; skills
 scopeFilter-round-1: [Nit] skills/super-code/scripts/run-profile.mjs:674; skills/super-code/scripts/run-profile.mjs:671 punch-list — Peak memory use is a performance/quality concern; the goal names no memory requirement and output is correct.
 scopeFilter-round-1: [Nit] skills/super-code/scripts/run-profile.mjs:693 punch-list — The unavailable line is still correct in outcome; discarding per-file reasons is diagnostic polish rather than wrong goal-named results.
 scope-filter: 3 in-scope · 2 punch-listed
+roastCodeExit: converged
+finalReviewFixRound: 2026-10-15 · autonomous once-per-run fix round for the fix-loop re-entry's final-review Must-fix (contextBaseline double count, goal-named Baseline line) · bead super-plan-fqb.11 · the post-cap audit covers it
