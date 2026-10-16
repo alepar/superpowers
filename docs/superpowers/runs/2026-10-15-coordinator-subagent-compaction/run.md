@@ -9,7 +9,7 @@ branch: super-auto/coordinator-subagent-compaction
 base: main
 spec: 2026-10-15-coordinator-subagent-compaction-design.md
 epic: super-plan-goq
-roast-design: 2026-10-15-coordinator-subagent-compaction-roast-design-1.md
+roast-design: 2026-10-15-coordinator-subagent-compaction-roast-design-1.md, 2026-10-15-coordinator-subagent-compaction-roast-design-2.md
 
 approvals:
 - finish · human (2026-10-15, mid-run message) · once the integration branch is ready with all changes, nudge the herdr "main" tab to merge it into main and cut a release with a major version bump
@@ -18,6 +18,7 @@ approvals:
 - coverage-round-2 · R-list read back from round 1, plus R17 "planner tasks are shaped as one feature in one subsystem with checkable acceptance checklists" · requirements: 16 · mapped: 15 · unmapped: 1 (R16) · divergence: findings 13 → 15 · novel 9/15 (60%) · widening: yes · auto GAP "R16" → card owns keepalive wording (.5), .9 places it; auto GAP "R17" → .16 planner shaping; auto UNOWNED-SEAM "subsystem cluster key" → .13; auto UNOWNED-SEAM "filesToRead/surfaceTokens shape" → .16 owns; auto UNOWNED-SEAM "fits: line" → .12 owns; auto UNOWNED-SEAM "marker session id" → .2 get --cwd fallback, .6/.7; auto GAP "R14 Claude id" → .1 scope; auto UNOWNED-SEAM "nested marker" → .2/.9; auto UNOWNED-SEAM "card ordering" → wording to .5; auto GAP "R3 Cursor/Copilot" → .6; auto UNOWNED-SEAM "contextWindows" → .13 line; auto GAP "R5 read rule scope" → .9/.10; auto UNOWNED-SEAM "report format" → .8/.13; kept ".16<-.13"; rejected "live end-to-end check" (follow-on)
 roastDesignRound: 2
 stepBackDesign-round-1: patch — Round 1 with no recurrence history; 15 findings form four local clusters plus three standalone fixes; the §A2 single-string run block is a local flip inside one section, not a redesign.
+stepBackDesign-round-2: patch — not dispatched: round 2 exited [converged] (0 Blocking); its 9 sub-Blocking findings were applied inline as spec/bead text as the punch list, no re-roast
 parked:
 - 2026-10-15-coordinator-subagent-compaction-roast-design-1.md · escalation · "§A1/§A3 whether a subagent's compaction fires SessionStart(source=compact) and with which session id — unverified external"
 - 2026-10-15-coordinator-subagent-compaction-roast-design-1.md · escalation · "§A2 Claude Code compact-source SessionStart additionalContext injection reported silently dropped (claudeissues #28305, closed not planned) — unverified on the installed version; spike .1 now checks it"
@@ -25,3 +26,6 @@ parked:
 - 2026-10-15-coordinator-subagent-compaction-roast-design-1.md · escalation · "§A3 what the Codex per-hook trust hash covers — unverified; spike .1 now checks it"
 - 2026-10-15-coordinator-subagent-compaction-roast-design-1.md · escalation · "§A3 effect of a malformed plugin.json hooks value on the whole plugin — unverified; spike .1 now checks it"
 - 2026-10-15-coordinator-subagent-compaction-roast-design-1.md · escalation · "§A2 5 s watchdog vs run-profile discovery measured at 5–10.6 s — material dissent; addressed by session-scoped --in-flight and per-source timeouts"
+- 2026-10-15-coordinator-subagent-compaction-roast-design-2.md · escalation · "§A3 whether Codex counts additionalContextLimit by tokenizer or bytes/4 — unverified; limit raised to 4000 for margin, spike .1 records honouring"
+- 2026-10-15-coordinator-subagent-compaction-roast-design-2.md · escalation · "§A3 additionalContextLimit margin — engine-added duplicate of the above"
+roastDesignExit: converged (round 2: Should-fix 9 [converged], 0 Blocking; round 1 Blocking 1 / Should-fix 9 / Nit 5 all fixed or resolved); punch list of 9 applied inline; escalations parked (8)

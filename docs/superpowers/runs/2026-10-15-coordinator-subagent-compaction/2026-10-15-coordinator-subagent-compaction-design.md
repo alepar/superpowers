@@ -72,21 +72,23 @@ read-heavy reviewers, qualitative sizing, a warn-only pre-flight). This spec add
 - Recommended: a bash script, `register | clear | get | prune`. It writes one `key: value` file per
   session at `${XDG_STATE_HOME:-~/.local/state}/superpowers/active-runs/<session_id>`, with the
   fields `skill`, `harness`, `run_md` (absent for standalone super-code), `ledger`, `epic`,
-  `started`, `registered_by_pid`, `worktree`.
+  `started`, `registered_by_pid`, `worktree`, `session`, `runTag`.
 - The session id comes from `$CLAUDE_CODE_SESSION_ID`, else `$CODEX_THREAD_ID`. With neither,
   `register` prints `run-marker: no session id — skipped` and exits 0, because a marker is an
   optimisation, never a gate.
 - Every per-user path is resolved from the environment: `${XDG_STATE_HOME:-$HOME/.local/state}`.
   When the store cannot be written (a sandboxed coordinator), `register` writes the fallback marker
-  `<worktree>/.superpowers/run-marker` (git-ignored) and prints `run-marker: wrote fallback
+  `<worktree>/.superpowers/run-marker-<session>` (git-ignored, keyed by session) and prints `run-marker: wrote fallback
   <path> — <reason>`. When neither write succeeds it prints `run-marker: register failed —
   <reason>`. It always exits 0, but a failure is never printed as a normal skip.
 - `get <session_id> [--cwd <dir>]` resolves the marker exactly once: first by session id in the
   store, then (only with `--cwd`) by the newest live store marker whose `worktree` contains
-  `<dir>`, then by a fallback marker found walking up from `<dir>`. On success it prints the
-  resolved marker key (`key: <session id or fallback path>`) followed by the marker, and exits 0.
-  Otherwise it exits 1. Both hook entries pass stdin `cwd`. Every downstream consumer (run-digest)
-  takes the resolved key and never resolves again.
+  `<dir>`, then by a fallback marker found walking up from `<dir>` (its own session's first, else
+  the newest live one). On success it prints `key: <session id or fallback path>` followed by every
+  marker field (including `session` and `runTag`), and exits 0. Otherwise it exits 1. `get`'s
+  stdout is a stable interface, not only its exit code. Both hook entries pass stdin `cwd` and
+  pipe `get`'s full stdout into `run-digest` on stdin, so run-digest never resolves or reads a
+  marker file itself.
 - Live means the marker was registered or refreshed within the last 14 days, and also: under
   super-auto, `run_md` exists and its `phase:` is not `done`; for standalone super-code, the
   ledger exists. The age bound applies to every marker, so a crashed or abandoned run expires.
@@ -102,8 +104,9 @@ read-heavy reviewers, qualitative sizing, a warn-only pre-flight). This spec add
 - Who registers:
   - super-auto, at pre-flight step 4 once `run.md` exists, again on every resume, and again when
     phase 3 creates the ledger (to add its path);
-  - super-code, at launch, only when `get` finds no live marker for this session (a standalone
-    run).
+  - super-code, at launch, only when `get <session> --cwd <integration worktree>` finds no live
+    marker (a standalone run). Including `--cwd` lets the guard see a sandboxed super-auto's
+    fallback marker.
 - Who clears: super-auto at `phase: done`; super-code's calling session at Finish (after the
   coordinator Workflow returns, or at the ordinary loop's Finish), only when the marker's `skill`
   is `super-code`.
@@ -122,14 +125,15 @@ read-heavy reviewers, qualitative sizing, a warn-only pre-flight). This spec add
   - a bounded, non-blocking stdin read;
   - pattern extraction of `session_id` and `cwd`;
   - `run-marker get <session_id> --cwd <cwd>`;
-  - `run-digest --key <resolved key> --budget 9000` under a portable watchdog (background process
+  - `run-marker get … | run-digest --budget 9000` under a portable watchdog (background process
     plus kill after 5 s; macOS has no `timeout`).
   On a live marker it emits the run block in Claude Code's
   `hookSpecificOutput.additionalContext` shape. With no live marker it emits nothing and exits 0.
 - On error or timeout, the run block is the fallback: the card plus one line, `Run state
   unavailable — read run.md's phase and run scripts/ledger-digest.`, within the same budget.
 - All dynamic text is sanitised before JSON escaping: U+0000–U+001F other than newline and tab
-  are stripped, then `escape_for_json` (shared with `session-start`) escapes the rest.
+  are stripped, then the library's own copy of `escape_for_json` escapes the rest. The function is
+  duplicated, not moved, so `hooks/session-start` is not edited at all.
 - Cursor and Copilot keep their own hook configurations and get no run block. Re-inject is scoped
   to Claude Code and Codex.
 - Considered: appending the run block to the bootstrap string. It would overflow the 10K cap and
@@ -141,8 +145,8 @@ read-heavy reviewers, qualitative sizing, a warn-only pre-flight). This spec add
 - That script sources `hooks/run-block.sh` as A2 does. It emits only the run block, in the JSON
   shape the spike confirmed, with budget 9000 characters. It emits nothing, with exit 0, when
   there is no live marker. It never emits the bootstrap.
-- The Codex hook entry sets `additionalContextLimit` (3000 tokens, above the 9000-character block
-  and below a size that would crowd the window), so Codex's default 2,500-token threshold does not
+- The Codex hook entry sets `additionalContextLimit` (4000 tokens, above the 9000-character block
+  whether Codex counts tokens with a tokenizer or as bytes ÷ 4), so Codex's default 2,500-token threshold does not
   replace the block with a head-and-tail preview.
 - The session id comes from stdin `session_id`, falling back to `$CODEX_THREAD_ID`, and `cwd`
   from stdin. The matcher already limits it to compaction, so a missing `source` field is not an
@@ -168,11 +172,12 @@ read-heavy reviewers, qualitative sizing, a warn-only pre-flight). This spec add
 - Considered: removing `"hooks": {}` so that `hooks/hooks.json` is discovered. That re-registers
   the bootstrap on Codex. Discarded.
 
-**A4. Run block — `skills/super-code/scripts/run-digest --key <resolved key> --budget <chars>` + `skills/super-code/coordinator-card.md`.**
-- Recommended: `run-digest` reads the marker for the key it is given (`run-marker get` output,
-  never a second resolution), then prints, in order:
+**A4. Run block — `skills/super-code/scripts/run-digest --budget <chars>` (marker on stdin) + `skills/super-code/coordinator-card.md`.**
+- Recommended: `run-digest` reads the marker fields from stdin (`run-marker get` output, never a
+  second resolution), then prints, in order:
   1. the card, verbatim;
-  2. a header naming the skill, epic and phase (`run.md`'s `phase:`, or `super-code` standalone);
+  2. a header naming the skill, epic, phase (`run.md`'s `phase:`, or `super-code` standalone) and
+     `runTag`;
   3. state counts reduced from `ledger-digest` (landed, failed or BLOCKED, pending retry,
      cancelled), plus its last 15 lines;
   4. open beads in the epic tree (count, then ids, capped at 40);
@@ -180,8 +185,9 @@ read-heavy reviewers, qualitative sizing, a warn-only pre-flight). This spec add
      unknown age prints as `age unknown`.
 - The block never exceeds `--budget` characters (the hooks pass 9000, under both harness caps).
   The card comes first and is never cut; overflow trims the in-flight list first (`+N more, see
-  ledger-digest`), then the open-bead ids, then the ledger tail. Each source runs under its own 2 s
-  timeout, and a source that times out or fails prints `unknown` for its section.
+  ledger-digest`), then the open-bead ids, then the ledger tail. The sources run concurrently under
+  one shared 4 s deadline (each capped at 3 s), below RunBlockInjector's 5 s watchdog. A source that
+  misses the deadline or fails prints `unknown` for its section, and the rest still print.
 - The card is static, at most 4,500 characters (about 1.1K tokens), and covers:
   - the loop rules (refill, early unblock, one merge at a time);
   - bounded waits, and on Codex "block on `wait_agent` in 5–10 minute stretches, don't poll
@@ -222,7 +228,9 @@ read-heavy reviewers, qualitative sizing, a warn-only pre-flight). This spec add
   seam-review, check-fix-review, merge, triage, plan, assemble, final-review, and super-auto's
   step-back, scope filter and report drafter) ends with one line. When the dispatch carries no
   structured result schema, the final message is one verdict line plus the report path. Schema
-  dispatches keep their schema, and the line tells them the schema is the answer. The builders
+  dispatches keep their schema, and the line tells them the schema is the answer. The step-back's
+  template output fields, and the scope filter's JSON, count as schemas, so they return those in
+  full. The builders
   live in `coordinator.js`, so `dispatch-text` inherits the line.
 - The report drafter writes its draft to `<run-dir>/report.draft.md` and returns the path. The
   orchestrator renames the draft to `report.md` after splicing in the status line, without reading
@@ -276,10 +284,14 @@ read-heavy reviewers, qualitative sizing, a warn-only pre-flight). This spec add
 - Prompt template `skills/super-code/assembler-prompt.md`. Model tier `mechanical` (Sonnet on
   Claude; on Codex, the cheapest V2 preset in the actual spawn allowlist; the template names no
   model). It gathers with tool calls and judges nothing.
-- **runTag**, defined once: super-code's pre-flight mints `<epicId>-<UTC yyyymmddThhmmss>` and
-  passes it as `args.runTag` (ordinary loop: the same value, written on the `Launch:` line). Every
-  file name below uses it, so relaunches never collide.
-- It writes `<workspace>/assembled/<consumer>-<runTag>/` containing:
+- **runTag**, defined once: the run's first pre-flight mints `<epicId or slug>-<UTC
+  yyyymmddThhmmss>`. Under super-auto that is super-auto's pre-flight, which records `runTag:` in
+  `run.md` and passes it to every super-code invocation as `args.runTag`. A standalone super-code
+  mints its own. It is written on the `Launch:` line and into the run marker, so the run block's
+  header shows it after a compaction. Every file name below uses it, so relaunches never collide.
+- It writes `<workspace>/assembled/<consumer>-<runTag>-<instance>/`, where instance is `r<N>` (a
+  roast round), `audit` (the post-cap audit), `final`, or the bead id of a history or assess pass.
+  It empties that directory first. The directory contains:
   - `diffstat.txt`: the branch diffstat alone (for `assemble-args --diff-stat`);
   - `digest.md`: the diffstat, per-task report summaries (status, assumptions, concerns),
     interfaces and seams, deferred minors from the ledger, and bead-comment amendments, each
@@ -331,8 +343,11 @@ read-heavy reviewers, qualitative sizing, a warn-only pre-flight). This spec add
   unreviewed, and the verdict reads `not ready (… unreviewed)`, never `ready`:
   - a failed or null cluster or seam review;
   - a cluster still reported `cluster-fits: … no` after the re-cluster;
-  - `fits: no` with no usable clusters (exit 3 counts as the assembler being unavailable, so the
-    review falls back to single mode on direct inputs).
+  - `fits: no` with no usable clusters (`assembled-size` exit 3). The review still runs in single
+    mode on direct inputs, but its verdict is capped at `not ready (… unreviewed: inputs exceed the
+    window and no usable clusters)`, with the ledger line `Final review: single (no usable clusters
+    — capped)`. The assembler relays the exit code together with the `fits:` line. A null or empty
+    assemble (fits unknown) is the uncapped `single (assembler unavailable)` case.
 - Ledger line: `Final review: single|split (inputs <N>K <=|> 40% of <W>K) · clusters <k>`, or
   `Final review: single (assembler unavailable)`.
 - The `coordinator-workflow.md` dryRun baselines are updated for the new Finish agents.
@@ -462,26 +477,26 @@ The visions' failure sections hold. In addition:
 ## Key abstractions
 
 **run-marker** — new bash module (script with subcommands `register | clear | get | prune`), the single store of "which session is coordinating which run".
-- Owns: the marker file location, its private `key: value` format, the liveness rule (every marker < 14 days since its last register; super-auto: `run_md` phase ≠ `done`; standalone: ledger exists), the one-pass resolution (session id → `--cwd` worktree match → worktree fallback marker) that prints the resolved key, the 14-day prune, and session-id resolution (`$CLAUDE_CODE_SESSION_ID` → `$CODEX_THREAD_ID` → explicit id argument).
-- Hides: the marker format and how liveness is computed — to the hook, run-digest and the skills, `get`'s exit code is the whole answer.
+- Owns: the marker file location, its private `key: value` format, the liveness rule (every marker < 14 days since its last register; super-auto: `run_md` phase ≠ `done`; standalone: ledger exists), the one-pass resolution (session id → `--cwd` worktree match → session-keyed worktree fallback marker) whose stdout (key plus every field) is the stable interface, the 14-day prune, and session-id resolution (`$CLAUDE_CODE_SESSION_ID` → `$CODEX_THREAD_ID` → explicit id argument).
+- Hides: the marker file format and how liveness is computed — the hook, run-digest and the skills see only `get`'s exit code and stdout.
 - Must not: read `run.md` fields or the ledger beyond liveness, or print run state (run-digest does that); never fail a caller — no session id means skip, exit 0.
 - Relationships: leaf. super-auto/super-code (register/clear), run-digest and both hook entries (get) depend on it; it depends on nothing in the repo.
-- Lifecycle: one file per session under `${XDG_STATE_HOME:-~/.local/state}/superpowers/active-runs/` (or the fallback `<worktree>/.superpowers/run-marker` when the store is not writable); created at register, removed by `clear` from its own session only, or by prune once not live; register drops other markers for the same `run_md`. The directory is shared by every session on the machine (global, per user).
+- Lifecycle: one file per session under `${XDG_STATE_HOME:-~/.local/state}/superpowers/active-runs/` (or the fallback `<worktree>/.superpowers/run-marker-<session>` when the store is not writable); created at register, removed by `clear` from its own session only, or by prune once not live; register drops other markers for the same `run_md`. The directory is shared by every session on the machine (global, per user).
 - Errors: `get` → exit 0 live / exit 1 absent-or-not-live (callers do not distinguish the two); `register`/`clear` always exit 0, reporting a skip on stdout.
 
 **run-digest** — new bash script plus static data (`coordinator-card.md`), the run-block builder.
-- Owns: the block's section order (card first), the `--budget` cap and trim order (in-flight → bead ids → ledger tail; card never cut), the per-source 2 s timeouts, and reducing `ledger-digest` lines to state counts.
+- Owns: the block's section order (card first), the `--budget` cap and trim order (in-flight → bead ids → ledger tail; card never cut), concurrent sources under one shared 4 s deadline, and reducing `ledger-digest` lines to state counts.
 - Hides: which scripts supply each section (`run-marker get`, `ledger-digest`, the epic tree via `bd`, `run-profile --in-flight`).
-- Must not: run the whole-block watchdog, choose a hook output shape, or JSON-escape (RunBlockInjector does); must not resolve the marker itself — it takes the key `run-marker get` printed. The card's rules live in the card file, never in script code.
+- Must not: run the whole-block watchdog, choose a hook output shape, or JSON-escape (RunBlockInjector does); must not resolve or read a marker itself — it reads `run-marker get`'s output on stdin. The card's rules live in the card file, never in script code.
 - Relationships: Facade over four sources; both hooks depend on it through RunBlockInjector.
 - Lifecycle: one process per compaction event; stateless.
 - Errors: non-zero exit or hang → the caller's fallback; a missing section source degrades that section only (`age unknown`, counts omitted), never the whole block.
 
 **RunBlockInjector** (`hooks/run-block.sh`, sourced) — new bash library, the shared core of the two run-block hook entries.
-- Owns: bounded non-blocking stdin read, pattern extraction of `session_id` and `cwd`, the single `run-marker get` resolution, the portable 5 s watchdog around `run-digest`, the fallback text (static card + `Run state unavailable — …`) within the budget, control-character sanitising, and `escape_for_json` (moved here; `session-start` sources it unchanged).
+- Owns: bounded non-blocking stdin read, pattern extraction of `session_id` and `cwd`, the single `run-marker get` resolution, the portable 5 s watchdog around `run-digest`, the fallback text (static card + `Run state unavailable — …`) within the budget, control-character sanitising, and its own copy of `escape_for_json` (duplicated so `session-start` stays untouched).
 - Hides: how a run block is obtained and degraded, from both entry scripts.
 - Must not: choose the output JSON shape — each entry script decides; it never touches the bootstrap, which stays in `session-start`'s own hook entry.
-- Relationships: two entry adapters use it, each its own compact-matcher hook entry — `session-start-runblock` (Claude Code, `hookSpecificOutput.additionalContext`) and `session-start-codex` (the spike-confirmed shape, `$CODEX_THREAD_ID` fallback, `additionalContextLimit` on its entry). Dependency: entry → library → run-marker / run-digest.
+- Relationships: two entry adapters use it, each its own compact-matcher hook entry — `session-start-runblock` (Claude Code, `hookSpecificOutput.additionalContext`) and `session-start-codex` (the spike-confirmed shape, `$CODEX_THREAD_ID` fallback, `additionalContextLimit` 4000 on its entry). Dependency: entry → library → run-marker / run-digest.
 - Lifecycle: sourced per hook invocation; no state; the watchdog kills its own background child.
 - Errors: never returns failure to an entry; a run block is always either the digest or the fallback, so neither hook can fail SessionStart.
 
@@ -500,7 +515,7 @@ The visions' failure sections hold. In addition:
 - Relationships: every builder delegates its closing line to it; dispatch-text inherits it through the builders.
 
 **Assembler** — new prompt template (`assembler-prompt.md`) plus a deterministic gauge script (`assembled-size`): raw history → digest, slices, clusters for one consumer.
-- Owns: gathering into `<workspace>/assembled/<consumer>-<runTag>/` (template); `size:`, `fits:` and per-cluster `cluster-fits:` lines and exactly-one-cluster coverage, required clusters under `--clusters-required` (`assembled-size`).
+- Owns: gathering into `<workspace>/assembled/<consumer>-<runTag>-<instance>/`, emptied first (template); `size:`, `fits:` and per-cluster `cluster-fits:` lines and exactly-one-cluster coverage, required clusters under `--clusters-required` (`assembled-size`).
 - Hides: what each consumer needs — one consumer profile (digest sections, clusters yes/no) per consumer, in one table inside the `assemblePrompt` builder in `coordinator.js`, reached via `dispatch-text assemble --consumer <name>` (super-auto phase 4 uses that kind rather than writing its own brief).
 - Must not: judge findings, or compute `fits` itself (consumers trust `fits` only from `assembled-size`; the assembler agent relays it).
 - Relationships: consumers (final review, roast-code, improvised history/assess passes) depend on its output dir; roast-code feeds `@<dir>/digest.md` to `assemble-args`; the super-roast engine is unaware of it.
@@ -531,14 +546,14 @@ The visions' failure sections hold. In addition:
 **coordinator.js prompt builders / dispatch-text** — extended: the `assemblePrompt` builder and the final-review trio, the final-answer rule in every builder, the fix-pass path handoff stated as the agent's only memory, and the PLANNED schema's `filesToRead`, `surfaceTokens`, `oversized`; dispatch-text's builder return list (`loadBuilders`) and its `switch` are the registration point for each new kind.
 
 Variation: harness hook output shape (Claude Code, Codex) → one compact-matcher entry script per hook manifest over RunBlockInjector, the shape chosen in each entry. Report formats → one recogniser each in report-verdict's ordered table. Assembler consumers → one profile entry in `assemblePrompt`'s table. Final-review modes (single/cluster/seam, fixed by the spec) → three plain builders chosen in the FinalReview step and dispatch-text's `--mode` case, no mode flag inside builders. Harness window sources → two readers in context-preflight, chosen by its single harness detection.
-Walk-through: Claude Code compacts mid super-auto run → `session-start` emits the bootstrap as today from its own entry → the compact entry runs `session-start-runblock` → RunBlockInjector reads `session_id` + `cwd` → `run-marker get` prints the resolved key → `run-digest --key … --budget 9000` under the watchdog (card, header, ledger-digest counts and tail, open beads, session-scoped `run-profile --in-flight`) → sanitised, escaped, emitted as its own `additionalContext`; the coordinator then reads child results only through `report-verdict`, and at Finish the FinalReview step assembles, gets `fits: no` → cluster reviewers → seam reviewer → verdict line + `reviewPath`. Likely future change — re-inject for a new harness (e.g. Gemini CLI) — touches one new entry script plus its hook-manifest entry, no change to run-digest, run-marker or the existing hooks; a new child report kind touches one recogniser plus one table entry in report-verdict.
+Walk-through: Claude Code compacts mid super-auto run → `session-start` emits the bootstrap as today from its own entry → the compact entry runs `session-start-runblock` → RunBlockInjector reads `session_id` + `cwd` → `run-marker get` prints the resolved key → `run-marker get … | run-digest --budget 9000` under the watchdog (card, header, ledger-digest counts and tail, open beads, session-scoped `run-profile --in-flight`) → sanitised, escaped, emitted as its own `additionalContext`; the coordinator then reads child results only through `report-verdict`, and at Finish the FinalReview step assembles, gets `fits: no` → cluster reviewers → seam reviewer → verdict line + `reviewPath`. Likely future change — re-inject for a new harness (e.g. Gemini CLI) — touches one new entry script plus its hook-manifest entry, no change to run-digest, run-marker or the existing hooks; a new child report kind touches one recogniser plus one table entry in report-verdict.
 Per spec §A2: the run block gets its own hook entry so each string stays under Claude Code's 10,000-character cap; `session-start` keeps only the bootstrap.
 Per spec §A5: super-roast keeps returning `reportMarkdown` — callers must write it to disk before `report-verdict` can read it, a step every roast caller repeats until the follow-on lands.
 
 Digest:
 - run-marker: owns marker storage, format and liveness; new liveness rules go only in its `get`;
   callers never read marker files directly, only `get`'s exit code.
-- run-digest: owns the run block's sections, order (card first), budget trim and per-source timeouts; a new section is one source call plus
+- run-digest: owns the run block's sections, order (card first), budget trim and shared deadline; a new section is one source call plus
   its place in the trim order; callers never assemble run state themselves.
 - RunBlockInjector: owns stdin parsing, the watchdog, the fallback and JSON escaping for re-inject; a new
   harness adds one entry script that sources it; entry scripts never call run-digest unguarded.
