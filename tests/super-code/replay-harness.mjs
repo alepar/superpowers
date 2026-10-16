@@ -1110,6 +1110,8 @@ async function main() {
       assertNoThrow(out)
       check(promptOf(out.trace, 'assemble:final')?.includes('[THRESHOLD] = 400000'), 'threshold 400000 in the assemble prompt')
       check(frLedger(out) === 'Final review: single (inputs 12K <= 40% of 1000K) · clusters 0', 'ledger names the configured window', frLedger(out))
+      const launch = extractLedgerLines(promptOf(out.trace, 'ledger-append:launch')).find(l => l.startsWith('Launch: args ')) ?? ''
+      check(launch.includes('"contextWindows":{"finalReview":1000000}') && launch.includes('"runTag":'), 'the Launch: args line carries config.contextWindows and runTag', launch.slice(0, 300))
     }
 
     scenario('final review: does not fit → one reviewer per cluster, then the seam reviewer')
