@@ -8,3 +8,4 @@ idea: Implement both vision specs in one run: docs/superpowers/specs/2026-10-15-
 branch: super-auto/coordinator-subagent-compaction
 base: main
 spec: 2026-10-15-coordinator-subagent-compaction-design.md
+epic: super-plan-goq

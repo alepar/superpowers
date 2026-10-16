@@ -127,7 +127,8 @@ read-heavy reviewers, qualitative sizing, a warn-only pre-flight). This spec add
   derive the shapes from the 0.162.1 binary's strings and the Codex source. The wiring then ships
   with `source`-agnostic parsing and emits the `hookSpecificOutput.additionalContext` shape, with
   the gap recorded in `MAINTENANCE.md`.
-- The trust prompt is an accepted cost. Codex sessions without the hook keep today's behaviour.
+- The trust prompt is an accepted cost (the human confirmed this on 2026-10-15). Codex sessions
+  without the hook keep today's behaviour.
 - Considered: removing `"hooks": {}` so that `hooks/hooks.json` is discovered. That re-registers
   the bootstrap on Codex. Discarded.
 
