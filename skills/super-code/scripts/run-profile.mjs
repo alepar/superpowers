@@ -15,13 +15,16 @@
 //   Claude Code, the calling session's subagents/ directory and transcript. There is no journal:
 //   outcomes come from the ledger, the graph from bd, and the merges, which the coordinator runs
 //   itself, from its own git commands.
-import { readFileSync, readdirSync, writeFileSync, statSync, openSync, readSync, closeSync, existsSync } from 'node:fs'
+// - Context (context-pass.mjs): peak context and compactions per agent, from the same transcripts.
+import { readFileSync, readdirSync, writeFileSync, statSync, openSync, readSync, closeSync, existsSync, realpathSync } from 'node:fs'
 import { basename, dirname, join } from 'node:path'
 import { execFileSync } from 'node:child_process'
 import { homedir } from 'node:os'
+import { HARNESSES, summarizeContext, contextLines, contextMarkdown, contextJson, contextBaseline } from './context-pass.mjs'
 
 const USAGE = `usage: run-profile (--workflow <dir>... | --codex <thread>... | --subagents <dir>... | --discover --epic <id>
                    | --in-flight --epic <id> --session <id> --harness claude|codex) [options]
+       run-profile --context-only (--session <session.jsonl> | --workflow <dir> | --subagents <dir> | --codex <thread>)... [--out <prefix>] [--context-window <N>]
 
   --workflow <dir>    a Workflow run directory (journal.jsonl, agent-*.jsonl); repeat for each
                       invocation of the same epic (relaunches), in any order
@@ -47,6 +50,12 @@ const USAGE = `usage: run-profile (--workflow <dir>... | --codex <thread>... | -
                       else 1; else unlimited)
   --out <prefix>      also write <prefix>.md (tables, critical path, timeline) and <prefix>.json
   --include-dry-run   keep invocations launched with dryRun: true (skipped by default)
+  --context-window <N>  the context window of every Claude Code agent, in tokens (default: the
+                      model table; Codex windows always come from the rollout)
+  --context-only      only the context lines, for any session: no coordinator check, epic, ledger,
+                      bd or timing; exit 3 when no transcript has a usage row
+  --session <file>    with --context-only: a Claude Code session transcript, every row, with its
+                      subagents/agent-*.jsonl and subagents/workflows/*/agent-*.jsonl
 
   --latest            keep only the newest invocation and the relaunches that led into it (an
                       earlier run that ended under 10 minutes before the next one started)
@@ -55,14 +64,17 @@ const USAGE = `usage: run-profile (--workflow <dir>... | --codex <thread>... | -
 
 Prints the summary on stdout as ledger-ready lines, \`Profile: <epic> · …\` then
 \`Profile: <key> — …\` for shape, bound, critical path, critical chain, bottleneck, waits, early
-unblock, rework, tests, slow tests, merge lane, conflicts, runtime, what-if (one line each) and
+unblock, rework, tests, slow tests, merge lane, conflicts, runtime, what-if (one line each),
+context (peak context and compactions by cause, cap, early, idle, manual, over every agent),
+context agent (each agent that compacted or peaked at 50% or more of its window, at most 10) and
 unmeasured; an ordinary-subagent run adds concurrency and per-kind dispatch time, and when its
-dispatch names do not map to the epic's beads, prints only those run-level lines.`
+dispatch names do not map to the epic's beads, prints only those run-level lines and the context
+lines. A run whose timing exits early (exit 3, no --epic) still prints its context lines first.`
 
 const die = (code, msg) => { process.stderr.write(`run-profile: ${msg}\n`); process.exit(code) }
 
 // ---- argv ----
-const opt = { workflow: [], codex: [], subagents: [] }
+const opt = { workflow: [], codex: [], subagents: [], session: [] }
 const argv = process.argv.slice(2)
 for (let i = 0; i < argv.length; i++) {
   const a = argv[i]
@@ -71,18 +83,25 @@ for (let i = 0; i < argv.length; i++) {
   if (a === '--in-flight') { opt.inFlight = true; continue }
   if (a === '--include-dry-run') { opt.includeDryRun = true; continue }
   if (a === '--latest') { opt.latest = true; continue }
+  if (a === '--context-only') { opt.contextOnly = true; continue }
   if (a === '--summarize') { opt.summarize = []; while (i + 1 < argv.length && !argv[i + 1].startsWith('--')) opt.summarize.push(argv[++i]); continue }
   if (!a.startsWith('--') || i + 1 >= argv.length) die(2, `bad argument '${a}'\n${USAGE}`)
   const k = a.slice(2)
-  if (['workflow', 'codex', 'subagents'].includes(k)) opt[k].push(argv[++i])
-  else if (['epic', 'projects', 'cap', 'out', 'codex-home', 'ledger', 'beads', 'session', 'harness'].includes(k)) opt[k] = argv[++i]
+  if (['workflow', 'codex', 'subagents', 'session'].includes(k)) opt[k].push(argv[++i])
+  else if (['epic', 'projects', 'cap', 'out', 'codex-home', 'ledger', 'beads', 'context-window', 'harness'].includes(k)) opt[k] = argv[++i]
   else die(2, `unknown option ${a}`)
 }
 if (opt.inFlight) {
-  if (!opt.epic || !opt.session || !['claude', 'codex'].includes(opt.harness)) die(2, '--in-flight needs --epic <id> --session <id> --harness claude|codex')
+  // --session is repeatable for --context-only; --in-flight takes one session id (the last given)
+  const sessionId = opt.session[opt.session.length - 1]
+  if (!opt.epic || !sessionId || !['claude', 'codex'].includes(opt.harness)) die(2, '--in-flight needs --epic <id> --session <id> --harness claude|codex')
+  opt.session = sessionId
   inFlight()
 }
-if (!opt.discover && !opt.workflow.length && !opt.codex.length && !opt.subagents.length && !opt.summarize) die(2, `give --workflow <dir>, --codex <thread>, --subagents <dir>, --discover --epic <id> or --summarize <json>…\n${USAGE}`)
+if (!opt.discover && !opt.workflow.length && !opt.codex.length && !opt.subagents.length && !opt.session.length && !opt.summarize) die(2, `give --workflow <dir>, --codex <thread>, --subagents <dir>, --discover --epic <id>, --summarize <json>… or --context-only --session <file>\n${USAGE}`)
+if (opt.session.length && !opt.contextOnly) die(2, '--session needs --context-only')
+if (opt.contextOnly && (opt.discover || opt.summarize)) die(2, '--context-only takes --session, --workflow, --subagents or --codex, not --discover or --summarize')
+if (opt['context-window'] !== undefined && !(Number(opt['context-window']) > 0)) die(2, '--context-window must be a positive number of tokens')
 if (opt.summarize && !opt.summarize.length) die(2, '--summarize needs at least one profile .json')
 if (opt.discover && !opt.epic) die(2, '--discover needs --epic <id>')
 if (opt.cap !== undefined && !(Number(opt.cap) >= 1)) die(2, '--cap must be a positive number')
@@ -430,6 +449,12 @@ function readRun(dir) {
     Object.assign(a, parseLabel(a.label ?? ''))
     a.stage = stageOf(a.kind, a.suffix)
   }
+  // A Workflow run directory is <session>/subagents/workflows/wf_<id>: its owning session is the
+  // coordinator. Outside that layout there is no coordinator record.
+  const d = dir.replace(/\/+$/, '')
+  const owned = basename(dirname(d)) === 'workflows' && basename(dirname(dirname(d))) === 'subagents'
+  run.context = { harness: 'claude', coordinators: owned ? [`${dirname(dirname(dirname(d)))}.jsonl`] : [],
+    agents: [...run.agents.values()].map(a => ({ file: join(d, `agent-${a.id}.jsonl`), label: a.label ?? `agent-${a.id}` })) }
   return run
 }
 const planEpic = run => {
@@ -508,7 +533,7 @@ function codexIndex() {
         const m = firstRow(p)?.payload
         if (!m?.id) continue
         const sp = m.source?.subagent?.thread_spawn
-        codexIdx.push({ file: p, id: m.id, parent: sp?.parent_thread_id ?? null, name: sp ? String(sp.agent_path ?? '').split('/').pop() : null, sub: !!m.source?.subagent, cwd: m.cwd })
+        codexIdx.push({ file: p, id: m.id, parent: sp?.parent_thread_id ?? null, name: sp ? String(sp.agent_path ?? '').split('/').pop() : null, path: sp?.agent_path ?? null, sub: !!m.source?.subagent, cwd: m.cwd })
       } else if (isDir(p)) walk(p)
     }
   }
@@ -591,7 +616,7 @@ function readCodex(input) {
     const m = firstRow(input)?.payload
     if (!m?.id) die(2, `not a Codex rollout: ${input}`)
     id = m.id
-    if (!idx.some(e => e.file === input)) idx.push({ file: input, id, parent: null, name: null, sub: !!m.source?.subagent, cwd: m.cwd })
+    if (!idx.some(e => e.file === input)) idx.push({ file: input, id, parent: null, name: null, path: null, sub: !!m.source?.subagent, cwd: m.cwd })
   }
   const own = idx.filter(e => e.id === id)
   if (!own.length) die(2, `no Codex rollout for thread ${id} under ${codexHome()}/sessions`)
@@ -604,7 +629,11 @@ function readCodex(input) {
     const calls = codexCalls(crow).filter(x => !(x.start === t0 && x.end === t0))
     codexTasks(crow).forEach(([s, e], k) => agents.set(`${c.id}#${k}`, { id: `${c.id}#${k}`, run: id, name: c.name, ...spanTiming(s, e, calls) }))
   }
-  return { source: 'codex', dir: own[0].file, runId: id, journal: false, agents, launch: null, coordinator: true, callerCalls: codexCalls(rows), cwd: own[0].cwd }
+  // Every descendant, transitively (timing above reads direct children only).
+  const kids = [], seen = new Set([id])
+  for (const q = [id]; q.length;) { const p = q.shift(); for (const e of idx.filter(x => x.parent === p)) { kids.push(e); if (!seen.has(e.id)) { seen.add(e.id); q.push(e.id) } } }
+  return { source: 'codex', dir: own[0].file, runId: id, journal: false, agents, launch: null, coordinator: true, callerCalls: codexCalls(rows), cwd: own[0].cwd,
+    context: { harness: 'codex', scoped: true, coordinators: own.map(e => e.file), agents: kids.map(e => ({ file: e.file, label: e.path ? String(e.path).replace(/^\/root\//, '') : e.id })) } }
 }
 function claudeCallerCalls(rows) {
   const open = new Map(), calls = []
@@ -637,7 +666,26 @@ function readSubagents(dir) {
     agents.set(m[1], { id: m[1], run: session, name: meta.description ?? '', model: meta.model, ...(t ?? {}) })
   }
   const rows = readJsonl(`${dirname(d)}.jsonl`) ?? []
-  return { source: 'subagents', dir: d, runId: session, journal: false, agents, launch: null, coordinator: true, callerCalls: claudeCallerCalls(rows), cwd: rows.find(r => r.cwd)?.cwd }
+  return { source: 'subagents', dir: d, runId: session, journal: false, agents, launch: null, coordinator: true, callerCalls: claudeCallerCalls(rows), cwd: rows.find(r => r.cwd)?.cwd,
+    context: { harness: 'claude', scoped: true, coordinators: [`${dirname(d)}.jsonl`],
+      agents: ls(d).filter(f => /^agent-.+\.jsonl$/.test(f)).map(f => ({ file: join(d, f), label: agents.get(f.slice(6, -6))?.name || f.slice(0, -6) })) } }
+}
+// --session (context only): a Claude Code session as coordinator, every row, with every agent it
+// ran: <session>/subagents/agent-*.jsonl and <session>/subagents/workflows/*/agent-*.jsonl.
+function readSession(file) {
+  const base = file.replace(/\.jsonl$/, ''), sub = join(base, 'subagents'), agents = []
+  const add = d => {
+    for (const f of ls(d)) {
+      const m = /^agent-(.+)\.jsonl$/.exec(f)
+      if (!m) continue
+      let label = null
+      try { label = JSON.parse(readFileSync(join(d, `agent-${m[1]}.meta.json`), 'utf8')).description } catch { /* no meta */ }
+      agents.push({ file: join(d, f), label: label || `agent-${m[1]}` })
+    }
+  }
+  add(sub)
+  for (const w of ls(join(sub, 'workflows'))) if (isDir(join(sub, 'workflows', w))) add(join(sub, 'workflows', w))
+  return { source: 'session', dir: file, runId: basename(base), agents: new Map(), context: { harness: 'claude', whole: true, coordinators: [file], agents } }
 }
 const LEDGER_RE = /(\/[^\s"'`]*\/\.superpowers\/sdd\/([^/\s"'`]+)-plan\/progress\.md)/g
 function discoverOrdinary(projects, epic) {
@@ -708,6 +756,72 @@ const escRe = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 // A bead id inside free text, not as a prefix of a longer id (`cx.1` in `task-cx.1`, not in `cx.10`).
 const idRe = (id, pre = '') => new RegExp(`(?<![A-Za-z0-9_.])${pre}${escRe(id)}(?![A-Za-z0-9_]|\\.[A-Za-z0-9])`)
 
+// ---- context: the transcripts each run contributes, measured once by context-pass ----
+// Context targets: the dedupe by real path, each coordinator's run window of rows (its harness's
+// runRows from the run's anchor T0; the union when one file serves several runs) and the scoping of
+// an ordinary subagent or Codex descendant to that window by its first row. A new run type is one
+// new lister above. context-pass reads and renders; nothing here parses usage or formats a line.
+const realOf = f => { try { return realpathSync(f) } catch { return f } }
+const firstTs = (rows, from = 0) => { for (let i = Math.max(0, from); i < rows.length; i++) { const t = tsOf(rows[i]); if (Number.isFinite(t)) return t } return null }
+// T0: a Workflow run's earliest agent start; an ordinary run's first dispatch mapped to a bead
+// (undefined, the session's end, before the mapping ran or when none mapped).
+function runT0(r) {
+  const ts = [...r.agents.values()].filter(a => !a.synthetic && Number.isFinite(a.start) && (r.source === 'workflow' || a.bead)).map(a => a.start)
+  return ts.length ? Math.min(...ts) : undefined
+}
+const unionRows = ws => ws.map(w => [w.fromRow, w.toRow]).sort((a, b) => a[0] - b[0])
+  .reduce((u, [a, b]) => { const l = u.at(-1); if (l && a <= l[1]) l[1] = Math.max(l[1], b); else u.push([a, b]); return u }, [])
+let contextMemo = null
+// Built once, on the first exit path that asks, and shared by every output.
+function contextResult(rs) {
+  if (contextMemo) return contextMemo
+  const coords = new Map(), agents = new Map(), reasons = []
+  const contextWindow = opt['context-window'] !== undefined ? Number(opt['context-window']) : undefined
+  // Each agent transcript is reduced to its record as soon as it is read, so peak memory is one
+  // transcript plus the coordinators' rows, not every transcript of the run at once.
+  for (const r of rs) {
+    const c = r.context
+    if (!c) continue
+    const t0 = runT0(r), spans = []
+    for (const f of c.coordinators) {
+      const k = realOf(f)
+      if (!coords.has(k)) coords.set(k, { file: f, harness: c.harness, rows: readJsonl(f), wins: [], whole: false })
+      const e = coords.get(k)
+      if (c.whole) { e.whole = true; continue }
+      if (!e.rows) continue
+      const w = HARNESSES[c.harness].runRows(e.rows, t0)
+      e.wins.push(w)
+      spans.push([w.fromRow > 0 ? firstTs(e.rows, w.fromRow) ?? -Infinity : -Infinity, w.toRow < e.rows.length ? firstTs(e.rows, w.toRow) ?? Infinity : Infinity])
+    }
+    for (const a of c.agents) {
+      const k = realOf(a.file)
+      if (coords.has(k) || agents.has(k)) continue
+      const rows = readJsonl(a.file)
+      const t = c.scoped && spans.length && rows ? firstTs(rows) : null
+      if (t !== null && !spans.some(([s, e]) => t >= s && t < e)) continue
+      agents.set(k, HARNESSES[c.harness].read(rows, { label: a.label, role: 'agent', file: a.file, contextWindow }))
+    }
+  }
+  const records = []
+  let n = 0
+  for (const e of coords.values()) {
+    const label = coords.size === 1 ? 'coordinator' : `coordinator:${++n}`
+    let w = {}
+    if (e.rows && !e.whole && e.wins.length) {
+      w = { spans: unionRows(e.wins) }
+      for (const x of e.wins) if (x.reason) reasons.push(x.reason)
+    }
+    records.push(HARNESSES[e.harness].read(e.rows, { ...w, label, role: 'coordinator', file: e.file, contextWindow }))
+    e.rows = null
+  }
+  records.push(...agents.values())
+  const summary = summarizeContext(records, { reasons })
+  // With nothing measured the `unavailable` line already says why; its reasons would only repeat it.
+  contextMemo = { summary, lines: contextLines(summary), reasons: summary.measured ? summary.reasons : [] }
+  return contextMemo
+}
+const contextUnmeasured = c => c.reasons.length ? [`Profile: unmeasured — ${c.reasons.join('; ')}`] : []
+
 // ---- --summarize: a baseline over earlier profiles ----
 if (opt.summarize) {
   const loaded = opt.summarize.map(f => { try { return JSON.parse(readFileSync(f, 'utf8')) } catch { die(2, `not a profile JSON: ${f}`) } })
@@ -768,8 +882,23 @@ if (opt.summarize) {
     for (const y of x.simulation?.whatIfs ?? []) add(ws, y.kind, y.savingMs)
   }
   if (Object.keys(wk).length) out.push(`Baseline: what-ifs — ${Object.entries(ws).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} in ${wk[k]} run(s), modelled savings ${H(v)} summed`).join(' · ')}`)
+  const cb = contextBaseline(ps.map(x => x.context))
+  if (cb) out.push(cb)
   console.log(out.join('\n'))
   process.exit(0)
+}
+
+// ---- --context-only: the context lines for any session; no coordinator check, epic, ledger, bd or timing ----
+if (opt.contextOnly) {
+  for (const d of [...opt.workflow, ...opt.subagents]) if (!isDir(d)) die(2, `not a directory: ${d}`)
+  for (const f of opt.session) if (!existsSync(f) || isDir(f)) die(2, `not a session transcript: ${f}`)
+  const c = contextResult([...opt.workflow.map(readRun), ...opt.codex.map(readCodex), ...opt.subagents.map(readSubagents), ...opt.session.map(readSession)])
+  console.log([...c.lines, ...contextUnmeasured(c)].join('\n'))
+  if (opt.out) {
+    writeFileSync(`${opt.out}.json`, JSON.stringify({ version: 1, contextOnly: true, context: contextJson(c.summary) }, null, 2) + '\n')
+    writeFileSync(`${opt.out}.md`, ['# Context profile', '', contextMarkdown(c.summary)].join('\n'))
+  }
+  process.exit(c.summary.measured ? 0 : 3)
 }
 
 // ---- load ----
@@ -800,6 +929,9 @@ if (opt.latest && runs.length > 1) {
     runs = keep.map(x => x.r)
   }
 }
+// Every exit path below prints the one context result: before its Profile: unmeasured line, or with
+// a line of its own where it prints none.
+const printContext = () => { const c = contextResult(runs); console.log([...c.lines, ...contextUnmeasured(c)].join('\n')) }
 
 // ---- ordinary-subagent runs: labels from dispatch names, outcomes from the ledger, the graph from bd,
 // and the merges, which the coordinator runs itself, from its own commands ----
@@ -812,7 +944,7 @@ if (ordinary.length) {
   ledger = ledgerPath ? readLedger(ledgerPath) : null
   if (opt.ledger && !ledger) die(2, `cannot read the ledger: ${opt.ledger}`)
   const ep = opt.epic ?? ledger?.epic
-  if (!ep) die(2, 'an ordinary-subagent run needs --epic <id> (or a --ledger whose Launch: line names it)')
+  if (!ep) { printContext(); die(2, 'an ordinary-subagent run needs --epic <id> (or a --ledger whose Launch: line names it)') }
   let dump = null
   if (opt.beads) { try { dump = JSON.parse(readFileSync(opt.beads, 'utf8')) } catch { die(2, `not a bd list JSON dump: ${opt.beads}`) } }
   else for (const r of ordinary) if ((dump = bdDump(r.cwd))) break
@@ -886,6 +1018,7 @@ if (!timed.some(a => a.bead) && !timed.some(a => serialRuns.has(a.run))) {
   const why = !dirs.length && !codexIn.length && !subIn.length ? `no Workflow run directory found${opt.epic ? ` for ${opt.epic}` : ''}, nor an ordinary-subagent coordinator's log (this harness keeps none, or they were cleaned up)`
     : !runs.length ? `every run given was a dryRun launch (${skippedDry.map(r => r.runId).join(', ')})`
     : 'no timed task dispatch in the runs given (transcripts missing)'
+  printContext()
   console.log(`Profile: unavailable — ${why}`)
   process.exit(3)
 }
@@ -935,13 +1068,14 @@ const RULE = 'coordinator-subagents.md names dispatches <kind>_<bead id> on Code
 if (!timed.some(a => a.bead)) {
   // No dispatch maps to a bead: only the run-level lines.
   const end = Math.max(...timed.map(a => a.end))
+  const ctxRes = contextResult(runs)
   const lines = [`Profile: ${epic ?? '(epic unknown)'} · ${invocations.length} invocation${invocations.length === 1 ? '' : 's'} · ${fmtTime(windowStart)} → ${fmtTime(end)} · wall ${fmtDur(end - windowStart)} · agents ${realAgents.length} (timed ${realAgents.filter(a => a.start !== undefined).length}) · beads dispatched 0${leaves ? `, planned ${leaves.size}` : ''}`,
-    ...runLevel.lines,
-    `Profile: unmeasured — no per-bead profile: no dispatch is named for a bead of ${epic} (${RULE})`]
+    ...runLevel.lines, ...ctxRes.lines,
+    `Profile: unmeasured — no per-bead profile: no dispatch is named for a bead of ${epic} (${RULE})${ctxRes.reasons.length ? `; ${ctxRes.reasons.join('; ')}` : ''}`]
   console.log(lines.join('\n'))
   if (opt.out) {
-    writeFileSync(`${opt.out}.json`, JSON.stringify({ version: 1, epic, partial: true, invocations: invocations.map(v => ({ runId: v.runId, dir: v.dir, source: v.source, start: new Date(v.start).toISOString(), end: new Date(v.end).toISOString(), agents: v.agents, timed: v.timed })), concurrency: runLevel.json, summary: lines }, null, 2) + '\n')
-    writeFileSync(`${opt.out}.md`, [`# Run profile — ${epic ?? 'unknown epic'}`, '', '```', ...lines, '```', ''].join('\n'))
+    writeFileSync(`${opt.out}.json`, JSON.stringify({ version: 1, epic, partial: true, invocations: invocations.map(v => ({ runId: v.runId, dir: v.dir, source: v.source, start: new Date(v.start).toISOString(), end: new Date(v.end).toISOString(), agents: v.agents, timed: v.timed })), concurrency: runLevel.json, context: contextJson(ctxRes.summary), summary: lines }, null, 2) + '\n')
+    writeFileSync(`${opt.out}.md`, [`# Run profile — ${epic ?? 'unknown epic'}`, '', '```', ...lines, '```', '', contextMarkdown(ctxRes.summary)].join('\n'))
   }
   process.exit(0)
 }
@@ -1563,6 +1697,7 @@ if (shape.cycles.length) unmeasured.push(`dependency cycle(s) in the planner row
 if (sim?.fit && (sim.fit < 0.75 || sim.fit > 1.25)) unmeasured.push(`the schedule model is ${Math.round(100 * sim.fit)}% of actual, so the what-ifs are rough`)
 const notLanded = [...beads.values()].filter(b => !b.landed)
 if (notLanded.length) unmeasured.push(`${notLanded.length} dispatched bead(s) did not land (not in the model): ${notLanded.slice(0, 5).map(b => b.id).join(', ')}${notLanded.length > 5 ? ', …' : ''}`)
+const ctxRes = contextResult(runs); lines.push(...ctxRes.lines); unmeasured.push(...ctxRes.reasons)
 lines.push(`Profile: unmeasured — ${unmeasured.length ? unmeasured.join('; ') : 'none'}`)
 console.log(lines.join('\n'))
 
@@ -1583,7 +1718,7 @@ if (opt.out) {
     criticalPath: { ms: pathMs, byCategory: byCat, laneContentionMs, redo, segments: segments.map(s => ({ kind: s.kind, bead: s.bead, label: s.label, via: s.why ?? null, start: T(s.start), ms: s.ms })) },
     bottleneck: bottleneck ? { bead: bottleneck[0], ms: bottleneck[1].total, share: pathMs ? bottleneck[1].total / pathMs : 0, byCategory: bottleneck[1].byCat,
       implByTool: beads.get(bottleneck[0]).implByCat, calls: beads.get(bottleneck[0]).final.impl.flatMap(a => a.calls ?? []).sort((x, y) => y.ms - x.ms).slice(0, 10) } : null,
-    lane, runtime, concurrency: runLevel?.json ?? null, tests: testTotals, slowTests, conflicts: hotConflicts.slice(0, 20), simulation: sim, unmeasured, summary: lines,
+    lane, runtime, concurrency: runLevel?.json ?? null, tests: testTotals, slowTests, conflicts: hotConflicts.slice(0, 20), simulation: sim, unmeasured, context: contextJson(ctxRes.summary), summary: lines,
   }
   writeFileSync(`${opt.out}.json`, JSON.stringify(json, null, 2) + '\n')
   const md = [`# Run profile — ${epic ?? 'unknown epic'}`, '', '```', ...lines, '```', '']
@@ -1618,6 +1753,7 @@ if (opt.out) {
     }
     md.push('```')
   }
+  md.push('', ...contextMarkdown(ctxRes.summary).trimEnd().split('\n'))
   if (unmeasured.length) md.push('', '## Unmeasured', '', ...unmeasured.map(u => `- ${u}`))
   writeFileSync(`${opt.out}.md`, md.join('\n') + '\n')
 }

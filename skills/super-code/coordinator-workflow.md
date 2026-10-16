@@ -1378,9 +1378,10 @@ relaunch), run `bash <this skill's dir>/scripts/run-profile --workflow <dir> …
 --latest` finds them), and append its stdout to the ledger. Those `Profile:` lines give the bead
 graph's shape, the realized critical path and its bottleneck bead with what its time went to, each
 bead's ready-to-start wait and cause, the merge lane's load and conflict files, and modelled
-what-ifs. It dispatches nothing. Where the harness keeps no such files it prints one `Profile:
-unavailable — …` line (exit 3); append that instead. Run it before the hand-off removes the
-integration worktree.
+what-ifs. It dispatches nothing. Append its whole stdout on every exit path: where the harness keeps no
+such files it exits 3 with `Profile: unavailable — …` as its last line, after the
+`Profile: context` lines it could still measure, and those lines belong in the ledger too. Run
+it before the hand-off removes the integration worktree.
 
 **The run marker is the invoking session's too.** After the Workflow returns with a `stopReason` (not
 a relaunch), run `bash <skills>/super-code/scripts/run-marker get <session id> --cwd <integration

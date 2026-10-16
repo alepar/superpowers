@@ -99,8 +99,9 @@ the same `Final review:` ledger line. Read the result through `report-verdict
 
 At Finish, record the run profile: `bash <skillsRoot>/super-code/scripts/run-profile --codex
 "$CODEX_THREAD_ID"` on Codex, or `--subagents ~/.claude/projects/*/"$CLAUDE_CODE_SESSION_ID"/subagents`
-on Claude Code, with `--ledger <ledger> --out <ledger dir>/profile-<session id>`. Append its stdout
-to the ledger. If it prints `Profile: unavailable — …` (exit 3), append that line instead.
+on Claude Code, with `--ledger <ledger> --out <ledger dir>/profile-<session id>`. Append its whole stdout
+to the ledger on every exit path: on exit 3 its last line is `Profile: unavailable — …`, and
+the `Profile: context` lines it prints before that line belong in the ledger too.
 
 Then clear the run marker by the same rule as `coordinator-workflow.md` §Finish: `bash
 <skillsRoot>/super-code/scripts/run-marker get <session id> --cwd <integration worktree>`, and only
