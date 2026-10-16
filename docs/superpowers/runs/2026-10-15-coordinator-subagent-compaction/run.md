@@ -9,3 +9,6 @@ branch: super-auto/coordinator-subagent-compaction
 base: main
 spec: 2026-10-15-coordinator-subagent-compaction-design.md
 epic: super-plan-goq
+
+approvals:
+- top-split · auto · super-plan-goq.1 LEAF, super-plan-goq.2 LEAF, super-plan-goq.3 LEAF, super-plan-goq.4 LEAF, super-plan-goq.5 LEAF, super-plan-goq.6 LEAF, super-plan-goq.7 LEAF, super-plan-goq.8 LEAF, super-plan-goq.9 LEAF, super-plan-goq.10 LEAF, super-plan-goq.11 LEAF, super-plan-goq.12 LEAF, super-plan-goq.13 LEAF, super-plan-goq.14 LEAF, super-plan-goq.15 LEAF, super-plan-goq.16 LEAF, super-plan-goq.17 LEAF, super-plan-goq.18 LEAF
