@@ -679,14 +679,12 @@ function contextResult(rs) {
   let n = 0
   for (const e of coords.values()) {
     const label = coords.size === 1 ? 'coordinator' : `coordinator:${++n}`
-    let rows = e.rows, w = {}
-    if (rows && !e.whole && e.wins.length) {
-      const u = unionRows(e.wins), all = rows
-      if (u.length === 1) w = { fromRow: u[0][0], toRow: u[0][1] }
-      else rows = u.flatMap(([a, b]) => all.slice(a, b))
+    let w = {}
+    if (e.rows && !e.whole && e.wins.length) {
+      w = { spans: unionRows(e.wins) }
       for (const x of e.wins) if (x.reason) reasons.push(x.reason)
     }
-    records.push(HARNESSES[e.harness].read(rows, { ...w, label, role: 'coordinator', file: e.file, contextWindow }))
+    records.push(HARNESSES[e.harness].read(e.rows, { ...w, label, role: 'coordinator', file: e.file, contextWindow }))
   }
   for (const a of agents.values()) records.push(HARNESSES[a.harness].read(a.rows, { label: a.label, role: 'agent', file: a.file, contextWindow }))
   const summary = summarizeContext(records, { reasons })
