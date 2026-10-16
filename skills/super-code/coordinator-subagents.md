@@ -46,6 +46,19 @@ Keep the window full. The Workflow coordinator does these, and so do you:
   every split. If a file holds back two tasks while a slot is free, raise its cap by one. Write a
   `Detector:` line at each refill, not only at Finish.
 
+**One fresh agent per round.**
+
+- Every fix pass, seam fix, check fix, re-review and re-assessment is a fresh agent; its only memory
+  of the earlier round is the paths the dispatch hands it (dispatch-text's `fix` text names them).
+- A steering message that adds work is a new round: spawn a fresh agent for it.
+- Improvised dispatches (a history reader, an assess pass, a first gate, an absorb, and similar) state
+  their input paths, one output file, scope and out-of-scope, a checklist, and "one fresh agent, one
+  job". Split a large input across several such agents.
+- History and assess passes read assembled inputs: run
+  `dispatch-text assemble --consumer history|assess --instance <bead id>` first and point the pass at
+  the digest it writes. When the assembler returns nothing or a non-zero exit, give the pass its
+  direct inputs and append `assembler: unavailable — <cause>` to the ledger.
+
 Three things keep the run measurable and resumable:
 
 - **Launch line.** Before the Launch line, run the same identity steps as `coordinator-workflow.md`

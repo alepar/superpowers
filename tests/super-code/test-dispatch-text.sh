@@ -52,6 +52,15 @@ run bash "$D" --ledger "$L" --stdout fix --id ep.2 --n 2 --base abc1234 --kind c
 assert_has "$out" "This is the merge-check fix" "fix --kind check: the merge-check fix scope"
 assert_has "$out" "cargo check --all-targets" "with the Launch: line's mergeCheck"
 assert_has "$out" "error[E0061]" "and the build errors as data"
+for k in check seam review; do
+  printf 'finding text\n' > "$T/f-$k.txt"
+  run bash "$D" --ledger "$L" --stdout fix --id ep.2 --n 2 --base abc1234 --kind "$k" --finding-file "$T/f-$k.txt"
+  assert_has "$out" "no memory of the earlier round" "fix --kind $k: fresh-agent handoff"
+  assert_has "$out" "task-2-brief.md" "fix --kind $k: brief path"
+  assert_has "$out" "task-2-report.md" "fix --kind $k: previous report path"
+  assert_has "$out" "abc1234..HEAD" "fix --kind $k: base..HEAD range"
+done
+assert_has "$out" "task-2-review.md" "fix --kind review: the review file path"
 run bash "$D" --ledger "$L" --stdout seam-review --id ep.2 --n 2 --base abc1234 --merge-base def5678 --head 9999999 --overlap src/a.rs,"consumes ep.1"
 assert_has "$out" "READ-ONLY post-rebase seam review for task ep.2" "seam review"
 assert_has "$out" "A \`consumes <id>\` entry" "a consumes entry gets the composed-review text"

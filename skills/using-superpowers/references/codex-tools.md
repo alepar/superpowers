@@ -21,11 +21,14 @@ disagree.
   Full-history forks accept `model` and `reasoning_effort` overrides
   (only `agent_type` is refused there) — isolated forks are the SDD
   default for context hygiene, not because overrides require them.
-- **Fix rounds:** resume the implementer with `followup_task` — it
-  delivers your message, triggers a turn, and transparently reloads a
-  child the harness evicted. Never dispatch a fresh implementer on the
-  theory that a spawned agent cannot be messaged again; on V2 it
-  always can.
+- **Fix rounds (super-code and super-auto):** every fix pass, seam fix,
+  check fix, re-review and re-assessment is a new
+  `spawn_agent {fork_turns: "none"}` handed paths, never a resumed
+  agent. `followup_task` only chases or clarifies a report the same job
+  still owes; never use it for new work, a new round, or steering that
+  changes scope. `subagent-driven-development` keeps its own bounded
+  design: it resumes the implementer with `followup_task` for fix
+  rounds 1–3 and dispatches a fresh one from round 4.
 - **Lifecycle:** V2 has no `close_agent`. Finished children are
   evicted automatically when slots are needed; leaving them unclosed
   costs nothing. Only V1 sessions have `close_agent` — there, close
