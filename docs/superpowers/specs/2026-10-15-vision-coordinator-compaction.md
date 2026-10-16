@@ -166,4 +166,6 @@ when the Workflow returns. This resets the ~54-minute idle timer at the cost of 
 
 ## Post-Implementation Notes
 
+**2026-10-16 — Changes vs. original design.** Implemented by the combined coordinator/subagent compaction design and shipped in 6.4.2-alepar6.0. Run-state injection uses separate compact-hook entries, a capped digest, and a static coordinator card. Codex uses a dedicated hooks manifest and its own session-keyed fallback marker. Live Codex session-id equality and context-limit behavior, Workflow-agent compact payloads, and idle-keepalive effectiveness remain unverified. See the combined run report for validation and deferred findings.
+
 > *As this design is implemented and iterated on — bug fixes, adjustments, anything that diverged from the assumptions above — append a dated note here, whether or not a formal debugging skill was used.*

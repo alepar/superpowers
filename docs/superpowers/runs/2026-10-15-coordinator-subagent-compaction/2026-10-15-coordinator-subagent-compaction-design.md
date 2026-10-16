@@ -595,4 +595,6 @@ Digest:
 
 ## Post-Implementation Notes
 
+**2026-10-16 — Changes vs. original design.** Implemented and integrated for 6.4.2-alepar6.0. The run block uses separate compact-hook entries to respect per-string limits. Codex resolves its own session-keyed fallback marker with `--own-only`; child detection uses documented fields. Review fixes added robust verdict/key extraction, explicit null-review-path handling, bounded UTF-8 truncation, and planner split-race guards. The in-flight profiler also gained three dispatch-label cases outside the original in-flight-only constraint. Main 5.4 was merged with both profiling paths preserved. The 23-command sweep passed, and the post-cap audit found no new findings. Live Codex hook session-id equality and context-limit behavior, Workflow-agent compact payloads, and keepalive effectiveness remain unverified; deferred nits and other limitations are recorded in `report.md` beside this spec.
+
 > *As this design is implemented and iterated on — bug fixes, adjustments, anything that diverged from the assumptions above — append a dated note here, whether or not a formal debugging skill was used.*

@@ -262,4 +262,6 @@ This depends on the separate change adding per-agent peak context and compaction
 
 ## Post-Implementation Notes
 
+**2026-10-16 — Changes vs. original design.** Implemented by the combined coordinator/subagent compaction design and shipped in 6.4.2-alepar6.0: fresh agents per round, bounded briefs, assembled final-review inputs with cluster/seam review, shaped planning units, surface estimates, split proposals, and warn-only context preflight. Review fixes preserve ordinary-mode argument parity and explicit missing-review behavior. Live context-reduction measurements and window calibration remain follow-up work; the combined run report records the remaining split-race and parser nits.
+
 *As this design is implemented and iterated on — bug fixes, adjustments, anything that diverged from the assumptions above — append a dated note here, whether or not a formal debugging skill was used.*
