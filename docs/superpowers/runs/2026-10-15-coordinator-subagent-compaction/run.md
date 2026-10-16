@@ -10,7 +10,7 @@ branch: super-auto/coordinator-subagent-compaction
 base: main
 spec: 2026-10-15-coordinator-subagent-compaction-design.md
 epic: super-plan-goq
-roast-code: 2026-10-16-coordinator-subagent-compaction-roast-pr-1.md, 2026-10-16-coordinator-subagent-compaction-roast-pr-2.md
+roast-code: 2026-10-16-coordinator-subagent-compaction-roast-pr-1.md, 2026-10-16-coordinator-subagent-compaction-roast-pr-2.md, 2026-10-16-coordinator-subagent-compaction-roast-pr-post-cap-audit.md
 roast-design: 2026-10-15-coordinator-subagent-compaction-roast-design-1.md, 2026-10-15-coordinator-subagent-compaction-roast-design-2.md
 
 approvals:
@@ -78,3 +78,4 @@ regressionPass-round-2: [Should-fix] hooks/session-start-codex:17; hooks/session
 finalReviewException: autonomous once-per-run — Must-fix correctness items from final-review-fixloop-r1.md in goal-named paths filed as fix beads (fallback-marker .gitignore, card Workflow guard, report-verdict order incl. roast r2 [Should-fix] report-verdict:152), one re-entry before the phase-6 sweep; covered by the post-cap audit
 finalReviewException-completion: super-plan-goq.49 — I8 vs Phase-5 keys (item 4 of final-review-fixloop-r1-blocked.md, missed at the exception round's filing) + null reviewPath routing; same exception round, one more re-entry
 baseAbsorbed: 0ea996d4 → 98eb7f12, 3 conflicted files (docs/superpowers/specs/INDEX.md, skills/super-code/coordinator-subagents.md, skills/super-code/scripts/run-profile.mjs)
+friction: 8 events
