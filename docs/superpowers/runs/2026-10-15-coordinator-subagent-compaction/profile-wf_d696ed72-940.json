@@ -1,0 +1,1056 @@
+{
+  "version": 1,
+  "epic": "super-plan-goq",
+  "cap": 8,
+  "earlyUnblock": true,
+  "runtimeSlots": 10,
+  "invocations": [
+    {
+      "runId": "wf_d696ed72-940",
+      "dir": "/Users/alepar/.aisw/profiles/claude/claude-1/projects/-Users-alepar-AleCode-superpowers/e0780166-81b8-4a91-9121-cf721232a36a/subagents/workflows/wf_d696ed72-940",
+      "source": "workflow",
+      "start": "2026-10-16T09:12:32.587Z",
+      "end": "2026-10-16T09:57:06.885Z",
+      "agents": 76,
+      "timed": 76,
+      "journal": true
+    }
+  ],
+  "window": {
+    "start": "2026-10-16T09:12:32.587Z",
+    "lastLanding": "2026-10-16T09:35:28.018Z",
+    "end": "2026-10-16T09:57:06.885Z",
+    "graphMs": 1375431,
+    "wallMs": 2674298
+  },
+  "shape": {
+    "beads": 31,
+    "edges": 0,
+    "depth": 1,
+    "width": 31,
+    "levels": [
+      31
+    ],
+    "criticalPath": [
+      "super-plan-goq.43"
+    ],
+    "fanOut": [],
+    "cycles": []
+  },
+  "cuts": [],
+  "beads": [
+    {
+      "id": "super-plan-goq.34",
+      "n": 21,
+      "deps": [],
+      "dependents": [],
+      "attempts": [
+        "IMPLEMENTED"
+      ],
+      "landed": true,
+      "readyAt": "2026-10-16T09:14:49.934Z",
+      "dispatchedAt": "2026-10-16T09:14:52.232Z",
+      "landedAt": "2026-10-16T09:17:42.771Z",
+      "waitMs": 2298,
+      "waitCause": "none",
+      "carriedMs": 0,
+      "implMs": 40217,
+      "implByTool": {
+        "read": 382,
+        "git": 2233,
+        "shell": 811
+      },
+      "implToolMs": 3426,
+      "reviewMs": 26904,
+      "fixMs": 0,
+      "stackWaitMs": 0,
+      "queueWaitMs": 49632,
+      "laneMs": 51624,
+      "seamMs": 0,
+      "blockerMs": 0,
+      "reworkMs": 0,
+      "criticalMs": 64153,
+      "stackParents": [],
+      "lateEdges": []
+    },
+    {
+      "id": "super-plan-goq.35",
+      "n": 22,
+      "deps": [],
+      "dependents": [],
+      "attempts": [
+        "IMPLEMENTED"
+      ],
+      "landed": true,
+      "readyAt": "2026-10-16T09:14:49.934Z",
+      "dispatchedAt": "2026-10-16T09:14:57.233Z",
+      "landedAt": "2026-10-16T09:27:54.093Z",
+      "waitMs": 7299,
+      "waitCause": "none",
+      "carriedMs": 0,
+      "implMs": 81863,
+      "implByTool": {
+        "read": 26,
+        "git": 1601,
+        "shell": 55031,
+        "bd": 1441
+      },
+      "implToolMs": 57445,
+      "reviewMs": 37099,
+      "fixMs": 0,
+      "stackWaitMs": 0,
+      "queueWaitMs": 562720,
+      "laneMs": 92779,
+      "seamMs": 23009,
+      "blockerMs": 0,
+      "reworkMs": 0,
+      "criticalMs": 105749,
+      "stackParents": [],
+      "lateEdges": []
+    },
+    {
+      "id": "super-plan-goq.36",
+      "n": 23,
+      "deps": [],
+      "dependents": [],
+      "attempts": [
+        "IMPLEMENTED"
+      ],
+      "landed": true,
+      "readyAt": "2026-10-16T09:14:49.934Z",
+      "dispatchedAt": "2026-10-16T09:14:57.234Z",
+      "landedAt": "2026-10-16T09:16:38.618Z",
+      "waitMs": 7300,
+      "waitCause": "none",
+      "carriedMs": 0,
+      "implMs": 14968,
+      "implByTool": {
+        "read": 11,
+        "git": 1198,
+        "shell": 772
+      },
+      "implToolMs": 1981,
+      "reviewMs": 36320,
+      "fixMs": 0,
+      "stackWaitMs": 0,
+      "queueWaitMs": 2207,
+      "laneMs": 45249,
+      "seamMs": 0,
+      "blockerMs": 0,
+      "reworkMs": 0,
+      "criticalMs": 108684,
+      "stackParents": [],
+      "lateEdges": []
+    },
+    {
+      "id": "super-plan-goq.37",
+      "n": 24,
+      "deps": [],
+      "dependents": [],
+      "attempts": [
+        "IMPLEMENTED"
+      ],
+      "landed": true,
+      "readyAt": "2026-10-16T09:14:49.934Z",
+      "dispatchedAt": "2026-10-16T09:14:57.235Z",
+      "landedAt": "2026-10-16T09:21:25.788Z",
+      "waitMs": 7301,
+      "waitCause": "none",
+      "carriedMs": 0,
+      "implMs": 24428,
+      "implByTool": {
+        "read": 634,
+        "git": 1291,
+        "shell": 593,
+        "bd": 1166
+      },
+      "implToolMs": 3250,
+      "reviewMs": 40764,
+      "fixMs": 0,
+      "stackWaitMs": 0,
+      "queueWaitMs": 171224,
+      "laneMs": 149800,
+      "seamMs": 66834,
+      "blockerMs": 0,
+      "reworkMs": 0,
+      "criticalMs": 161372,
+      "stackParents": [],
+      "lateEdges": []
+    },
+    {
+      "id": "super-plan-goq.39",
+      "n": 26,
+      "deps": [],
+      "dependents": [],
+      "attempts": [
+        "IMPLEMENTED"
+      ],
+      "landed": true,
+      "readyAt": "2026-10-16T09:14:49.934Z",
+      "dispatchedAt": "2026-10-16T09:14:57.236Z",
+      "landedAt": "2026-10-16T09:22:31.203Z",
+      "waitMs": 7302,
+      "waitCause": "none",
+      "carriedMs": 0,
+      "implMs": 51156,
+      "implByTool": {
+        "read": 11,
+        "git": 1791,
+        "shell": 19205
+      },
+      "implToolMs": 21007,
+      "reviewMs": 30241,
+      "fixMs": 0,
+      "stackWaitMs": 0,
+      "queueWaitMs": 325527,
+      "laneMs": 44604,
+      "seamMs": 0,
+      "blockerMs": 0,
+      "reworkMs": 0,
+      "criticalMs": 65415,
+      "stackParents": [],
+      "lateEdges": []
+    },
+    {
+      "id": "super-plan-goq.38",
+      "n": 25,
+      "deps": [],
+      "dependents": [],
+      "attempts": [
+        "IMPLEMENTED"
+      ],
+      "landed": true,
+      "readyAt": "2026-10-16T09:14:49.934Z",
+      "dispatchedAt": "2026-10-16T09:14:57.236Z",
+      "landedAt": "2026-10-16T09:23:33.702Z",
+      "waitMs": 7302,
+      "waitCause": "none",
+      "carriedMs": 0,
+      "implMs": 71983,
+      "implByTool": {
+        "read": 10,
+        "git": 721,
+        "shell": 5492,
+        "test": 36561
+      },
+      "implToolMs": 42784,
+      "reviewMs": 16206,
+      "fixMs": 0,
+      "stackWaitMs": 0,
+      "queueWaitMs": 375955,
+      "laneMs": 50080,
+      "seamMs": 0,
+      "blockerMs": 0,
+      "reworkMs": 0,
+      "criticalMs": 62499,
+      "stackParents": [],
+      "lateEdges": []
+    },
+    {
+      "id": "super-plan-goq.42",
+      "n": 29,
+      "deps": [],
+      "dependents": [],
+      "attempts": [
+        "IMPLEMENTED"
+      ],
+      "landed": true,
+      "readyAt": "2026-10-16T09:14:49.934Z",
+      "dispatchedAt": "2026-10-16T09:14:57.237Z",
+      "landedAt": "2026-10-16T09:18:44.416Z",
+      "waitMs": 7303,
+      "waitCause": "none",
+      "carriedMs": 0,
+      "implMs": 46623,
+      "implByTool": {
+        "read": 8,
+        "git": 5268,
+        "shell": 3448,
+        "test": 2528
+      },
+      "implToolMs": 11252,
+      "reviewMs": 16505,
+      "fixMs": 0,
+      "stackWaitMs": 0,
+      "queueWaitMs": 112946,
+      "laneMs": 48136,
+      "seamMs": 0,
+      "blockerMs": 0,
+      "reworkMs": 0,
+      "criticalMs": 61645,
+      "stackParents": [],
+      "lateEdges": []
+    },
+    {
+      "id": "super-plan-goq.40",
+      "n": 27,
+      "deps": [],
+      "dependents": [],
+      "attempts": [
+        "IMPLEMENTED"
+      ],
+      "landed": true,
+      "readyAt": "2026-10-16T09:14:49.934Z",
+      "dispatchedAt": "2026-10-16T09:14:57.237Z",
+      "landedAt": "2026-10-16T09:26:08.344Z",
+      "waitMs": 7303,
+      "waitCause": "none",
+      "carriedMs": 0,
+      "implMs": 76176,
+      "implByTool": {
+        "read": 14,
+        "git": 1116,
+        "shell": 7901,
+        "test": 31100
+      },
+      "implToolMs": 40131,
+      "reviewMs": 24007,
+      "fixMs": 0,
+      "stackWaitMs": 0,
+      "queueWaitMs": 424989,
+      "laneMs": 143730,
+      "seamMs": 70535,
+      "blockerMs": 0,
+      "reworkMs": 0,
+      "criticalMs": 154642,
+      "stackParents": [],
+      "lateEdges": []
+    },
+    {
+      "id": "super-plan-goq.41",
+      "n": 28,
+      "deps": [],
+      "dependents": [],
+      "attempts": [
+        "IMPLEMENTED"
+      ],
+      "landed": true,
+      "readyAt": "2026-10-16T09:15:35.082Z",
+      "dispatchedAt": "2026-10-16T09:15:53.368Z",
+      "landedAt": "2026-10-16T09:31:09.718Z",
+      "waitMs": 18286,
+      "waitCause": "none",
+      "carriedMs": 0,
+      "implMs": 61636,
+      "implByTool": {
+        "read": 9,
+        "git": 1848,
+        "shell": 508,
+        "test": 34124
+      },
+      "implToolMs": 36489,
+      "reviewMs": 23263,
+      "fixMs": 0,
+      "stackWaitMs": 0,
+      "queueWaitMs": 651777,
+      "laneMs": 177418,
+      "seamMs": 54524,
+      "blockerMs": 0,
+      "reworkMs": 0,
+      "criticalMs": 195625,
+      "stackParents": [],
+      "lateEdges": []
+    },
+    {
+      "id": "super-plan-goq.43",
+      "n": 30,
+      "deps": [],
+      "dependents": [],
+      "attempts": [
+        "IMPLEMENTED"
+      ],
+      "landed": true,
+      "readyAt": "2026-10-16T09:15:35.082Z",
+      "dispatchedAt": "2026-10-16T09:16:03.718Z",
+      "landedAt": "2026-10-16T09:35:28.018Z",
+      "waitMs": 28636,
+      "waitCause": "none",
+      "carriedMs": 0,
+      "implMs": 280073,
+      "implByTool": {
+        "read": 389,
+        "git": 2041,
+        "shell": 4482,
+        "test": 229797
+      },
+      "implToolMs": 236709,
+      "reviewMs": 28520,
+      "fixMs": 0,
+      "stackWaitMs": 0,
+      "queueWaitMs": 689404,
+      "laneMs": 164013,
+      "seamMs": 73205,
+      "blockerMs": 0,
+      "reworkMs": 0,
+      "criticalMs": 174541,
+      "stackParents": [],
+      "lateEdges": []
+    },
+    {
+      "id": "super-plan-goq.44",
+      "n": 31,
+      "deps": [],
+      "dependents": [],
+      "attempts": [
+        "IMPLEMENTED"
+      ],
+      "landed": true,
+      "readyAt": "2026-10-16T09:15:35.082Z",
+      "dispatchedAt": "2026-10-16T09:16:05.921Z",
+      "landedAt": "2026-10-16T09:32:33.477Z",
+      "waitMs": 30839,
+      "waitCause": "unexplained",
+      "carriedMs": 0,
+      "implMs": 59009,
+      "implByTool": {
+        "read": 8,
+        "git": 1104,
+        "shell": 4465,
+        "test": 22707
+      },
+      "implToolMs": 28284,
+      "reviewMs": 19217,
+      "fixMs": 0,
+      "stackWaitMs": 0,
+      "queueWaitMs": 834518,
+      "laneMs": 71154,
+      "seamMs": 0,
+      "blockerMs": 0,
+      "reworkMs": 0,
+      "criticalMs": 83759,
+      "stackParents": [],
+      "lateEdges": []
+    }
+  ],
+  "criticalPath": {
+    "ms": 1375431,
+    "byCategory": {
+      "startup": 52122,
+      "ready": 6618,
+      "dispatch": 175184,
+      "planning": 76281,
+      "implement": 14968,
+      "review": 36320,
+      "merge": 725831,
+      "seam": 288107
+    },
+    "laneContentionMs": 854910,
+    "redo": {
+      "stack-conflict": {
+        "ms": 0,
+        "beads": []
+      },
+      "cancelled": {
+        "ms": 0,
+        "beads": []
+      },
+      "retry": {
+        "ms": 0,
+        "beads": []
+      }
+    },
+    "segments": [
+      {
+        "kind": "startup",
+        "bead": null,
+        "label": "run start",
+        "via": null,
+        "start": "2026-10-16T09:12:32.587Z",
+        "ms": 52122
+      },
+      {
+        "kind": "ready",
+        "bead": null,
+        "label": "bd-ready",
+        "via": null,
+        "start": "2026-10-16T09:13:24.709Z",
+        "ms": 6618
+      },
+      {
+        "kind": "dispatch",
+        "bead": null,
+        "label": "previous → plan",
+        "via": null,
+        "start": "2026-10-16T09:13:31.327Z",
+        "ms": 2326
+      },
+      {
+        "kind": "planning",
+        "bead": null,
+        "label": "plan",
+        "via": "previous",
+        "start": "2026-10-16T09:13:33.653Z",
+        "ms": 76281
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-goq.36",
+        "label": "planned → impl:super-plan-goq.36",
+        "via": null,
+        "start": "2026-10-16T09:14:49.934Z",
+        "ms": 7300
+      },
+      {
+        "kind": "implement",
+        "bead": "super-plan-goq.36",
+        "label": "impl:super-plan-goq.36",
+        "via": "planned",
+        "start": "2026-10-16T09:14:57.234Z",
+        "ms": 14968
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-goq.36",
+        "label": "chain → review:super-plan-goq.36",
+        "via": null,
+        "start": "2026-10-16T09:15:12.202Z",
+        "ms": 2640
+      },
+      {
+        "kind": "review",
+        "bead": "super-plan-goq.36",
+        "label": "review:super-plan-goq.36",
+        "via": "chain",
+        "start": "2026-10-16T09:15:14.842Z",
+        "ms": 36320
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-goq.36",
+        "label": "chain → merge:super-plan-goq.36",
+        "via": null,
+        "start": "2026-10-16T09:15:51.162Z",
+        "ms": 2207
+      },
+      {
+        "kind": "merge",
+        "bead": "super-plan-goq.36",
+        "label": "merge:super-plan-goq.36",
+        "via": "chain",
+        "start": "2026-10-16T09:15:53.369Z",
+        "ms": 45249
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-goq.34",
+        "label": "merge-lane → merge:super-plan-goq.34",
+        "via": null,
+        "start": "2026-10-16T09:16:38.618Z",
+        "ms": 12529
+      },
+      {
+        "kind": "merge",
+        "bead": "super-plan-goq.34",
+        "label": "merge:super-plan-goq.34",
+        "via": "merge-lane",
+        "start": "2026-10-16T09:16:51.147Z",
+        "ms": 51624
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-goq.42",
+        "label": "merge-lane → merge:super-plan-goq.42",
+        "via": null,
+        "start": "2026-10-16T09:17:42.771Z",
+        "ms": 13509
+      },
+      {
+        "kind": "merge",
+        "bead": "super-plan-goq.42",
+        "label": "merge:super-plan-goq.42",
+        "via": "merge-lane",
+        "start": "2026-10-16T09:17:56.280Z",
+        "ms": 48136
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-goq.37",
+        "label": "merge-lane → merge:super-plan-goq.37",
+        "via": null,
+        "start": "2026-10-16T09:18:44.416Z",
+        "ms": 11572
+      },
+      {
+        "kind": "merge",
+        "bead": "super-plan-goq.37",
+        "label": "merge:super-plan-goq.37",
+        "via": "merge-lane",
+        "start": "2026-10-16T09:18:55.988Z",
+        "ms": 18612
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-goq.37",
+        "label": "chain → seam-review:super-plan-goq.37",
+        "via": null,
+        "start": "2026-10-16T09:19:14.600Z",
+        "ms": 2179
+      },
+      {
+        "kind": "seam",
+        "bead": "super-plan-goq.37",
+        "label": "seam-review:super-plan-goq.37",
+        "via": "chain",
+        "start": "2026-10-16T09:19:16.779Z",
+        "ms": 66834
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-goq.37",
+        "label": "chain → merge:super-plan-goq.37:seam-cleared",
+        "via": null,
+        "start": "2026-10-16T09:20:23.613Z",
+        "ms": 2348
+      },
+      {
+        "kind": "merge",
+        "bead": "super-plan-goq.37",
+        "label": "merge:super-plan-goq.37:seam-cleared",
+        "via": "chain",
+        "start": "2026-10-16T09:20:25.961Z",
+        "ms": 59827
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-goq.39",
+        "label": "merge-lane → merge:super-plan-goq.39",
+        "via": null,
+        "start": "2026-10-16T09:21:25.788Z",
+        "ms": 20811
+      },
+      {
+        "kind": "merge",
+        "bead": "super-plan-goq.39",
+        "label": "merge:super-plan-goq.39",
+        "via": "merge-lane",
+        "start": "2026-10-16T09:21:46.599Z",
+        "ms": 44604
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-goq.38",
+        "label": "merge-lane → merge:super-plan-goq.38",
+        "via": null,
+        "start": "2026-10-16T09:22:31.203Z",
+        "ms": 12419
+      },
+      {
+        "kind": "merge",
+        "bead": "super-plan-goq.38",
+        "label": "merge:super-plan-goq.38",
+        "via": "merge-lane",
+        "start": "2026-10-16T09:22:43.622Z",
+        "ms": 50080
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-goq.40",
+        "label": "merge-lane → merge:super-plan-goq.40",
+        "via": null,
+        "start": "2026-10-16T09:23:33.702Z",
+        "ms": 10912
+      },
+      {
+        "kind": "merge",
+        "bead": "super-plan-goq.40",
+        "label": "merge:super-plan-goq.40",
+        "via": "merge-lane",
+        "start": "2026-10-16T09:23:44.614Z",
+        "ms": 21203
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-goq.40",
+        "label": "chain → seam-review:super-plan-goq.40",
+        "via": null,
+        "start": "2026-10-16T09:24:05.817Z",
+        "ms": 2517
+      },
+      {
+        "kind": "seam",
+        "bead": "super-plan-goq.40",
+        "label": "seam-review:super-plan-goq.40",
+        "via": "chain",
+        "start": "2026-10-16T09:24:08.334Z",
+        "ms": 70535
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-goq.40",
+        "label": "chain → merge:super-plan-goq.40:seam-cleared",
+        "via": null,
+        "start": "2026-10-16T09:25:18.869Z",
+        "ms": 3438
+      },
+      {
+        "kind": "merge",
+        "bead": "super-plan-goq.40",
+        "label": "merge:super-plan-goq.40:seam-cleared",
+        "via": "chain",
+        "start": "2026-10-16T09:25:22.307Z",
+        "ms": 46037
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-goq.35",
+        "label": "merge-lane → merge:super-plan-goq.35",
+        "via": null,
+        "start": "2026-10-16T09:26:08.344Z",
+        "ms": 12970
+      },
+      {
+        "kind": "merge",
+        "bead": "super-plan-goq.35",
+        "label": "merge:super-plan-goq.35",
+        "via": "merge-lane",
+        "start": "2026-10-16T09:26:21.314Z",
+        "ms": 16711
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-goq.35",
+        "label": "chain → seam-review:super-plan-goq.35",
+        "via": null,
+        "start": "2026-10-16T09:26:38.025Z",
+        "ms": 2400
+      },
+      {
+        "kind": "seam",
+        "bead": "super-plan-goq.35",
+        "label": "seam-review:super-plan-goq.35",
+        "via": "chain",
+        "start": "2026-10-16T09:26:40.425Z",
+        "ms": 23009
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-goq.35",
+        "label": "chain → merge:super-plan-goq.35:seam-cleared",
+        "via": null,
+        "start": "2026-10-16T09:27:03.434Z",
+        "ms": 2382
+      },
+      {
+        "kind": "merge",
+        "bead": "super-plan-goq.35",
+        "label": "merge:super-plan-goq.35:seam-cleared",
+        "via": "chain",
+        "start": "2026-10-16T09:27:05.816Z",
+        "ms": 48277
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-goq.41",
+        "label": "merge-lane → merge:super-plan-goq.41",
+        "via": null,
+        "start": "2026-10-16T09:27:54.093Z",
+        "ms": 18207
+      },
+      {
+        "kind": "merge",
+        "bead": "super-plan-goq.41",
+        "label": "merge:super-plan-goq.41",
+        "via": "merge-lane",
+        "start": "2026-10-16T09:28:12.300Z",
+        "ms": 56058
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-goq.41",
+        "label": "chain → seam-review:super-plan-goq.41",
+        "via": null,
+        "start": "2026-10-16T09:29:08.358Z",
+        "ms": 2222
+      },
+      {
+        "kind": "seam",
+        "bead": "super-plan-goq.41",
+        "label": "seam-review:super-plan-goq.41",
+        "via": "chain",
+        "start": "2026-10-16T09:29:10.580Z",
+        "ms": 54524
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-goq.41",
+        "label": "chain → merge:super-plan-goq.41:seam-cleared",
+        "via": null,
+        "start": "2026-10-16T09:30:05.104Z",
+        "ms": 2178
+      },
+      {
+        "kind": "merge",
+        "bead": "super-plan-goq.41",
+        "label": "merge:super-plan-goq.41:seam-cleared",
+        "via": "chain",
+        "start": "2026-10-16T09:30:07.282Z",
+        "ms": 62436
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-goq.44",
+        "label": "merge-lane → merge:super-plan-goq.44",
+        "via": null,
+        "start": "2026-10-16T09:31:09.718Z",
+        "ms": 12605
+      },
+      {
+        "kind": "merge",
+        "bead": "super-plan-goq.44",
+        "label": "merge:super-plan-goq.44",
+        "via": "merge-lane",
+        "start": "2026-10-16T09:31:22.323Z",
+        "ms": 71154
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-goq.43",
+        "label": "merge-lane → merge:super-plan-goq.43",
+        "via": null,
+        "start": "2026-10-16T09:32:33.477Z",
+        "ms": 10528
+      },
+      {
+        "kind": "merge",
+        "bead": "super-plan-goq.43",
+        "label": "merge:super-plan-goq.43",
+        "via": "merge-lane",
+        "start": "2026-10-16T09:32:44.005Z",
+        "ms": 19244
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-goq.43",
+        "label": "chain → seam-review:super-plan-goq.43",
+        "via": null,
+        "start": "2026-10-16T09:33:03.249Z",
+        "ms": 2631
+      },
+      {
+        "kind": "seam",
+        "bead": "super-plan-goq.43",
+        "label": "seam-review:super-plan-goq.43",
+        "via": "chain",
+        "start": "2026-10-16T09:33:05.880Z",
+        "ms": 73205
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-goq.43",
+        "label": "chain → merge:super-plan-goq.43:seam-cleared",
+        "via": null,
+        "start": "2026-10-16T09:34:19.085Z",
+        "ms": 2354
+      },
+      {
+        "kind": "merge",
+        "bead": "super-plan-goq.43",
+        "label": "merge:super-plan-goq.43:seam-cleared",
+        "via": "chain",
+        "start": "2026-10-16T09:34:21.439Z",
+        "ms": 66579
+      }
+    ]
+  },
+  "bottleneck": {
+    "bead": "super-plan-goq.41",
+    "ms": 195625,
+    "share": 0.14222814521411833,
+    "byCategory": {
+      "dispatch": 22607,
+      "merge": 118494,
+      "seam": 54524
+    },
+    "implByTool": {
+      "read": 9,
+      "git": 1848,
+      "shell": 508,
+      "test": 34124
+    },
+    "calls": [
+      {
+        "name": "Bash",
+        "cat": "test",
+        "what": "W=/Users/alepar/AleCode/superpowers/.worktrees/super-auto-c…",
+        "test": "node tests/super-code/replay-harness.mjs",
+        "ms": 34124
+      },
+      {
+        "name": "Bash",
+        "cat": "git",
+        "what": "W=/Users/alepar/AleCode/superpowers/.worktrees/super-auto-c…",
+        "ms": 1276
+      },
+      {
+        "name": "Bash",
+        "cat": "git",
+        "what": "D=/Users/alepar/AleCode/superpowers/.worktrees/super-auto-c…",
+        "ms": 520
+      },
+      {
+        "name": "Bash",
+        "cat": "shell",
+        "what": "W=/Users/alepar/AleCode/superpowers/.worktrees/super-auto-c…",
+        "ms": 508
+      },
+      {
+        "name": "Bash",
+        "cat": "git",
+        "what": "git worktree list",
+        "ms": 52
+      },
+      {
+        "name": "Read",
+        "cat": "read",
+        "what": "",
+        "ms": 9
+      }
+    ]
+  },
+  "lane": {
+    "busyMs": 1013938,
+    "seamMs": 288107,
+    "spanMs": 1174649,
+    "merges": 16,
+    "firstTryFailed": 5,
+    "firstTryKnown": 11,
+    "queueWaitMs": 4200899,
+    "stackWaitMs": 0,
+    "peakQueue": 8
+  },
+  "runtime": {
+    "slots": 10,
+    "peak": 9,
+    "fullMs": 0
+  },
+  "concurrency": null,
+  "tests": {
+    "busyMs": 808132,
+    "testMs": 356817,
+    "pollMs": 0,
+    "cappedCalls": 0
+  },
+  "slowTests": [
+    {
+      "cmd": "bash tests/hooks/test-run-block.sh",
+      "ms": 229797,
+      "runs": 3,
+      "longestMs": 113380
+    },
+    {
+      "cmd": "node tests/super-code/replay-harness.mjs",
+      "ms": 65224,
+      "runs": 2,
+      "longestMs": 34124
+    },
+    {
+      "cmd": "bash tests/super-code/test-run-digest.sh",
+      "ms": 36561,
+      "runs": 1,
+      "longestMs": 36561
+    },
+    {
+      "cmd": "bash tests/super-code/test-run-profile.sh",
+      "ms": 22707,
+      "runs": 1,
+      "longestMs": 22707
+    },
+    {
+      "cmd": "bash tests/super-code/test-context-preflight.sh",
+      "ms": 2528,
+      "runs": 1,
+      "longestMs": 2528
+    }
+  ],
+  "conflicts": [
+    {
+      "file": "skills/super-code/coordinator.js",
+      "stackConflicts": 0,
+      "seamOverlaps": 3,
+      "declaredBy": 9
+    },
+    {
+      "file": "tests/super-code/replay-harness.mjs",
+      "stackConflicts": 0,
+      "seamOverlaps": 3,
+      "declaredBy": 7
+    },
+    {
+      "file": "skills/super-code/coordinator-workflow.md",
+      "stackConflicts": 0,
+      "seamOverlaps": 2,
+      "declaredBy": 7
+    },
+    {
+      "file": "hooks/session-start-codex",
+      "stackConflicts": 0,
+      "seamOverlaps": 1,
+      "declaredBy": 2
+    },
+    {
+      "file": "skills/super-code/coordinator-card.md",
+      "stackConflicts": 0,
+      "seamOverlaps": 1,
+      "declaredBy": 3
+    },
+    {
+      "file": "skills/super-code/scripts/run-marker",
+      "stackConflicts": 0,
+      "seamOverlaps": 1,
+      "declaredBy": 3
+    },
+    {
+      "file": "tests/hooks/test-run-block.sh",
+      "stackConflicts": 0,
+      "seamOverlaps": 1,
+      "declaredBy": 4
+    }
+  ],
+  "simulation": {
+    "asRunMs": 1227222,
+    "actualMs": 1375431,
+    "fit": 0.89,
+    "unlimitedSlotsMs": 1227222,
+    "unlimitedLanesMs": 673081,
+    "lowerBoundMs": 655101,
+    "graphChain": [
+      "super-plan-goq.43"
+    ],
+    "whatIfs": [
+      {
+        "kind": "lanes",
+        "target": "unlimited merge lanes",
+        "ms": 673081,
+        "savingMs": 554141,
+        "note": "merges in parallel, each still after its stack parents"
+      },
+      {
+        "kind": "seam",
+        "target": "seam work off the merge lane",
+        "ms": 939115,
+        "savingMs": 288107,
+        "note": "rebase and seam review/fix before queueing; the lane only merges (an engine change)"
+      }
+    ],
+    "verdict": "merge-lane-bound"
+  },
+  "unmeasured": [],
+  "summary": [
+    "Profile: super-plan-goq · 1 invocation · 2026-10-16T09:12Z → 2026-10-16T09:57Z · wall 45m (task graph 23m, after the last landing 22m) · agents 76 (timed 76) · beads dispatched 11, landed 11, planned 31",
+    "Profile: shape — 31 beads · 0 edges · depth 1 · width 31 · beads per level 31",
+    "Profile: bound — graph lower bound 11m (unlimited slots and merge lanes) · model of the run 20m (cap 8, one merge lane) vs actual 23m (89%) → merge-lane-bound: 9m of the 10m above the graph's bound is the serial merge lane",
+    "Profile: critical path — 23m = implement 15s · review 36s · merge 12m · seam 5m · planning 1m · ready 7s · startup 52s · dispatch 3m · of which other beads' merge-lane turns 14m",
+    "Profile: critical chain — bd-ready ready 7s → plan planning 1m → super-plan-goq.36 implement+review+merge 2m → merge lane ×10 16m (seam 5m)",
+    "Profile: bottleneck — super-plan-goq.41 — 3m on the critical path (14%) · merge 2m · seam 55s · dispatch 23s · dependents 0",
+    "Profile: waits — ready→start, summed per bead (beads wait at the same time, so not wall time): 31s over 1 of 11 landed beads — unexplained 31s (1)",
+    "Profile: early unblock — 0 landed beads had in-run blockers · stacked on an implementation 0 · bounced on a stack conflict then waited for the merge 0 (0s) · waited for a merge without one 0",
+    "Profile: tests — implementers and fixers, summed: 6m running tests and 0s polling background runs, 44% of their 13m · 0 Bash call(s) ran into the 10-minute tool limit",
+    "Profile: slow tests — bash tests/hooks/test-run-block.sh 4m (3 runs, longest 2m)",
+    "Profile: merge lane — busy 17m of 20m (86%) · seam reviews and fixes 5m (28% of busy) · 16 merge dispatches, first try not merged for 5 of 11 · queue wait 1h10m total, peak 8 waiting · stack-parent wait 0s",
+    "Profile: conflicts — skills/super-code/coordinator.js (stack conflicts 0, seam overlaps 3, declared by 9) · tests/super-code/replay-harness.mjs (stack conflicts 0, seam overlaps 3, declared by 7) · skills/super-code/coordinator-workflow.md (stack conflicts 0, seam overlaps 2, declared by 7) · hooks/session-start-codex (stack conflicts 0, seam overlaps 1, declared by 2)",
+    "Profile: runtime — peak 9 agents at once of 10 runtime slots · full 0% of the run · slot cap 8",
+    "Profile: what-if — unlimited merge lanes → 11m (−9m, 45%) — merges in parallel, each still after its stack parents",
+    "Profile: what-if — seam work off the merge lane → 16m (−5m, 23%) — rebase and seam review/fix before queueing; the lane only merges (an engine change)",
+    "Profile: unmeasured — none"
+  ]
+}

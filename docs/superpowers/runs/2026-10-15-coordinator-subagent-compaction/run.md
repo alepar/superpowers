@@ -2,7 +2,7 @@
 
 flags: planOneShot=t skipPlanRoast=f skipCodeRoast=f autonomous=f
 resumeChange: 2026-10-15 · "one-shot design … fully autonomous after" + "lgtm" · autonomous=t from phase 3 onward (no stops until the phase-7 hand-back)
-phase: fix-loop
+phase: roast-code
 codeMechanism: Workflow
 
 idea: Implement both vision specs in one run: docs/superpowers/specs/2026-10-15-vision-coordinator-compaction.md and docs/superpowers/specs/2026-10-15-vision-subagent-compaction.md. One-shot design; pause once design is done so the user can review the split into beads; fully autonomous after that. Both roasts on. The herdr tabs "coordinator-compaction" and "subagent-compaction" in this workspace authored the visions and can be consulted about decision rationale while writing the design spec.
@@ -40,17 +40,17 @@ roastDesignExit: converged (round 2: Should-fix 9 [converged], 0 Blocking; round
 graph-pass: depth 8→8 · width 2.5→2.5 · applied 0 · parked 4
 graph-pass-human: depth 8→5 · width 2.5→4.0 · applied 2 (human) · declined 2 (moot drop .11<-.12; optional seam contract)
 codeBuckets:
-  completed: super-plan-goq.1, super-plan-goq.2, super-plan-goq.3, super-plan-goq.4, super-plan-goq.5, super-plan-goq.6, super-plan-goq.7, super-plan-goq.8, super-plan-goq.9, super-plan-goq.10, super-plan-goq.11, super-plan-goq.12, super-plan-goq.13, super-plan-goq.14, super-plan-goq.15, super-plan-goq.16, super-plan-goq.17, super-plan-goq.18, super-plan-goq.19, super-plan-goq.20
+  completed: super-plan-goq.1–.20, super-plan-goq.34–.44 (31)
   escalated: 
   pendingRetry: 
   parked: 
   stalled: false
-  review: not ready (known-failing test-run-profile.sh tracked off-epic in super-plan-xsa; coordinator card can reach non-coordinator Codex children via the --cwd fallback; ordinary-mode final review gets no sweep result; no full-suite measurement yet)
+  review: not ready (fix round 1: fallback marker .gitignore not self-ignored breaks merges; Codex hook never reads the fallback marker; card lacks a Workflow-mode guard; report-verdict recogniser order; no sweep yet)
   sweep: SWEEP DEFERRED (caller-owned)
   slowness: round 1 graph-bound (depth 5, width 3 vs cap 8; edge audit: no changes); round 1 merge queue peaked at 3
   worktreesKept: 
   processSweep: stopped 0 · survived 0
-roastCodeRound: 1
+roastCodeRound: 2
 decision-run-profile-cases: autonomous — allow three label-kind case entries (assemble, split, close-split) in run-profile.mjs outside --in-flight so the release-checklist test passes; trivially mergeable with super-auto/run-profile-context-pass; supersedes the off-epic bead super-plan-xsa (to be closed in favour of an in-epic fix bead)
 stepBackCode-round-1: patch — Round 1 found 21 independent-to-loosely-clustered defects, no recurrence; patch with five rule clusters, keep the design.
 scopeFilter-round-1: [Should-fix] skills/super-code/coordinator.js:701; tests/super-code/test-run-profile.sh:337; docs/superpowers/runs/2026-10-15-coordinator-subagent-compaction/final-review-phase3.md:1 punch-list — Concerns run-profile.mjs timing classification of labels, which is out of scope (run-profile.mjs); the goal-named assemble/split behavior itself is not wrong.
