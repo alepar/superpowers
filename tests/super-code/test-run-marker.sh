@@ -212,6 +212,36 @@ assert_eq "$code" 0 "exits 0"
 assert_has "$out" "run-marker: register failed — " "prints register failed"
 assert_lacks "$out" "skipped" "not reported as a skip"
 
+echo "run-marker: refresh keeps optional fields"
+mk keep
+reg "CLAUDE_CODE_SESSION_ID=k1"
+rm_run "CLAUDE_CODE_SESSION_ID=k1" -- register --skill super-auto --worktree "$W" --run-md "$R"
+rm_run -- get k1
+assert_has "$out" "ledger: $W/ledger.md" "refresh keeps ledger"
+assert_has "$out" "epic: ep" "refresh keeps epic"
+assert_has "$out" "runTag: rt-1" "refresh keeps runTag"
+assert_has "$out" "run_md: $R" "refresh keeps run_md"
+rm_run "CLAUDE_CODE_SESSION_ID=k1" -- register --skill super-auto --worktree "$W" --epic ep2
+assert_eq "$(grep '^epic:' "$(store)/k1")" "epic: ep2" "a given flag wins over the kept value"
+assert_eq "$(grep '^ledger:' "$(store)/k1")" "ledger: $W/ledger.md" "ledger kept beside a new epic"
+mkdir -p "$T/wt-other"
+rm_run "CLAUDE_CODE_SESSION_ID=k1" -- register --skill super-auto --worktree "$T/wt-other"
+assert_eq "$(grep '^epic:' "$(store)/k1")" "epic: " "another worktree carries no epic"
+assert_lacks "$(cat "$(store)/k1")" "$W/ledger.md" "another worktree carries no ledger"
+assert_lacks "$(cat "$(store)/k1")" "runTag:" "another worktree carries no runTag"
+reg "CLAUDE_CODE_SESSION_ID=k1"
+rm_run "CLAUDE_CODE_SESSION_ID=k1" -- register --skill super-code --worktree "$W"
+assert_eq "$(grep '^epic:' "$(store)/k1")" "epic: " "another skill carries no epic"
+assert_lacks "$(cat "$(store)/k1")" "run_md:" "another skill carries no run_md"
+assert_lacks "$(cat "$(store)/k1")" "runTag:" "another skill carries no runTag"
+mk keepfb
+printf 'x' > "$T/afile2"
+XDG="$T/afile2"
+reg "CLAUDE_CODE_SESSION_ID=k2"
+rm_run "CLAUDE_CODE_SESSION_ID=k2" -- register --skill super-auto --worktree "$W"
+assert_eq "$(grep '^epic:' "$W/.superpowers/run-marker-k2")" "epic: ep" "fallback refresh keeps epic"
+assert_has "$(cat "$W/.superpowers/run-marker-k2")" "ledger: $W/ledger.md" "fallback refresh keeps ledger"
+
 echo "run-marker: usage"
 mk usage
 rm_run "CLAUDE_CODE_SESSION_ID=s1" -- register --worktree "$W"

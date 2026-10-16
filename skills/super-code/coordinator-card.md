@@ -47,7 +47,7 @@ All live under the `scripts:` directory the state block names; invoke each with 
 - `epic-tree <epic>`: which beads belong to the epic's tree (never judge by id prefix).
 - `report-verdict <file>`: a child or roast report's verdict, blocking items and path.
 - `run-digest --part card|state|all --budget <chars>`: this block, fed by `run-marker get` output on stdin.
-- `run-marker get <session>`: which run this session coordinates; `register` refreshes its age.
+- `run-marker get <session>`: which run this session coordinates; `register` refreshes its age and keeps any field a refresh omits.
 - `stop-run-processes <roots>`: the leak check and cleanup for processes a run left behind.
 
 ## super-auto

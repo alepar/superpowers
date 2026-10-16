@@ -9,6 +9,8 @@
 #   bash run-marker get      <session_id> [--cwd <dir>] [--subagent]
 #   bash run-marker prune
 #
+# register: a refresh that omits --run-md/--ledger/--epic/--run-tag keeps those fields from this
+# session's marker for the same skill and worktree.
 # Store: ${XDG_STATE_HOME:-$HOME/.local/state}/superpowers/active-runs/<session_id>, one `field: value`
 # line per field. Fallback (store unwritable): <worktree>/.superpowers/run-marker-<session>.
 # Session id: $CLAUDE_CODE_SESSION_ID, else $CODEX_THREAD_ID, else --session.
@@ -138,6 +140,15 @@ cmd_register() {
   fb="$worktree/.superpowers/run-marker-$sid"
   if [ -f "$store" ]; then started=$(field "$store" started); fi
   if [ -z "$started" ] && [ -f "$fb" ]; then started=$(field "$fb" started); fi
+  # A refresh that omits optional fields keeps them from this session's marker for the same skill and worktree.
+  prev=""
+  if [ -f "$store" ]; then prev="$store"; elif [ -f "$fb" ]; then prev="$fb"; fi
+  if [ -n "$prev" ] && [ "$(field "$prev" skill)" = "$skill" ] && [ "$(field "$prev" worktree)" = "$worktree" ]; then
+    [ -n "$run_md" ] || run_md=$(field "$prev" run_md)
+    [ -n "$ledger" ] || ledger=$(field "$prev" ledger)
+    [ -n "$epic" ] || epic=$(field "$prev" epic)
+    [ -n "$run_tag" ] || run_tag=$(field "$prev" runTag)
+  fi
   [ -n "$started" ] || started=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 
   if err=$(write_marker "$store" 2>&1); then
