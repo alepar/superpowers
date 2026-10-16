@@ -153,8 +153,10 @@ cp "$T/payload-lines" "$T/payload"
 out=$(hook state '{"session_id":"S1"}')
 check_cut "lines over cap" "$out" 9500 lines - 1
 [ "$(printf '%s' "$out" | cutinfo lines | cut -d' ' -f1)" -lt 9840 ] && pass "lines over cap: shorter than input" || fail "lines over cap: not shorter than input"
-# Multibyte cut (x + 5000 e-acute, no newline; expect 9499 bytes, no U+FFFD) is not asserted yet: the
-# iconv -c branch duplicates the text when iconv exits 1 (blocker bead super-plan-4wz).
+mkpayload mb mb 5000
+cp "$T/payload-mb" "$T/payload"
+out=$(hook state '{"session_id":"S1"}')
+check_cut "multibyte cut" "$out" 9500 mb 9499 0
 echo ok >"$T/mode"
 
 echo "== stdin shapes"
@@ -219,7 +221,10 @@ echo file >"$T/mode"
 cp "$T/payload-lines-codex" "$T/payload"
 out=$(chook '{"session_id":"S1"}')
 check_cut "codex lines over cap" "$out" 17500 lines-codex - 1
-# Codex multibyte cut (x + 9000 e-acute; expect 17499 bytes) waits on the same fix (super-plan-4wz).
+mkpayload mb-codex mb 9000
+cp "$T/payload-mb-codex" "$T/payload"
+out=$(chook '{"session_id":"S1"}')
+check_cut "codex multibyte cut" "$out" 17500 mb-codex 17499 0
 echo ctrl >"$T/mode"
 dec=$(chook '{"session_id":"S1"}' | decode)
 assert_eq "codex: ctrl: no control bytes" "0" "$(printf '%s' "$dec" | LC_ALL=C tr -d '\011\012\040-\377' | LC_ALL=C wc -c | tr -d ' ')"
