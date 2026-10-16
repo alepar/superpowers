@@ -107,6 +107,11 @@ mkdir -p "$T/proj/.claude"; printf '{"model":"sonnet[1m]"}\n' > "$T/proj/.claude
 set +e; out=$(cd "$T/proj" && env -i HOME="$T/home" PATH="$PATH" CLAUDE_CONFIG_DIR="$FX/claude-200k" bash "$P" --harness claude --json 2>/dev/null); set -e
 assert_has "$out" '"implementer":1000000' "project .claude/settings.json beats the config dir"
 
+mkdir -p "$T/proj2/.claude"; printf '{"permissions":{"allow":[]}}\n' > "$T/proj2/.claude/settings.local.json"
+set +e; out=$(cd "$T/proj2" && env -i HOME="$T/home" PATH="$PATH" CLAUDE_CONFIG_DIR="$FX/claude-1m" bash "$P" --harness claude --json 2>/dev/null); set -e
+assert_has "$out" '"planner":1000000' "model-less project settings file does not hide the config dir model"
+assert_has "$out" '"finalReview":1000000' "finalReview window comes from the config dir model"
+
 echo "context-preflight: undetected"
 run -- 
 expect_clean "no harness"
@@ -115,7 +120,7 @@ run -- --json
 assert_eq "$out" "{}" "no harness --json"
 
 echo "context-preflight: writes nothing"
-stray=$(find "$T" -type f -newer "$T/stamp" | grep -v -E "^$T/(err|low/|nomulti/|nojq/|home/\.codex/|proj/)" || true)
+stray=$(find "$T" -type f -newer "$T/stamp" | grep -v -E "^$T/(err|low/|nomulti/|nojq/|home/\.codex/|proj/|proj2/)" || true)
 assert_eq "$stray" "" "no files written by the script"
 assert_eq "$(ls -A "$T/empty")" "" "cwd untouched"
 
