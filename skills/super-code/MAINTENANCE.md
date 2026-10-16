@@ -1256,15 +1256,19 @@ assume the following; verify them against a live Codex run and adjust:
 
 - stdin carries `session_id`, `cwd` and `source`; the hook parses by pattern, never reads `source`,
   and falls back to `$CODEX_THREAD_ID` when `session_id` is absent. `session_id` may not equal the
-  coordinator's `$CODEX_THREAD_ID`; there is no cwd fallback on Codex, so the block is then not
-  re-injected (a degraded, safe outcome).
+  coordinator's `$CODEX_THREAD_ID`; the store lookup is by session id only on Codex, so the block is
+  then not re-injected (a degraded, safe outcome).
 - stdout `hookSpecificOutput.additionalContext` (same JSON as Claude Code) injects the context.
 - `additionalContextLimit` (6000, unit unconfirmed) is honoured on the command entry.
 - `plugin.json` `hooks` accepts a path string (`./hooks/hooks-codex.json`), and Codex expands
   `${PLUGIN_ROOT}` in the command. A malformed value's blast radius (hooks only, or the whole
   plugin) is unknown: validate against Codex before each release.
 - The trust hash is assumed stable because the command string is fixed.
-- Codex records no child identifier, so the Codex entry resolves by session id only and leaves the
-  cwd fallback out: a child thread (own `session_id`, coordinator cwd) gets nothing. Claude Code
+- Codex records no child identifier, so the Codex entry passes stdin `cwd` with `run-marker get
+  --own-only`: the cwd store scan (step 2) is skipped, so a child thread (own `session_id`,
+  coordinator cwd) gets nothing from the store; the caller's own session-keyed fallback marker
+  (step 3, written when the store was unwritable) is still reached. Trade-off: a Codex coordinator
+  whose `session_id` differs from its `$CODEX_THREAD_ID` and whose store marker exists gets no
+  re-inject, because only the session-keyed fallback is reachable by cwd. Claude Code
   children are refused by a non-empty `agent_id` (library `rb_is_subagent`). The card's opening line
   also tells any dispatched child agent that sees the block to ignore it.

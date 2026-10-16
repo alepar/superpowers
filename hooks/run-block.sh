@@ -78,16 +78,18 @@ rb_is_subagent() {
   return 1
 }
 
-# rb_resolve <session_id> <cwd>: set RB_MARKER from `run-marker get`; status 0 only on a hit. An empty
-# cwd means session-id matching only (no cwd fallback).
+# rb_resolve <session_id> <cwd> [own]: set RB_MARKER from `run-marker get`; status 0 only on a hit. An
+# empty cwd means session-id matching only (no cwd fallback). A third argument `own` passes
+# --own-only: the cwd lookup then finds only the caller's own session-keyed fallback marker.
 rb_resolve() {
-  local sid="${1:-}" cwd="${2:-}" out
+  local sid="${1:-}" cwd="${2:-}" own="${3:-}" out
   local args=()
   RB_MARKER=""
   [ -n "$sid" ] || [ -n "$cwd" ] || return 1
   args+=(get)
   args+=("${sid:-none}")
   [ -n "$cwd" ] && args+=(--cwd "$cwd")
+  [ -n "$cwd" ] && [ "$own" = own ] && args+=(--own-only)
   rb_is_subagent && args+=(--subagent)
   out=$(bash "$RB_SCRIPTS/run-marker" "${args[@]}" 2>/dev/null) || return 1
   [ -n "$out" ] || return 1
