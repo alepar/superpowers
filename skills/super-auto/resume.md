@@ -16,6 +16,8 @@ Decide on the candidates by idea match: exactly one sharing a content noun phras
 
 On a match, switch into that run's worktree before writing anything, or re-create one on `run.md`'s `branch` if it is gone (`git worktree add <path> <branch>`, with no `-b`: the branch exists, and the `-b` form fails on it). Every later write (specs, roast reports, `run.md`, `report.md`) must land on that branch, and a resume that stays in the checkout it was invoked from puts all of it on the default branch, where phase 7 will not merge it.
 
+Re-register the run marker (SKILL.md §Pre-flight step 4's register command, with `--epic` and `--ledger` when run.md records an epic and phase 3 has started): the session id changed, and register drops the old session's marker for the same run.md.
+
 Hand `super-design` the recorded `idea:`, not the words the user just typed. A resume is phrased as a resume ("keep going on the X work"); passing that verbatim points the root brainstorm at a meta-instruction instead of the goal.
 
 ## Resume messages that change something

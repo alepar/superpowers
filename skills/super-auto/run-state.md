@@ -27,6 +27,8 @@ The schema home for `run.md`: every field's name and line format. The numbered i
 | `roast-code` | `roast-code: <report path>, <report path>, …` | 3 | super-auto |
 | `skillSource` | `skillSource: <abs skills path> @ <sha>[+dirty:<hash>] (<version>)`, only after a mid-run definitions switch or a pre-flight that proceeded on the updated cache | 3 | super-auto |
 | `codeMechanism` | `codeMechanism: Workflow \| ordinary-subagents`, chosen from the calling session's loaded tools, updated before a code re-entry when capability changes | 3 | super-auto |
+| `runTag` | `runTag: <slug>-<UTC yyyymmddThhmmss>`, minted once; passed to every super-code invocation as `args.runTag` | 3 | super-auto, at pre-flight |
+| `context` | `context: <the context-preflight line, verbatim>` | 3 | super-auto, at pre-flight |
 | `migrated` | `migrated: <recorded field or ledger line> → <what it maps to now, or dropped>`, beside `skillSource` | 3 | super-auto |
 | `feedback` | `feedback: <issue-url>`, optional: present only when upstream-feedback filed an issue | 3 | super-auto, from `superpowers:upstream-feedback` |
 | `friction` | `friction: <N> events \| none recorded` | 3 | super-auto (SKILL.md §Phase 6 — report step 4) |
@@ -62,7 +64,7 @@ The schema home for `run.md`: every field's name and line format. The numbered i
 
 ## Required contents
 
-`run.md` holds the fields in §Field table as they become known. At creation, before phase 1, it holds `flags`, `phase`, `codeMechanism`, `idea`, `branch` and `base` (the caller created the workspace in pre-flight); each other field is added when the phase that produces it returns. Omitted is not the same as empty: a resume reading no `epic:` line knows phase 1 never got that far, while an `epic:` with a blank value is a malformed file. Every field is read back on resume and trusted, so dropping one lets a resume redo work or reverse a decision already made.
+`run.md` holds the fields in §Field table as they become known. At creation, before phase 1, it holds `flags`, `phase`, `codeMechanism`, `runTag`, `context`, `idea`, `branch` and `base` (the caller created the workspace in pre-flight); each other field is added when the phase that produces it returns. Omitted is not the same as empty: a resume reading no `epic:` line knows phase 1 never got that far, while an `epic:` with a blank value is a malformed file. Every field is read back on resume and trusted, so dropping one lets a resume redo work or reverse a decision already made.
 
 1. **Flags** — `planOneShot`, `skipPlanRoast`, `skipCodeRoast`, `autonomous`, asked once per SKILL.md §Inputs and recorded so a resume never re-asks: re-asking would let a resume flip a decision the run is partway through acting on.
 
@@ -72,7 +74,7 @@ The schema home for `run.md`: every field's name and line format. The numbered i
 
    A stall at phases 1–5 writes `report.md` (status line per report-prompt.md §The status block) but leaves `phase` where it was. A stall at phase 6 leaves `phase: report` with a `stalled` status line, which is why the phase-7 gate also checks the status line (SKILL.md §Invariants I2 (phase-7 gate)).
 
-3. **Pointers** — the raw idea text, spec path, epic id, integration branch, the base branch the run merges back into (the repo branch this run's worktree was cut from, usually `main`), and the roast report paths. `branch` is this run's own branch, which is also the integration branch `super-code` merges into. There is no plan pointer: a tracker is required (SKILL.md §Pre-flight), so the epic and its beads are the plan, and a `plan:` line would send a resume looking for a file that does not exist. `base` is written in pre-flight, when this run's worktree is created, so phase 7 can supply it instead of asking; a resumed run has no other way to know it. Pointers only, never inline content: `run.md` says where the spec and reports live and does not restate them. The exception is `idea`, which carries the raw idea verbatim because resume.md §Finding a run matches on it, and a run that dies during phase 1 has no spec yet. `skillSource` appears only after a mid-run definitions switch or a pre-flight that proceeded on the updated cache instead of restarting (SKILL.md §Pre-flight), and a resume reads skills from it; `migrated` lines beside it map fields the new contract dropped (resume.md §Switching definitions mid-run).
+3. **Pointers** — the raw idea text, spec path, epic id, integration branch, the base branch the run merges back into (the repo branch this run's worktree was cut from, usually `main`), and the roast report paths. `branch` is this run's own branch, which is also the integration branch `super-code` merges into. There is no plan pointer: a tracker is required (SKILL.md §Pre-flight), so the epic and its beads are the plan, and a `plan:` line would send a resume looking for a file that does not exist. `base` is written in pre-flight, when this run's worktree is created, so phase 7 can supply it instead of asking; a resumed run has no other way to know it. Pointers only, never inline content: `run.md` says where the spec and reports live and does not restate them. The exception is `idea`, which carries the raw idea verbatim because resume.md §Finding a run matches on it, and a run that dies during phase 1 has no spec yet. `runTag` names this run in every assembled-input dir and final-review file and in the run marker; `context` records each role's context window at pre-flight. `skillSource` appears only after a mid-run definitions switch or a pre-flight that proceeded on the updated cache instead of restarting (SKILL.md §Pre-flight), and a resume reads skills from it; `migrated` lines beside it map fields the new contract dropped (resume.md §Switching definitions mid-run).
 
    Path-valued pointers are relative to the run directory (`docs/superpowers/runs/YYYY-MM-DD-<slug>/`), never bare filenames or full repo-relative paths: one convention, so two writers produce compatible files.
 
@@ -196,6 +198,8 @@ code roast.
 flags: planOneShot=false skipPlanRoast=false skipCodeRoast=false autonomous=true
 phase: roast-code
 codeMechanism: ordinary-subagents
+runTag: per-tenant-rate-limiter-20260731T091500
+context: Context: claude · planner=1M/967K · implementer=200K/167K · reviewer=200K/167K · finalReview=1M/967K · assembler=200K/167K · warn: implementer, reviewer, assembler on a 200K model → set ANTHROPIC_DEFAULT_SONNET_MODEL=<model>[1m] or config.models.<role> to a 1M model
 
 idea: add a per-tenant rate limiter to the public API
 spec: 2026-07-31-per-tenant-rate-limiter-design.md
