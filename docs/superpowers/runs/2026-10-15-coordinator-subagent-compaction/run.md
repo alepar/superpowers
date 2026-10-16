@@ -51,3 +51,4 @@ codeBuckets:
   worktreesKept: 
   processSweep: stopped 0 · survived 0
 roastCodeRound: 1
+decision-run-profile-cases: autonomous — allow three label-kind case entries (assemble, split, close-split) in run-profile.mjs outside --in-flight so the release-checklist test passes; trivially mergeable with super-auto/run-profile-context-pass; supersedes the off-epic bead super-plan-xsa (to be closed in favour of an in-epic fix bead)
