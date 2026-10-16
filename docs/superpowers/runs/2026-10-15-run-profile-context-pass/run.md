@@ -35,8 +35,8 @@ codeBuckets:
   pendingRetry:
   parked:
   stalled: false
-  review: not ready (pending the phase-6 sweep; Must-fix punch-listed: contextResult holds every parsed transcript before reducing — a large run can OOM and lose all Profile: lines, timing included; human decision on the parked constraint override; see final-review-fix-round.md)
-  sweep: f79cfbf — 9 suites passed, 0 failed, 0 errors, 0 skipped; failing: none; command: the nine AGENTS.md step-1 suites (timeout 600 each) @ f79cfbf
+  review: not ready (Must-fix punch-listed: contextResult holds every parsed transcript before reducing, so a very large run can run out of memory and lose all Profile: lines, timing included; human decision on the parked constraint override; see final-review-fix-round.md)
+  sweep: f79cfbf — 9 passed, 0 failed, 0 errors, 0 skipped; failing: none; command: the nine AGENTS.md step-1 suites, each under timeout 600 @ f79cfbf
   slowness: round 1: graph-bound — 3 open beads, depth 3, achievable width 1 vs cap 8; edge audit armed now
   worktreesKept:
   processSweep: stopped 0 · survived 0
