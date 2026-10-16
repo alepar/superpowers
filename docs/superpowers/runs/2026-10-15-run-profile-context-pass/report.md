@@ -1,5 +1,5 @@
 status: completed with 0 unresolved Blocking, 4 escalations [degraded: Global Constraint 'no agent-facing change' overridden by super-plan-fqb.8 (coordinator-workflow.md and coordinator-subagents.md Finish wording: append run-profile's whole stdout), final review: not ready (Must-fix punch-listed: contextResult holds every parsed transcript before reducing, so a very large run can run out of memory and lose all Profile: lines, timing included; human decision on the parked constraint override; see final-review-fix-round.md)]
-metrics: pending (upstream-feedback not yet run)
+metrics: upstream-feedback draft parked at docs/superpowers/runs/2026-10-15-run-profile-context-pass/upstream-feedback-draft.md (not filed)
 
 **Decision requested:** (1) confirm or revert the Finish-doc wording change that overrides the "no agent-facing change" constraint (the final review recommends confirming it); (2) decide whether to fix the `contextResult` memory regression before merging. The final review rated it Important and called it a data-loss path. Details under Remaining.
 

@@ -1,7 +1,7 @@
 # super-auto run — 2026-10-15-run-profile-context-pass
 
 flags: planOneShot=t skipPlanRoast=f skipCodeRoast=f autonomous=t
-phase: report
+phase: finish
 roastCodeRound: 2
 roast-code: 2026-10-15-run-profile-context-pass-roast-pr-1.md, 2026-10-15-run-profile-context-pass-roast-pr-2.md, 2026-10-15-run-profile-context-pass-roast-pr-post-cap-audit.md
 spec: 2026-10-15-run-profile-context-pass-design.md
