@@ -9,6 +9,7 @@ branch: super-auto/coordinator-subagent-compaction
 base: main
 spec: 2026-10-15-coordinator-subagent-compaction-design.md
 epic: super-plan-goq
+roast-design: 2026-10-15-coordinator-subagent-compaction-roast-design-1.md
 
 approvals:
 - finish · human (2026-10-15, mid-run message) · once the integration branch is ready with all changes, nudge the herdr "main" tab to merge it into main and cut a release with a major version bump
