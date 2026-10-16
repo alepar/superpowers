@@ -4,7 +4,7 @@ flags: planOneShot=t skipPlanRoast=f skipCodeRoast=f autonomous=t
 phase: roast-design
 spec: 2026-10-15-run-profile-context-pass-design.md
 epic: super-plan-fqb
-roastDesignRound: 1
+roastDesignRound: 2
 roast-design: 2026-10-15-run-profile-context-pass-roast-design-1.md
 codeMechanism: Workflow
 
@@ -22,3 +22,4 @@ parked:
 - 2026-10-15-run-profile-context-pass-roast-design-1.md · escalation · "Whether Claude Code ever writes a [1m] suffix into message.model is unverified (no local 4.6 or [1m] transcript)"
 - 2026-10-15-run-profile-context-pass-roast-design-1.md · escalation · "Subagent/Workflow-agent compact_boundary format unobserved locally (docs state it is logged; no local subagent ever compacted)"
 - 2026-10-15-run-profile-context-pass-roast-design-1.md · escalation · "Whether a resumed Codex thread's later rollout replays earlier compacted rows is unverified (no local thread has two rollouts)"
+- stepBackDesign-round-1: patch — Round 1's 11 findings are independent spec gaps in three clusters (coordinator cutoff, per-row window/model, null and unmeasured rendering) plus two one-off fixes; sweep each cluster with one rule and keep the design
