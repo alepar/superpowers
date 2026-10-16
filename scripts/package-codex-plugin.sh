@@ -40,7 +40,9 @@ Options:
   -h, --help               Show this help.
 
 The archive is rootless: .codex-plugin/, assets/, skills/, README.md, LICENSE,
-and CODE_OF_CONDUCT.md sit at the archive root. Source-only repo files, hooks, tests,
+and CODE_OF_CONDUCT.md sit at the archive root, plus the Codex-only hook files
+(hooks/hooks-codex.json, hooks/session-start-codex, hooks/run-block.sh,
+hooks/run-hook.cmd). Source-only repo files, the Claude Code and Cursor hooks, tests,
 docs, and other harness manifests are intentionally not shipped.
 EOF
 }
@@ -238,6 +240,10 @@ git -C "$REPO_ROOT" -c tar.umask=0022 archive --format=tar "$REF" -- \
   LICENSE \
   README.md \
   assets \
+  hooks/hooks-codex.json \
+  hooks/session-start-codex \
+  hooks/run-block.sh \
+  hooks/run-hook.cmd \
   skills \
   | tar -xpf - -C "$STAGE"
 
@@ -333,7 +339,7 @@ esac
 
 unexpected_paths="$(
   printf '%s\n' "$archive_paths" |
-    grep -E '(^superpowers/|^\.agents/|^hooks/|package\.json$|^\.git|^\.pytest_cache|^\.ruff_cache|^scripts/|^tests/|^docs/|^evals/|^lib/|^\.claude|^\.cursor|^\.kimi|^\.opencode|^\.pi|^AGENTS\.md$|^CLAUDE\.md$|^GEMINI\.md$|^RELEASE-NOTES\.md$|^CHANGELOG\.md$)' || true
+    grep -E '(^superpowers/|^\.agents/|^hooks/(hooks\.json|session-start|session-start-runblock|hooks-cursor\.json)$|package\.json$|^\.git|^\.pytest_cache|^\.ruff_cache|^scripts/|^tests/|^docs/|^evals/|^lib/|^\.claude|^\.cursor|^\.kimi|^\.opencode|^\.pi|^AGENTS\.md$|^CLAUDE\.md$|^GEMINI\.md$|^RELEASE-NOTES\.md$|^CHANGELOG\.md$)' || true
 )"
 if [[ -n "$unexpected_paths" ]]; then
   printf '%s\n' "$unexpected_paths" | sed 's/^/  /' >&2
