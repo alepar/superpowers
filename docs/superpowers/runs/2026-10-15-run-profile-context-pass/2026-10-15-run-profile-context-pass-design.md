@@ -368,6 +368,8 @@ peak.
 
 ## Post-Implementation Notes
 
+**Changes vs. original design (2026-10-15):** readers take the whole transcript plus `[fromRow, toRow)` spans instead of a row slice, so model, gap and window state carries from row 0 (code roast round 1). The coordinator Finish docs now say to append run-profile's whole stdout on every exit path, which overrides this design's "no agent-facing change" constraint; the human is to confirm or revert. `contextBaseline` dedupes records across a run's super-code invocations, but its file-only key undercounts runs that share one coordinator session (open, post-cap audit). Open from the final review: `contextResult` holds every parsed transcript in memory before reducing them (OOM risk on very large runs). Validated on 13 real Codex runs and 13 Claude coordinator sessions (MAINTENANCE.md).
+
 > *As this design is implemented and iterated on — bug fixes, adjustments, anything that diverged from the assumptions above — append a dated note here, whether or not a formal debugging skill was used.*
 
 ### 2026-10-15 — run-profile integration (super-plan-fqb.2)
