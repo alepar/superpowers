@@ -83,8 +83,10 @@ read-heavy reviewers, qualitative sizing, a warn-only pre-flight). This spec add
   <reason>`. It always exits 0, but a failure is never printed as a normal skip.
 - `get <session_id> [--cwd <dir>]` resolves the marker exactly once: first by session id in the
   store, then (only with `--cwd`) by the newest live store marker whose `worktree` contains
-  `<dir>`, then by a fallback marker found walking up from `<dir>` (its own session's first, else
-  the newest live one). On success it prints `key: <session id or fallback path>` followed by every
+  `<dir>`, then by the caller's own session fallback marker found walking up from `<dir>`. Both
+  fallbacks refuse when `<dir>` lies under any marker's `<worktree>/.worktrees/` (a task
+  worktree), or when the hook input identifies a subagent (`agent_id` or the equivalent the spike
+  records). A subagent that compacts must never receive the coordinator's run block. On success it prints `key: <session id or fallback path>` followed by every
   marker field (including `session` and `runTag`), and exits 0. Otherwise it exits 1. `get`'s
   stdout is a stable interface, not only its exit code. Both hook entries pass stdin `cwd` and
   pipe `get`'s full stdout into `run-digest` on stdin, so run-digest never resolves or reads a
@@ -92,7 +94,8 @@ read-heavy reviewers, qualitative sizing, a warn-only pre-flight). This spec add
 - Live means the marker was registered or refreshed within the last 14 days, and also: under
   super-auto, `run_md` exists and its `phase:` is not `done`; for standalone super-code, the
   ledger exists. The age bound applies to every marker, so a crashed or abandoned run expires.
-  super-auto re-registers on every resume and at phase 3, which refreshes the age. Neither
+  super-auto re-registers on every resume, at phase 3, at each keepalive wake and at each refill
+  it observes, which refreshes the age. A single phase running for days therefore stays live. Neither
   coordinator writes a new ledger line for this.
 - One marker per run: `register` removes any other store marker with the same `run_md` (an old
   session id after a resume). One marker per session: when super-auto drives super-code in the same
@@ -114,9 +117,11 @@ read-heavy reviewers, qualitative sizing, a warn-only pre-flight). This spec add
   run directory (the hook would have to search every repo; it is kept as the fallback, found from
   the hook's `cwd`). Discarded.
 
-**A2. Claude Code re-inject — a second SessionStart entry, `hooks/session-start-runblock`.**
-- Recommended: `hooks/hooks.json` gains a second SessionStart entry, matcher `compact`, which runs
-  `hooks/session-start-runblock`. `hooks/session-start` and its existing entry are not changed, so
+**A2. Claude Code re-inject — two compact SessionStart entries, card and state.**
+- Recommended: `hooks/hooks.json` gains two SessionStart entries, both matcher `compact`. One runs
+  `hooks/session-start-runblock card` and emits the static card. The other runs
+  `hooks/session-start-runblock state` and emits the live state. Each entry has its own
+  10,000-character budget, so the card can be the full size the vision intended. `hooks/session-start` and its existing entry are not changed, so
   every non-compact case stays byte-identical by construction.
 - Claude Code caps each hook's `additionalContext` at 10,000 characters and replaces a longer
   string with a file path and a 2,000-character preview. A separate entry gives the run block its
@@ -125,12 +130,13 @@ read-heavy reviewers, qualitative sizing, a warn-only pre-flight). This spec add
   - a bounded, non-blocking stdin read;
   - pattern extraction of `session_id` and `cwd`;
   - `run-marker get <session_id> --cwd <cwd>`;
-  - `run-marker get … | run-digest --budget 9000` under a portable watchdog (background process
+  - `run-marker get … | run-digest --part card|state --budget 9000` under a portable watchdog (background process
     plus kill after 5 s; macOS has no `timeout`).
   On a live marker it emits the run block in Claude Code's
   `hookSpecificOutput.additionalContext` shape. With no live marker it emits nothing and exits 0.
-- On error or timeout, the run block is the fallback: the card plus one line, `Run state
-  unavailable — read run.md's phase and run scripts/ledger-digest.`, within the same budget.
+- Both entries emit only when a live marker resolves. The card entry prints the static card file
+  without running run-digest, so it cannot time out. On error or timeout, the state entry emits one
+  line: `Run state unavailable — read run.md's phase and run scripts/ledger-digest.`
 - All dynamic text is sanitised before JSON escaping: U+0000–U+001F other than newline and tab
   are stripped, then the library's own copy of `escape_for_json` escapes the rest. The function is
   duplicated, not moved, so `hooks/session-start` is not edited at all.
@@ -143,9 +149,10 @@ read-heavy reviewers, qualitative sizing, a warn-only pre-flight). This spec add
 - Recommended: a Codex-only hook file, with SessionStart and matcher `compact` only, whose command
   runs `hooks/session-start-codex`.
 - That script sources `hooks/run-block.sh` as A2 does. It emits only the run block, in the JSON
-  shape the spike confirmed, with budget 9000 characters. It emits nothing, with exit 0, when
+  shape the spike confirmed, as one string: card then state (`run-digest --part all --budget
+  18000`). It emits nothing, with exit 0, when
   there is no live marker. It never emits the bootstrap.
-- The Codex hook entry sets `additionalContextLimit` (4000 tokens, above the 9000-character block
+- The Codex hook entry sets `additionalContextLimit` (6000 tokens, above the 18,000-character block
   whether Codex counts tokens with a tokenizer or as bytes ÷ 4), so Codex's default 2,500-token threshold does not
   replace the block with a head-and-tail preview.
 - The session id comes from stdin `session_id`, falling back to `$CODEX_THREAD_ID`, and `cwd`
@@ -163,7 +170,11 @@ read-heavy reviewers, qualitative sizing, a warn-only pre-flight). This spec add
   command string); what a malformed `hooks` value does to the rest of the plugin; and, on Claude
   Code, whether a compact-matcher hook's `additionalContext` reaches the model (a unique token
   emitted on `/compact`, then asked for) and whether `$CLAUDE_CODE_SESSION_ID` equals the hook's
-  `session_id`. Read-only fallback when a live Codex run is not possible:
+  `session_id`. The Claude Code compact-injection check is required live, with docs only as a
+  last-resort fallback, because everything in A2 rests on it. Also record: whether Claude Code's
+  idle compaction fires SessionStart with source `compact`; whether compaction fires the hook for
+  Codex child threads and Claude Code subagents or Workflow agents; and which stdin fields
+  identify them. Read-only fallback when a live Codex run is not possible:
   derive the shapes from the 0.162.1 binary's strings and the Codex source. The wiring then ships
   with `source`-agnostic parsing and emits the `hookSpecificOutput.additionalContext` shape, with
   the gap recorded in `MAINTENANCE.md`.
@@ -172,9 +183,10 @@ read-heavy reviewers, qualitative sizing, a warn-only pre-flight). This spec add
 - Considered: removing `"hooks": {}` so that `hooks/hooks.json` is discovered. That re-registers
   the bootstrap on Codex. Discarded.
 
-**A4. Run block — `skills/super-code/scripts/run-digest --budget <chars>` (marker on stdin) + `skills/super-code/coordinator-card.md`.**
+**A4. Run block — `skills/super-code/scripts/run-digest --part card|state|all --budget <chars>` (marker on stdin) + `skills/super-code/coordinator-card.md`.**
 - Recommended: `run-digest` reads the marker fields from stdin (`run-marker get` output, never a
-  second resolution), then prints, in order:
+  second resolution), then prints, in order (`--part card` prints only item 1, `--part state`
+  items 2–5, `--part all` everything):
   1. the card, verbatim;
   2. a header naming the skill, epic, phase (`run.md`'s `phase:`, or `super-code` standalone) and
      `runTag`;
@@ -183,12 +195,13 @@ read-heavy reviewers, qualitative sizing, a warn-only pre-flight). This spec add
   4. open beads in the epic tree (count, then ids, capped at 40);
   5. in-flight dispatches with ages, from `run-profile --in-flight` (below), with their count. An
      unknown age prints as `age unknown`.
-- The block never exceeds `--budget` characters (the hooks pass 9000, under both harness caps).
+- Each part never exceeds `--budget` characters (Claude Code passes 9000 per entry, Codex 18,000
+  for `all`).
   The card comes first and is never cut; overflow trims the in-flight list first (`+N more, see
   ledger-digest`), then the open-bead ids, then the ledger tail. The sources run concurrently under
   one shared 4 s deadline (each capped at 3 s), below RunBlockInjector's 5 s watchdog. A source that
   misses the deadline or fails prints `unknown` for its section, and the rest still print.
-- The card is static, at most 4,500 characters (about 1.1K tokens), and covers:
+- The card is static, 1.5–2.5K tokens (at most 9,000 characters), and covers:
   - the loop rules (refill, early unblock, one merge at a time);
   - bounded waits, and on Codex "block on `wait_agent` in 5–10 minute stretches, don't poll
     `list_agents`";
@@ -253,9 +266,9 @@ read-heavy reviewers, qualitative sizing, a warn-only pre-flight). This spec add
 - Stated in super-code `SKILL.md` "Unattended runs" beside the slowness watch, in the card, and as
   a pointer from super-auto's §Ending turns. It complements the existing Monitor or bounded-loop
   watcher and replaces neither. Between runs, idle compaction behaves as today.
-- Codex has no idle compaction: Codex compacts only on reaching its token limit (the vision's
-  228 Codex compactions were all limit-driven). So the keepalive is Claude Code only, and Codex
-  waits need only the bounded `wait_agent` stretches the card states.
+- No idle trigger is known on Codex. Its compactions are token-driven (some async, starting well
+  below the cap), and nothing measured points to an idle cause. So the keepalive is Claude Code
+  only, and Codex waits need only the bounded `wait_agent` stretches the card states.
 - Considered: `"idleCompaction": false` (global, a user setting, out of scope); a Monitor-only
   approach (a quiet Monitor does not produce assistant turns). Discarded.
 
@@ -266,8 +279,10 @@ read-heavy reviewers, qualitative sizing, a warn-only pre-flight). This spec add
   pass, seam fix, check fix, re-review and re-assessment is a new `spawn_agent {fork_turns:
   "none"}`. `followup_task` only chases or clarifies a report the same job owes, and is never used
   for new work, a new round, or steering that changes scope.
-- `subagent-driven-development` gets the same rule where it describes fix rounds. It is a pointer
-  to the shared reference, not a copy.
+- The rule is scoped to super-code and super-auto dispatches. `subagent-driven-development` keeps
+  its own bounded design (resume the implementer for fix rounds 1–3, fresh from round 4), and
+  codex-tools.md says so. Changing SDD would mean editing behaviour-shaping upstream content that
+  needs eval evidence, which is out of this tree.
 - `coordinator-subagents.md` states three rules:
   - fresh agent per round;
   - a steering message that adds work counts as a new round;
@@ -295,7 +310,9 @@ read-heavy reviewers, qualitative sizing, a warn-only pre-flight). This spec add
   - `diffstat.txt`: the branch diffstat alone (for `assemble-args --diff-stat`);
   - `digest.md`: the diffstat, per-task report summaries (status, assumptions, concerns),
     interfaces and seams, deferred minors from the ledger, and bead-comment amendments, each
-    section only when the consumer asks for it;
+    section only when the consumer asks for it. The roast-code profile carries only the diffstat,
+    slice index and stated-intent spec paths, never report summaries or concerns, so adversarial
+    scouts judge the diff rather than anchor on implementers' self-reports;
   - `slices/`: the relevant hunks or file ranges;
   - `clusters.json`: when asked, changed files grouped by import and call edges, else by
     directory, never by count.
@@ -362,8 +379,9 @@ read-heavy reviewers, qualitative sizing, a warn-only pre-flight). This spec add
   - every leaf's acceptance is a checkable `- [ ]` list, which the planner carries verbatim.
   - No numbers.
 - super-code planner (`planner-prompt.md`, the `PLANNED` schema, and both coordinators):
-  - each task is one feature in one subsystem and carries the bead's `- [ ]` checklist verbatim; a
-    bead spanning independent subsystems is reported `oversized` rather than planned as one task;
+  - each task carries the bead's `- [ ]` checklist verbatim. The planner may report a bead as
+    `oversized` when it judges it too large for one session with independent groups, informed by
+    `surfaceTokens`. It is a judgment, never a gate; super-design owns the one-subsystem shape;
   - each `## Task <N>` gains `filesToRead` beside `filesTouched`;
   - the planner runs new `scripts/task-surface --base <sha> <files…>` (sum of characters ÷ 4 at
     the base commit) and records `surfaceTokens` on the mapping row;
@@ -419,6 +437,8 @@ read-heavy reviewers, qualitative sizing, a warn-only pre-flight). This spec add
   and new `tests/hooks/test-run-block.sh` covers `session-start-runblock` and
   `session-start-codex`:
   - no marker → no output;
+  - a task-worktree `cwd` (under `<worktree>/.worktrees/`) or a subagent id, with a non-matching
+    session id → no output;
   - a live marker (by session id, by `cwd`, by fallback marker) → a run block in each harness's
     JSON shape;
   - `run-digest` failing or hanging → the fallback block;
@@ -477,7 +497,7 @@ The visions' failure sections hold. In addition:
 ## Key abstractions
 
 **run-marker** — new bash module (script with subcommands `register | clear | get | prune`), the single store of "which session is coordinating which run".
-- Owns: the marker file location, its private `key: value` format, the liveness rule (every marker < 14 days since its last register; super-auto: `run_md` phase ≠ `done`; standalone: ledger exists), the one-pass resolution (session id → `--cwd` worktree match → session-keyed worktree fallback marker) whose stdout (key plus every field) is the stable interface, the 14-day prune, and session-id resolution (`$CLAUDE_CODE_SESSION_ID` → `$CODEX_THREAD_ID` → explicit id argument).
+- Owns: the marker file location, its private `key: value` format, the liveness rule (every marker < 14 days since its last register; super-auto: `run_md` phase ≠ `done`; standalone: ledger exists), the one-pass resolution (session id → `--cwd` worktree match → the caller's own session-keyed fallback marker; both fallbacks refuse task worktrees and subagents) whose stdout (key plus every field) is the stable interface, the 14-day prune, and session-id resolution (`$CLAUDE_CODE_SESSION_ID` → `$CODEX_THREAD_ID` → explicit id argument).
 - Hides: the marker file format and how liveness is computed — the hook, run-digest and the skills see only `get`'s exit code and stdout.
 - Must not: read `run.md` fields or the ledger beyond liveness, or print run state (run-digest does that); never fail a caller — no session id means skip, exit 0.
 - Relationships: leaf. super-auto/super-code (register/clear), run-digest and both hook entries (get) depend on it; it depends on nothing in the repo.
@@ -485,7 +505,7 @@ The visions' failure sections hold. In addition:
 - Errors: `get` → exit 0 live / exit 1 absent-or-not-live (callers do not distinguish the two); `register`/`clear` always exit 0, reporting a skip on stdout.
 
 **run-digest** — new bash script plus static data (`coordinator-card.md`), the run-block builder.
-- Owns: the block's section order (card first), the `--budget` cap and trim order (in-flight → bead ids → ledger tail; card never cut), concurrent sources under one shared 4 s deadline, and reducing `ledger-digest` lines to state counts.
+- Owns: the block's parts (`card`, `state`, `all`) and section order (card first), the per-part `--budget` cap and trim order (in-flight → bead ids → ledger tail; card never cut), concurrent sources under one shared 4 s deadline, and reducing `ledger-digest` lines to state counts.
 - Hides: which scripts supply each section (`run-marker get`, `ledger-digest`, the epic tree via `bd`, `run-profile --in-flight`).
 - Must not: run the whole-block watchdog, choose a hook output shape, or JSON-escape (RunBlockInjector does); must not resolve or read a marker itself — it reads `run-marker get`'s output on stdin. The card's rules live in the card file, never in script code.
 - Relationships: Facade over four sources; both hooks depend on it through RunBlockInjector.
@@ -496,7 +516,7 @@ The visions' failure sections hold. In addition:
 - Owns: bounded non-blocking stdin read, pattern extraction of `session_id` and `cwd`, the single `run-marker get` resolution, the portable 5 s watchdog around `run-digest`, the fallback text (static card + `Run state unavailable — …`) within the budget, control-character sanitising, and its own copy of `escape_for_json` (duplicated so `session-start` stays untouched).
 - Hides: how a run block is obtained and degraded, from both entry scripts.
 - Must not: choose the output JSON shape — each entry script decides; it never touches the bootstrap, which stays in `session-start`'s own hook entry.
-- Relationships: two entry adapters use it, each its own compact-matcher hook entry — `session-start-runblock` (Claude Code, `hookSpecificOutput.additionalContext`) and `session-start-codex` (the spike-confirmed shape, `$CODEX_THREAD_ID` fallback, `additionalContextLimit` 4000 on its entry). Dependency: entry → library → run-marker / run-digest.
+- Relationships: entry adapters use it, each its own compact-matcher hook entry — `session-start-runblock card` and `session-start-runblock state` (Claude Code, `hookSpecificOutput.additionalContext`, one 10K budget each) and `session-start-codex` (the spike-confirmed shape, `$CODEX_THREAD_ID` fallback, `additionalContextLimit` 6000 on its entry, card and state in one string). Dependency: entry → library → run-marker / run-digest.
 - Lifecycle: sourced per hook invocation; no state; the watchdog kills its own background child.
 - Errors: never returns failure to an entry; a run block is always either the digest or the fallback, so neither hook can fail SessionStart.
 
@@ -546,7 +566,7 @@ The visions' failure sections hold. In addition:
 **coordinator.js prompt builders / dispatch-text** — extended: the `assemblePrompt` builder and the final-review trio, the final-answer rule in every builder, the fix-pass path handoff stated as the agent's only memory, and the PLANNED schema's `filesToRead`, `surfaceTokens`, `oversized`; dispatch-text's builder return list (`loadBuilders`) and its `switch` are the registration point for each new kind.
 
 Variation: harness hook output shape (Claude Code, Codex) → one compact-matcher entry script per hook manifest over RunBlockInjector, the shape chosen in each entry. Report formats → one recogniser each in report-verdict's ordered table. Assembler consumers → one profile entry in `assemblePrompt`'s table. Final-review modes (single/cluster/seam, fixed by the spec) → three plain builders chosen in the FinalReview step and dispatch-text's `--mode` case, no mode flag inside builders. Harness window sources → two readers in context-preflight, chosen by its single harness detection.
-Walk-through: Claude Code compacts mid super-auto run → `session-start` emits the bootstrap as today from its own entry → the compact entry runs `session-start-runblock` → RunBlockInjector reads `session_id` + `cwd` → `run-marker get` prints the resolved key → `run-marker get … | run-digest --budget 9000` under the watchdog (card, header, ledger-digest counts and tail, open beads, session-scoped `run-profile --in-flight`) → sanitised, escaped, emitted as its own `additionalContext`; the coordinator then reads child results only through `report-verdict`, and at Finish the FinalReview step assembles, gets `fits: no` → cluster reviewers → seam reviewer → verdict line + `reviewPath`. Likely future change — re-inject for a new harness (e.g. Gemini CLI) — touches one new entry script plus its hook-manifest entry, no change to run-digest, run-marker or the existing hooks; a new child report kind touches one recogniser plus one table entry in report-verdict.
+Walk-through: Claude Code compacts mid super-auto run → `session-start` emits the bootstrap as today from its own entry → the compact entry runs `session-start-runblock` → RunBlockInjector reads `session_id` + `cwd` → `run-marker get` prints the resolved key → the card entry emits the static card, and the state entry runs `run-marker get … | run-digest --part state --budget 9000` under the watchdog (header, ledger-digest counts and tail, open beads, session-scoped `run-profile --in-flight`) → each sanitised, escaped, emitted as its own `additionalContext`; the coordinator then reads child results only through `report-verdict`, and at Finish the FinalReview step assembles, gets `fits: no` → cluster reviewers → seam reviewer → verdict line + `reviewPath`. Likely future change — re-inject for a new harness (e.g. Gemini CLI) — touches one new entry script plus its hook-manifest entry, no change to run-digest, run-marker or the existing hooks; a new child report kind touches one recogniser plus one table entry in report-verdict.
 Per spec §A2: the run block gets its own hook entry so each string stays under Claude Code's 10,000-character cap; `session-start` keeps only the bootstrap.
 Per spec §A5: super-roast keeps returning `reportMarkdown` — callers must write it to disk before `report-verdict` can read it, a step every roast caller repeats until the follow-on lands.
 

@@ -1,7 +1,8 @@
 # super-auto run — 2026-10-15-coordinator-subagent-compaction
 
 flags: planOneShot=t skipPlanRoast=f skipCodeRoast=f autonomous=f
-phase: roast-design
+resumeChange: 2026-10-15 · "one-shot design … fully autonomous after" + "lgtm" · autonomous=t from phase 3 onward (no stops until the phase-7 hand-back)
+phase: code
 codeMechanism: Workflow
 
 idea: Implement both vision specs in one run: docs/superpowers/specs/2026-10-15-vision-coordinator-compaction.md and docs/superpowers/specs/2026-10-15-vision-subagent-compaction.md. One-shot design; pause once design is done so the user can review the split into beads; fully autonomous after that. Both roasts on. The herdr tabs "coordinator-compaction" and "subagent-compaction" in this workspace authored the visions and can be consulted about decision rationale while writing the design spec.
@@ -12,7 +13,8 @@ epic: super-plan-goq
 roast-design: 2026-10-15-coordinator-subagent-compaction-roast-design-1.md, 2026-10-15-coordinator-subagent-compaction-roast-design-2.md
 
 approvals:
-- design-review · pending
+- design-review · approved (2026-10-15, "lgtm" — after the two authoring tabs' review; their findings applied: subagent-in-worktree refusal, two Claude Code compact entries with a full-size card, SDD left unchanged, oversized as judgment, roast-code digest without self-reports, stale bead text regenerated)
+- graph-change · human · applied: drop super-plan-goq.5 <- super-plan-goq.11; narrow super-plan-goq.6 <- super-plan-goq.5 to super-plan-goq.19 <- super-plan-goq.5 (depth 8→5)
 - finish · human (2026-10-15, mid-run message) · once the integration branch is ready with all changes, nudge the herdr "main" tab to merge it into main and cut a release with a major version bump
 - top-split · auto · super-plan-goq.1 LEAF, super-plan-goq.2 LEAF, super-plan-goq.3 LEAF, super-plan-goq.4 LEAF, super-plan-goq.5 LEAF, super-plan-goq.6 LEAF, super-plan-goq.7 LEAF, super-plan-goq.8 LEAF, super-plan-goq.9 LEAF, super-plan-goq.10 LEAF, super-plan-goq.11 LEAF, super-plan-goq.12 LEAF, super-plan-goq.13 LEAF, super-plan-goq.14 LEAF, super-plan-goq.15 LEAF, super-plan-goq.16 LEAF, super-plan-goq.17 LEAF, super-plan-goq.18 LEAF
 - coverage-round-1 · canonical R-list: R1–R13 per coverage-round-1-requirements.md, plus R14 "a coordinator registers its marker under the session id the hook receives", R15 "an end-to-end smoke shows the re-inject on each hook configuration, with its negative cases", R16 "Codex wait behaviour is explicitly scoped" · requirements: 13 · mapped: 13 · unmapped: 0 · auto GAP "R9 improvised history/assess" → .11 consumes Assembler, dep .12; auto UNOWNED-SEAM "marker session id" → owned in .2, recorded in .1, matched in .7; auto GAP "end-to-end re-inject" → leaf super-plan-goq.19 (Configuration smoke); auto GAP "wiring deps" → deps .9/.10→.2,.4,.5,.18 and .14→.4; auto GAP "R6 keepalive owner" → .9 owns; auto GAP "R4 prune caller" → .2 register prunes; auto GAP "ledger-digest owner" → rejected (existing script, unchanged); auto GAP "Codex idle compaction scope" → spec §A6 note; auto UNOWNED-SEAM "config.contextWindows" → .18 owns shape; auto UNOWNED-SEAM "coordinator card vs rules" → .5 deps .4,.8,.11; auto UNOWNED-SEAM "path handoff" → .11 consumes Final-answer rule; auto UNOWNED-SEAM "report file format" → .4 owns recognised formats, .12/.13 consume; auto GAP "R3 in task lines" → covered by super-plan-goq.19 negative cases
@@ -35,3 +37,4 @@ parked:
 - graph-pass · graph-change · "proposal: seam contract for hooks/run-block.sh between .6 and .7 (optional)"
 roastDesignExit: converged (round 2: Should-fix 9 [converged], 0 Blocking; round 1 Blocking 1 / Should-fix 9 / Nit 5 all fixed or resolved); punch list of 9 applied inline; escalations parked (8)
 graph-pass: depth 8→8 · width 2.5→2.5 · applied 0 · parked 4
+graph-pass-human: depth 8→5 · width 2.5→4.0 · applied 2 (human) · declined 2 (moot drop .11<-.12; optional seam contract)

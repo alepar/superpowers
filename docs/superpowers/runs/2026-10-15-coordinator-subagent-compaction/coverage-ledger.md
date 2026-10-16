@@ -34,3 +34,7 @@ g4 · graph · GRAPH-EDGE · super-plan-goq.7 <- super-plan-goq.6 · kept — so
 g5 · graph · GRAPH-EDGE · super-plan-goq.6 <- super-plan-goq.5 · parked — narrow to .19 <- .5, safe no (.6 can stub the spec-fixed run-digest CLI)
 g6 · graph · GRAPH-EDGE · super-plan-goq.5 <- super-plan-goq.11 · parked — drop, safe no (card summarises spec text; .20 re-checks wording); alone 8→6
 g7 · graph · PROPOSAL · super-plan-goq.6,super-plan-goq.7 · parked — seam contract for hooks/run-block.sh function interface (optional)
+g8 · graph · GRAPH-EDGE · super-plan-goq.5 <- super-plan-goq.11 · applied — human approved at design review
+g9 · graph · GRAPH-EDGE · super-plan-goq.6 <- super-plan-goq.5 · applied — narrowed to super-plan-goq.19 <- super-plan-goq.5, human approved
+g10 · graph · GRAPH-EDGE · super-plan-goq.11 <- super-plan-goq.12 · declined — moot after g8
+g11 · graph · PROPOSAL · super-plan-goq.6,super-plan-goq.7 · declined — optional seam contract not needed
