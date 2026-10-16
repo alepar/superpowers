@@ -1,7 +1,7 @@
 # super-auto run — 2026-10-15-run-profile-context-pass
 
 flags: planOneShot=t skipPlanRoast=f skipCodeRoast=f autonomous=t
-phase: fix-loop
+phase: report
 roastCodeRound: 2
 roast-code: 2026-10-15-run-profile-context-pass-roast-pr-1.md, 2026-10-15-run-profile-context-pass-roast-pr-2.md
 spec: 2026-10-15-run-profile-context-pass-design.md
@@ -30,12 +30,12 @@ stepBackDesign-round-1: patch — Round 1's 11 findings are independent spec gap
 design roast exit: converged at round 2 (Should-fix 8 confirmed, 0 Blocking) · punch list of 8 applied inline as spec clarifications (window [start,end) from T0, --session unwindowed, inference raises stamps, targets after run filters, measured = non-null peak, AgentContext gap wording), no re-roast · escalations: 4 carried from round 1 (parked) · no qualifier
 graph-pass: depth 4→4 · width 1.2→1.2 · applied 0 · parked 0
 codeBuckets:
-  completed: super-plan-fqb.1, super-plan-fqb.3, super-plan-fqb.2, super-plan-fqb.4, super-plan-fqb.5, super-plan-fqb.10, super-plan-fqb.8, super-plan-fqb.9
+  completed: super-plan-fqb.1, super-plan-fqb.3, super-plan-fqb.2, super-plan-fqb.4, super-plan-fqb.5, super-plan-fqb.10, super-plan-fqb.8, super-plan-fqb.9, super-plan-fqb.11
   escalated:
   pendingRetry:
   parked:
   stalled: false
-  review: not ready (pending the caller's full-suite sweep; Must-fix: contextBaseline double-counts the coordinator across a run's super-code invocations; constraint override for the Finish-doc wording recorded under design decisions)
+  review: not ready (pending the phase-6 sweep; Must-fix punch-listed: contextResult holds every parsed transcript before reducing — a large run can OOM and lose all Profile: lines, timing included; human decision on the parked constraint override; see final-review-fix-round.md)
   sweep: SWEEP DEFERRED (caller-owned)
   slowness: round 1: graph-bound — 3 open beads, depth 3, achievable width 1 vs cap 8; edge audit armed now
   worktreesKept:
