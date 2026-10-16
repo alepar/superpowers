@@ -1079,6 +1079,7 @@ async function main() {
     assertNoThrow(out)
     check(typeof out.result?.review === 'string' && out.result.review.includes('FINAL REVIEW UNAVAILABLE'), 'review is the explicit UNAVAILABLE string', out.result?.review)
     check(out.trace.findIndex(t => t.label === 'assemble:final') >= 0 && out.trace.findIndex(t => t.label === 'assemble:final') < out.trace.findIndex(t => t.label === 'final-review'), 'the assembler ran first')
+    check(out.result?.reviewPath === null, 'no review file was written, so reviewPath is null', JSON.stringify(out.result?.reviewPath))
   }
 
   // ===== Final-review size switch (spec §B3): assemble → single | split =====
@@ -1200,6 +1201,19 @@ async function main() {
       const stub = promptOf(out.trace, 'final-review:stub') ?? ''
       check(stub.includes(REVIEW_PATH) && stub.includes('cluster-1.md') && stub.includes('cluster-2.md') && stub.includes('unreviewed: seam'), 'the stub names the handoff file, the cluster files and the unreviewed seam')
       check(out.result?.review === 'not ready (unreviewed: seam)' && out.result?.reviewPath === REVIEW_PATH, 'review is not ready; reviewPath still returned', JSON.stringify([out.result?.review, out.result?.reviewPath]))
+    }
+
+    scenario('final review: a null seam review whose stub is also null → reviewPath null')
+    {
+      const out = await run({ args: liveArgs(), canned: oneTaskCanned({
+        'assemble:final': asmOf(SPLIT),
+        'final-review:cluster:1': { verdict: 'ready', path: 'c1' }, 'final-review:cluster:2': { verdict: 'ready', path: 'c2' },
+        'final-review:seam': null, 'final-review:stub': null,
+      }) })
+      assertNoThrow(out)
+      check(same(frLabels(out), ['assemble:final', 'ledger-append:metrics', 'final-review:cluster:1', 'final-review:cluster:2', 'final-review:seam', 'final-review:stub']), 'stub dispatched after the null seam', JSON.stringify(frLabels(out)))
+      check(out.trace.length === 25, `25 agent dispatches (got ${out.trace.length})`)
+      check(out.result?.review === 'not ready (unreviewed: seam)' && out.result?.reviewPath === null, 'review is not ready; no file was written, so reviewPath is null', JSON.stringify([out.result?.review, out.result?.reviewPath]))
     }
 
     scenario('final review: an oversized cluster is not dispatched and is unreviewed')

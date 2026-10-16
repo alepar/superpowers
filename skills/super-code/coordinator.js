@@ -1658,8 +1658,10 @@ if (!metricsLedger) {
 }
 // Final review (spec §B3): the assembler measures the review inputs against 40% of the reviewer's
 // window; one reviewer when they fit, one per cluster plus a seam reviewer when they do not. The
-// handoff file <workspace>/final-review-<runTag>.md always exists; the Workflow returns only its
-// verdict line (`review`) and path (`reviewPath`), never a body.
+// handoff file <workspace>/final-review-<runTag>.md exists whenever `reviewPath` is non-null;
+// `reviewPath` is null when no work landed or no review file was written (a null single review, or a
+// null seam review whose stub also returned null). The Workflow returns only the verdict line
+// (`review`) and that path, never a body.
 const landedWork = !!(completed.size || confirmedLandings.size)
 const reviewPath = `${workspaceAbs}/final-review-${runTag}.md`
 const clusterReviewPath = n => `${workspaceAbs}/final-review-${runTag}-cluster-${n}.md`
@@ -1695,13 +1697,14 @@ const notReadyWith = (verdict, unrev) => {
   const inner = /^not ready \((.*)\)$/s.exec(v)?.[1]
   return `not ready (${inner ? inner + '; ' : ''}unreviewed: ${unrev.join(', ')})`
 }
-let review
+let review, reviewWritten = false
 if (!landedWork) review = 'no work landed'
 else if (frMode !== 'split') {
   const single = await dispatch(() => finalReviewPrompt(epicId, integrationBranch, integrationWorktree, ledgerPath, lastPlanned?.planPath, sweepSummary, metrics,
     { dir: frMode === 'single' ? frDir : null, capped: frMode === 'capped', reviewPath }), 'final-review',
     { label: 'final-review', phase: 'Finish', ...tier('finalReview'), schema: FINAL_VERDICT })
   const v = String(single?.verdict ?? '').trim()
+  reviewWritten = !!v
   review = !v ? FINAL_REVIEW_UNAVAILABLE : frMode === 'capped' ? notReadyWith(v, [CAPPED_CAUSE]) : v
 } else {
   const unreviewed = frClusters.filter(c => !c.fits).map(c => `cluster ${c.n} (${c.name}): over the window`)
@@ -1718,11 +1721,13 @@ else if (frMode !== 'split') {
   const seam = await dispatch(() => finalSeamReviewPrompt(frDir, clusterPaths, reviewPath, epicId, integrationBranch, integrationWorktree, unreviewed), 'final-review:seam',
     { label: 'final-review:seam', phase: 'Finish', ...tier('finalReview'), schema: FINAL_VERDICT })
   let seamVerdict = String(seam?.verdict ?? '').trim()
+  reviewWritten = !!seamVerdict
   if (!seamVerdict) {
     unreviewed.push('seam')
     const stub = await dispatch(() => finalReviewStubPrompt(clusterPaths, unreviewed, reviewPath), 'final-review:stub',
       { label: 'final-review:stub', phase: 'Finish', ...tier('mechanical'), schema: STUB_WRITTEN })
-    if (!stub) log(`final-review: the seam review and its stub both returned null — ${reviewPath} may not exist`)
+    if (!stub) log(`final-review: the seam review and its stub both returned null — ${reviewPath} was not written; reviewPath is null`)
+    else reviewWritten = true
     seamVerdict = ''
   }
   review = unreviewed.length ? notReadyWith(seamVerdict, unreviewed) : seamVerdict
@@ -1774,7 +1779,7 @@ const processSweep = !wsweep
       survived: (wsweep.processLines || []).filter(l => /^survived:/.test(l)).map(l => l.replace(/^survived:\s*/, '')) }
 log(`process sweep: ${processSweep.stopped.length} stopped, ${processSweep.survived.length} survived${processSweep.survived.length ? ' — ' + processSweep.survived.join('; ') : ''}`)
 return { closureUnconfirmed, completed: [...completed], escalated: [...escalated], pendingRetry: [...pendingRetry],
-         parked: [...parked], stalled, stopReason, review, authRefused: [...authRefused], sweep: sweepSummary, reviewPath: landedWork ? reviewPath : null,
+         parked: [...parked], stalled, stopReason, review, authRefused: [...authRefused], sweep: sweepSummary, reviewPath: landedWork && reviewWritten ? reviewPath : null,
          metrics, ledgerAppendFailed: [...ledgerAppendFailed], slowness: [...slowness], humanActions: [...humanActions], worktreesKept, processSweep }
 
 // --- helpers ---

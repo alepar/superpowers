@@ -1291,13 +1291,14 @@ from the assembler's `clusters.json` (import and call edges, else directory), ne
 key. A cluster still `cluster-fits: no` after the assembler's one re-cluster is not dispatched and is
 listed `unreviewed`. Cluster reviewers write `<workspace>/final-review-<runTag>-cluster-<n>.md`; the
 seam reviewer, given only those files and the cross-cluster hunks and interfaces, writes the handoff
-file. **`<workspace>/final-review-<runTag>.md` always exists** when work landed: the single or seam
+file. **`<workspace>/final-review-<runTag>.md` exists whenever `reviewPath` is non-null**: the single or seam
 reviewer writes it, and on a null seam review a mechanical `final-review:stub` dispatch writes a stub
-that lists the cluster files. The Workflow returns `review` (the verdict line) and `reviewPath` (that
-file) and never a body; callers read the file through `report-verdict`. Anything unreviewed — a null
+that lists the cluster files; only a null stub leaves it absent, and `reviewPath` is then null. The
+Workflow returns `review` (the verdict line) and `reviewPath` (that file, or null when no file was
+written) and never a body; callers read the file through `report-verdict`. Anything unreviewed — a null
 cluster or seam review, an over-window cluster — makes `review` `not ready (<summary>; unreviewed: …)`,
 never `ready`; a capped single review is forced to `not ready (… unreviewed: inputs exceed the window
-and no usable clusters)`. A null single review keeps today's `FINAL REVIEW UNAVAILABLE` string.
+and no usable clusters)`. A null single review keeps today's `FINAL REVIEW UNAVAILABLE` string and returns `reviewPath` null.
 
 **The sweep runs here, once, before the final review — mandatory whenever work landed, unless the
 caller set `deferSweep`** (then no sweep dispatches, the final reviewer is told it was deferred, and
@@ -1952,9 +1953,10 @@ single-mode count is 22.
 | exit 3, capped | `exit: 3` | `final-review` on direct inputs, told `no usable clusters` | `single (no usable clusters — capped)` | `not ready (… unreviewed: inputs exceed the window and no usable clusters)` | 22 |
 | null cluster review | split, cluster 2 null | both clusters, then the seam | split line | `not ready (unreviewed: cluster 2 (beta): review unavailable)` | 24 |
 | null seam review | split, seam null | both clusters, the seam, `final-review:stub` | split line | `not ready (unreviewed: seam)`; `reviewPath` still returned | 25 |
+| null seam and stub | split, seam and stub null | both clusters, the seam, `final-review:stub` | split line | `not ready (unreviewed: seam)`; `reviewPath` null | 25 |
 | oversized cluster | split, cluster b `no` | `final-review:cluster:1` only, then the seam | split line | `not ready (unreviewed: cluster 2 (b): over the window)` | 23 |
 
-A null single review keeps `FINAL REVIEW UNAVAILABLE` (the existing null-final-review scenario, now
+A null single review keeps `FINAL REVIEW UNAVAILABLE` and returns `reviewPath` null (the existing null-final-review scenario, now
 also asserting `assemble:final` ran first). No work landed: no assemble, no review, `reviewPath` null.
 
 ### Oversized split scenarios (replay harness, live-sim)
