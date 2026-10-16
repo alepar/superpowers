@@ -369,3 +369,13 @@ peak.
 ## Post-Implementation Notes
 
 > *As this design is implemented and iterated on — bug fixes, adjustments, anything that diverged from the assumptions above — append a dated note here, whether or not a formal debugging skill was used.*
+
+### 2026-10-15 — run-profile integration (super-plan-fqb.2)
+
+- When `summary.measured === 0` the output is the single `Profile: context — unavailable — <why>` line and no context reason is added to `Profile: unmeasured`, so every pre-existing fixture (whose transcripts carry no usage rows) keeps `Profile: unmeasured — none`.
+- A Workflow run directory gets a coordinator target only in a session layout (parent `workflows`, grandparent `subagents`), where the coordinator is `<dirname³(dir)>.jsonl` and a missing file is an unmeasured coordinator record; a directory outside that layout has no coordinator record.
+- Coordinator records are labelled `coordinator`, or `coordinator:<k>` (k from 1, in target order) when more than one coordinator file results; Workflow agents use the timing label (else `agent-<id>`), Claude subagents their `.meta.json` `description` (else `agent-<id>`), and Codex descendants their `agent_path` without the leading `/root/` (else the thread id).
+- One context result is built per process, lazily by the first exit path that asks, and memoized so every path prints the same result; the ordinary-run anchor T0 reads the bead mapping, so on the missing-epic exit (mapping not yet run) T0 is the session's end, the spec's "no mapped dispatch" rule.
+- Each run contributes one `runRows` window per coordinator file and the windows of one file are merged as a union: one merged span is passed as `{ fromRow, toRow }`, several disjoint spans as the concatenation of their row slices; agents are scoped by the same windows converted to time, and an agent whose first timestamped row lies in none of its run's spans is left out.
+- `--session` requires `--context-only` (else exit 2), `--context-only` refuses `--discover` and `--summarize` (exit 2), `--context-window` must be a positive number (exit 2) and a `--session` file that does not exist is exit 2; exit 3 prints the context lines, then the context `Profile: unmeasured` line when reasons exist, then `Profile: unavailable — …`, and still writes no `--out` files.
+- A context-only `--out` writes `<prefix>.json` = `{ version: 1, contextOnly: true, context }` and `<prefix>.md` = `# Context profile` plus the `## Context` section; such a JSON has no `criticalPath`, so `--summarize` refuses it like a partial profile.

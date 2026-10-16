@@ -9,6 +9,13 @@
 //              tools?: [{ kind: exec|apply_patch|write_stdin, cmd?, start, end }],
 //              inherited?: true (a forked child: a replayed call at its spawn instant),
 //              parent?: <codex name of another agent> (a grandchild), guardian?: true }] }
+// Context rows (optional). Claude: agents[].context: [[s, ctx]…], agents[].compact: [[s, trigger, pre,
+//   post]…]; coord: [[kind, s, …]…] extra rows in the session transcript, kinds as in
+//   run-profile-fixture.mjs's session. Codex: agents[].context: [[s, input, window]…] token_count rows,
+//   agents[].compact: [[s, pre]…] compacted rows, agents[].forkCompacted: pre (with inherited: a
+//   replayed compacted row, and the child's own rows start at session_meta's
+//   subagent_history_start_ordinal); coord: [["prompt", s, text] | ["usage", s, input, window] |
+//   ["record", s, input] | ["compacted", s, pre]…] extra rows in the coordinator's rollout.
 // Times are seconds after t0. On Claude Code each task is its own agent.
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { join } from 'node:path'
@@ -39,8 +46,14 @@ if (harness === 'codex') {
   const exec = x => x.kind === 'apply_patch' ? 'text(await tools.apply_patch("*** Begin Patch\\n*** End Patch"));'
     : x.kind === 'write_stdin' ? 'text(await tools.write_stdin({session_id:3,chars:""}));'
     : `text(await tools.exec_command({cmd:${JSON.stringify(x.cmd)},max_output_tokens:4000}));`
+  const codexRow = ([kind, s, x, y]) => kind === 'prompt' ? item(s, { type: 'message', role: 'user', content: [{ type: 'input_text', text: x }] })
+    : kind === 'usage' ? { timestamp: at(s), type: 'event_msg', payload: { type: 'token_count', info: { last_token_usage: { input_tokens: x }, total_token_usage: { input_tokens: x }, ...(y ? { model_context_window: y } : {}) } } }
+    : kind === 'record' ? { timestamp: at(s), type: 'token_usage_record', payload: { usage: { input_tokens: x } } }
+    : kind === 'compacted' ? { timestamp: at(s), type: 'compacted', payload: { message: '', latest_token_usage_record: { usage: { input_tokens: x } } } }
+    : (() => { throw new Error(`unknown codex row kind: ${kind}`) })()
   const crows = [{ timestamp: at(-100), type: 'session_meta', payload: { id: coord, session_id: coord, cwd: sc.cwd, source: 'cli', cli_version: '0.160.1' } }, event(-100, 'task_started')]
   for (const c of sc.caller ?? []) crows.push(...call(c.start, c.end, 'exec', exec({ kind: 'exec', cmd: c.cmd })))
+  for (const r of sc.coord ?? []) crows.push(codexRow(r))
   for (const a of sc.agents) {
     const spawn = tasksOf(a)[0][0]
     const id = idOf(a)
@@ -54,9 +67,12 @@ if (harness === 'codex') {
       : { subagent: { thread_spawn: { parent_thread_id: parent, depth: a.parent ? 2 : 1, agent_path: `/root/${a.parent ? `${a.parent}/` : ''}${a.codex}`, agent_nickname: 'Nick', agent_role: null } } }
     const rows = [{ timestamp: at(spawn), type: 'session_meta', payload: { id, ...(a.guardian ? { parent_thread_id: coord } : {}), cwd: sc.cwd, source, cli_version: '0.160.1' } }]
     if (a.inherited) rows.push({ timestamp: at(spawn), type: 'session_meta', payload: { id: coord, cwd: sc.cwd, source: 'cli' } }, ...call(spawn, spawn, 'exec', exec({ kind: 'exec', cmd: 'cargo test --workspace' })))
+    if (a.inherited && a.forkCompacted !== undefined) { rows.push(codexRow(['compacted', spawn, a.forkCompacted])); rows[0].payload.subagent_history_start_ordinal = rows.length }
     for (const [s, e] of tasksOf(a)) {
       rows.push(event(s, 'task_started'))
       for (const x of (a.tools ?? []).filter(x => x.start >= s && x.start < e)) rows.push(...call(x.start, x.end, 'exec', exec(x)))
+      for (const [cs, input, w] of a.context ?? []) if (cs >= s && cs <= e) rows.push(codexRow(['usage', cs, input, w]))
+      for (const [cs, pre] of a.compact ?? []) if (cs >= s && cs <= e) rows.push(codexRow(['compacted', cs, pre]))
       rows.push(event(e, 'task_complete'))
     }
     jsonl(file(id), rows.sort((x, y) => Date.parse(x.timestamp) - Date.parse(y.timestamp)))
@@ -75,8 +91,19 @@ if (harness === 'codex') {
     return [{ type: 'assistant', timestamp: at(start), cwd: sc.cwd, ...extra, message: { role: 'assistant', content: [{ type: 'tool_use', id, name, input }] } },
       { type: 'user', timestamp: at(end), cwd: sc.cwd, ...extra, message: { role: 'user', content: [{ type: 'tool_result', tool_use_id: id, content: 'ok' }] } }]
   }
+  const usageRow = (s, ctx, id, model = 'claude-opus-4-6', extra = {}) => ({ type: 'assistant', timestamp: at(s), ...extra,
+    message: { id, model, role: 'assistant', content: [{ type: 'text', text: 'ok' }], usage: { input_tokens: 10, cache_read_input_tokens: ctx - 30, cache_creation_input_tokens: 20, output_tokens: 5 } } })
+  const boundaryRow = (s, trigger, pre, post, extra = {}) => ({ type: 'system', subtype: 'compact_boundary', timestamp: at(s), ...extra, compactMetadata: { trigger, preTokens: pre, postTokens: post } })
+  const claudeRow = ([kind, s, x, y, z], k) => kind === 'prompt' ? { type: 'user', timestamp: at(s), message: { role: 'user', content: x } }
+    : kind === 'meta' ? { type: 'user', isMeta: true, timestamp: at(s), message: { role: 'user', content: x } }
+    : kind === 'result' ? { type: 'user', timestamp: at(s), message: { role: 'user', content: [{ type: 'tool_result', tool_use_id: `tr${k}`, content: x }] } }
+    : kind === 'skill' ? { type: 'assistant', timestamp: at(s), message: { id: `sk${k}`, role: 'assistant', content: [{ type: 'tool_use', id: `sk${k}`, name: 'Skill', input: { skill: x } }] } }
+    : kind === 'usage' ? usageRow(s, x, `c${k}`)
+    : kind === 'compact' ? boundaryRow(s, x, y, z)
+    : (() => { throw new Error(`unknown session row kind: ${kind}`) })()
   const rows = [{ type: 'user', timestamp: at(-100), cwd: sc.cwd, message: { role: 'user', content: `Run super-code on epic ${sc.epic}` } }]
   for (const c of sc.caller ?? []) rows.push(...pair(c.start, c.end, 'Bash', { command: c.cmd }))
+  for (const [k, r] of (sc.coord ?? []).entries()) rows.push(claudeRow(r, k))
   jsonl(join(pd, `${sid}.jsonl`), rows.sort((x, y) => Date.parse(x.timestamp) - Date.parse(y.timestamp)))
   let k = 0
   for (const a of sc.agents.filter(a => !a.parent && !a.guardian)) {
@@ -89,7 +116,10 @@ if (harness === 'codex') {
         const [name, input] = x.kind === 'apply_patch' ? ['Edit', { file_path: '/w/src/a.rs' }] : x.kind === 'write_stdin' ? ['BashOutput', { bash_id: 'b1' }] : ['Bash', { command: x.cmd }]
         ar.push(...pair(x.start, x.end, name, input, extra))
       }
+      ;(a.context ?? []).forEach(([cs, ctx], j) => { if (cs >= s && cs <= e) ar.push(usageRow(cs, ctx, `${id}-m${j}`, 'claude-opus-4-6', extra)) })
+      for (const [cs, trigger, pre, post] of a.compact ?? []) if (cs >= s && cs <= e) ar.push(boundaryRow(cs, trigger, pre, post, extra))
       ar.push({ type: 'assistant', timestamp: at(e), ...extra, message: { role: 'assistant', content: [{ type: 'text', text: 'done' }] } })
+      if (a.context || a.compact) ar.sort((x, y) => Date.parse(x.timestamp) - Date.parse(y.timestamp))
       jsonl(join(sub, `agent-${id}.jsonl`), ar)
     }
   }
