@@ -37,9 +37,12 @@ kinds and options:
   triage            --id ID --blocker BEAD
   assemble          --consumer final-review|roast-code|history|assess --instance I
                     [--threshold N] [--base SHA] [--head REF] [--spec P1,P2]
-  final-review      --mode single|cluster|seam [--dir D] [--capped] [--cluster N --name NAME] [--clusters N]
-                    (single without --dir reviews direct inputs; cluster needs --dir --cluster --name;
-                    seam needs --dir --clusters, the cluster files being 1..N)
+  final-review      --mode single|cluster|seam|stub [--dir D] [--capped] [--sweep F|deferred]
+                    [--metrics F] [--cluster N --name NAME] [--reviewed N1,N2|none] [--unreviewed F]
+                    (single: --sweep/--metrics default to the ledger's last Sweep: line and last four
+                    Metrics: lines; cluster needs --dir --cluster --name; seam needs --dir --reviewed,
+                    the clusters whose review returned a verdict; stub needs --reviewed --unreviewed;
+                    --unreviewed F holds one unreviewed entry per line)
 
 common options:
   --plan <file>        the plan file (default: <ledger dir>/<epic>-plan.md)
@@ -72,7 +75,7 @@ function launchFrom(ledgerText) {
   if (line.startsWith('args ')) {
     try {
       const a = JSON.parse(line.slice(5))
-      return { epic: a.epicId, branch: a.integrationBranch, worktree: a.integrationWorktree, runTag: a.runTag, mergeCheck: a.config?.mergeCheck, testPaths: a.config?.testPaths }
+      return { epic: a.epicId, branch: a.integrationBranch, worktree: a.integrationWorktree, runTag: a.runTag, sweep: a.deferSweep ? 'deferred' : undefined, mergeCheck: a.config?.mergeCheck, testPaths: a.config?.testPaths }
     } catch { return {} }
   }
   const f = {}
@@ -80,15 +83,20 @@ function launchFrom(ledgerText) {
     const m = part.match(/^(\S+)\s+(.*)$/)
     if (m) f[m[1]] = m[2].trim()
   }
-  return { epic: f.epic, branch: f.branch, worktree: f.integrationWorktree, runTag: f.runTag, mergeCheck: f.mergeCheck }
+  return { epic: f.epic, branch: f.branch, worktree: f.integrationWorktree, runTag: f.runTag, mergeCheck: f.mergeCheck, sweep: f.sweep }
 }
+
+// The ledger's last `Sweep: ` line (text after the prefix) and the last four `Metrics: ` lines (the
+// Workflow appends exactly four, in one batch), as Finish passes them to the final-review builder.
+const lastSweep = t => { const m = t.split('\n').filter(l => l.startsWith('Sweep: ')); return m.length ? m[m.length - 1].slice(7).trim() : null }
+const lastMetrics = t => t.split('\n').filter(l => l.startsWith('Metrics: ')).slice(-4)
 
 function loadBuilders(cfg) {
   let src
   try { src = readFileSync(join(codeSkill, 'coordinator.js'), 'utf8') } catch (e) { console.error(`dispatch-text: cannot read coordinator.js: ${e.message}`); process.exit(3) }
   const cut = src.search(/^while \(true\) \{$/m)
   if (cut < 0) { console.error('dispatch-text: coordinator.js has no top-level `while (true) {` round loop to cut at'); process.exit(3) }
-  const ret = `return { planPrompt, implementPrompt, taskReviewPrompt, fixPrompt, seamReviewPrompt, checkFixReviewPrompt, finalReviewPrompt, finalClusterReviewPrompt, finalSeamReviewPrompt, finalReviewStubPrompt, mergePrompt, triagePrompt, assemblePrompt, reviewBeadOf, mergeCheckCommand }\n`
+  const ret = `return { SWEEP_DEFERRED, planPrompt, implementPrompt, taskReviewPrompt, fixPrompt, seamReviewPrompt, checkFixReviewPrompt, finalReviewPrompt, finalClusterReviewPrompt, finalSeamReviewPrompt, finalReviewStubPrompt, mergePrompt, triagePrompt, assemblePrompt, reviewBeadOf, mergeCheckCommand }\n`
   const body = (src.slice(0, cut) + ret + src.slice(cut)).replace(/^export const meta/m, 'const meta')
   const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor
   const fn = new AsyncFunction('args', 'agent', 'log', 'phase', 'pipeline', 'parallel', 'budget', 'workflow', body)
@@ -125,6 +133,7 @@ const art = n => ({
 })
 const taskWorktree = id => `${worktree}/.worktrees/${String(branch).replace(/\//g, '-')}--task-${id}`
 const task = () => ({ id: o.id, n: Number(o.n), branch: taskWorktree(o.id), base: o.base })
+const readLines = k => readArg(k).split('\n').map(l => l.trim()).filter(Boolean)
 const readArg = k => { try { return readFileSync(o[k], 'utf8').trim() } catch (e) { fail(`cannot read --${k} ${o[k]}: ${e.message}`) } }
 
 let text, label
@@ -190,23 +199,38 @@ switch (kind) {
   }
   case 'final-review': {
     need('mode')
-    if (!['single', 'cluster', 'seam'].includes(o.mode)) fail('--mode is single, cluster or seam')
+    if (!['single', 'cluster', 'seam', 'stub'].includes(o.mode)) fail('--mode is single, cluster, seam or stub')
     const reviewPath = `${worktree}/.superpowers/sdd/${epic}-plan/final-review-${runTag}.md`
     const clusterPath = n => `${worktree}/.superpowers/sdd/${epic}-plan/final-review-${runTag}-cluster-${n}.md`
     const posInt = k => { if (!/^[1-9]\d*$/.test(String(o[k]))) fail(`--${k} is a positive integer`); return Number(o[k]) }
+    // --reviewed N1,N2|none: the cluster ordinals whose review returned a verdict, in the order given.
+    const reviewedPaths = () => {
+      need('reviewed')
+      if (o.reviewed === 'none') return []
+      const ns = list(o.reviewed)
+      if (!ns.length || !ns.every(n => /^[1-9]\d*$/.test(n))) fail('--reviewed is positive cluster numbers, comma-separated, or none')
+      return ns.map(n => clusterPath(Number(n)))
+    }
     if (o.mode === 'single') {
-      text = B.finalReviewPrompt(epic, branch, worktree, '.superpowers/sdd/' + epic + '-plan/progress.md', planPath, null, [], { dir: o.dir || null, capped: !!o.capped, reviewPath })
+      const sweep = o.sweep === 'deferred' ? B.SWEEP_DEFERRED : o.sweep ? readArg('sweep')
+        : lastSweep(ledgerText) ?? (L.sweep === 'deferred' ? B.SWEEP_DEFERRED : null)
+      const metrics = o.metrics ? readLines('metrics') : lastMetrics(ledgerText)
+      text = B.finalReviewPrompt(epic, branch, worktree, '.superpowers/sdd/' + epic + '-plan/progress.md', planPath, sweep, metrics, { dir: o.dir || null, capped: !!o.capped, reviewPath })
       label = 'final-review-single'
     } else if (o.mode === 'cluster') {
       need('dir', 'cluster', 'name')
       const n = posInt('cluster')
       text = B.finalClusterReviewPrompt(n, o.name, o.dir, clusterPath(n), epic, branch, worktree)
       label = `final-review-cluster-${n}`
-    } else {
-      need('dir', 'clusters')
-      const k = posInt('clusters')
-      text = B.finalSeamReviewPrompt(o.dir, Array.from({ length: k }, (_, i) => clusterPath(i + 1)), reviewPath, epic, branch, worktree)
+    } else if (o.mode === 'seam') {
+      need('dir')
+      const paths = reviewedPaths()
+      text = B.finalSeamReviewPrompt(o.dir, paths, reviewPath, epic, branch, worktree, o.unreviewed ? readLines('unreviewed') : [])
       label = 'final-review-seam'
+    } else {
+      need('unreviewed')
+      text = B.finalReviewStubPrompt(reviewedPaths(), readLines('unreviewed'), reviewPath)
+      label = 'final-review-stub'
     }
     break
   }

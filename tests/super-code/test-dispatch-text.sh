@@ -218,17 +218,108 @@ fr --mode cluster --dir "$FD" --cluster 2 --name hooks
 assert_has "$out" "final-review-rt-1-cluster-2.md" "cluster writes final-review-<runTag>-cluster-<n>.md"
 assert_has "$out" "cluster named hooks" "cluster names the cluster it reviews"
 if last_is_schema; then pass "cluster ends with the final-answer line"; else fail "cluster ends with the final-answer line"; fi
-fr --mode seam --dir "$FD" --clusters 3
-for n in 1 2 3; do assert_has "$out" "final-review-rt-1-cluster-$n.md" "seam is given cluster file $n"; done
-assert_lacks "$out" "final-review-rt-1-cluster-4.md" "seam is given no cluster beyond --clusters"
+printf 'cluster 2 (hooks): over the window\n' > "$T/unrev.txt"
+fr --mode seam --dir "$FD" --reviewed 1,3 --unreviewed "$T/unrev.txt"
+assert_eq "$code" 0 "seam --reviewed exits 0"
+assert_has "$out" "final-review-rt-1-cluster-1.md" "seam is given reviewed cluster file 1"
+assert_has "$out" "final-review-rt-1-cluster-3.md" "seam is given reviewed cluster file 3"
+assert_lacks "$out" "final-review-rt-1-cluster-2.md" "seam is not given the unreviewed cluster's file"
+assert_has "$out" "cluster 2 (hooks): over the window" "seam names the unreviewed entry verbatim"
 assert_has "$out" "$W/.superpowers/sdd/ep-plan/final-review-rt-1.md" "seam writes the handoff file"
 if last_is_schema; then pass "seam ends with the final-answer line"; else fail "seam ends with the final-answer line"; fi
+fr --mode seam --dir "$FD" --reviewed none
+assert_has "$out" "none — no cluster review completed" "--reviewed none: the empty list"
+fr --mode stub --reviewed 1 --unreviewed <(printf 'seam\n')
+assert_eq "$code" 0 "stub exits 0"
+assert_has "$out" "$W/.superpowers/sdd/ep-plan/final-review-rt-1.md" "stub writes the handoff file"
+assert_has "$out" "unreviewed: seam" "stub names the unreviewed entries"
+assert_has "$out" "final-review-rt-1-cluster-1.md" "stub lists the reviewed cluster file"
+if last_is_schema; then pass "stub ends with the final-answer line"; else fail "stub ends with the final-answer line"; fi
+run bash "$D" --ledger "$T/ws/rt.md" final-review --mode stub --reviewed none --unreviewed "$T/unrev.txt"
+assert_eq "$out" "$T/ws/dispatch/final-review-stub.md" "stub's default label is final-review-stub"
 fr --mode bogus
 assert_eq "$code" 2 "final-review --mode bogus: exit 2"
 fr --mode cluster --dir "$FD" --cluster 2
 assert_eq "$code" 2 "cluster without --name: exit 2"
-fr --mode seam --dir "$FD" --clusters 0
-assert_eq "$code" 2 "seam --clusters 0: exit 2"
+fr --mode stub --reviewed 1
+assert_eq "$code" 2 "stub without --unreviewed: exit 2"
+fr --mode seam --dir "$FD" --reviewed 0
+assert_eq "$code" 2 "seam --reviewed 0: exit 2"
+fr --mode seam --dir "$FD" --reviewed a,b
+assert_eq "$code" 2 "seam --reviewed a,b: exit 2"
+fr --mode seam --dir "$FD"
+assert_eq "$code" 2 "seam without --reviewed: exit 2"
+assert_has "$(cat "$T/err")" "needs --reviewed" "and says what is missing"
+
+# Single: sweep and Metrics come from the ledger, as Finish passes them.
+printf '%s\n' "Launch: mechanism ordinary-subagents · epic ep · branch feat/x · integrationWorktree $W · runTag rt-1 · mergeCheck none" \
+  'Sweep: abc1234 — 120 passed, 0 failed; failing: none; command: npm test' \
+  'Metrics: m1' 'Metrics: m2' 'Metrics: m3' 'Metrics: m4' > "$T/ws/sw.md"
+frl() { run bash "$D" --ledger "$T/ws/sw.md" --stdout final-review "$@"; }
+frl --mode single
+assert_has "$out" "<sweep>" "single reads the ledger's Sweep: line into the prompt"
+assert_has "$out" "120 passed" "and its text"
+assert_has "$out" "Metrics: m1 | Metrics: m2 | Metrics: m3 | Metrics: m4" "single reads the four Metrics: lines"
+assert_lacks "$out" "No sweep result is available" "a recorded sweep is not reported absent"
+frl --mode single --sweep deferred
+assert_has "$out" "deferred to the caller" "--sweep deferred passes the deferred marker"
+printf 'sweep from file\n' > "$T/sweepf.txt"; printf 'Metrics: f1\nMetrics: f2\n' > "$T/metf.txt"
+frl --mode single --sweep "$T/sweepf.txt" --metrics "$T/metf.txt"
+assert_has "$out" "sweep from file" "--sweep F overrides the ledger"
+assert_lacks "$out" "120 passed" "and the ledger's sweep is not used"
+assert_has "$out" "Metrics: f1 | Metrics: f2" "--metrics F overrides the ledger"
+assert_lacks "$out" "Metrics: m1" "and the ledger's metrics are not used"
+printf '%s\n' "Launch: mechanism ordinary-subagents · epic ep · branch feat/x · integrationWorktree $W · runTag rt-1 · sweep deferred · mergeCheck none" > "$T/ws/df.md"
+run bash "$D" --ledger "$T/ws/df.md" --stdout final-review --mode single
+assert_has "$out" "deferred to the caller" "a Launch line with sweep deferred and no Sweep: line defers the sweep"
+printf '%s\n' 'Launch: args {"epicId":"ep","integrationBranch":"feat/x","integrationWorktree":"/r/wt","runTag":"rt-1","deferSweep":true}' > "$T/ws/dfa.md"
+run bash "$D" --ledger "$T/ws/dfa.md" --stdout final-review --mode single
+assert_has "$out" "deferred to the caller" "the Workflow Launch form's deferSweep defers the sweep"
+fr --mode single
+assert_has "$out" "No sweep result is available" "no Sweep: line and no deferral: still no sweep result"
+
+# Argument parity: every final-review builder call in coordinator.js and dispatch-text.mjs passes as
+# many arguments as the builder declares, with the same option-object keys.
+parity=$(cd "$REPO_ROOT" && node - <<'NODE'
+const { readFileSync } = require('node:fs')
+const co = readFileSync('skills/super-code/coordinator.js', 'utf8')
+const dt = readFileSync('skills/super-code/scripts/dispatch-text.mjs', 'utf8')
+function argsAt(src, open) {
+  const out = []; let d = 0, cur = '', q = null
+  for (let j = open + 1; j < src.length; j++) {
+    const c = src[j]
+    if (q) { cur += c; if (c === '\\') { cur += src[++j]; continue } if (c === q) q = null; continue }
+    if (c === '"' || c === "'" || c === '`') { q = c; cur += c; continue }
+    if ('([{'.includes(c)) d++
+    if (')]}'.includes(c)) { if (d === 0) { if (cur.trim()) out.push(cur.trim()); return out } d-- }
+    if (c === ',' && d === 0) { out.push(cur.trim()); cur = ''; continue }
+    cur += c
+  }
+  return null
+}
+const keys = a => a.trim().startsWith('{') ? argsAt('(' + a.trim().slice(1, -1) + ')', 0).map(p => p.split(':')[0].trim()).sort().join(',') : null
+const calls = (src, re) => { const r = []; let m; while ((m = re.exec(src))) r.push(argsAt(src, m.index + m[0].length - 1)); return r }
+for (const name of ['finalReviewPrompt', 'finalClusterReviewPrompt', 'finalSeamReviewPrompt', 'finalReviewStubPrompt']) {
+  const decl = new RegExp('^function ' + name + '\\(', 'm').exec(co)
+  const params = argsAt(co, decl.index + decl[0].length - 1).length
+  const cc = calls(co, new RegExp('(?<!function )\\b' + name + '\\(', 'g'))
+  const dc = calls(dt, new RegExp('B\\.' + name + '\\(', 'g'))
+  const bad = []
+  if (!cc.length) bad.push('no coordinator.js call')
+  if (!dc.length) bad.push('no dispatch-text call')
+  for (const c of cc) if (c.length !== params) bad.push(`coordinator.js passes ${c.length} of ${params}`)
+  for (const c of dc) {
+    if (c.length !== params) bad.push(`dispatch-text passes ${c.length} of ${params}`)
+    c.forEach((a, i) => { const k = keys(a), ck = cc[0] && cc[0][i] ? keys(cc[0][i]) : null; if (k !== ck) bad.push(`arg ${i + 1} keys ${k} vs ${ck}`) })
+  }
+  console.log(bad.length ? `bad ${name}: ${bad.join('; ')}` : `ok ${name}`)
+}
+NODE
+)
+while IFS= read -r line; do
+  case "$line" in ok\ *) pass "argument parity: ${line#ok }" ;; *) fail "argument parity: ${line#bad }" ;; esac
+done <<< "$parity"
+[ -n "$parity" ] || fail "argument parity block printed nothing"
 
 echo "dispatch-text: run facts and bad input"
 printf '%s\n' 'Launch: args {"epicId":"ep","integrationBranch":"feat/y","integrationWorktree":"/r/wy","config":{"mergeCheck":"none"}}' > "$T/ws/wf.md"
