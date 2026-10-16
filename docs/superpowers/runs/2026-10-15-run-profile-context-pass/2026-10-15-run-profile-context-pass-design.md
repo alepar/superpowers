@@ -255,6 +255,64 @@ from the ledger. No change to how the coordinator records the profile: it alread
 Ideas for avoiding compaction in subagents and coordinators are being brainstormed separately; this
 tree only measures.
 
+## Key abstractions
+
+**context-pass** (new module, `skills/super-code/scripts/context-pass.mjs`): the pure core of the context measurement. It turns parsed rows into per-agent records, then into a summary and its rendered output.
+- Owns: the per-harness readers, the Claude window table, compaction-cause classification, the run summary, and every rendering of context data: the `Profile: context` lines, the `## Context` Markdown table, the `context` JSON value and the `Baseline: context` line for `--summarize`.
+- Hides: transcript field paths, how duplicate rows are dropped, which Codex rows are replayed history, the model→window table and the 33K buffer, the cause thresholds, and the line formats (ordering, the cap of 10 lines, leaving out zero-count causes).
+- Must not: read files, walk directories, resolve sessions, print or exit. All of that stays in run-profile. It imports nothing from run-profile.
+- Relationships: run-profile depends on context-pass, never the reverse. The tests import it directly with synthetic rows.
+- Lifecycle: a stateless ES module. The model table is a frozen constant.
+- Errors: it throws nothing on bad rows. A malformed row is skipped. A transcript with no usage row still yields a record, with `unmeasured` set and `peak: null`. Callers tell measured from unmeasured by `peak === null`, never by `peak === 0`.
+
+**Harness entry** (new: a frozen table `HARNESSES = { claude, codex }` inside context-pass): one record per harness that bundles that harness's reader, window resolution, cause rule and coordinator-invocation marker.
+- Owns: everything that differs by harness. That is 4 operations across the 2 kinds that exist today. The Claude entry composes `claudeContext` and `claudeWindow`, including table, override and inference. The Codex entry composes `codexContext`, whose window comes from the transcript and is tracked per row. Each entry also holds its own cause rule and invocation matcher.
+- Hides: which harness-specific rule applies. `summarizeContext` and run-profile look an entry up by `record.harness` (or `target.harness`) in this one table and never test `harness === 'claude'` themselves.
+- Must not: hold run-type logic, i.e. how a Workflow, subagents or Codex run lays out its files. That belongs to the run-profile source listers.
+- Relationships: composition of plain functions. The table is the one registry where a harness kind is chosen.
+- Errors: none of its own. The readers' unmeasured reasons pass through it.
+
+**AgentContext** (new record type, a plain object as spec'd): the uniform per-agent record. It is the seam between the readers and everything downstream, and it is also what `--out` JSON writes.
+- Owns: the spec's fields. To fill a gap, each compaction also carries the raw facts its cause needs, chiefly the gap since the previous row. `cause` is left empty until summarize fills it.
+- Must not: be built outside a harness reader. Run-profile adds only the `label`, `role` and `file` it was handed.
+
+**Context targets** (new, in run-profile: one source lister per run type): each lister turns a located run into a list of transcripts to measure (file, harness, role, label, model).
+- Owns: where transcripts live. Workflow: each `agent-<id>.jsonl`, plus `<session>.jsonl` three levels up. Ordinary Claude subagents: each `agent-<id>.jsonl`, plus `${dirname(d)}.jsonl`. Codex: the coordinator's rollout(s), plus descendants found transitively through the cached `codexIndex` parent links. `--session`: the session file, its `subagents/agent-*.jsonl` and `subagents/workflows/*/agent-*.jsonl`. It also owns the dedupe by real path (one step over all targets) and the row cutoff for coordinators (the run's first dispatch).
+- Hides: the run-type layouts from context-pass.
+- Must not: parse usage or decide anything about context. Note that today `readCodex` sees only direct children. The transitive walk is for context only and leaves timing unchanged.
+- Relationships: `readRun`, `readCodex` and `readSubagents` are extended to return their targets next to the timing data they already compute. `--session` gets a fourth lister. The lister results go through dedupe, then `readJsonl`, then the harness entry's reader.
+- Lifecycle: built once per process, after load and **before** any early exit, so all exit paths share one context result.
+- Errors: a missing directory, or a file that is not a rollout, is exit 2 as today. A target file that is missing or unreadable becomes an unmeasured record and never aborts the run.
+
+**run-profile.mjs**, extended: it parses `--context-only`, `--session` and `--context-window`; it builds the context result once; and one helper places that result into each output. The helper puts the context lines before `Profile: unmeasured`, adds the context reasons to that line, and adds the `context` key and the `## Context` section to `--out`. The outputs that use it are the full profile, the no-bead partial (exit 0), the `Profile: unavailable` path (exit 3), the missing-epic die and context-only mode. `--summarize` delegates its context line to context-pass.
+
+Variation:
+- **Harness** (2 kinds now; Gemini CLI is a likely next one). Absorbed by `HARNESSES` in context-pass; that table is the one place a kind is chosen.
+- **Run type** (workflow, subagents, codex, session). Absorbed by one source lister each in run-profile.
+- **Model windows.** A new model family is a new row in the window table.
+- **Causes** are a closed enum (cap, early, idle, manual). Rendering always walks them in that fixed order.
+
+Walk-through: `run-profile --workflow <dir>` runs `readRun`, which yields the timing plus targets: every agent transcript, and the session file as coordinator with the first-dispatch cutoff. The targets are deduped by real path and read with `readJsonl`. Each one goes through `HARNESSES.claude` (its reader, then `claudeWindow`), which returns an `AgentContext`. `summarizeContext` classifies each compaction with that entry's cause rule and builds the summary and the unmeasured reasons. `contextLines` renders the result, and the helper places it in whichever exit path the timing takes.
+
+Future change: adding Gemini CLI touches one new harness entry (its reader, window, cause rule and invocation matcher) and one new source lister plus its flag in run-profile. `summarizeContext`, the renderers and the exit paths stay unchanged.
+
+- Per spec §Compaction cause: causes are applied in `summarizeContext`, not in the readers. So readers must record the raw gap on each compaction, and summarize looks up the per-harness rule through the harness entry. That split is intended.
+- Per spec §Claude Code window: only Claude has a window function (table, override, inferred). Codex takes its window from the transcript. The asymmetry is intended.
+- Per spec §Context-only mode: `--context-only` deliberately branches past the coordinator check, epic resolution, the ledger, `bd` and the timing profile. Normal mode prints context before its early exits. Both are intended branches in run-profile's main flow.
+- Per spec §Module boundary: readers take parsed rows, not paths, so file I/O and `readJsonl` stay in run-profile.
+- Gap filled (the spec does not decide this): with more than one coordinator record, which happens with a resumed Codex thread that has several rollouts, the summary's coordinator figures use the largest peak and the summed compactions.
+- Gap filled (the spec does not decide this): in context-only mode the coordinator cutoff is the earliest start among the agent transcripts. With no agents, rows start at the last invocation.
+
+Digest:
+- context-pass: owns per-harness reading, windows, cause classification, summary and every context rendering (lines, Markdown, JSON, baseline);
+  new context logic and new output formats are added here; callers never parse usage fields or format context lines themselves.
+- Harness entry: owns everything that differs by harness (reader, window, cause rule, invocation marker);
+  a new harness is one new entry in `HARNESSES`; callers never branch on `harness`.
+- AgentContext: owns the uniform per-agent record and the raw compaction facts;
+  new measured facts are added as fields set by the readers; callers never build one outside a reader, and never treat a null `peak` as 0.
+- Context targets: owns which transcripts each run type contributes, the dedupe by real path and the coordinator cutoff;
+  a new run type is one new lister; context-pass never discovers files.
+
 ## Post-Implementation Notes
 
 > *As this design is implemented and iterated on — bug fixes, adjustments, anything that diverged from the assumptions above — append a dated note here, whether or not a formal debugging skill was used.*
