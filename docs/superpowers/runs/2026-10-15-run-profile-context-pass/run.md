@@ -1,8 +1,8 @@
 # super-auto run — 2026-10-15-run-profile-context-pass
 
 flags: planOneShot=t skipPlanRoast=f skipCodeRoast=f autonomous=t
-phase: fix-loop
-roastCodeRound: 1
+phase: roast-code
+roastCodeRound: 2
 roast-code: 2026-10-15-run-profile-context-pass-roast-pr-1.md
 spec: 2026-10-15-run-profile-context-pass-design.md
 epic: super-plan-fqb
@@ -29,12 +29,12 @@ stepBackDesign-round-1: patch — Round 1's 11 findings are independent spec gap
 design roast exit: converged at round 2 (Should-fix 8 confirmed, 0 Blocking) · punch list of 8 applied inline as spec clarifications (window [start,end) from T0, --session unwindowed, inference raises stamps, targets after run filters, measured = non-null peak, AgentContext gap wording), no re-roast · escalations: 4 carried from round 1 (parked) · no qualifier
 graph-pass: depth 4→4 · width 1.2→1.2 · applied 0 · parked 0
 codeBuckets:
-  completed: super-plan-fqb.1, super-plan-fqb.3, super-plan-fqb.2, super-plan-fqb.4, super-plan-fqb.5
+  completed: super-plan-fqb.1, super-plan-fqb.3, super-plan-fqb.2, super-plan-fqb.4, super-plan-fqb.5, super-plan-fqb.10, super-plan-fqb.8, super-plan-fqb.9
   escalated:
   pendingRetry:
   parked:
   stalled: false
-  review: not ready (pending the caller's full-suite sweep; one Must-fix decision: coordinator-workflow.md:1292-1293 and coordinator-subagents.md:71 say to append only the `Profile: unavailable` line on exit 3, which drops the new context lines)
+  review: not ready (pending the caller's full-suite sweep; Must-fix: contextBaseline double-counts the coordinator across a run's super-code invocations; constraint override for the Finish-doc wording recorded under design decisions)
   sweep: SWEEP DEFERRED (caller-owned)
   slowness: round 1: graph-bound — 3 open beads, depth 3, achievable width 1 vs cap 8; edge audit armed now
   worktreesKept:
@@ -47,3 +47,4 @@ scopeFilter-round-1: [Nit] skills/super-code/scripts/run-profile.mjs:685; skills
 scopeFilter-round-1: [Nit] skills/super-code/scripts/run-profile.mjs:674; skills/super-code/scripts/run-profile.mjs:671 punch-list — Peak memory use is a performance/quality concern; the goal names no memory requirement and output is correct.
 scopeFilter-round-1: [Nit] skills/super-code/scripts/run-profile.mjs:693 punch-list — The unavailable line is still correct in outcome; discarding per-file reasons is diagnostic polish rather than wrong goal-named results.
 scope-filter: 3 in-scope · 2 punch-listed
+constraintOverride: 2026-10-15 · super-plan-fqb.8 changed agent-facing Finish wording in coordinator-workflow.md and coordinator-subagents.md ("append its whole stdout"), overriding the epic's own 'no agent-facing change' Global Constraint, which this run's design set; kept because the confirmed roast finding r1 [Should-fix] run-profile.mjs:895 and the final review's Must-fix both show the goal's ledger-ready lines are otherwise lost on exit 3 · surfaced at hand-back for the human
