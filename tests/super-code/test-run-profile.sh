@@ -483,5 +483,25 @@ assert_has "$(cat "$T/czp.md")" "| impl:cz.low | agent |" "every agent is in the
 run bash "$P" --context-only --workflow "$CW/wf_ca" --context-window 300000 --out "$T/cwo"
 assert_eq "$(q "$T/cwo.json" "[...new Set(d.context.agents.filter(a => a.peak !== null).flatMap(a => [a.window, a.windowSource, ...a.compactions.map(c => c.window)]))].join(',')")" "300000,override" "--context-window sets every measured Claude record's window and every compaction's"
 
+echo "run-profile: multi-rollout Codex coordinator (a resumed thread)"
+# One thread, two rollouts: the first from its $super-auto prompt (a 245K cap compaction, the larger
+# peak) and the resumed one with no invocation of its own (a 150K early compaction), each spawning one
+# child. The coordinator summary takes the largest peak and the summed compactions; giving the thread
+# and its second rollout file both, or the full profile, counts no rollout twice.
+CR=$(node "$ORD" "$FX/ctx-codex-resume.json" codex "$T/cr")
+CR2=$(ls "$T"/cr/codex/sessions/*/*/*/rollout-2026-10-13T06-33-20-"$CR".jsonl)
+CRSUM="Profile: context — agents 4 (measured 4) · peak≥80% 1 · compacted 2 agents, 2 compactions (cap 1 · early 1) · coordinator 245K/258K (95%), 2 compactions"
+run bash "$P" --context-only --codex "$CR" --codex-home "$T/cr/codex" --out "$T/crc"
+assert_eq "$code" 0 "multi-rollout --context-only: exits 0"
+assert_has "$out" "$CRSUM" "multi-rollout --context-only: largest peak, summed compactions"
+assert_eq "$(q "$T/crc.json" "d.context.agents.filter(a => a.role === 'coordinator').map(a => a.peak + ':' + a.compactions.map(c => c.cause).join('+')).sort().join(' ')")" "200000:early 245000:cap" "one coordinator record per rollout, each compaction once"
+assert_eq "$(q "$T/crc.json" "d.context.agents.filter(a => a.role === 'agent').map(a => a.label).sort().join(',')")" "impl_cr_1,impl_cr_2" "children of both rollouts"
+run bash "$P" --context-only --codex "$CR" --codex "$CR2" --codex-home "$T/cr/codex"
+assert_has "$out" "$CRSUM" "the thread and its second rollout given both: nothing counted twice"
+run bash "$P" --codex "$CR" --codex-home "$T/cr/codex" --beads "$T/cr/beads.json" --epic cr --out "$T/crp"
+assert_eq "$code" 0 "multi-rollout full profile: exits 0"
+assert_has "$out" "$CRSUM" "multi-rollout full profile: the same coordinator figures"
+assert_eq "$(q "$T/crp.json" "[d.context.summary.compactions, d.context.summary.coordinator.peak, d.context.summary.coordinator.compactions].join(' ')")" "2 245000 2" "multi-rollout full profile --out JSON: the context key"
+
 echo
 if [ "$FAILURES" -eq 0 ]; then echo "run-profile: all tests passed"; else echo "run-profile: $FAILURES failure(s)"; exit 1; fi
