@@ -211,5 +211,17 @@ assert_eq "$code" 4 "no jq exits 4"
 case "$out" in JQ_UNAVAILABLE:*) pass "no jq prints a JQ_UNAVAILABLE: instruction" ;;
   *) fail "no jq prints a JQ_UNAVAILABLE: instruction"; echo "    got: $out" ;; esac
 
+echo "prompt-text: shaped units"
+SK="$REPO_ROOT/skills/super-design/SKILL.md"
+PR="$REPO_ROOT/skills/super-design/promotion-reviewer-prompt.md"
+has() { grep -qF -- "$2" "$1"; }
+for phrase in "one feature in one subsystem" "Tightly coupled" "checkable list" "- [ ]" "heavy mutual calls or imports"; do
+  if has "$SK" "$phrase"; then pass "SKILL.md has: $phrase"; else fail "SKILL.md has: $phrase"; fi
+done
+for phrase in "one feature in one subsystem" "tightly coupled files" "heavy mutual calls or imports"; do
+  if has "$PR" "$phrase"; then pass "promotion prompt has: $phrase"; else fail "promotion prompt has: $phrase"; fi
+done
+if has "$PR" "~5+"; then fail "promotion prompt has no ~5+ number"; else pass "promotion prompt has no ~5+ number"; fi
+
 echo
 if [ "$FAILURES" -eq 0 ]; then echo "All super-design script tests passed"; else echo "$FAILURES failure(s)"; exit 1; fi

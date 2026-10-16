@@ -189,6 +189,10 @@ human).
 
 Same fields as brainstorming's old beads step: title, short description, files-touched hint, blocking deps per child.
 
+Every leaf's acceptance criteria are a checkable list, one `- [ ]` item per criterion;
+super-code's planner carries the list verbatim into the task, and each item is what the task
+reviewer checks.
+
 **A deletion bead's acceptance must sweep the whole repo, not just imports.** "grep shows zero
 importers" passes while the deleted path still appears in build/lock/digest/manifest artifacts —
 a codegen manifest, a lockfile, a checksum or approved-source list (measured live: a deleted
@@ -231,6 +235,11 @@ catches only the bottleneck case, so Step A's job is to not fuse work that could
 
 - **Cohesion:** a leaf is one merge-worthy deliverable a reviewer accepts or rejects as a
   unit. A description that needs "and then" is two beads.
+- **One feature, one subsystem:** a leaf delivers one feature in one subsystem. Tightly coupled
+  files (heavy mutual calls or imports) stay in one leaf; splitting them only moves the coupling
+  into a seam two implementers must agree on. Siblings that share an interface name it as a
+  contract through the owns:/consumes: lines below, or a `Seam contract:` bead when the interface
+  must exist first.
 - **Executable by one implementer:** super-code's implementer works alone and spawns no
   subagents, so work that needs fresh agents — behavioral probes, skill evals, scenario runs
   against a model — is not a leaf. Route it to the orchestrator's own phase (`super-auto`'s
