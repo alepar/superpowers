@@ -1,7 +1,7 @@
 # super-auto run — 2026-10-15-run-profile-context-pass
 
 flags: planOneShot=t skipPlanRoast=f skipCodeRoast=f autonomous=t
-phase: roast-design
+phase: code
 spec: 2026-10-15-run-profile-context-pass-design.md
 epic: super-plan-fqb
 roastDesignRound: 2
@@ -25,3 +25,4 @@ parked:
 
 stepBackDesign-round-1: patch — Round 1's 11 findings are independent spec gaps in three clusters (coordinator cutoff, per-row window/model, null and unmeasured rendering) plus two one-off fixes; sweep each cluster with one rule and keep the design
 design roast exit: converged at round 2 (Should-fix 8 confirmed, 0 Blocking) · punch list of 8 applied inline as spec clarifications (window [start,end) from T0, --session unwindowed, inference raises stamps, targets after run filters, measured = non-null peak, AgentContext gap wording), no re-roast · escalations: 4 carried from round 1 (parked) · no qualifier
+graph-pass: depth 4→4 · width 1.2→1.2 · applied 0 · parked 0

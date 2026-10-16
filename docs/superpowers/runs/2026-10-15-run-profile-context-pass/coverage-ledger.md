@@ -22,3 +22,5 @@ cov-21 · r2 · UNOWNED-SEAM · Codex fork point · applied — codexContext det
 cov-22 · r2 · UNOWNED-SEAM · coordinator cutoff argument · applied — readers take an inclusive fromRow index computed with the matcher
 cov-23 · r2 · GAP · R12 · applied — fqb.3 states super-auto readers reach run-profile through super-code; no super-auto doc change
 cov-24 · r2 · GAP · ledger-ready lines reach the ledger · rejected — super-code's Finish already records every run-profile `Profile:` line on the ledger (SKILL.md, spec §Documentation); the new lines are `Profile:` lines
+cov-25 · graph · GRAPH-EDGE · super-plan-fqb.4 <- super-plan-fqb.2 · kept — fqb.4 runs the CLI flags and wiring fqb.2 lands
+cov-26 · graph · GRAPH-EDGE · super-plan-fqb.2 <- super-plan-fqb.1 · kept — fqb.2 consumes the context-pass module API and matchers
