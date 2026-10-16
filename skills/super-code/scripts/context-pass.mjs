@@ -291,11 +291,33 @@ export function contextJson(s) {
   return { agents, summary }
 }
 // One `Baseline: context` line over the `context` values of several --out profiles; null when none has one.
+// Every super-code invocation of one super-auto run reports the same coordinator record, so agents are
+// counted once per file (the record with the most requests) and compactions once per (file, at). A record
+// with no file is never merged; a context with no `agents` list adds its summary counts as they are.
 export function contextBaseline(contexts) {
   const cs = (contexts ?? []).filter(c => c?.summary)
   if (!cs.length) return null
-  const t = k => cs.reduce((s, c) => s + (c.summary[k] ?? 0), 0)
-  const by = Object.fromEntries(CAUSES.map(k => [k, cs.reduce((s, c) => s + (c.summary.byCause?.[k] ?? 0), 0)]))
+  const files = new Map(), loose = { n: 0, measured: 0, high: 0, compacted: 0 }
+  const by = Object.fromEntries(CAUSES.map(k => [k, 0]))
+  for (const c of cs) {
+    if (!Array.isArray(c.agents)) {
+      for (const k of Object.keys(loose)) loose[k] += c.summary[k] ?? 0
+      for (const k of CAUSES) by[k] += c.summary.byCause?.[k] ?? 0
+      continue
+    }
+    for (const a of c.agents.filter(Boolean)) {
+      const key = a.file ?? Symbol('no file')
+      const f = files.get(key) ?? { a, comps: new Map() }
+      if ((a.requests ?? 0) > (f.a.requests ?? 0)) f.a = a
+      for (const x of a.compactions ?? []) { const at = x?.at ?? Symbol('no time'); if (!f.comps.has(at)) f.comps.set(at, x) }
+      files.set(key, f)
+    }
+  }
+  const fs = [...files.values()]
+  for (const f of fs) for (const x of f.comps.values()) by[CAUSES.includes(x?.cause) ? x.cause : 'unknown']++
+  const measured = fs.filter(f => num(f.a.peak) !== null)
+  const n = loose.n + fs.length, high = loose.high + measured.filter(f => (f.a.peakPct ?? 0) >= HIGH_PCT).length
+  const compacted = loose.compacted + fs.filter(f => f.comps.size).length, total = CAUSES.reduce((s, k) => s + by[k], 0)
   const causes = causeList(by, ' · ')
-  return `Baseline: context — ${cs.length} profile(s) · agents ${t('n')} (measured ${t('measured')}) · peak≥80% ${t('high')} · compacted ${t('compacted')} agents, ${t('compactions')} compactions${causes ? ` (${causes})` : ''}`
+  return `Baseline: context — ${cs.length} profile(s) · agents ${n} (measured ${loose.measured + measured.length}) · peak≥80% ${high} · compacted ${compacted} agents, ${total} compactions${causes ? ` (${causes})` : ''}`
 }

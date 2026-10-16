@@ -174,8 +174,24 @@ const comp = (pre, trigger = 'auto', gapMs = 1000) => ({ at: at(0), trigger, pre
   const s = summarizeContext([rec('coord', 190000, 200000, [comp(165000)], { role: 'coordinator' })])
   const j = contextJson(s)
   check('json: { agents, summary }', [Object.keys(j), j.summary.byCause.cap, j.agents[0].compactions[0].cause], [['agents', 'summary'], 1, 'cap'])
-  check('baseline: aggregates compactions by cause over profiles with a context key', contextBaseline([j, undefined, j]), 'Baseline: context — 2 profile(s) · agents 2 (measured 2) · peak≥80% 2 · compacted 2 agents, 2 compactions (cap 2)')
+  const j2 = contextJson(summarizeContext([rec('coord2', 190000, 200000, [comp(165000)], { role: 'coordinator' })]))
+  check('baseline: aggregates compactions by cause over profiles with a context key', contextBaseline([j, undefined, j2]), 'Baseline: context — 2 profile(s) · agents 2 (measured 2) · peak≥80% 2 · compacted 2 agents, 2 compactions (cap 2)')
   check('baseline: none with a context key', contextBaseline([undefined]), null)
+}
+{
+  // Two super-code invocations of one super-auto run: both profiles carry the same coordinator file and
+  // its one compaction; the second invocation's record covers more rows. Each implementer is its own.
+  const coordA = rec('coord', 190000, 200000, [comp(165000)], { role: 'coordinator', requests: 5 })
+  const coordB = rec('coord', 190000, 200000, [comp(165000)], { role: 'coordinator', requests: 7 })
+  const pA = contextJson(summarizeContext([coordA, rec('impl:a', 120000, 200000)]))
+  const pB = contextJson(summarizeContext([coordB, rec('impl:b', 170000, 200000, [comp(90000, 'manual')])]))
+  check('baseline: a coordinator file and compaction shared by two profiles count once',
+    contextBaseline([pA, pB]), 'Baseline: context — 2 profile(s) · agents 3 (measured 3) · peak≥80% 2 · compacted 2 agents, 2 compactions (cap 1 · manual 1)')
+  const wide = rec('coord', 190000, 200000, [comp(165000), { ...comp(60000, 'auto', 4e6), at: at(100) }], { role: 'coordinator', requests: 9 })
+  check('baseline: a compaction only the wider record saw still counts',
+    contextBaseline([pA, contextJson(summarizeContext([wide]))]), 'Baseline: context — 2 profile(s) · agents 2 (measured 2) · peak≥80% 1 · compacted 1 agents, 2 compactions (cap 1 · idle 1)')
+  const nofile = contextJson(summarizeContext([rec('scout', 30000, 200000, [], { file: null })]))
+  check('baseline: records with no file are never merged', contextBaseline([nofile, nofile]), 'Baseline: context — 2 profile(s) · agents 2 (measured 2) · peak≥80% 0 · compacted 0 agents, 0 compactions')
 }
 
 // ---- spans: the whole transcript, counted only inside [fromRow, toRow) spans in original row indices ----
