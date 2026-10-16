@@ -60,7 +60,7 @@ list, never a re-plan or a stop — and record each action in the friction log (
 friction rule under §Phase 6 — report) as well as the ledger. Watch with the Monitor tool or a bounded loop that exits when the Workflow ends, never a
 backgrounded `tail -f`.
 
-While a coordinator or roast Workflow runs on Claude Code, keep the keepalive armed (`super-code/coordinator-card.md`'s Workflow keepalive, also super-code's "Unattended runs"): each wake re-runs the register command (§Pre-flight step 4), which refreshes the marker.
+While a coordinator or roast Workflow runs on Claude Code, keep the keepalive armed (`super-code/coordinator-card.md`'s Workflow keepalive, also super-code's "Unattended runs"): each wake re-runs the run's register command — the command from §Pre-flight step 4, plus `--epic <epic> --ledger <abs ledger>` once phase 3 has them; a refresh that omits them keeps them — which refreshes the marker.
 
 The stops you want form a closed list (§Invariants I1 (closed stop list)); under `autonomous` none of them is mid-run:
 
@@ -126,7 +126,7 @@ Once `bd` and the skill version are confirmed, work in this order: steps 3 and 4
    base: <the branch this run merges back into>
    ```
 
-   Mint the runTag with `date -u +%Y%m%dT%H%M%S`; take `context:` from `bash <skills-root>/super-code/scripts/context-preflight`. In the same step, after run.md is written, register the run marker so a compaction from here on re-injects the run block: `bash <skills-root>/super-code/scripts/run-marker register --skill super-auto --worktree <run worktree> --run-md <abs run.md> --run-tag <runTag>` (add `--epic <epic> --ledger <abs ledger>` once phase 3 has them). Record its output line in the friction log when it is a `skipped`, `wrote fallback` or `register failed` line; the run goes on.
+   Mint the runTag with `date -u +%Y%m%dT%H%M%S`; take `context:` from `bash <skills-root>/super-code/scripts/context-preflight`. In the same step, after run.md is written, register the run marker so a compaction from here on re-injects the run block: `bash <skills-root>/super-code/scripts/run-marker register --skill super-auto --worktree <run worktree> --run-md <abs run.md> --run-tag <runTag>` (add `--epic <epic> --ledger <abs ledger>` once phase 3 has them; a later register without them keeps them). Record its output line in the friction log when it is a `skipped`, `wrote fallback` or `register failed` line; the run goes on.
 
    Every later field uses the names and line formats in run-state.md §Field table (§Invariants I6 (run.md field names)).
 
