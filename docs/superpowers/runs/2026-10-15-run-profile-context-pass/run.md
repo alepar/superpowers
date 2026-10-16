@@ -39,3 +39,11 @@ codeBuckets:
   slowness: round 1: graph-bound — 3 open beads, depth 3, achievable width 1 vs cap 8; edge audit armed now
   worktreesKept:
   processSweep: stopped 0 · survived 0
+
+stepBackCode-round-1: patch — Round 1 has no recurrence; two clusters (exit-3 coordinator docs; reader windowing: readers see only in-window rows) swept with one rule each; no redesign
+scopeFilter-round-1: [Should-fix] skills/super-code/scripts/run-profile.mjs:895; skills/super-code/coordinator-workflow.md:1292 in-scope — Goal names ledger-ready per-agent lines; on exit 3 the docs make the Profile: context lines never reach the ledger, so the goal-named output is lost in the Finish path.
+scopeFilter-round-1: [Should-fix] skills/super-code/scripts/context-pass.mjs:84 in-scope — Goal names each compaction with its cause (cap, early, idle); this misclassifies cause and drops the idle gap due to a wrong default window, which is a correctness defect.
+scopeFilter-round-1: [Nit] skills/super-code/scripts/run-profile.mjs:685; skills/super-code/scripts/run-profile.mjs:686 in-scope — Concatenating disjoint windows misclassifies compaction cause (idle vs early), a correctness defect in a goal-named path, and the path is untested while the goal requires fixture coverage.
+scopeFilter-round-1: [Nit] skills/super-code/scripts/run-profile.mjs:674; skills/super-code/scripts/run-profile.mjs:671 punch-list — Peak memory use is a performance/quality concern; the goal names no memory requirement and output is correct.
+scopeFilter-round-1: [Nit] skills/super-code/scripts/run-profile.mjs:693 punch-list — The unavailable line is still correct in outcome; discarding per-file reasons is diagnostic polish rather than wrong goal-named results.
+scope-filter: 3 in-scope · 2 punch-listed
