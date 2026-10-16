@@ -106,6 +106,14 @@ run_digest all 18000 </dev/null
 assert_eq "$(printf '%s\n' "$out" | head -n 1)" "$(head -n 1 "$CARD")" "card still prints for empty stdin"
 assert_has "$out" "Run state: no marker on stdin" "state line after the card"
 
+echo "run-digest: a ledger with no Task lines"
+printf '# Progress\nDetector: slow\nLaunch: x\n' >"$T/tasks-less.md"
+run_digest state 9000 < <(printf 'key: S1\nskill: super-code\nharness: claude\nledger: %s\nepic: E\nsession: S1\nworktree: %s\n' "$T/tasks-less.md" "$T/wt")
+assert_eq "$code" 0 "exits 0"
+assert_has "$out" "## Run state" "heading still prints"
+assert_has "$out" "ledger: landed 0 · failed/BLOCKED 0 · pending retry 0 · cancelled 0" "zero counts"
+assert_hasp "$out" "open beads: " "later sections still print"
+
 echo "run-digest: a failing source degrades only its section"
 printf '#!/usr/bin/env bash\nexit 1\n' >"$T/bin/bd"
 run_digest state 9000 < <(marker progress.md)

@@ -92,7 +92,7 @@ build_state() {
   if [ -z "$ledger" ]; then
     ledger_counts="ledger: none yet"
   elif [ "$ok_ledger" = 1 ]; then
-    ledger_counts=$(grep -v '^# ledger-digest:' "$T/ledger" | awk '
+    ledger_counts=$({ grep -v '^# ledger-digest:' "$T/ledger" || true; } | awk '
       match($0, /^Task [^ ]+ \([^)]+\): /) {
         id = $0; sub(/^Task [^ ]+ \(/, "", id); sub(/\).*$/, "", id)
         st = $0; sub(/^Task [^ ]+ \([^)]+\): /, "", st)
@@ -102,7 +102,7 @@ build_state() {
       }
       END { for (i in state) c[state[i]]++
         printf "ledger: landed %d · failed/BLOCKED %d · pending retry %d · cancelled %d", c["L"], c["B"], c["P"], c["C"] }')
-    while IFS= read -r line; do tail_lines[${#tail_lines[@]}]=$line; done < <(grep -v '^# ledger-digest:' "$T/ledger" | tail -n 15)
+    while IFS= read -r line; do tail_lines[${#tail_lines[@]}]=$line; done < <({ grep -v '^# ledger-digest:' "$T/ledger" || true; } | tail -n 15)
     ntail=${#tail_lines[@]}
   else
     ledger_counts="ledger: unknown"
