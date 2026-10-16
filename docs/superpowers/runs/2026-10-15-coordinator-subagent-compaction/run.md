@@ -76,3 +76,4 @@ fixBeads-round-1: super-plan-goq.34–super-plan-goq.44 (5 cluster beads, 6 sing
 roastCodeExit: converged
 regressionPass-round-2: [Should-fix] hooks/session-start-codex:17; hooks/session-start-codex:19 + [Should-fix] hooks/session-start-codex:17 → one fix bead (Codex fallback marker); no step-back, no scope filter, no re-roast
 finalReviewException: autonomous once-per-run — Must-fix correctness items from final-review-fixloop-r1.md in goal-named paths filed as fix beads (fallback-marker .gitignore, card Workflow guard, report-verdict order incl. roast r2 [Should-fix] report-verdict:152), one re-entry before the phase-6 sweep; covered by the post-cap audit
+finalReviewException-completion: super-plan-goq.49 — I8 vs Phase-5 keys (item 4 of final-review-fixloop-r1-blocked.md, missed at the exception round's filing) + null reviewPath routing; same exception round, one more re-entry
