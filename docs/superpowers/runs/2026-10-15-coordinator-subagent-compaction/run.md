@@ -28,4 +28,9 @@ parked:
 - 2026-10-15-coordinator-subagent-compaction-roast-design-1.md · escalation · "§A2 5 s watchdog vs run-profile discovery measured at 5–10.6 s — material dissent; addressed by session-scoped --in-flight and per-source timeouts"
 - 2026-10-15-coordinator-subagent-compaction-roast-design-2.md · escalation · "§A3 whether Codex counts additionalContextLimit by tokenizer or bytes/4 — unverified; limit raised to 4000 for margin, spike .1 records honouring"
 - 2026-10-15-coordinator-subagent-compaction-roast-design-2.md · escalation · "§A3 additionalContextLimit margin — engine-added duplicate of the above"
+- graph-pass · graph-change · "drop super-plan-goq.5 <- super-plan-goq.11 (safe no): the card only summarises spec §B1; alone takes depth 8→6"
+- graph-pass · graph-change · "narrow super-plan-goq.6 <- super-plan-goq.5 to super-plan-goq.19 <- super-plan-goq.5 (safe no): .6 stubs the spec-fixed run-digest CLI; with the drop above, depth 8→5"
+- graph-pass · graph-change · "drop super-plan-goq.11 <- super-plan-goq.12 (safe no): only matters if .5 <- .11 stays"
+- graph-pass · graph-change · "proposal: seam contract for hooks/run-block.sh between .6 and .7 (optional)"
 roastDesignExit: converged (round 2: Should-fix 9 [converged], 0 Blocking; round 1 Blocking 1 / Should-fix 9 / Nit 5 all fixed or resolved); punch list of 9 applied inline; escalations parked (8)
+graph-pass: depth 8→8 · width 2.5→2.5 · applied 0 · parked 4

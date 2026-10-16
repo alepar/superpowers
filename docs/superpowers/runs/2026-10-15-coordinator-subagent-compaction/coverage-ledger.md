@@ -27,3 +27,10 @@ c25 · r2 · GAP · R5 · applied — .9/.10 acceptance: the read rule covers ev
 c26 · r2 · UNOWNED-SEAM · report file format · applied — .8 and .13 keep recognised shapes
 c27 · r2 · UNOWNED-SEAM · super-plan-goq.16<-super-plan-goq.13 · kept — .16's blocked-by line already names the exchanged thing (dryRun baselines ordering)
 c28 · r2 · GAP · end-to-end re-inject · rejected — live compaction checks are orchestrator follow-on outside the tree (spec §C, Follow-on); the spike (.1) covers the live id facts
+g1 · graph · GRAPH-EDGE · super-plan-goq.19 <- super-plan-goq.7 · kept — smoke runs the Codex hook files .7 creates
+g2 · graph · GRAPH-EDGE · super-plan-goq.11 <- super-plan-goq.12 · parked — drop, safe no (shared coordinator.js/test-dispatch-text.sh; matters only if .5<-.11 stays)
+g3 · graph · GRAPH-EDGE · super-plan-goq.12 <- super-plan-goq.8 · kept — final-answer rule helper
+g4 · graph · GRAPH-EDGE · super-plan-goq.7 <- super-plan-goq.6 · kept — sources hooks/run-block.sh
+g5 · graph · GRAPH-EDGE · super-plan-goq.6 <- super-plan-goq.5 · parked — narrow to .19 <- .5, safe no (.6 can stub the spec-fixed run-digest CLI)
+g6 · graph · GRAPH-EDGE · super-plan-goq.5 <- super-plan-goq.11 · parked — drop, safe no (card summarises spec text; .20 re-checks wording); alone 8→6
+g7 · graph · PROPOSAL · super-plan-goq.6,super-plan-goq.7 · parked — seam contract for hooks/run-block.sh function interface (optional)
