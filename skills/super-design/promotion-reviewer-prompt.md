@@ -39,7 +39,9 @@ Task tool (general-purpose):
 
     - **Uncertainty test:** implementing this task would force design decisions the spec doesn't
       answer.
-    - **Size test:** the task would decompose into ~5+ subtasks or spans multiple subsystems.
+    - **Size test:** the task delivers more than one feature, or spans more than one subsystem.
+      A LEAF delivers one feature in one subsystem; tightly coupled files (heavy mutual calls or imports)
+      staying together in one task do not fail this test.
 
     `SPLIT` is narrower and fires only when BOTH hold — do not size-police tasks that gate
     nothing:
