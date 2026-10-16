@@ -1,8 +1,9 @@
 # super-auto run — 2026-10-15-run-profile-context-pass
 
 flags: planOneShot=t skipPlanRoast=f skipCodeRoast=f autonomous=t
-phase: roast-code
+phase: fix-loop
 roastCodeRound: 1
+roast-code: 2026-10-15-run-profile-context-pass-roast-pr-1.md
 spec: 2026-10-15-run-profile-context-pass-design.md
 epic: super-plan-fqb
 roastDesignRound: 2
