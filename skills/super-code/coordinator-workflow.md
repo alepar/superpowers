@@ -26,6 +26,7 @@ args = {
   integrationBranch,
   integrationWorktree,   // optional — see below
   skillsRoot,            // required — see below
+  runTag,                // optional — see below
   deferSweep,            // optional — see below
   processRoots,          // optional — see below
   dryRun,
@@ -42,6 +43,7 @@ args = {
     testPaths: ['tests/**', '...'],  // optional — REPLACES the default test pathspecs, see below
     models: { planner: 'opus', implementer: 'sonnet', reviewer: 'sonnet', mechanical: 'sonnet', triage: 'opus', finalReview: 'opus' },
     efforts: { mechanical: 'low' },  // optional — per-role reasoning effort overrides, see below
+    contextWindows: { planner: 1000000, implementer: 1000000, reviewer: 1000000, finalReview: 1000000, assembler: 1000000 },  // optional — see below
   },
   prompts: { ... },
 }
@@ -58,6 +60,16 @@ cap is `concurrency` as given, and a log line says it was not checked.
 `max`) passed beside each dispatch's model. Defaults: `mechanical` low; `planner`, `triage` and
 `finalReview` high; `implementer` and `reviewer` (which also runs the merge) inherit the session's
 effort. dryRun stubs take none.
+
+`runTag` is **optional**: the run's tag, `<epicId or slug>-<UTC yyyymmddThhmmss>`. A caller
+(`super-auto`) passes its own; a standalone pre-flight mints `<epicId>-…`. Every assembled directory
+and final-review file name uses it, and the Workflow writes it into its `Launch: args` line. Absent,
+it is the epic id.
+
+`contextWindows` is **optional**: `context-preflight --json`'s object (`{"<role>": <window tokens>}`
+for planner, implementer, reviewer, finalReview and assembler; absent roles are unknown), passed
+through unchanged. The final review reads `finalReview`; its fallback window is the FinalReview
+step's own, never set here.
 
 `hotFileCap` is **optional** — additive, defaulting to 3: how many in-flight tasks may declare
 the same `filesTouched` file at once (the scheduling constraint that replaced disjoint-file
@@ -313,6 +325,22 @@ Done by the main session, not the Workflow:
    `super-auto` created it as its run worktree), skip creation entirely and pass its real path as
    `integrationWorktree` — never re-derive it. The user's original worktree stays untouched.
    Record: epic id, integration branch name, and (when not derivable) the worktree path.
+   Then the run's identity, before launch (`<skills>` is `skillsRoot`):
+   - `bash <skills>/super-code/scripts/context-preflight` prints one `Context:` line: append it to the
+     ledger (`<integration worktree>/.superpowers/sdd/<epicId>-plan/progress.md`; create it with the
+     first line `# SDD ledger — plan: <epicId>-plan.md` when absent). `bash
+     <skills>/super-code/scripts/context-preflight --json` gives `config.contextWindows` (omit the key
+     when it prints `{}`).
+   - runTag: the caller's `args.runTag` when given, else mint `<epicId>-$(date -u +%Y%m%dT%H%M%S)`;
+     pass it as `args.runTag` (the Workflow writes it into its `Launch: args` line).
+   - Marker: `bash <skills>/super-code/scripts/run-marker get <session id> --cwd <integration worktree>`
+     (session id: `$CLAUDE_CODE_SESSION_ID`, else `$CODEX_THREAD_ID`). Exit 1 (no live marker: a
+     standalone run) → `bash <skills>/super-code/scripts/run-marker register --skill super-code
+     --worktree <integration worktree> --ledger <ledger path> --epic <epicId> --run-tag <runTag>`, and
+     remember that this session registered it. Exit 0 (a live marker, e.g. super-auto's, possibly its
+     fallback marker, which is why `--cwd` is passed) → register nothing. Under super-auto neither
+     register nor clear. A `run-marker: … skipped` or `register failed` line goes in the friction log
+     and the run goes on (a marker is an optimisation, never a gate).
 3. Resolve the runtime's agent slots and choose a concurrency cap. Read the core count
    (`sysctl -n hw.ncpu` on macOS, `nproc` on Linux) and pass `config.runtimeSlots = min(16, cores-2)`
    — the Workflow runtime's per-workflow agent cap, which the script cannot read itself. The script
@@ -1292,6 +1320,12 @@ bead's ready-to-start wait and cause, the merge lane's load and conflict files, 
 what-ifs. It dispatches nothing. Where the harness keeps no such files it prints one `Profile:
 unavailable — …` line (exit 3); append that instead. Run it before the hand-off removes the
 integration worktree.
+
+**The run marker is the invoking session's too.** After the Workflow returns with a `stopReason` (not
+a relaunch), run `bash <skills>/super-code/scripts/run-marker get <session id> --cwd <integration
+worktree>`; only when its `skill:` line is `super-code`, run `bash
+<skills>/super-code/scripts/run-marker clear --worktree <integration worktree>`. Under super-auto (the
+marker's skill is `super-auto`) clear nothing: super-auto clears at `phase: done`.
 
 ## Local adaptations (porting the script to a project)
 
