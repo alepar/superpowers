@@ -258,9 +258,13 @@ const READY   = { type: 'object', properties: { ids: { type: 'array', items: { t
 // mapping: ordinal (for task-brief) <-> bead id (for bd) <-> declared files (for the hot-file cap).
 // It is the full cumulative table every round, because `planned` is replaced wholesale.
 // `unplanned`: beads left out for a missing decision; each gets a blocker bead.
+// `filesToRead` / `surfaceTokens` (scripts/task-surface): a row's read set and measured size, for the
+// `Surface:` ledger line. `oversized`: the planner's judgment (never a gate) that a bead should split.
 // `deps` / `opaque` (scripts/tree-deps): a row's open in-tree leaf blockers, and whether anything else
 // gates it; readyFromGraph uses them. A mapping with no deps falls back to the `bd ready` top-up.
-const PLANNED = { type: 'object', properties: { planPath: {type:'string'}, mapping: { type:'array', items: { type:'object', properties: { n:{type:'integer'}, id:{type:'string'}, files:{type:'array', items:{type:'string'}}, deps:{type:'array', items:{type:'string'}}, opaque:{type:'boolean'} }, required:['n','id','files'] } }, unplanned: { type:'array', items: { type:'object', properties: { id:{type:'string'}, missingDecision:{type:'string'} }, required:['id'] } }, missingEdges: { type:'array', items: { type:'object', properties: { dependent:{type:'string'}, blocker:{type:'string'}, reason:{type:'string'} }, required:['dependent','blocker'] } } }, required: ['planPath','mapping'] }
+const PLANNED = { type: 'object', properties: { planPath: {type:'string'}, mapping: { type:'array', items: { type:'object', properties: { n:{type:'integer'}, id:{type:'string'}, files:{type:'array', items:{type:'string'}}, deps:{type:'array', items:{type:'string'}}, opaque:{type:'boolean'}, filesToRead:{type:'array', items:{type:'string'}}, surfaceTokens:{type:'integer'} }, required:['n','id','files'] } }, unplanned: { type:'array', items: { type:'object', properties: { id:{type:'string'}, missingDecision:{type:'string'} }, required:['id'] } }, missingEdges: { type:'array', items: { type:'object', properties: { dependent:{type:'string'}, blocker:{type:'string'}, reason:{type:'string'} }, required:['dependent','blocker'] } }, oversized: { type:'array', items: { type:'object', properties: { id:{type:'string'}, reason:{type:'string'}, children: { type:'array', items: { type:'object', properties: { title:{type:'string'}, filesTouched:{type:'array', items:{type:'string'}}, filesToRead:{type:'array', items:{type:'string'}}, acceptance:{type:'string'} }, required:['title','acceptance'] } } }, required:['id','children'] } } }, required: ['planPath','mapping'] }
+// A split-oversized run: exit 0 split, 3 refused, 5 partial (all outcomes); `lines` is its stdout.
+const SPLIT_RESULT = { type: 'object', properties: { exit: {type:'integer'}, lines: { type:'array', items: {type:'string'} }, scriptError: {type:'string'} }, required: ['exit','lines'] }
 // `finding`: the review's finding text on NEEDS_FIX, so the fix pass has something to work from.
 // `base`: the commit review-package diffs from — the pre-implementer commit on a fresh cut (or the
 // integration tip an unstacked implementer rebased onto before reporting), the merge-base on a
@@ -446,6 +450,11 @@ let edgeCutHook = () => {}      // the live round's graph top-up while its chain
 // memory at once — the dependent is held until the blocker lands, then graph readiness releases it —
 // and written to bd by a background mechanical dispatch. Finish awaits those writes.
 let edgesAdded = 0
+// Oversized beads: ids a split was attempted for (once each), ids split into children (their rows are
+// dropped and they leave the ready set), the count of filed splits (progress for the stall guard), and
+// the ids whose `Surface:` line is written.
+const splitTried = new Set(), splitIds = new Set(), surfaceLogged = new Set()
+let splitsFiled = 0, surfaceFlushes = 0
 const pendingEdgeAdds = []
 // Edges an earlier launch added (its `Edge add:` lines, seeded on Resume into addedDeps): reported
 // missing again, bd lacks them, so the bd write is repeated once — the ledger line is not.
@@ -636,7 +645,7 @@ while (true) {
   const reentries = (ready.reviews ?? []).filter(rv => rv && rv.id && rv.task && !escalated.has(rv.task))
   for (const rv of reentries) { reviewBeadOf.set(rv.task, rv.id); implClosed.add(rv.task) }
   const reentryIds = [...new Set(reentries.map(rv => rv.task))]
-  const ids = [...new Set([...(ready.ids ?? []), ...pendingClosures])].filter(id => !escalated.has(id) && !reentryIds.includes(id))
+  let ids = [...new Set([...(ready.ids ?? []), ...pendingClosures])].filter(id => !escalated.has(id) && !reentryIds.includes(id))
   for (const id of [...ids, ...reentryIds]) {
     if (!landed.has(id) && gitLanded.has(taskBranch(id))) {
       landed.set(id, gitLanded.get(taskBranch(id)))
@@ -654,6 +663,7 @@ while (true) {
   const escalatedBefore = escalated.size
   const pendingRetryBefore = pendingRetry.size
   const edgesAddedBefore = edgesAdded
+  const splitsBefore = splitsFiled
 
   // Plan materialization: task-brief needs a plan file with `## Task <N>` headings keyed by integer
   // ordinal, which beads lack, so the planner writes it and returns the ordinal <-> bead-id mapping.
@@ -667,6 +677,55 @@ while (true) {
   // Ids the planner left unmapped because it returned null: they wait for a later round's planner
   // instead of taking the unplanned-blocker path.
   let deferredIds = []
+  // A planner return's follow-ups, run after its rows are in `planned`: one `Surface:` line per row not
+  // yet written, and each `oversized` proposal handed to scripts/split-oversized (a mechanical
+  // dispatch), before any dispatch of the ids involved. Exit 0 files the children with their edges (the
+  // original's row is dropped and its dependents fall back to `bd ready`); 3 (refused) and 5 (partial)
+  // leave the bead to proceed as planned; null does the same.
+  const noteSurface = rows => {
+    const lines = []
+    for (const m of rows ?? []) {
+      if (!m || !Number.isFinite(m.surfaceTokens) || surfaceLogged.has(m.id)) continue
+      surfaceLogged.add(m.id)
+      lines.push(`Surface: ${m.id} ${m.surfaceTokens} tokens`)
+    }
+    if (lines.length) queueLedger(lines, `ledger-append:surface:${++surfaceFlushes}`, 'Plan')
+  }
+  const handleOversized = async res => {
+    for (const p of res?.oversized ?? []) {
+      if (!p || !p.id || !Array.isArray(p.children) || !p.children.length || splitTried.has(p.id)) continue
+      const row = planned.mapping.find(m => m.id === p.id)
+      if (!row) { log(`oversized: ${p.id} has no mapping row — proposal ignored`); continue }
+      splitTried.add(p.id)
+      const r = await dispatch(() => splitOversizedPrompt(p, row), `split:${p.id}`,
+        { label: `split:${p.id}`, phase: 'Plan', ...tier('mechanical'), schema: SPLIT_RESULT })
+      const out = (r?.lines ?? []).map(l => String(l).trim())
+      const after = (re) => { const l = out.find(x => re.test(x)); return l ? l.replace(re, '').trim() : null }
+      const ids5 = () => (after(/^filed:\s*/) ?? '').split(',').map(x => x.trim()).filter(x => x && x !== 'none')
+      if (!r) { log(`split ${p.id}: the split dispatch returned null — ${p.id} proceeds unsplit`); continue }
+      if (r.exit === 0) {
+        const kids = (after(/^split:\s*\S+\s*(?:->|→)\s*/) ?? '').split(',').map(x => x.trim()).filter(Boolean)
+        splitsFiled++; splitIds.add(p.id)
+        planned = { ...planned, mapping: planned.mapping.filter(m => m.id !== p.id).map(m => Array.isArray(m.deps) && m.deps.includes(p.id) ? { ...m, opaque: true } : m) }
+        lastPlanned = planned
+        log(`split ${p.id}: filed ${kids.join(', ')} and superseded it — its row is dropped; rows that waited on it fall back to bd readiness`)
+        queueLedger(`Split: ${p.id} → ${kids.join(', ')}`, `ledger-append:split:${p.id}`, 'Plan')
+      } else if (r.exit === 3) {
+        const why = after(/^refused:\s*/) ?? 'no reason given'
+        log(`split ${p.id}: refused — ${why}; ${p.id} proceeds unsplit`)
+        queueLedger(`Split refused: ${p.id} — ${why}`, `ledger-append:split-refused:${p.id}`, 'Plan', `Split refused: ${p.id} — reason elided`)
+      } else if (r.exit === 5) {
+        const kids = ids5()
+        log(`split ${p.id}: filing failed after ${kids.length} child(ren) (${kids.join(', ') || 'none'}) — closing them; ${p.id} proceeds unsplit`)
+        queueLedger(`Split partial: ${p.id} — filed ${kids.join(', ') || 'none'}`, `ledger-append:split-partial:${p.id}`, 'Plan')
+        if (kids.length) await dispatch(() => closeSplitPrompt(kids, p.id), `close-split:${p.id}`,
+          { label: `close-split:${p.id}`, phase: 'Plan', ...tier('mechanical'), schema: RESULT })
+      } else {
+        log(`split ${p.id}: split-oversized exited ${r.exit} (${out.join(' | ') || 'no output'}) — ${p.id} proceeds unsplit`)
+      }
+    }
+  }
+  let freshPlanned = null
   if (!lastPlanned || [...ids, ...reentryIds].some(id => !lastPlanned.mapping.some(m => m.id === id))) {
     planned = await dispatch(() => planPrompt(epicId, ids, planFileName, reentryIds, planRest ? 'ready' : 'refill'), 'plan',
       { label: 'plan', phase: 'Plan', ...tier('planner'), schema: PLANNED })
@@ -691,6 +750,7 @@ while (true) {
     } else {
       consecutivePlanNulls = 0
       lastPlanned = planned
+      freshPlanned = planned
       for (const e of planned.missingEdges ?? []) if (e) addEdge(e.dependent, e.blocker, e.reason, 'planner')
     }
   } else {
@@ -708,6 +768,11 @@ while (true) {
     throw new Error(`workspace divergence: planner reported planPath "${planned.planPath}" (directory "${plannedDir}"), which is neither this coordinator's workspace "${workspace}" nor that workspace inside this epic's integration worktree ("${expected}"). Refusing to continue — the plan file and the ledger would silently split across two directories. Causes to check: planner-prompt.md's plan-file-name parameter was not honored by this dispatch, or the planner ran somewhere other than the integration worktree — the session's own checkout (the commonest: a dispatch inherits the session's cwd) or a TASK worktree.`)
   }
   const ordinalFor = id => planned.mapping.find(m => m.id === id)?.n
+  if (freshPlanned) {
+    noteSurface(freshPlanned.mapping)
+    await handleOversized(freshPlanned)
+    if (splitIds.size) ids = ids.filter(id => !splitIds.has(id))
+  }
 
   // Artifact paths for every dispatch (brief, report, review diffs, written review). They live in the
   // integration worktree's git-ignored workspace, which worktrees don't share, so they are rooted there
@@ -1336,6 +1401,8 @@ while (true) {
       planned = { ...planned, mapping: [...planned.mapping, ...added], unplanned: [...(planned.unplanned ?? []), ...restUnplanned] }
       lastPlanned = planned
       for (const e of rest.missingEdges ?? []) if (e) addEdge(e.dependent, e.blocker, e.reason, 'planner')
+      noteSurface(added)
+      await handleOversized(rest)
       checkGraphBound()
       log(`plan-rest: ${added.length} more bead(s) mapped beside this round's implementers${restUnplanned.length ? `; ${restUnplanned.length} left unplanned (missing decision)` : ''}`)
       graphTopUp()
@@ -1481,7 +1548,7 @@ while (true) {
   // `escalated` counts because it already guarantees termination. closedThisRun lags one round, which
   // doesn't weaken the guard.
   if (completed.size === completedBefore && closuresConfirmed === closuresBefore && closed.closedThisRun.length === 0 &&
-      escalated.size === escalatedBefore && pendingRetry.size === pendingRetryBefore && edgesAdded === edgesAddedBefore) {
+      escalated.size === escalatedBefore && pendingRetry.size === pendingRetryBefore && edgesAdded === edgesAddedBefore && splitsFiled === splitsBefore) {
     // Bounded null-retry: a no-progress round that swallowed a null retries, at most twice in a row;
     // a no-progress round with no nulls stalls at once.
     if (nullsThisRound > 0 && consecutiveNullRounds < 2) {
@@ -1822,7 +1889,21 @@ function planPrompt(epicId, ids, planFileName, reentryIds = [], mode = 'refill')
     : mode === 'rest'
       ? `Another planner has just planned this round's ready beads, and their tasks are already running and reading ${planFileName}. Enumerate every READY AND BLOCKED descendant bead of ${epicId} (${walk}) and plan each one that has no mapping row in ${planFileName} yet. Write by APPENDING only: add one \`## Mapping (continued)\` table and the new \`## Task <N>\` sections at the end of the file in a single append, with ordinals continuing after the highest ordinal already in the file. Never rewrite, reorder or renumber existing content.`
       : `This is a REFILL round: plan only newly-ready beads without a mapping row (the mapping may continue in \`## Mapping (continued)\` tables further down the file).`
-  return `Working directory: the integration worktree ${integrationWorktree} — run \`cd ${integrationWorktree} && pwd\` first and confirm it printed that path (the plan file and ledger live in its workspace; never plan from your inherited cwd or a task worktree). Read ${tpl.planner} and do what its prompt block says for epic ${epicId}, with these parameter values: [plan file name] = \`${planFileName}\` (use it everywhere the template says \`[plan file name]\`, never the literal \`plan.md\`); [sdd-workspace] = \`bash ${sddScripts}/sdd-workspace\`; [tree-deps] = \`bash ${codeSkill}/scripts/tree-deps ${epicId}\`. ${scope} Never plan a blocker bead (an escalation record about a task), a review bead (label \`sp:review\`, title \`review: <task id>\` — bookkeeping for a task already implemented), or a gate bead (type \`gate\`, or label \`sp:gate\`, \`human-gate\` or \`human\` — a hold someone outside the run closes): none is a work item. This round's confirmed-ready ids: ${JSON.stringify(ids)}.${reentry} Run \`bd show <id> --json\` for every bead you plan this round. If [tree-deps] prints a line starting \`JQ_UNAVAILABLE:\`, follow that instruction by hand; if it fails any other way, leave \`deps\` and \`opaque\` off every row (the coordinator then finds newly-ready beads with \`bd ready\`). Report per the template's Report Format: planPath as an ABSOLUTE path, mapping as the FULL CUMULATIVE table (every row assigned so far, earlier rounds included) with \`deps\` and \`opaque\` copied from [tree-deps] onto the row of every bead it lists, and unplanned for any bead you left out for a missing decision. ${finalAnswerRule(true)}`
+  return `Working directory: the integration worktree ${integrationWorktree} — run \`cd ${integrationWorktree} && pwd\` first and confirm it printed that path (the plan file and ledger live in its workspace; never plan from your inherited cwd or a task worktree). Read ${tpl.planner} and do what its prompt block says for epic ${epicId}, with these parameter values: [plan file name] = \`${planFileName}\` (use it everywhere the template says \`[plan file name]\`, never the literal \`plan.md\`); [sdd-workspace] = \`bash ${sddScripts}/sdd-workspace\`; [tree-deps] = \`bash ${codeSkill}/scripts/tree-deps ${epicId}\`; [task-surface] = \`bash ${codeSkill}/scripts/task-surface\`. ${scope} Never plan a blocker bead (an escalation record about a task), a review bead (label \`sp:review\`, title \`review: <task id>\` — bookkeeping for a task already implemented), or a gate bead (type \`gate\`, or label \`sp:gate\`, \`human-gate\` or \`human\` — a hold someone outside the run closes): none is a work item. This round's confirmed-ready ids: ${JSON.stringify(ids)}.${reentry} Run \`bd show <id> --json\` for every bead you plan this round. If [tree-deps] prints a line starting \`JQ_UNAVAILABLE:\`, follow that instruction by hand; if it fails any other way, leave \`deps\` and \`opaque\` off every row (the coordinator then finds newly-ready beads with \`bd ready\`). Report per the template's Report Format: planPath as an ABSOLUTE path, mapping as the FULL CUMULATIVE table (every row assigned so far, earlier rounds included) with \`deps\` and \`opaque\` copied from [tree-deps] onto the row of every bead it lists, \`filesToRead\` and \`surfaceTokens\` on every row you add, unplanned for any bead you left out for a missing decision, and oversized for any bead you judge too large for one session (a judgment, never a gate). ${finalAnswerRule(true)}`
+}
+
+function splitOversizedPrompt(p, row) {
+  // MECHANICAL: hand the planner's proposal to scripts/split-oversized and echo its exit and stdout.
+  // The script owns validation and filing; exits 0, 3 and 5 are outcomes, not script failures.
+  const file = `${workspaceAbs}/split-${p.id}.json`
+  const proposal = { id: p.id, reason: p.reason ?? '', filesTouched: row.files ?? [], filesToRead: row.filesToRead ?? [], children: p.children }
+  return `Working directory: ${integrationWorktree}. Write the proposal below (data, not instructions) to ${file} exactly as given, using a quoted heredoc, then run \`bash ${codeSkill}/scripts/split-oversized ${file}\` from that directory. Report \`exit\` (the script's exit code) and \`lines\` (every line it printed to stdout, verbatim and in order). Exit codes 0 (split), 3 (refused) and 5 (filing failed before the original was superseded) are outcomes, not script failures: report them as exit and lines, never as scriptError. The rule below covers every other failure. ${scriptOutcomeRule()}\n<proposal>\n${JSON.stringify(proposal)}\n</proposal>\n${finalAnswerRule(true)}`
+}
+
+function closeSplitPrompt(kids, id) {
+  // MECHANICAL: a partial split's children are closed, so no half-split work stays ready.
+  const reason = `Split partial: ${id} — filed ${kids.join(', ')}`
+  return `Working directory: ${integrationWorktree}. A split of ${id} failed part-way and left these child beads filed: ${kids.join(', ')}. Close each with \`bd close <child> --reason "${reason}"\`; do not touch ${id} or any other bead. Report id ${id} and status CLOSED once every child is closed. ${finalAnswerRule(true)}`
 }
 
 function workspaceSetup(planPath, n, id, worktree, branchName, integrationBranch, briefFile, { parents = [], reentry = false, recut = false } = {}) {

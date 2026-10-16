@@ -14,7 +14,8 @@ file" below) and writes no code.
 from every other epic's. If a dispatch leaves it unfilled, derive it as `<epicId>-plan.md`.
 `[sdd-workspace]` is the absolute command `bash <skills root>/subagent-driven-development/scripts/sdd-workspace`
 (invoked through `bash`, since marketplace unpacking can strip exec bits). `[tree-deps]` is the
-absolute command `bash <skills root>/super-code/scripts/tree-deps <epic id>`.
+absolute command `bash <skills root>/super-code/scripts/tree-deps <epic id>`. `[task-surface]` is the
+absolute command `bash <skills root>/super-code/scripts/task-surface`.
 
 ```
 Task tool (general-purpose), model: opus:
@@ -85,12 +86,22 @@ Task tool (general-purpose), model: opus:
          against it. One exception to over-declaration being a cost to avoid: a `Seam contract:`
          bead deliberately declares files on both sides of the boundary it contracts — that span
          is its point, not an over-declaration, so preserve it as reported rather than trimming it.
-       - Append one row to the mapping table: ordinal, bead id, task name, `filesTouched`.
+       - Determine this task's **`filesToRead: string[]`** — the files the implementer must read to
+         do the task (interfaces it calls, files it extends, the spec sections it implements), not
+         files it writes: those are `filesTouched`, which keeps its write-only meaning.
+       - Measure the task's surface: run `[task-surface] --base <the integration branch tip,
+         `git rev-parse HEAD` in the integration worktree> <filesTouched and filesToRead paths>` and
+         record the integer it prints as `surfaceTokens` on the mapping row (a path it reports missing
+         at base counts 0: a file the task creates).
+       - Append one row to the mapping table: ordinal, bead id, task name, `filesTouched`,
+         `filesToRead`, `surfaceTokens`.
        - Append a `## Task <N>` section, headed by the **ordinal** (never the bead id), containing:
          - The `filesTouched` list, stated first, in the section body itself (not only in the
            mapping table) — `scripts/task-brief` extracts only this section, so the implementer
-           never sees the mapping table and needs the list here too.
-         - The bead's acceptance criteria and any epic-level Global Constraints, carried verbatim.
+           never sees the mapping table and needs the list here too — and `filesToRead` right
+           after it.
+         - The bead's `- [ ]` acceptance checklist, carried verbatim, item for item, and any
+           epic-level Global Constraints, carried verbatim.
          - Bite-sized, TDD-structured implementation steps with complete content — no placeholders.
          - An independently testable deliverable, with the tests that exercise it named, since
            the implementer runs only the task-relevant tests. Don't write a review contract into
@@ -115,6 +126,12 @@ Task tool (general-purpose), model: opus:
        `missingEdges` rather than only in the plan's prose: prose is not read by the scheduler, and
        the dependent would be dispatched before its blocker. Name only dependencies the beads'
        text makes concrete (a function, file, schema or interface one creates and the other uses).
+    7. You MAY report a bead as `oversized` when you judge it too large for one session AND its work
+       falls into independent groups: `{id, reason, children:[{title, filesTouched, filesToRead,
+       acceptance}]}`, each child's `acceptance` a `- [ ]` list, the children together carrying every
+       original checklist item verbatim, each child's files within the original's `filesTouched`
+       plus `filesToRead`. `surfaceTokens` informs this judgment; it is never a gate, and no number
+       decides it. Plan the bead normally as well: if the split is refused it proceeds as planned.
 
     ## Constraints
 
@@ -130,12 +147,13 @@ Task tool (general-purpose), model: opus:
       from it to agents in other worktrees, where a relative path resolves to the wrong root)
     - `mapping`: the **full, cumulative mapping table** — every row assigned so far in `[plan file
       name]`, including rows from earlier rounds, not only the rows this round added — `{n:
-      <ordinal>, id: <bead id>, files: <filesTouched list>, deps, opaque}` per row (`deps` and
+      <ordinal>, id: <bead id>, files: <filesTouched list>, filesToRead, surfaceTokens, deps,
+      opaque}` per row (`deps` and
       `opaque` from step 5, only on rows of beads `[tree-deps]` listed). Return the complete table
       every round: the coordinator replaces its working copy with whatever you return, so a
       round-scoped subset would make every previously-assigned id's ordinal lookup fail on the
       very next round. `files` is required on every entry; it is what the coordinator's
-      hot-file cap (`config.hotFileCap`) counts. `deps`/`opaque` let the coordinator dispatch a
+      hot-file cap (`config.hotFileCap`) counts. `filesToRead` and `surfaceTokens` are set on every row you add this round. `deps`/`opaque` let the coordinator dispatch a
       bead the moment its blockers land, without a `bd ready` round-trip.
     - `unplanned`: one `{id, missingDecision}` entry per bead you left out under step 4 (omit or
       leave empty when none). The coordinator files a blocker bead for each, carrying your
@@ -144,3 +162,6 @@ Task tool (general-purpose), model: opus:
       (omit or leave empty when none). The coordinator holds the dependent until the blocker lands
       and adds the edge to the tracker.
 ```
+    - `oversized`: one `{id, reason, children}` entry per bead you reported under step 7 (omit or
+      leave empty when none). The coordinator runs the split before the next refill; a refused or
+      partial split leaves the bead to proceed as you planned it.
