@@ -2,7 +2,7 @@
 
 flags: planOneShot=t skipPlanRoast=f skipCodeRoast=f autonomous=f
 resumeChange: 2026-10-15 · "one-shot design … fully autonomous after" + "lgtm" · autonomous=t from phase 3 onward (no stops until the phase-7 hand-back)
-phase: fix-loop
+phase: report
 codeMechanism: Workflow
 
 idea: Implement both vision specs in one run: docs/superpowers/specs/2026-10-15-vision-coordinator-compaction.md and docs/superpowers/specs/2026-10-15-vision-subagent-compaction.md. One-shot design; pause once design is done so the user can review the split into beads; fully autonomous after that. Both roasts on. The herdr tabs "coordinator-compaction" and "subagent-compaction" in this workspace authored the visions and can be consulted about decision rationale while writing the design spec.
@@ -77,3 +77,4 @@ roastCodeExit: converged
 regressionPass-round-2: [Should-fix] hooks/session-start-codex:17; hooks/session-start-codex:19 + [Should-fix] hooks/session-start-codex:17 → one fix bead (Codex fallback marker); no step-back, no scope filter, no re-roast
 finalReviewException: autonomous once-per-run — Must-fix correctness items from final-review-fixloop-r1.md in goal-named paths filed as fix beads (fallback-marker .gitignore, card Workflow guard, report-verdict order incl. roast r2 [Should-fix] report-verdict:152), one re-entry before the phase-6 sweep; covered by the post-cap audit
 finalReviewException-completion: super-plan-goq.49 — I8 vs Phase-5 keys (item 4 of final-review-fixloop-r1-blocked.md, missed at the exception round's filing) + null reviewPath routing; same exception round, one more re-entry
+baseAbsorbed: 0ea996d4 → 98eb7f12, 3 conflicted files (docs/superpowers/specs/INDEX.md, skills/super-code/coordinator-subagents.md, skills/super-code/scripts/run-profile.mjs)
