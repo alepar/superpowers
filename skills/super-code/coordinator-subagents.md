@@ -48,8 +48,11 @@ Keep the window full. The Workflow coordinator does these, and so do you:
 
 Three things keep the run measurable and resumable:
 
-- **Launch line.** Before the first task dispatch, append `Launch: mechanism ordinary-subagents ·
-  epic <id> · branch <branch> · integrationWorktree <absolute path> · concurrency <N> ·
+- **Launch line.** Before the Launch line, run the same identity steps as `coordinator-workflow.md`
+  §Pre-flight (step 2's run-identity bullets): the `Context:` line, the runTag, and the marker guard —
+  register only when `run-marker get … --cwd` finds no live marker; under super-auto neither register
+  nor clear. Before the first task dispatch, append `Launch: mechanism ordinary-subagents ·
+  epic <id> · runTag <tag> · branch <branch> · integrationWorktree <absolute path> · concurrency <N> ·
   earlyUnblock <on or off> · sweep <command or deferred> · mergeCheck <build-only command or none>`
   to the ledger. Append another one when you resume.
 - **Ledger outcomes.** Write each task's `Task …` and `Merge: …` lines in `coordinator-workflow.md`'s
@@ -69,3 +72,12 @@ At Finish, record the run profile: `bash <skillsRoot>/super-code/scripts/run-pro
 "$CODEX_THREAD_ID"` on Codex, or `--subagents ~/.claude/projects/*/"$CLAUDE_CODE_SESSION_ID"/subagents`
 on Claude Code, with `--ledger <ledger> --out <ledger dir>/profile-<session id>`. Append its stdout
 to the ledger. If it prints `Profile: unavailable — …` (exit 3), append that line instead.
+
+Then clear the run marker by the same rule as `coordinator-workflow.md` §Finish: `bash
+<skillsRoot>/super-code/scripts/run-marker get <session id> --cwd <integration worktree>`, and only
+when its `skill:` line is `super-code`, `run-marker clear --worktree <integration worktree>`. Under
+super-auto clear nothing.
+
+Every read you make to route the loop follows the read rule in `coordinator-card.md` (re-injected
+after compaction): the ledger through `ledger-digest`, child reports through `report-verdict <file>`,
+never a report body, plan, spec or diff.

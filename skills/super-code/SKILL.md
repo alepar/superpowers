@@ -79,6 +79,12 @@ started that references the run's paths: the ledger, the integration worktree, a
 No re-plans, no edits to running tasks, and never a stop (a hung Workflow, above, is the one
 exception): a signal you cannot act on cheaply is noted and the run goes on.
 
+**Workflow keepalive (Claude Code only).** While a coordinator or roast Workflow runs, keep one `run_in_background` `sleep 2700` armed. When it fires before the Workflow's notification, take one cheap progress look (the newest ledger lines), refresh the run marker with the same `run-marker register` command the run registered with, and re-arm. Do not re-arm once the Workflow has returned. No idle trigger is known on Codex: there, block on `wait_agent` in 5–10 minute stretches and never poll `list_agents`.
+
+Arm it when you launch or relaunch a coordinator Workflow; it complements the Monitor or bounded-loop watcher and replaces neither; between runs idle compaction behaves as today. Under super-auto the refresh is super-auto's own register command (super-auto §Ending turns in an autonomous run).
+
+**Read rule.** Read only what you need to route work: the ledger through `ledger-digest`; run state through `run-digest` or `run.md`'s fields; child and roast reports through `report-verdict <file>` (verdict, blocking items, path). Plans, specs, source, diffs and full child reports are read by children, never by you to route. Stated in full in `./coordinator-card.md`, which a compaction re-injects.
+
 ## Boundary
 
 super-code owns the epic-level machinery and its per-task prompts; it uses
@@ -124,6 +130,8 @@ A caller supplies these — none are inferable from the repo:
 | mode | autonomous or interactive — Workflow uses the script; ordinary subagents run the loop by hand (`coordinator-subagents.md`). Mode changes who answers a blocked task, never what gets reviewed |
 | who owns the finish | **state it explicitly if the caller owns it.** There is no config flag. Left unsaid, this skill runs its own Finish: it merges the integration branch and deletes the worktree — taking the ledger and the per-task reports with it, which is where a caller's report gets its sources |
 | `config.models`, `config.efforts`, `config.concurrency`, `config.runtimeSlots`, `config.hotFileCap`, `config.topUpQueryCap`, `config.edgeAuditCap`, `config.earlyUnblock`, `config.edgeCuts` | optional; see Model tiering and Parallelism below for what they default to and why an explicit map is preferred. Pre-flight resolves `config.runtimeSlots` (the runtime's `min(16, cores-2)` agent slots) |
+| `runTag` | optional: the run's tag. `super-auto` passes its own; a standalone pre-flight mints it (`./coordinator-workflow.md`'s "Coordinator contract") |
+| `config.contextWindows` | optional: from `context-preflight --json` at pre-flight; the final review reads `finalReview` |
 | `config.sweep` | optional: the exact full-suite command Finish runs once against the integration tip, envelope included (`nice`, thread caps — whatever `AGENTS.md` requires of every command). Undeclared, pre-flight resolves the project's full test command into it, so the `Launch:` line records it. The sweep always runs when work landed (`./coordinator-workflow.md`'s "Finish"). There is no per-merge gate; a `config.gate` is ignored with a log line |
 | `config.mergeCheck` | optional: the exact BUILD-ONLY command (compile/typecheck, envelope included — `cargo check --all-targets`, `tsc --noEmit`, `go build ./...`) the merge agent runs on the merged tree at every serial merge. **Never a test command.** Undeclared, pre-flight resolves the project's build/typecheck step into it, or `'none'` when the project has none (then no check runs); the `Launch:` line records which. It covers every build configuration the CI matrix compiles (Cargo: at least default features and `--all-features`), since one configuration alone misses breaks in the others. A failing check gets one merge-check fix (the task's one seam fix) and a scoped review of it, then re-runs; still failing → the blocker path |
 | `processRoots` | optional: absolute paths the caller owns for this run (e.g. `super-auto`'s run directory), added to the Finish process sweep's roots. Never a shared location: every process referencing a root is stopped |
