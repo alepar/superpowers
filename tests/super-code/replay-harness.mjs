@@ -1100,6 +1100,7 @@ async function main() {
       check(frLedger(out) === 'Final review: single (inputs 12K <= 40% of 200K) · clusters 0', 'ledger line in the Metrics append', frLedger(out))
       check(promptOf(out.trace, 'assemble:final')?.includes('[THRESHOLD] = 80000'), 'threshold is 40% of the 200K fallback window')
       check(promptOf(out.trace, 'final-review')?.includes(`${FR_DIR}/digest.md`), 'the reviewer is pointed at the assembled digest')
+      check(promptOf(out.trace, 'final-review')?.includes('"## Untested scope"'), 'the single reviewer prompt fixes the review-file headings')
       check(out.result?.review === 'ready' && out.result?.reviewPath === REVIEW_PATH, 'returns the verdict line and reviewPath', JSON.stringify([out.result?.review, out.result?.reviewPath]))
       check(!JSON.stringify(out.result).includes('looks fine'), 'no review body in the return')
     }
@@ -1129,6 +1130,22 @@ async function main() {
       const seam = promptOf(out.trace, 'final-review:seam') ?? ''
       check(seam.includes(`final-review-${EPIC}-cluster-1.md`) && seam.includes(`final-review-${EPIC}-cluster-2.md`) && seam.includes(REVIEW_PATH), 'the seam reviewer gets both cluster files and writes the handoff file')
       check(out.result?.review === 'ready' && out.result?.reviewPath === REVIEW_PATH, 'review is the seam verdict; reviewPath is the handoff file', JSON.stringify([out.result?.review, out.result?.reviewPath]))
+    }
+
+    scenario('final review: a cluster name with a space is reviewed; a cluster-count mismatch is unreviewed')
+    {
+      const out = await run({ args: liveArgs(), canned: oneTaskCanned({
+        'assemble:final': asmOf({ fits: 'fits: no (300000 of 80000)', clusterFits: ['cluster-fits: run marker yes (60000 of 80000)', 'cluster-fits: hooks yes (70000 of 80000)'], clusters: 3 }),
+        'final-review:cluster:1': { verdict: 'ready', path: 'c1' }, 'final-review:cluster:2': { verdict: 'ready', path: 'c2' },
+        'final-review:seam': { verdict: 'ready', path: REVIEW_PATH },
+      }) })
+      assertNoThrow(out)
+      check(same(frLabels(out), ['assemble:final', 'ledger-append:metrics', 'final-review:cluster:1', 'final-review:cluster:2', 'final-review:seam']), 'both parsable clusters are reviewed, then the seam', JSON.stringify(frLabels(out)))
+      check(promptOf(out.trace, 'final-review:cluster:1')?.includes('run marker'), 'the spaced cluster name survives into its prompt')
+      const msg = '1 cluster(s) in clusters.json with no parsable cluster-fits line'
+      check(out.result?.review === `not ready (unreviewed: ${msg})`, 'the dropped cluster makes the verdict not ready', out.result?.review)
+      check(promptOf(out.trace, 'final-review:seam')?.includes(msg), 'the seam prompt names the unparsed-cluster entry')
+      check(promptOf(out.trace, 'final-review:cluster:1')?.includes('"## Untested scope"') && promptOf(out.trace, 'final-review:seam')?.includes('"## Untested scope"'), 'cluster and seam prompts fix the review-file headings')
     }
 
     scenario('final review: assembler unavailable → uncapped single on direct inputs')
