@@ -79,3 +79,4 @@ finalReviewException: autonomous once-per-run — Must-fix correctness items fro
 finalReviewException-completion: super-plan-goq.49 — I8 vs Phase-5 keys (item 4 of final-review-fixloop-r1-blocked.md, missed at the exception round's filing) + null reviewPath routing; same exception round, one more re-entry
 baseAbsorbed: 0ea996d4 → 98eb7f12, 3 conflicted files (docs/superpowers/specs/INDEX.md, skills/super-code/coordinator-subagents.md, skills/super-code/scripts/run-profile.mjs)
 friction: 8 events
+handoff: 2026-10-16 · tip 40d3c63c sent to the main tab (seat sveEUb5xA, thread t97Zwme92, msg mQbBb9RhG) for merge into main and release 6.4.2-alepar6.0, per the user's instruction; run worktree kept until the merge is confirmed
