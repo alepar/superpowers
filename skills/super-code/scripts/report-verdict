@@ -1,0 +1,163 @@
+#!/usr/bin/env bash
+# Reduce a child report to the few lines a coordinator needs, so it never reads the report body.
+# Prints at most 19 lines:
+#   verdict: <verdict>
+#   kind: <task-report|roast|final-review|step-back|assembled>   (absent for an unknown format)
+#   - <blocking / must-fix / concern item>   (one per line, cut to 160 characters, at most 15,
+#   +N more                                   then a `+N more` line)
+#   path: <file as given>
+# Recognisers are tried in this order; the first one whose marker line is in the file wins:
+#   1. task-report  - a `Status: <TOKEN>` line (DONE, DONE_WITH_CONCERNS, BLOCKED, IMPLEMENTED, ...);
+#                     items (unless DONE/IMPLEMENTED/FIXED/CLEAN) are the bullets under the first
+#                     Concern/Blocker/Finding heading or bold label.
+#   2. roast        - a `super-roast verdict: ...` line; items are the `- [Blocking]` entries under
+#                     `## Confirmed findings`.
+#   3. final-review - a `Verdict` heading or label (final-review and cluster verdict files); items are
+#                     the bullets under the `Must fix` heading or label (a lone `none` is no items).
+#   4. step-back    - a `decision: patch|redesign` line; items are `summary:` (and for redesign
+#                     `changes:` and `scope:`).
+#   5. assembled    - a `fits: yes|no (<total> of <threshold>)` line; items are the
+#                     `cluster-fits: <name> no (...)` lines.
+# An unrecognised file prints `verdict: unknown`, `path: <file>` and the file's first 10 lines.
+#
+# Usage: bash report-verdict FILE
+# Exits 0 on any readable file; 2 on a missing or unreadable file or a wrong argument count.
+set -euo pipefail
+
+if [ $# -ne 1 ]; then
+  echo "usage: report-verdict FILE" >&2
+  exit 2
+fi
+f=$1
+if [ ! -f "$f" ] || [ ! -r "$f" ]; then
+  echo "report-verdict: cannot read $f" >&2
+  exit 2
+fi
+
+MAX_ITEMS=15
+MAX_LEN=160
+
+# Shared awk helpers: a section boundary is a markdown heading or a line that opens with a bold
+# label; label() is the text of that heading or label.
+HELPERS='
+function boundary(l) { return (l ~ /^#+[ \t]/ || l ~ /^\*\*[^*]+\*\*/) }
+function label(l) {
+  if (l ~ /^#+[ \t]/) { sub(/^#+[ \t]*/, "", l); return l }
+  sub(/^\*\*/, "", l); sub(/\*\*.*/, "", l); return l
+}
+function bullet(l) { return (l ~ /^[ \t]{0,3}[-*][ \t]+/) }
+function bullet_text(l) { sub(/^[ \t]*[-*][ \t]+/, "", l); return l }
+function is_none(t) { t = tolower(t); gsub(/[ \t.*_`]+/, "", t); return (t == "none") }
+'
+
+# Items go out as bare text lines; the formatter below truncates, caps and prefixes them.
+items_task_report() {
+  awk "$HELPERS"'
+    { sub(/\r$/, "") }
+    boundary($0) {
+      lab = label($0)
+      insec = (!done && lab ~ /(Concern|Blocker|Finding)/)
+      if (insec) done = 1
+      next
+    }
+    insec && bullet($0) { print bullet_text($0) }
+  ' "$f"
+}
+items_roast() {
+  awk '
+    { sub(/\r$/, "") }
+    /^## / { insec = ($0 ~ /^## Confirmed findings/); next }
+    insec && /^- \[[Bb][Ll][Oo][Cc][Kk][Ii][Nn][Gg]\]/ { sub(/^- /, ""); print }
+  ' "$f"
+}
+items_final_review() {
+  awk "$HELPERS"'
+    { sub(/\r$/, "") }
+    boundary($0) {
+      insec = (!done && tolower(label($0)) ~ /must fix/)
+      if (insec) done = 1
+      next
+    }
+    insec && bullet($0) { t = bullet_text($0); if (!is_none(t)) print t }
+  ' "$f"
+}
+items_step_back() {
+  awk -v redesign="$1" '
+    { sub(/\r$/, "") }
+    /^summary:/ { print }
+    redesign == "1" && (/^changes:/ || /^scope:/) { print }
+  ' "$f"
+}
+items_assembled() {
+  grep -E '^cluster-fits: .* no \(' "$f" | tr -d '\r' || true
+}
+
+# Prints the verdict text for final-review: the text after the label on the Verdict line when
+# non-empty, else the first non-empty line after it.
+final_review_verdict() {
+  awk '
+    { sub(/\r$/, "") }
+    !found && /^(#+[ \t]*)?\**Verdict\**[ \t]*:?/ {
+      t = $0
+      sub(/^(#+[ \t]*)?\**Verdict\**[ \t]*:?/, "", t)
+      gsub(/^[ \t*:]+|[ \t*:]+$/, "", t)
+      found = 1
+      if (t != "") { print t; exit }
+      next
+    }
+    found && $0 !~ /^[ \t]*$/ { t = $0; gsub(/^[ \t*:]+|[ \t*:]+$/, "", t); print t; exit }
+  ' "$f"
+}
+
+# emit VERDICT KIND  (item text lines on stdin)
+emit() {
+  printf 'verdict: %s\n' "$(printf '%s' "$1" | awk -v max="$MAX_LEN" '{ print (length($0) > max ? substr($0, 1, max) "…" : $0); exit }')"
+  printf 'kind: %s\n' "$2"
+  awk -v max="$MAX_LEN" -v cap="$MAX_ITEMS" '
+    { n++ }
+    n <= cap { print "- " (length($0) > max ? substr($0, 1, max) "…" : $0) }
+    END { if (n > cap) print "+" (n - cap) " more" }
+  '
+  printf 'path: %s\n' "$f"
+}
+
+status_re='^[[:space:]]*(\*\*)?[Ss]tatus(:\*\*|\*\*:|:)[[:space:]]*\**(DONE_WITH_CONCERNS|DONE|NEEDS_CONTEXT|BLOCKED_AUTH|BLOCKED|IMPLEMENTED|FIXED|CLEAN|NEEDS_FIX|INVALID)\b'
+
+line=$(tr -d '\r' < "$f" | grep -m1 -E "$status_re" || true)
+if [ -n "$line" ]; then
+  token=$(printf '%s\n' "$line" | sed -E 's/^[[:space:]]*(\*\*)?[Ss]tatus(:\*\*|\*\*:|:)[[:space:]]*\**//; s/[^A-Z_].*$//')
+  case "$token" in
+    DONE|IMPLEMENTED|FIXED|CLEAN) : | emit "$token" task-report ;;
+    *) items_task_report | emit "$token" task-report ;;
+  esac
+  exit 0
+fi
+
+line=$(tr -d '\r' < "$f" | grep -m1 -E '^super-roast verdict: ' || true)
+if [ -n "$line" ]; then
+  items_roast | emit "${line#super-roast verdict: }" roast
+  exit 0
+fi
+
+if tr -d '\r' < "$f" | grep -qE '^(#+[[:space:]]*)?\**Verdict\**[[:space:]]*:?'; then
+  items_final_review | emit "$(final_review_verdict)" final-review
+  exit 0
+fi
+
+line=$(tr -d '\r' < "$f" | grep -m1 -E '^decision:[[:space:]]*(patch|redesign)' || true)
+if [ -n "$line" ]; then
+  value=$(printf '%s\n' "$line" | sed -E 's/^decision:[[:space:]]*(patch|redesign).*/\1/')
+  r=0; [ "$value" = redesign ] && r=1
+  items_step_back "$r" | emit "decision: $value" step-back
+  exit 0
+fi
+
+line=$(tr -d '\r' < "$f" | grep -m1 -E '^fits: (yes|no) \([0-9]+ of [0-9]+\)' || true)
+if [ -n "$line" ]; then
+  items_assembled | emit "$line" assembled
+  exit 0
+fi
+
+printf 'verdict: unknown\n'
+printf 'path: %s\n' "$f"
+head -n 10 "$f" || true
