@@ -16,6 +16,9 @@
 //   replayed compacted row, and the child's own rows start at session_meta's
 //   subagent_history_start_ordinal); coord: [["prompt", s, text] | ["usage", s, input, window] |
 //   ["record", s, input] | ["compacted", s, pre]…] extra rows in the coordinator's rollout.
+//   resume?: { at, end, caller?, coord? } (Codex) a second rollout of the coordinator's thread (a resumed
+//   session) from `at` to `end`, with its own caller commands and coord rows; agents[].rollout: 2 spawns
+//   that agent from it.
 // Times are seconds after t0. On Claude Code each task is its own agent.
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { join } from 'node:path'
@@ -54,12 +57,16 @@ if (harness === 'codex') {
   const crows = [{ timestamp: at(-100), type: 'session_meta', payload: { id: coord, session_id: coord, cwd: sc.cwd, source: 'cli', cli_version: '0.160.1' } }, event(-100, 'task_started')]
   for (const c of sc.caller ?? []) crows.push(...call(c.start, c.end, 'exec', exec({ kind: 'exec', cmd: c.cmd })))
   for (const r of sc.coord ?? []) crows.push(codexRow(r))
+  const rs = sc.resume
+  const rrows = rs ? [{ timestamp: at(rs.at), type: 'session_meta', payload: { id: coord, session_id: coord, cwd: sc.cwd, source: 'cli', cli_version: '0.160.1' } }, event(rs.at, 'task_started')] : null
+  for (const c of rs?.caller ?? []) rrows.push(...call(c.start, c.end, 'exec', exec({ kind: 'exec', cmd: c.cmd })))
+  for (const r of rs?.coord ?? []) rrows.push(codexRow(r))
   for (const a of sc.agents) {
     const spawn = tasksOf(a)[0][0]
     const id = idOf(a)
     if (!a.parent && !a.guardian) {
       const k = `call_${n++}`
-      crows.push(item(spawn, { type: 'function_call', call_id: k, name: 'spawn_agent', arguments: JSON.stringify({ task_name: a.codex, fork_turns: 'all', message: 'gAAAAAencrypted' }) }),
+      ;(a.rollout === 2 ? rrows : crows).push(item(spawn, { type: 'function_call', call_id: k, name: 'spawn_agent', arguments: JSON.stringify({ task_name: a.codex, fork_turns: 'all', message: 'gAAAAAencrypted' }) }),
         item(spawn, { type: 'function_call_output', call_id: k, output: JSON.stringify({ task_name: `/root/${a.codex}` }) }))
     }
     const parent = a.parent ? idOf(sc.agents.find(x => x.codex === a.parent)) : coord
@@ -79,6 +86,10 @@ if (harness === 'codex') {
   }
   crows.push(event(sc.end, 'task_complete'))
   jsonl(file(coord), crows.sort((x, y) => Date.parse(x.timestamp) - Date.parse(y.timestamp)))
+  if (rrows) {
+    rrows.push(event(rs.end, 'task_complete'))
+    jsonl(join(dir, `rollout-${at(rs.at).slice(0, 19).replace(/:/g, '-')}-${coord}.jsonl`), rrows.sort((x, y) => Date.parse(x.timestamp) - Date.parse(y.timestamp)))
+  }
   console.log(coord)
 } else if (harness === 'claude') {
   const sid = sc.session ?? 'c0ffee00-0000-4000-8000-000000000000'
