@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Reduce a child report to the few lines a coordinator needs, so it never reads the report body.
-# Prints at most 31 lines:
+# Prints at most 31 lines (default mode):
 #   verdict: <verdict>
 #   kind: <task-report|roast|final-review|step-back|assembled>   (absent for an unknown format)
 #   - <blocking / must-fix / concern item>   (one per line, cut to 160 characters, at most 15,
@@ -28,15 +28,27 @@
 #                     `cluster-fits: <name> no (...)` lines.
 # An unrecognised file prints `verdict: unknown`, `path: <file>` and the file's first 10 lines.
 #
-# Usage: bash report-verdict FILE
-# Exits 0 on any readable file; 2 on a missing or unreadable file or a wrong argument count.
+# Prints at most 31 lines in this default mode. With --keys, the same recogniser order picks the kind
+# but only key lines are printed, uncapped and uncut, so the output can be redirected into a keys
+# file: roast `[SEV] <location>` (every severity under `## Confirmed findings`, the text before the
+# first ` — `); final-review `[Must-fix] <item>` then `[Must-fix] untested: <item>`. Any other kind
+# prints nothing and exits 3.
+#
+# Usage: bash report-verdict [--keys] FILE
+# Exits 0 on any readable file; 2 on a missing or unreadable file or a wrong argument count;
+# 3 for --keys on a kind that has no keys.
 set -euo pipefail
 
-if [ $# -ne 1 ]; then
-  echo "usage: report-verdict FILE" >&2
+keys=0
+if [ $# -eq 2 ] && [ "$1" = "--keys" ]; then
+  keys=1
+  f=$2
+elif [ $# -eq 1 ] && [ "$1" != "--keys" ]; then
+  f=$1
+else
+  echo "usage: report-verdict [--keys] FILE" >&2
   exit 2
 fi
-f=$1
 if [ ! -f "$f" ] || [ ! -r "$f" ]; then
   echo "report-verdict: cannot read $f" >&2
   exit 2
@@ -151,17 +163,47 @@ emit() {
   printf 'path: %s\n' "$f"
 }
 
+keys_refuse() {
+  if [ "$keys" = 1 ]; then
+    echo "report-verdict: --keys reads only a roast report or a final review: $f" >&2
+    exit 3
+  fi
+}
+
+# Keys mode: `[SEV] <location>` for every entry under `## Confirmed findings`.
+keys_roast() {
+  awk '
+    { sub(/\r$/, "") }
+    /^## / { insec = ($0 ~ /^## Confirmed findings/); next }
+    insec && /^- \[[^]]+\] / {
+      sub(/^- /, ""); i = index($0, " — "); if (i > 0) $0 = substr($0, 1, i - 1)
+      sub(/[ \t]+$/, ""); print
+    }
+  ' "$f"
+}
+keys_final_review() {
+  section_items "must fix" | sed 's/^/[Must-fix] /'
+  section_items "untested scope" | sed 's/^/[Must-fix] untested: /'
+}
+out_roast() {
+  if [ "$keys" = 1 ]; then keys_roast; else items_roast | emit "$1" roast; fi
+}
+out_final_review() {
+  if [ "$keys" = 1 ]; then keys_final_review; else items_final_review | emit "$(final_review_verdict)" final-review "$(untested_lines)"; fi
+}
+
 status_re='^[[:space:]]*(\*\*)?[Ss]tatus(:\*\*|\*\*:|:)[[:space:]]*\**(DONE_WITH_CONCERNS|DONE|NEEDS_CONTEXT|BLOCKED_AUTH|BLOCKED|IMPLEMENTED|FIXED|CLEAN|NEEDS_FIX|INVALID)\b'
 
 # The exact `## Verdict` heading the final-review prompts require wins before the Status line, so a
 # final review that quotes a task report's `Status: DONE` is not read as a task report.
 if tr -d '\r' < "$f" | grep -qE '^##[[:space:]]+Verdict[[:space:]]*$'; then
-  items_final_review | emit "$(final_review_verdict)" final-review "$(untested_lines)"
+  out_final_review
   exit 0
 fi
 
 line=$(tr -d '\r' < "$f" | grep -m1 -E "$status_re" || true)
 if [ -n "$line" ]; then
+  keys_refuse
   token=$(printf '%s\n' "$line" | sed -E 's/^[[:space:]]*(\*\*)?[Ss]tatus(:\*\*|\*\*:|:)[[:space:]]*\**//; s/[^A-Z_].*$//')
   case "$token" in
     DONE|IMPLEMENTED|FIXED|CLEAN) : | emit "$token" task-report ;;
@@ -172,17 +214,18 @@ fi
 
 line=$(tr -d '\r' < "$f" | grep -m1 -E '^super-roast verdict: ' || true)
 if [ -n "$line" ]; then
-  items_roast | emit "${line#super-roast verdict: }" roast
+  out_roast "${line#super-roast verdict: }"
   exit 0
 fi
 
 if tr -d '\r' < "$f" | grep -qE '^(#+[[:space:]]*)?\**Verdict\**[[:space:]]*:?'; then
-  items_final_review | emit "$(final_review_verdict)" final-review "$(untested_lines)"
+  out_final_review
   exit 0
 fi
 
 line=$(tr -d '\r' < "$f" | grep -m1 -E '^decision:[[:space:]]*(patch|redesign)' || true)
 if [ -n "$line" ]; then
+  keys_refuse
   value=$(printf '%s\n' "$line" | sed -E 's/^decision:[[:space:]]*(patch|redesign).*/\1/')
   r=0; [ "$value" = redesign ] && r=1
   items_step_back "$r" | emit "decision: $value" step-back
@@ -191,10 +234,12 @@ fi
 
 line=$(tr -d '\r' < "$f" | grep -m1 -E '^fits: (yes|no) \([0-9]+ of [0-9]+\)' || true)
 if [ -n "$line" ]; then
+  keys_refuse
   items_assembled | emit "$line" assembled
   exit 0
 fi
 
+keys_refuse
 printf 'verdict: unknown\n'
 printf 'path: %s\n' "$f"
 head -n 10 "$f" || true

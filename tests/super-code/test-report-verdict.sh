@@ -168,6 +168,64 @@ item=$(printf '%s\n' "$out" | sed -n 3p)
 case "$item" in *…) pass "truncated item ends with an ellipsis";; *) fail "truncated item ends with an ellipsis"; echo "    got: $item";; esac
 assert_eq "$(printf '%s' "${item%…}" | wc -c | tr -d ' ')" 162 "kept text is '- ' plus 160 characters"
 
+RUNS="$REPO_ROOT/docs/superpowers/runs/2026-10-15-coordinator-subagent-compaction"
+
+echo "report-verdict --keys: the real roast-pr-1 report"
+run bash "$R" --keys "$RUNS/2026-10-16-coordinator-subagent-compaction-roast-pr-1.md"
+assert_eq "$code" 0 "exits 0"
+assert_eq "$(lines "$out")" 17 "every key, uncapped"
+assert_eq "$out" "$(cat "$RUNS/2026-10-16-coordinator-subagent-compaction-roast-pr-1-scope-keys.txt")" "equals the hand-written scope keys"
+assert_has "$out" "[Should-fix] skills/super-code/coordinator.js:701; tests/super-code/test-run-profile.sh:337; docs/superpowers/runs/2026-10-15-coordinator-subagent-compaction/final-review-phase3.md:1" "first key, longer than 160 characters, uncut"
+assert_has "$out" "[Nit] skills/super-code/MAINTENANCE.md:1266" "last key"
+assert_lacks "$out" "—" "no claim text"
+assert_lacks "$out" "+" "no overflow line"
+
+echo "report-verdict --keys: the real final-review-exception review"
+run bash "$R" --keys "$RUNS/final-review-exception.md"
+assert_eq "$code" 0 "exits 0"
+assert_eq "$(lines "$out")" 12 "four must-fix and eight untested keys"
+assert_eq "$(printf '%s\n' "$out" | grep -c '^\[Must-fix\] untested: ')" 8 "eight untested keys"
+assert_eq "$(printf '%s\n' "$out" | grep -vc '^\[Must-fix\] untested: ')" 4 "four must-fix keys"
+assert_eq "$(printf '%s\n' "$out" | grep -vc '^\[Must-fix\] ')" 0 "every line starts [Must-fix] "
+first=$(printf '%s\n' "$out" | sed -n 1p)
+case "$first" in '[Must-fix] I8 versus the Phase 5 keys files (`skills/super-auto/SKILL.md` I8'*) pass "line 1 is the I8 item";; *) fail "line 1 is the I8 item"; echo "    got: $first";; esac
+case "$first" in *…) fail "line 1 is not cut";; *) pass "line 1 is not cut";; esac
+assert_has "$out" "[Must-fix] untested: The spec's live checks (forced compaction on both harnesses, a profiled Codex run) are post-merge follow-ons." "untested key"
+
+echo "report-verdict --keys: fixtures"
+run bash "$R" --keys "$FX/roast-report.md"
+assert_eq "$code" 0 "roast-report exits 0"
+assert_eq "$out" "[Blocking] spec §A2
+[Blocking] spec §B3
+[Should-fix] spec §C1" "every severity of Confirmed findings; Rejected section absent"
+run bash "$R" --keys "$FX/roast-many.md"
+assert_eq "$(lines "$out")" 20 "roast-many: all 20 keys"
+assert_lacks "$out" "more" "roast-many: no overflow line"
+run bash "$R" --keys "$FX/final-review-quoted-status.md"
+assert_eq "$out" "[Must-fix] skills/super-code/scripts/report-verdict: the status line wins over the verdict heading.
+[Must-fix] untested: None run live." "quoted-status final review"
+run bash "$R" --keys "$FX/cluster-verdict.md"
+assert_eq "$out" "[Must-fix] untested: Codex entry script." "none Must-fix gives no key"
+{ printf '## Verdict\nnot ready (20)\n## Must fix before landing\n'; for i in $(seq 20); do echo "- item $i"; done
+  printf '## Untested scope\n'; for i in $(seq 12); do echo "- area $i"; done; } > "$T/many-mustfix.md"
+run bash "$R" --keys "$T/many-mustfix.md"
+assert_eq "$(lines "$out")" 32 "final review: 20 must-fix and 12 untested, uncapped"
+assert_has "$out" "[Must-fix] item 20" "item 20 present"
+assert_has "$out" "[Must-fix] untested: area 12" "area 12 present"
+assert_lacks "$out" "more" "no overflow line"
+
+echo "report-verdict --keys: other kinds refused"
+for k in task-report step-back assembled-digest unknown; do
+  run bash "$R" --keys "$FX/$k.md"
+  assert_eq "$code" 3 "$k exits 3"
+  assert_eq "$out" "" "$k prints nothing on stdout"
+  assert_has "$(cat "$T/err")" "report-verdict: --keys reads only a roast report or a final review: $FX/$k.md" "$k message on stderr"
+done
+run bash "$R" --keys
+assert_eq "$code" 2 "--keys alone exits 2"
+run bash "$R" --keys a b
+assert_eq "$code" 2 "--keys with two files exits 2"
+
 echo "report-verdict: bad input"
 run bash "$R" "$T/nope.md"
 assert_eq "$code" 2 "missing file exits 2"
