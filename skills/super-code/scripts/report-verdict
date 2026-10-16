@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 # Reduce a child report to the few lines a coordinator needs, so it never reads the report body.
-# Prints at most 19 lines:
+# Prints at most 31 lines:
 #   verdict: <verdict>
 #   kind: <task-report|roast|final-review|step-back|assembled>   (absent for an unknown format)
 #   - <blocking / must-fix / concern item>   (one per line, cut to 160 characters, at most 15,
 #   +N more                                   then a `+N more` line)
+#   untested: <item>                         (final-review only: the Untested scope items, same rule,
+#   untested: +N more                         cut to 160 characters, at most 10, then `+N more`)
 #   path: <file as given>
 # Recognisers are tried in this order; the first one whose marker line is in the file wins:
 #   1. task-report  - a `Status: <TOKEN>` line (DONE, DONE_WITH_CONCERNS, BLOCKED, IMPLEMENTED, ...);
@@ -12,8 +14,12 @@
 #                     Concern/Blocker/Finding heading or bold label.
 #   2. roast        - a `super-roast verdict: ...` line; items are the `- [Blocking]` entries under
 #                     `## Confirmed findings`.
-#   3. final-review - a `Verdict` heading or label (final-review and cluster verdict files); items are
-#                     the bullets under the `Must fix` heading or label (a lone `none` is no items).
+#   3. final-review - a `Verdict` heading or label (final-review and cluster verdict files); a heading
+#                     wins over any label, else `**Verdict: X**`, `**Verdict:** X` or `Verdict: X`.
+#                     Items are the lines under the first `Must fix` heading or label; an item is a line
+#                     with at most one leading space starting `- `, `* `, `<n>. ` or `<n>) ` (deeper
+#                     indents are sub-bullets, skipped); a lone `none` is no items. The `Untested scope`
+#                     section gives the `untested:` lines by the same rule.
 #   4. step-back    - a `decision: patch|redesign` line; items are `summary:` (and for redesign
 #                     `changes:` and `scope:`).
 #   5. assembled    - a `fits: yes|no (<total> of <threshold>)` line; items are the
@@ -70,16 +76,31 @@ items_roast() {
     insec && /^- \[[Bb][Ll][Oo][Cc][Kk][Ii][Nn][Gg]\]/ { sub(/^- /, ""); print }
   ' "$f"
 }
-items_final_review() {
-  awk "$HELPERS"'
+# A final-review item: a line with at most one leading space that starts with `- `, `* `, `<n>. ` or
+# `<n>) `; deeper-indented lines are continuations or sub-bullets and are skipped.
+# section_items PATTERN: the items of the first section whose heading or bold label contains PATTERN.
+section_items() {
+  awk -v pat="$1" "$HELPERS"'
     { sub(/\r$/, "") }
     boundary($0) {
-      insec = (!done && tolower(label($0)) ~ /must fix/)
+      insec = (!done && tolower(label($0)) ~ pat)
       if (insec) done = 1
       next
     }
-    insec && bullet($0) { t = bullet_text($0); if (!is_none(t)) print t }
+    insec && $0 ~ /^ ?([-*]|[0-9]+[.)])[ \t]+/ {
+      t = $0; sub(/^ ?([-*]|[0-9]+[.)])[ \t]+/, "", t); gsub(/\*\*/, "", t)
+      if (!is_none(t)) print t
+    }
   ' "$f"
+}
+items_final_review() { section_items "must fix"; }
+# `untested: <text>` lines, pre-formatted: 160-character cut, at most 10, then `untested: +N more`.
+untested_lines() {
+  section_items "untested scope" | awk -v max="$MAX_LEN" '
+    { n++ }
+    n <= 10 { print "untested: " (length($0) > max ? substr($0, 1, max) "…" : $0) }
+    END { if (n > 10) print "untested: +" (n - 10) " more" }
+  '
 }
 items_step_back() {
   awk -v redesign="$1" '
@@ -92,24 +113,30 @@ items_assembled() {
   grep -E '^cluster-fits: .* no \(' "$f" | tr -d '\r' || true
 }
 
-# Prints the verdict text for final-review: the text after the label on the Verdict line when
-# non-empty, else the first non-empty line after it.
+# Prints the verdict text for final-review. A `Verdict` heading wins over any bold or plain label
+# anywhere in the file; without a heading, the first label counts. The value is the text after the
+# label (up to a closing `**`) when non-empty, else the first non-empty line after it.
 final_review_verdict() {
   awk '
+    function clean(t) { sub(/\*\*.*/, "", t); gsub(/^[ \t*:]+|[ \t*:]+$/, "", t); return t }
+    function value(l) { sub(/^(#+[ \t]*)?\**Verdict/, "", l); sub(/^[ \t]*\**[ \t]*:?[ \t]*\**[ \t]*/, "", l); return clean(l) }
     { sub(/\r$/, "") }
-    !found && /^(#+[ \t]*)?\**Verdict\**[ \t]*:?/ {
-      t = $0
-      sub(/^(#+[ \t]*)?\**Verdict\**[ \t]*:?/, "", t)
-      gsub(/^[ \t*:]+|[ \t*:]+$/, "", t)
-      found = 1
-      if (t != "") { print t; exit }
-      next
+    pend != "" && $0 !~ /^[ \t]*$/ {
+      t = $0; gsub(/^[ \t*:]+|[ \t*:]+$/, "", t)
+      if (pend == "h") { if (hv == "") hv = t } else if (lv == "") lv = t
+      pend = ""
     }
-    found && $0 !~ /^[ \t]*$/ { t = $0; gsub(/^[ \t*:]+|[ \t*:]+$/, "", t); print t; exit }
+    /^#+[ \t]*\**Verdict\**[ \t]*:?/ && hv == "" && !hseen {
+      hseen = 1; t = value($0); if (t != "") hv = t; else pend = "h"; next
+    }
+    /^\**Verdict\**[ \t]*:?/ && lv == "" && !lseen {
+      lseen = 1; t = value($0); if (t != "") lv = t; else pend = "l"
+    }
+    END { if (hv != "") print hv; else print lv }
   ' "$f"
 }
 
-# emit VERDICT KIND  (item text lines on stdin)
+# emit VERDICT KIND [EXTRA]  (item text lines on stdin; EXTRA is pre-formatted lines placed before path:)
 emit() {
   printf 'verdict: %s\n' "$(printf '%s' "$1" | awk -v max="$MAX_LEN" '{ print (length($0) > max ? substr($0, 1, max) "…" : $0); exit }')"
   printf 'kind: %s\n' "$2"
@@ -118,6 +145,7 @@ emit() {
     n <= cap { print "- " (length($0) > max ? substr($0, 1, max) "…" : $0) }
     END { if (n > cap) print "+" (n - cap) " more" }
   '
+  if [ -n "${3:-}" ]; then printf '%s\n' "$3"; fi
   printf 'path: %s\n' "$f"
 }
 
@@ -140,7 +168,7 @@ if [ -n "$line" ]; then
 fi
 
 if tr -d '\r' < "$f" | grep -qE '^(#+[[:space:]]*)?\**Verdict\**[[:space:]]*:?'; then
-  items_final_review | emit "$(final_review_verdict)" final-review
+  items_final_review | emit "$(final_review_verdict)" final-review "$(untested_lines)"
   exit 0
 fi
 

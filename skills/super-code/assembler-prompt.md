@@ -27,6 +27,7 @@ Parameters: [CONSUMER], [INSTANCE], [OUT_DIR], [WORKTREE], [BASE], [HEAD], [SECT
    never by a count of files. Write `[OUT_DIR]/clusters.json`:
    `{"changed": ["<repo path>", …], "clusters": [{"name": "<name>", "files": ["<repo path>", …], "slices": ["slices/<file>", …]}]}`
    with every changed file in exactly one cluster and each cluster's slices the ones for its files.
+   Each `name` is a slug: lowercase letters, digits and `-` only (e.g. `run-marker`, `hooks`), unique in the file.
 6. Run `[ASSEMBLED_SIZE] [OUT_DIR] --threshold [THRESHOLD]`. When [CLUSTERS] is yes and it prints
    `fits: no`, re-cluster once by subdirectory each cluster printed as `cluster-fits: <name> no`
    (update `clusters.json`), then run

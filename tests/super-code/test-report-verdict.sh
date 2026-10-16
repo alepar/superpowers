@@ -61,15 +61,56 @@ assert_eq "$out" "verdict: not ready (2 must-fix)
 kind: final-review
 - skills/super-code/scripts/run-digest: the budget trim never reaches the tail section.
 - hooks/session-start-runblock: no watchdog around run-digest, a slow bd call hangs the hook.
-path: $FX/final-review.md" "Verdict section text and Must fix bullets"
-assert_lacks "$out" "Codex entry script" "Untested scope not listed"
+untested: The Codex entry script was not exercised.
+path: $FX/final-review.md" "Verdict section text, Must fix bullets and untested line"
 
 echo "report-verdict: cluster verdict"
 run bash "$R" "$FX/cluster-verdict.md"
 assert_eq "$code" 0 "exits 0"
 assert_eq "$out" "verdict: ready
 kind: final-review
+untested: Codex entry script.
 path: $FX/cluster-verdict.md" "inline verdict, '- none' yields no items"
+
+echo "report-verdict: final review, the real phase-3 sample"
+run bash "$R" "$FX/final-review-real.md"
+assert_eq "$code" 0 "exits 0"
+assert_eq "$(printf '%s\n' "$out" | sed -n 1p | cut -c1-33)" "verdict: not ready (known-failing" "verdict is the heading's value, not the bold label"
+assert_lacks "$(printf '%s\n' "$out" | sed -n 1p)" "**" "verdict has no bold markers"
+assert_lacks "$out" "One test is known" "verdict does not carry the label's trailing paragraph"
+assert_has "$out" "kind: final-review" "kind"
+assert_eq "$(printf '%s\n' "$out" | grep -c '^- ')" 3 "exactly three numbered must-fix items"
+for pre in "- The failing test" "- Stop the run block" "- Pass the sweep result"; do
+  assert_eq "$(printf '%s\n' "$out" | grep -c "^$pre")" 1 "item starts '$pre'"
+done
+assert_lacks "$out" "Its bead" "nested sub-bullet is not an item"
+assert_eq "$(printf '%s\n' "$out" | grep -c '^untested: .*No full-suite sweep')" 1 "untested line carries the first untested item"
+assert_eq "$(printf '%s\n' "$out" | tail -n 1)" "path: $FX/final-review-real.md" "path is last"
+
+echo "report-verdict: final review in the format the prompts fix"
+run bash "$R" "$FX/final-review-format.md"
+assert_eq "$out" "verdict: not ready (2 must-fix)
+kind: final-review
+- skills/super-code/scripts/run-digest: the budget trim never reaches the tail section.
+- hooks/session-start-runblock: no watchdog around run-digest, a slow bd call hangs the hook.
+untested: Codex entry not run.
+path: $FX/final-review-format.md" "exact output"
+
+echo "report-verdict: untested lines are capped at 10"
+{ printf '## Verdict\nready\n\n## Must fix before landing\n- none\n\n## Untested scope\n'; for i in 1 2 3 4 5 6 7 8 9 10 11 12; do echo "- area $i"; done; } > "$T/many-untested.md"
+run bash "$R" "$T/many-untested.md"
+assert_eq "$(printf '%s\n' "$out" | grep -c '^untested: ')" 11 "ten items plus the overflow line"
+assert_has "$out" "untested: +2 more" "overflow counted"
+assert_eq "$(lines "$out")" 14 "verdict, kind, 11 untested, path"
+
+echo "report-verdict: producer/parser contract"
+printf '%s\n' '# SDD ledger — plan: ep-plan.md' \
+  'Launch: mechanism ordinary-subagents · epic ep · branch b · integrationWorktree /r/w · mergeCheck none' > "$T/ledger.md"
+run bash "$REPO_ROOT/skills/super-code/scripts/dispatch-text" --ledger "$T/ledger.md" --stdout final-review --mode single
+assert_eq "$code" 0 "dispatch-text builds the single-mode final-review prompt"
+for needle in '"## Verdict"' '"## Must fix before landing"' '"## Untested scope"' 'no numbered lists'; do
+  if printf '%s\n' "$out" | grep -qF -- "$needle"; then pass "prompt fixes $needle"; else fail "prompt fixes $needle"; fi
+done
 
 echo "report-verdict: step-back"
 run bash "$R" "$FX/step-back.md"
