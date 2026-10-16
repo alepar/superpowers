@@ -89,8 +89,11 @@ Three things keep the run measurable and resumable:
 Final review: window = `config.contextWindows.finalReview` (from `context-preflight --json`), else
 `FINAL_REVIEW_FALLBACK_WINDOW` in coordinator.js (258K on Codex, 200K on Claude Code); threshold 40%.
 Run `dispatch-text assemble --consumer final-review --instance final --threshold <40% of the window>`,
-then `final-review --mode single [--dir …] [--capped]` or one `--mode cluster` per fitting cluster
-(concurrently) then `--mode seam`, routed exactly as `coordinator-workflow.md` §Finish says, and write
+then `final-review --mode single [--dir …] [--capped]` (it reads the sweep and Metrics from the
+ledger's `Sweep:`/`Metrics:` lines, so append those first, as §Finish orders) or one `--mode cluster`
+per fitting cluster (concurrently) then `--mode seam --reviewed <ordinals with a verdict> --unreviewed
+<file>`; on a null seam review, `--mode stub --reviewed … --unreviewed <file listing every unreviewed
+entry plus seam>`. Route exactly as `coordinator-workflow.md` §Finish says, and write
 the same `Final review:` ledger line. Read the result through `report-verdict
 <workspace>/final-review-<runTag>.md`.
 
