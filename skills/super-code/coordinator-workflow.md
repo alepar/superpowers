@@ -851,6 +851,27 @@ human or gets acted on exclusively through this run's escalation reporting ("Esc
 quarantine + continue") and the triage agent's RESOLVE/ESCALATE call on the **original** blocked
 task, never through re-planning.
 
+**Each row also carries what the task reads and how large its surface is.** The planner states
+`filesToRead` (files the implementer must read; `filesTouched` keeps its write-only meaning) beside
+`filesTouched` in the section, carries the bead's `- [ ]` checklist verbatim, runs
+`bash <skills>/super-code/scripts/task-surface --base <integration tip> <filesTouched + filesToRead>`
+and records the integer as `surfaceTokens`. The coordinator writes one `Surface: <id> <N> tokens`
+ledger line per new row, in one buffered append with no extra dispatch. The planner MAY also return
+`oversized: [{id, reason, children}]` when it judges a bead too large for one session with
+independent groups; that is a judgment informed by `surfaceTokens`, never a gate, and the bead is
+planned normally as well. Oversized proposals are handled like `unplanned` and `missingEdges`, before
+any dispatch of the ids involved and before the next refill: a mechanical dispatch (`split:<id>`)
+writes the proposal, plus the row's `filesTouched`/`filesToRead`, to `<workspace>/split-<id>.json` and
+runs `bash <skills>/super-code/scripts/split-oversized <file>`. Exit 0 (`split: <id> -> <children>`):
+the script filed the children with their edges and superseded the original; the coordinator drops the
+original's row (rows that waited on it fall back to `bd ready` readiness), writes
+`Split: <id> → <children>`, and the next refill plans the children. Exit 3 (`refused: <reason>`): writes
+`Split refused: <id> — <reason>`, and the bead proceeds unsplit. Exit 5 (`filed: <ids>`): writes
+`Split partial: <id> — filed <children>`, a `close-split:<id>` dispatch closes each filed child with
+that reason, and the bead proceeds unsplit. A null dispatch or another exit proceeds unsplit with no
+`Split` line. A filed split counts as progress for the no-progress guard. `ledger-digest` drops all of
+these lines (they are not Task, Merge, Human action or Edge add lines).
+
 **Every downstream call uses the ordinal**: `scripts/task-brief <epicId>-plan.md <N>`, and the
 brief/report/review-package filenames that follow from it. **The bead id remains the durable
 identity for every `bd` command** (`bd show`, `bd close`, `bd create`) — the coordinator never
@@ -1568,7 +1589,8 @@ narratives that used to accompany each row are in git history; nothing here depe
 | **Process cleanup (scripts/stop-run-processes: cwd, executable or exact HOME=/TMPDIR= under a run root, orphan argument paths, no kinship expansion, interactive terminals kept, epic/integration roots refused; task temp state in a short `/tmp/sp-<hash>/<task id>` root, removed with the worktree (`remove-task-worktree --tmp`); implementer/fixer leak check after test runs; processes stopped before a task's bead closes; the Finish `worktree-sweep` dispatch also runs the final process sweep and writes the `Process sweep:` ledger line, returning `processSweep`)** | replay 44/0 | replay 19/0 | replay 21/0 |
 | **Merge-lane priority (the next merge is the queued task with the most live stacked or bounced dependents waiting on its landing, first-come among equals; one queue worker replaces the promise chain) ** | replay 44/0 | replay 19/0 | replay 21/0 |
 | Current requirements and tracker closure confirmation | replay 47/0 | replay 19/0 | replay 22/0 |
-| **Final-review size switch (assembler pre-step, single/split, reviewPath) — CURRENT** | **replay 48/0** | **replay 19/0** | **replay 23/0** |
+| Final-review size switch (assembler pre-step, single/split, reviewPath) | replay 48/0 | replay 19/0 | replay 23/0 |
+| **Planner filesToRead/surfaceTokens and the oversized split route (`Surface:` / `Split…` ledger lines; no oversized in these fixtures) — CURRENT** | **replay 48/0** | **replay 19/0** | **replay 23/0** |
 
 The current row's figures come from the offline replay harness (`tests/super-code/`): it replays
 the three `args` blocks below and runs the live-sim, null-injection, parallelism, seam,
@@ -1934,6 +1956,19 @@ single-mode count is 22.
 
 A null single review keeps `FINAL REVIEW UNAVAILABLE` (the existing null-final-review scenario, now
 also asserting `assemble:final` ran first). No work landed: no assemble, no review, `reviewPath` null.
+
+### Oversized split scenarios (replay harness, live-sim)
+
+The two-task fixture (`bd-101`, and `bd-102` carrying an `oversized` proposal), `earlyUnblock: false`,
+canned `split:bd-102`. Counts are the harness's recorded agent calls for the whole run. The canonical,
+cap-tripping and PARK dryRun fixtures hold no oversized proposal, so their counts are unchanged.
+
+| Scenario | `split:bd-102` | Dispatches of interest | Ledger lines | Agents |
+|---|---|---|---|---|
+| filed | `exit 0`, `split: bd-102 -> bd-201,bd-202` | no `impl:bd-102`; refill `plan` (2 total) maps the children; `bd-201`, `bd-202` implement and merge | `Surface:` ×2, `Split: bd-102 → bd-201, bd-202` | 40 |
+| refused | `exit 3`, `refused: …` | `impl:bd-102` dispatches | `Split refused: bd-102 — …` | 29 |
+| partial | `exit 5`, `filed: bd-201` | `close-split:bd-102` before `impl:bd-102` | `Split partial: bd-102 — filed bd-201` | 30 |
+| null | null | `impl:bd-102` dispatches | no `Split` line | 28 |
 
 ### Baselines for the canonical scenario (recorded, not illustrative)
 

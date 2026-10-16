@@ -42,6 +42,11 @@ Keep the window full. The Workflow coordinator does these, and so do you:
 - **Add edges at once.** For a planner's `missingEdges` or a triage `waitFor`, run
   `bd dep add <dependent> <blocker>` yourself before the next refill, and write `Edge add:` or
   `waiting on <bead>`. A `waitFor` does not spend the task's retry.
+- **Split oversized beads before dispatch.** For a planner's `oversized` entry, write the proposal
+  (with the original's `filesTouched` and `filesToRead` from its mapping row) to
+  `<workspace>/split-<id>.json` and run `bash <skillsRoot>/super-code/scripts/split-oversized <file>`
+  yourself; route exit 0 / 3 / 5 exactly as coordinator-workflow.md Plan materialization says, writing
+  the same `Split…` and `Surface:` ledger lines.
 - **Do not idle.** Wait for whichever agent finishes first. Refill after every landing and
   every split. If a file holds back two tasks while a slot is free, raise its cap by one. Write a
   `Detector:` line at each refill, not only at Finish.

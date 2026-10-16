@@ -378,8 +378,8 @@ async function main() {
   {
     const scan = scanTemplateSpans(scriptBody)
     check(scan.clean, 'scanner ends in code state (no unterminated literal, string, or ${})')
-    check(scan.spans.length === 436,
-      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 436 (+16 for the final-review size switch (reviewPath and cluster path, the assemble dispatch key/label, its fits and cluster parse, the Final review: ledger lines, the UNAVAILABLE string, notReadyWith's two literals, the cluster and seam keys/labels, the stub key/label and its log, finalReviewPrompt's capped note, finalClusterReviewPrompt, finalSeamReviewPrompt, finalReviewStubPrompt); +3 for the assembler builder (workspaceAbs, the default-base text, assemblePrompt's prompt); +2 for the deferred-to-this-task minors note and its per-minor literal; +5 for the outage and quarantine fixes: the dispatch-unavailable stop log, the quarantine release log, its ledger line and key, the fix pass's evidence-only note; +9 for the outage-resume fixes: the Resume read's git landings step and its seeding log, the merge's already-landed log, the seeded-edge keys and the edge re-write key, the reconcile's blocker note, the reconciled completion line and its key; +1 closure verification contract, +1 current requirements contract; recovery marker uses concatenation) — 215 after the D4 loop rewrite, +10 for the merge-evidence contract (clean-check and merge steps, mergeEvidence's diagnoses and logs, the Merge-cleanup line) and writeFence(), +17 for the failing-mergeCheck seam route (the check-fix and fix-review dispatch keys/labels, their logs and blocker findings, the re-merge, fixPrompt's check branch, checkFixReviewPrompt), +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log, −7 for batched ledger writes (per-line ledger keys and labels out, the per-task flush key, the merge agent's LEDGER step and its line templates, the runtime-slot logs, the per-site null-merge logs and the background edge audit in), +46 for early unblock and graph readiness (the split/reopen/discard dispatch keys, labels, prompts and logs, the cancel and graph-dispatch logs, the stacked/re-entry brief and implementer wording, the stacked rebase and review-bead close, the held-back and re-entry logs, the reconcile split note, the detector and Metrics fields, the resume note), +33 for proactive slowness handling (noteSlowness and its items, the hot-file raise, the graph-bound arming and its audit reason, the detector's lane fields, the act-capable edge audit: change formatting, the edge-cuts dispatch key/label/prompt, the Edge cut: lines and their elided variants, effDeps' cut key), +8 for the round-1 planning split (planPrompt's walk and three scopes, the plan-rest key/label, its logs), +1 when the brief folded into the implementer (workspaceSetup's re-entry branch and the setup/no-base findings in, the brief dispatch key/label out), +1 for the planner-null degrade log, +5 for task-worktree cleanup (the task-worktree root, the merge's cleanup command and step, the worktree-sweep log and prompt), +4 for process cleanup (the run temp root, processHygiene's command and rule, the process-sweep log), +1 for the ledger-read retry label, +1 for the detached-HEAD merge diagnosis, +3 for the short task temp root (its root, taskTmp, processHygiene's roots), +1 for the auth-refused Merge: line, +1 for the review-base substitution log, +6 for the integration-blocked hold (the held/skip/stop logs, the hold reasons, its Merge: line and slowness item), +14 for added edges (addEdge's logs, ledger line, key and label, the waiting log, the waitFor ledger lines, edgeAddPrompt), +3 for edge-audit memory (the carried-verdict list), +30 for the open-issues sweep (already-merged re-check, ledger-check causes and the in-memory Metrics fallback, digest header check, class and cause tags, the graph-bound re-check, peak-based streak, aborted merge check, sweep-line validation and baseline, run-to-completion rule, HOME/XDG, human actions, deferred minors, composed review, base check, planner cwd), +1 for the final-review Metrics block, +1 for the merge-lane priority log; update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
+    check(scan.spans.length === 459,
+      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 459 (+23 for oversized handling (noteSurface's line and key, handleOversized's skip and split logs, the split dispatch key/label, the three outcome logs and ledger lines/keys/elision, the close-split key/label, splitOversizedPrompt and closeSplitPrompt); +16 for the final-review size switch (reviewPath and cluster path, the assemble dispatch key/label, its fits and cluster parse, the Final review: ledger lines, the UNAVAILABLE string, notReadyWith's two literals, the cluster and seam keys/labels, the stub key/label and its log, finalReviewPrompt's capped note, finalClusterReviewPrompt, finalSeamReviewPrompt, finalReviewStubPrompt); +3 for the assembler builder (workspaceAbs, the default-base text, assemblePrompt's prompt); +2 for the deferred-to-this-task minors note and its per-minor literal; +5 for the outage and quarantine fixes: the dispatch-unavailable stop log, the quarantine release log, its ledger line and key, the fix pass's evidence-only note; +9 for the outage-resume fixes: the Resume read's git landings step and its seeding log, the merge's already-landed log, the seeded-edge keys and the edge re-write key, the reconcile's blocker note, the reconciled completion line and its key; +1 closure verification contract, +1 current requirements contract; recovery marker uses concatenation) — 215 after the D4 loop rewrite, +10 for the merge-evidence contract (clean-check and merge steps, mergeEvidence's diagnoses and logs, the Merge-cleanup line) and writeFence(), +17 for the failing-mergeCheck seam route (the check-fix and fix-review dispatch keys/labels, their logs and blocker findings, the re-merge, fixPrompt's check branch, checkFixReviewPrompt), +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log, −7 for batched ledger writes (per-line ledger keys and labels out, the per-task flush key, the merge agent's LEDGER step and its line templates, the runtime-slot logs, the per-site null-merge logs and the background edge audit in), +46 for early unblock and graph readiness (the split/reopen/discard dispatch keys, labels, prompts and logs, the cancel and graph-dispatch logs, the stacked/re-entry brief and implementer wording, the stacked rebase and review-bead close, the held-back and re-entry logs, the reconcile split note, the detector and Metrics fields, the resume note), +33 for proactive slowness handling (noteSlowness and its items, the hot-file raise, the graph-bound arming and its audit reason, the detector's lane fields, the act-capable edge audit: change formatting, the edge-cuts dispatch key/label/prompt, the Edge cut: lines and their elided variants, effDeps' cut key), +8 for the round-1 planning split (planPrompt's walk and three scopes, the plan-rest key/label, its logs), +1 when the brief folded into the implementer (workspaceSetup's re-entry branch and the setup/no-base findings in, the brief dispatch key/label out), +1 for the planner-null degrade log, +5 for task-worktree cleanup (the task-worktree root, the merge's cleanup command and step, the worktree-sweep log and prompt), +4 for process cleanup (the run temp root, processHygiene's command and rule, the process-sweep log), +1 for the ledger-read retry label, +1 for the detached-HEAD merge diagnosis, +3 for the short task temp root (its root, taskTmp, processHygiene's roots), +1 for the auth-refused Merge: line, +1 for the review-base substitution log, +6 for the integration-blocked hold (the held/skip/stop logs, the hold reasons, its Merge: line and slowness item), +14 for added edges (addEdge's logs, ledger line, key and label, the waiting log, the waitFor ledger lines, edgeAddPrompt), +3 for edge-audit memory (the carried-verdict list), +30 for the open-issues sweep (already-merged re-check, ledger-check causes and the in-memory Metrics fallback, digest header check, class and cause tags, the graph-bound re-check, peak-based streak, aborted merge check, sweep-line validation and baseline, run-to-completion rule, HOME/XDG, human actions, deferred minors, composed review, base check, planner cwd), +1 for the final-review Metrics block, +1 for the merge-lane priority log; update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
     // self-test: inject a raw backtick mid-way through the first literal's content and assert
     // the detector actually fires — a detector that cannot catch the known failure is decoration
     const [s, e] = scan.spans[0]
@@ -2067,6 +2067,100 @@ async function main() {
     check(at('impl:bd-101') > out.trace.findIndex(t => t.label === 'merge:bd-102'), 'the re-dispatch comes after the waited-for bead merged')
     check(taskLedgerLine(out.trace, 'bd-101', /waiting on bd-102/) !== undefined, 'the ledger records the wait', JSON.stringify(taskLedgerLines(out.trace, 'bd-101')))
     check(/waitFor/.test(promptOf(out.trace, 'triage:bd-101') ?? ''), 'the triage prompt offers waitFor')
+  }
+
+  // Oversized proposals: the planner reports bd-102 as too large; the coordinator runs split-oversized
+  // through a mechanical dispatch before any dispatch of bd-102. The two-task fixture: bd-101 plans
+  // normally (surfaceTokens 1200), bd-102 carries the proposal.
+  const OVERSIZED = { id: 'bd-102', reason: 'two independent groups', children: [
+    { title: 'part a', filesTouched: ['src/b.js'], filesToRead: [], acceptance: '- [ ] x' },
+    { title: 'part b', filesTouched: ['src/c.js'], filesToRead: [], acceptance: '- [ ] y' }] }
+  const oversizedPlan = (extra = {}) => ({ planPath: PLANPATH,
+    mapping: [{ n: 1, id: 'bd-101', files: ['src/a.js'], filesToRead: ['src/z.js'], surfaceTokens: 1200, deps: [] },
+              { n: 2, id: 'bd-102', files: ['src/b.js', 'src/c.js'], filesToRead: [], surfaceTokens: 9000, deps: [] }],
+    oversized: [OVERSIZED], ...extra })
+  const record = (name, out) => console.log(`    [recorded] ${name}: ${Object.values(out.counts).reduce((x, y) => x + y, 0)} agent calls`)
+  const allLedger = out => out.trace.filter(t => /^ledger/.test(t.label)).flatMap(t => extractLedgerLines(t.prompt))
+
+  scenario('oversized: a filed split drops the original, writes Surface:/Split: lines, and the refill plans and lands the children')
+  {
+    const out = await run({ args: liveArgs({ config: cfg({ earlyUnblock: false }) }), canned: manyTaskCanned(['bd-101', 'bd-102', 'bd-201', 'bd-202'], {
+      'bd-ready': [{ ids: ['bd-101', 'bd-102'] }, { ids: ['bd-201', 'bd-202'] }, { ids: [] }],
+      'plan': [oversizedPlan(), { planPath: PLANPATH, mapping: [
+        { n: 1, id: 'bd-101', files: ['src/a.js'], deps: [] }, { n: 2, id: 'bd-102', files: ['src/b.js', 'src/c.js'], deps: [] },
+        { n: 3, id: 'bd-201', files: ['src/b.js'], deps: [] }, { n: 4, id: 'bd-202', files: ['src/c.js'], deps: [] }] }],
+      'split:bd-102': { exit: 0, lines: ['split: bd-102 -> bd-201,bd-202'] },
+      'ledger-append:surface:1': { appended: true }, 'ledger-append:split:bd-102': { appended: true } }) })
+    assertNoThrow(out)
+    check(!out.counts['impl:bd-102'] && !out.counts['unplanned-blocker:bd-102'], 'the split original is never dispatched nor routed as unplanned', JSON.stringify(out.counts))
+    check(JSON.stringify([...out.result.completed].sort()) === '["bd-101","bd-201","bd-202"]', 'the siblings and both children land', JSON.stringify(out.result))
+    check(out.counts['plan'] === 2 && out.counts['split:bd-102'] === 1, 'the refill planner maps the children after the split', JSON.stringify(out.counts))
+    const sp = promptOf(out.trace, 'split:bd-102') ?? ''
+    check(sp.includes(`bash ${SKILLS}/super-code/scripts/split-oversized`) && sp.includes('"filesTouched":["src/b.js","src/c.js"]') && /outcomes, not script failures/.test(sp), 'the split prompt runs the script on the proposal with the original\'s files', sp)
+    const w = allLedger(out)
+    check(w.includes('Surface: bd-101 1200 tokens') && w.includes('Surface: bd-102 9000 tokens'), 'Surface: lines are written', JSON.stringify(w))
+    check(w.includes('Split: bd-102 → bd-201, bd-202'), 'a Split: line records the children', JSON.stringify(w))
+    check(out.result.stopReason === 'ready-drained' && out.result.stalled === false, 'a round whose only progress was a split is not a stall', JSON.stringify(out.result))
+    record('oversized filed', out)
+  }
+
+  scenario('oversized: a refused split writes Split refused: and the bead proceeds unsplit')
+  {
+    const out = await run({ args: liveArgs({ config: cfg({ earlyUnblock: false }) }), canned: manyTaskCanned(['bd-101', 'bd-102'], {
+      'plan': oversizedPlan(),
+      'split:bd-102': { exit: 3, lines: ['refused: no child carries checklist item "x"'] },
+      'ledger-append:surface:1': { appended: true }, 'ledger-append:split-refused:bd-102': { appended: true } }) })
+    assertNoThrow(out)
+    check(out.counts['impl:bd-102'] === 1 && JSON.stringify([...out.result.completed].sort()) === '["bd-101","bd-102"]', 'bd-102 implements and lands as planned', JSON.stringify(out.result))
+    check(allLedger(out).includes('Split refused: bd-102 — no child carries checklist item "x"'), 'the refusal is on the ledger', JSON.stringify(allLedger(out)))
+    check(!allLedger(out).some(l => l.startsWith('Split: ')) && !out.counts['close-split:bd-102'], 'no Split: line, no child close')
+    record('oversized refused', out)
+  }
+
+  scenario('oversized: a partial split closes the filed children, writes Split partial:, and the bead proceeds unsplit')
+  {
+    const out = await run({ args: liveArgs({ config: cfg({ earlyUnblock: false }) }), canned: manyTaskCanned(['bd-101', 'bd-102'], {
+      'plan': oversizedPlan(),
+      'split:bd-102': { exit: 5, lines: ['filing failed: create - boom', 'filed: bd-201'] },
+      'close-split:bd-102': { id: 'bd-102', status: 'CLOSED' },
+      'ledger-append:surface:1': { appended: true }, 'ledger-append:split-partial:bd-102': { appended: true } }) })
+    assertNoThrow(out)
+    check(out.counts['impl:bd-102'] === 1 && out.counts['close-split:bd-102'] === 1, 'the children are closed and bd-102 implements', JSON.stringify(out.counts))
+    const cp = promptOf(out.trace, 'close-split:bd-102') ?? ''
+    check(/bd close <child> --reason "Split partial: bd-102 — filed bd-201"/.test(cp) && cp.includes('bd-201'), 'the close prompt names the filed child and the reason', cp)
+    check(allLedger(out).includes('Split partial: bd-102 — filed bd-201'), 'the partial outcome is on the ledger', JSON.stringify(allLedger(out)))
+    check(out.trace.findIndex(t => t.label === 'close-split:bd-102') < out.trace.findIndex(t => t.label === 'impl:bd-102'), 'children are closed before the bead dispatches')
+    record('oversized partial', out)
+  }
+
+  scenario('oversized: a null split dispatch proceeds unsplit with no Split line')
+  {
+    const out = await run({ args: liveArgs({ config: cfg({ earlyUnblock: false }) }), canned: manyTaskCanned(['bd-101', 'bd-102'], {
+      'plan': oversizedPlan(), 'split:bd-102': null, 'ledger-append:surface:1': { appended: true } }) })
+    assertNoThrow(out)
+    check(out.counts['impl:bd-102'] === 1 && !allLedger(out).some(l => /^Split/.test(l)), 'bd-102 implements; no Split line', JSON.stringify(allLedger(out)))
+    record('oversized null', out)
+  }
+
+  scenario('oversized: planner-prompt.md defines filesToRead, surfaceTokens, verbatim checklists and oversized as a judgment')
+  {
+    const pp = readFileSync(path.join(skillDir, 'planner-prompt.md'), 'utf8').replace(/\s+/g, ' ')
+    for (const needle of ['filesToRead', 'surfaceTokens', '[task-surface]', 'oversized', 'never a gate', 'carried verbatim, item for item', 'keeps its write-only meaning'])
+      check(pp.includes(needle), `planner-prompt.md contains "${needle}"`)
+    const plan = promptOf((await run({ args: liveArgs(), canned: oneTaskCanned() })).trace, 'plan') ?? ''
+    check(plan.includes(`[task-surface] = \`bash ${SKILLS}/super-code/scripts/task-surface\``) && /oversized for any bead you judge too large[^.]*never a gate/.test(plan), 'the plan prompt passes [task-surface] and asks for filesToRead, surfaceTokens and oversized', plan)
+  }
+
+  scenario('oversized: ledger-digest drops Surface: and Split lines')
+  {
+    const dir = mkdtempSync(path.join(os.tmpdir(), 'surface-digest-'))
+    const file = path.join(dir, 'progress.md')
+    try {
+      writeFileSync(file, ['Surface: bd-101 1200 tokens', 'Split: bd-102 → bd-201, bd-202', 'Split refused: bd-103 — no child carries checklist item "x"',
+        'Split partial: bd-104 — filed bd-301', 'Task 1 (bd-101): complete (commits aaa..bbb, review clean)'].join('\n') + '\n')
+      const text = execFileSync('bash', [path.join(skillDir, 'scripts/ledger-digest'), file], { encoding: 'utf8' })
+      check(!/Surface|Split/.test(text) && /Task 1 \(bd-101\): complete/.test(text) && text.startsWith('# ledger-digest: 1 of 5 lines'), 'only the Task line survives', text)
+    } finally { rmSync(dir, { recursive: true, force: true }) }
   }
 
   scenario('timeouts: a killed merge check is no result — the merge re-dispatches once, no fix or blocker; twice leaves it unsettled')

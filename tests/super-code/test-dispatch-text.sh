@@ -84,6 +84,7 @@ run bash "$D" --ledger "$L" --stdout plan --ids ep.1,ep.2 --mode ready
 assert_has "$out" "plan ONLY the confirmed-ready ids" "plan --mode ready"
 run bash "$D" --ledger "$L" --stdout plan --ids ep.1 --mode rest
 assert_has "$out" "APPENDING only" "plan --mode rest appends"
+for w in task-surface filesToRead surfaceTokens oversized; do assert_has "$out" "$w" "plan text names $w"; done
 run bash "$D" --ledger "$L" --stdout triage --id ep.2 --blocker ep.7
 assert_has "$out" "blocker bead ep.7, filed against task ep.2" "triage"
 assert_has "$out" "waitFor" "and its waitFor field"
