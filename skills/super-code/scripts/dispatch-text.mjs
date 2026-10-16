@@ -35,10 +35,13 @@ kinds and options:
                     [--resolved-bead ID] [--consumes ID1,ID2]
   plan              --ids ID1,ID2 [--mode ready|rest|refill] [--reentry-ids ID1,ID2]
   triage            --id ID --blocker BEAD
+  assemble          --consumer final-review|roast-code|history|assess --instance I
+                    [--threshold N] [--base SHA] [--head REF] [--spec P1,P2]
 
 common options:
   --plan <file>        the plan file (default: <ledger dir>/<epic>-plan.md)
   --test-paths P1,P2   config.testPaths, when the run set one
+  --run-tag T          names the assembled-input directories (default: the Launch: line's runTag, else the epic)
   --epic, --branch, --worktree, --merge-check   override the Launch: line`
 
 const FLAGS = new Set(['stdout', 'reentry', 'recut', 'stacked', 'seam-cleared', 'help'])
@@ -66,7 +69,7 @@ function launchFrom(ledgerText) {
   if (line.startsWith('args ')) {
     try {
       const a = JSON.parse(line.slice(5))
-      return { epic: a.epicId, branch: a.integrationBranch, worktree: a.integrationWorktree, mergeCheck: a.config?.mergeCheck, testPaths: a.config?.testPaths }
+      return { epic: a.epicId, branch: a.integrationBranch, worktree: a.integrationWorktree, runTag: a.runTag, mergeCheck: a.config?.mergeCheck, testPaths: a.config?.testPaths }
     } catch { return {} }
   }
   const f = {}
@@ -74,7 +77,7 @@ function launchFrom(ledgerText) {
     const m = part.match(/^(\S+)\s+(.*)$/)
     if (m) f[m[1]] = m[2].trim()
   }
-  return { epic: f.epic, branch: f.branch, worktree: f.integrationWorktree, mergeCheck: f.mergeCheck }
+  return { epic: f.epic, branch: f.branch, worktree: f.integrationWorktree, runTag: f.runTag, mergeCheck: f.mergeCheck }
 }
 
 function loadBuilders(cfg) {
@@ -82,7 +85,7 @@ function loadBuilders(cfg) {
   try { src = readFileSync(join(codeSkill, 'coordinator.js'), 'utf8') } catch (e) { console.error(`dispatch-text: cannot read coordinator.js: ${e.message}`); process.exit(3) }
   const cut = src.search(/^while \(true\) \{$/m)
   if (cut < 0) { console.error('dispatch-text: coordinator.js has no top-level `while (true) {` round loop to cut at'); process.exit(3) }
-  const ret = `return { planPrompt, implementPrompt, taskReviewPrompt, fixPrompt, seamReviewPrompt, checkFixReviewPrompt, mergePrompt, triagePrompt, reviewBeadOf, mergeCheckCommand }\n`
+  const ret = `return { planPrompt, implementPrompt, taskReviewPrompt, fixPrompt, seamReviewPrompt, checkFixReviewPrompt, mergePrompt, triagePrompt, assemblePrompt, reviewBeadOf, mergeCheckCommand }\n`
   const body = (src.slice(0, cut) + ret + src.slice(cut)).replace(/^export const meta/m, 'const meta')
   const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor
   const fn = new AsyncFunction('args', 'agent', 'log', 'phase', 'pipeline', 'parallel', 'budget', 'workflow', body)
@@ -102,10 +105,11 @@ if (!epic || !branch || !worktree) fail('epic, branch and integration worktree a
 const mergeCheck = o['merge-check'] ?? L.mergeCheck
 const testPaths = o['test-paths'] ? list(o['test-paths']) : L.testPaths
 const ws = dirname(resolve(o.ledger))
+const runTag = o['run-tag'] || L.runTag || epic
 const planPath = o.plan || join(ws, `${epic}-plan.md`)
 
 const B = await loadBuilders({
-  epicId: epic, integrationBranch: branch, integrationWorktree: worktree, skillsRoot, dryRun: false,
+  epicId: epic, integrationBranch: branch, integrationWorktree: worktree, skillsRoot, runTag, dryRun: false,
   config: { mergeCheck: mergeCheck && !/^none\b/.test(mergeCheck) ? mergeCheck : 'none', ...(testPaths ? { testPaths } : {}) },
 })
 
@@ -170,6 +174,17 @@ switch (kind) {
     text = B.triagePrompt(o.id, o.blocker, planPath)
     label = `triage-${o.id}`
     break
+  case 'assemble': {
+    need('consumer', 'instance')
+    if (!['final-review', 'roast-code', 'history', 'assess'].includes(o.consumer)) fail('--consumer is final-review, roast-code, history or assess')
+    const opts = { specPaths: list(o.spec) }
+    if (o.threshold !== undefined) { if (!/^\d+$/.test(o.threshold)) fail('--threshold is a non-negative integer'); opts.threshold = Number(o.threshold) }
+    if (o.base) opts.base = o.base
+    if (o.head) opts.head = o.head
+    text = B.assemblePrompt(o.consumer, o.instance, opts)
+    label = `assemble-${o.consumer}-${o.instance}`
+    break
+  }
   default:
     fail(`unknown kind ${kind}\n${USAGE}`)
 }
