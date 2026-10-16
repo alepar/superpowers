@@ -72,6 +72,12 @@ J
 run bash "$S" "$C" --threshold 1500
 assert_eq "$code" 3 "a changed file in two clusters: exit 3"
 assert_has "$out" "coverage: src/b.js in 2 clusters" "names the file and its cluster count"
+run bash "$S" "$C" --threshold 6000
+assert_eq "$code" 3 "bad coverage with inputs under the threshold: still exit 3"
+assert_has "$out" "fits: yes (" "exit 3 still prints a valid fits: yes line"
+fl=$(printf '%s\n' "$out" | grep -n '^fits:' | head -1 | cut -d: -f1)
+cl=$(printf '%s\n' "$out" | grep -n '^coverage:' | head -1 | cut -d: -f1)
+[ -n "$fl" ] && [ -n "$cl" ] && [ "$fl" -lt "$cl" ] && echo "ok: fits line precedes the first coverage line" || { echo "FAIL: fits line must precede coverage (fits=$fl coverage=$cl)"; exit 1; }
 assert_lacks "$out" "cluster-fits" "no cluster-fits lines on bad coverage"
 cat > "$C/clusters.json" <<'J'
 {"changed":["src/a.js","src/b.js"],"clusters":[{"name":"x","files":["src/a.js"],"slices":[]}]}

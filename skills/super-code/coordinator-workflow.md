@@ -1286,7 +1286,8 @@ entry, 258K); the threshold is 40% of it. The mode follows the assembler's reply
 | Assembler reply | Mode | Dispatches | Ledger line |
 |---|---|---|---|
 | null, no parsable `fits:` line, or `exit` not 0/3 | `single` on direct inputs, uncapped | `final-review` | `Final review: single (assembler unavailable)` |
-| `exit` 3 (bad coverage, or no usable `clusters.json`), or `fits: no` with no `cluster-fits:` lines | `single` on direct inputs, **capped** | `final-review` | `Final review: single (no usable clusters — capped)` |
+| `exit` 3 with `fits: no` or no `fits:` line, or `fits: no` with no `cluster-fits:` lines | `single` on direct inputs, **capped** | `final-review` | `Final review: single (no usable clusters — capped)` |
+| `exit` 3 with `fits: yes` | `single` on direct inputs, uncapped | `final-review` | `Final review: single (inputs fit; clusters.json rejected — direct inputs)` |
 | `fits: yes` | `single` on the digest and slices | `final-review` | `Final review: single (inputs <N>K <= 40% of <W>K) · clusters <k>` |
 | `fits: no` | `split` | `final-review:cluster:<n>` for each `cluster-fits: <name> yes` (concurrent, in batches of the concurrency cap), then `final-review:seam` | `Final review: split (inputs <N>K > 40% of <W>K) · clusters <k>` |
 
@@ -1955,6 +1956,7 @@ single-mode count is 22.
 | split | `fits: no (300000 of 80000)`, two `yes` clusters | `final-review:cluster:1`, `:2`, `final-review:seam` | `split (inputs 300K > 40% of 200K) · clusters 2` | the seam verdict | 24 |
 | assembler unavailable | null | `final-review` on direct inputs | `single (assembler unavailable)` | uncapped | 22 |
 | exit 3, capped | `exit: 3` | `final-review` on direct inputs, told `no usable clusters` | `single (no usable clusters — capped)` | `not ready (… unreviewed: inputs exceed the window and no usable clusters)` | 22 |
+| exit 3, fits | `exit: 3`, `fits: yes (12000 of 80000)` | `final-review` on direct inputs, not capped | `single (inputs fit; clusters.json rejected — direct inputs)` | the reviewer's verdict | 22 |
 | null cluster review | split, cluster 2 null | both clusters, then the seam | split line | `not ready (unreviewed: cluster 2 (beta): review unavailable)` | 24 |
 | null seam review | split, seam null | both clusters, the seam, `final-review:stub` | split line | `not ready (unreviewed: seam)`; `reviewPath` still returned | 25 |
 | null seam and stub | split, seam and stub null | both clusters, the seam, `final-review:stub` | split line | `not ready (unreviewed: seam)`; `reviewPath` null | 25 |

@@ -1691,11 +1691,15 @@ if (landedWork) {
     .map((m, i) => ({ n: i + 1, name: m[1].trim(), fits: m[2] === 'yes' }))
   frDir = asm?.dir ?? null
   frAsmClusters = asm?.clusters ?? null
-  if (asm && asm.exit === 3) frMode = 'capped'
+  // Exit 3 (bad clusters.json coverage) caps only when the inputs also do not fit; `fits: yes` means a
+  // single review on direct inputs, uncapped.
+  const exit3Fits = !!(asm && asm.exit === 3 && fm && fm[1] === 'yes')
+  if (asm && asm.exit === 3 && !exit3Fits) frMode = 'capped'
   else if (asm && asm.exit === 0 && fm && frDir) frMode = fm[1] === 'yes' ? 'single' : (frClusters.length ? 'split' : 'capped')
   const totalK = fm ? Math.round(Number(fm[2]) / 1000) : 0, windowK = Math.round(reviewWindow / 1000)
   const k = asm?.clusters ?? frClusters.length
-  frLine = frMode === 'unavailable' ? 'Final review: single (assembler unavailable)'
+  frLine = exit3Fits ? 'Final review: single (inputs fit; clusters.json rejected — direct inputs)'
+    : frMode === 'unavailable' ? 'Final review: single (assembler unavailable)'
     : frMode === 'capped' ? 'Final review: single (no usable clusters — capped)'
     : `Final review: ${frMode} (inputs ${totalK}K ${frMode === 'single' ? '<=' : '>'} 40% of ${windowK}K) · clusters ${k}`
 }

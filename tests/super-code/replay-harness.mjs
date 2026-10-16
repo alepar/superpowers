@@ -1171,6 +1171,20 @@ async function main() {
       check(out.result?.review === 'not ready (unreviewed: inputs exceed the window and no usable clusters)' && out.result?.reviewPath === REVIEW_PATH, 'a reviewer "ready" is capped to not ready', JSON.stringify([out.result?.review, out.result?.reviewPath]))
       const kept = await run({ args: liveArgs(), canned: oneTaskCanned({ 'assemble:final': asmOf({ exit: 3, fits: 'fits: no (300000 of 80000)' }), 'final-review': { verdict: 'not ready (a defect in a.js)', path: REVIEW_PATH } }) })
       check(kept.result?.review === 'not ready (a defect in a.js; unreviewed: inputs exceed the window and no usable clusters)', 'the reviewer\'s own summary is kept', kept.result?.review)
+      const noFits = await run({ args: liveArgs(), canned: oneTaskCanned({ 'assemble:final': asmOf({ exit: 3, fits: '' }) }) })
+      check(noFits.result?.review === 'not ready (unreviewed: inputs exceed the window and no usable clusters)', 'exit 3 with no fits line is still capped', noFits.result?.review)
+    }
+
+    scenario('final review: assembled-size exit 3 with fits: yes → uncapped single on direct inputs')
+    {
+      const out = await run({ args: liveArgs(), canned: oneTaskCanned({ 'assemble:final': asmOf({ exit: 3, fits: 'fits: yes (12000 of 80000)' }) }) })
+      assertNoThrow(out)
+      check(same(frLabels(out), ['assemble:final', 'ledger-append:metrics', 'final-review']), 'one single review', JSON.stringify(frLabels(out)))
+      check(out.trace.length === 22, `22 agent dispatches (got ${out.trace.length})`)
+      const p = promptOf(out.trace, 'final-review') ?? ''
+      check(p.includes('review-package') && !p.includes('no usable clusters') && !p.includes('digest.md'), 'direct inputs, not told it is capped')
+      check(frLedger(out) === 'Final review: single (inputs fit; clusters.json rejected — direct inputs)', 'ledger line names the cause', frLedger(out))
+      check(out.result?.review === 'ready', 'verdict not capped', out.result?.review)
     }
 
     scenario('final review: a null cluster review is unreviewed, the seam still runs')

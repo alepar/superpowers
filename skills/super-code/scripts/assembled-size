@@ -15,6 +15,8 @@
 # Every changed path must be in exactly one cluster's files, and every cluster file in changed.
 # --clusters-required: clusters.json missing, unparsable or with an empty clusters array prints
 # `clusters: required but missing or empty` after the fits line.
+# Exit 3 still prints every size: line and the fits: line first, both valid; a consumer caps a review
+# only when fits is no.
 # Exit codes: 0 measured (whether or not it fits), 2 bad usage, 3 bad cluster coverage or required
 # clusters missing, 4 jq unavailable (clusters.json present: run the coverage check by hand).
 set -euo pipefail
