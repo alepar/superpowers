@@ -13,10 +13,10 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 rb_read_stdin
 sid=$(rb_field session_id)
 [ -n "$sid" ] || sid="${CODEX_THREAD_ID:-}"
-cwd=$(rb_field cwd)
 
-rb_is_subagent && exit 0
-rb_resolve "$sid" "$cwd" || exit 0
+# Codex records no child identifier, and a child thread has its own session_id with the coordinator's
+# cwd. The cwd fallback would hand it the run block, so resolve by session id only (no cwd).
+rb_resolve "$sid" "" || exit 0
 
 if text=$(rb_digest all 18000 5 2>/dev/null); then
   :

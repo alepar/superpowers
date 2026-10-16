@@ -13,6 +13,8 @@
 # session's marker for the same skill and worktree.
 # Store: ${XDG_STATE_HOME:-$HOME/.local/state}/superpowers/active-runs/<session_id>, one `field: value`
 # line per field. Fallback (store unwritable): <worktree>/.superpowers/run-marker-<session>.
+# --cwd fallback: used by the Claude Code entry only, which refuses it (--subagent) when the hook input
+# carries `agent_id`. The Codex entry never passes --cwd (no child identifier is recorded for Codex).
 # Session id: $CLAUDE_CODE_SESSION_ID, else $CODEX_THREAD_ID, else --session.
 # Live = refreshed within 14 days AND (run_md set: file exists, first `phase:` line is not `done`;
 # else: ledger set and exists).

@@ -1,5 +1,7 @@
 # Coordinator card (re-injected after compaction)
 
+If you are a dispatched child agent (implementer, reviewer, triage, assembler or any other subagent), this block is not for you: ignore it and follow your dispatch.
+
 You coordinate a super-code or super-auto run. Your context was compacted or this is a fresh turn; this card and the `## Run state` block after it are what you need to continue. Continue from them, then from `run.md`'s `phase` or the ledger. Do not restart, re-plan, or re-read whole documents.
 
 ## Loop

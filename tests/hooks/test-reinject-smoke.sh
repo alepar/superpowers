@@ -281,7 +281,7 @@ else
     fail "the entry prints valid JSON"
   fi
 
-  negative_cases "Codex" "$CX_HOOKS" "$T/codex" ',"thread_spawn":{"parent_thread_id":"S1"}'
+  negative_cases "Codex" "$CX_HOOKS" "$T/codex" ""
 
   for mode in failing hanging; do
     echo "Codex: $mode run-digest"

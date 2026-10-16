@@ -154,11 +154,11 @@ assert_eq "codex: hookEventName" "SessionStart" "$(printf '%s' "$out" | node -e 
 out=$(chook '{"cwd":"/elsewhere"}' CODEX_THREAD_ID=S1)
 assert_eq "codex: CODEX_THREAD_ID fallback, no source field" "$(printf 'CARD-TEXT\n\nSTATE-TEXT')" "$(printf '%s' "$out" | decode)"
 out=$(chook "{\"session_id\":\"S9\",\"cwd\":\"$T/W/sub\"}")
-assert_has "codex: cwd match" "STATE-TEXT" "$(printf '%s' "$out" | decode)"
+assert_eq "codex: no cwd fallback (child with own id and coordinator cwd): no output" "" "$out"
 out=$(chook '{"session_id":"S9","cwd":"/elsewhere","source":"compact"}'; echo "rc=$?")
 assert_eq "codex: non-matching id: no output, exit 0" "rc=0" "$out"
-out=$(chook "{\"session_id\":\"C9\",\"cwd\":\"$T/W/sub\",\"source\":{\"subagent\":{\"thread_spawn\":{\"parent_thread_id\":\"S1\"}}}}")
-assert_eq "codex: child thread: no output" "" "$out"
+out=$(chook "{\"session_id\":\"C9\",\"cwd\":\"$T/W\",\"source\":\"compact\"}")
+assert_eq "codex: realistic child payload (own session_id, coordinator cwd): no output" "" "$out"
 out=$(chook "{\"session_id\":\"C9\",\"cwd\":\"$T/W/.worktrees/t1\"}")
 assert_eq "codex: task-worktree cwd, other id: no output" "" "$out"
 out=$(chook '{}' CODEX_THREAD_ID=)
