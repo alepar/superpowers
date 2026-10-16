@@ -72,7 +72,7 @@ read-heavy reviewers, qualitative sizing, a warn-only pre-flight). This spec add
 - Recommended: a bash script, `register | clear | get | prune`. It writes one `key: value` file per
   session at `${XDG_STATE_HOME:-~/.local/state}/superpowers/active-runs/<session_id>`, with the
   fields `skill`, `harness`, `run_md` (absent for standalone super-code), `ledger`, `epic`,
-  `started`, `registered_by_pid`.
+  `started`, `registered_by_pid`, `worktree`.
 - The session id comes from `$CLAUDE_CODE_SESSION_ID`, else `$CODEX_THREAD_ID`. With neither,
   `register` prints `run-marker: no session id — skipped` and exits 0, because a marker is an
   optimisation, never a gate.
@@ -81,6 +81,12 @@ read-heavy reviewers, qualitative sizing, a warn-only pre-flight). This spec add
   super-code, the ledger exists and the marker is under 14 days old. The calling session clears
   the marker at Finish, so only a crashed run leaves a stale one, which expires. Neither
   coordinator writes a new ledger line for this.
+- `get --cwd <dir>` is the fallback lookup: when no marker matches the session id, it returns the
+  newest live marker whose recorded run worktree (field `worktree`) contains `<dir>`. Both hook
+  entries pass stdin `cwd`. This covers a harness whose hook session id differs from the id the
+  coordinator's shell sees; the spike (A3) records whether either harness needs it.
+- One marker per session. When super-auto drives super-code in the same session, super-code finds
+  the live super-auto marker and neither registers nor clears.
 - `register` is idempotent: it rewrites the file and refreshes paths. It also prunes markers older
   than 14 days that are no longer live. `clear` removes only the caller's session marker.
 - The marker format is private to the script. The hook and `run-digest` read markers only through
@@ -287,6 +293,8 @@ read-heavy reviewers, qualitative sizing, a warn-only pre-flight). This spec add
   - every leaf's acceptance is a checkable `- [ ]` list, which the planner carries verbatim.
   - No numbers.
 - super-code planner (`planner-prompt.md`, the `PLANNED` schema, and both coordinators):
+  - each task is one feature in one subsystem and carries the bead's `- [ ]` checklist verbatim; a
+    bead spanning independent subsystems is reported `oversized` rather than planned as one task;
   - each `## Task <N>` gains `filesToRead` beside `filesTouched`;
   - the planner runs new `scripts/task-surface --base <sha> <files…>` (sum of characters ÷ 4 at
     the base commit) and records `surfaceTokens` on the mapping row;
