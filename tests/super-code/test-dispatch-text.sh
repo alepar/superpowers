@@ -198,6 +198,37 @@ assert_eq "$code" 2 "--consumer bogus: exit 2"
 run bash "$D" --ledger "$L" --stdout assemble --consumer assess
 assert_eq "$code" 2 "assemble without --instance: exit 2"
 
+echo "dispatch-text: final-review"
+fr() { run bash "$D" --ledger "$T/ws/rt.md" --stdout final-review "$@"; }
+last_is_schema() { [ "$(printf '%s\n' "$out" | tail -n 1 | grep -o 'FINAL ANSWER:.*')" = "$SCHEMA_RULE" ]; }
+FD="$AW/final-review-rt-1-final"
+fr --mode single
+assert_eq "$code" 0 "final-review --mode single exits 0"
+assert_has "$out" "review-package" "single without --dir reviews direct inputs through the review package"
+assert_has "$out" "$W/.superpowers/sdd/ep-plan/final-review-rt-1.md" "single writes the handoff file final-review-<runTag>.md"
+assert_lacks "$out" "no usable clusters" "an uncapped single review is not told its inputs overflow"
+if last_is_schema; then pass "single ends with the final-answer line"; else fail "single ends with the final-answer line"; fi
+fr --mode single --dir "$FD"
+assert_has "$out" "$FD/digest.md" "single --dir reads the assembled digest"
+assert_lacks "$out" "review-package" "single --dir does not rebuild the review package"
+fr --mode single --capped
+assert_has "$out" "no usable clusters" "--capped tells the reviewer its inputs exceed the window"
+fr --mode cluster --dir "$FD" --cluster 2 --name hooks
+assert_has "$out" "final-review-rt-1-cluster-2.md" "cluster writes final-review-<runTag>-cluster-<n>.md"
+assert_has "$out" "cluster named hooks" "cluster names the cluster it reviews"
+if last_is_schema; then pass "cluster ends with the final-answer line"; else fail "cluster ends with the final-answer line"; fi
+fr --mode seam --dir "$FD" --clusters 3
+for n in 1 2 3; do assert_has "$out" "final-review-rt-1-cluster-$n.md" "seam is given cluster file $n"; done
+assert_lacks "$out" "final-review-rt-1-cluster-4.md" "seam is given no cluster beyond --clusters"
+assert_has "$out" "$W/.superpowers/sdd/ep-plan/final-review-rt-1.md" "seam writes the handoff file"
+if last_is_schema; then pass "seam ends with the final-answer line"; else fail "seam ends with the final-answer line"; fi
+fr --mode bogus
+assert_eq "$code" 2 "final-review --mode bogus: exit 2"
+fr --mode cluster --dir "$FD" --cluster 2
+assert_eq "$code" 2 "cluster without --name: exit 2"
+fr --mode seam --dir "$FD" --clusters 0
+assert_eq "$code" 2 "seam --clusters 0: exit 2"
+
 echo "dispatch-text: run facts and bad input"
 printf '%s\n' 'Launch: args {"epicId":"ep","integrationBranch":"feat/y","integrationWorktree":"/r/wy","config":{"mergeCheck":"none"}}' > "$T/ws/wf.md"
 run bash "$D" --ledger "$T/ws/wf.md" --stdout merge --id ep.2 --n 2 --base abc1234

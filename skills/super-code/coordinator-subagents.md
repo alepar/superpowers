@@ -69,17 +69,25 @@ Three things keep the run measurable and resumable:
   earlyUnblock <on or off> · sweep <command or deferred> · mergeCheck <build-only command or none>`
   to the ledger. Append another one when you resume.
 - **Ledger outcomes.** Write each task's `Task …` and `Merge: …` lines in `coordinator-workflow.md`'s
-  formats as the task settles, and the `Detector:`, `Sweep:` and four `Metrics:` lines at Finish.
+  formats as the task settles, and the `Detector:`, `Sweep:`, four `Metrics:` and `Final review:` lines at Finish.
   Resume reads them back, through `scripts/ledger-digest`, together with beads and git
   (`scripts/already-merged --landed <integration branch>` lists the task merges git holds, for
   landings whose ledger lines were lost). Do not write a `Human action:` or `Edge add:` line the
   ledger already has.
 - **Dispatch names.** Name every dispatch `<kind>:<bead id>[:<suffix>]` with the Workflow kinds:
   `impl`, `review`, `fix`, `fix:<id>:seam` or `fix:<id>:check`, `seam-review` (`seam-review:<id>:check`
-  for a merge-check fix's review), `merge`, `triage`, and `plan`, `plan-rest` or `final-review`
-  with no bead. On Codex, task names accept only `[a-z0-9_]`, so write
+  for a merge-check fix's review), `merge`, `triage`, and `plan`, `plan-rest`, `final-review`, `final-review:cluster:<n>`, `final-review:seam` or
+  `final-review:stub` with no bead. On Codex, task names accept only `[a-z0-9_]`, so write
   `<kind>_<bead id>[_<suffix>]` with every other character as `_` (`seam_review_ht_3bi_3_4`), and
   append `__2`, `__3`, … when a name repeats.
+
+Final review: window = `config.contextWindows.finalReview` (from `context-preflight --json`), else
+`FINAL_REVIEW_FALLBACK_WINDOW` in coordinator.js (258K on Codex, 200K on Claude Code); threshold 40%.
+Run `dispatch-text assemble --consumer final-review --instance final --threshold <40% of the window>`,
+then `final-review --mode single [--dir …] [--capped]` or one `--mode cluster` per fitting cluster
+(concurrently) then `--mode seam`, routed exactly as `coordinator-workflow.md` §Finish says, and write
+the same `Final review:` ledger line. Read the result through `report-verdict
+<workspace>/final-review-<runTag>.md`.
 
 At Finish, record the run profile: `bash <skillsRoot>/super-code/scripts/run-profile --codex
 "$CODEX_THREAD_ID"` on Codex, or `--subagents ~/.claude/projects/*/"$CLAUDE_CODE_SESSION_ID"/subagents`
