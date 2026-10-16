@@ -432,7 +432,35 @@ A null peak, window or percentage prints as `unmeasured` (a null window as `<pea
 
 **How it breaks.** Every field above is harness-internal and undocumented, and the tests use synthetic rows, so a harness update passes them. Signs of drift: every record `unmeasured: no usage rows` (a usage field renamed); Claude compactions dropping to zero across runs that clearly compacted (`compact_boundary` or `compactMetadata` renamed); forked Codex children showing their parent's compactions (the history-start ordinal moved or changed meaning); Codex peaks below the sizes the rollout's own compaction rows report (`latest_token_usage_record` moved); every Claude cap compaction classified `early` (the 33K buffer changed); a new Claude model reported `inferred` or above 100% (a missing table row). After a Claude Code or Codex update, re-check with `--context-only --session <recent session.jsonl>` and `--context-only --codex <recent thread>` against the transcripts by hand.
 
-**Validated on** — not yet checked against real runs; this paragraph is replaced by the dated real-run comparison (super-plan-fqb.4).
+**Validated on 2026-10-16**, against the real runs still on the maintainer's disk. No defect found in `context-pass.mjs` or `run-profile.mjs`, so this check added no regression fixture. The Codex runs were written by CLI 0.157.1, 0.160.0, 0.161.0, 0.162.0 and 0.162.1; the Claude Code sessions by 2.1.284 through 2.1.301.
+
+*Codex, `--context-only --codex <thread>` on the 13 super-auto coordinator threads of the original research scan.* The scan script, rerun, reproduced its recorded counts for all 13 runs, so the sessions had not changed. Each cell is agents / agents that compacted / compactions / coordinator compactions, the scan's first and run-profile's second. Agents count the coordinator.
+
+| run (date, thread) | scan | run-profile | difference |
+| --- | --- | --- | --- |
+| 09-26 `01a0dd01` | 39 / 6 / 10 / 3 | 36 / 3 / 5 / 2 | invocation at 09:56; 3 descendants spawned at 09:24 (4 compactions) and 1 coordinator compaction precede it |
+| 09-27 `01a0e0ba` | 433 / 42 / 129 / 45 | 89 / 4 / 9 / 6 | the thread holds a second `$super-auto` invocation two days later (09-29 04:04); 344 earlier descendants (38 compacted, 81 compactions) and 39 coordinator compactions precede it |
+| 09-27 `01a0e1c2` | 6 / 1 / 1 / 1 | 6 / 1 / 1 / 1 | none |
+| 10-03 `01a1029b` | 90 / 1 / 4 / 4 | 63 / 1 / 3 / 3 | 27 descendants (none compacted) and 1 coordinator compaction precede the invocation |
+| 10-04 `01a10505` | 361 / 45 / 154 / 75 | 359 / 45 / 154 / 75 | 2 descendants (none compacted) precede the invocation |
+| 10-04 `01a10803` | 107 / 1 / 4 / 4 | 107 / 1 / 4 / 4 | none |
+| 10-08 `01a119ba` | 207 / 14 / 61 / 29 | 190 / 14 / 60 / 28 | 17 descendants (none compacted) and 1 coordinator compaction precede the invocation |
+| 10-08 `01a119ce` | 240 / 9 / 37 / 27 | 240 / 9 / 37 / 27 | none |
+| 10-08 `01a119df` | 198 / 4 / 22 / 15 | 197 / 4 / 22 / 15 | 1 descendant (not compacted) precedes the invocation |
+| 10-10 `01a12715` | 111 / 21 / 69 / 8 | 111 / 21 / 69 / 8 | none |
+| 10-10 `01a12747` | 51 / 1 / 1 / 1 | 50 / 1 / 1 / 1 | 1 descendant (not compacted) precedes the invocation |
+| 10-10 `01a1274d` | 49 / 1 / 1 / 1 | 49 / 1 / 1 / 1 | none |
+| 10-11 `01a12c6f` | 233 / 24 / 44 / 15 | 227 / 24 / 44 / 15 | 6 descendants (none compacted) precede the invocation |
+
+Every difference is the run window: the scan counts the whole thread, run-profile counts from the latest `$super-auto` invocation (here the thread's last, because `--context-only` anchors at the session's end) and leaves out descendants whose first row precedes it. The counts were checked per run against the rollouts: the window start row, the coordinator compactions on each side of it, and the first row of every excluded descendant. None of the 13 threads has a coordinator or descendant with more than one rollout, and guardian rollouts carry no spawn parent, so neither of those two possible sources of difference occurred. The peaks agree with the scan to the K for every agent both count, with two exceptions that are the scan's: it reports the largest agent peak over the whole thread (253K for the second run, an excluded descendant), and it takes one window per thread, so the fifth run's coordinator reads 314K/258K there against 314K/354K here, where the window is tracked over time. A coordinator's `first` equalled the first request after the invocation row in all 13 runs.
+
+*Claude Code coordinator sessions, `--context-only --session`, on the 13 sessions of the research list.* All 13 transcripts are present. The compaction count and every trigger match the list exactly (auto and manual, 27 compactions in all). The peak matches within rounding (the list floors to the K, run-profile rounds) for seven sessions and is 1 to 4K higher for five, because the peak here includes each compaction's `preTokens` and those exceeded the largest request. The agent counts match (the list counts the coordinator out), with two exceptions: the session of this run was live (14 agents and a 335K peak then, 234 and 417K now, still 3 compactions), and one session lists 1140 where its directory holds 1195 transcripts, 1140 under `workflows/` and 55 ordinary subagents.
+
+*Full profile, Claude Code.* The Workflow run of this epic (`--discover --epic`) printed its context line beside the timing lines: the coordinator window starts at the `super-auto` Skill row, so its 3 earlier compactions are out and it has 0 in the window, 25 Workflow agents and the 8 of the session's 22 ordinary subagents that start inside the window. By hand against the transcripts, the coordinator (96 requests, first 122.6K, peak 417,155) and two Workflow agents (34 requests, first 36,711, peak 295,841; 27 requests, first 39,738, peak 156,751) match to the token. One ordinary subagent of another session (246 requests, first 35,164, peak 439,855, from `--context-only --session`) matches too. `--context-only --subagents` over that session's directory reports the same figures and adds the no-invocation caveat.
+
+*Full profile, Codex.* `run-profile --codex` on the 10-04 `01a10803` and 10-10 `01a12747` runs printed the same context lines as `--context-only`, then exited 2 with `an ordinary-subagent run needs --epic <id>`, the context lines first. With an `--epic` given, the second run exited 0 with the context lines unchanged.
+
+*Uncovered.* No Workflow agent or ordinary subagent transcript on this machine holds a `compact_boundary` row, so a Claude subagent compaction (and its `post` fallback) is checked on the fixtures only. The cause shown for the Claude auto compactions is `idle` for sub-cap compactions that followed a gap of 50 minutes or more, as the rule says; it was not checked against any outside record.
 
 ## Rationale archived from the coordinator script
 
