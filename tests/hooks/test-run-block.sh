@@ -15,7 +15,7 @@ assert_has() { case "$3" in *"$2"*) pass "$1" ;; *) fail "$1 (missing: $2 in: $3
 
 P=$T/plugin
 mkdir -p "$P/hooks" "$P/skills/super-code/scripts" "$T/W/sub" "$T/W/.worktrees/t1" "$T/state"
-cp "$REPO_ROOT/hooks/run-block.sh" "$REPO_ROOT/hooks/session-start-runblock" "$REPO_ROOT/hooks/run-hook.cmd" "$P/hooks/"
+cp "$REPO_ROOT/hooks/run-block.sh" "$REPO_ROOT/hooks/session-start-runblock" "$REPO_ROOT/hooks/session-start-codex" "$REPO_ROOT/hooks/run-hook.cmd" "$P/hooks/"
 cp "$REPO_ROOT/skills/super-code/scripts/run-marker" "$P/skills/super-code/scripts/"
 printf 'CARD-FILE' >"$P/skills/super-code/coordinator-card.md"
 cat >"$P/skills/super-code/scripts/run-digest" <<STUB
@@ -25,10 +25,11 @@ mode=\$(cat "$T/mode")
 part=""
 while [ \$# -gt 0 ]; do case "\$1" in --part) part="\$2"; shift ;; esac; shift; done
 case "\$mode" in
-  ok) if [ "\$part" = card ]; then printf 'CARD-TEXT'; else printf 'STATE-TEXT'; fi ;;
+  ok) case "\$part" in card) printf 'CARD-TEXT' ;; all) printf 'CARD-TEXT\n\nSTATE-TEXT' ;; *) printf 'STATE-TEXT' ;; esac ;;
   fail) exit 1 ;;
   hang) sleep 30 ;;
   ctrl) printf 'S\001T\033U\rV "q" back\\\\slash\nline2\ttab' ;;
+  bigall) head -c 17900 /dev/zero | tr '\0' 'x' ;;
   big) head -c 9000 /dev/zero | tr '\0' 'x' ;;
 esac
 STUB
@@ -139,6 +140,58 @@ const ok=first.matcher==="startup|clear|compact" && first.hooks.length===1 &&
   cur[1].hooks[0].command.endsWith("session-start-runblock card") &&
   cur[2].hooks[0].command.endsWith("session-start-runblock state");
 process.exit(ok?0:1)' "$REPO_ROOT" && pass "hooks.json: original entry intact, two compact entries" || fail "hooks.json shape"
+
+echo "== session-start-codex"
+chook() { # <stdin> [env assignments...]
+  local in="$1"; shift
+  printf '%s' "$in" | env -u CLAUDE_CODE_SESSION_ID -u CODEX_THREAD_ID XDG_STATE_HOME="$T/state" "$@" \
+    bash "$P/hooks/session-start-codex"
+}
+register "$T/state"
+out=$(chook '{"session_id":"S1","cwd":"/elsewhere","source":"compact"}')
+assert_eq "codex: card then state" "$(printf 'CARD-TEXT\n\nSTATE-TEXT')" "$(printf '%s' "$out" | decode)"
+assert_eq "codex: hookEventName" "SessionStart" "$(printf '%s' "$out" | node -e 'process.stdout.write(JSON.parse(require("fs").readFileSync(0,"utf8")).hookSpecificOutput.hookEventName)')"
+out=$(chook '{"cwd":"/elsewhere"}' CODEX_THREAD_ID=S1)
+assert_eq "codex: CODEX_THREAD_ID fallback, no source field" "$(printf 'CARD-TEXT\n\nSTATE-TEXT')" "$(printf '%s' "$out" | decode)"
+out=$(chook "{\"session_id\":\"S9\",\"cwd\":\"$T/W/sub\"}")
+assert_has "codex: cwd match" "STATE-TEXT" "$(printf '%s' "$out" | decode)"
+out=$(chook '{"session_id":"S9","cwd":"/elsewhere","source":"compact"}'; echo "rc=$?")
+assert_eq "codex: non-matching id: no output, exit 0" "rc=0" "$out"
+out=$(chook "{\"session_id\":\"C9\",\"cwd\":\"$T/W/sub\",\"source\":{\"subagent\":{\"thread_spawn\":{\"parent_thread_id\":\"S1\"}}}}")
+assert_eq "codex: child thread: no output" "" "$out"
+out=$(chook "{\"session_id\":\"C9\",\"cwd\":\"$T/W/.worktrees/t1\"}")
+assert_eq "codex: task-worktree cwd, other id: no output" "" "$out"
+out=$(chook '{}' CODEX_THREAD_ID=)
+assert_eq "codex: no id, no cwd: no output" "" "$out"
+echo bigall >"$T/mode"
+out=$(chook '{"session_id":"S1"}')
+len=$(printf '%s' "$out" | node -e 'process.stdout.write(String(JSON.parse(require("fs").readFileSync(0,"utf8")).hookSpecificOutput.additionalContext.length))')
+[ "$len" -gt 10000 ] && [ "$len" -lt 18000 ] && pass "codex: big length $len < 18000" || fail "codex: big length $len"
+echo ctrl >"$T/mode"
+dec=$(chook '{"session_id":"S1"}' | decode)
+assert_eq "codex: ctrl: no control bytes" "0" "$(printf '%s' "$dec" | LC_ALL=C tr -d '\011\012\040-\377' | LC_ALL=C wc -c | tr -d ' ')"
+echo fail >"$T/mode"
+dec=$(chook '{"session_id":"S1"}' | decode)
+assert_eq "codex: fail: card file then fallback" "$(printf 'CARD-FILE\n\nRun state unavailable — read run.md'"'"'s phase and run scripts/ledger-digest.')" "$dec"
+echo hang >"$T/mode"
+start=$(node -e 'process.stdout.write(String(Date.now()))')
+out=$(chook '{"session_id":"S1"}'; echo "rc=$?")
+end=$(node -e 'process.stdout.write(String(Date.now()))')
+assert_has "codex: hang: card file" "CARD-FILE" "$out"
+assert_has "codex: hang: fallback line" "Run state unavailable" "$out"
+assert_has "codex: hang: exit 0" "rc=0" "$out"
+[ $((end - start)) -lt 7000 ] && pass "codex: hang under 7 s ($((end - start)) ms)" || fail "codex: hang took $((end - start)) ms"
+echo ok >"$T/mode"
+
+echo "== hooks-codex.json"
+node -e '
+const j=JSON.parse(require("fs").readFileSync(process.argv[1]+"/hooks/hooks-codex.json","utf8"));
+const ss=j.hooks.SessionStart;
+const h=ss&&ss[0]&&ss[0].hooks;
+const ok=Object.keys(j.hooks).length===1 && ss.length===1 && ss[0].matcher==="compact" && h.length===1 &&
+  h[0].type==="command" && h[0].additionalContextLimit===6000 &&
+  h[0].command==="\"${PLUGIN_ROOT}/hooks/run-hook.cmd\" session-start-codex";
+process.exit(ok?0:1)' "$REPO_ROOT" && pass "hooks-codex.json: one compact entry, limit 6000, fixed command" || fail "hooks-codex.json shape"
 
 [ "$FAILED" = 0 ] || exit 1
 echo "test-run-block: all tests passed"
