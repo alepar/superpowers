@@ -35,7 +35,7 @@ if [ "$(printf '%s' "$text" | LC_ALL=C wc -c | tr -d ' ')" -gt 9500 ]; then
   cut=$(printf '%s' "$text" | LC_ALL=C head -c 9500)
   case "$cut" in
     *$'\n'*) cut="${cut%$'\n'*}" ;;
-    *) cut=$(printf '%s' "$cut" | iconv -f UTF-8 -t UTF-8 -c 2>/dev/null || printf '%s' "$cut") ;;
+    *) fixed=$(printf '%s' "$cut" | iconv -f UTF-8 -t UTF-8 -c 2>/dev/null); [ -n "$fixed" ] && cut="$fixed" ;;
   esac
   text="$cut"
 fi

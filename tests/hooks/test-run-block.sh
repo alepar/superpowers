@@ -31,6 +31,7 @@ case "\$mode" in
   ctrl) printf 'S\001T\033U\rV "q" back\\\\slash\nline2\ttab' ;;
   bigall) head -c 17900 /dev/zero | tr '\0' 'x' ;;
   big) head -c 9000 /dev/zero | tr '\0' 'x' ;;
+  file) cat "$T/payload" ;;
 esac
 STUB
 echo ok >"$T/mode"
@@ -106,7 +107,56 @@ assert_has "ctrl: quote and backslash survive" '"q" back\slash' "$dec"
 echo big >"$T/mode"
 out=$(hook state '{"session_id":"S1"}')
 len=$(printf '%s' "$out" | node -e 'process.stdout.write(String(JSON.parse(require("fs").readFileSync(0,"utf8")).hookSpecificOutput.additionalContext.length))')
-[ "$len" -gt 0 ] && [ "$len" -lt 10000 ] && pass "big: length $len < 10000" || fail "big: length $len"
+assert_eq "big: 9000 bytes pass through untouched" "9000" "$len"
+echo ok >"$T/mode"
+
+echo "== size cut (Claude entry)"
+mkpayload() { # <name> <kind> <count>: lines = N lines of L%04d + 74 y + e-acute; mb = x + N e-acute; edge = N x
+  case "$2" in
+    lines) awk -v n="$3" 'BEGIN { y = sprintf("%74s", ""); gsub(/ /, "y", y); for (i = 1; i <= n; i++) printf "L%04d%s\303\251\n", i, y }' >"$T/payload-$1" ;;
+    mb) { printf x; awk -v n="$3" 'BEGIN { for (i = 0; i < n; i++) printf "\303\251" }'; } >"$T/payload-$1" ;;
+    edge) head -c "$3" /dev/zero | tr '\0' 'x' >"$T/payload-$1" ;;
+  esac
+}
+# cutinfo <payload name>: reads hook JSON on stdin; prints bytes, prefix, fffd, next char, last line
+cutinfo() {
+  node -e '
+const fs=require("fs");
+const ctx=JSON.parse(fs.readFileSync(0,"utf8")).hookSpecificOutput.additionalContext;
+const pl=fs.readFileSync(process.argv[1],"utf8");
+const last=ctx.split("\n").pop();
+console.log([Buffer.byteLength(ctx),pl.startsWith(ctx),ctx.includes("\uFFFD"),JSON.stringify(pl.charAt(ctx.length)),/^L[0-9]{4}y{74}\u00e9$/.test(last)].join(" "));
+' "$T/payload-$1"
+}
+echo file >"$T/mode"
+mkpayload edge9500 edge 9500; mkpayload lines lines 120
+mkpayload lines-codex lines 220
+check_cut() { # <label> <hook output> <cap> <name> <expected bytes or "-"> <line-boundary 0|1>
+  local info b pre ff nx ll
+  info=$(printf '%s' "$2" | cutinfo "$4")
+  set -- "$1" "$3" "$5" "$6" $info
+  b=$5; pre=$6; ff=$7; nx=$8; ll=$9
+  [ "$b" -le "$2" ] && pass "$1: $b bytes <= $2" || fail "$1: $b bytes > $2"
+  assert_eq "$1: output is a prefix of the payload" "true" "$pre"
+  assert_eq "$1: no U+FFFD" "false" "$ff"
+  [ "$3" = "-" ] || assert_eq "$1: exact byte count" "$3" "$b"
+  if [ "$4" = 1 ]; then
+    assert_eq "$1: cut at a line boundary" '"\n"' "$nx"
+    assert_eq "$1: last line whole" "true" "$ll"
+  fi
+}
+echo file >"$T/mode"
+cp "$T/payload-edge9500" "$T/payload"
+out=$(hook state '{"session_id":"S1"}')
+assert_eq "edge 9500: untouched" "9500" "$(printf '%s' "$out" | cutinfo edge9500 | cut -d' ' -f1)"
+cp "$T/payload-lines" "$T/payload"
+out=$(hook state '{"session_id":"S1"}')
+check_cut "lines over cap" "$out" 9500 lines - 1
+[ "$(printf '%s' "$out" | cutinfo lines | cut -d' ' -f1)" -lt 9840 ] && pass "lines over cap: shorter than input" || fail "lines over cap: not shorter than input"
+mkpayload mb mb 5000
+cp "$T/payload-mb" "$T/payload"
+out=$(hook state '{"session_id":"S1"}')
+check_cut "multibyte cut" "$out" 9500 mb 9499 0
 echo ok >"$T/mode"
 
 echo "== stdin shapes"
@@ -166,7 +216,15 @@ assert_eq "codex: no id, no cwd: no output" "" "$out"
 echo bigall >"$T/mode"
 out=$(chook '{"session_id":"S1"}')
 len=$(printf '%s' "$out" | node -e 'process.stdout.write(String(JSON.parse(require("fs").readFileSync(0,"utf8")).hookSpecificOutput.additionalContext.length))')
-[ "$len" -gt 10000 ] && [ "$len" -lt 18000 ] && pass "codex: big length $len < 18000" || fail "codex: big length $len"
+assert_eq "codex: 17900-byte newline-free payload cut to exactly 17500" "17500" "$len"
+echo file >"$T/mode"
+cp "$T/payload-lines-codex" "$T/payload"
+out=$(chook '{"session_id":"S1"}')
+check_cut "codex lines over cap" "$out" 17500 lines-codex - 1
+mkpayload mb-codex mb 9000
+cp "$T/payload-mb-codex" "$T/payload"
+out=$(chook '{"session_id":"S1"}')
+check_cut "codex multibyte cut" "$out" 17500 mb-codex 17499 0
 echo ctrl >"$T/mode"
 dec=$(chook '{"session_id":"S1"}' | decode)
 assert_eq "codex: ctrl: no control bytes" "0" "$(printf '%s' "$dec" | LC_ALL=C tr -d '\011\012\040-\377' | LC_ALL=C wc -c | tr -d ' ')"
