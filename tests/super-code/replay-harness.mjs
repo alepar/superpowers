@@ -106,6 +106,7 @@ async function run({ args, canned = {}, nullLabels = new Set(), nullAll = false,
         if (label === 'read-ledger:finish') return { text: '' }
         if (label === 'ledger-append:metrics') return { appended: true }
         if (label === 'reconcile-buckets') return { closed: [] }
+        if (label === 'assemble:final') return { dir: FR_DIR, exit: 0, fits: 'fits: yes (12000 of 80000)', clusterFits: [], clusters: 0 }   // the final review's assembler pre-step: fits
         if (label === 'sweep') return 'abc1234 — 1 passed, 0 failed, 0 errors, 0 skipped; failing: none; command: <project test command>'
         if (label === 'ledger-append:sweep') return { appended: true }
         if (label.startsWith('ledger:')) return { appended: true }   // a task's batched ledger flush
@@ -220,6 +221,11 @@ const ROOT = '/repo'
 const IW = `${ROOT}/.worktrees/${BRANCH}` // where the plan actually lands in a real run
 const PLANDIR = `${IW}/.superpowers/sdd/${EPIC}-plan`
 const PLANPATH = `${PLANDIR}/${EPIC}-plan.md`
+// liveArgs sets no integrationWorktree, so the script derives it from the branch; the final review's
+// workspace, assembled directory and handoff file hang off that path (runTag falls back to the epic).
+const FR_WS = `.worktrees/${BRANCH}/.superpowers/sdd/${EPIC}-plan`
+const REVIEW_PATH = `${FR_WS}/final-review-${EPIC}.md`
+const FR_DIR = `${FR_WS}/assembled/final-review-${EPIC}-final`
 
 const SHA = c => c.repeat(40)
 
@@ -300,7 +306,8 @@ function oneTaskCanned(overrides = {}) {
     'merge:bd-101': { id: 'bd-101', merged: true, mergeExit: 0, mergeHead: true, head: SHA('b'), mergeBase: SHA('a'), rebaseConflictFiles: 0 },
     'read-ledger:finish': { text: '' },
     'ledger-append:metrics': { appended: true },
-    'final-review': 'looks fine',
+    'assemble:final': { dir: FR_DIR, exit: 0, fits: 'fits: yes (12000 of 80000)', clusterFits: [], clusters: 0 },
+    'final-review': { verdict: 'ready', path: REVIEW_PATH },
     ...overrides,
   }
 }
@@ -371,8 +378,8 @@ async function main() {
   {
     const scan = scanTemplateSpans(scriptBody)
     check(scan.clean, 'scanner ends in code state (no unterminated literal, string, or ${})')
-    check(scan.spans.length === 420,
-      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 420 (+3 for the assembler builder (workspaceAbs, the default-base text, assemblePrompt's prompt); +2 for the deferred-to-this-task minors note and its per-minor literal; +5 for the outage and quarantine fixes: the dispatch-unavailable stop log, the quarantine release log, its ledger line and key, the fix pass's evidence-only note; +9 for the outage-resume fixes: the Resume read's git landings step and its seeding log, the merge's already-landed log, the seeded-edge keys and the edge re-write key, the reconcile's blocker note, the reconciled completion line and its key; +1 closure verification contract, +1 current requirements contract; recovery marker uses concatenation) — 215 after the D4 loop rewrite, +10 for the merge-evidence contract (clean-check and merge steps, mergeEvidence's diagnoses and logs, the Merge-cleanup line) and writeFence(), +17 for the failing-mergeCheck seam route (the check-fix and fix-review dispatch keys/labels, their logs and blocker findings, the re-merge, fixPrompt's check branch, checkFixReviewPrompt), +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log, −7 for batched ledger writes (per-line ledger keys and labels out, the per-task flush key, the merge agent's LEDGER step and its line templates, the runtime-slot logs, the per-site null-merge logs and the background edge audit in), +46 for early unblock and graph readiness (the split/reopen/discard dispatch keys, labels, prompts and logs, the cancel and graph-dispatch logs, the stacked/re-entry brief and implementer wording, the stacked rebase and review-bead close, the held-back and re-entry logs, the reconcile split note, the detector and Metrics fields, the resume note), +33 for proactive slowness handling (noteSlowness and its items, the hot-file raise, the graph-bound arming and its audit reason, the detector's lane fields, the act-capable edge audit: change formatting, the edge-cuts dispatch key/label/prompt, the Edge cut: lines and their elided variants, effDeps' cut key), +8 for the round-1 planning split (planPrompt's walk and three scopes, the plan-rest key/label, its logs), +1 when the brief folded into the implementer (workspaceSetup's re-entry branch and the setup/no-base findings in, the brief dispatch key/label out), +1 for the planner-null degrade log, +5 for task-worktree cleanup (the task-worktree root, the merge's cleanup command and step, the worktree-sweep log and prompt), +4 for process cleanup (the run temp root, processHygiene's command and rule, the process-sweep log), +1 for the ledger-read retry label, +1 for the detached-HEAD merge diagnosis, +3 for the short task temp root (its root, taskTmp, processHygiene's roots), +1 for the auth-refused Merge: line, +1 for the review-base substitution log, +6 for the integration-blocked hold (the held/skip/stop logs, the hold reasons, its Merge: line and slowness item), +14 for added edges (addEdge's logs, ledger line, key and label, the waiting log, the waitFor ledger lines, edgeAddPrompt), +3 for edge-audit memory (the carried-verdict list), +30 for the open-issues sweep (already-merged re-check, ledger-check causes and the in-memory Metrics fallback, digest header check, class and cause tags, the graph-bound re-check, peak-based streak, aborted merge check, sweep-line validation and baseline, run-to-completion rule, HOME/XDG, human actions, deferred minors, composed review, base check, planner cwd), +1 for the final-review Metrics block, +1 for the merge-lane priority log; update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
+    check(scan.spans.length === 436,
+      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 436 (+16 for the final-review size switch (reviewPath and cluster path, the assemble dispatch key/label, its fits and cluster parse, the Final review: ledger lines, the UNAVAILABLE string, notReadyWith's two literals, the cluster and seam keys/labels, the stub key/label and its log, finalReviewPrompt's capped note, finalClusterReviewPrompt, finalSeamReviewPrompt, finalReviewStubPrompt); +3 for the assembler builder (workspaceAbs, the default-base text, assemblePrompt's prompt); +2 for the deferred-to-this-task minors note and its per-minor literal; +5 for the outage and quarantine fixes: the dispatch-unavailable stop log, the quarantine release log, its ledger line and key, the fix pass's evidence-only note; +9 for the outage-resume fixes: the Resume read's git landings step and its seeding log, the merge's already-landed log, the seeded-edge keys and the edge re-write key, the reconcile's blocker note, the reconciled completion line and its key; +1 closure verification contract, +1 current requirements contract; recovery marker uses concatenation) — 215 after the D4 loop rewrite, +10 for the merge-evidence contract (clean-check and merge steps, mergeEvidence's diagnoses and logs, the Merge-cleanup line) and writeFence(), +17 for the failing-mergeCheck seam route (the check-fix and fix-review dispatch keys/labels, their logs and blocker findings, the re-merge, fixPrompt's check branch, checkFixReviewPrompt), +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log, −7 for batched ledger writes (per-line ledger keys and labels out, the per-task flush key, the merge agent's LEDGER step and its line templates, the runtime-slot logs, the per-site null-merge logs and the background edge audit in), +46 for early unblock and graph readiness (the split/reopen/discard dispatch keys, labels, prompts and logs, the cancel and graph-dispatch logs, the stacked/re-entry brief and implementer wording, the stacked rebase and review-bead close, the held-back and re-entry logs, the reconcile split note, the detector and Metrics fields, the resume note), +33 for proactive slowness handling (noteSlowness and its items, the hot-file raise, the graph-bound arming and its audit reason, the detector's lane fields, the act-capable edge audit: change formatting, the edge-cuts dispatch key/label/prompt, the Edge cut: lines and their elided variants, effDeps' cut key), +8 for the round-1 planning split (planPrompt's walk and three scopes, the plan-rest key/label, its logs), +1 when the brief folded into the implementer (workspaceSetup's re-entry branch and the setup/no-base findings in, the brief dispatch key/label out), +1 for the planner-null degrade log, +5 for task-worktree cleanup (the task-worktree root, the merge's cleanup command and step, the worktree-sweep log and prompt), +4 for process cleanup (the run temp root, processHygiene's command and rule, the process-sweep log), +1 for the ledger-read retry label, +1 for the detached-HEAD merge diagnosis, +3 for the short task temp root (its root, taskTmp, processHygiene's roots), +1 for the auth-refused Merge: line, +1 for the review-base substitution log, +6 for the integration-blocked hold (the held/skip/stop logs, the hold reasons, its Merge: line and slowness item), +14 for added edges (addEdge's logs, ledger line, key and label, the waiting log, the waitFor ledger lines, edgeAddPrompt), +3 for edge-audit memory (the carried-verdict list), +30 for the open-issues sweep (already-merged re-check, ledger-check causes and the in-memory Metrics fallback, digest header check, class and cause tags, the graph-bound re-check, peak-based streak, aborted merge check, sweep-line validation and baseline, run-to-completion rule, HOME/XDG, human actions, deferred minors, composed review, base check, planner cwd), +1 for the final-review Metrics block, +1 for the merge-lane priority log; update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
     // self-test: inject a raw backtick mid-way through the first literal's content and assert
     // the detector actually fires — a detector that cannot catch the known failure is decoration
     const [s, e] = scan.spans[0]
@@ -392,7 +399,7 @@ async function main() {
   {
     const out = await run({ args: canonicalArgs })
     assertNoThrow(out)
-    check(out.trace.length === 47, `47 agent dispatches (got ${out.trace.length}) — the doc's "Expected dispatch count" arithmetic`)
+    check(out.trace.length === 48, `48 agent dispatches (got ${out.trace.length}) — the doc's "Expected dispatch count" arithmetic`)
     const r = out.result
     check(r && JSON.stringify([...r.completed].sort()) === '["bd-101","bd-102","bd-105"]', 'completed = [bd-101, bd-102, bd-105]', JSON.stringify(r?.completed))
     check(r && JSON.stringify([...r.escalated].sort()) === '["bd-103","bd-104"]', 'escalated = [bd-103, bd-104] — bd-104 spent its one retry same-round and bounced', JSON.stringify(r?.escalated))
@@ -440,7 +447,7 @@ async function main() {
   {
     const out = await run({ args: parkedArgs })
     assertNoThrow(out)
-    check(out.trace.length === 22, `22 agent dispatches (got ${out.trace.length})`)
+    check(out.trace.length === 23, `23 agent dispatches (got ${out.trace.length})`)
     const r = out.result
     check(r && JSON.stringify(r.completed) === '["bd-301"]' && JSON.stringify(r.parked) === '["bd-301"]', 'bd-301 completed AND parked', JSON.stringify(r))
     check(!out.trace.some(t => /^(triage|notify|missing-blocker|unplanned-blocker):/.test(t.label)), 'a declined finding never reaches the blocker path')
@@ -1071,6 +1078,130 @@ async function main() {
     const out = await run({ args: liveArgs(), canned: oneTaskCanned({ 'final-review': null }) })
     assertNoThrow(out)
     check(typeof out.result?.review === 'string' && out.result.review.includes('FINAL REVIEW UNAVAILABLE'), 'review is the explicit UNAVAILABLE string', out.result?.review)
+    check(out.trace.findIndex(t => t.label === 'assemble:final') >= 0 && out.trace.findIndex(t => t.label === 'assemble:final') < out.trace.findIndex(t => t.label === 'final-review'), 'the assembler ran first')
+  }
+
+  // ===== Final-review size switch (spec §B3): assemble → single | split =====
+  {
+    const FR = /^(assemble:final|ledger-append:metrics|final-review.*)$/
+    const frLabels = out => out.trace.map(t => t.label).filter(l => FR.test(l))
+    const frLedger = out => extractLedgerLines(promptOf(out.trace, 'ledger-append:metrics')).find(l => l.startsWith('Final review:')) ?? null
+    const asmOf = (o = {}) => ({ dir: FR_DIR, exit: 0, fits: 'fits: yes (12000 of 80000)', clusterFits: [], clusters: 0, ...o })
+    const SPLIT = { fits: 'fits: no (300000 of 80000)', clusterFits: ['cluster-fits: alpha yes (90000 of 80000)', 'cluster-fits: beta yes (70000 of 80000)'], clusters: 2 }
+    const same = (a, b) => JSON.stringify(a) === JSON.stringify(b)
+    const verdictFile = (out, label) => out.result?.reviewPath === REVIEW_PATH && !('reviewBody' in (out.result ?? {})) && label
+
+    scenario('final review: fits → one reviewer on the assembled digest')
+    {
+      const out = await run({ args: liveArgs(), canned: oneTaskCanned() })
+      assertNoThrow(out)
+      check(same(frLabels(out), ['assemble:final', 'ledger-append:metrics', 'final-review']), 'assemble precedes the Metrics append, then one final review', JSON.stringify(frLabels(out)))
+      check(out.trace.length === 22, `22 agent dispatches (got ${out.trace.length})`)
+      check(frLedger(out) === 'Final review: single (inputs 12K <= 40% of 200K) · clusters 0', 'ledger line in the Metrics append', frLedger(out))
+      check(promptOf(out.trace, 'assemble:final')?.includes('[THRESHOLD] = 80000'), 'threshold is 40% of the 200K fallback window')
+      check(promptOf(out.trace, 'final-review')?.includes(`${FR_DIR}/digest.md`), 'the reviewer is pointed at the assembled digest')
+      check(out.result?.review === 'ready' && out.result?.reviewPath === REVIEW_PATH, 'returns the verdict line and reviewPath', JSON.stringify([out.result?.review, out.result?.reviewPath]))
+      check(!JSON.stringify(out.result).includes('looks fine'), 'no review body in the return')
+    }
+
+    scenario('final review: config.contextWindows.finalReview sets the threshold')
+    {
+      const out = await run({ args: liveArgs({ config: cfg({ contextWindows: { finalReview: 1000000 } }) }), canned: oneTaskCanned() })
+      assertNoThrow(out)
+      check(promptOf(out.trace, 'assemble:final')?.includes('[THRESHOLD] = 400000'), 'threshold 400000 in the assemble prompt')
+      check(frLedger(out) === 'Final review: single (inputs 12K <= 40% of 1000K) · clusters 0', 'ledger names the configured window', frLedger(out))
+    }
+
+    scenario('final review: does not fit → one reviewer per cluster, then the seam reviewer')
+    {
+      const out = await run({ args: liveArgs(), canned: oneTaskCanned({
+        'assemble:final': asmOf(SPLIT),
+        'final-review:cluster:1': { verdict: 'ready', path: 'c1' }, 'final-review:cluster:2': { verdict: 'ready', path: 'c2' },
+        'final-review:seam': { verdict: 'ready', path: REVIEW_PATH },
+      }) })
+      assertNoThrow(out)
+      check(same(frLabels(out), ['assemble:final', 'ledger-append:metrics', 'final-review:cluster:1', 'final-review:cluster:2', 'final-review:seam']), 'clusters then seam; no single review', JSON.stringify(frLabels(out)))
+      check(out.trace.length === 24, `24 agent dispatches (got ${out.trace.length})`)
+      check(frLedger(out) === 'Final review: split (inputs 300K > 40% of 200K) · clusters 2', 'split ledger line', frLedger(out))
+      check(promptOf(out.trace, 'final-review:cluster:2')?.includes(`final-review-${EPIC}-cluster-2.md`) && promptOf(out.trace, 'final-review:cluster:2')?.includes('beta'), 'cluster 2 writes its own file and names beta')
+      const seam = promptOf(out.trace, 'final-review:seam') ?? ''
+      check(seam.includes(`final-review-${EPIC}-cluster-1.md`) && seam.includes(`final-review-${EPIC}-cluster-2.md`) && seam.includes(REVIEW_PATH), 'the seam reviewer gets both cluster files and writes the handoff file')
+      check(out.result?.review === 'ready' && out.result?.reviewPath === REVIEW_PATH, 'review is the seam verdict; reviewPath is the handoff file', JSON.stringify([out.result?.review, out.result?.reviewPath]))
+    }
+
+    scenario('final review: assembler unavailable → uncapped single on direct inputs')
+    {
+      const out = await run({ args: liveArgs(), canned: oneTaskCanned({ 'assemble:final': null }) })
+      assertNoThrow(out)
+      check(same(frLabels(out), ['assemble:final', 'ledger-append:metrics', 'final-review']), 'single review after the null assemble', JSON.stringify(frLabels(out)))
+      check(out.trace.length === 22, `22 agent dispatches (got ${out.trace.length})`)
+      check(promptOf(out.trace, 'final-review')?.includes('review-package') && !promptOf(out.trace, 'final-review')?.includes('digest.md'), 'direct inputs: the review package, no digest')
+      check(frLedger(out) === 'Final review: single (assembler unavailable)', 'ledger line', frLedger(out))
+      check(out.result?.review === 'ready' && out.result?.reviewPath === REVIEW_PATH, 'verdict not capped', JSON.stringify([out.result?.review, out.result?.reviewPath]))
+    }
+
+    scenario('final review: assembled-size exit 3 → single on direct inputs, verdict capped')
+    {
+      const out = await run({ args: liveArgs(), canned: oneTaskCanned({ 'assemble:final': asmOf({ exit: 3, fits: 'fits: no (300000 of 80000)' }) }) })
+      assertNoThrow(out)
+      check(same(frLabels(out), ['assemble:final', 'ledger-append:metrics', 'final-review']), 'one single review', JSON.stringify(frLabels(out)))
+      check(out.trace.length === 22, `22 agent dispatches (got ${out.trace.length})`)
+      check(promptOf(out.trace, 'final-review')?.includes('no usable clusters') && promptOf(out.trace, 'final-review')?.includes('review-package'), 'the reviewer is told, on direct inputs')
+      check(frLedger(out) === 'Final review: single (no usable clusters — capped)', 'ledger line', frLedger(out))
+      check(out.result?.review === 'not ready (unreviewed: inputs exceed the window and no usable clusters)' && out.result?.reviewPath === REVIEW_PATH, 'a reviewer "ready" is capped to not ready', JSON.stringify([out.result?.review, out.result?.reviewPath]))
+      const kept = await run({ args: liveArgs(), canned: oneTaskCanned({ 'assemble:final': asmOf({ exit: 3, fits: 'fits: no (300000 of 80000)' }), 'final-review': { verdict: 'not ready (a defect in a.js)', path: REVIEW_PATH } }) })
+      check(kept.result?.review === 'not ready (a defect in a.js; unreviewed: inputs exceed the window and no usable clusters)', 'the reviewer\'s own summary is kept', kept.result?.review)
+    }
+
+    scenario('final review: a null cluster review is unreviewed, the seam still runs')
+    {
+      const out = await run({ args: liveArgs(), canned: oneTaskCanned({
+        'assemble:final': asmOf(SPLIT),
+        'final-review:cluster:1': { verdict: 'ready', path: 'c1' }, 'final-review:cluster:2': null,
+        'final-review:seam': { verdict: 'ready', path: REVIEW_PATH },
+      }) })
+      assertNoThrow(out)
+      check(same(frLabels(out), ['assemble:final', 'ledger-append:metrics', 'final-review:cluster:1', 'final-review:cluster:2', 'final-review:seam']), 'seam runs after a null cluster', JSON.stringify(frLabels(out)))
+      check(out.trace.length === 24, `24 agent dispatches (got ${out.trace.length})`)
+      check(out.result?.review === 'not ready (unreviewed: cluster 2 (beta): review unavailable)', 'never ready', out.result?.review)
+      const seam = promptOf(out.trace, 'final-review:seam') ?? ''
+      check(seam.includes(`cluster-1.md`) && !seam.includes(`cluster-2.md`) && seam.includes('cluster 2 (beta)'), 'the seam gets only the reviewed file and is told of the gap')
+    }
+
+    scenario('final review: a null seam review → the stub writes the handoff file')
+    {
+      const out = await run({ args: liveArgs(), canned: oneTaskCanned({
+        'assemble:final': asmOf(SPLIT),
+        'final-review:cluster:1': { verdict: 'ready', path: 'c1' }, 'final-review:cluster:2': { verdict: 'ready', path: 'c2' },
+        'final-review:seam': null, 'final-review:stub': { written: true, path: REVIEW_PATH },
+      }) })
+      assertNoThrow(out)
+      check(same(frLabels(out), ['assemble:final', 'ledger-append:metrics', 'final-review:cluster:1', 'final-review:cluster:2', 'final-review:seam', 'final-review:stub']), 'stub after the null seam', JSON.stringify(frLabels(out)))
+      check(out.trace.length === 25, `25 agent dispatches (got ${out.trace.length})`)
+      const stub = promptOf(out.trace, 'final-review:stub') ?? ''
+      check(stub.includes(REVIEW_PATH) && stub.includes('cluster-1.md') && stub.includes('cluster-2.md') && stub.includes('unreviewed: seam'), 'the stub names the handoff file, the cluster files and the unreviewed seam')
+      check(out.result?.review === 'not ready (unreviewed: seam)' && out.result?.reviewPath === REVIEW_PATH, 'review is not ready; reviewPath still returned', JSON.stringify([out.result?.review, out.result?.reviewPath]))
+    }
+
+    scenario('final review: an oversized cluster is not dispatched and is unreviewed')
+    {
+      const out = await run({ args: liveArgs(), canned: oneTaskCanned({
+        'assemble:final': asmOf({ fits: 'fits: no (300000 of 80000)', clusterFits: ['cluster-fits: a yes (60000 of 80000)', 'cluster-fits: b no (240000 of 80000)'], clusters: 2 }),
+        'final-review:cluster:1': { verdict: 'ready', path: 'c1' }, 'final-review:seam': { verdict: 'ready', path: REVIEW_PATH },
+      }) })
+      assertNoThrow(out)
+      check(same(frLabels(out), ['assemble:final', 'ledger-append:metrics', 'final-review:cluster:1', 'final-review:seam']), 'only cluster 1 is dispatched', JSON.stringify(frLabels(out)))
+      check(out.trace.length === 23, `23 agent dispatches (got ${out.trace.length})`)
+      check(out.result?.review === 'not ready (unreviewed: cluster 2 (b): over the window)', 'cluster 2 listed unreviewed', out.result?.review)
+    }
+
+    scenario('final review: no work landed → no assemble, no review, no reviewPath')
+    {
+      const out = await run({ args: liveArgs(), canned: oneTaskCanned({ 'bd-ready': { ids: [] } }) })
+      assertNoThrow(out)
+      check(!out.counts['assemble:final'] && !out.counts['final-review'] && out.result?.review === 'no work landed' && out.result?.reviewPath === null, 'nothing dispatched; reviewPath null', JSON.stringify([out.result?.review, out.result?.reviewPath]))
+      check(frLedger(out) === null, 'no Final review: line')
+    }
   }
 
   scenario('null sweep: explicit SWEEP UNAVAILABLE, never green')
@@ -1097,7 +1228,8 @@ async function main() {
     const m = out.result?.metrics ?? []
     check(m.length === 4 && m.every(l => l.startsWith('Metrics: UNAVAILABLE')), 'all four lines are explicit UNAVAILABLE lines', JSON.stringify(m))
     check(m.every(l => l.includes('this invocation only: completed 1')), 'UNAVAILABLE lines carry the invocation counts, labelled', m[0])
-    check(JSON.stringify(extractLedgerLines(promptOf(out.trace, 'ledger-append:metrics'))) === JSON.stringify(m), 'the same four lines reach the ledger')
+    const written = extractLedgerLines(promptOf(out.trace, 'ledger-append:metrics'))
+    check(JSON.stringify(written.slice(0, 4)) === JSON.stringify(m) && written.length === 5 && written[4].startsWith('Final review: '), 'the same four lines reach the ledger, then the Final review: line')
   }
 
   scenario('read-ledger: a null first read is recovered by the retry; the read echoes scripts/ledger-digest')
@@ -2428,7 +2560,7 @@ async function main() {
     check(out.counts['read-ledger:finish'] === 1 && out.counts['ledger-append:metrics'] === 1, 'exactly one re-read and one Metrics append')
     const idx = label => out.trace.findIndex(t => t.label === label)
     check(idx('ledger-append:metrics') !== -1 && idx('ledger-append:metrics') < idx('final-review'), 'Metrics precede the final review')
-    check(extractLedgerLines(promptOf(out.trace, 'ledger-append:metrics')).length === 4, 'four lines in the one dispatch')
+    check(extractLedgerLines(promptOf(out.trace, 'ledger-append:metrics')).length === 5, 'four Metrics lines and the Final review: line in the one dispatch')
     assertBucketsDisjoint(out.result)
   }
 
@@ -2455,7 +2587,7 @@ async function main() {
     ].join('\n')
     const out = await run({ args: liveArgs(), canned: manyTaskCanned(['bd-101', 'bd-102'], { 'read-ledger:finish': { text: knownLedger } }) })
     assertNoThrow(out)
-    const lines = extractLedgerLines(promptOf(out.trace, 'ledger-append:metrics'))
+    const lines = extractLedgerLines(promptOf(out.trace, 'ledger-append:metrics')).filter(l => l.startsWith('Metrics:'))
     check(lines[0] === 'Metrics: merges 2 · merge-failed 2 · rebase-conflicts 3 · seam-reviews 2 (fixed 1) · check-fails 2 (fixed 1)', 'line 1: success-path merges only; conflicts, seam reviews and check failures on both paths', lines[0])
     check(lines[1] === 'Metrics: completions — review clean 1 · after fix pass 2 · parked 1 · re-entry closes 1 · dispatched early 1 · cancelled 1', 'line 2: completion kinds (parked counted within fix pass), early dispatches and cancellations', lines[1])
     check(lines[2] === 'Metrics: fix-pass — entered 4 · FIXED 3 · BLOCKED 1', 'line 3: every fix-pass line counted, a retried task twice', lines[2])

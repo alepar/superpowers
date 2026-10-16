@@ -37,6 +37,9 @@ kinds and options:
   triage            --id ID --blocker BEAD
   assemble          --consumer final-review|roast-code|history|assess --instance I
                     [--threshold N] [--base SHA] [--head REF] [--spec P1,P2]
+  final-review      --mode single|cluster|seam [--dir D] [--capped] [--cluster N --name NAME] [--clusters N]
+                    (single without --dir reviews direct inputs; cluster needs --dir --cluster --name;
+                    seam needs --dir --clusters, the cluster files being 1..N)
 
 common options:
   --plan <file>        the plan file (default: <ledger dir>/<epic>-plan.md)
@@ -44,7 +47,7 @@ common options:
   --run-tag T          names the assembled-input directories (default: the Launch: line's runTag, else the epic)
   --epic, --branch, --worktree, --merge-check   override the Launch: line`
 
-const FLAGS = new Set(['stdout', 'reentry', 'recut', 'stacked', 'seam-cleared', 'help'])
+const FLAGS = new Set(['stdout', 'reentry', 'recut', 'stacked', 'seam-cleared', 'capped', 'help'])
 function fail(msg) { process.stderr.write(`dispatch-text: ${msg}\n`); process.exit(2) }
 function parse(argv) {
   const o = { _: [] }
@@ -85,7 +88,7 @@ function loadBuilders(cfg) {
   try { src = readFileSync(join(codeSkill, 'coordinator.js'), 'utf8') } catch (e) { console.error(`dispatch-text: cannot read coordinator.js: ${e.message}`); process.exit(3) }
   const cut = src.search(/^while \(true\) \{$/m)
   if (cut < 0) { console.error('dispatch-text: coordinator.js has no top-level `while (true) {` round loop to cut at'); process.exit(3) }
-  const ret = `return { planPrompt, implementPrompt, taskReviewPrompt, fixPrompt, seamReviewPrompt, checkFixReviewPrompt, mergePrompt, triagePrompt, assemblePrompt, reviewBeadOf, mergeCheckCommand }\n`
+  const ret = `return { planPrompt, implementPrompt, taskReviewPrompt, fixPrompt, seamReviewPrompt, checkFixReviewPrompt, finalReviewPrompt, finalClusterReviewPrompt, finalSeamReviewPrompt, finalReviewStubPrompt, mergePrompt, triagePrompt, assemblePrompt, reviewBeadOf, mergeCheckCommand }\n`
   const body = (src.slice(0, cut) + ret + src.slice(cut)).replace(/^export const meta/m, 'const meta')
   const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor
   const fn = new AsyncFunction('args', 'agent', 'log', 'phase', 'pipeline', 'parallel', 'budget', 'workflow', body)
@@ -183,6 +186,28 @@ switch (kind) {
     if (o.head) opts.head = o.head
     text = B.assemblePrompt(o.consumer, o.instance, opts)
     label = `assemble-${o.consumer}-${o.instance}`
+    break
+  }
+  case 'final-review': {
+    need('mode')
+    if (!['single', 'cluster', 'seam'].includes(o.mode)) fail('--mode is single, cluster or seam')
+    const reviewPath = `${worktree}/.superpowers/sdd/${epic}-plan/final-review-${runTag}.md`
+    const clusterPath = n => `${worktree}/.superpowers/sdd/${epic}-plan/final-review-${runTag}-cluster-${n}.md`
+    const posInt = k => { if (!/^[1-9]\d*$/.test(String(o[k]))) fail(`--${k} is a positive integer`); return Number(o[k]) }
+    if (o.mode === 'single') {
+      text = B.finalReviewPrompt(epic, branch, worktree, '.superpowers/sdd/' + epic + '-plan/progress.md', planPath, null, [], { dir: o.dir || null, capped: !!o.capped, reviewPath })
+      label = 'final-review-single'
+    } else if (o.mode === 'cluster') {
+      need('dir', 'cluster', 'name')
+      const n = posInt('cluster')
+      text = B.finalClusterReviewPrompt(n, o.name, o.dir, clusterPath(n), epic, branch, worktree)
+      label = `final-review-cluster-${n}`
+    } else {
+      need('dir', 'clusters')
+      const k = posInt('clusters')
+      text = B.finalSeamReviewPrompt(o.dir, Array.from({ length: k }, (_, i) => clusterPath(i + 1)), reviewPath, epic, branch, worktree)
+      label = 'final-review-seam'
+    }
     break
   }
   default:

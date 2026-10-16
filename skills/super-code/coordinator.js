@@ -30,6 +30,10 @@ log('coordinator: epic=' + epicId + ' branch=' + integrationBranch + ' skillsRoo
 // high, implementer and reviewer inherit the session. `config.efforts` overrides per role.
 // Model per role defaults to SKILL.md's tiering table; `config.models` overrides per role.
 const MODEL_DEFAULTS = { planner: 'opus', triage: 'opus', finalReview: 'opus', implementer: 'sonnet', reviewer: 'sonnet', mechanical: 'sonnet' }
+// The smallest known final-reviewer context window per harness (tokens): Claude Code's Workflow subagents,
+// and ordinary-subagent mode on Codex. config.contextWindows.finalReview (from context-preflight) wins;
+// the Finish size switch reads this one place when it is absent.
+const FINAL_REVIEW_FALLBACK_WINDOW = { workflow: 200000, ordinary: 258000 }
 const EFFORT_DEFAULTS = { mechanical: 'low', planner: 'high', triage: 'high', finalReview: 'high' }
 const tier = role => {
   if (dryRun) return { model: 'haiku' }
@@ -297,6 +301,8 @@ const SWEEP_SUMMARY = { type: 'object', properties: { summary: { type: 'string' 
 // closed; a reopen's list; a cancelled task's worktree removal.
 const REVIEW_BEAD = { type: 'object', properties: { reviewBead: {type:'string'}, implClosed: {type:'boolean'}, created: {type:'boolean'}, scriptError: {type:'string'} }, required: ['reviewBead','implClosed'] }
 const ASSEMBLED = { type:'object', properties:{ dir:{type:'string'}, exit:{type:'integer'}, fits:{type:'string'}, clusterFits:{type:'array', items:{type:'string'}}, clusters:{type:'integer'}, cause:{type:'string'} }, required:['dir','exit'] }
+const FINAL_VERDICT = { type:'object', properties:{ verdict:{type:'string'}, path:{type:'string'} }, required:['verdict'] }
+const STUB_WRITTEN = { type:'object', properties:{ written:{type:'boolean'}, path:{type:'string'} }, required:['written'] }
 const REOPENED = { type: 'object', properties: { reopened: { type: 'array', items: {type:'string'} }, scriptError: {type:'string'} }, required: ['reopened'] }
 const DISCARD = { type: 'object', properties: { discarded: {type:'boolean'}, reopened: { type: 'array', items: {type:'string'} }, cleanup: { type: 'array', items: {type:'string'} }, scriptError: {type:'string'} }, required: ['discarded'] }
 // The Finish backstop sweep's report: every output line of scripts/remove-task-worktree --sweep, then
@@ -1583,15 +1589,75 @@ if (!metricsLedger) {
     `Metrics: ledger-check ${mLedgerCheck} · append-failed ${ledgerAppendFailed.length} · append-retried ${ledgerAppendRetried}`,
   ]
 }
-await appendLedger(metrics,
+// Final review (spec §B3): the assembler measures the review inputs against 40% of the reviewer's
+// window; one reviewer when they fit, one per cluster plus a seam reviewer when they do not. The
+// handoff file <workspace>/final-review-<runTag>.md always exists; the Workflow returns only its
+// verdict line (`review`) and path (`reviewPath`), never a body.
+const landedWork = !!(completed.size || confirmedLandings.size)
+const reviewPath = `${workspaceAbs}/final-review-${runTag}.md`
+const clusterReviewPath = n => `${workspaceAbs}/final-review-${runTag}-cluster-${n}.md`
+const CAPPED_CAUSE = 'inputs exceed the window and no usable clusters'
+let frMode = 'unavailable', frDir = null, frClusters = [], frLine = null
+if (landedWork) {
+  const reviewWindow = Number(config.contextWindows?.finalReview) || FINAL_REVIEW_FALLBACK_WINDOW.workflow
+  const reviewThreshold = Math.floor(reviewWindow * 0.4)
+  const asm = await dispatch(() => assemblePrompt('final-review', 'final', { threshold: reviewThreshold }), 'assemble:final',
+    { label: 'assemble:final', phase: 'Finish', ...tier('mechanical'), schema: ASSEMBLED })
+  const fm = /^fits: (yes|no) \((\d+) of (\d+)\)/.exec(String(asm?.fits ?? '').trim())
+  frClusters = (asm?.clusterFits ?? []).map(l => /^cluster-fits: (\S+) (yes|no)\b/.exec(String(l).trim())).filter(Boolean)
+    .map((m, i) => ({ n: i + 1, name: m[1], fits: m[2] === 'yes' }))
+  frDir = asm?.dir ?? null
+  if (asm && asm.exit === 3) frMode = 'capped'
+  else if (asm && asm.exit === 0 && fm && frDir) frMode = fm[1] === 'yes' ? 'single' : (frClusters.length ? 'split' : 'capped')
+  const totalK = fm ? Math.round(Number(fm[2]) / 1000) : 0, windowK = Math.round(reviewWindow / 1000)
+  const k = asm?.clusters ?? frClusters.length
+  frLine = frMode === 'unavailable' ? 'Final review: single (assembler unavailable)'
+    : frMode === 'capped' ? 'Final review: single (no usable clusters — capped)'
+    : `Final review: ${frMode} (inputs ${totalK}K ${frMode === 'single' ? '<=' : '>'} 40% of ${windowK}K) · clusters ${k}`
+}
+await appendLedger(frLine ? [...metrics, frLine] : metrics,
   'ledger-append:metrics', { label: 'ledger-append:metrics', phase: 'Finish', ...tier('mechanical') })
-const reviewRes = (completed.size || confirmedLandings.size)
-  ? await dispatch(() => finalReviewPrompt(epicId, integrationBranch, integrationWorktree, ledgerPath, lastPlanned?.planPath, sweepSummary, metrics), 'final-review',
-      { label: 'final-review', phase: 'Finish', ...tier('finalReview') })
-  : 'no work landed'
 // Null final-review ("Null dispatch policy"): an explicit UNAVAILABLE string — never silence, and
 // never anything a reader could mistake for "reviewed, no findings".
-const review = reviewRes ?? `FINAL REVIEW UNAVAILABLE — the final-review dispatch returned null (terminal API error after retries). The integration branch has had NO whole-epic review; treat this as a missing review, never as "no findings".`
+const FINAL_REVIEW_UNAVAILABLE = `FINAL REVIEW UNAVAILABLE — the final-review dispatch returned null (terminal API error after retries). The integration branch has had NO whole-epic review; treat this as a missing review, never as "no findings".`
+// A verdict that cannot be `ready`: keeps the reviewer's own summary and names what went unreviewed.
+const notReadyWith = (verdict, unrev) => {
+  const v = String(verdict ?? '').trim()
+  if (v.startsWith('not ready (') && v.includes('unreviewed: ') && unrev.every(u => v.includes(u))) return v
+  const inner = /^not ready \((.*)\)$/s.exec(v)?.[1]
+  return `not ready (${inner ? inner + '; ' : ''}unreviewed: ${unrev.join(', ')})`
+}
+let review
+if (!landedWork) review = 'no work landed'
+else if (frMode !== 'split') {
+  const single = await dispatch(() => finalReviewPrompt(epicId, integrationBranch, integrationWorktree, ledgerPath, lastPlanned?.planPath, sweepSummary, metrics,
+    { dir: frMode === 'single' ? frDir : null, capped: frMode === 'capped', reviewPath }), 'final-review',
+    { label: 'final-review', phase: 'Finish', ...tier('finalReview'), schema: FINAL_VERDICT })
+  const v = String(single?.verdict ?? '').trim()
+  review = !v ? FINAL_REVIEW_UNAVAILABLE : frMode === 'capped' ? notReadyWith(v, [CAPPED_CAUSE]) : v
+} else {
+  const unreviewed = frClusters.filter(c => !c.fits).map(c => `cluster ${c.n} (${c.name}): over the window`)
+  const reviewed = []
+  const fitting = frClusters.filter(c => c.fits)
+  for (let i = 0; i < fitting.length; i += cap) {
+    const batch = fitting.slice(i, i + cap)
+    const res = await Promise.all(batch.map(c => dispatch(() => finalClusterReviewPrompt(c.n, c.name, frDir, clusterReviewPath(c.n), epicId, integrationBranch, integrationWorktree), `final-review:cluster:${c.n}`,
+      { label: `final-review:cluster:${c.n}`, phase: 'Finish', ...tier('finalReview'), schema: FINAL_VERDICT })))
+    batch.forEach((c, j) => { if (res[j] && String(res[j].verdict ?? '').trim()) reviewed.push(c); else unreviewed.push(`cluster ${c.n} (${c.name}): review unavailable`) })
+  }
+  const clusterPaths = reviewed.map(c => clusterReviewPath(c.n))
+  const seam = await dispatch(() => finalSeamReviewPrompt(frDir, clusterPaths, reviewPath, epicId, integrationBranch, integrationWorktree, unreviewed), 'final-review:seam',
+    { label: 'final-review:seam', phase: 'Finish', ...tier('finalReview'), schema: FINAL_VERDICT })
+  let seamVerdict = String(seam?.verdict ?? '').trim()
+  if (!seamVerdict) {
+    unreviewed.push('seam')
+    const stub = await dispatch(() => finalReviewStubPrompt(clusterPaths, unreviewed, reviewPath), 'final-review:stub',
+      { label: 'final-review:stub', phase: 'Finish', ...tier('mechanical'), schema: STUB_WRITTEN })
+    if (!stub) log(`final-review: the seam review and its stub both returned null — ${reviewPath} may not exist`)
+    seamVerdict = ''
+  }
+  review = unreviewed.length ? notReadyWith(seamVerdict, unreviewed) : seamVerdict
+}
 // `authRefused` ids are also in `escalated`, so the bucket invariant holds.
 // Reconcile with the tracker before returning: a closed bead is completed whatever the ledger says —
 // except a split task, which counts only when its review bead is closed too, and a landed task,
@@ -1639,7 +1705,7 @@ const processSweep = !wsweep
       survived: (wsweep.processLines || []).filter(l => /^survived:/.test(l)).map(l => l.replace(/^survived:\s*/, '')) }
 log(`process sweep: ${processSweep.stopped.length} stopped, ${processSweep.survived.length} survived${processSweep.survived.length ? ' — ' + processSweep.survived.join('; ') : ''}`)
 return { closureUnconfirmed, completed: [...completed], escalated: [...escalated], pendingRetry: [...pendingRetry],
-         parked: [...parked], stalled, stopReason, review, authRefused: [...authRefused], sweep: sweepSummary,
+         parked: [...parked], stalled, stopReason, review, authRefused: [...authRefused], sweep: sweepSummary, reviewPath: landedWork ? reviewPath : null,
          metrics, ledgerAppendFailed: [...ledgerAppendFailed], slowness: [...slowness], humanActions: [...humanActions], worktreesKept, processSweep }
 
 // --- helpers ---
@@ -2067,20 +2133,42 @@ function ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName, lines
   return `Working directory: ${integrationWorktree} (the integration worktree, which owns the ledger; never write it from a task worktree). If ${ledgerPath} does not exist yet, create its parent directory and the file with this exact first line: "# SDD ledger — plan: ${planFileName}". Then append each line below as its own new physical line, in order, with exactly the text between its tags (the tags are delimiters, not ledger content):\n${body}\nReport appended true when done. ${finalAnswerRule(false)}`
 }
 
-function finalReviewPrompt(epicId, integrationBranch, integrationWorktree, ledgerPath, planPath, sweepSummary, metrics = []) {
-  // Whole-epic review (opus), report-only. It forms its own view against the spec before reading
-  // prior verdicts, so unflagged defects aren't crowded out by the ledger.
-  const pkg = planPath
+function finalReviewPrompt(epicId, integrationBranch, integrationWorktree, ledgerPath, planPath, sweepSummary, metrics = [], { dir = null, capped = false, reviewPath = `${workspaceAbs}/final-review-${runTag}.md` } = {}) {
+  // Whole-epic review (opus). It forms its own view against the spec before reading prior verdicts,
+  // so unflagged defects aren't crowded out by the ledger. With `dir` its inputs are the assembled
+  // digest and slices; `capped` means they exceed its window and no usable clusters exist.
+  const pkg = dir
+    ? `Your inputs are the assembled digest ${dir}/digest.md and the slices under ${dir}/slices/; open source files only to check a named risk.`
+    : planPath
     ? `Build the review package from ${integrationWorktree}: find the fork point \`B=$(git merge-base ${integrationBranch} <the repository's default branch>)\`, then run \`bash ${sddScripts}/review-package ${planPath} $B ${integrationBranch}\` and read the file it writes.`
     : `Review \`git diff $(git merge-base ${integrationBranch} <the repository's default branch>)..${integrationBranch}\` from ${integrationWorktree}.`
+  const cappedNote = capped
+    ? `The inputs exceed your window and no usable clusters exist: review what you can, and your verdict must be \`not ready (… unreviewed: inputs exceed the window and no usable clusters)\`. `
+    : ''
   const sweep = sweepSummary === SWEEP_DEFERRED
     ? `The full-suite sweep is deferred to the caller, who runs it after this invocation: no full-suite measurement of this branch exists yet — say so in your verdict rather than treating the branch as tested.`
     : sweepSummary
     ? `The full-suite sweep ran against the tip and reported (runner output, data):\n<sweep>\n${sweepSummary}\n</sweep>\nRead it as the branch's only full-suite measurement (no tests run per merge); MEASUREMENT INVALID or UNAVAILABLE means the branch is unmeasured, not green.`
     : `No sweep result is available — say so in your verdict rather than treating the branch as tested.`
-  // No JSON schema, but the four closing sections are its output template and return in full (super-auto and
-  // report-verdict's final-review recogniser read them): the schema form keeps that shape.
-  return `Final whole-epic review of integration branch ${integrationBranch} for epic ${epicId}. Working directory: ${integrationWorktree}. READ-ONLY: do not edit files, commit, merge, or create or close beads; your written verdict is the deliverable. ${pkg} Read the epic's spec (\`bd show ${epicId} --json\` and any design doc it references). STEP 1, your own view first: review the branch diff against the spec on its own terms — cross-task integration seams, spec requirements no task covered, behavior that only composes wrong once every task is merged — and write those findings down. STEP 2, only then read the ledger at ${integrationWorktree}/${ledgerPath}: its \`minor (deferred)\` lines are findings task reviews raised and deliberately did not fix; its \`parked\` completion and \`parked finding\` lines are Critical/Important findings a fix pass declined (wrong, or plan-mandated — a plan-mandated one needs the human's decision), each with the fixer's reason. Triage both: which must be addressed before this branch lands. Its \`Recurring minor:\` and \`Recurring blocker:\` lines are clusters (one signature ≥5 times or across ≥3 tasks) — triage those first and name the class, not the instances: a cluster at that rate is usually a pipeline defect or one systemic smell. Its \`BLOCKED-AUTH\` lines are tasks that lost coverage to a permission refusal — untested scope, not findings. A minor that names a skipped or ignored test, a known product defect, or a data-loss path was misgraded: triage it as must-fix. ${metrics.length ? `The run's Metrics lines (counts from the ledger; a \`METRICS INVALID\` or \`landed≠completed\` line means the ledger is incomplete, so do not read absence there as clean): ${metrics.join(' | ')}. ` : ''}${sweep} End with these sections: Verdict (ready / not ready); Must fix before landing; Untested scope; Deferred OK. ${finalAnswerRule(true)}`
+  return `Final whole-epic review of integration branch ${integrationBranch} for epic ${epicId}. Working directory: ${integrationWorktree}. READ-ONLY: do not edit files, commit, merge, or create or close beads; the one file you write is your review, ${reviewPath}. ${pkg} ${cappedNote}Read the epic's spec (\`bd show ${epicId} --json\` and any design doc it references). STEP 1, your own view first: review the branch diff against the spec on its own terms — cross-task integration seams, spec requirements no task covered, behavior that only composes wrong once every task is merged — and write those findings down. STEP 2, only then read the ledger at ${integrationWorktree}/${ledgerPath}: its \`minor (deferred)\` lines are findings task reviews raised and deliberately did not fix; its \`parked\` completion and \`parked finding\` lines are Critical/Important findings a fix pass declined (wrong, or plan-mandated — a plan-mandated one needs the human's decision), each with the fixer's reason. Triage both: which must be addressed before this branch lands. Its \`Recurring minor:\` and \`Recurring blocker:\` lines are clusters (one signature ≥5 times or across ≥3 tasks) — triage those first and name the class, not the instances: a cluster at that rate is usually a pipeline defect or one systemic smell. Its \`BLOCKED-AUTH\` lines are tasks that lost coverage to a permission refusal — untested scope, not findings. A minor that names a skipped or ignored test, a known product defect, or a data-loss path was misgraded: triage it as must-fix. ${metrics.length ? `The run's Metrics lines (counts from the ledger; a \`METRICS INVALID\` or \`landed≠completed\` line means the ledger is incomplete, so do not read absence there as clean): ${metrics.join(' | ')}. ` : ''}${sweep} Write your whole review, ending with the sections Verdict (ready / not ready (<summary>)); Must fix before landing; Untested scope; Deferred OK, to ${reviewPath}. Return verdict (the Verdict line's value) and path. ${authRefusalRule()} ${finalAnswerRule(true)}`
+}
+
+function finalClusterReviewPrompt(n, name, dir, clusterPath, epicId, integrationBranch, integrationWorktree) {
+  // One cluster of the split final review: the cluster's files and slices only, against the spec.
+  return `Final review of cluster ${n} (${name}) of integration branch ${integrationBranch} for epic ${epicId}. Working directory: ${integrationWorktree}. READ-ONLY: do not edit files, commit, merge, or create or close beads; the one file you write is your review, ${clusterPath}. Your inputs are the files and slices that ${dir}/clusters.json lists for the cluster named ${name}, under ${dir}/, plus ${dir}/digest.md for context; review that cluster only, against the epic's spec (\`bd show ${epicId} --json\` and any design doc it references), and open other source files only to check a named risk. Judge the cluster on its own terms: spec requirements it fails to meet, defects, untested scope. Another reviewer judges how the clusters compose. Write your whole review, ending with the sections Verdict (ready / not ready (<summary>)); Must fix before landing; Untested scope; Deferred OK, to ${clusterPath}. Return verdict (the Verdict line's value) and path. ${authRefusalRule()} ${finalAnswerRule(true)}`
+}
+
+function finalSeamReviewPrompt(dir, clusterPaths, reviewPath, epicId, integrationBranch, integrationWorktree, unreviewed = []) {
+  // The split final review's second stage: how the reviewed clusters compose. It reads the cluster
+  // verdict files and the cross-cluster hunks, never the clusters' full slices.
+  const files = clusterPaths.length ? clusterPaths.join(', ') : 'none — no cluster review completed'
+  const gaps = unreviewed.length ? ` These clusters have no review file, so name them in your Must fix section as unreviewed: ${unreviewed.join('; ')}.` : ''
+  return `Final seam review of integration branch ${integrationBranch} for epic ${epicId}. Working directory: ${integrationWorktree}. READ-ONLY: do not edit files, commit, merge, or create or close beads; the one file you write is your review, ${reviewPath}. Your inputs are only the cluster review files (${files}) and the cross-cluster hunks and interfaces: the diff hunks of files in one cluster that reference symbols defined in another, which you find from ${dir}/clusters.json and \`git diff\` in ${integrationWorktree}.${gaps} Judge how the clusters compose against the epic's spec (\`bd show ${epicId} --json\`): interfaces that disagree, requirements that fall between clusters, behavior that only breaks once every cluster is merged. Do not re-review a cluster's own files. Write your whole review, ending with the sections Verdict (ready / not ready (<summary>)); Must fix before landing, which carries every cluster's must-fix items forward plus your own; Untested scope; Deferred OK, to ${reviewPath}. Return verdict (the Verdict line's value) and path. ${authRefusalRule()} ${finalAnswerRule(true)}`
+}
+
+function finalReviewStubPrompt(clusterPaths, unreviewed, reviewPath) {
+  // Mechanical: the seam review returned null, but the handoff file must exist. Lists the cluster files.
+  return `Write ${reviewPath} with exactly this content, and change nothing else: a "## Verdict" heading, then the line "not ready (unreviewed: ${unreviewed.join(', ')})"; a "## Must fix before landing" heading, then the line "- the seam review did not run; see the cluster files"; a line "Cluster files:" followed by one bullet per path (${clusterPaths.length ? clusterPaths.join(', ') : 'none'}); then an empty "## Untested scope" heading and an empty "## Deferred OK" heading. Report written true and path ${reviewPath}. ${finalAnswerRule(true)}`
 }
 
 function ledgerLine(n, id, rest) {

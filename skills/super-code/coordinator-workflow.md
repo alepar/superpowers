@@ -259,7 +259,9 @@ Two rules, both mandatory in `./coordinator.js`:
 | `plan-rest` (round 1's second planner) | **Opportunistic**: logged; the beads it would have mapped are planned by later rounds' refill planning. Never a stopReason. |
 | `read-ledger` | Retried once (`read-ledger:retry`). A second null: Resume reconstructs nothing, loudly: `bd ready` remains the authority on closed work, but prior-run `pendingRetry` bounds are lost for this run — logged, not silent. |
 | `read-ledger:finish` (the Metrics re-read) | Retried once (`read-ledger:finish:retry`). A second null is logged as a NULL dispatch; the four `Metrics:` lines are then written as `Metrics: UNAVAILABLE — the Finish ledger re-read returned null` rather than as zero counts. |
-| `final-review` | `review` is an explicit UNAVAILABLE string — **never** "no findings". |
+| `final-review` (single) | `review` is an explicit UNAVAILABLE string — **never** "no findings". |
+| `assemble:final` | Not fatal: the final review runs once on direct inputs, uncapped, and the ledger line reads `Final review: single (assembler unavailable)`. |
+| `final-review:cluster:<n>` / `final-review:seam` | The cluster (or `seam`) is listed `unreviewed` and `review` becomes `not ready (…; unreviewed: …)` — never `ready`. A null seam dispatches `final-review:stub` so the handoff file exists. |
 | `worktree-sweep` | `worktreesKept` is `['WORKTREE SWEEP UNAVAILABLE — …']` and `processSweep.survived` is `['PROCESS SWEEP UNAVAILABLE — …']` — **never** empty lists, which would read as nothing left behind. |
 | ledger writes (`ledger:<id>` — one per task chain, carrying every line the task noted — plus `ledger-append:<kind>` and `ledger-recurring:<k>`; all via `appendLedger` on the ledger chain) | **Retried once, then marked**: a null append is re-dispatched once — with the lines' agent-authored free text elided where the call site has an elided variant (ids and outcome token kept) — and a second null is recorded by label in `ledgerAppendFailed` (returned), logged as `ledger-append-failed: <label>`, and counted on the Finish-phase `Metrics: ledger-check` line. Never silent, never fatal. |
 | `notify` | Retried once with the detail elided (ids and the blocker bead only); a second null is logged and the run continues — the ledger's BLOCKED line and the bead carry the record. |
@@ -1210,8 +1212,9 @@ sweep, `scripts/stop-run-processes` over the task-worktree root, the run temp ro
 are returned as `processSweep` (`stopped`, `survived`). It runs whoever owns the finish, because
 task worktrees and the processes started in them are this skill's, not the caller's.
 
-When the loop ends (and at least some work landed), run the sweep (below), then dispatch the
-**final whole-epic review (opus)** against the integration branch. It is report-only, reviews the
+When the loop ends (and at least some work landed), run the sweep (below), then the **final
+whole-epic review (opus)** against the integration branch, whose shape depends on size (next
+paragraph). It is report-only (apart from its own review file), reviews the
 branch diff against the epic's spec on its own terms first, and only then reads the ledger's
 deferred minors, parked lines, recurring clusters, `BLOCKED-AUTH` lines and the sweep result. What
 happens after that review is **conditional on who owns the finish hand-off**. By default, hand off
@@ -1247,6 +1250,33 @@ reported as a `Recurring blocker:` line. Measured: six false-premise blockers ac
 one run (the implementer looking the report up under the bead id instead of the plan ordinal;
 finished work left uncommitted) were each RESOLVEd correctly and never counted, because the
 detector only saw review minors.
+
+**The final review is size-switched.** After the Metrics re-read and before its append, one
+mechanical `assemble:final` dispatch (`assemblePrompt('final-review', 'final', …)`) gathers the review
+inputs into `<workspace>/assembled/final-review-<runTag>-final/` and measures them. The window is
+`config.contextWindows.finalReview`, else `FINAL_REVIEW_FALLBACK_WINDOW.workflow` (200K, defined once
+beside `MODEL_DEFAULTS` in `coordinator.js`; the ordinary-subagent coordinator uses its `ordinary`
+entry, 258K); the threshold is 40% of it. The mode follows the assembler's reply:
+
+| Assembler reply | Mode | Dispatches | Ledger line |
+|---|---|---|---|
+| null, no parsable `fits:` line, or `exit` not 0/3 | `single` on direct inputs, uncapped | `final-review` | `Final review: single (assembler unavailable)` |
+| `exit` 3 (bad coverage, or no usable `clusters.json`), or `fits: no` with no `cluster-fits:` lines | `single` on direct inputs, **capped** | `final-review` | `Final review: single (no usable clusters — capped)` |
+| `fits: yes` | `single` on the digest and slices | `final-review` | `Final review: single (inputs <N>K <= 40% of <W>K) · clusters <k>` |
+| `fits: no` | `split` | `final-review:cluster:<n>` for each `cluster-fits: <name> yes` (concurrent, in batches of the concurrency cap), then `final-review:seam` | `Final review: split (inputs <N>K > 40% of <W>K) · clusters <k>` |
+
+The `Final review:` line is appended in the same dispatch as the four `Metrics:` lines. Clusters come
+from the assembler's `clusters.json` (import and call edges, else directory), never from a declared
+key. A cluster still `cluster-fits: no` after the assembler's one re-cluster is not dispatched and is
+listed `unreviewed`. Cluster reviewers write `<workspace>/final-review-<runTag>-cluster-<n>.md`; the
+seam reviewer, given only those files and the cross-cluster hunks and interfaces, writes the handoff
+file. **`<workspace>/final-review-<runTag>.md` always exists** when work landed: the single or seam
+reviewer writes it, and on a null seam review a mechanical `final-review:stub` dispatch writes a stub
+that lists the cluster files. The Workflow returns `review` (the verdict line) and `reviewPath` (that
+file) and never a body; callers read the file through `report-verdict`. Anything unreviewed — a null
+cluster or seam review, an over-window cluster — makes `review` `not ready (<summary>; unreviewed: …)`,
+never `ready`; a capped single review is forced to `not ready (… unreviewed: inputs exceed the window
+and no usable clusters)`. A null single review keeps today's `FINAL REVIEW UNAVAILABLE` string.
 
 **The sweep runs here, once, before the final review — mandatory whenever work landed, unless the
 caller set `deferSweep`** (then no sweep dispatches, the final reviewer is told it was deferred, and
@@ -1291,7 +1321,7 @@ zero counts, each carrying this invocation's own buckets, labelled `this invocat
   INVALID` because every count on the block is then wrong. Before this split, every legitimate
   re-entry close read as a mismatch.
 
-The return carries `metrics`, the same four strings.
+The return carries `metrics`, the same four strings. The `Final review:` line (above) rides in the same append.
 
 **Friction capture is the invoking session's job, not the Workflow script's.** The Workflow script
 itself cannot write files — it has no I/O (see "Key constraint: the script does no I/O") — so it
@@ -1537,7 +1567,8 @@ narratives that used to accompany each row are in git history; nothing here depe
 | **Task-worktree cleanup (merge agent runs `scripts/remove-task-worktree` after the merge and bead close — processes stopped, `git worktree remove` + `git branch -d`, never forced, `--keep-branch` for split tasks; close-only re-entries clean up too; discards go through `--discard`; Finish `worktree-sweep` backstop returning `worktreesKept`)** | replay 44/0 | replay 19/0 | replay 21/0 |
 | **Process cleanup (scripts/stop-run-processes: cwd, executable or exact HOME=/TMPDIR= under a run root, orphan argument paths, no kinship expansion, interactive terminals kept, epic/integration roots refused; task temp state in a short `/tmp/sp-<hash>/<task id>` root, removed with the worktree (`remove-task-worktree --tmp`); implementer/fixer leak check after test runs; processes stopped before a task's bead closes; the Finish `worktree-sweep` dispatch also runs the final process sweep and writes the `Process sweep:` ledger line, returning `processSweep`)** | replay 44/0 | replay 19/0 | replay 21/0 |
 | **Merge-lane priority (the next merge is the queued task with the most live stacked or bounced dependents waiting on its landing, first-come among equals; one queue worker replaces the promise chain) ** | replay 44/0 | replay 19/0 | replay 21/0 |
-| **Current requirements and tracker closure confirmation — CURRENT** | **replay 47/0** | **replay 19/0** | **replay 22/0** |
+| Current requirements and tracker closure confirmation | replay 47/0 | replay 19/0 | replay 22/0 |
+| **Final-review size switch (assembler pre-step, single/split, reviewPath) — CURRENT** | **replay 48/0** | **replay 19/0** | **replay 23/0** |
 
 The current row's figures come from the offline replay harness (`tests/super-code/`): it replays
 the three `args` blocks below and runs the live-sim, null-injection, parallelism, seam,
@@ -1843,7 +1874,8 @@ exercised by the replay harness's live-sim scenarios.
 | `read-ledger:finish` / `ledger-append:metrics` | `{text:""}` / `{appended:true}` | the Metrics re-read and the one dispatch appending all four lines |
 | `reconcile-buckets` | `{closed:[]}` | Finish reconciliation of escalated ids (and any landed id whose closure is unconfirmed) against the tracker |
 | `worktree-sweep` | `{lines:[]}` | the Finish task-worktree backstop (always dispatched) |
-| `final-review` | `{summary,verdict}` | dispatched because `completed.size` is 2 |
+| `assemble:final` | `{dir:"…",exit:0,fits:"fits: yes (1200 of 80000)",clusterFits:[],clusters:0}` | the final review's assembler pre-step: fits, so a single review. The split-mode keys (`final-review:cluster:<n>`, `final-review:seam`, `final-review:stub`) are exercised by the replay harness's live-sim scenarios only |
+| `final-review` | `{verdict:"ready",path:"…"}` | dispatched because `completed.size` is 2 |
 
 **Stub keys are call-site qualified** (`implement:<id>`, `review:<id>`, `fix:<id>`, `merge:<id>`,
 `triage:<id>`, …): a single unqualified key can't return four different task ids, or CLEAN for two
@@ -1874,19 +1906,41 @@ missing-bead fallback (`missing-blocker:<id>`) are not exercised by these scenar
   `review` 4 + `fix` 1 + `merge` 4 + `triage` 3 + `notify` 2 + `clarify` 1 + task ledger flushes 5
   (`ledger:bd-101`, `ledger:bd-103`, `ledger:bd-104` ×2, `ledger:bd-105`) + `ledger-append:detector` 1 +
   `sweep` 1 + `ledger-append:sweep` 1 + `read-ledger:finish` 1 + `ledger-append:metrics` 1 +
-  `final-review` 1 + `reconcile-buckets` 1 + `worktree-sweep` 1 + `close-check` 3 = **47 agent calls, 0 errors**, terminal shape
+  `assemble:final` 1 + `final-review` 1 + `reconcile-buckets` 1 + `worktree-sweep` 1 + `close-check` 3 = **48 agent calls, 0 errors**, terminal shape
   `{completed:["bd-102","bd-101","bd-105"], escalated:["bd-103","bd-104"], pendingRetry:[], parked:[],
   stalled:false, stopReason:"ready-drained"}` (bucket order follows completion order).
 
 If any assertion fails, fix `./coordinator.js` (the canonical script) and
 re-run before committing the fix.
 
+### Final-review size switch scenarios (replay harness, live-sim)
+
+The dryRun fixtures above take the `fits: yes` branch only. The replay harness's live-sim scenarios
+cover the other modes by canning `assemble:final` (and, in split mode, the cluster, seam and stub
+keys); each asserts the dispatch sequence, the `Final review:` line inside the `ledger-append:metrics`
+prompt, and the returned `review` and `reviewPath`. Agent counts are for the one-task fixture, whose
+single-mode count is 22.
+
+| Scenario | `assemble:final` | Final-review dispatches | `Final review:` line | `review` | Agents |
+|---|---|---|---|---|---|
+| single | `fits: yes (12000 of 80000)` | `final-review` on the digest | `single (inputs 12K <= 40% of 200K) · clusters 0` | the reviewer's verdict | 22 |
+| window from config (`contextWindows.finalReview: 1000000`) | same; threshold 400000 | `final-review` | `… 40% of 1000K` | the reviewer's verdict | 22 |
+| split | `fits: no (300000 of 80000)`, two `yes` clusters | `final-review:cluster:1`, `:2`, `final-review:seam` | `split (inputs 300K > 40% of 200K) · clusters 2` | the seam verdict | 24 |
+| assembler unavailable | null | `final-review` on direct inputs | `single (assembler unavailable)` | uncapped | 22 |
+| exit 3, capped | `exit: 3` | `final-review` on direct inputs, told `no usable clusters` | `single (no usable clusters — capped)` | `not ready (… unreviewed: inputs exceed the window and no usable clusters)` | 22 |
+| null cluster review | split, cluster 2 null | both clusters, then the seam | split line | `not ready (unreviewed: cluster 2 (beta): review unavailable)` | 24 |
+| null seam review | split, seam null | both clusters, the seam, `final-review:stub` | split line | `not ready (unreviewed: seam)`; `reviewPath` still returned | 25 |
+| oversized cluster | split, cluster b `no` | `final-review:cluster:1` only, then the seam | split line | `not ready (unreviewed: cluster 2 (b): over the window)` | 23 |
+
+A null single review keeps `FINAL REVIEW UNAVAILABLE` (the existing null-final-review scenario, now
+also asserting `assemble:final` ran first). No work landed: no assemble, no review, `reviewPath` null.
+
 ### Baselines for the canonical scenario (recorded, not illustrative)
 
 **Confirmed for the current revision by the offline replay harness**
-(`tests/super-code/replay-harness.mjs`, run via `test-coordinator-replay.sh`): 47 agent calls,
+(`tests/super-code/replay-harness.mjs`, run via `test-coordinator-replay.sh`): 48 agent calls,
 0 errors, the terminal shape above. No Workflow-hosted run has been recorded against this
-revision yet. (The script-in-file batch's 43 is superseded by this one's added `worktree-sweep`; the early-unblock batch's 48 by the script-in-file batch; the off-critical-path
+revision yet. (The size-switch batch's 47 is superseded by this one's `assemble:final`; the script-in-file batch's 43 is superseded by this one's added `worktree-sweep`; the early-unblock batch's 48 by the script-in-file batch; the off-critical-path
 batch's 44 by the early-unblock batch; the D4 loop's 50 by the off-critical-path batch.)
 
 Superseded by the D4 loop (pre-D4 script: five-round fix loop, per-merge gate). Recorded then: run `wf_97164f71-a3c`: **32 agents dispatched, 0 errors**
@@ -1921,9 +1975,9 @@ it even by coincidence. The figures were real and unaltered — and still not ev
 run never executed. That is the failure the rule generalizes.
 
 **Schema-less dispatches — the harness's "N empty results" is expected, not a defect.** `notify`,
-`clarify`, the ledger appends (`ledger:<id>`, `ledger-append:*`, `ledger-recurring:*`) and
-`final-review` carry no `schema:`. The coordinator reads the first three only for null; `final-review`'s
-string is returned verbatim as `review`. `sweep` carries `SWEEP_SUMMARY`, and its line must match a
+`clarify` and the ledger appends (`ledger:<id>`, `ledger-append:*`, `ledger-recurring:*`) carry no
+`schema:`; the coordinator reads them only for null. The final-review dispatches carry `FINAL_VERDICT`
+(`{verdict, path}`; `review` is the verdict line), the stub `STUB_WRITTEN`, the assembler `ASSEMBLED`. `sweep` carries `SWEEP_SUMMARY`, and its line must match a
 measurement form (counts, `PASS|FAIL` for a non-test command, or `MEASUREMENT INVALID:`) or it is
 recorded as `SWEEP UNAVAILABLE` — an agent's interim status once reached the final reviewer as the
 branch's measurement. Don't add schemas to force the rest into a shape they don't need.
@@ -2004,7 +2058,8 @@ To reproduce or re-verify after a structural edit, run the Workflow tool with th
       "reconcile-buckets": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"closed\":[]}",
       "sweep": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"summary\":\"f00dbee \\u2014 12 passed, 0 failed, 0 errors, 0 skipped; failing: none; command: <project test command>\"}",
       "ledger-append:sweep": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
-      "final-review": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"summary\":\"stub: 2/4 tasks merged; bd-103 and bd-104 quarantined\",\"verdict\":\"conditional-pass\"}"
+      "assemble:final": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"dir\":\".worktrees/epic-bd-100-integration/.superpowers/sdd/bd-100-plan/assembled/final-review-bd-100-final\",\"exit\":0,\"fits\":\"fits: yes (1200 of 80000)\",\"clusterFits\":[],\"clusters\":0}",
+      "final-review": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"verdict\":\"ready\",\"path\":\".worktrees/epic-bd-100-integration/.superpowers/sdd/bd-100-plan/final-review-bd-100.md\"}"
     }
   }
 }
@@ -2093,13 +2148,13 @@ the parked variant carrying the reason and the finding, and the final review tri
 | `fix:bd-301` | `{status:"FIXED",head,declined:"… plan-mandated …"}` | `declined` non-empty → `parkReason` |
 | `merge:bd-301` | merged, `ledgerAppended:true` | the merge agent writes the `Merge:` line only — a parked completion line carries fixer free text |
 | `ledger:bd-301` | `{appended:true}` | the one flush: the fix-pass line, then `Task 1 (bd-301): complete (commits …, fix pass, 1 parked — reason: … — finding: …)` |
-| `sweep` / `ledger-append:sweep` / `final-review` | fixed | work landed, so both dispatch |
+| `sweep` / `ledger-append:sweep` / `assemble:final` / `final-review` | fixed | work landed, so all dispatch |
 | `worktree-sweep` | `{lines:[]}` | the Finish task-worktree backstop |
 
 **Assertions:** no `triage`, `notify`, or blocker-filing key dispatches (a declined finding never
 reaches the blocker path); `completed` `["bd-301"]`, `parked` `["bd-301"]`, `escalated` `[]`,
 `pendingRetry` `[]`; the Finish log line reads `Parked (merged with fix-pass-declined findings): 1`.
-Expected dispatch count: **22 agent calls, 0 errors** — confirmed by the offline replay harness at
+Expected dispatch count: **23 agent calls, 0 errors** — confirmed by the offline replay harness at
 the current revision.
 
 ```json
@@ -2141,7 +2196,8 @@ the current revision.
       "reconcile-buckets": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"closed\":[]}",
       "sweep": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"summary\":\"f00dbee \\u2014 12 passed, 0 failed, 0 errors, 0 skipped; failing: none; command: <project test command>\"}",
       "ledger-append:sweep": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
-      "final-review": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"summary\":\"stub: 1/1 task merged; bd-301 parked (fix pass declined a plan-mandated finding)\",\"verdict\":\"conditional-pass\"}"
+      "assemble:final": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"dir\":\".worktrees/epic-bd-300-integration/.superpowers/sdd/bd-300-plan/assembled/final-review-bd-300-final\",\"exit\":0,\"fits\":\"fits: yes (1200 of 80000)\",\"clusterFits\":[],\"clusters\":0}",
+      "final-review": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"verdict\":\"ready\",\"path\":\".worktrees/epic-bd-300-integration/.superpowers/sdd/bd-300-plan/final-review-bd-300.md\"}"
     }
   }
 }
