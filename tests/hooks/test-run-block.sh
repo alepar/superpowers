@@ -1,0 +1,144 @@
+#!/usr/bin/env bash
+# Tests for the Claude Code run-block re-inject: hooks/run-block.sh + hooks/session-start-runblock
+# + the two compact entries in hooks/hooks.json. run-digest is stubbed (mode from $T/mode).
+set -euo pipefail
+
+REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
+T=$(mktemp -d)
+trap 'rm -rf "$T"' EXIT
+
+pass() { echo "  [PASS] $1"; }
+fail() { echo "  [FAIL] $1"; FAILED=1; }
+FAILED=0
+assert_eq() { if [ "$2" = "$3" ]; then pass "$1"; else fail "$1 (expected: $2, got: $3)"; fi; }
+assert_has() { case "$3" in *"$2"*) pass "$1" ;; *) fail "$1 (missing: $2 in: $3)" ;; esac; }
+
+P=$T/plugin
+mkdir -p "$P/hooks" "$P/skills/super-code/scripts" "$T/W/sub" "$T/W/.worktrees/t1" "$T/state"
+cp "$REPO_ROOT/hooks/run-block.sh" "$REPO_ROOT/hooks/session-start-runblock" "$REPO_ROOT/hooks/run-hook.cmd" "$P/hooks/"
+cp "$REPO_ROOT/skills/super-code/scripts/run-marker" "$P/skills/super-code/scripts/"
+printf 'CARD-FILE' >"$P/skills/super-code/coordinator-card.md"
+cat >"$P/skills/super-code/scripts/run-digest" <<STUB
+#!/usr/bin/env bash
+cat >/dev/null
+mode=\$(cat "$T/mode")
+part=""
+while [ \$# -gt 0 ]; do case "\$1" in --part) part="\$2"; shift ;; esac; shift; done
+case "\$mode" in
+  ok) if [ "\$part" = card ]; then printf 'CARD-TEXT'; else printf 'STATE-TEXT'; fi ;;
+  fail) exit 1 ;;
+  hang) sleep 30 ;;
+  ctrl) printf 'S\001T\033U\rV "q" back\\\\slash\nline2\ttab' ;;
+  big) head -c 9000 /dev/zero | tr '\0' 'x' ;;
+esac
+STUB
+echo ok >"$T/mode"
+echo W >"$T/W/ledger.md"
+: >"$T/W/ledger.md"
+echo "ledger" >"$T/W/ledger.md"
+
+hook() { # <part> <stdin> [XDG_STATE_HOME]
+  printf '%s' "$2" | env -u CLAUDE_CODE_SESSION_ID -u CODEX_THREAD_ID XDG_STATE_HOME="${3:-$T/state}" \
+    bash "$P/hooks/session-start-runblock" "$1"
+}
+decode() { node -e 'const j=JSON.parse(require("fs").readFileSync(0,"utf8")); process.stdout.write(j.hookSpecificOutput.additionalContext)'; }
+register() { env -u CLAUDE_CODE_SESSION_ID -u CODEX_THREAD_ID XDG_STATE_HOME="$1" \
+  bash "$P/skills/super-code/scripts/run-marker" register --session S1 --skill super-code --worktree "$T/W" --ledger "$T/W/ledger.md" >/dev/null; }
+
+echo "== no marker"
+for part in card state; do
+  out=$(hook $part '{"session_id":"S1","cwd":"/elsewhere"}'; echo "rc=$?")
+  assert_eq "no marker, $part: no output, exit 0" "rc=0" "$out"
+done
+
+register "$T/state"
+
+echo "== by session id"
+out=$(hook card '{"session_id":"S1","cwd":"/elsewhere","source":"compact"}')
+assert_eq "card text" "CARD-TEXT" "$(printf '%s' "$out" | decode)"
+assert_eq "hookEventName" "SessionStart" "$(printf '%s' "$out" | node -e 'process.stdout.write(JSON.parse(require("fs").readFileSync(0,"utf8")).hookSpecificOutput.hookEventName)')"
+out=$(hook state '{"session_id":"S1","cwd":"/elsewhere","source":"compact"}')
+assert_eq "state text" "STATE-TEXT" "$(printf '%s' "$out" | decode)"
+
+echo "== by cwd"
+out=$(hook state "{\"session_id\":\"S9\",\"cwd\":\"$T/W/sub\"}")
+assert_eq "cwd match" "STATE-TEXT" "$(printf '%s' "$out" | decode)"
+
+echo "== by own fallback marker"
+: >"$T/notadir"
+rm -rf "$T/W/.superpowers"
+register "$T/notadir"
+[ -f "$T/W/.superpowers/run-marker-S1" ] && pass "fallback marker written" || fail "fallback marker written"
+mkdir -p "$T/W/a"
+out=$(hook state "{\"session_id\":\"S1\",\"cwd\":\"$T/W/a\"}" "$T/notadir")
+assert_eq "fallback match" "STATE-TEXT" "$(printf '%s' "$out" | decode)"
+rm -rf "$T/W/.superpowers"
+
+echo "== refusals"
+out=$(hook state "{\"session_id\":\"S9\",\"cwd\":\"$T/W/.worktrees/t1\"}")
+assert_eq "task-worktree cwd: no output" "" "$out"
+out=$(hook state "{\"session_id\":\"S9\",\"cwd\":\"$T/W/sub\",\"agent_id\":\"a1\"}")
+assert_eq "subagent, other session: no output" "" "$out"
+out=$(hook state "{\"session_id\":\"S1\",\"cwd\":\"$T/W/sub\",\"agent_id\":\"a1\"}")
+assert_eq "subagent, same session: no output" "" "$out"
+out=$(hook state "{\"session_id\":\"S1\",\"cwd\":\"$T/W/sub\",\"agent_id\":\"\"}")
+assert_eq "empty agent_id is not a subagent" "STATE-TEXT" "$(printf '%s' "$out" | decode)"
+
+echo "== run-digest modes"
+echo fail >"$T/mode"
+assert_eq "fail: state fallback" "Run state unavailable — read run.md's phase and run scripts/ledger-digest." \
+  "$(hook state '{"session_id":"S1"}' | decode)"
+assert_eq "fail: card file" "CARD-FILE" "$(hook card '{"session_id":"S1"}' | decode)"
+echo hang >"$T/mode"
+start=$(node -e 'process.stdout.write(String(Date.now()))')
+out=$(hook state '{"session_id":"S1"}'; echo "rc=$?")
+end=$(node -e 'process.stdout.write(String(Date.now()))')
+assert_has "hang: state fallback" "Run state unavailable" "$out"
+assert_has "hang: exit 0" "rc=0" "$out"
+[ $((end - start)) -lt 7000 ] && pass "hang: under 7 s ($((end - start)) ms)" || fail "hang: took $((end - start)) ms"
+echo ctrl >"$T/mode"
+out=$(hook state '{"session_id":"S1"}')
+dec=$(printf '%s' "$out" | decode)
+assert_eq "ctrl: no control bytes" "0" "$(printf '%s' "$dec" | LC_ALL=C tr -d '\011\012\040-\377' | LC_ALL=C wc -c | tr -d ' ')"
+assert_has "ctrl: text survives" 'S' "$dec"
+assert_has "ctrl: quote and backslash survive" '"q" back\slash' "$dec"
+echo big >"$T/mode"
+out=$(hook state '{"session_id":"S1"}')
+len=$(printf '%s' "$out" | node -e 'process.stdout.write(String(JSON.parse(require("fs").readFileSync(0,"utf8")).hookSpecificOutput.additionalContext.length))')
+[ "$len" -gt 0 ] && [ "$len" -lt 10000 ] && pass "big: length $len < 10000" || fail "big: length $len"
+echo ok >"$T/mode"
+
+echo "== stdin shapes"
+out=$(hook state '{
+  "session_id": "S1",
+  "cwd": "/elsewhere"
+}')
+assert_eq "pretty-printed stdin" "STATE-TEXT" "$(printf '%s' "$out" | decode)"
+start=$(node -e 'process.stdout.write(String(Date.now()))')
+node -e '
+const {spawn}=require("child_process");
+const t=Date.now();
+const c=spawn("bash",[process.argv[1],"state"],{stdio:["pipe","pipe","ignore"],env:{...process.env,XDG_STATE_HOME:process.argv[2]}});
+let out="";c.stdout.on("data",d=>out+=d);
+c.on("close",rc=>{console.log(JSON.stringify({rc,ms:Date.now()-t,out}));process.exit(0)});
+' "$P/hooks/session-start-runblock" "$T/state" >"$T/hung.json"
+ms=$(node -e 'process.stdout.write(String(JSON.parse(require("fs").readFileSync(process.argv[1],"utf8")).ms))' "$T/hung.json")
+rc=$(node -e 'process.stdout.write(String(JSON.parse(require("fs").readFileSync(process.argv[1],"utf8")).rc))' "$T/hung.json")
+o=$(node -e 'process.stdout.write(JSON.parse(require("fs").readFileSync(process.argv[1],"utf8")).out)' "$T/hung.json")
+[ "$ms" -lt 3500 ] && pass "never-closing stdin returns in $ms ms" || fail "never-closing stdin took $ms ms"
+assert_eq "never-closing stdin: exit 0" "0" "$rc"
+assert_eq "never-closing stdin: no output" "" "$o"
+
+echo "== hooks.json"
+node -e '
+const cur=JSON.parse(require("fs").readFileSync(process.argv[1]+"/hooks/hooks.json","utf8")).hooks.SessionStart;
+const first=cur[0];
+const ok=first.matcher==="startup|clear|compact" && first.hooks.length===1 &&
+  first.hooks[0].command==="\"${CLAUDE_PLUGIN_ROOT}/hooks/run-hook.cmd\" session-start" && cur.length===3 &&
+  cur.slice(1).every(e=>e.matcher==="compact") &&
+  cur[1].hooks[0].command.endsWith("session-start-runblock card") &&
+  cur[2].hooks[0].command.endsWith("session-start-runblock state");
+process.exit(ok?0:1)' "$REPO_ROOT" && pass "hooks.json: original entry intact, two compact entries" || fail "hooks.json shape"
+
+[ "$FAILED" = 0 ] || exit 1
+echo "test-run-block: all tests passed"
