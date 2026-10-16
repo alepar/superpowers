@@ -128,6 +128,20 @@ This repository is the `alepar` fork. Its versions are `<upstream version>-alepa
    - `bash tests/super-auto/test-contract-lint.sh`
    - `bash tests/skill-scripts/test-bash-invocation.sh`
    - `bash tests/codex/test-marketplace-manifest.sh`
+   - `bash tests/super-code/test-run-marker.sh`
+   - `bash tests/super-code/test-run-profile-in-flight.sh`
+   - `bash tests/super-code/test-report-verdict.sh`
+   - `bash tests/super-code/test-run-digest.sh`
+   - `bash tests/super-code/test-task-surface.sh`
+   - `bash tests/super-code/test-split-oversized.sh`
+   - `bash tests/super-code/test-context-preflight.sh`
+   - `bash tests/super-code/test-assembled-size.sh`
+   - `bash tests/hooks/test-session-start.sh`
+   - `bash tests/hooks/test-run-block.sh`
+   - `bash tests/hooks/test-reinject-smoke.sh`
+   - `bash tests/codex/test-package-codex-plugin.sh`
+   - `bash tests/codex-plugin-sync/test-sync-to-codex-plugin.sh`
+   - `bash tests/skill-scripts/test-prompt-text-fresh-rounds.sh`
    
    If a Workflow engine changed (`skills/super-code/coordinator.js`, `skills/super-roast/super-roast-workflow.md`), also run its documented `dryRun` scenarios and compare against the expected agent counts recorded in its doc (`coordinator-workflow.md` or `super-roast-workflow.md`).
 2. **Bump every manifest:** `./scripts/bump-version.sh <version>`. It updates all files listed in `.version-bump.json` and audits the repo for stragglers; `--check` reports drift. Never hand-edit a single manifest.
