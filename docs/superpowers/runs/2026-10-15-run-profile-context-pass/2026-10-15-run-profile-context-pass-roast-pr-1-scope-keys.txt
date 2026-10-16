@@ -1,0 +1,5 @@
+[Should-fix] skills/super-code/scripts/run-profile.mjs:895; skills/super-code/coordinator-workflow.md:1292
+[Should-fix] skills/super-code/scripts/context-pass.mjs:84
+[Nit] skills/super-code/scripts/run-profile.mjs:685; skills/super-code/scripts/run-profile.mjs:686
+[Nit] skills/super-code/scripts/run-profile.mjs:674; skills/super-code/scripts/run-profile.mjs:671
+[Nit] skills/super-code/scripts/run-profile.mjs:693

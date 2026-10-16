@@ -336,5 +336,184 @@ missing=""
 for k in $kinds; do grep -qF "case '$k'" "$REPO_ROOT/skills/super-code/scripts/run-profile.mjs" || missing="$missing $k"; done
 assert_eq "${missing:-none}" "none" "coordinator label kinds are all classified (missing:${missing:- none})"
 
+echo "run-profile: context-pass module (synthetic rows)"
+# context-pass-unit.mjs prints `ok <name>` / `not ok <name>` per check over synthetic transcript rows.
+seen=0
+while IFS= read -r line; do
+  case "$line" in
+    "ok "*) pass "context-pass: ${line#ok }"; seen=$((seen + 1)) ;;
+    "not ok "*) fail "context-pass: ${line#not ok }"; seen=$((seen + 1)) ;;
+    *) echo "$line" ;;
+  esac
+done < <(node "$SCRIPT_DIR/context-pass-unit.mjs" 2>&1 || echo "not ok context-pass-unit.mjs exited with an error")
+[ "$seen" -gt 0 ] || fail "context-pass: the unit driver ran no checks"
+
+echo "run-profile: context pass end to end (Workflow, ordinary subagents, Codex, context-only)"
+assert_not_has() { if printf '%s\n' "$1" | grep -qF -- "$2"; then fail "$3"; echo "    unexpected: $2"; else pass "$3"; fi; }
+# yes when the first line starting $2 comes before the first line starting $3
+before() { printf '%s\n' "$1" | awk -v a="$2" -v b="$3" 'index($0, a) == 1 && !x { x = NR } index($0, b) == 1 && !y { y = NR } END { print (x && y && x < y) ? "yes" : "no" }'; }
+# Workflow: two run directories of session s9. Session rows 0–2 are an earlier super-auto run, row 3 the
+# profiled run's super-auto (wf_ca's window [3, 12) from T0 = its first agent), row 12 its resume
+# (wf_cb's [12, 17) from T0 = 4000s), row 17 the next run; the coordinator reads their union [3, 17):
+# peak 164K, a cap compaction (160K ≥ 95% of 167K) and an idle one (55 minutes after the last request).
+# Row 5 (a tool_result quoting /super-code), row 6 (an isMeta row quoting /super-auto) and row 7 (a
+# phase-3 Skill super-code use) move nothing: first 30K is row 4's.
+CW="$T/cw/p/-w/s9/subagents/workflows"
+build ctx-wf-a "$CW/wf_ca"
+build ctx-wf-b "$CW/wf_cb"
+run bash "$P" --workflow "$CW/wf_ca" --workflow "$CW/wf_cb" --out "$T/cwp"
+assert_eq "$code" 0 "Workflow run with its session: exits 0"
+assert_has "$out" "Profile: context — agents 15 (measured 5) · peak≥80% 2 · compacted 2 agents, 3 compactions (cap 2 · idle 1) · coordinator 164K/200K (82%), 2 compactions · max coordinator 82%" "summary: one coordinator record (the union of both runs' windows) and 14 Workflow agents"
+assert_has "$out" "Profile: context agent — coordinator peak 164K/200K (82%) · first 30K · compactions 2 (cap 1, idle 1)" "coordinator: cut at the profiled super-auto row, ending at the next run's; the earlier manual and the later 196K compactions left out"
+assert_has "$out" "Profile: context agent — impl:cw.1 peak 162K/200K (81%) · first 15K · compactions 1 (cap 1)" "a Workflow agent's cap compaction"
+assert_has "$out" "Profile: context agent — impl:cw.2 peak 110K/200K (55%) · first 10K · compactions 0" "an agent at 50% or more gets a line without compacting"
+assert_eq "$(before "$out" "Profile: context —" "Profile: unmeasured —")" "yes" "context lines print before Profile: unmeasured"
+assert_has "$out" "context unmeasured for 10 agent(s): read-ledger (no usage rows)" "agents with no usage rows are named on the unmeasured line"
+assert_has "$out" "Claude context windows from the model table: claude-opus-4-6 200K" "and the table window"
+assert_eq "$(q "$T/cwp.json" "[d.context.summary.compactions, d.context.summary.coordinator.peak, d.context.agents.find(a => a.role === 'coordinator').compactions.map(c => c.cause).join('+')].join(' ')")" "3 164000 cap+idle" "--out JSON: the context key"
+assert_has "$(cat "$T/cwp.md")" "| coordinator | coordinator | claude-opus-4-6 | 2 | 7 | 30K | 164K | 200K | table | 82% | 2: cap 160K→30K, idle 70K→9K |" "--out Markdown: the ## Context table"
+run bash "$P" --summarize "$T/cwp.json"
+assert_has "$out" "Baseline: context — 1 profile(s) · agents 15 (measured 5) · peak≥80% 2 · compacted 2 agents, 3 compactions (cap 2 · idle 1)" "--summarize: a Baseline: context line"
+run bash "$P" --context-only --workflow "$CW/wf_ca"
+assert_eq "$code" 0 "--context-only --workflow: exits 0"
+assert_has "$out" "Profile: context — agents 8 (measured 4) · peak≥80% 2 · compacted 2 agents, 2 compactions (cap 2) · coordinator 164K/200K (82%), 1 compactions · max coordinator 82%" "context-only --workflow: T0 is the earliest agent start, so wf_ca's window alone"
+assert_not_has "$out" "Profile: cw ·" "context-only prints no timing"
+# --session: every row of s9 (four compactions: manual, cap, idle, cap), its side subagent and both
+# workflows' agents; no window, no caveat.
+run bash "$P" --context-only --session "$T/cw/p/-w/s9.jsonl"
+assert_eq "$code" 0 "--context-only --session: exits 0"
+assert_has "$out" "Profile: context — agents 16 (measured 6) · peak≥80% 2 · compacted 2 agents, 5 compactions (cap 3 · idle 1 · manual 1) · coordinator 196K/200K (98%), 4 compactions · max coordinator 98%" "--session: the whole session, subagents/agent-*.jsonl and subagents/workflows/*/agent-*.jsonl"
+assert_has "$out" "Profile: context agent — scout peak 120K/200K (60%) · first 60K · compactions 0" "a session subagent, labelled by its .meta.json"
+assert_not_has "$out" "counted from the session start" "--session has no window and no caveat"
+run bash "$P" --context-only --session "$T/cw/p/-w/s9.jsonl" --context-window 400000 --out "$T/cws"
+assert_has "$out" "Profile: context agent — coordinator peak 196K/400K (49%) · first 50K · compactions 4 (early 2, idle 1, manual 1)" "--context-window: every Claude agent's window, and its compaction point classifies the compactions"
+assert_not_has "$out" "from the model table" "--context-window: no table window to name"
+assert_eq "$(q "$T/cws.json" "[d.contextOnly, d.context.agents[0].windowSource, d.context.summary.n, typeof d.criticalPath].join(' ')")" "true override 16 undefined" "context-only --out: the JSON holds the context key only"
+mkdir -p "$T/cwm" && cp -R "$CW/wf_ca" "$T/cwm/wf_ca" && rm "$T/cwm/wf_ca/agent-aca0006.jsonl"
+run bash "$P" --context-only --workflow "$T/cwm/wf_ca" --out "$T/cwmp"
+assert_eq "$code" 0 "a missing agent transcript does not abort"
+assert_eq "$(q "$T/cwmp.json" "(a => a.peak + ' ' + a.unmeasured)(d.context.agents.find(a => a.label === 'merge:cw.1'))")" "null transcript missing or unreadable" "it becomes an unmeasured record"
+assert_has "$(cat "$T/cwmp.md")" "## Context" "context-only --out writes the ## Context section"
+run bash "$P" --context-only --workflow "$T/chain"
+assert_eq "$code" 3 "--context-only with no usage row anywhere: exit 3"
+assert_has "$out" "Profile: context — unavailable — no usage rows in any transcript" "and the unavailable line"
+# Timing exits 3 (no bead dispatch); context needs no beads. The session has no invocation, so the
+# coordinator is read from its first row and the unmeasured line says so.
+build ctx-noimpl "$T/cn/p/-w/s1/subagents/workflows/wf_cn"
+run bash "$P" --workflow "$T/cn/p/-w/s1/subagents/workflows/wf_cn"
+assert_eq "$code" 3 "no timed bead dispatch: exit 3 as before"
+assert_has "$out" "Profile: context — agents 5 (measured 2) · peak≥80% 0 · compacted 0 agents, 0 compactions · coordinator 90K/200K (45%), 0 compactions · max plan 60%" "exit 3 still prints the context summary"
+assert_has "$out" "Profile: context agent — plan peak 120K/200K (60%) · first 20K · compactions 0" "and its agent lines"
+assert_has "$out" "coordinator rows counted from the session start (no invocation found)" "no invocation: counted from the first row, and said so"
+assert_eq "$(before "$out" "Profile: context —" "Profile: unavailable —")" "yes" "context lines print before Profile: unavailable"
+# Claude Code ordinary subagents. T0 = impl:co.1's start (60s): the window runs from the super-auto row
+# at -200s to the next at 3000s, so the scout (-250s) and late-scout (3100s) are left out, and so are
+# the earlier run's manual compaction and the next run's 180K. The tool_result quoting /super-auto at
+# 30s is not an invocation (first 20K is the -190s request).
+SUBC=$(node "$ORD" "$FX/ctx-ordinary.json" claude "$T/co")
+run bash "$P" --subagents "$SUBC" --ledger "$T/co/progress.md" --beads "$T/co/beads.json" --out "$T/cop"
+assert_eq "$code" 0 "ordinary Claude subagents: exits 0"
+assert_has "$out" "Profile: context — agents 5 (measured 4) · peak≥80% 1 · compacted 3 agents, 3 compactions (cap 1 · early 1 · manual 1) · coordinator 130K/200K (65%), 1 compactions · max impl:co.1 80%" "summary: only the profiled run's coordinator rows and agents"
+assert_has "$out" "Profile: context agent — impl:co.1 peak 160K/200K (80%) · first 12K · compactions 1 (cap 1)" "an ordinary subagent's cap compaction"
+assert_has "$out" "Profile: context agent — coordinator peak 130K/200K (65%) · first 20K · compactions 1 (early 1)" "the coordinator's sub-cap compaction 500s after a request is early"
+assert_has "$out" "Profile: context agent — review:co.1 peak 52K/200K (26%) · first 50K · compactions 1 (manual 1)" "a manual compaction"
+assert_has "$out" "context unmeasured for 1 agent(s): helper (no usage rows)" "a subagent with no usage rows is unmeasured, not 0"
+run bash "$P" --context-only --subagents "$SUBC"
+assert_has "$out" "Profile: context — agents 2 (measured 2) · peak≥80% 1 · compacted 0 agents, 0 compactions · coordinator 180K/200K (90%), 0 compactions · max coordinator 90%" "context-only --subagents: T0 is the session's end, so the last super-auto run's rows and agents"
+# Codex: coordinator window from its $super-auto prompt. Its 95K compaction is cap against the 100K
+# window then in effect, the 336K compaction request (the peak, above every token_count) early against
+# 400K. impl_cq_1 caps; its grandchild probe is found transitively; the forked review_cq_1 replays a
+# 200K compaction before its history start, which is not counted.
+CQ=$(node "$ORD" "$FX/ctx-codex.json" codex "$T/cq")
+run bash "$P" --codex "$CQ" --codex-home "$T/cq/codex" --beads "$T/cq/beads.json" --epic cq --out "$T/cqp"
+assert_eq "$code" 0 "Codex: exits 0"
+assert_has "$out" "Profile: context — agents 4 (measured 4) · peak≥80% 2 · compacted 2 agents, 3 compactions (cap 2 · early 1) · coordinator 336K/400K (84%), 2 compactions · max impl_cq_1 95%" "Codex summary: coordinator, children and a grandchild"
+assert_has "$out" "Profile: context agent — coordinator peak 336K/400K (84%) · first 50K · compactions 2 (cap 1, early 1)" "a compaction request holding the peak; each compaction against its own window"
+assert_has "$out" "Profile: context agent — impl_cq_1 peak 245K/258K (95%) · first 40K · compactions 1 (cap 1)" "a spawn_agent child"
+assert_has "$out" "Profile: context agent — review_cq_1 peak 130K/258K (50%) · first 120K · compactions 0" "a forked child: the replayed compaction is not its own"
+assert_eq "$(q "$T/cqp.json" "d.context.agents.map(a => a.label).sort().join(',')")" "coordinator,impl_cq_1,impl_cq_1/probe,review_cq_1" "Codex agents labelled by agent_path"
+run bash "$P" --codex "$CQ" --codex-home "$T/cq/codex"
+assert_eq "$code" 2 "no epic and no ledger: exit 2 as before"
+assert_has "$out" "Profile: context — agents 4 (measured 4)" "the missing-epic exit still prints the context lines"
+run bash "$P" --context-only --codex "$CQ" --codex-home "$T/cq/codex"
+assert_eq "$code" 0 "--context-only --codex: no epic, ledger or bd"
+assert_has "$out" "coordinator 336K/400K (84%), 2 compactions" "and the same coordinator figures"
+
+# Two non-adjacent windows of one session: wf_ga's run is rows [0, 4), another run [4, 7), wf_gb's run
+# rows [7, 12). The reader gets the whole file and both spans: the other run's 150K request is not
+# counted, and row 8's compaction 200s after the other run's last request (row 6) is early, not idle
+# from row 2's request 4100s earlier; row 3's compaction has no postTokens and keeps no post.
+CG="$T/cg/p/-w/s3/subagents/workflows"
+build ctx-gap-a "$CG/wf_ga"
+build ctx-gap-b "$CG/wf_gb"
+run bash "$P" --context-only --workflow "$CG/wf_ga" --workflow "$CG/wf_gb" --out "$T/cgp"
+assert_eq "$code" 0 "two non-adjacent windows: exits 0"
+assert_has "$out" "Profile: context — agents 3 (measured 3) · peak≥80% 0 · compacted 1 agents, 2 compactions (early 2) · coordinator 100K/200K (50%), 2 compactions · max coordinator 50%" "two non-adjacent windows: only the two runs' rows; the second window's compaction is early"
+assert_has "$(cat "$T/cgp.md")" "| coordinator | coordinator | claude-opus-4-6 | 2 | 5 | 40K | 100K | 200K | table | 50% | 2: early 70K→?, early 90K→10K |" "two non-adjacent windows: the gap crosses the excluded rows; no post across a window end"
+run bash "$P" --session "$T/cw/p/-w/s9.jsonl"
+assert_eq "$code" 2 "--session without --context-only: exit 2"
+run bash "$P" --context-only
+assert_eq "$code" 2 "--context-only with no input: exit 2"
+run bash "$P" --context-only --session "$T/none.jsonl"
+assert_eq "$code" 2 "a missing --session file: exit 2"
+run bash "$P" --context-only --session "$T/cw/p/-w/s9.jsonl" --context-window 0
+assert_eq "$code" 2 "--context-window 0: exit 2"
+run bash "$P" --context-only --discover --epic cw
+assert_eq "$code" 2 "--context-only refuses --discover"
+
+echo "run-profile: context pass integration sweep"
+# One check over every --out profile with a context key: each `Profile: context agent` line on stdout
+# (kept in the JSON's summary lines) names a record whose peak, window, peak% and compaction count
+# render to that line, and every record has a `## Context` Markdown row with the same peak.
+for p in "$T/cwp" "$T/cop" "$T/cqp"; do
+  assert_eq "$(node -e '
+    const fs = require("fs"), [p] = process.argv.slice(1)
+    const d = JSON.parse(fs.readFileSync(p + ".json", "utf8")), md = fs.readFileSync(p + ".md", "utf8")
+    const K = n => Math.round(n / 1000) + "K", bad = []
+    const lines = d.summary.filter(l => l.startsWith("Profile: context agent — ") && !/ more in --out$/.test(l))
+    for (const l of lines) {
+      const a = d.context.agents.find(x => l.startsWith(`Profile: context agent — ${x.label} peak `))
+      const want = a && `peak ${K(a.peak)}/${K(a.window)} (${a.peakPct}%) · first ${K(a.first)} · compactions ${a.compactions.length}`
+      if (!a || !l.includes(want)) bad.push(l)
+    }
+    for (const a of d.context.agents) if (a.peak !== null && !md.split("\n").some(r => r.startsWith(`| ${a.label} | ${a.role} |`) && r.includes(`| ${K(a.peak)} |`))) bad.push("md:" + a.label)
+    if (!d.summary.some(l => l.startsWith("Profile: context — "))) bad.push("no summary line")
+    console.log(bad.length ? bad.join(" ; ") : "agree")' "$p")" "agree" "stdout, --out Markdown and JSON agree for every agent ($(basename "$p"))"
+done
+# The 50% threshold and the 10-line cap, end to end: 12 agents at 50–56% and one at 49%.
+node -e '
+  const agents = Array.from({ length: 12 }, (_, k) => ({ label: `impl:cz.${k}`, start: 10 * k, end: 10 * k + 5, context: [[10 * k + 1, 100000 + k * 1000]] }))
+  agents.push({ label: "impl:cz.low", start: 200, end: 205, context: [[201, 98000]] })
+  require("fs").writeFileSync(process.argv[1], JSON.stringify({ t0: "2026-10-11T00:00:00Z", idPrefix: "cz", agents }))' "$T/cz.json"
+node "$BUILD" "$T/cz.json" "$T/cz"
+run bash "$P" --context-only --workflow "$T/cz" --out "$T/czp"
+assert_eq "$(printf '%s\n' "$out" | grep -c '^Profile: context agent — impl:cz\.[0-9]')" "10" "at most 10 agent lines"
+assert_has "$out" "Profile: context agent — 2 more in --out" "then a more line for the other two at 50% or more"
+assert_not_has "$out" "impl:cz.low" "an agent at 49% gets no line"
+assert_has "$(cat "$T/czp.md")" "| impl:cz.low | agent |" "every agent is in the --out table"
+# --context-window reaches every Claude record and its compactions' windows.
+run bash "$P" --context-only --workflow "$CW/wf_ca" --context-window 300000 --out "$T/cwo"
+assert_eq "$(q "$T/cwo.json" "[...new Set(d.context.agents.filter(a => a.peak !== null).flatMap(a => [a.window, a.windowSource, ...a.compactions.map(c => c.window)]))].join(',')")" "300000,override" "--context-window sets every measured Claude record's window and every compaction's"
+
+echo "run-profile: multi-rollout Codex coordinator (a resumed thread)"
+# One thread, two rollouts: the first from its $super-auto prompt (a 245K cap compaction, the larger
+# peak) and the resumed one with no invocation of its own (a 150K early compaction), each spawning one
+# child. The coordinator summary takes the largest peak and the summed compactions; giving the thread
+# and its second rollout file both, or the full profile, counts no rollout twice.
+CR=$(node "$ORD" "$FX/ctx-codex-resume.json" codex "$T/cr")
+CR2=$(ls "$T"/cr/codex/sessions/*/*/*/rollout-2026-10-13T06-33-20-"$CR".jsonl)
+CRSUM="Profile: context — agents 4 (measured 4) · peak≥80% 1 · compacted 2 agents, 2 compactions (cap 1 · early 1) · coordinator 245K/258K (95%), 2 compactions"
+run bash "$P" --context-only --codex "$CR" --codex-home "$T/cr/codex" --out "$T/crc"
+assert_eq "$code" 0 "multi-rollout --context-only: exits 0"
+assert_has "$out" "$CRSUM" "multi-rollout --context-only: largest peak, summed compactions"
+assert_eq "$(q "$T/crc.json" "d.context.agents.filter(a => a.role === 'coordinator').map(a => a.peak + ':' + a.compactions.map(c => c.cause).join('+')).sort().join(' ')")" "200000:early 245000:cap" "one coordinator record per rollout, each compaction once"
+assert_eq "$(q "$T/crc.json" "d.context.agents.filter(a => a.role === 'agent').map(a => a.label).sort().join(',')")" "impl_cr_1,impl_cr_2" "children of both rollouts"
+run bash "$P" --context-only --codex "$CR" --codex "$CR2" --codex-home "$T/cr/codex"
+assert_has "$out" "$CRSUM" "the thread and its second rollout given both: nothing counted twice"
+run bash "$P" --codex "$CR" --codex-home "$T/cr/codex" --beads "$T/cr/beads.json" --epic cr --out "$T/crp"
+assert_eq "$code" 0 "multi-rollout full profile: exits 0"
+assert_has "$out" "$CRSUM" "multi-rollout full profile: the same coordinator figures"
+assert_eq "$(q "$T/crp.json" "[d.context.summary.compactions, d.context.summary.coordinator.peak, d.context.summary.coordinator.compactions].join(' ')")" "2 245000 2" "multi-rollout full profile --out JSON: the context key"
+
 echo
 if [ "$FAILURES" -eq 0 ]; then echo "run-profile: all tests passed"; else echo "run-profile: $FAILURES failure(s)"; exit 1; fi

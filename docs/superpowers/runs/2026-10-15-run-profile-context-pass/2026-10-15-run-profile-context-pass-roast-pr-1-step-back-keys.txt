@@ -1,0 +1,7 @@
+r1 [Should-fix] skills/super-code/scripts/run-profile.mjs:895; skills/super-code/coordinator-workflow.md:1292
+r1 [Should-fix] skills/super-code/scripts/context-pass.mjs:84
+r1 [Nit] skills/super-code/scripts/run-profile.mjs:685; skills/super-code/scripts/run-profile.mjs:686
+r1 [Nit] skills/super-code/scripts/run-profile.mjs:674; skills/super-code/scripts/run-profile.mjs:671
+r1 [Nit] skills/super-code/scripts/run-profile.mjs:693
+r1 [Must-fix] skills/super-code/coordinator-workflow.md:1292-1293
+r1 [Must-fix] untested: multi-rollout Codex coordinator end to end
