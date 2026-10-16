@@ -202,6 +202,29 @@ assert_eq "$(printf '%s\n' "$out" | head -1)" "key: $W/.superpowers/run-marker-s
 rm_run -- get s2 --cwd "$W/a"
 assert_eq "$(printf '%s\n' "$out" | head -1)" "key: $W/.superpowers/run-marker-s2" "s2 gets its own"
 [ "$(grep -c 'run-marker-\*' "$W/.superpowers/.gitignore")" = 1 ] && pass ".gitignore entry not duplicated" || fail ".gitignore entry not duplicated"
+grep -qxF '.gitignore' "$W/.superpowers/.gitignore" && pass ".gitignore lists itself" || fail ".gitignore lists itself"
+
+echo "run-marker: fallback leaves the worktree clean"
+mk gi
+git -C "$W" init -q
+git -C "$W" add -A
+git -C "$W" -c user.name=t -c user.email=t@t -c commit.gpgsign=false commit -qm init
+assert_eq "$(git -C "$W" status --porcelain --untracked-files=all)" "" "setup: clean before the register"
+printf x > "$T/afile-gi"
+XDG="$T/afile-gi"
+reg "CLAUDE_CODE_SESSION_ID=g1"
+assert_has "$out" "run-marker: wrote fallback $W/.superpowers/run-marker-g1" "fallback path ran"
+assert_eq "$(git -C "$W" status --porcelain --untracked-files=all)" "" "fallback register leaves no untracked file"
+reg "CLAUDE_CODE_SESSION_ID=g2"
+assert_eq "$(git -C "$W" status --porcelain --untracked-files=all)" "" "second session leaves no untracked file"
+assert_eq "$(grep -cxF '.gitignore' "$W/.superpowers/.gitignore")" 1 ".gitignore line appears once"
+assert_eq "$(grep -cxF 'run-marker-*' "$W/.superpowers/.gitignore")" 1 "run-marker-* line appears once"
+rm -rf "$W/.superpowers"; mkdir -p "$W/.superpowers"
+printf 'run-marker-*\n' > "$W/.superpowers/.gitignore"
+reg "CLAUDE_CODE_SESSION_ID=g1"
+assert_eq "$(git -C "$W" status --porcelain --untracked-files=all)" "" "upgraded old .gitignore leaves no untracked file"
+assert_eq "$(grep -cxF '.gitignore' "$W/.superpowers/.gitignore")" 1 "upgrade adds the .gitignore line once"
+assert_eq "$(grep -cxF 'run-marker-*' "$W/.superpowers/.gitignore")" 1 "upgrade keeps run-marker-* once"
 
 echo "run-marker: both unwritable"
 mk bad

@@ -12,7 +12,8 @@
 # register: a refresh that omits --run-md/--ledger/--epic/--run-tag keeps those fields from this
 # session's marker for the same skill and worktree.
 # Store: ${XDG_STATE_HOME:-$HOME/.local/state}/superpowers/active-runs/<session_id>, one `field: value`
-# line per field. Fallback (store unwritable): <worktree>/.superpowers/run-marker-<session>.
+# line per field. Fallback (store unwritable): <worktree>/.superpowers/run-marker-<session>, with a self-ignoring
+# <worktree>/.superpowers/.gitignore (`run-marker-*` and `.gitignore`).
 # --cwd fallback: used by the Claude Code entry only, which refuses it (--subagent) when the hook input
 # carries `agent_id`. The Codex entry never passes --cwd (no child identifier is recorded for Codex).
 # Session id: $CLAUDE_CODE_SESSION_ID, else $CODEX_THREAD_ID, else --session.
@@ -170,9 +171,10 @@ cmd_register() {
   reason=$(oneline "$err")
   if err=$(write_marker "$fb" 2>&1); then
     local gi="$worktree/.superpowers/.gitignore"
-    if ! grep -qxF 'run-marker-*' "$gi" 2>/dev/null; then
-      printf 'run-marker-*\n' >> "$gi" 2>/dev/null || true
-    fi
+    local pat
+    for pat in 'run-marker-*' '.gitignore'; do
+      grep -qxF -- "$pat" "$gi" 2>/dev/null || printf '%s\n' "$pat" >> "$gi" 2>/dev/null || true
+    done
     echo "run-marker: wrote fallback $fb — $reason"
     return 0
   fi
