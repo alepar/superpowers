@@ -449,5 +449,39 @@ assert_eq "$code" 2 "--context-window 0: exit 2"
 run bash "$P" --context-only --discover --epic cw
 assert_eq "$code" 2 "--context-only refuses --discover"
 
+echo "run-profile: context pass integration sweep"
+# One check over every --out profile with a context key: each `Profile: context agent` line on stdout
+# (kept in the JSON's summary lines) names a record whose peak, window, peak% and compaction count
+# render to that line, and every record has a `## Context` Markdown row with the same peak.
+for p in "$T/cwp" "$T/cop" "$T/cqp"; do
+  assert_eq "$(node -e '
+    const fs = require("fs"), [p] = process.argv.slice(1)
+    const d = JSON.parse(fs.readFileSync(p + ".json", "utf8")), md = fs.readFileSync(p + ".md", "utf8")
+    const K = n => Math.round(n / 1000) + "K", bad = []
+    const lines = d.summary.filter(l => l.startsWith("Profile: context agent — ") && !/ more in --out$/.test(l))
+    for (const l of lines) {
+      const a = d.context.agents.find(x => l.startsWith(`Profile: context agent — ${x.label} peak `))
+      const want = a && `peak ${K(a.peak)}/${K(a.window)} (${a.peakPct}%) · first ${K(a.first)} · compactions ${a.compactions.length}`
+      if (!a || !l.includes(want)) bad.push(l)
+    }
+    for (const a of d.context.agents) if (a.peak !== null && !md.split("\n").some(r => r.startsWith(`| ${a.label} | ${a.role} |`) && r.includes(`| ${K(a.peak)} |`))) bad.push("md:" + a.label)
+    if (!d.summary.some(l => l.startsWith("Profile: context — "))) bad.push("no summary line")
+    console.log(bad.length ? bad.join(" ; ") : "agree")' "$p")" "agree" "stdout, --out Markdown and JSON agree for every agent ($(basename "$p"))"
+done
+# The 50% threshold and the 10-line cap, end to end: 12 agents at 50–56% and one at 49%.
+node -e '
+  const agents = Array.from({ length: 12 }, (_, k) => ({ label: `impl:cz.${k}`, start: 10 * k, end: 10 * k + 5, context: [[10 * k + 1, 100000 + k * 1000]] }))
+  agents.push({ label: "impl:cz.low", start: 200, end: 205, context: [[201, 98000]] })
+  require("fs").writeFileSync(process.argv[1], JSON.stringify({ t0: "2026-10-11T00:00:00Z", idPrefix: "cz", agents }))' "$T/cz.json"
+node "$BUILD" "$T/cz.json" "$T/cz"
+run bash "$P" --context-only --workflow "$T/cz" --out "$T/czp"
+assert_eq "$(printf '%s\n' "$out" | grep -c '^Profile: context agent — impl:cz\.[0-9]')" "10" "at most 10 agent lines"
+assert_has "$out" "Profile: context agent — 2 more in --out" "then a more line for the other two at 50% or more"
+assert_not_has "$out" "impl:cz.low" "an agent at 49% gets no line"
+assert_has "$(cat "$T/czp.md")" "| impl:cz.low | agent |" "every agent is in the --out table"
+# --context-window reaches every Claude record and its compactions' windows.
+run bash "$P" --context-only --workflow "$CW/wf_ca" --context-window 300000 --out "$T/cwo"
+assert_eq "$(q "$T/cwo.json" "[...new Set(d.context.agents.filter(a => a.peak !== null).flatMap(a => [a.window, a.windowSource, ...a.compactions.map(c => c.window)]))].join(',')")" "300000,override" "--context-window sets every measured Claude record's window and every compaction's"
+
 echo
 if [ "$FAILURES" -eq 0 ]; then echo "run-profile: all tests passed"; else echo "run-profile: $FAILURES failure(s)"; exit 1; fi
