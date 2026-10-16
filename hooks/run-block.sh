@@ -61,12 +61,13 @@ rb_field() {
     | sed 's/^[^:]*:[[:space:]]*"\(.*\)"$/\1/'
 }
 
-# rb_is_subagent: status 0 when RB_INPUT names a subagent or child thread (a non-empty, non-null,
-# non-false value under any identifying key).
+# rb_is_subagent: status 0 when RB_INPUT carries a non-empty, non-null, non-false `agent_id` (the
+# documented Claude Code subagent field). Codex hook input has no child identifier recorded, so the
+# Codex entry does not call this; it refuses children by never using the cwd fallback.
 rb_is_subagent() {
   local k v flat
   flat=$(printf '%s' "$RB_INPUT" | tr '\n' ' ')
-  for k in agent_id agent_type parent_thread_id thread_spawn subagent; do
+  for k in agent_id; do
     v=$(printf '%s' "$flat" | grep -o "\"$k\"[[:space:]]*:[[:space:]]*[^,}]*" 2>/dev/null | head -1 \
       | sed 's/^[^:]*:[[:space:]]*//; s/[[:space:]]*$//')
     case "$v" in
@@ -77,7 +78,8 @@ rb_is_subagent() {
   return 1
 }
 
-# rb_resolve <session_id> <cwd>: set RB_MARKER from `run-marker get`; status 0 only on a hit.
+# rb_resolve <session_id> <cwd>: set RB_MARKER from `run-marker get`; status 0 only on a hit. An empty
+# cwd means session-id matching only (no cwd fallback).
 rb_resolve() {
   local sid="${1:-}" cwd="${2:-}" out
   local args=()
