@@ -1,0 +1,4 @@
+[Should-fix] skills/super-code/coordinator.js:701; tests/super-code/test-run-profile.sh:337; docs/superpowers/runs/2026-10-15-coordinator-subagent-compaction/final-review-phase3.md:1
+[Nit] skills/super-code/scripts/report-verdict:129
+[Nit] skills/super-code/coordinator.js:2272
+[Nit] skills/super-code/coordinator.js:704

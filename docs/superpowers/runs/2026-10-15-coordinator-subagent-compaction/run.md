@@ -2,7 +2,7 @@
 
 flags: planOneShot=t skipPlanRoast=f skipCodeRoast=f autonomous=f
 resumeChange: 2026-10-15 · "one-shot design … fully autonomous after" + "lgtm" · autonomous=t from phase 3 onward (no stops until the phase-7 hand-back)
-phase: roast-code
+phase: fix-loop
 codeMechanism: Workflow
 
 idea: Implement both vision specs in one run: docs/superpowers/specs/2026-10-15-vision-coordinator-compaction.md and docs/superpowers/specs/2026-10-15-vision-subagent-compaction.md. One-shot design; pause once design is done so the user can review the split into beads; fully autonomous after that. Both roasts on. The herdr tabs "coordinator-compaction" and "subagent-compaction" in this workspace authored the visions and can be consulted about decision rationale while writing the design spec.
@@ -10,7 +10,7 @@ branch: super-auto/coordinator-subagent-compaction
 base: main
 spec: 2026-10-15-coordinator-subagent-compaction-design.md
 epic: super-plan-goq
-roast-code: 2026-10-16-coordinator-subagent-compaction-roast-pr-1.md
+roast-code: 2026-10-16-coordinator-subagent-compaction-roast-pr-1.md, 2026-10-16-coordinator-subagent-compaction-roast-pr-2.md
 roast-design: 2026-10-15-coordinator-subagent-compaction-roast-design-1.md, 2026-10-15-coordinator-subagent-compaction-roast-design-2.md
 
 approvals:
@@ -73,3 +73,6 @@ scopeFilter-round-1: [Nit] skills/super-code/MAINTENANCE.md:1266 in-scope — Ch
 cluster dropped: runprofile-labels — Fix it once: add `case` entries for `assemble`, `split` and `close-split` to the run-profile.mjs kind switch; bring bead super-plan-xsa under epic super-plan-goq and close it with that fix; then check that every label coordinator.js dispatches is classified, so test-run-profile.sh passes.
 scope-filter: 16 in-scope · 1 punch-listed
 fixBeads-round-1: super-plan-goq.34–super-plan-goq.44 (5 cluster beads, 6 single; .44 from final-review Must-fix bead super-plan-xsa, closed as superseded)
+roastCodeExit: converged
+regressionPass-round-2: [Should-fix] hooks/session-start-codex:17; hooks/session-start-codex:19 + [Should-fix] hooks/session-start-codex:17 → one fix bead (Codex fallback marker); no step-back, no scope filter, no re-roast
+finalReviewException: autonomous once-per-run — Must-fix correctness items from final-review-fixloop-r1.md in goal-named paths filed as fix beads (fallback-marker .gitignore, card Workflow guard, report-verdict order incl. roast r2 [Should-fix] report-verdict:152), one re-entry before the phase-6 sweep; covered by the post-cap audit
