@@ -1,5 +1,5 @@
 status: completed with 0 unresolved Blocking, 8 escalations
-metrics: pending (upstream-feedback not yet run)
+metrics: parked draft docs/superpowers/runs/2026-10-15-coordinator-subagent-compaction/upstream-feedback-draft.md (10 findings: 7 defects, 2 design questions, 1 doc gap; not filed)
 
 ## Implemented
 
