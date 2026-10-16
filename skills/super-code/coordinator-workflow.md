@@ -868,8 +868,12 @@ original's row (rows that waited on it fall back to `bd ready` readiness), write
 `Split: <id> → <children>`, and the next refill plans the children. Exit 3 (`refused: <reason>`): writes
 `Split refused: <id> — <reason>`, and the bead proceeds unsplit. Exit 5 (`filed: <ids>`): writes
 `Split partial: <id> — filed <children>`, a `close-split:<id>` dispatch closes each filed child with
-that reason, and the bead proceeds unsplit. A null dispatch or another exit proceeds unsplit with no
-`Split` line. A filed split counts as progress for the no-progress guard. `ledger-digest` drops all of
+that reason, and the bead proceeds unsplit. Exit 4 (the by-hand path when jq is missing) is
+inconclusive: the row is dropped, `Split unconfirmed: <id> — exit 4 (by-hand path); bd readiness
+decides` is written, and `bd ready` decides whether the bead returns (the next refill plans it, with
+no second split). While a `split:<id>` dispatch is in flight the id is not dispatchable (graph or
+`bd ready` top-up), and a `plan-rest` proposal for an id already dispatched is ignored. A null
+dispatch or another exit proceeds unsplit with no `Split` line. A filed split counts as progress for the no-progress guard. `ledger-digest` drops all of
 these lines (they are not Task, Merge, Human action or Edge add lines).
 
 **Every downstream call uses the ordinal**: `scripts/task-brief <epicId>-plan.md <N>`, and the
@@ -1971,6 +1975,10 @@ cap-tripping and PARK dryRun fixtures hold no oversized proposal, so their count
 | refused | `exit 3`, `refused: …` | `impl:bd-102` dispatches | `Split refused: bd-102 — …` | 29 |
 | partial | `exit 5`, `filed: bd-201` | `close-split:bd-102` before `impl:bd-102` | `Split partial: bd-102 — filed bd-201` | 30 |
 | null | null | `impl:bd-102` dispatches | no `Split` line | 28 |
+| race guard (graph fixture; `plan-rest` proposes `bd-102`, split resolves after `bd-101` lands) | `exit 0`, `split: bd-102 -> bd-201,bd-202` | no `impl:bd-102`; `split:bd-102` once; `bd-101`, `bd-201`, `bd-202` land | `Split: bd-102 → bd-201, bd-202` | 37 |
+| already dispatched (`plan-rest` proposes `bd-101`) | none | no `split:bd-101`; skip logged; `bd-101` lands | none | 21 |
+| exit 4, `bd ready` empty | `exit 4`, `JQ_UNAVAILABLE: …` | no `impl:bd-102` | `Split unconfirmed: bd-102 — exit 4 (by-hand path); bd readiness decides` | 24 |
+| exit 4, `bd ready` returns it | `exit 4` | refill plans `bd-102`; no second split; `impl:bd-102` once | `Split unconfirmed: …` | 33 |
 
 ### Baselines for the canonical scenario (recorded, not illustrative)
 
