@@ -20,7 +20,8 @@ import { basename, dirname, join } from 'node:path'
 import { execFileSync } from 'node:child_process'
 import { homedir } from 'node:os'
 
-const USAGE = `usage: run-profile (--workflow <dir>... | --codex <thread>... | --subagents <dir>... | --discover --epic <id>) [options]
+const USAGE = `usage: run-profile (--workflow <dir>... | --codex <thread>... | --subagents <dir>... | --discover --epic <id>
+                   | --in-flight --epic <id> --session <id> --harness claude|codex) [options]
 
   --workflow <dir>    a Workflow run directory (journal.jsonl, agent-*.jsonl); repeat for each
                       invocation of the same epic (relaunches), in any order
@@ -30,6 +31,11 @@ const USAGE = `usage: run-profile (--workflow <dir>... | --codex <thread>... | -
   --discover          find every run of --epic: Workflow runs whose Launch: line names it, and
                       ordinary-subagent coordinators whose log names its ledger
   --epic <id>         the root epic (required with --discover; otherwise read from the runs)
+  --in-flight         instead: list one session's dispatches that started and have not finished,
+                      one \`in-flight: <label> · <age>\` line each (nothing in flight: no lines);
+                      scans only --session's own files (--harness claude: CLAUDE_CONFIG_DIR, else
+                      ~/.claude; codex: CODEX_HOME, else ~/.codex); an unreadable root prints
+                      \`in-flight: unknown — <reason>\`
   --projects <dir>    where --discover looks for Claude Code sessions (default: ~/.claude/projects)
   --codex-home <dir>  where Codex keeps sessions/ (default: ~/.codex)
   --ledger <file>     the run's progress.md, for ordinary-subagent runs (default: the one the
@@ -62,19 +68,135 @@ for (let i = 0; i < argv.length; i++) {
   const a = argv[i]
   if (a === '--help' || a === '-h') { console.log(USAGE); process.exit(0) }
   if (a === '--discover') { opt.discover = true; continue }
+  if (a === '--in-flight') { opt.inFlight = true; continue }
   if (a === '--include-dry-run') { opt.includeDryRun = true; continue }
   if (a === '--latest') { opt.latest = true; continue }
   if (a === '--summarize') { opt.summarize = []; while (i + 1 < argv.length && !argv[i + 1].startsWith('--')) opt.summarize.push(argv[++i]); continue }
   if (!a.startsWith('--') || i + 1 >= argv.length) die(2, `bad argument '${a}'\n${USAGE}`)
   const k = a.slice(2)
   if (['workflow', 'codex', 'subagents'].includes(k)) opt[k].push(argv[++i])
-  else if (['epic', 'projects', 'cap', 'out', 'codex-home', 'ledger', 'beads'].includes(k)) opt[k] = argv[++i]
+  else if (['epic', 'projects', 'cap', 'out', 'codex-home', 'ledger', 'beads', 'session', 'harness'].includes(k)) opt[k] = argv[++i]
   else die(2, `unknown option ${a}`)
+}
+if (opt.inFlight) {
+  if (!opt.epic || !opt.session || !['claude', 'codex'].includes(opt.harness)) die(2, '--in-flight needs --epic <id> --session <id> --harness claude|codex')
+  inFlight()
 }
 if (!opt.discover && !opt.workflow.length && !opt.codex.length && !opt.subagents.length && !opt.summarize) die(2, `give --workflow <dir>, --codex <thread>, --subagents <dir>, --discover --epic <id> or --summarize <json>…\n${USAGE}`)
 if (opt.summarize && !opt.summarize.length) die(2, '--summarize needs at least one profile .json')
 if (opt.discover && !opt.epic) die(2, '--discover needs --epic <id>')
 if (opt.cap !== undefined && !(Number(opt.cap) >= 1)) die(2, '--cap must be a positive number')
+
+// --in-flight: the session's dispatches that started and have not finished. Runs before the helpers
+// below are initialised, so it uses only the imports and its own inner helpers.
+function inFlight() {
+  const now = process.env.RUN_PROFILE_NOW ? Date.parse(process.env.RUN_PROFILE_NOW) : Date.now()
+  const rows = []   // { label, start } (start: ms or NaN)
+  const rd = p => readdirSync(p)
+  const isD = p => { try { return statSync(p).isDirectory() } catch { return false } }
+  const parse = l => { try { return JSON.parse(l) } catch { return null } }
+  const chunk = (file, from, len) => {
+    const fd = openSync(file, 'r')
+    try { const b = Buffer.alloc(len); const n = readSync(fd, b, 0, len, from); return b.subarray(0, n).toString('utf8') } finally { closeSync(fd) }
+  }
+  const first = file => {
+    let fd
+    try { fd = openSync(file, 'r') } catch { return null }
+    const parts = [], buf = Buffer.alloc(65536)
+    try {
+      for (let n; (n = readSync(fd, buf, 0, buf.length, null)) > 0;) {
+        const i = buf.subarray(0, n).indexOf(10)
+        parts.push(Buffer.from(buf.subarray(0, i >= 0 ? i : n)))
+        if (i >= 0) break
+      }
+    } catch { return null } finally { closeSync(fd) }
+    return parse(Buffer.concat(parts).toString('utf8'))
+  }
+  const tail = (file, size) => {
+    try {
+      const len = statSync(file).size, from = Math.max(0, len - size)
+      const lines = chunk(file, from, Math.min(size, len)).split('\n')
+      if (from > 0) lines.shift()
+      return lines.filter(l => l.trim()).map(parse).filter(Boolean)
+    } catch { return null }
+  }
+  const unknown = (why, root, e) => { console.log(`in-flight: unknown — ${why} ${root}: ${e.code ?? e.message}`); process.exit(0) }
+  if (opt.harness === 'claude') {
+    const root = join(process.env.CLAUDE_CONFIG_DIR || join(homedir(), '.claude'), 'projects')
+    let projects
+    try { projects = rd(root) } catch (e) { unknown('cannot read', root, e) }
+    const dir = projects.map(p => join(root, p, opt.session)).find(isD)
+    const sub = dir && join(dir, 'subagents')
+    if (dir) {
+      const wfRoot = join(sub, 'workflows')
+      let runs = []
+      try { runs = rd(wfRoot).filter(n => n.startsWith('wf_')) } catch { /* no workflow runs */ }
+      for (const run of runs) {
+        const wd = join(wfRoot, run)
+        let text
+        try { text = readFileSync(join(wd, 'journal.jsonl'), 'utf8') } catch { continue }
+        const plans = [...text.matchAll(/\/sdd\/([^/"]+)-plan\//g)].map(m => m[1])
+        if (plans.length && !plans.includes(opt.epic)) continue
+        const agents = new Map()
+        for (const l of text.split('\n')) {
+          const r = l.trim() ? parse(l) : null
+          if (!r || !r.agentId) continue
+          if (r.type === 'started') { if (!agents.has(r.agentId)) agents.set(r.agentId, { label: r.label, done: false }) }
+          else if (r.type === 'result' || r.type === 'failed') { if (!agents.has(r.agentId)) agents.set(r.agentId, { done: true }); else agents.get(r.agentId).done = true }
+        }
+        for (const [id, a] of agents) if (!a.done) rows.push({ label: a.label ?? id, start: Date.parse(first(join(wd, `agent-${id}.jsonl`))?.timestamp) })
+      }
+      let names = []
+      try { names = rd(sub) } catch { /* no subagent dir */ }
+      for (const f of names) {
+        const m = /^agent-(.+)\.meta\.json$/.exec(f)
+        if (!m) continue
+        let meta
+        try { meta = JSON.parse(readFileSync(join(sub, f), 'utf8')) } catch { continue }
+        const tr = join(sub, `agent-${m[1]}.jsonl`)
+        const last = (tail(tr, 65536) ?? []).pop()
+        const finished = last?.type === 'assistant' && Array.isArray(last.message?.content) && !last.message.content.some(c => c?.type === 'tool_use')
+        if (!finished) rows.push({ label: meta.description ?? m[1], start: Date.parse(first(tr)?.timestamp) })
+      }
+    }
+  } else {
+    const sessions = join(process.env.CODEX_HOME || join(homedir(), '.codex'), 'sessions')
+    let years
+    try { years = rd(sessions) } catch (e) { unknown('cannot read', sessions, e) }
+    const days = []   // 'YYYY/MM/DD'
+    for (const y of years) for (const mo of isD(join(sessions, y)) ? rd(join(sessions, y)) : []) for (const d of isD(join(sessions, y, mo)) ? rd(join(sessions, y, mo)) : []) days.push(`${y}/${mo}/${d}`)
+    let coord = null
+    for (const d of days) {
+      const hit = rd(join(sessions, d)).find(n => n.endsWith(`-${opt.session}.jsonl`))
+      if (hit) { coord = { day: d, file: join(sessions, d, hit) }; break }
+    }
+    if (coord) {
+      const cstart = Date.parse(first(coord.file)?.timestamp)
+      for (const d of days.filter(x => x >= coord.day)) {
+        for (const n of rd(join(sessions, d))) {
+          if (!/^rollout-.*\.jsonl$/.test(n)) continue
+          const file = join(sessions, d, n)
+          if (Number.isFinite(cstart)) { try { if (statSync(file).mtimeMs < cstart) continue } catch { continue } }
+          const sp = first(file)?.payload?.source?.subagent?.thread_spawn
+          if (sp?.parent_thread_id !== opt.session) continue
+          const evs = (tail(file, 262144) ?? []).filter(r => r.type === 'event_msg' && ['task_started', 'task_complete', 'turn_aborted'].includes(r.payload?.type))
+          const last = evs.pop()
+          if (last?.payload.type === 'task_started') rows.push({ label: String(sp.agent_path ?? '').split('/').pop() || n, start: Date.parse(last.timestamp) })
+        }
+      }
+    }
+  }
+  const age = s => {
+    if (!Number.isFinite(s)) return 'unknown'
+    const t = Math.max(0, Math.floor((now - s) / 1000))
+    if (t < 60) return `${t}s`
+    const m = Math.floor(t / 60)
+    return m < 60 ? `${m}m` : `${Math.floor(m / 60)}h${String(m % 60).padStart(2, '0')}m`
+  }
+  rows.sort((a, b) => (Number.isFinite(a.start) ? a.start : Infinity) - (Number.isFinite(b.start) ? b.start : Infinity) || (a.label < b.label ? -1 : 1))
+  for (const r of rows) console.log(`in-flight: ${r.label} · ${age(r.start)}`)
+  process.exit(0)
+}
 
 // ---- helpers ----
 const EPS = 5000            // clock slack when matching one dispatch's end to the next one's start
