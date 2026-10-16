@@ -1,0 +1,269 @@
+#!/usr/bin/env bash
+# Per-session run marker: records which session coordinates an active super-auto / super-code run so
+# a hook can re-inject run state after compaction. A marker is an optimisation, never a gate.
+#
+# Usage:
+#   bash run-marker register --skill super-auto|super-code --worktree <dir> [--harness claude|codex]
+#                            [--run-md <path>] [--ledger <path>] [--epic <id>] [--run-tag <tag>] [--session <id>]
+#   bash run-marker clear    [--session <id>] [--worktree <dir>]
+#   bash run-marker get      <session_id> [--cwd <dir>] [--subagent]
+#   bash run-marker prune
+#
+# Store: ${XDG_STATE_HOME:-$HOME/.local/state}/superpowers/active-runs/<session_id>, one `field: value`
+# line per field. Fallback (store unwritable): <worktree>/.superpowers/run-marker-<session>.
+# Session id: $CLAUDE_CODE_SESSION_ID, else $CODEX_THREAD_ID, else --session.
+# Live = refreshed within 14 days AND (run_md set: file exists, first `phase:` line is not `done`;
+# else: ledger set and exists).
+# Exit codes: register/clear/prune always 0 (one status line on stdout); get 0 = hit (prints
+# `key: <session id or fallback path>` then every marker line), 1 = nothing, 2 = bad usage.
+set -euo pipefail
+
+USAGE="register --skill super-auto|super-code --worktree <dir> [--harness H] [--run-md P] [--ledger P] [--epic E] [--run-tag T] [--session S] | clear [--session S] [--worktree D] | get <session_id> [--cwd D] [--subagent] | prune"
+
+store_dir() { printf '%s\n' "${XDG_STATE_HOME:-$HOME/.local/state}/superpowers/active-runs"; }
+
+valid_sid() {
+  case "$1" in
+    ''|*/*|.*) return 1 ;;
+  esac
+  return 0
+}
+
+# sid_resolve <explicit>: prints "<id> <harness-hint>" or nothing.
+sid_resolve() {
+  if valid_sid "${CLAUDE_CODE_SESSION_ID:-}"; then printf '%s claude\n' "$CLAUDE_CODE_SESSION_ID"
+  elif valid_sid "${CODEX_THREAD_ID:-}"; then printf '%s codex\n' "$CODEX_THREAD_ID"
+  elif valid_sid "${1:-}"; then printf '%s unknown\n' "$1"
+  fi
+}
+
+field() { awk -F': ' -v n="$2" '$1==n { sub(/^[^:]*: /, ""); print; exit }' "$1" 2>/dev/null || true; }
+
+canon_dir() { (cd "$1" 2>/dev/null && pwd -P) || printf '%s\n' "$1"; }
+
+canon_file() {
+  local d
+  d=$(canon_dir "$(dirname "$1")")
+  printf '%s/%s\n' "$d" "$(basename "$1")"
+}
+
+# under <dir> <prefix>: dir is prefix or inside it.
+under() {
+  case "$1/" in "$2/"*) return 0 ;; esac
+  return 1
+}
+
+# is_live <file>
+is_live() {
+  local f="$1" rm lg phase
+  [ -f "$f" ] || return 1
+  [ -n "$(find "$f" -mtime -14 2>/dev/null)" ] || return 1
+  rm=$(field "$f" run_md)
+  if [ -n "$rm" ]; then
+    [ -f "$rm" ] || return 1
+    phase=$(sed -n 's/^phase:[[:space:]]*//p' "$rm" | head -1 | sed 's/[[:space:]]*$//')
+    [ "$phase" != "done" ] || return 1
+    return 0
+  fi
+  lg=$(field "$f" ledger)
+  [ -n "$lg" ] && [ -f "$lg" ]
+}
+
+# marker_text: the marker body from the variables set by cmd_register.
+marker_text() {
+  printf 'skill: %s\n' "$skill"
+  printf 'harness: %s\n' "$harness"
+  [ -z "$run_md" ] || printf 'run_md: %s\n' "$run_md"
+  printf 'ledger: %s\n' "$ledger"
+  printf 'epic: %s\n' "$epic"
+  printf 'started: %s\n' "$started"
+  printf 'registered_by_pid: %s\n' "$PPID"
+  printf 'worktree: %s\n' "$worktree"
+  printf 'session: %s\n' "$sid"
+  [ -z "$run_tag" ] || printf 'runTag: %s\n' "$run_tag"
+}
+
+# write_marker <path>: atomic write. Prints nothing; failure reason on stderr, status 1.
+write_marker() {
+  local p="$1"
+  mkdir -p "$(dirname "$p")" || return 1
+  marker_text > "$p.tmp.$$" || { rm -f "$p.tmp.$$"; return 1; }
+  mv -f "$p.tmp.$$" "$p" || { rm -f "$p.tmp.$$"; return 1; }
+}
+
+oneline() { printf '%s' "$1" | tr '\n' ' ' | sed 's/[[:space:]]*$//'; }
+
+prune_store() { # prune_store [keep-session]; echoes the count
+  local d f n=0
+  d=$(store_dir)
+  if [ -d "$d" ]; then
+    for f in "$d"/*; do
+      [ -f "$f" ] || continue
+      case "$f" in *.tmp.*) continue ;; esac
+      [ "$(basename "$f")" != "${1:-}" ] || continue
+      if ! is_live "$f"; then rm -f "$f"; n=$((n + 1)); fi
+    done
+  fi
+  printf '%s\n' "$n"
+}
+
+cmd_register() {
+  local skill="" worktree="" harness_arg="" run_md="" ledger="" epic="" run_tag="" explicit=""
+  while [ "$#" -gt 0 ]; do
+    case "$1" in
+      --skill) skill="${2:-}"; shift 2 || shift ;;
+      --worktree) worktree="${2:-}"; shift 2 || shift ;;
+      --harness) harness_arg="${2:-}"; shift 2 || shift ;;
+      --run-md) run_md="${2:-}"; shift 2 || shift ;;
+      --ledger) ledger="${2:-}"; shift 2 || shift ;;
+      --epic) epic="${2:-}"; shift 2 || shift ;;
+      --run-tag) run_tag="${2:-}"; shift 2 || shift ;;
+      --session) explicit="${2:-}"; shift 2 || shift ;;
+      *) echo "run-marker: register failed — usage: $USAGE"; return 0 ;;
+    esac
+  done
+  local r sid harness
+  r=$(sid_resolve "$explicit")
+  if [ -z "$r" ]; then echo "run-marker: no session id — skipped"; return 0; fi
+  sid=${r%% *}; harness=${r##* }
+  [ -z "$harness_arg" ] || harness="$harness_arg"
+  if [ -z "$skill" ] || [ -z "$worktree" ]; then
+    echo "run-marker: register failed — usage: $USAGE"; return 0
+  fi
+  worktree=$(canon_dir "$worktree")
+  [ -z "$run_md" ] || run_md=$(canon_file "$run_md")
+  [ -z "$ledger" ] || ledger=$(canon_file "$ledger")
+  local store fb started="" prev err
+  store="$(store_dir)/$sid"
+  fb="$worktree/.superpowers/run-marker-$sid"
+  if [ -f "$store" ]; then started=$(field "$store" started); fi
+  if [ -z "$started" ] && [ -f "$fb" ]; then started=$(field "$fb" started); fi
+  [ -n "$started" ] || started=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+
+  if err=$(write_marker "$store" 2>&1); then
+    local f
+    prune_store "$sid" > /dev/null
+    if [ -n "$run_md" ]; then
+      for f in "$(store_dir)"/*; do
+        [ -f "$f" ] || continue
+        case "$f" in *.tmp.*|"$store") continue ;; esac
+        [ "$(field "$f" run_md)" != "$run_md" ] || rm -f "$f"
+      done
+    fi
+    echo "run-marker: registered $sid ($store)"
+    return 0
+  fi
+  local reason
+  reason=$(oneline "$err")
+  if err=$(write_marker "$fb" 2>&1); then
+    local gi="$worktree/.superpowers/.gitignore"
+    if ! grep -qxF 'run-marker-*' "$gi" 2>/dev/null; then
+      printf 'run-marker-*\n' >> "$gi" 2>/dev/null || true
+    fi
+    echo "run-marker: wrote fallback $fb — $reason"
+    return 0
+  fi
+  echo "run-marker: register failed — $(oneline "$err")"
+}
+
+cmd_clear() {
+  local explicit="" worktree=""
+  while [ "$#" -gt 0 ]; do
+    case "$1" in
+      --session) explicit="${2:-}"; shift 2 || shift ;;
+      --worktree) worktree="${2:-}"; shift 2 || shift ;;
+      *) echo "run-marker: usage: $USAGE" >&2; return 2 ;;
+    esac
+  done
+  local r sid store
+  r=$(sid_resolve "$explicit")
+  if [ -z "$r" ]; then echo "run-marker: no session id — skipped"; return 0; fi
+  sid=${r%% *}
+  store="$(store_dir)/$sid"
+  if [ -z "$worktree" ] && [ -f "$store" ]; then worktree=$(field "$store" worktree); fi
+  rm -f "$store"
+  if [ -n "$worktree" ]; then rm -f "$(canon_dir "$worktree")/.superpowers/run-marker-$sid"; fi
+  echo "run-marker: cleared $sid"
+}
+
+# in_task_worktree <dir> [extra-worktree]: dir is under <W>/.worktrees/ for any store marker's W.
+in_task_worktree() {
+  local dir="$1" f w
+  for f in "$(store_dir)"/*; do
+    [ -f "$f" ] || continue
+    case "$f" in *.tmp.*) continue ;; esac
+    w=$(field "$f" worktree)
+    [ -z "$w" ] || ! under "$dir" "$w/.worktrees" || return 0
+  done
+  if [ -n "${2:-}" ] && under "$dir" "$2/.worktrees"; then return 0; fi
+  return 1
+}
+
+emit() { # emit <key> <file>
+  printf 'key: %s\n' "$1"
+  cat "$2"
+}
+
+cmd_get() {
+  local sid="" cwd="" subagent=0
+  while [ "$#" -gt 0 ]; do
+    case "$1" in
+      --cwd) [ "$#" -ge 2 ] || { echo "run-marker: usage: $USAGE" >&2; return 2; }; cwd="$2"; shift 2 ;;
+      --subagent) subagent=1; shift ;;
+      -*) echo "run-marker: usage: $USAGE" >&2; return 2 ;;
+      *) [ -z "$sid" ] || { echo "run-marker: usage: $USAGE" >&2; return 2; }; sid="$1"; shift ;;
+    esac
+  done
+  [ -n "$sid" ] || { echo "run-marker: usage: $USAGE" >&2; return 2; }
+  local store f
+  store=$(store_dir)
+  if valid_sid "$sid" && is_live "$store/$sid"; then emit "$sid" "$store/$sid"; return 0; fi
+  if [ -z "$cwd" ] || [ "$subagent" = 1 ]; then return 1; fi
+  cwd=$(canon_dir "$cwd")
+  if in_task_worktree "$cwd"; then return 1; fi
+  # 2: newest live store marker whose worktree contains cwd.
+  if [ -d "$store" ]; then
+    local w name
+    while IFS= read -r name; do
+      f="$store/$name"
+      case "$name" in *.tmp.*) continue ;; esac
+      [ -f "$f" ] || continue
+      is_live "$f" || continue
+      w=$(field "$f" worktree)
+      [ -n "$w" ] || continue
+      if under "$cwd" "$w"; then emit "$(field "$f" session)" "$f"; return 0; fi
+    done < <(ls -t "$store" 2>/dev/null)
+  fi
+  # 3: the caller's own session fallback marker, walking up from cwd.
+  valid_sid "$sid" || return 1
+  local d="$cwd" w
+  while :; do
+    f="$d/.superpowers/run-marker-$sid"
+    if [ -f "$f" ] && is_live "$f"; then
+      w=$(field "$f" worktree)
+      if in_task_worktree "$cwd" "${w:-$d}"; then return 1; fi
+      emit "$f" "$f"; return 0
+    fi
+    [ "$d" != "/" ] || break
+    d=$(dirname "$d")
+  done
+  return 1
+}
+
+cmd_prune() {
+  echo "run-marker: pruned $(prune_store)"
+}
+
+main() {
+  local cmd="${1:-}"
+  [ "$#" -gt 0 ] && shift
+  case "$cmd" in
+    register) cmd_register "$@" ;;
+    clear) cmd_clear "$@" ;;
+    get) cmd_get "$@" ;;
+    prune) cmd_prune ;;
+    *) echo "run-marker: usage: $USAGE" >&2; return 2 ;;
+  esac
+}
+
+main "$@"
