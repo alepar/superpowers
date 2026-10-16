@@ -164,6 +164,10 @@ tasks quarantined because the harness permission layer refused their commands (a
 sweep's one-line result, starting with the tip SHA it measured, whenever work landed
 (`MEASUREMENT INVALID: …`, `SWEEP UNAVAILABLE …` or `SWEEP DEFERRED (caller-owned)` mean the branch
 is unmeasured here, not green) —
+**`reviewPath`** — the absolute path of the full final-review file `<workspace>/final-review-<runTag>.md`,
+non-null only when that file was written (null when no work landed or the final review returned null);
+`review` is that review's one verdict line (`ready`, `not ready (…)`, `no work landed`, or
+`FINAL REVIEW UNAVAILABLE …`), never its body — read the file through `scripts/report-verdict` —
 **`worktreesKept`**, the task worktrees the Finish sweep left in place because they hold
 uncommitted or unmerged work (a caller's report lists them; empty means every finished task's
 worktree is gone) — **`processSweep`**, `{ stopped, survived }`: the run's processes the Finish
