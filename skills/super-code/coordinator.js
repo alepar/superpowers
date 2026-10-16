@@ -18,6 +18,8 @@ export const meta = {
 // worktree itself, since no string derivation can recover a caller-chosen path.
 const A = typeof args === 'string' ? JSON.parse(args) : args
 const { epicId, integrationBranch, config, dryRun = false, prompts } = A || {}
+// runTag names this run's assembled-input directories so a relaunch never reads another run's files.
+const runTag = (A && typeof A.runTag === 'string' && A.runTag.trim()) || epicId
 // skillsRoot: absolute path of the skills/ directory. Agents run inside project worktrees, so every
 // template and script path is built from it.
 const skillsRoot = A && typeof A.skillsRoot === 'string' ? A.skillsRoot.replace(/\/+$/, '') : ''
@@ -72,6 +74,7 @@ const taskBranch = id => `task-${id}`
 // copy written elsewhere would never be read.
 const planFileName = `${epicId}-plan.md`
 const workspace = `.superpowers/sdd/${epicId}-plan`
+const workspaceAbs = `${integrationWorktree}/${workspace}`
 // The run's own temp root (git-ignored with the workspace): the Finish process sweep covers it with
 // every task worktree and any extra roots the caller owns (`processRoots`, e.g. super-auto's run dir).
 const runTmpRoot = `${integrationWorktree}/${workspace}/tmp`
@@ -293,6 +296,7 @@ const SWEEP_SUMMARY = { type: 'object', properties: { summary: { type: 'string' 
 // Early-unblock bookkeeping (scripts/review-bead): the split's review bead and whether the task bead
 // closed; a reopen's list; a cancelled task's worktree removal.
 const REVIEW_BEAD = { type: 'object', properties: { reviewBead: {type:'string'}, implClosed: {type:'boolean'}, created: {type:'boolean'}, scriptError: {type:'string'} }, required: ['reviewBead','implClosed'] }
+const ASSEMBLED = { type:'object', properties:{ dir:{type:'string'}, exit:{type:'integer'}, fits:{type:'string'}, clusterFits:{type:'array', items:{type:'string'}}, clusters:{type:'integer'}, cause:{type:'string'} }, required:['dir','exit'] }
 const REOPENED = { type: 'object', properties: { reopened: { type: 'array', items: {type:'string'} }, scriptError: {type:'string'} }, required: ['reopened'] }
 const DISCARD = { type: 'object', properties: { discarded: {type:'boolean'}, reopened: { type: 'array', items: {type:'string'} }, cleanup: { type: 'array', items: {type:'string'} }, scriptError: {type:'string'} }, required: ['discarded'] }
 // The Finish backstop sweep's report: every output line of scripts/remove-task-worktree --sweep, then
@@ -469,7 +473,7 @@ const ledger = await readLedger('read-ledger', 'Resume', true)
 if (!ledger) log('resume: ledger read unavailable (null dispatch) — proceeding with an empty reconstruction; bd ready remains the authority on closed work, but prior-run pendingRetry bounds are lost for this run')
 // The resolved launch args go to the ledger as a `Launch:` line so a relaunch can copy them back
 // (dryRun stub tables omitted).
-queueLedger(`Launch: args ${JSON.stringify({ epicId, integrationBranch, integrationWorktree, skillsRoot, deferSweep, mergeCheck: mergeCheckCommand ?? 'none (no build/typecheck step declared)', config, dryRun: !!dryRun })}`,
+queueLedger(`Launch: args ${JSON.stringify({ epicId, integrationBranch, integrationWorktree, skillsRoot, runTag, deferSweep, mergeCheck: mergeCheckCommand ?? 'none (no build/typecheck step declared)', config, dryRun: !!dryRun })}`,
   'ledger-append:launch', 'Resume')
 // Optional baseline (config.sweepBaseline): the same sweep at the starting tip, so Finish can tell a
 // regression this run made from breakage it started with. Off by default; never under deferSweep.
@@ -1708,6 +1712,37 @@ function blockerBeadRule() {
 // The remaining builders fill template parameters; the prompt content lives in this skill's
 // templates, named by absolute path. Every dispatch is self-contained, and interpolated agent-written
 // text is wrapped in tags and marked as data.
+
+// The brief assembler (spec §B2): gathers a consumer's inputs into <workspace>/assembled/<consumer>-<runTag>-<instance>/.
+// One profile table (declared inside the builder, because dispatch-text loads only the code before the round loop); a new consumer is one entry. The template (assembler-prompt.md) is generic: each
+// [SECTIONS] line below is `name: definition`, so a profile carries only its own sections' wording.
+function assemblePrompt(consumer, instance, { threshold = 80000, base = null, head = integrationBranch, specPaths = [] } = {}) {
+  const ASSEMBLER_SECTIONS = {
+    diffstat: 'diffstat: the contents of diffstat.txt',
+    report: 'report summaries: for every task-<n>-report.md in [WORKSPACE], its task id, Status line, the Assumptions and the Concerns bullets, copied verbatim and cut to 300 characters each',
+    seams: 'interfaces and seams: exported function and type signatures added or changed in the diff (one line each, with file), new public files, and the title and id of every bead in the epic tree whose title starts `Seam contract:`',
+    minors: 'deferred minors: every `minor (deferred)` and `parked` line of [LEDGER], verbatim',
+    amendments: 'amendments: the bead comments in the epic tree that change a task\'s scope, one line each with the bead id',
+    slices: 'slice index: one line per file under slices/, with its added and removed line counts',
+    specs: 'stated-intent spec paths: the paths in [SPEC_PATHS], one per line; paths only, never read or quote the specs',
+    ledgerLines: 'ledger lines: every line of [LEDGER] that names bead [INSTANCE], verbatim',
+    beadComments: 'bead comments: the output of `bd comments [INSTANCE]`, verbatim',
+    beadReport: 'report summaries: the same extraction, for the one task-<n>-report.md whose task id is [INSTANCE]',
+    beadDiffstat: 'diffstat: of the commits for bead [INSTANCE] only (the `commits base..tip` range on its ledger line)',
+    stateCounts: 'ledger state counts: how many tasks of [LEDGER] are in each state (complete, parked, BLOCKED, pending retry, cancelled)',
+  }
+  const ASSEMBLER_PROFILES = {
+    'final-review': { clusters: true, sections: ['diffstat', 'report', 'seams', 'minors', 'amendments'] },
+    'roast-code': { clusters: false, sections: ['diffstat', 'slices', 'specs'] },
+    'history': { clusters: false, sections: ['ledgerLines', 'beadReport', 'beadComments', 'beadDiffstat'] },
+    'assess': { clusters: false, sections: ['diffstat', 'report', 'minors', 'amendments', 'stateCounts'] },
+  }
+  const profile = Object.hasOwn(ASSEMBLER_PROFILES, consumer) ? ASSEMBLER_PROFILES[consumer] : null
+  if (!profile) throw new Error('assemblePrompt: unknown consumer ' + consumer + ' (one of ' + Object.keys(ASSEMBLER_PROFILES).join(', ') + ')')
+  const sections = profile.sections.map(k => ASSEMBLER_SECTIONS[k]).join('\n')
+  const baseText = base || `the output of \`git merge-base ${integrationBranch} <the repository's default branch>\``
+  return `Read ${codeSkill}/assembler-prompt.md and follow it, with these parameter values: [CONSUMER] = ${consumer}; [INSTANCE] = ${instance}; [OUT_DIR] = ${workspaceAbs}/assembled/${consumer}-${runTag}-${instance}; [WORKTREE] = ${integrationWorktree}; [BASE] = ${baseText}; [HEAD] = ${head}; [SECTIONS] =\n${sections}\n; [CLUSTERS] = ${profile.clusters ? 'yes' : 'no'}; [THRESHOLD] = ${threshold}; [ASSEMBLED_SIZE] = bash ${codeSkill}/scripts/assembled-size; [LEDGER] = ${workspaceAbs}/progress.md; [WORKSPACE] = ${workspaceAbs}; [SPEC_PATHS] = ${specPaths.length ? specPaths.join(', ') : 'none'}. Return dir, exit, fits, clusterFits, clusters (the number of clusters, 0 when none) and cause (only when you could not finish). ${authRefusalRule()} ${finalAnswerRule(true)}`
+}
 
 function planPrompt(epicId, ids, planFileName, reentryIds = [], mode = 'refill') {
   // Planner (opus), append-only. `mode`: 'ready' plans only this round's ready ids (an invocation's

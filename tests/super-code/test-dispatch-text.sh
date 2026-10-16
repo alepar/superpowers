@@ -123,6 +123,72 @@ has_f "report-prompt.md names the status placeholder" "{{STATUS_BLOCK}}" "$REPOR
 row=$(grep '^| report drafter' "$REPO_ROOT/skills/super-auto/SKILL.md" || true)
 assert_has "$row" "report.draft.md" "SKILL.md's report drafter row names report.draft.md"
 
+echo "dispatch-text: assemble"
+printf '%s\n' '# SDD ledger — plan: ep-plan.md' \
+  "Launch: mechanism ordinary-subagents · epic ep · branch feat/x · integrationWorktree $W · runTag rt-1 · mergeCheck none" > "$T/ws/rt.md"
+printf '%s\n' 'Launch: args {"epicId":"ep","integrationBranch":"feat/y","integrationWorktree":"/r/wy","skillsRoot":"/s","runTag":"rt-2","config":{"mergeCheck":"none"}}' > "$T/ws/rtargs.md"
+AW="$W/.superpowers/sdd/ep-plan/assembled"
+asm() {  # $1 = consumer, $2 = instance
+  run bash "$D" --ledger "$T/ws/rt.md" --stdout assemble --consumer "$1" --instance "$2"
+}
+asm final-review final
+assert_eq "$code" 0 "assemble final-review exits 0"
+assert_has "$out" "[OUT_DIR] = $AW/final-review-rt-1-final" "OUT_DIR is <workspace>/assembled/<consumer>-<runTag>-<instance>"
+assert_has "$out" "assembler-prompt.md" "points at the assembler template"
+assert_has "$out" "[CONSUMER] = final-review" "names the consumer"
+assert_has "$out" "[CLUSTERS] = yes" "final-review asks for clusters"
+for sec in "diffstat" "report summaries" "interfaces and seams" "deferred minors" "amendments"; do
+  assert_has "$out" "$sec" "final-review section: $sec"
+done
+assert_has "$out" "[ASSEMBLED_SIZE] = bash " "assembled-size is named by absolute script path"
+assert_has "$out" "scripts/assembled-size" "and it is the script, not a re-implementation"
+assert_has "$out" "[LEDGER] = $W/.superpowers/sdd/ep-plan/progress.md" "the ledger path"
+assert_has "$out" "[THRESHOLD] = 80000" "default threshold"
+assert_has "$out" "[SPEC_PATHS] = none" "no spec paths by default"
+last=$(printf '%s\n' "$out" | awk 'NF{l=$0} END{print l}')
+case "$last" in *"$SCHEMA_RULE") pass "assemble final-review ends with the final-answer rule" ;; *) fail "assemble final-review ends with the final-answer rule" ;; esac
+asm roast-code r3
+assert_has "$out" "[OUT_DIR] = $AW/roast-code-rt-1-r3" "roast-code OUT_DIR carries the instance"
+assert_has "$out" "slice index" "roast-code section: slice index"
+assert_has "$out" "stated-intent spec paths" "roast-code section: stated-intent spec paths"
+assert_has "$out" "diffstat" "roast-code section: diffstat"
+assert_lacks "$out" "report summaries" "roast-code carries no report summaries"
+assert_lacks "$out" "concerns" "roast-code carries no concerns"
+assert_has "$out" "[CLUSTERS] = no" "roast-code asks for no clusters"
+last=$(printf '%s\n' "$out" | awk 'NF{l=$0} END{print l}')
+case "$last" in *"$SCHEMA_RULE") pass "assemble roast-code ends with the final-answer rule" ;; *) fail "assemble roast-code ends with the final-answer rule" ;; esac
+run bash "$D" --ledger "$T/ws/rt.md" --stdout assemble --consumer roast-code --instance r3 --spec docs/a.md,docs/b.md
+assert_has "$out" "[SPEC_PATHS] = docs/a.md, docs/b.md" "--spec lists the spec paths"
+asm history ep.4
+assert_has "$out" "[OUT_DIR] = $AW/history-rt-1-ep.4" "history instance is a bead id"
+assert_has "$out" "ledger lines" "history section: ledger lines"
+assert_has "$out" "bead comments" "history section: bead comments"
+assert_has "$out" "report summaries" "history section: report summaries"
+assert_has "$out" "[CLUSTERS] = no" "history asks for no clusters"
+last=$(printf '%s\n' "$out" | awk 'NF{l=$0} END{print l}')
+case "$last" in *"$SCHEMA_RULE") pass "assemble history ends with the final-answer rule" ;; *) fail "assemble history ends with the final-answer rule" ;; esac
+asm assess audit
+assert_has "$out" "ledger state counts" "assess section: ledger state counts"
+assert_has "$out" "deferred minors" "assess section: deferred minors"
+assert_has "$out" "[CLUSTERS] = no" "assess asks for no clusters"
+last=$(printf '%s\n' "$out" | awk 'NF{l=$0} END{print l}')
+case "$last" in *"$SCHEMA_RULE") pass "assemble assess ends with the final-answer rule" ;; *) fail "assemble assess ends with the final-answer rule" ;; esac
+run bash "$D" --ledger "$T/ws/rt.md" --stdout --run-tag x assemble --consumer assess --instance audit
+assert_has "$out" "[OUT_DIR] = $AW/assess-x-audit" "--run-tag overrides the Launch: line"
+run bash "$D" --ledger "$T/ws/rtargs.md" --stdout assemble --consumer assess --instance audit
+assert_has "$out" "[OUT_DIR] = /r/wy/.superpowers/sdd/ep-plan/assembled/assess-rt-2-audit" "the Launch: args form carries runTag"
+run bash "$D" --ledger "$L" --stdout assemble --consumer final-review --instance final
+assert_has "$out" "assembled/final-review-ep-final" "a Launch line without runTag falls back to the epic"
+ASMT="$REPO_ROOT/skills/super-code/assembler-prompt.md"
+has_f "assembler-prompt.md states it judges nothing" "judges nothing" "$ASMT"
+has_f "assembler-prompt.md empties the instance dir first" 'rm -rf [OUT_DIR] && mkdir -p [OUT_DIR]/slices' "$ASMT"
+has_f "assembler-prompt.md relays the exit code and the fits: line" 'its `fits:` line verbatim' "$ASMT"
+for m in opus sonnet haiku gpt; do lacks_f "assembler-prompt.md names no model ($m)" "$m" "$ASMT"; done
+run bash "$D" --ledger "$L" --stdout assemble --consumer bogus --instance final
+assert_eq "$code" 2 "--consumer bogus: exit 2"
+run bash "$D" --ledger "$L" --stdout assemble --consumer assess
+assert_eq "$code" 2 "assemble without --instance: exit 2"
+
 echo "dispatch-text: run facts and bad input"
 printf '%s\n' 'Launch: args {"epicId":"ep","integrationBranch":"feat/y","integrationWorktree":"/r/wy","config":{"mergeCheck":"none"}}' > "$T/ws/wf.md"
 run bash "$D" --ledger "$T/ws/wf.md" --stdout merge --id ep.2 --n 2 --base abc1234
