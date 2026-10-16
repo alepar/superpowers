@@ -62,4 +62,6 @@ punch-list for a correctness defect in something the goal asks for.
 
 Don't invent a finding, drop one, or re-route one by disagreeing with the roast's severity:
 that disagreement is not yours to act on here.
+
+FINAL ANSWER: your structured result is the whole answer. Return every field your schema or output template defines, in full, and add no prose summary beside it.
 ```
