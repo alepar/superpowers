@@ -438,6 +438,18 @@ assert_has "$out" "Profile: context — agents 4 (measured 4)" "the missing-epic
 run bash "$P" --context-only --codex "$CQ" --codex-home "$T/cq/codex"
 assert_eq "$code" 0 "--context-only --codex: no epic, ledger or bd"
 assert_has "$out" "coordinator 336K/400K (84%), 2 compactions" "and the same coordinator figures"
+
+# Two non-adjacent windows of one session: wf_ga's run is rows [0, 4), another run [4, 7), wf_gb's run
+# rows [7, 12). The reader gets the whole file and both spans: the other run's 150K request is not
+# counted, and row 8's compaction 200s after the other run's last request (row 6) is early, not idle
+# from row 2's request 4100s earlier; row 3's compaction has no postTokens and keeps no post.
+CG="$T/cg/p/-w/s3/subagents/workflows"
+build ctx-gap-a "$CG/wf_ga"
+build ctx-gap-b "$CG/wf_gb"
+run bash "$P" --context-only --workflow "$CG/wf_ga" --workflow "$CG/wf_gb" --out "$T/cgp"
+assert_eq "$code" 0 "two non-adjacent windows: exits 0"
+assert_has "$out" "Profile: context — agents 3 (measured 3) · peak≥80% 0 · compacted 1 agents, 2 compactions (early 2) · coordinator 100K/200K (50%), 2 compactions · max coordinator 50%" "two non-adjacent windows: only the two runs' rows; the second window's compaction is early"
+assert_has "$(cat "$T/cgp.md")" "| coordinator | coordinator | claude-opus-4-6 | 5 | 40K | 100K | 200K | table | 50% | 2: early 70K→?, early 90K→10K |" "two non-adjacent windows: the gap crosses the excluded rows; no post across a window end"
 run bash "$P" --session "$T/cw/p/-w/s9.jsonl"
 assert_eq "$code" 2 "--session without --context-only: exit 2"
 run bash "$P" --context-only

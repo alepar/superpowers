@@ -32,7 +32,20 @@ const pctOf = (peak, window) => (peak !== null && window ? Math.round(100 * peak
 // and window at its own row plus the raw facts its cause needs (gapMs); `cause` stays null until
 // summarizeContext fills it. Built only by a reader below; run-profile hands in label, role and file.
 // A new measured fact is a new field set by the readers.
-const span = (rows, o = {}) => [Math.max(0, o.fromRow ?? 0), Math.min(rows.length, o.toRow ?? rows.length)]
+// Readers take the whole transcript and opts.spans, [fromRow, toRow) pairs in original row indices
+// (sorted, disjoint; default one span, opts.fromRow/opts.toRow, else every row). Carry-over state (model,
+// the last request's time, the Codex window) is tracked over every row; requests, peak, first and
+// compactions count only rows inside a span, and a post never comes from past its span's end.
+// inSpans marks each row: 0 outside every span, 1 inside one, 2 the last row of one.
+function inSpans(rows, o = {}) {
+  const at = new Uint8Array(rows.length)
+  for (const [a, b] of o.spans ?? [[o.fromRow ?? 0, o.toRow ?? rows.length]]) {
+    const lo = Math.max(0, a), hi = Math.min(rows.length, b)
+    if (lo >= hi) continue
+    at.fill(1, lo, hi); at[hi - 1] = 2
+  }
+  return at
+}
 function blank(harness, o, reason) {
   return { harness, role: o.role ?? 'agent', label: o.label ?? null, file: o.file ?? null, model: null, requests: 0, peak: null, peakAt: null,
     first: null, window: null, windowSource: null, peakPct: null, compactions: [], unmeasured: reason }
@@ -62,24 +75,26 @@ const claudeUsage = r => {
   const parts = [u.input_tokens, u.cache_read_input_tokens, u.cache_creation_input_tokens].map(num)
   return parts.every(x => x === null) ? null : parts.reduce((s, x) => s + (x ?? 0), 0)
 }
-// opts: { fromRow, toRow, contextWindow, label, role, file }. Rows outside [fromRow, toRow) are not read.
+// opts: { spans | fromRow, toRow, contextWindow, label, role, file }.
 export function claudeContext(rows, opts = {}) {
   if (!Array.isArray(rows)) return blank('claude', opts, 'transcript missing or unreadable')
-  const [lo, hi] = span(rows, opts)
+  const on = inSpans(rows, opts)
   const ids = new Set(), comps = []
   let peak = null, peakAt = null, peakModel = null, first = null, model = null, lastUsageT = null, waiting = null
   const see = (ctx, at, m) => { if (peak === null || ctx > peak) { peak = ctx; peakAt = at; peakModel = m } }
-  for (let i = lo; i < hi; i++) {
+  for (let i = 0; i < rows.length; i++) {
     const r = rows[i]
     const ctx = claudeUsage(r)
     if (ctx !== null) {
-      ids.add(r.message.id ?? `row${i}`)
       model = r.message.model ?? model
-      if (first === null) first = ctx
-      see(ctx, r.timestamp ?? null, model)
+      if (on[i]) {
+        ids.add(r.message.id ?? `row${i}`)
+        if (first === null) first = ctx
+        see(ctx, r.timestamp ?? null, model)
+        if (waiting) { waiting.post = ctx; waiting = null }
+      }
       if (Number.isFinite(tsOf(r))) lastUsageT = tsOf(r)
-      if (waiting) { waiting.post = ctx; waiting = null }
-    } else if (r?.type === 'system' && r.subtype === 'compact_boundary') {
+    } else if (on[i] && r?.type === 'system' && r.subtype === 'compact_boundary') {
       const m = r.compactMetadata ?? {}, t = tsOf(r)
       const c = { at: r.timestamp ?? null, trigger: m.trigger ?? null, pre: num(m.preTokens), post: num(m.postTokens), model,
         window: claudeWindow(model, opts.contextWindow).window, gapMs: lastUsageT !== null && Number.isFinite(t) ? t - lastUsageT : null, cause: null }
@@ -87,6 +102,7 @@ export function claudeContext(rows, opts = {}) {
       comps.push(c)
       waiting = c.post === null ? c : null
     }
+    if (on[i] === 2) waiting = null
   }
   if (peak === null) return { ...blank('claude', opts, 'no usage rows'), compactions: comps }
   let { window, source } = claudeWindow(peakModel, opts.contextWindow)
@@ -122,16 +138,16 @@ function claudeInvocation(r) {
 }
 
 // ---- Codex ----
-// opts: { fromRow, toRow, label, role, file }. A forked child's rows before its first session_meta's
-// subagent_history_start_ordinal are its ancestors' replayed history (compactions included): skipped.
+// opts: { spans | fromRow, toRow, label, role, file }. A forked child's rows before its first session_meta's
+// subagent_history_start_ordinal are its ancestors' replayed history (compactions included): skipped,
+// for carry-over state too.
 export function codexContext(rows, opts = {}) {
   if (!Array.isArray(rows)) return blank('codex', opts, 'transcript missing or unreadable')
   const meta = rows.find(r => r?.type === 'session_meta')
   const ord = Math.max(0, num(meta?.payload?.subagent_history_start_ordinal) ?? 0)
-  const [from, hi] = span(rows, opts)
-  const lo = Math.max(from, ord)
+  const on = inSpans(rows, opts)
   const wins = []
-  for (let i = lo; i < hi; i++) {
+  for (let i = ord; i < rows.length; i++) {
     const w = rows[i]?.type === 'event_msg' && rows[i].payload?.type === 'token_count' ? num(rows[i].payload.info?.model_context_window) : null
     if (w) wins.push([i, w])
   }
@@ -142,16 +158,17 @@ export function codexContext(rows, opts = {}) {
     if (first === null) first = ctx
     if (peak === null || ctx > peak) { peak = ctx; peakAt = rows[i].timestamp ?? null; peakI = i; peakModel = model }
   }
-  for (let i = lo; i < hi; i++) {
+  for (let i = ord; i < rows.length; i++) {
     const r = rows[i], p = r?.payload
-    if (!p) continue
-    if (r.type === 'turn_context') model = p.model ?? model
+    if (p && r.type === 'turn_context') model = p.model ?? model
+    else if (!p || !on[i]) { /* outside every span: carry-over state only */ }
     else if (r.type === 'event_msg' && p.type === 'token_count') {
       const ctx = num(p.info?.last_token_usage?.input_tokens)
-      if (!ctx) continue
-      requests++
-      see(ctx, i)
-      if (waiting) { waiting.post = ctx; waiting = null }
+      if (ctx) {
+        requests++
+        see(ctx, i)
+        if (waiting) { waiting.post = ctx; waiting = null }
+      }
     } else if (r.type === 'token_usage_record') {
       const ctx = num(p.usage?.input_tokens)
       if (ctx) see(ctx, i)
@@ -162,6 +179,7 @@ export function codexContext(rows, opts = {}) {
       comps.push(c)
       waiting = c
     }
+    if (on[i] === 2) waiting = null
   }
   if (peak === null) return { ...blank('codex', opts, 'no usage rows'), compactions: comps }
   const window = windowAt(peakI)

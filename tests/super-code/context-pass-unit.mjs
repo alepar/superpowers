@@ -177,3 +177,38 @@ const comp = (pre, trigger = 'auto', gapMs = 1000) => ({ at: at(0), trigger, pre
   check('baseline: aggregates compactions by cause over profiles with a context key', contextBaseline([j, undefined, j]), 'Baseline: context — 2 profile(s) · agents 2 (measured 2) · peak≥80% 2 · compacted 2 agents, 2 compactions (cap 2)')
   check('baseline: none with a context key', contextBaseline([undefined]), null)
 }
+
+// ---- spans: the whole transcript, counted only inside [fromRow, toRow) spans in original row indices ----
+{
+  // Rows 0–1 precede the span: the 1M model and the last request's time carry in. The span opens
+  // with a compaction before its first usage row.
+  const o5 = { model: 'claude-opus-5-5' }
+  const r = claudeContext([asst(0, 100000, o5), asst(100, 170000, o5), boundary(160, 'auto', 180000, 20000), asst(170, 25000, o5), asst(200, 40000, o5)], { spans: [[2, 5]] })
+  check('claude spans: a compaction before the first in-span usage row takes the model and gap from earlier rows',
+    [r.model, r.window, r.peak, r.peakPct, r.requests, r.first, r.compactions.map(c => [c.model, c.window, c.gapMs]), causes(r)],
+    ['claude-opus-5-5', 1000000, 180000, 18, 2, 25000, [['claude-opus-5-5', 1000000, 60000]], ['early']])
+}
+{
+  // Spans [0, 4) and [7, 9); rows 4–6 are another run's. Row 3's compaction has no postTokens and ends
+  // its span still waiting: its post stays null, not row 7's request.
+  const r = claudeContext([user(0, 'go'), asst(10, 40000), asst(100, 60000), boundary(200, 'auto', 70000),
+    user(1000, 'other'), asst(1100, 150000), asst(4000, 80000), asst(4100, 20000), asst(4200, 100000)], { spans: [[0, 4], [7, 9]] })
+  check('claude spans: rows between two spans are not counted', [r.requests, r.peak, r.first], [4, 100000, 40000])
+  check('claude spans: a post is never taken across a span end', r.compactions.map(c => [c.post, c.gapMs]), [[null, 100000]])
+}
+{
+  // Spans [0, 3) and [5, 7): row 5's gap runs from row 4's request (outside both spans), not row 2's.
+  const r = claudeContext([user(0, 'go'), asst(10, 40000), asst(100, 60000), user(1000, 'other'), asst(4000, 80000),
+    boundary(4200, 'auto', 90000, 10000), asst(4300, 20000)], { spans: [[0, 3], [5, 7]] })
+  check('claude spans: the idle gap is measured from the latest request before the boundary, in or out of a span', [r.compactions[0].gapMs, causes(r), r.requests, r.peak], [200000, ['early'], 3, 90000])
+}
+{
+  // The span [3, 7) opens after the rollout's turn_context and its first window row: both carry in.
+  const r = codexContext([meta(0), turn(1, 'gpt-6-sol'), tc(2, 60000, 100000), cxUser(3, '$super-auto go'), compacted(4, 95000), tc(5, 20000, 400000), tc(6, 30000, 400000)], { spans: [[3, 7]] })
+  check('codex spans: model and window carry in from before the span',
+    [r.model, r.peak, r.window, r.peakPct, r.requests, r.compactions.map(c => [c.model, c.window]), causes(r)],
+    ['gpt-6-sol', 95000, 100000, 95, 2, [['gpt-6-sol', 100000]], ['cap']])
+  const two = codexContext([meta(0), tc(1, 50000, 258400), compacted(2, 240000), tc(3, 200000, 258400), tc(4, 60000, 258400),
+    tc(5, 30000, 258400), compacted(6, 100000), tc(7, 10000, 258400)], { spans: [[0, 3], [5, 8]] })
+  check('codex spans: two spans; a post is never taken across a span end', [two.requests, two.peak, two.compactions.map(c => c.post)], [3, 240000, [null, 10000]])
+}
