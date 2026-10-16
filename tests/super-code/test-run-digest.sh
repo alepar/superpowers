@@ -192,6 +192,8 @@ KEEPALIVE='**Workflow keepalive (Claude Code only).** While a coordinator or roa
 READRULE='**Read rule.** Read only what you need to route work: the ledger through `ledger-digest`; run state through `run-digest` or `run.md`'"'"'s fields; child and roast reports through `report-verdict <file>` (verdict, blocking items, path). Plans, specs, source, diffs and full child reports are read by children, never by you to route.'
 if grep -qxF -- "$KEEPALIVE" "$REAL"; then pass "keepalive paragraph verbatim"; else fail "keepalive paragraph differs"; fi
 if grep -qxF -- "$READRULE" "$REAL"; then pass "read rule paragraph verbatim"; else fail "read rule paragraph differs"; fi
+GUARD='- While a coordinator Workflow runs, it owns this loop (dispatch, refill, merge): you wait, watch and keep the keepalive, and do not start, refill or merge tasks yourself.'
+if grep -qxF -- "$GUARD" "$REAL"; then pass "Workflow-mode guard line verbatim"; else fail "Workflow-mode guard line missing"; fi
 
 echo
 if [ "$FAILURES" -gt 0 ]; then echo "run-digest: $FAILURES failure(s)"; exit 1; fi

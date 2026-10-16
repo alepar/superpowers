@@ -6,6 +6,7 @@ You coordinate a super-code or super-auto run. Your context was compacted or thi
 
 ## Loop
 
+- While a coordinator Workflow runs, it owns this loop (dispatch, refill, merge): you wait, watch and keep the keepalive, and do not start, refill or merge tasks yourself.
 - Keep `config.concurrency` chains full, within the hot-file cap. After every landing and every split, refill from `ready-in-tree`: start every ready task a free slot allows.
 - Unblock early: a split lets its dependents start at implementation-done, and a dependent can stack on a parent that is implemented but not yet merged (early unblock). Do not wait for a review to finish before starting work that does not need its result.
 - Do one merge at a time into the integration branch. A second landing waits for the first merge, its merge check and its ledger line.
