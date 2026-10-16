@@ -20,6 +20,7 @@ approvals:
 - coverage-round-2 · cov-13..cov-23 applied auto · cov-24 rejected auto · divergence: findings 11 → 12, novel 10/12 (83%), widening: yes (cap kept at two rounds; the design roast reviews round 2's fixes) · NEEDS-SPEC super-plan-fqb.1 answered by owns lines pointing at the spec sections (no re-dispatch) · integration sweep super-plan-fqb.5 created
 
 parked:
+- 2026-10-15-run-profile-context-pass-roast-pr-1.md · degraded-verdict · "Global Constraint 'no agent-facing change' overridden by super-plan-fqb.8 (coordinator-workflow.md and coordinator-subagents.md Finish wording: append run-profile's whole stdout) — applied because r1 [Should-fix] run-profile.mjs:895 and the final review show the context lines are otherwise lost on exit 3; human to confirm or revert"
 - 2026-10-15-run-profile-context-pass-roast-design-1.md · escalation · "Resumed/forked Claude Code sessions may replay parent compact_boundary rows (unverified; local corpus: 49 boundary uuids, none duplicated across files)"
 - 2026-10-15-run-profile-context-pass-roast-design-1.md · escalation · "Whether Claude Code ever writes a [1m] suffix into message.model is unverified (no local 4.6 or [1m] transcript)"
 - 2026-10-15-run-profile-context-pass-roast-design-1.md · escalation · "Subagent/Workflow-agent compact_boundary format unobserved locally (docs state it is logged; no local subagent ever compacted)"
@@ -47,4 +48,3 @@ scopeFilter-round-1: [Nit] skills/super-code/scripts/run-profile.mjs:685; skills
 scopeFilter-round-1: [Nit] skills/super-code/scripts/run-profile.mjs:674; skills/super-code/scripts/run-profile.mjs:671 punch-list — Peak memory use is a performance/quality concern; the goal names no memory requirement and output is correct.
 scopeFilter-round-1: [Nit] skills/super-code/scripts/run-profile.mjs:693 punch-list — The unavailable line is still correct in outcome; discarding per-file reasons is diagnostic polish rather than wrong goal-named results.
 scope-filter: 3 in-scope · 2 punch-listed
-constraintOverride: 2026-10-15 · super-plan-fqb.8 changed agent-facing Finish wording in coordinator-workflow.md and coordinator-subagents.md ("append its whole stdout"), overriding the epic's own 'no agent-facing change' Global Constraint, which this run's design set; kept because the confirmed roast finding r1 [Should-fix] run-profile.mjs:895 and the final review's Must-fix both show the goal's ledger-ready lines are otherwise lost on exit 3 · surfaced at hand-back for the human
