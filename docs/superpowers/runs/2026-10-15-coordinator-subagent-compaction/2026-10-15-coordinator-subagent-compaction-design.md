@@ -379,6 +379,102 @@ The visions' failure sections hold. In addition:
 - super-roast writing its own report file.
 - A fork release per `CLAUDE.md`.
 
+## Key abstractions
+
+**run-marker** — new bash module (script with subcommands `register | clear | get | prune`), the single store of "which session is coordinating which run".
+- Owns: the marker file location, its private `key: value` format, the liveness rule (super-auto: `run_md` phase ≠ `done`; standalone: ledger exists, marker < 14 days, no `Finish: done`), the 14-day prune, and session-id resolution (`$CLAUDE_CODE_SESSION_ID` → `$CODEX_THREAD_ID` → explicit id argument).
+- Hides: the marker format and how liveness is computed — to the hook, run-digest and the skills, `get`'s exit code is the whole answer.
+- Must not: read `run.md` fields or the ledger beyond liveness, or print run state (run-digest does that); never fail a caller — no session id means skip, exit 0.
+- Relationships: leaf. super-auto/super-code (register/clear), run-digest and both hook entries (get) depend on it; it depends on nothing in the repo.
+- Lifecycle: one file per session under `${XDG_STATE_HOME:-~/.local/state}/superpowers/active-runs/`; created at register, removed by `clear` from its own session only, or by prune once not live. The directory is shared by every session on the machine (global, per user).
+- Errors: `get` → exit 0 live / exit 1 absent-or-not-live (callers do not distinguish the two); `register`/`clear` always exit 0, reporting a skip on stdout.
+
+**run-digest** — new bash script plus static data (`coordinator-card.md`), the run-block builder.
+- Owns: the block's section order, the 24,000-character cap and trim order (in-flight → bead ids → ledger tail; card never cut), and reducing `ledger-digest` lines to state counts.
+- Hides: which scripts supply each section (`run-marker get`, `ledger-digest`, the epic tree via `bd`, `run-profile --in-flight`).
+- Must not: handle timeouts, choose a hook output shape, or JSON-escape (RunBlockInjector does); must not read the marker file directly. The card's rules live in the card file, never in script code.
+- Relationships: Facade over four sources; both hooks depend on it through RunBlockInjector.
+- Lifecycle: one process per compaction event; stateless.
+- Errors: non-zero exit or hang → the caller's fallback; a missing section source degrades that section only (`age unknown`, counts omitted), never the whole block.
+
+**RunBlockInjector** (`hooks/run-block.sh`, sourced) — new bash library, the shared re-inject half of both harness hooks.
+- Owns: bounded non-blocking stdin read, pattern extraction of `source` and `session_id`, the portable 5 s watchdog around `run-digest`, the fallback text (static card + `Run state unavailable — …`), and `escape_for_json` (moved here from `session-start` unchanged).
+- Hides: how a run block is obtained and degraded, from both entry scripts.
+- Must not: choose the output JSON shape or decide whether to emit the bootstrap — each entry script decides.
+- Relationships: two entry adapters use it — `session-start` (appends the run block after the bootstrap when `source=compact`, keeping its existing per-platform shape) and `session-start-codex` (run block only, the spike-confirmed shape, `$CODEX_THREAD_ID` fallback). Dependency: entry → library → run-marker / run-digest.
+- Lifecycle: sourced per hook invocation; no state; the watchdog kills its own background child.
+- Errors: never returns failure to an entry; a run block is always either the digest or the fallback, so neither hook can fail SessionStart.
+
+**report-verdict** — new bash script with an ordered recogniser table: child report → verdict, blocking items, path, in ≤ ~20 lines.
+- Owns: one recogniser per report kind (task report status line; super-roast verdict + Blocking entries; final-review Verdict/Must-fix; step-back `decision:`; assembler `fits:`), tried in one ordered list, first match wins.
+- Hides: report file formats from the coordinators, which never parse child reports themselves.
+- Must not: judge or summarise beyond the extracted lines; exit non-zero for an unknown format.
+- Relationships: leaf; super-code, super-auto, the card's guidance and the step-back hand-off depend on it.
+- Lifecycle: stateless, per call.
+- Errors: unknown format → `verdict: unknown` + exit 0 (callers must distinguish this from a real verdict); missing/unreadable file → usage error, exit 2.
+
+**Final-answer rule** — new rule helper in `coordinator.js` (beside `scriptOutcomeRule`/`authRefusalRule`), the closing line every dispatch carries.
+- Owns: the text, in its two forms ("one verdict line plus report path" / "your schema is the answer").
+- Hides: wording; each builder states only whether it carries a schema.
+- Must not: be appended inside `dispatch()` (dispatch-text calls builders directly and would miss it). super-auto's step-back, scope-filter and report-drafter templates copy the line literally; a prompt-text test pins the copies together.
+- Relationships: every builder delegates its closing line to it; dispatch-text inherits it through the builders.
+
+**Assembler** — new prompt template (`assembler-prompt.md`) plus a deterministic gauge script (`assembled-size`): raw history → digest, slices, clusters for one consumer.
+- Owns: gathering into `<workspace>/assembled/<consumer>-<runId>/` (template); `size:` lines, the `fits:` decision and exactly-one-cluster coverage (`assembled-size`).
+- Hides: what each consumer needs — one consumer profile (digest sections, clusters yes/no) per consumer, in one table inside the `assemblePrompt` builder in `coordinator.js`, reached via `dispatch-text assemble --consumer <name>` (super-auto phase 4 uses that kind rather than writing its own brief).
+- Must not: judge findings, or compute `fits` itself (consumers trust `fits` only from `assembled-size`; the assembler agent relays it).
+- Relationships: consumers (final review, roast-code, improvised history/assess passes) depend on its output dir; roast-code feeds `@<dir>/digest.md` to `assemble-args`; the super-roast engine is unaware of it.
+- Lifecycle: one directory per consumer per run, kept with the workspace for audit; not cleaned mid-run.
+- Errors: callers distinguish no output or non-zero `assembled-size` (→ direct inputs, `assembler: unavailable — <cause>`) from `fits: no` (→ split); exit 3 (bad cluster coverage) counts as unavailable, never as a split.
+
+**FinalReview step** — new Finish section in `coordinator.js` (one function plus three plain builders), the whole-epic review with its size switch.
+- Owns: window resolution (`config.contextWindows.finalReview`, else the per-harness smallest known window, defined in one place), the 40% threshold, assemble → single or cluster→seam, verdict combination (any null cluster/seam → `not ready (… unreviewed)`), the `Final review:` ledger line, and the verdict-line-plus-`reviewPath` return.
+- Hides: the split from the Workflow return contract and from super-auto, which see one verdict and one path either way.
+- Must not: read review bodies (it gets verdicts through schema fields; the file is the reader's); write files (the Workflow does no I/O) — the reviewer writes `final-review-<runId>.md`, in split mode the seam reviewer writes it from the cluster verdict files; on a null seam review `reviewPath` points at the cluster verdict files and the verdict names the seam unreviewed.
+- Relationships: composes the Assembler and three builders (`finalReviewPrompt` single, a cluster builder, and a final-seam builder named apart from the existing task `seamReviewPrompt`); dispatch-text's `final-review --mode` selects among them, one case each.
+- Lifecycle: once per invocation, at Finish.
+- Errors: null assemble → `single (assembler unavailable)` on direct inputs; null single review → today's `FINAL REVIEW UNAVAILABLE`.
+
+**OversizedSplit** — new script pair: `task-surface` (surface measurement) and `split-oversized` (validate and file a planner's split proposal).
+- Owns: the `surfaceTokens` arithmetic at the base commit; refusal rules (child files outside `filesTouched ∪ filesToRead`; children's acceptance missing an original checklist item verbatim); filing (flag triple, copied deps, `blocked-by` lines, then `bd supersede` last).
+- Hides: all deterministic split logic; coordinators only dispatch the script and route on its outcome, as for `unplanned`/`missingEdges`.
+- Must not: decide whether a task is oversized — the planner judges that.
+- Errors: callers distinguish `refused` (→ `Split refused: <id> — <reason>`, proceed unsplit) from a filing failure after partial children (must not supersede; reports filed children for reconciliation) — distinct exit codes.
+
+**context-preflight** — new bash script, one window reader per harness: records each role's context window and warns.
+- Owns: harness detection (the one place the reader is chosen), the Codex reader (`config.toml` + model cache), the Claude reader (session model settings + env overrides → 1M/200K), the warning rules with their one-line fixes, and the line and `--json` output forms.
+- Must not: edit configuration, stop the run, or apply the "smallest known window" default (the FinalReview step owns that).
+- Errors: none cross the boundary — it prints `Context: unknown — <reason>` and exits 0.
+
+**run-profile.mjs** — extended: an `--in-flight --epic` mode, one new function over the existing discovery plus its argv entry, nothing else (separable from the context-pass branch).
+
+**coordinator.js prompt builders / dispatch-text** — extended: the `assemblePrompt` builder and the final-review trio, the final-answer rule in every builder, the fix-pass path handoff stated as the agent's only memory, and the PLANNED schema's `filesToRead`, `surfaceTokens`, `oversized`; dispatch-text's builder return list (`loadBuilders`) and its `switch` are the registration point for each new kind.
+
+Variation: harness hook output shape (Claude Code, Cursor, Copilot, Codex) → one entry script per hook manifest over RunBlockInjector, the shape chosen in each entry (and `session-start`'s existing platform branch). Report formats → one recogniser each in report-verdict's ordered table. Assembler consumers → one profile entry in `assemblePrompt`'s table. Final-review modes (single/cluster/seam, fixed by the spec) → three plain builders chosen in the FinalReview step and dispatch-text's `--mode` case, no mode flag inside builders. Harness window sources → two readers in context-preflight, chosen by its single harness detection.
+Walk-through: Claude Code compacts mid super-auto run → `session-start` emits the bootstrap as today → RunBlockInjector reads `source=compact` + `session_id` → `run-marker get` exits 0 → `run-digest` under the watchdog (marker, ledger-digest counts and tail, open beads, `run-profile --in-flight`, card; capped at 24K) → escaped and appended after the bootstrap; the coordinator then reads child results only through `report-verdict`, and at Finish the FinalReview step assembles, gets `fits: no` → cluster reviewers → seam reviewer → verdict line + `reviewPath`. Likely future change — re-inject for a new harness (e.g. Gemini CLI) — touches one new entry script plus its hook-manifest entry, no change to run-digest, run-marker or the existing hooks; a new child report kind touches one recogniser plus one table entry in report-verdict.
+Per spec §A2: the run block goes in the existing `session-start`, not a separate hook entry — so that script mixes bootstrap and run-block concerns; the shared library keeps the Codex entry from duplicating them.
+Per spec §A5: super-roast keeps returning `reportMarkdown` — callers must write it to disk before `report-verdict` can read it, a step every roast caller repeats until the follow-on lands.
+
+Digest:
+- run-marker: owns marker storage, format and liveness; new liveness rules go only in its `get`;
+  callers never read marker files directly, only `get`'s exit code.
+- run-digest: owns the run block's sections, order and 24K trim; a new section is one source call plus
+  its place in the trim order; callers never assemble run state themselves.
+- RunBlockInjector: owns stdin parsing, the watchdog, the fallback and JSON escaping for re-inject; a new
+  harness adds one entry script that sources it; entry scripts never call run-digest unguarded.
+- report-verdict: owns child-report → verdict/blocking/path parsing; a new report kind is one
+  recogniser in its ordered table; coordinators never read report bodies.
+- Final-answer rule: owns the closing line of every dispatch; each new builder ends with it,
+  and super-auto templates copy it literally; never appended in `dispatch()`.
+- Assembler: owns gathering into digest/slices/clusters, with `assembled-size` owning `fits` and coverage;
+  a new consumer is one profile entry in `assemblePrompt`; consumers never compute `fits` themselves.
+- FinalReview step: owns the window threshold, the single/split switch, verdict combination and the
+  ledger line; new modes are a builder plus one case; callers never see the split or read the body.
+- OversizedSplit: owns surface measurement, split validation and filing; new refusal rules go
+  in `split-oversized`; coordinators never file split children themselves.
+- context-preflight: owns harness detection, per-harness window reading and warnings; a new harness
+  is one reader chosen at its detection; it never edits config or stops a run.
+
 ## Post-Implementation Notes
 
 > *As this design is implemented and iterated on — bug fixes, adjustments, anything that diverged from the assumptions above — append a dated note here, whether or not a formal debugging skill was used.*
