@@ -106,6 +106,24 @@ run_digest all 18000 </dev/null
 assert_eq "$(printf '%s\n' "$out" | head -n 1)" "$(head -n 1 "$CARD")" "card still prints for empty stdin"
 assert_has "$out" "Run state: no marker on stdin" "state line after the card"
 
+echo "run-digest: a ledger with no Task lines"
+printf '# Progress\nDetector: slow\nLaunch: x\nPlan: y\n' >"$T/ledger-launch.md"
+: >"$T/ledger-empty.md"
+printf '# SDD ledger — plan: x\n' >"$T/ledger-header.md"
+for lf in ledger-launch ledger-empty ledger-header; do
+  for part in state all; do
+    budget=9000; [ "$part" = all ] && budget=18000
+    run_digest "$part" "$budget" < <(printf 'key: S1\nskill: super-code\nharness: claude\nledger: %s\nepic: E\nsession: S1\nworktree: %s\n' "$T/$lf.md" "$T/wt")
+    assert_eq "$code" 0 "$lf/$part: exits 0"
+    assert_has "$out" "## Run state" "$lf/$part: heading prints"
+    assert_has "$out" "ledger: landed 0 · failed/BLOCKED 0 · pending retry 0 · cancelled 0" "$lf/$part: zero counts"
+    assert_lacks "$out" "ledger tail (last" "$lf/$part: no tail line"
+    if [ "$part" = all ]; then
+      assert_eq "$(printf '%s\n' "$out" | head -n 1)" "$(head -n 1 "$CARD")" "$lf/all: starts with the card's first line"
+    fi
+  done
+done
+
 echo "run-digest: a failing source degrades only its section"
 printf '#!/usr/bin/env bash\nexit 1\n' >"$T/bin/bd"
 run_digest state 9000 < <(marker progress.md)
