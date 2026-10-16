@@ -40,13 +40,13 @@ roastDesignExit: converged (round 2: Should-fix 9 [converged], 0 Blocking; round
 graph-pass: depth 8→8 · width 2.5→2.5 · applied 0 · parked 4
 graph-pass-human: depth 8→5 · width 2.5→4.0 · applied 2 (human) · declined 2 (moot drop .11<-.12; optional seam contract)
 codeBuckets:
-  completed: super-plan-goq.1–.20, super-plan-goq.34–.44 (31)
+  completed: super-plan-goq.1–.20, super-plan-goq.34–.49 (36)
   escalated: 
   pendingRetry: 
   parked: 
   stalled: false
-  review: not ready (fix round 1: fallback marker .gitignore not self-ignored breaks merges; Codex hook never reads the fallback marker; card lacks a Workflow-mode guard; report-verdict recogniser order; no sweep yet)
-  sweep: SWEEP DEFERRED (caller-owned)
+  review: ready (after the phase-6 sweep @ 14c342ed)
+  sweep: 14c342e — 23 passed, 0 failed, 0 errors, 0 skipped; failing: none; command: the CLAUDE.md release-checklist list (sweep-14c342ed.txt), run in a scratch clone @ 14c342ed
   slowness: round 1 graph-bound (depth 5, width 3 vs cap 8; edge audit: no changes); round 1 merge queue peaked at 3
   worktreesKept: 
   processSweep: stopped 0 · survived 0
