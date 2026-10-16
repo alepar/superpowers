@@ -15,8 +15,10 @@ sid=$(rb_field session_id)
 [ -n "$sid" ] || sid="${CODEX_THREAD_ID:-}"
 
 # Codex records no child identifier, and a child thread has its own session_id with the coordinator's
-# cwd. The cwd fallback would hand it the run block, so resolve by session id only (no cwd).
-rb_resolve "$sid" "" || exit 0
+# cwd. The cwd store scan would hand it the run block, so pass cwd with `own` (--own-only): only the
+# caller's own session-keyed fallback marker is found by cwd, never another session's marker.
+cwd=$(rb_field cwd)
+rb_resolve "$sid" "$cwd" own || exit 0
 
 if text=$(rb_digest all 18000 5 2>/dev/null); then
   :

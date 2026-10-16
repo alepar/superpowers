@@ -81,12 +81,13 @@ read-heavy reviewers, qualitative sizing, a warn-only pre-flight). This spec add
   `<worktree>/.superpowers/run-marker-<session>` (git-ignored, keyed by session) and prints `run-marker: wrote fallback
   <path> — <reason>`. When neither write succeeds it prints `run-marker: register failed —
   <reason>`. It always exits 0, but a failure is never printed as a normal skip.
-- `get <session_id> [--cwd <dir>]` resolves the marker exactly once: first by session id in the
+- `get <session_id> [--cwd <dir>] [--own-only]` resolves the marker exactly once: first by session id in the
   store, then (only with `--cwd`) by the newest live store marker whose `worktree` contains
   `<dir>`, then by the caller's own session fallback marker found walking up from `<dir>`. Both
   fallbacks refuse when `<dir>` lies under any marker's `<worktree>/.worktrees/` (a task
   worktree), or when the hook input identifies a subagent (`agent_id` or the equivalent the spike
-  records). A subagent that compacts must never receive the coordinator's run block. On success it prints `key: <session id or fallback path>` followed by every
+  records). `--own-only` skips the store scan and keeps only the caller's own session fallback marker (the
+  Codex entry uses it, since Codex records no child identifier). A subagent that compacts must never receive the coordinator's run block. On success it prints `key: <session id or fallback path>` followed by every
   marker field (including `session` and `runTag`), and exits 0. Otherwise it exits 1. `get`'s
   stdout is a stable interface, not only its exit code. Both hook entries pass stdin `cwd` and
   pipe `get`'s full stdout into `run-digest` on stdin, so run-digest never resolves or reads a
@@ -156,7 +157,9 @@ read-heavy reviewers, qualitative sizing, a warn-only pre-flight). This spec add
   whether Codex counts tokens with a tokenizer or as bytes ÷ 4), so Codex's default 2,500-token threshold does not
   replace the block with a head-and-tail preview.
 - The session id comes from stdin `session_id`, falling back to `$CODEX_THREAD_ID`, and `cwd`
-  from stdin. The matcher already limits it to compaction, so a missing `source` field is not an
+  from stdin. The Codex entry passes that `cwd` with `get --own-only`: it never scans the store by
+  cwd (a child thread has its own `session_id` and the coordinator's cwd), and it still reaches its
+  own session-keyed fallback marker. The matcher already limits it to compaction, so a missing `source` field is not an
   error.
 - `.codex-plugin/plugin.json`'s `hooks` points at the Codex hook file, in whichever form the spike
   confirmed (path or inline). It never falls back to `hooks/hooks.json`.

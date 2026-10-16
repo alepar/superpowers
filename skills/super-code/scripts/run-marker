@@ -6,7 +6,7 @@
 #   bash run-marker register --skill super-auto|super-code --worktree <dir> [--harness claude|codex]
 #                            [--run-md <path>] [--ledger <path>] [--epic <id>] [--run-tag <tag>] [--session <id>]
 #   bash run-marker clear    [--session <id>] [--worktree <dir>]
-#   bash run-marker get      <session_id> [--cwd <dir>] [--subagent]
+#   bash run-marker get      <session_id> [--cwd <dir>] [--subagent] [--own-only]
 #   bash run-marker prune
 #
 # register: a refresh that omits --run-md/--ledger/--epic/--run-tag keeps those fields from this
@@ -15,7 +15,8 @@
 # line per field. Fallback (store unwritable): <worktree>/.superpowers/run-marker-<session>, with a self-ignoring
 # <worktree>/.superpowers/.gitignore (`run-marker-*` and `.gitignore`).
 # --cwd fallback: used by the Claude Code entry only, which refuses it (--subagent) when the hook input
-# carries `agent_id`. The Codex entry never passes --cwd (no child identifier is recorded for Codex).
+# carries `agent_id`. The Codex entry passes --cwd with --own-only (no child identifier is recorded for
+# Codex): --own-only skips the store scan (step 2) and keeps the caller's own session fallback marker.
 # Session id: $CLAUDE_CODE_SESSION_ID, else $CODEX_THREAD_ID, else --session.
 # Live = refreshed within 14 days AND (run_md set: file exists, first `phase:` line is not `done`;
 # else: ledger set and exists).
@@ -23,7 +24,7 @@
 # `key: <session id or fallback path>` then every marker line), 1 = nothing, 2 = bad usage.
 set -euo pipefail
 
-USAGE="register --skill super-auto|super-code --worktree <dir> [--harness H] [--run-md P] [--ledger P] [--epic E] [--run-tag T] [--session S] | clear [--session S] [--worktree D] | get <session_id> [--cwd D] [--subagent] | prune"
+USAGE="register --skill super-auto|super-code --worktree <dir> [--harness H] [--run-md P] [--ledger P] [--epic E] [--run-tag T] [--session S] | clear [--session S] [--worktree D] | get <session_id> [--cwd D] [--subagent] [--own-only] | prune"
 
 store_dir() { printf '%s\n' "${XDG_STATE_HOME:-$HOME/.local/state}/superpowers/active-runs"; }
 
@@ -220,11 +221,12 @@ emit() { # emit <key> <file>
 }
 
 cmd_get() {
-  local sid="" cwd="" subagent=0
+  local sid="" cwd="" subagent=0 own_only=0
   while [ "$#" -gt 0 ]; do
     case "$1" in
       --cwd) [ "$#" -ge 2 ] || { echo "run-marker: usage: $USAGE" >&2; return 2; }; cwd="$2"; shift 2 ;;
       --subagent) subagent=1; shift ;;
+      --own-only) own_only=1; shift ;;
       -*) echo "run-marker: usage: $USAGE" >&2; return 2 ;;
       *) [ -z "$sid" ] || { echo "run-marker: usage: $USAGE" >&2; return 2; }; sid="$1"; shift ;;
     esac
@@ -236,8 +238,8 @@ cmd_get() {
   if [ -z "$cwd" ] || [ "$subagent" = 1 ]; then return 1; fi
   cwd=$(canon_dir "$cwd")
   if in_task_worktree "$cwd"; then return 1; fi
-  # 2: newest live store marker whose worktree contains cwd.
-  if [ -d "$store" ]; then
+  # 2: newest live store marker whose worktree contains cwd (skipped with --own-only).
+  if [ "$own_only" = 0 ] && [ -d "$store" ]; then
     local w name
     while IFS= read -r name; do
       f="$store/$name"

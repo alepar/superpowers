@@ -226,6 +226,24 @@ assert_eq "$(git -C "$W" status --porcelain --untracked-files=all)" "" "upgraded
 assert_eq "$(grep -cxF '.gitignore' "$W/.superpowers/.gitignore")" 1 "upgrade adds the .gitignore line once"
 assert_eq "$(grep -cxF 'run-marker-*' "$W/.superpowers/.gitignore")" 1 "upgrade keeps run-marker-* once"
 
+echo "run-marker: get --own-only"
+mk own
+rm_run "CLAUDE_CODE_SESSION_ID=s1" -- register --skill super-auto --worktree "$W" --run-md "$R" --ledger "$R"
+rm_run -- get other --cwd "$W/sub"
+assert_eq "$code" 0 "store scan finds the marker without --own-only"
+rm_run -- get other --cwd "$W/sub" --own-only
+assert_eq "$code" 1 "--own-only skips the store scan"
+rm_run -- get s1 --cwd "$W/sub" --own-only
+assert_eq "$code" 0 "--own-only still resolves by session id"
+mk own2
+printf 'x' > "$T/afile2"
+XDG="$T/afile2"
+reg "CLAUDE_CODE_SESSION_ID=s1"
+rm_run -- get s1 --cwd "$W/a/b" --own-only
+assert_eq "$(printf '%s\n' "$out" | head -1)" "key: $W/.superpowers/run-marker-s1" "--own-only keeps the own fallback marker"
+rm_run -- get other --cwd "$W/a/b" --own-only
+assert_eq "$code" 1 "--own-only: another session's fallback is not returned"
+
 echo "run-marker: both unwritable"
 mk bad
 XDG="$T/afile"

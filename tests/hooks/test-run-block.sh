@@ -213,6 +213,17 @@ out=$(chook "{\"session_id\":\"C9\",\"cwd\":\"$T/W/.worktrees/t1\"}")
 assert_eq "codex: task-worktree cwd, other id: no output" "" "$out"
 out=$(chook '{}' CODEX_THREAD_ID=)
 assert_eq "codex: no id, no cwd: no output" "" "$out"
+# Own session-keyed fallback marker (store unwritable at register time): found by cwd with --own-only.
+mkdir -p "$T/W2/sub"
+echo ledger >"$T/W2/ledger.md"
+printf 'x' >"$T/afile"
+env -u CLAUDE_CODE_SESSION_ID -u CODEX_THREAD_ID XDG_STATE_HOME="$T/afile" \
+  bash "$P/skills/super-code/scripts/run-marker" register --session F1 --skill super-code --worktree "$T/W2" --ledger "$T/W2/ledger.md" >/dev/null
+[ -f "$T/W2/.superpowers/run-marker-F1" ] && pass "codex fallback: marker file written" || fail "codex fallback: marker file written"
+out=$(chook "{\"session_id\":\"F1\",\"cwd\":\"$T/W2/sub\",\"source\":\"compact\"}")
+assert_eq "codex fallback: own session-keyed fallback marker found by cwd" "$(printf 'CARD-TEXT\n\nSTATE-TEXT')" "$(printf '%s' "$out" | decode)"
+out=$(chook "{\"session_id\":\"C9\",\"cwd\":\"$T/W2/sub\"}")
+assert_eq "codex fallback: another session in the same worktree gets nothing" "" "$out"
 echo bigall >"$T/mode"
 out=$(chook '{"session_id":"S1"}')
 len=$(printf '%s' "$out" | node -e 'process.stdout.write(String(JSON.parse(require("fs").readFileSync(0,"utf8")).hookSpecificOutput.additionalContext.length))')
