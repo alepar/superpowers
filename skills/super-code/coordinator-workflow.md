@@ -121,6 +121,10 @@ with none gets `'none'`, and no check runs. The `Launch:` line records the resol
 `none`. A `config.gate` from an older caller is ignored with a log line. Which command ran is on the ledger's `Launch:` and
 `Sweep:` lines.
 
+**Improvised dispatches.** Any dispatch the calling session writes itself (outside the builders) states
+its input paths, one output file, scope and out-of-scope, a checklist, and "one fresh agent, one job";
+the Workflow engine already dispatches every round fresh.
+
 `edgeAuditCap` is **optional** — additive: how many dependency-edge audits one invocation may
 dispatch, default 3, `0` disables. Armed by two consecutive rounds whose peak in-flight stayed under
 the cap while mapped beads were still open (a drained graph has nothing to audit), or once, as soon
