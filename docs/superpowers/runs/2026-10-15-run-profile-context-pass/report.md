@@ -71,3 +71,7 @@ metrics: upstream-feedback draft parked at docs/superpowers/runs/2026-10-15-run-
 - Deferred minor codex-first-from-compaction (context-pass.mjs:180). The smell: `first` can come from a compacted row's `pre` rather than a real request. (progress.md Task 1)
 - Deferred minor wording-inconsistency (coordinator-workflow.md:1289 still says "append its stdout"). The smell: two phrasings of the same Finish rule sit next to each other. (progress.md Task 6)
 - Fix-pass merges without re-review, `DONE_WITH_CONCERNS` reports, regressionPass fixes, sweepFix passes: none. All 9 tasks were review-clean with 0 fix passes. (progress.md Metrics; task-*-report.md)
+
+## Post-report changes (2026-10-16)
+
+- The memory regression in Remaining is fixed in 451ca28. `contextResult` now reduces each transcript as soon as it is read: on the largest run, peak RSS went from 3.70GB to 2.07GB, and it completes under a 1.5GB heap cap. A per-agent `tasks` count was added at the subagent-compaction design tab's request: `tasks>1 <n>` on the summary line, and ` · tasks <n>` on agent lines when above one. All nine suites pass @ 451ca28. (commit 451ca28; MAINTENANCE.md Context pass)
