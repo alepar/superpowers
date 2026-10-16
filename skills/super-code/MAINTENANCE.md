@@ -1247,3 +1247,21 @@ Each entry is the comment that used to sit above the named line of `coordinator.
 > on. Built through `ledgerLine()`
 > (see the merge-gate call site's comment) so `detail` — which can itself embed `t.detail`,
 > free text from the triage agent — can't break the one-line-per-outcome shape with a newline.
+
+## Codex re-inject: unverified facts
+
+2026-10-16. The Codex compact-hook record (`codex-hook-shapes.md`) could not run live, so every
+Codex entry is `unverified (source)`. `hooks/session-start-codex` and `hooks/hooks-codex.json`
+assume the following; verify them against a live Codex run and adjust:
+
+- stdin carries `session_id`, `cwd` and `source`; the hook parses by pattern, never reads `source`,
+  and falls back to `$CODEX_THREAD_ID` when `session_id` is absent. `session_id` may not equal the
+  coordinator's `$CODEX_THREAD_ID`; the cwd fallback then does the matching.
+- stdout `hookSpecificOutput.additionalContext` (same JSON as Claude Code) injects the context.
+- `additionalContextLimit` (6000, unit unconfirmed) is honoured on the command entry.
+- `plugin.json` `hooks` accepts a path string (`./hooks/hooks-codex.json`), and Codex expands
+  `${PLUGIN_ROOT}` in the command. A malformed value's blast radius (hooks only, or the whole
+  plugin) is unknown: validate against Codex before each release.
+- The trust hash is assumed stable because the command string is fixed.
+- Child threads are told apart by `parent_thread_id` / `thread_spawn` keys (library
+  `rb_is_subagent`) and by the marker lookup refusing a non-matching id.
