@@ -1,0 +1,21 @@
+r1 [Should-fix] skills/super-code/coordinator.js:701; tests/super-code/test-run-profile.sh:337; docs/superpowers/runs/2026-10-15-coordinator-subagent-compaction/final-review-phase3.md:1
+r1 [Should-fix] skills/super-code/scripts/run-digest:95
+r1 [Should-fix] skills/super-code/scripts/run-marker:139-143
+r1 [Should-fix] skills/super-code/coordinator.js:1401; skills/super-code/coordinator.js:1402
+r1 [Should-fix] skills/super-code/coordinator.js:1677
+r1 [Should-fix] skills/super-code/scripts/report-verdict:116
+r1 [Should-fix] skills/super-code/scripts/report-verdict:73
+r1 [Should-fix] skills/super-code/scripts/context-preflight:121
+r1 [Should-fix] skills/super-code/scripts/dispatch-text.mjs:198; skills/super-code/scripts/dispatch-text.mjs:206
+r1 [Should-fix] tests/hooks/test-run-block.sh:161
+r1 [Should-fix] tests/hooks/test-run-block.sh:109
+r1 [Nit] hooks/run-block.sh:69; hooks/run-block.sh:66
+r1 [Nit] skills/super-code/coordinator.js:1674
+r1 [Nit] skills/super-code/coordinator.js:1775
+r1 [Nit] skills/super-code/coordinator.js:723
+r1 [Nit] skills/super-code/coordinator.js:1775; skills/super-code/SKILL.md:143
+r1 [Nit] skills/super-code/MAINTENANCE.md:1266
+r1 [Must-fix] bead super-plan-xsa
+r1 [Must-fix] skills/super-code/scripts/run-marker --cwd fallback and coordinator-card.md opening line (run block reaches non-coordinator Codex children)
+r1 [Must-fix] skills/super-code/scripts/dispatch-text.mjs final-review sweep/metrics (ordinary-mode final review told no sweep)
+r1 [Must-fix] untested: full-suite sweep not run

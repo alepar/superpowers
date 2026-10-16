@@ -10,6 +10,7 @@ branch: super-auto/coordinator-subagent-compaction
 base: main
 spec: 2026-10-15-coordinator-subagent-compaction-design.md
 epic: super-plan-goq
+roast-code: 2026-10-16-coordinator-subagent-compaction-roast-pr-1.md
 roast-design: 2026-10-15-coordinator-subagent-compaction-roast-design-1.md, 2026-10-15-coordinator-subagent-compaction-roast-design-2.md
 
 approvals:
