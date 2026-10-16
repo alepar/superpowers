@@ -5,7 +5,7 @@ phase: roast-design
 spec: 2026-10-15-run-profile-context-pass-design.md
 epic: super-plan-fqb
 roastDesignRound: 2
-roast-design: 2026-10-15-run-profile-context-pass-roast-design-1.md
+roast-design: 2026-10-15-run-profile-context-pass-roast-design-1.md, 2026-10-15-run-profile-context-pass-roast-design-2.md
 codeMechanism: Workflow
 
 idea: Add a per-agent context pass to skills/super-code/scripts/run-profile.mjs — per agent peak context, window, peak%, first-request context, compactions with cause (cap/early/idle/manual) — for Claude Code (root session, ordinary subagents, Workflow agents) and Codex (coordinator + spawn_agent children, forked children counted from subagent_history_start_ordinal, compaction requests included, window tracked over time; coordinator counted from the super-auto invocation row). Output `Context:` lines per agent over threshold or compacted and a `Metrics: context` summary line, plus Markdown/JSON. Fixture tests in tests/super-code/test-run-profile.sh. Method and exact field paths: ~/Documents/Agent_Context_Peak_Research_20261015/final_report.md; validated against the 13 real Codex super-auto runs (scan: ~/Documents/Agent_Context_Peak_Research_20261015/cx_compact.py, cx_out2.txt).
@@ -24,3 +24,4 @@ parked:
 - 2026-10-15-run-profile-context-pass-roast-design-1.md · escalation · "Whether a resumed Codex thread's later rollout replays earlier compacted rows is unverified (no local thread has two rollouts)"
 
 stepBackDesign-round-1: patch — Round 1's 11 findings are independent spec gaps in three clusters (coordinator cutoff, per-row window/model, null and unmeasured rendering) plus two one-off fixes; sweep each cluster with one rule and keep the design
+design roast exit: converged at round 2 (Should-fix 8 confirmed, 0 Blocking) · punch list of 8 applied inline as spec clarifications (window [start,end) from T0, --session unwindowed, inference raises stamps, targets after run filters, measured = non-null peak, AgentContext gap wording), no re-roast · escalations: 4 carried from round 1 (parked) · no qualifier

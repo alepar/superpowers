@@ -75,9 +75,11 @@ Claude's `postTokens` counts the conversation only, not the system and tools bas
 comparable with `peak`. `windowSource` is `transcript` (Codex), `table` (Claude model
 table), `override` (CLI flag) or `inferred` (raised because an observed size exceeded the table
 window). `unmeasured` is a reason string when no usage row was found, and then `peak` is `null`, not
-0. A record whose window cannot be found (a Codex rollout with no `model_context_window`) keeps its
-peak but has `window: null`, `peakPct: null`, causes `unknown`, and an unmeasured reason `no
-window recorded`. **Considered:** per-task-span records (Codex children are already split into task spans for
+0. A record is measured exactly when `peak !== null`; that decides the summary's `measured <M>`
+count. A record whose window cannot be found (a Codex rollout with no `model_context_window`) is
+still measured: it keeps its peak but has `window: null`, `peakPct: null` and causes `unknown`,
+and its `no window recorded` reason goes only on the `Profile: unmeasured` line, not in the
+record's `unmeasured` field. **Considered:** per-task-span records (Codex children are already split into task spans for
 timing, but context belongs to the transcript, not the span: a resumed child carries its context
 across spans).
 
@@ -109,7 +111,8 @@ in the local corpus).
 - **Override:** `--context-window <N>` overrides the table for every Claude agent of the run,
   standing in for an unrecorded `CLAUDE_CODE_AUTO_COMPACT_WINDOW`.
 - **Inference:** an agent whose peak exceeds its table window is reported against the next
-  larger window, `source: inferred`.
+  larger window, `source: inferred`. Inference raises every window stamp in the record, and
+  `compactAt` with it, so its compactions are classified against the inferred window.
 - **Reporting:** the unmeasured line names `table` windows once per run, so a reader knows the
   percentage rests on the table.
 
@@ -158,12 +161,15 @@ Claude `auto` as idle (it would hide the unexplained cases that the gap test sep
 ### Which agents, per run type
 
 **Recommended:** context is measured per transcript file, deduplicated by real path across
-invocations. Every session file gets one cutoff (§The coordinator's window of rows); when the
-same coordinator file arrives from several runs (repeated `--workflow` or `--subagents`,
-`--discover`), the earliest cutoff is kept. Agent transcripts are scoped to the run by the same
-cutoff: an ordinary subagent or Codex descendant whose first row precedes the coordinator's
-cutoff time belongs to earlier work in that session and is left out. A Workflow run directory is
-already run-scoped, and `--session` deliberately measures the whole session.
+invocations. Targets are taken from the runs that survive run-profile's existing filters (the
+dry-run skip, the by-run-id dedupe and `--latest`), after the load block and before the first
+exit that follows it. Every coordinator session file gets one run window (§The coordinator's
+window of rows); when the same file arrives from several runs (repeated `--workflow` or
+`--subagents`, `--discover`), the windows are merged into their union. Ordinary subagents and
+Codex descendants are scoped to the run by the same window: one whose first row falls outside it
+belongs to other work in that session and is left out. A Workflow run directory is already
+run-scoped, and `--session` measures the whole session: every row and every agent, with no window
+and no caveat.
 - **Workflow run directory:** each `agent-<id>.jsonl`, labelled as timing labels it. The
   coordinator is the session that owns the run: the directory is
   `<session>/subagents/workflows/wf_<id>`, so the session file is `<session>.jsonl`, three
@@ -179,10 +185,22 @@ design-phase and roast agents, which compact too).
 
 ### The coordinator's window of rows
 
-**Recommended:** the coordinator session usually predates the run. Its rows are counted from the
-earliest `super-auto` invocation before the run's first dispatch, so a super-auto run's design
-and roast phases are included; when no `super-auto` invocation precedes it, from the last
-`super-code` invocation at or before the first dispatch. An invocation is:
+**Recommended:** the coordinator session usually predates the run, and may host several runs.
+The run's coordinator rows form a window `[start, end)`, found from an anchor time `T0`:
+- **`T0`:** the earliest start among the run's own dispatches. For a Workflow run, that is the
+  earliest agent transcript in its run directories. For an ordinary-subagent or Codex run, it is
+  the first dispatch timing maps to a bead. When timing has no mapped dispatch (bead mapping
+  failed, the exit-3 path, or `--context-only` with `--subagents`/`--codex`), `T0` is the
+  session's end.
+- **`start`:** the latest `super-auto` invocation at or before `T0`, so a super-auto run's design
+  and roast phases are included while an earlier run in the same session is not; when no
+  `super-auto` invocation precedes `T0`, the latest `super-code` invocation at or before it. A
+  super-code invocation inside a super-auto run (phase 3, fix-loop re-entries) does not move
+  `start`. A resumed super-auto run counts from its resume invocation; its earlier rows belong to
+  whichever session ran them.
+- **`end`:** the next `super-auto` invocation after `start`, else the session's end.
+
+An invocation is:
 - on Claude Code, a genuine prompt row (`type: "user"`, not `isMeta`, its content not a
   `tool_result`) containing a `<command-name>` element naming `/super-auto` or `/super-code`,
   either with or without a `superpowers:` prefix, or an assistant `Skill` tool use whose `skill`
@@ -190,10 +208,10 @@ and roast phases are included; when no `super-auto` invocation precedes it, from
 - on Codex, a user `response_item` containing `$super-auto`, `$super-code`, or the injected
   `<name>superpowers:super-auto` / `super-code` skill block.
 
-When no invocation is found, count from the first row and add `coordinator rows counted from the
-session start (no invocation found)` to the unmeasured line. Rows after the run's last activity
-are counted too: compaction after the run still happened to that coordinator, but `peakAt` makes
-it visible. **Considered:** counting only within the run's timing window (it would miss
+When no invocation is found, `start` is the first row, and `coordinator rows counted from the
+session start (no invocation found)` is added to the unmeasured line (never for `--session`, which
+has no window). Rows after the run's last activity but before `end` are counted too: compaction
+after the run still happened to that coordinator, and `peakAt` makes it visible. **Considered:** counting only within the run's timing window (it would miss
 design-phase compactions in a super-auto coordinator, which the user asked about).
 
 ### Output lines
@@ -298,7 +316,7 @@ tree only measures.
 - Errors: none of its own. The readers' unmeasured reasons pass through it.
 
 **AgentContext** (new record type, a plain object as spec'd): the uniform per-agent record. It is the seam between the readers and everything downstream, and it is also what `--out` JSON writes.
-- Owns: the spec's fields. To fill a gap, each compaction also carries the raw facts its cause needs, chiefly the gap since the previous row. `cause` is left empty until summarize fills it.
+- Owns: the spec's fields. To fill a gap, each compaction also carries the raw facts its cause needs, chiefly the gap since the last timestamped assistant usage row (§Compaction cause). `cause` is left empty until summarize fills it.
 - Must not: be built outside a harness reader. Run-profile adds only the `label`, `role` and `file` it was handed.
 
 **Context targets** (new, in run-profile: one source lister per run type): each lister turns a located run into a list of transcripts to measure (file, harness, role, label, model).
@@ -326,7 +344,7 @@ Future change: adding Gemini CLI touches one new harness entry (its reader, wind
 - Per spec §Context-only mode: `--context-only` deliberately branches past the coordinator check, epic resolution, the ledger, `bd` and the timing profile. Normal mode prints context before its early exits. Both are intended branches in run-profile's main flow.
 - Per spec §Module boundary: readers take parsed rows, not paths, so file I/O and `readJsonl` stay in run-profile.
 - Gap filled (the spec does not decide this): with more than one coordinator record, which happens with a resumed Codex thread that has several rollouts, the summary's coordinator figures use the largest peak and the summed compactions.
-- Gap filled (the spec does not decide this): in context-only mode the coordinator cutoff time is the earliest start among the agent transcripts, and the invocation rule of §The coordinator's window of rows applies at that time. With no agents, the same rule applies at the session's end.
+- Gap filled (since settled in §The coordinator's window of rows): in context-only mode with `--workflow`, `T0` is the earliest agent start in its directories; with `--subagents` or `--codex`, `T0` is the session's end; `--session` has no window.
 
 Digest:
 - context-pass: owns per-harness reading, windows, cause classification, summary and every context rendering (lines, Markdown, JSON, baseline);
@@ -342,7 +360,11 @@ Design roast round 1 (2026-10-15) amended §The per-agent record, §Codex reader
 §Which agents, §The coordinator's window of rows and §Output lines: one cutoff per session anchored
 on the earliest super-auto invocation, a stricter invocation matcher, per-compaction model and
 window stamps, the idle gap from the last assistant usage row, the first `session_meta` only, and
-rendering rules for absent values.
+rendering rules for absent values. Round 2 converged; its punch list was applied inline: the
+coordinator window became `[start, end)` from an anchor `T0`, bounded by the next `super-auto`
+invocation, with agents scoped to the same window; `--session` has no window; inference raises
+the compaction stamps; targets come after run-profile's run filters; "measured" means a non-null
+peak.
 
 ## Post-Implementation Notes
 
