@@ -1,0 +1,523 @@
+{
+  "version": 1,
+  "epic": "super-plan-goq",
+  "cap": 8,
+  "earlyUnblock": true,
+  "runtimeSlots": 10,
+  "invocations": [
+    {
+      "runId": "wf_8f905992-f18",
+      "dir": "/Users/alepar/.aisw/profiles/claude/claude-1/projects/-Users-alepar-AleCode-superpowers/e0780166-81b8-4a91-9121-cf721232a36a/subagents/workflows/wf_8f905992-f18",
+      "source": "workflow",
+      "start": "2026-10-16T10:06:57.518Z",
+      "end": "2026-10-16T10:29:38.279Z",
+      "agents": 34,
+      "timed": 34,
+      "journal": true
+    }
+  ],
+  "window": {
+    "start": "2026-10-16T10:06:57.518Z",
+    "lastLanding": "2026-10-16T10:20:07.345Z",
+    "end": "2026-10-16T10:29:38.279Z",
+    "graphMs": 789827,
+    "wallMs": 1360761
+  },
+  "shape": {
+    "beads": 35,
+    "edges": 0,
+    "depth": 1,
+    "width": 35,
+    "levels": [
+      35
+    ],
+    "criticalPath": [
+      "super-plan-goq.45"
+    ],
+    "fanOut": [],
+    "cycles": []
+  },
+  "cuts": [],
+  "beads": [
+    {
+      "id": "super-plan-goq.45",
+      "n": 32,
+      "deps": [],
+      "dependents": [],
+      "attempts": [
+        "IMPLEMENTED"
+      ],
+      "landed": true,
+      "readyAt": "2026-10-16T10:13:25.405Z",
+      "dispatchedAt": "2026-10-16T10:13:27.931Z",
+      "landedAt": "2026-10-16T10:20:07.345Z",
+      "waitMs": 2526,
+      "waitCause": "none",
+      "carriedMs": 0,
+      "implMs": 212335,
+      "implByTool": {
+        "git": 1833,
+        "shell": 3023,
+        "read": 2668,
+        "test": 140530
+      },
+      "implToolMs": 148054,
+      "reviewMs": 18631,
+      "fixMs": 0,
+      "stackWaitMs": 0,
+      "queueWaitMs": 54777,
+      "laneMs": 111450,
+      "seamMs": 53535,
+      "blockerMs": 0,
+      "reworkMs": 0,
+      "criticalMs": 120380,
+      "stackParents": [],
+      "lateEdges": []
+    },
+    {
+      "id": "super-plan-goq.46",
+      "n": 33,
+      "deps": [],
+      "dependents": [],
+      "attempts": [
+        "IMPLEMENTED"
+      ],
+      "landed": true,
+      "readyAt": "2026-10-16T10:13:25.405Z",
+      "dispatchedAt": "2026-10-16T10:13:30.732Z",
+      "landedAt": "2026-10-16T10:18:06.965Z",
+      "waitMs": 5327,
+      "waitCause": "none",
+      "carriedMs": 0,
+      "implMs": 206222,
+      "implByTool": {
+        "read": 851,
+        "git": 101,
+        "shell": 147817,
+        "test": 6738,
+        "other": 1
+      },
+      "implToolMs": 155508,
+      "reviewMs": 17269,
+      "fixMs": 0,
+      "stackWaitMs": 0,
+      "queueWaitMs": 2069,
+      "laneMs": 48374,
+      "seamMs": 0,
+      "blockerMs": 0,
+      "reworkMs": 0,
+      "criticalMs": 281560,
+      "stackParents": [],
+      "lateEdges": []
+    },
+    {
+      "id": "super-plan-goq.48",
+      "n": 35,
+      "deps": [],
+      "dependents": [],
+      "attempts": [
+        "IMPLEMENTED"
+      ],
+      "landed": true,
+      "readyAt": "2026-10-16T10:13:25.405Z",
+      "dispatchedAt": "2026-10-16T10:13:30.733Z",
+      "landedAt": "2026-10-16T10:15:55.023Z",
+      "waitMs": 5328,
+      "waitCause": "none",
+      "carriedMs": 0,
+      "implMs": 62404,
+      "implByTool": {
+        "read": 933,
+        "shell": 6994,
+        "test": 5542,
+        "other": 1
+      },
+      "implToolMs": 13470,
+      "reviewMs": 20951,
+      "fixMs": 0,
+      "stackWaitMs": 0,
+      "queueWaitMs": 2207,
+      "laneMs": 56551,
+      "seamMs": 0,
+      "blockerMs": 0,
+      "reworkMs": 0,
+      "criticalMs": 0,
+      "stackParents": [],
+      "lateEdges": []
+    },
+    {
+      "id": "super-plan-goq.47",
+      "n": 34,
+      "deps": [],
+      "dependents": [],
+      "attempts": [
+        "IMPLEMENTED"
+      ],
+      "landed": true,
+      "readyAt": "2026-10-16T10:13:25.405Z",
+      "dispatchedAt": "2026-10-16T10:13:30.733Z",
+      "landedAt": "2026-10-16T10:16:52.357Z",
+      "waitMs": 5328,
+      "waitCause": "none",
+      "carriedMs": 0,
+      "implMs": 75258,
+      "implByTool": {
+        "read": 997,
+        "git": 87,
+        "shell": 8342,
+        "test": 33932
+      },
+      "implToolMs": 43358,
+      "reviewMs": 37096,
+      "fixMs": 0,
+      "stackWaitMs": 0,
+      "queueWaitMs": 40394,
+      "laneMs": 46462,
+      "seamMs": 0,
+      "blockerMs": 0,
+      "reworkMs": 0,
+      "criticalMs": 0,
+      "stackParents": [],
+      "lateEdges": []
+    }
+  ],
+  "criticalPath": {
+    "ms": 789827,
+    "byCategory": {
+      "startup": 69663,
+      "ready": 13892,
+      "dispatch": 25441,
+      "planning": 302033,
+      "implement": 206222,
+      "review": 17269,
+      "merge": 101772,
+      "seam": 53535
+    },
+    "laneContentionMs": 48374,
+    "redo": {
+      "stack-conflict": {
+        "ms": 0,
+        "beads": []
+      },
+      "cancelled": {
+        "ms": 0,
+        "beads": []
+      },
+      "retry": {
+        "ms": 0,
+        "beads": []
+      }
+    },
+    "segments": [
+      {
+        "kind": "startup",
+        "bead": null,
+        "label": "run start",
+        "via": null,
+        "start": "2026-10-16T10:06:57.518Z",
+        "ms": 69663
+      },
+      {
+        "kind": "ready",
+        "bead": null,
+        "label": "close-epics",
+        "via": null,
+        "start": "2026-10-16T10:08:07.181Z",
+        "ms": 13892
+      },
+      {
+        "kind": "dispatch",
+        "bead": null,
+        "label": "previous → plan",
+        "via": null,
+        "start": "2026-10-16T10:08:21.073Z",
+        "ms": 2299
+      },
+      {
+        "kind": "planning",
+        "bead": null,
+        "label": "plan",
+        "via": "previous",
+        "start": "2026-10-16T10:08:23.372Z",
+        "ms": 302033
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-goq.46",
+        "label": "planned → impl:super-plan-goq.46",
+        "via": null,
+        "start": "2026-10-16T10:13:25.405Z",
+        "ms": 5327
+      },
+      {
+        "kind": "implement",
+        "bead": "super-plan-goq.46",
+        "label": "impl:super-plan-goq.46",
+        "via": "planned",
+        "start": "2026-10-16T10:13:30.732Z",
+        "ms": 206222
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-goq.46",
+        "label": "chain → review:super-plan-goq.46",
+        "via": null,
+        "start": "2026-10-16T10:16:56.954Z",
+        "ms": 2299
+      },
+      {
+        "kind": "review",
+        "bead": "super-plan-goq.46",
+        "label": "review:super-plan-goq.46",
+        "via": "chain",
+        "start": "2026-10-16T10:16:59.253Z",
+        "ms": 17269
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-goq.46",
+        "label": "chain → merge:super-plan-goq.46",
+        "via": null,
+        "start": "2026-10-16T10:17:16.522Z",
+        "ms": 2069
+      },
+      {
+        "kind": "merge",
+        "bead": "super-plan-goq.46",
+        "label": "merge:super-plan-goq.46",
+        "via": "chain",
+        "start": "2026-10-16T10:17:18.591Z",
+        "ms": 48374
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-goq.45",
+        "label": "merge-lane → merge:super-plan-goq.45",
+        "via": null,
+        "start": "2026-10-16T10:18:06.965Z",
+        "ms": 8930
+      },
+      {
+        "kind": "merge",
+        "bead": "super-plan-goq.45",
+        "label": "merge:super-plan-goq.45",
+        "via": "merge-lane",
+        "start": "2026-10-16T10:18:15.895Z",
+        "ms": 14808
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-goq.45",
+        "label": "chain → seam-review:super-plan-goq.45",
+        "via": null,
+        "start": "2026-10-16T10:18:30.703Z",
+        "ms": 2282
+      },
+      {
+        "kind": "seam",
+        "bead": "super-plan-goq.45",
+        "label": "seam-review:super-plan-goq.45",
+        "via": "chain",
+        "start": "2026-10-16T10:18:32.985Z",
+        "ms": 53535
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-goq.45",
+        "label": "chain → merge:super-plan-goq.45:seam-cleared",
+        "via": null,
+        "start": "2026-10-16T10:19:26.520Z",
+        "ms": 2235
+      },
+      {
+        "kind": "merge",
+        "bead": "super-plan-goq.45",
+        "label": "merge:super-plan-goq.45:seam-cleared",
+        "via": "chain",
+        "start": "2026-10-16T10:19:28.755Z",
+        "ms": 38590
+      }
+    ]
+  },
+  "bottleneck": {
+    "bead": "super-plan-goq.46",
+    "ms": 281560,
+    "share": 0.35648312858385445,
+    "byCategory": {
+      "dispatch": 9695,
+      "implement": 206222,
+      "review": 17269,
+      "merge": 48374
+    },
+    "implByTool": {
+      "read": 851,
+      "git": 101,
+      "shell": 147817,
+      "test": 6738,
+      "other": 1
+    },
+    "calls": [
+      {
+        "name": "Bash",
+        "cat": "shell",
+        "what": "for t in tests/super-code/test-run-marker.sh tests/hooks/te…",
+        "ms": 75094
+      },
+      {
+        "name": "Bash",
+        "cat": "shell",
+        "what": "python3 - <<'EOF'",
+        "ms": 64730
+      },
+      {
+        "name": "Bash",
+        "cat": "test",
+        "what": "python3 - <<'EOF'",
+        "test": "bash tests/super-code/test-run-marker.sh",
+        "ms": 6738
+      },
+      {
+        "name": "Bash",
+        "cat": "shell",
+        "what": "W=/Users/alepar/AleCode/superpowers/.worktrees/super-auto-c…",
+        "ms": 5243
+      },
+      {
+        "name": "Bash",
+        "cat": "shell",
+        "what": "git worktree add $W -b task-super-plan-goq.46 super-auto/co…",
+        "ms": 2060
+      },
+      {
+        "name": "Bash",
+        "cat": "shell",
+        "what": "git branch --list task-super-plan-goq.46",
+        "ms": 690
+      },
+      {
+        "name": "Bash",
+        "cat": "read",
+        "what": "grep -n -i 'fallback\\|gitignore' skills/super-code/scripts/…",
+        "ms": 437
+      },
+      {
+        "name": "Bash",
+        "cat": "read",
+        "what": "sed -n 165,180p skills/super-code/scripts/run-marker",
+        "ms": 402
+      },
+      {
+        "name": "Bash",
+        "cat": "git",
+        "what": "git worktree list",
+        "ms": 101
+      },
+      {
+        "name": "Read",
+        "cat": "read",
+        "what": "",
+        "ms": 12
+      }
+    ]
+  },
+  "lane": {
+    "busyMs": 258320,
+    "seamMs": 53535,
+    "spanMs": 308873,
+    "merges": 5,
+    "firstTryFailed": 1,
+    "firstTryKnown": 4,
+    "queueWaitMs": 99447,
+    "stackWaitMs": 0,
+    "peakQueue": 1
+  },
+  "runtime": {
+    "slots": 10,
+    "peak": 5,
+    "fullMs": 0
+  },
+  "concurrency": null,
+  "tests": {
+    "busyMs": 556219,
+    "testMs": 186742,
+    "pollMs": 0,
+    "cappedCalls": 0
+  },
+  "slowTests": [
+    {
+      "cmd": "bash tests/hooks/test-run-block.sh",
+      "ms": 96177,
+      "runs": 2,
+      "longestMs": 64279
+    },
+    {
+      "cmd": "bash tests/hooks/test-reinject-smoke.sh",
+      "ms": 44353,
+      "runs": 1,
+      "longestMs": 44353
+    },
+    {
+      "cmd": "bash tests/super-code/test-run-digest.sh",
+      "ms": 33932,
+      "runs": 1,
+      "longestMs": 33932
+    },
+    {
+      "cmd": "bash tests/super-code/test-run-marker.sh",
+      "ms": 6738,
+      "runs": 1,
+      "longestMs": 6738
+    },
+    {
+      "cmd": "bash tests/super-code/test-report-verdict.sh",
+      "ms": 5542,
+      "runs": 2,
+      "longestMs": 2900
+    }
+  ],
+  "conflicts": [
+    {
+      "file": "skills/super-code/scripts/run-marker",
+      "stackConflicts": 0,
+      "seamOverlaps": 1,
+      "declaredBy": 5
+    },
+    {
+      "file": "tests/super-code/test-run-marker.sh",
+      "stackConflicts": 0,
+      "seamOverlaps": 1,
+      "declaredBy": 5
+    }
+  ],
+  "simulation": {
+    "asRunMs": 771202,
+    "actualMs": 789827,
+    "fit": 0.98,
+    "unlimitedSlotsMs": 771202,
+    "unlimitedLanesMs": 730303,
+    "lowerBoundMs": 730303,
+    "graphChain": [
+      "super-plan-goq.45"
+    ],
+    "whatIfs": [],
+    "verdict": "bead-bound"
+  },
+  "unmeasured": [],
+  "summary": [
+    "Profile: super-plan-goq · 1 invocation · 2026-10-16T10:06Z → 2026-10-16T10:29Z · wall 23m (task graph 13m, after the last landing 10m) · agents 34 (timed 34) · beads dispatched 4, landed 4, planned 35",
+    "Profile: shape — 35 beads · 0 edges · depth 1 · width 35 · beads per level 35",
+    "Profile: bound — graph lower bound 12m (unlimited slots and merge lanes) · model of the run 13m (cap 8, one merge lane) vs actual 13m (98%) → bead-bound: super-plan-goq.45 alone set the pace — split it or make it faster",
+    "Profile: critical path — 13m = implement 3m · review 17s · merge 2m · seam 54s · planning 5m · ready 14s · startup 1m · dispatch 25s · of which other beads' merge-lane turns 48s",
+    "Profile: critical chain — close-epics ready 14s → plan planning 5m → super-plan-goq.46 implement+review+merge 5m → merge lane ×1 2m (seam 54s)",
+    "Profile: bottleneck — super-plan-goq.46 — 5m on the critical path (36%) · implement 3m · review 17s · merge 48s · dispatch 10s · implement on the path 3m: test 7s · shell 2m · model 51s (longest: \"for t in tests/super-code/test-run-marker.sh tests/hooks/te…\" 1m, \"python3 - <<'EOF'\" 1m) · dependents 0",
+    "Profile: waits — ready→start, summed per bead (beads wait at the same time, so not wall time): 0s over 0 of 4 landed beads",
+    "Profile: early unblock — 0 landed beads had in-run blockers · stacked on an implementation 0 · bounced on a stack conflict then waited for the merge 0 (0s) · waited for a merge without one 0",
+    "Profile: tests — implementers and fixers, summed: 3m running tests and 0s polling background runs, 34% of their 9m · 0 Bash call(s) ran into the 10-minute tool limit",
+    "Profile: slow tests — bash tests/hooks/test-run-block.sh 2m (2 runs, longest 1m)",
+    "Profile: merge lane — busy 4m of 5m (84%) · seam reviews and fixes 54s (21% of busy) · 5 merge dispatches, first try not merged for 1 of 4 · queue wait 2m total, peak 1 waiting · stack-parent wait 0s",
+    "Profile: conflicts — skills/super-code/scripts/run-marker (stack conflicts 0, seam overlaps 1, declared by 5) · tests/super-code/test-run-marker.sh (stack conflicts 0, seam overlaps 1, declared by 5)",
+    "Profile: runtime — peak 5 agents at once of 10 runtime slots · full 0% of the run · slot cap 8",
+    "Profile: what-if — none saves more than 1% of the modelled 13m",
+    "Profile: unmeasured — none"
+  ]
+}

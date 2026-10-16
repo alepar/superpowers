@@ -1,0 +1,349 @@
+{
+  "version": 1,
+  "epic": "super-plan-goq",
+  "cap": 8,
+  "earlyUnblock": true,
+  "runtimeSlots": 10,
+  "invocations": [
+    {
+      "runId": "wf_960a1f63-72a",
+      "dir": "/Users/alepar/.aisw/profiles/claude/claude-1/projects/-Users-alepar-AleCode-superpowers/e0780166-81b8-4a91-9121-cf721232a36a/subagents/workflows/wf_960a1f63-72a",
+      "source": "workflow",
+      "start": "2026-10-16T10:30:32.600Z",
+      "end": "2026-10-16T11:07:20.394Z",
+      "agents": 18,
+      "timed": 18,
+      "journal": true
+    }
+  ],
+  "window": {
+    "start": "2026-10-16T10:30:32.600Z",
+    "lastLanding": "2026-10-16T10:48:50.433Z",
+    "end": "2026-10-16T11:07:20.394Z",
+    "graphMs": 1097833,
+    "wallMs": 2207794
+  },
+  "shape": {
+    "beads": 36,
+    "edges": 0,
+    "depth": 1,
+    "width": 36,
+    "levels": [
+      36
+    ],
+    "criticalPath": [
+      "super-plan-goq.49"
+    ],
+    "fanOut": [],
+    "cycles": []
+  },
+  "cuts": [],
+  "beads": [
+    {
+      "id": "super-plan-goq.49",
+      "n": 36,
+      "deps": [],
+      "dependents": [],
+      "attempts": [
+        "IMPLEMENTED"
+      ],
+      "landed": true,
+      "readyAt": "2026-10-16T10:36:31.791Z",
+      "dispatchedAt": "2026-10-16T10:36:34.585Z",
+      "landedAt": "2026-10-16T10:48:50.433Z",
+      "waitMs": 2794,
+      "waitCause": "none",
+      "carriedMs": 0,
+      "implMs": 666411,
+      "implByTool": {
+        "read": 1601,
+        "git": 684,
+        "shell": 130340,
+        "test": 124256,
+        "other": 0,
+        "poll": 218733
+      },
+      "implToolMs": 475614,
+      "reviewMs": 27162,
+      "fixMs": 0,
+      "stackWaitMs": 0,
+      "queueWaitMs": 2145,
+      "laneMs": 36577,
+      "seamMs": 0,
+      "blockerMs": 0,
+      "reworkMs": 0,
+      "criticalMs": 738642,
+      "stackParents": [],
+      "lateEdges": []
+    }
+  ],
+  "criticalPath": {
+    "ms": 1097833,
+    "byCategory": {
+      "startup": 73647,
+      "ready": 6765,
+      "dispatch": 10768,
+      "planning": 276503,
+      "implement": 666411,
+      "review": 27162,
+      "merge": 36577
+    },
+    "laneContentionMs": 0,
+    "redo": {
+      "stack-conflict": {
+        "ms": 0,
+        "beads": []
+      },
+      "cancelled": {
+        "ms": 0,
+        "beads": []
+      },
+      "retry": {
+        "ms": 0,
+        "beads": []
+      }
+    },
+    "segments": [
+      {
+        "kind": "startup",
+        "bead": null,
+        "label": "run start",
+        "via": null,
+        "start": "2026-10-16T10:30:32.600Z",
+        "ms": 73647
+      },
+      {
+        "kind": "ready",
+        "bead": null,
+        "label": "close-epics",
+        "via": null,
+        "start": "2026-10-16T10:31:46.247Z",
+        "ms": 6765
+      },
+      {
+        "kind": "dispatch",
+        "bead": null,
+        "label": "previous → plan",
+        "via": null,
+        "start": "2026-10-16T10:31:53.012Z",
+        "ms": 2276
+      },
+      {
+        "kind": "planning",
+        "bead": null,
+        "label": "plan",
+        "via": "previous",
+        "start": "2026-10-16T10:31:55.288Z",
+        "ms": 276503
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-goq.49",
+        "label": "planned → impl:super-plan-goq.49",
+        "via": null,
+        "start": "2026-10-16T10:36:31.791Z",
+        "ms": 2794
+      },
+      {
+        "kind": "implement",
+        "bead": "super-plan-goq.49",
+        "label": "impl:super-plan-goq.49",
+        "via": "planned",
+        "start": "2026-10-16T10:36:34.585Z",
+        "ms": 666411
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-goq.49",
+        "label": "chain → review:super-plan-goq.49",
+        "via": null,
+        "start": "2026-10-16T10:47:40.996Z",
+        "ms": 3553
+      },
+      {
+        "kind": "review",
+        "bead": "super-plan-goq.49",
+        "label": "review:super-plan-goq.49",
+        "via": "chain",
+        "start": "2026-10-16T10:47:44.549Z",
+        "ms": 27162
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-goq.49",
+        "label": "chain → merge:super-plan-goq.49",
+        "via": null,
+        "start": "2026-10-16T10:48:11.711Z",
+        "ms": 2145
+      },
+      {
+        "kind": "merge",
+        "bead": "super-plan-goq.49",
+        "label": "merge:super-plan-goq.49",
+        "via": "chain",
+        "start": "2026-10-16T10:48:13.856Z",
+        "ms": 36577
+      }
+    ]
+  },
+  "bottleneck": {
+    "bead": "super-plan-goq.49",
+    "ms": 738642,
+    "share": 0.6728181790855258,
+    "byCategory": {
+      "dispatch": 8492,
+      "implement": 666411,
+      "review": 27162,
+      "merge": 36577
+    },
+    "implByTool": {
+      "read": 1601,
+      "git": 684,
+      "shell": 130340,
+      "test": 124256,
+      "other": 0,
+      "poll": 218733
+    },
+    "calls": [
+      {
+        "name": "Bash",
+        "cat": "shell",
+        "what": "python3 - <<'EOF'",
+        "ms": 120809
+      },
+      {
+        "name": "Bash",
+        "cat": "test",
+        "what": "cat > $TMPDIR/ins.txt 2>/dev/null",
+        "test": "bash tests/super-code/test-report-verdict.sh",
+        "ms": 120801
+      },
+      {
+        "name": "Bash",
+        "cat": "poll",
+        "what": "for i in $(seq 18)",
+        "ms": 108742
+      },
+      {
+        "name": "Bash",
+        "cat": "poll",
+        "what": "for i in $(seq 15)",
+        "ms": 90830
+      },
+      {
+        "name": "Bash",
+        "cat": "poll",
+        "what": "for i in $(seq 18)",
+        "ms": 18738
+      },
+      {
+        "name": "Bash",
+        "cat": "shell",
+        "what": "S=/Users/alepar/.claude/plugins/cache/superpowers-alepar/su…",
+        "ms": 2980
+      },
+      {
+        "name": "Bash",
+        "cat": "shell",
+        "what": "git worktree add $W -b task-super-plan-goq.49 super-auto/co…",
+        "ms": 1755
+      },
+      {
+        "name": "Bash",
+        "cat": "test",
+        "what": "python3 - <<'EOF'",
+        "test": "bash tests/super-code/test-report-verdict.sh </dev/null",
+        "ms": 1576
+      },
+      {
+        "name": "Bash",
+        "cat": "test",
+        "what": "cat > /tmp/sp-4d3bafd8/super-plan-goq.49/ins.txt <<'EOF'",
+        "test": "bash tests/super-code/test-report-verdict.sh",
+        "ms": 1477
+      },
+      {
+        "name": "Bash",
+        "cat": "shell",
+        "what": "W=$PWD",
+        "ms": 1138
+      }
+    ]
+  },
+  "lane": {
+    "busyMs": 36577,
+    "seamMs": 0,
+    "spanMs": 36577,
+    "merges": 1,
+    "firstTryFailed": 0,
+    "firstTryKnown": 1,
+    "queueWaitMs": 2145,
+    "stackWaitMs": 0,
+    "peakQueue": 1
+  },
+  "runtime": {
+    "slots": 10,
+    "peak": 3,
+    "fullMs": 0
+  },
+  "concurrency": null,
+  "tests": {
+    "busyMs": 666411,
+    "testMs": 124256,
+    "pollMs": 218733,
+    "cappedCalls": 0
+  },
+  "slowTests": [
+    {
+      "cmd": "bash tests/super-code/test-report-verdict.sh",
+      "ms": 122680,
+      "runs": 3,
+      "longestMs": 120801
+    },
+    {
+      "cmd": "bash tests/super-code/test-report-verdict.sh </dev/null",
+      "ms": 1576,
+      "runs": 1,
+      "longestMs": 1576
+    }
+  ],
+  "conflicts": [],
+  "simulation": {
+    "asRunMs": 1089341,
+    "actualMs": 1097833,
+    "fit": 0.99,
+    "unlimitedSlotsMs": 1089341,
+    "unlimitedLanesMs": 1089341,
+    "lowerBoundMs": 1089341,
+    "graphChain": [
+      "super-plan-goq.49"
+    ],
+    "whatIfs": [
+      {
+        "kind": "faster",
+        "target": "faster super-plan-goq.49",
+        "ms": 756135.5,
+        "savingMs": 333205.5,
+        "note": "its implement time halved"
+      }
+    ],
+    "verdict": "bead-bound"
+  },
+  "unmeasured": [],
+  "summary": [
+    "Profile: super-plan-goq · 1 invocation · 2026-10-16T10:30Z → 2026-10-16T11:07Z · wall 37m (task graph 18m, after the last landing 19m) · agents 18 (timed 18) · beads dispatched 1, landed 1, planned 36",
+    "Profile: shape — 36 beads · 0 edges · depth 1 · width 36 · beads per level 36",
+    "Profile: bound — graph lower bound 18m (unlimited slots and merge lanes) · model of the run 18m (cap 8, one merge lane) vs actual 18m (99%) → bead-bound: super-plan-goq.49 alone set the pace — split it or make it faster",
+    "Profile: critical path — 18m = implement 11m · review 27s · merge 37s · planning 5m · ready 7s · startup 1m · dispatch 11s",
+    "Profile: critical chain — close-epics ready 7s → plan planning 5m → super-plan-goq.49 implement+review+merge 12m",
+    "Profile: bottleneck — super-plan-goq.49 — 12m on the critical path (67%) · implement 11m · review 27s · merge 37s · dispatch 8s · implement on the path 11m: test 2m · poll 4m · read 2s · shell 2m · model 3m (longest: \"python3 - <<'EOF'\" 2m, \"cat > $TMPDIR/ins.txt 2>/dev/null\" 2m) · dependents 0",
+    "Profile: waits — ready→start, summed per bead (beads wait at the same time, so not wall time): 0s over 0 of 1 landed beads",
+    "Profile: early unblock — 0 landed beads had in-run blockers · stacked on an implementation 0 · bounced on a stack conflict then waited for the merge 0 (0s) · waited for a merge without one 0",
+    "Profile: tests — implementers and fixers, summed: 2m running tests and 4m polling background runs, 51% of their 11m · 0 Bash call(s) ran into the 10-minute tool limit",
+    "Profile: slow tests — bash tests/super-code/test-report-verdict.sh 2m (3 runs, longest 2m)",
+    "Profile: merge lane — busy 37s of 37s (100%) · seam reviews and fixes 0s (0% of busy) · 1 merge dispatches, first try not merged for 0 of 1 · queue wait 2s total, peak 1 waiting · stack-parent wait 0s",
+    "Profile: runtime — peak 3 agents at once of 10 runtime slots · full 0% of the run · slot cap 8",
+    "Profile: what-if — faster super-plan-goq.49 → 13m (−6m, 31%) — its implement time halved",
+    "Profile: unmeasured — none"
+  ]
+}
