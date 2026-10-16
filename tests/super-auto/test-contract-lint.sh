@@ -3,7 +3,7 @@
 # §Field table; (b) every §<Heading>, <file> §<Heading> and run-state.md item <N> (<label>)
 # pointer resolves; (c) no numeric count in runtime prose points at a list; (R7) the field
 # table's names and line formats and SKILL.md's phase sequence match the pre-epic baseline
-# (fixtures from 2bf1d53, plus fields added deliberately since — codeBuckets.worktreesKept, codeBuckets.processSweep, friction, roastCodeExit, codeMechanism, runTag, context); example status lines have a shape report-status prints. Then it
+# (fixtures from 2bf1d53, plus fields added deliberately since — codeBuckets.worktreesKept, codeBuckets.processSweep, friction, roastCodeExit, codeMechanism, runTag, context); example status lines have a shape report-status prints; (keys) I8 and the Phase 5 key steps name report-verdict --keys and SKILL.md and report-prompt.md carry the null reviewPath rule. Then it
 # mutates a copy of the skill and checks each mutation is caught. Pure bash and awk.
 set -euo pipefail
 
@@ -192,12 +192,24 @@ check_status_examples() { # SKILL_DIR
   done
 }
 
+check_keys_rule() { # SKILL_DIR
+  local a b
+  grep '^- I8 ' "$1/SKILL.md" | grep -qF 'report-verdict --keys' || echo "SKILL.md: I8 does not name report-verdict --keys"
+  for a in 'First write the step-back keys file' 'Write the scope keys file' 'Its Must-fix and untested-scope items'; do
+    grep -F -- "$a" "$1/SKILL.md" | grep -qF 'report-verdict --keys' || echo "SKILL.md: '$a' does not use report-verdict --keys"
+  done
+  for b in SKILL.md report-prompt.md; do
+    { grep -qF 'null `reviewPath`' "$1/$b" && grep -qF '[Must-fix] untested: whole-epic review' "$1/$b"; } || echo "$b: no null reviewPath rule"
+  done
+}
+
 lint() { # SKILLS_ROOT REPO_ROOT -> one "file[:line]: message" per problem
   check_example "$1/super-auto"
   check_pointers "$1" "$2"
   check_counts "$1/super-auto"
   check_baseline "$1/super-auto"
   check_status_examples "$1/super-auto"
+  check_keys_rule "$1/super-auto"
 }
 
 echo "contract lint: live tree"
@@ -232,6 +244,10 @@ copy; printf '\nCollect all seven flags at once.\n' >> "$SA/SKILL.md"
 expect_caught "a numeric list count fails" "numeric count points at a list"
 copy; sed 's/^| `roastCodeRound` |/| `roastCodeRounds` |/' "$REPO_ROOT/skills/super-auto/run-state.md" > "$SA/run-state.md"
 expect_caught "a renamed field-table field fails the baseline" "lost baseline field: roastCodeRound"
+copy; sed '/^- I8 /s/report-verdict --keys/report-verdict/g' "$REPO_ROOT/skills/super-auto/SKILL.md" > "$SA/SKILL.md"
+expect_caught "I8 without --keys fails" "I8 does not name report-verdict --keys"
+copy; grep -vF 'whole-epic review' "$REPO_ROOT/skills/super-auto/report-prompt.md" > "$SA/report-prompt.md"
+expect_caught "report-prompt without the null reviewPath rule fails" "report-prompt.md: no null reviewPath rule"
 
 echo
 if [ "$FAILURES" -eq 0 ]; then

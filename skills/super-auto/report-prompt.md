@@ -15,7 +15,7 @@ Build every section from these sources, and name in each section the source each
 
 - `run.md`: its pointers, `parked` records, `codeBuckets`, `sweepFix`, `roastDesignCapped`, `roastCodeCapped`, `roastCodeExit`, `friction`, `baseAbsorbed`, `resumeChange` lines, and the `stepBackCode-round-<N>`, `scopeFilter-round-<N>` (with its `cluster dropped:` lines) and `regressionPass-round-<N>` records;
 - the roast reports `run.md` points to, and each round's step-back file beside its report;
-- the final review file (`reviewPath`), read through `bash <skills-root>/super-code/scripts/report-verdict`, as the source of final-review items; do not paste its body;
+- the final review file (`reviewPath`), read through `bash <skills-root>/super-code/scripts/report-verdict` for its verdict and `bash <skills-root>/super-code/scripts/report-verdict --keys` for every item, uncapped, as the source of final-review items; do not paste its body. A null `reviewPath` means no review file exists: call neither, take the verdict from `codeBuckets.review`, and unless it reads `no work landed`, list `[Must-fix] untested: whole-epic review` in Remaining tagged `final review`;
 - the beads under the run's epic, including blocker beads;
 - `super-code`'s ledger and implementer reports (the ledger path is part of `super-code`'s return). They live git-ignored inside the integration worktree, so the report is written before that worktree is torn down;
 - the run branch's diff against `base` (`git diff <base>...<branch>`), which Entrypoints reads;
