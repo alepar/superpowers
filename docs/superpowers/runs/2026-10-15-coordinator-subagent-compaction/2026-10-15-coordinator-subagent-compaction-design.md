@@ -203,6 +203,9 @@ read-heavy reviewers, qualitative sizing, a warn-only pre-flight). This spec add
 - Stated in super-code `SKILL.md` "Unattended runs" beside the slowness watch, in the card, and as
   a pointer from super-auto's §Ending turns. It complements the existing Monitor or bounded-loop
   watcher and replaces neither. Between runs, idle compaction behaves as today.
+- Codex has no idle compaction: Codex compacts only on reaching its token limit (the vision's
+  228 Codex compactions were all limit-driven). So the keepalive is Claude Code only, and Codex
+  waits need only the bounded `wait_agent` stretches the card states.
 - Considered: `"idleCompaction": false` (global, a user setting, out of scope); a Monitor-only
   approach (a quiet Monitor does not produce assistant turns). Discarded.
 
