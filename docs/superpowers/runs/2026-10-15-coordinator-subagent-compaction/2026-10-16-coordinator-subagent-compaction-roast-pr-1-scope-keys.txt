@@ -1,0 +1,17 @@
+[Should-fix] skills/super-code/coordinator.js:701; tests/super-code/test-run-profile.sh:337; docs/superpowers/runs/2026-10-15-coordinator-subagent-compaction/final-review-phase3.md:1
+[Should-fix] skills/super-code/scripts/run-digest:95
+[Should-fix] skills/super-code/scripts/run-marker:139-143
+[Should-fix] skills/super-code/coordinator.js:1401; skills/super-code/coordinator.js:1402
+[Should-fix] skills/super-code/coordinator.js:1677
+[Should-fix] skills/super-code/scripts/report-verdict:116
+[Should-fix] skills/super-code/scripts/report-verdict:73
+[Should-fix] skills/super-code/scripts/context-preflight:121
+[Should-fix] skills/super-code/scripts/dispatch-text.mjs:198; skills/super-code/scripts/dispatch-text.mjs:206
+[Should-fix] tests/hooks/test-run-block.sh:161
+[Should-fix] tests/hooks/test-run-block.sh:109
+[Nit] hooks/run-block.sh:69; hooks/run-block.sh:66
+[Nit] skills/super-code/coordinator.js:1674
+[Nit] skills/super-code/coordinator.js:1775
+[Nit] skills/super-code/coordinator.js:723
+[Nit] skills/super-code/coordinator.js:1775; skills/super-code/SKILL.md:143
+[Nit] skills/super-code/MAINTENANCE.md:1266

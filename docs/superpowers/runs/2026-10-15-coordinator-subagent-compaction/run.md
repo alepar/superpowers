@@ -2,7 +2,7 @@
 
 flags: planOneShot=t skipPlanRoast=f skipCodeRoast=f autonomous=f
 resumeChange: 2026-10-15 · "one-shot design … fully autonomous after" + "lgtm" · autonomous=t from phase 3 onward (no stops until the phase-7 hand-back)
-phase: roast-code
+phase: fix-loop
 codeMechanism: Workflow
 
 idea: Implement both vision specs in one run: docs/superpowers/specs/2026-10-15-vision-coordinator-compaction.md and docs/superpowers/specs/2026-10-15-vision-subagent-compaction.md. One-shot design; pause once design is done so the user can review the split into beads; fully autonomous after that. Both roasts on. The herdr tabs "coordinator-compaction" and "subagent-compaction" in this workspace authored the visions and can be consulted about decision rationale while writing the design spec.
@@ -52,3 +52,24 @@ codeBuckets:
   processSweep: stopped 0 · survived 0
 roastCodeRound: 1
 decision-run-profile-cases: autonomous — allow three label-kind case entries (assemble, split, close-split) in run-profile.mjs outside --in-flight so the release-checklist test passes; trivially mergeable with super-auto/run-profile-context-pass; supersedes the off-epic bead super-plan-xsa (to be closed in favour of an in-epic fix bead)
+stepBackCode-round-1: patch — Round 1 found 21 independent-to-loosely-clustered defects, no recurrence; patch with five rule clusters, keep the design.
+scopeFilter-round-1: [Should-fix] skills/super-code/coordinator.js:701; tests/super-code/test-run-profile.sh:337; docs/superpowers/runs/2026-10-15-coordinator-subagent-compaction/final-review-phase3.md:1 punch-list — Concerns run-profile.mjs timing classification of labels, which is out of scope (run-profile.mjs); the goal-named assemble/split behavior itself is not wrong.
+scopeFilter-round-1: [Should-fix] skills/super-code/scripts/run-digest:95 in-scope — run-digest aborts on a Task-less ledger.
+scopeFilter-round-1: [Should-fix] skills/super-code/scripts/run-marker:139-143 in-scope — Marker refresh drops epic/ledger.
+scopeFilter-round-1: [Should-fix] skills/super-code/coordinator.js:1401; skills/super-code/coordinator.js:1402 in-scope — Split race.
+scopeFilter-round-1: [Should-fix] skills/super-code/coordinator.js:1677 in-scope — Fitting inputs forced to capped.
+scopeFilter-round-1: [Should-fix] skills/super-code/scripts/report-verdict:116 in-scope — Untested scope omitted.
+scopeFilter-round-1: [Should-fix] skills/super-code/scripts/report-verdict:73 in-scope — Garbled verdict on a real review.
+scopeFilter-round-1: [Should-fix] skills/super-code/scripts/context-preflight:121 in-scope — Wrong windows.
+scopeFilter-round-1: [Should-fix] skills/super-code/scripts/dispatch-text.mjs:198; skills/super-code/scripts/dispatch-text.mjs:206 in-scope — Final-review dispatch drops arguments.
+scopeFilter-round-1: [Should-fix] tests/hooks/test-run-block.sh:161 in-scope — Invented child payload.
+scopeFilter-round-1: [Should-fix] tests/hooks/test-run-block.sh:109 in-scope — No truncation test.
+scopeFilter-round-1: [Nit] hooks/run-block.sh:69; hooks/run-block.sh:66 in-scope — --agent main session misclassified.
+scopeFilter-round-1: [Nit] skills/super-code/coordinator.js:1674 in-scope — Whitespace cluster names.
+scopeFilter-round-1: [Nit] skills/super-code/coordinator.js:1775 in-scope — reviewPath without file.
+scopeFilter-round-1: [Nit] skills/super-code/coordinator.js:723 in-scope — Exit 4 split path.
+scopeFilter-round-1: [Nit] skills/super-code/coordinator.js:1775; skills/super-code/SKILL.md:143 in-scope — Stale SKILL.md contract.
+scopeFilter-round-1: [Nit] skills/super-code/MAINTENANCE.md:1266 in-scope — Child-detection doc claim.
+cluster dropped: runprofile-labels — Fix it once: add `case` entries for `assemble`, `split` and `close-split` to the run-profile.mjs kind switch; bring bead super-plan-xsa under epic super-plan-goq and close it with that fix; then check that every label coordinator.js dispatches is classified, so test-run-profile.sh passes.
+scope-filter: 16 in-scope · 1 punch-listed
+fixBeads-round-1: super-plan-goq.34–super-plan-goq.44 (5 cluster beads, 6 single; .44 from final-review Must-fix bead super-plan-xsa, closed as superseded)
