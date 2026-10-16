@@ -3,7 +3,7 @@
 flags: planOneShot=t skipPlanRoast=f skipCodeRoast=f autonomous=t
 phase: report
 roastCodeRound: 2
-roast-code: 2026-10-15-run-profile-context-pass-roast-pr-1.md, 2026-10-15-run-profile-context-pass-roast-pr-2.md
+roast-code: 2026-10-15-run-profile-context-pass-roast-pr-1.md, 2026-10-15-run-profile-context-pass-roast-pr-2.md, 2026-10-15-run-profile-context-pass-roast-pr-post-cap-audit.md
 spec: 2026-10-15-run-profile-context-pass-design.md
 epic: super-plan-fqb
 roastDesignRound: 2
@@ -51,3 +51,4 @@ scope-filter: 3 in-scope · 2 punch-listed
 roastCodeExit: converged
 finalReviewFixRound: 2026-10-15 · autonomous once-per-run fix round for the fix-loop re-entry's final-review Must-fix (contextBaseline double count, goal-named Baseline line) · bead super-plan-fqb.11 · the post-cap audit covers it
 baseAbsorbed: de7a58b → 0eb7905, 0 conflicted files
+friction: 3 events
