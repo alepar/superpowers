@@ -160,7 +160,7 @@ const comp = (pre, trigger = 'auto', gapMs = 1000) => ({ at: at(0), trigger, pre
   const s = summarizeContext([un, rec('impl:a', 30000, 200000)])
   const md = contextMarkdown(s)
   check('unmeasured transcript: counted as unmeasured on the summary line', contextLines(s)[0].includes('agents 2 (measured 1)'), true)
-  check('unmeasured transcript: a Markdown row with its reason', md.includes('| scout | agent | — | 0 | unmeasured: no usage rows | — | — | — | — | 0 |'), true)
+  check('unmeasured transcript: a Markdown row with its reason', md.includes('| scout | agent | — | 1 | 0 | unmeasured: no usage rows | — | — | — | — | 0 |'), true)
   check('unmeasured transcript: the JSON record keeps peak null and the reason', JSON.parse(JSON.stringify(contextJson(s))).agents[0].peak === null && contextJson(s).agents[0].unmeasured === 'no usage rows', true)
   check('nothing measured: an unavailable line', contextLines(summarizeContext([un])), ['Profile: context — unavailable — no usage rows in any transcript'])
 }
@@ -227,4 +227,23 @@ const comp = (pre, trigger = 'auto', gapMs = 1000) => ({ at: at(0), trigger, pre
   const two = codexContext([meta(0), tc(1, 50000, 258400), compacted(2, 240000), tc(3, 200000, 258400), tc(4, 60000, 258400),
     tc(5, 30000, 258400), compacted(6, 100000), tc(7, 10000, 258400)], { spans: [[0, 3], [5, 8]] })
   check('codex spans: two spans; a post is never taken across a span end', [two.requests, two.peak, two.compactions.map(c => c.post)], [3, 240000, [null, 10000]])
+}
+// ---- tasks received ----
+{
+  const tr = (s, id) => user(s, [{ type: 'tool_result', tool_use_id: id, content: 'ok' }])
+  const r = claudeContext([user(0, 'brief'), user(0, 'brief, continued'), asst(1, 5000), tr(2, 't1'), asst(3, 6000),
+    user(4, 'meta', { isMeta: true }), user(10, 'follow-up task'), asst(11, 7000), user(20, 'summary', { isCompactSummary: true }), asst(21, 8000)])
+  check('claude tasks: split prompt rows are one task; a continuation after an assistant turn is a second; tool results, meta and compact summaries are none', r.tasks, 2)
+  const cx = codexContext([meta(0, { subagent_history_start_ordinal: 2 }),
+    { timestamp: at(1), type: 'event_msg', payload: { type: 'task_started' } },
+    { timestamp: at(2), type: 'event_msg', payload: { type: 'task_started' } }, tc(3, 5000, 258400),
+    { timestamp: at(4), type: 'event_msg', payload: { type: 'task_started' } }, tc(5, 6000, 258400)])
+  check('codex tasks: task_started turns from the history start (replayed ones not counted)', cx.tasks, 2)
+  const one = { ...claudeContext([user(0, 'go'), asst(1, 120000)]), label: 'impl:a', role: 'agent' }
+  const many = { ...r, peak: 150000, peakPct: 75, label: 'review:b', role: 'agent' }
+  const coord = { ...r, label: 'coordinator', role: 'coordinator', peak: 160000, peakPct: 80 }
+  const lines = contextLines(summarizeContext([coord, one, many]))
+  check('tasks: the summary counts agents (not coordinators) given more than one task', lines[0].includes(' · tasks>1 1 · '), true)
+  check('tasks: an agent line carries its count only when above one', [lines.find(l => l.includes('review:b'))?.endsWith(' · tasks 2'), lines.find(l => l.includes('impl:a'))?.includes('tasks'), lines.find(l => l.includes('coordinator peak'))?.includes('tasks')], [true, false, false])
+  check('tasks: no tasks>1 token when every agent got one task', contextLines(summarizeContext([one]))[0].includes('tasks>1'), false)
 }

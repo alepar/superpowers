@@ -651,6 +651,9 @@ let contextMemo = null
 function contextResult(rs) {
   if (contextMemo) return contextMemo
   const coords = new Map(), agents = new Map(), reasons = []
+  const contextWindow = opt['context-window'] !== undefined ? Number(opt['context-window']) : undefined
+  // Each agent transcript is reduced to its record as soon as it is read, so peak memory is one
+  // transcript plus the coordinators' rows, not every transcript of the run at once.
   for (const r of rs) {
     const c = r.context
     if (!c) continue
@@ -671,10 +674,9 @@ function contextResult(rs) {
       const rows = readJsonl(a.file)
       const t = c.scoped && spans.length && rows ? firstTs(rows) : null
       if (t !== null && !spans.some(([s, e]) => t >= s && t < e)) continue
-      agents.set(k, { ...a, harness: c.harness, rows })
+      agents.set(k, HARNESSES[c.harness].read(rows, { label: a.label, role: 'agent', file: a.file, contextWindow }))
     }
   }
-  const contextWindow = opt['context-window'] !== undefined ? Number(opt['context-window']) : undefined
   const records = []
   let n = 0
   for (const e of coords.values()) {
@@ -685,8 +687,9 @@ function contextResult(rs) {
       for (const x of e.wins) if (x.reason) reasons.push(x.reason)
     }
     records.push(HARNESSES[e.harness].read(e.rows, { ...w, label, role: 'coordinator', file: e.file, contextWindow }))
+    e.rows = null
   }
-  for (const a of agents.values()) records.push(HARNESSES[a.harness].read(a.rows, { label: a.label, role: 'agent', file: a.file, contextWindow }))
+  records.push(...agents.values())
   const summary = summarizeContext(records, { reasons })
   // With nothing measured the `unavailable` line already says why; its reasons would only repeat it.
   contextMemo = { summary, lines: contextLines(summary), reasons: summary.measured ? summary.reasons : [] }

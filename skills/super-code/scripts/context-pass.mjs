@@ -48,7 +48,7 @@ function inSpans(rows, o = {}) {
 }
 function blank(harness, o, reason) {
   return { harness, role: o.role ?? 'agent', label: o.label ?? null, file: o.file ?? null, model: null, requests: 0, peak: null, peakAt: null,
-    first: null, window: null, windowSource: null, peakPct: null, compactions: [], unmeasured: reason }
+    first: null, window: null, windowSource: null, peakPct: null, tasks: null, compactions: [], unmeasured: reason }
 }
 
 // ---- Claude Code ----
@@ -75,15 +75,25 @@ const claudeUsage = r => {
   const parts = [u.input_tokens, u.cache_read_input_tokens, u.cache_creation_input_tokens].map(num)
   return parts.every(x => x === null) ? null : parts.reduce((s, x) => s + (x ?? 0), 0)
 }
+// A task an agent received: a genuine prompt row (its first task, then each SendMessage continuation)
+// after an assistant turn, never a tool result, a meta row or a compaction summary.
+const claudePrompt = r => {
+  if (r?.type !== 'user' || r.isMeta || r.isCompactSummary) return false
+  const c = r.message?.content
+  return typeof c === 'string' ? c.trim() !== '' : Array.isArray(c) && !c.some(x => x?.type === 'tool_result') && c.some(x => x?.type === 'text')
+}
 // opts: { spans | fromRow, toRow, contextWindow, label, role, file }.
 export function claudeContext(rows, opts = {}) {
   if (!Array.isArray(rows)) return blank('claude', opts, 'transcript missing or unreadable')
   const on = inSpans(rows, opts)
   const ids = new Set(), comps = []
-  let peak = null, peakAt = null, peakModel = null, first = null, model = null, lastUsageT = null, waiting = null
+  let peak = null, peakAt = null, peakModel = null, first = null, model = null, lastUsageT = null, waiting = null, tasks = 0, answered = true
   const see = (ctx, at, m) => { if (peak === null || ctx > peak) { peak = ctx; peakAt = at; peakModel = m } }
   for (let i = 0; i < rows.length; i++) {
     const r = rows[i]
+    // Prompt rows with no assistant turn between them are one task (a prompt split across rows).
+    if (r?.type === 'assistant') answered = true
+    else if (on[i] && answered && claudePrompt(r)) { tasks++; answered = false }
     const ctx = claudeUsage(r)
     if (ctx !== null) {
       model = r.message.model ?? model
@@ -104,7 +114,7 @@ export function claudeContext(rows, opts = {}) {
     }
     if (on[i] === 2) waiting = null
   }
-  if (peak === null) return { ...blank('claude', opts, 'no usage rows'), compactions: comps }
+  if (peak === null) return { ...blank('claude', opts, 'no usage rows'), tasks, compactions: comps }
   let { window, source } = claudeWindow(peakModel, opts.contextWindow)
   if (source === 'table' && peak > window) {
     const up = WINDOW_SIZES.find(w => w >= peak && w > window)
@@ -114,7 +124,7 @@ export function claudeContext(rows, opts = {}) {
     }
   }
   return { harness: 'claude', role: opts.role ?? 'agent', label: opts.label ?? null, file: opts.file ?? null, model: peakModel, requests: ids.size,
-    peak, peakAt, first, window, windowSource: source, peakPct: pctOf(peak, window), compactions: comps, unmeasured: null }
+    peak, peakAt, first, window, windowSource: source, peakPct: pctOf(peak, window), tasks, compactions: comps, unmeasured: null }
 }
 function claudeCause(c) {
   if (c.trigger === 'manual') return 'manual'
@@ -153,7 +163,7 @@ export function codexContext(rows, opts = {}) {
   }
   const windowAt = i => (wins.findLast(([j]) => j <= i) ?? wins.find(([j]) => j > i))?.[1] ?? null
   const comps = []
-  let peak = null, peakAt = null, peakI = -1, peakModel = null, first = null, model = null, requests = 0, waiting = null
+  let peak = null, peakAt = null, peakI = -1, peakModel = null, first = null, model = null, requests = 0, waiting = null, tasks = 0
   const see = (ctx, i) => {
     if (first === null) first = ctx
     if (peak === null || ctx > peak) { peak = ctx; peakAt = rows[i].timestamp ?? null; peakI = i; peakModel = model }
@@ -162,6 +172,7 @@ export function codexContext(rows, opts = {}) {
     const r = rows[i], p = r?.payload
     if (p && r.type === 'turn_context') model = p.model ?? model
     else if (!p || !on[i]) { /* outside every span: carry-over state only */ }
+    else if (r.type === 'event_msg' && p.type === 'task_started') tasks++   // its spawn task, then each follow-up
     else if (r.type === 'event_msg' && p.type === 'token_count') {
       const ctx = num(p.info?.last_token_usage?.input_tokens)
       if (ctx) {
@@ -181,10 +192,10 @@ export function codexContext(rows, opts = {}) {
     }
     if (on[i] === 2) waiting = null
   }
-  if (peak === null) return { ...blank('codex', opts, 'no usage rows'), compactions: comps }
+  if (peak === null) return { ...blank('codex', opts, 'no usage rows'), tasks, compactions: comps }
   const window = windowAt(peakI)
   return { harness: 'codex', role: opts.role ?? 'agent', label: opts.label ?? null, file: opts.file ?? null, model: peakModel, requests,
-    peak, peakAt, first, window, windowSource: window ? 'transcript' : null, peakPct: pctOf(peak, window), compactions: comps, unmeasured: null }
+    peak, peakAt, first, window, windowSource: window ? 'transcript' : null, peakPct: pctOf(peak, window), tasks, compactions: comps, unmeasured: null }
 }
 function codexCause(c) {
   if (!c.window || c.pre === null) return 'unknown'
@@ -248,6 +259,7 @@ export function summarizeContext(agents, opts = {}) {
   if (table.size) reasons.push(`Claude context windows from the model table: ${[...table].sort().map(([m, w]) => `${m} ${kTok(w)}`).join(', ')}`)
   for (const r of opts.reasons ?? []) if (r && !reasons.includes(r)) reasons.push(r)
   return { agents: as, n: as.length, measured: measured.length, high: measured.filter(a => (a.peakPct ?? 0) >= HIGH_PCT).length,
+    multiTask: as.filter(a => a.role === 'agent' && (a.tasks ?? 0) > 1).length,
     compacted: as.filter(a => a.compactions.length).length, compactions: CAUSES.reduce((s, k) => s + byCause[k], 0), byCause,
     coordinator, max: top ? { label: nameOf(top), peakPct: top.peakPct } : null, reasons }
 }
@@ -259,7 +271,7 @@ const order = (x, y) => y.compactions.length - x.compactions.length || (y.peakPc
 export function contextLines(s, opts = {}) {
   if (!s.measured) return [`Profile: context — unavailable — ${opts.why ?? (s.n ? 'no usage rows in any transcript' : 'no transcripts found')}`]
   const causes = causeList(s.byCause, ' · ')
-  const parts = [`agents ${s.n} (measured ${s.measured})`, `peak≥80% ${s.high}`, `compacted ${s.compacted} agents, ${s.compactions} compactions${causes ? ` (${causes})` : ''}`]
+  const parts = [`agents ${s.n} (measured ${s.measured})`, `peak≥80% ${s.high}`, ...(s.multiTask ? [`tasks>1 ${s.multiTask}`] : []), `compacted ${s.compacted} agents, ${s.compactions} compactions${causes ? ` (${causes})` : ''}`]
   if (s.coordinator) parts.push(s.coordinator.peak === null ? 'coordinator unmeasured' : `coordinator ${peakText(s.coordinator)}, ${s.coordinator.compactions} compactions`)
   if (s.max) parts.push(`max ${s.max.label} ${s.max.peakPct}%`)
   const out = [`Profile: context — ${parts.join(' · ')}`]
@@ -268,7 +280,7 @@ export function contextLines(s, opts = {}) {
     const counts = {}
     for (const c of a.compactions) counts[c.cause] = (counts[c.cause] ?? 0) + 1
     const cs = causeList(counts, ', ')
-    out.push(`Profile: context agent — ${nameOf(a)} peak ${peakText(a)} · first ${a.first === null ? 'unmeasured' : kTok(a.first)} · compactions ${a.compactions.length}${cs ? ` (${cs})` : ''}`)
+    out.push(`Profile: context agent — ${nameOf(a)} peak ${peakText(a)} · first ${a.first === null ? 'unmeasured' : kTok(a.first)} · compactions ${a.compactions.length}${cs ? ` (${cs})` : ''}${a.role === 'agent' && (a.tasks ?? 0) > 1 ? ` · tasks ${a.tasks}` : ''}`)
   }
   if (shown.length > AGENT_LINE_CAP) out.push(`Profile: context agent — ${shown.length - AGENT_LINE_CAP} more in --out`)
   return out
@@ -276,13 +288,13 @@ export function contextLines(s, opts = {}) {
 const cell = v => String(v ?? '—').replace(/\|/g, '\\|')
 export function contextMarkdown(s) {
   const lines = ['## Context', '', ...contextLines(s).map(l => `- ${l}`), '',
-    '| agent | role | model | requests | first | peak | window | source | peak% | compactions |',
-    '| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |']
+    '| agent | role | model | tasks | requests | first | peak | window | source | peak% | compactions |',
+    '| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |']
   const rows = [...s.agents].sort((x, y) => (y.role === 'coordinator') - (x.role === 'coordinator') || order(x, y))
   for (const a of rows) {
-    if (a.peak === null) { lines.push(`| ${cell(nameOf(a))} | ${a.role} | ${cell(a.model)} | ${a.requests} | unmeasured: ${cell(a.unmeasured)} | — | — | — | — | ${a.compactions.length} |`); continue }
+    if (a.peak === null) { lines.push(`| ${cell(nameOf(a))} | ${a.role} | ${cell(a.model)} | ${a.tasks ?? '—'} | ${a.requests} | unmeasured: ${cell(a.unmeasured)} | — | — | — | — | ${a.compactions.length} |`); continue }
     const cs = a.compactions.map(c => `${c.cause} ${c.pre === null ? '?' : kTok(c.pre)}→${c.post === null ? '?' : kTok(c.post)}`).join(', ')
-    lines.push(`| ${cell(nameOf(a))} | ${a.role} | ${cell(a.model)} | ${a.requests} | ${a.first === null ? '—' : kTok(a.first)} | ${kTok(a.peak)} | ${a.window ? kTok(a.window) : 'unknown'} | ${a.windowSource ?? '—'} | ${a.peakPct === null ? '—' : `${a.peakPct}%`} | ${a.compactions.length}${cs ? `: ${cs}` : ''} |`)
+    lines.push(`| ${cell(nameOf(a))} | ${a.role} | ${cell(a.model)} | ${a.tasks ?? '—'} | ${a.requests} | ${a.first === null ? '—' : kTok(a.first)} | ${kTok(a.peak)} | ${a.window ? kTok(a.window) : 'unknown'} | ${a.windowSource ?? '—'} | ${a.peakPct === null ? '—' : `${a.peakPct}%`} | ${a.compactions.length}${cs ? `: ${cs}` : ''} |`)
   }
   return lines.join('\n') + '\n'
 }
