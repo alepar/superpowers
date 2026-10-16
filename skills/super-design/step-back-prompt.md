@@ -99,4 +99,6 @@ Task tool (general-purpose), model: opus:
     scope: inside | outside — <the goal / non-goal clause it touches, quoted; "inside" means
       the root goal and non-goals stand unchanged>
     recommendation: <one or two sentences: why this redesign over continued patching>
+
+    FINAL ANSWER: your structured result is the whole answer. Return every field your schema or output template defines, in full, and add no prose summary beside it.
 ```

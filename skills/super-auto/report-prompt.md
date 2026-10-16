@@ -2,7 +2,12 @@
 
 `report.md` is written at phase `report` to `docs/superpowers/runs/YYYY-MM-DD-<slug>/report.md` and committed with the run's other artifacts. Its one reader is a human who did not watch the run and is deciding whether to merge, dig further, or intervene. A run can finish with known Blocking findings or an unresolved escalation; the report's job is to make that outcome impossible to mistake for "everything's fine".
 
-The orchestrator writes and commits the file. A drafting subagent (SKILL.md §Subagent dispatch, report drafter row) is read-only and returns the report body as text.
+The orchestrator commits the file. A drafting subagent (SKILL.md §Subagent dispatch, report drafter row) writes the draft and returns only its path:
+
+- The drafter writes the whole report except the status block to `<run-dir>/report.draft.md`, whose first line is exactly `{{STATUS_BLOCK}}`, and writes nothing else.
+- The orchestrator runs `report-status` (§The status block) itself and gives its output to the drafter as an input (the qualifier lines feed Remaining and Smells).
+- The orchestrator then replaces the `{{STATUS_BLOCK}}` line with the `status:` line from `report-status` and the `metrics:` line, writes the result as `<run-dir>/report.md`, and deletes the draft, without reading the body — e.g. `awk -v s="$status_line" -v m="$metrics_line" 'NR==1 && $0=="{{STATUS_BLOCK}}" {print s; print m; next} {print}' report.draft.md > report.md && rm report.draft.md`.
+- The drafter's closing instruction: FINAL ANSWER: your final message is exactly one line: your verdict, then " — " and the absolute path of the file that holds your full report (" — none" when this job writes no report). Never paste a report body into your final message. Its final message is `drafted — <run-dir>/report.draft.md`.
 
 ## Allowed sources
 

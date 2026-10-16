@@ -79,6 +79,50 @@ run bash "$D" --ledger "$L" --stdout triage --id ep.2 --blocker ep.7
 assert_has "$out" "blocker bead ep.7, filed against task ep.2" "triage"
 assert_has "$out" "waitFor" "and its waitFor field"
 
+echo "dispatch-text: final-answer rule"
+SCHEMA_RULE='FINAL ANSWER: your structured result is the whole answer. Return every field your schema or output template defines, in full, and add no prose summary beside it.'
+VERDICT_RULE='FINAL ANSWER: your final message is exactly one line: your verdict, then " — " and the absolute path of the file that holds your full report (" — none" when this job writes no report). Never paste a report body into your final message.'
+ends_with_rule() {  # $1 = label, rest = dispatch-text args; the last non-empty line must end with the schema rule
+  local label="$1"; shift
+  run bash "$D" --ledger "$L" --stdout "$@"
+  local last; last=$(printf '%s\n' "$out" | awk 'NF{l=$0} END{print l}')
+  case "$last" in *"$SCHEMA_RULE") pass "$label ends with the final-answer rule" ;; *) fail "$label ends with the final-answer rule"; echo "    last line ends: ${last: -120}" ;; esac
+}
+ends_with_rule implement implement --id ep.2 --n 2
+ends_with_rule "implement (stacked)" implement --id ep.2 --n 2 --parents ep.1
+ends_with_rule "implement (reentry)" implement --id ep.2 --n 2 --reentry
+ends_with_rule review review --id ep.2 --n 2 --base abc1234
+ends_with_rule "fix (check)" fix --id ep.2 --n 2 --base abc1234 --kind check --finding-file "$T/err.txt"
+printf 'a finding\n' > "$T/finding.txt"
+ends_with_rule "fix (review)" fix --id ep.2 --n 2 --base abc1234 --kind review --finding-file "$T/finding.txt"
+ends_with_rule "fix (seam)" fix --id ep.2 --n 2 --base abc1234 --kind seam --finding-file "$T/finding.txt"
+ends_with_rule seam-review seam-review --id ep.2 --n 2 --base abc1234 --merge-base def5678 --head 9999999 --overlap src/a.rs
+ends_with_rule check-fix-review check-fix-review --id ep.2 --n 2 --pre-fix-head abc1234 --errors-file "$T/err.txt"
+ends_with_rule merge merge --id ep.2 --n 2 --base abc1234
+ends_with_rule "merge (stacked)" merge --id ep.2 --n 2 --base abc1234 --stacked --review-bead ep.9
+ends_with_rule "plan (ready)" plan --ids ep.1,ep.2 --mode ready
+ends_with_rule "plan (rest)" plan --ids ep.1 --mode rest
+ends_with_rule "plan (refill)" plan --ids ep.1 --mode refill
+ends_with_rule triage triage --id ep.2 --blocker ep.7
+CJS="$REPO_ROOT/skills/super-code/coordinator.js"
+STEP="$REPO_ROOT/skills/super-design/step-back-prompt.md"
+SCOPE="$REPO_ROOT/skills/super-auto/scope-filter-prompt.md"
+REPORT="$REPO_ROOT/skills/super-auto/report-prompt.md"
+has_f() { if grep -qF -- "$2" "$3"; then pass "$1"; else fail "$1"; echo "    missing in $3"; fi; }
+lacks_f() { if grep -qF -- "$2" "$3"; then fail "$1"; echo "    unexpected in $3"; else pass "$1"; fi; }
+has_f "coordinator.js carries the schema-form rule" "$SCHEMA_RULE" "$CJS"
+has_f "coordinator.js carries the verdict-form rule" "$VERDICT_RULE" "$CJS"
+has_f "step-back-prompt.md copies the schema form" "$SCHEMA_RULE" "$STEP"
+has_f "scope-filter-prompt.md copies the schema form" "$SCHEMA_RULE" "$SCOPE"
+has_f "report-prompt.md copies the verdict form" "$VERDICT_RULE" "$REPORT"
+lacks_f "report-prompt.md has no schema form" "$SCHEMA_RULE" "$REPORT"
+lacks_f "step-back-prompt.md has no verdict form" "$VERDICT_RULE" "$STEP"
+lacks_f "scope-filter-prompt.md has no verdict form" "$VERDICT_RULE" "$SCOPE"
+has_f "report-prompt.md describes the draft handoff" "report.draft.md" "$REPORT"
+has_f "report-prompt.md names the status placeholder" "{{STATUS_BLOCK}}" "$REPORT"
+row=$(grep '^| report drafter' "$REPO_ROOT/skills/super-auto/SKILL.md" || true)
+assert_has "$row" "report.draft.md" "SKILL.md's report drafter row names report.draft.md"
+
 echo "dispatch-text: run facts and bad input"
 printf '%s\n' 'Launch: args {"epicId":"ep","integrationBranch":"feat/y","integrationWorktree":"/r/wy","config":{"mergeCheck":"none"}}' > "$T/ws/wf.md"
 run bash "$D" --ledger "$T/ws/wf.md" --stdout merge --id ep.2 --n 2 --base abc1234
