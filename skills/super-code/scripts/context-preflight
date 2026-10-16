@@ -122,7 +122,7 @@ read_claude() {
       if [ -r "$f" ] && [ ! -d "$f" ]; then
         have_src=1
         session=$(sed -n 's/.*"model"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' "$f" 2>/dev/null | head -1 || true)
-        break
+        [ -z "$session" ] || break   # a file without a model key defers to the next layer
       fi
     done
   fi
