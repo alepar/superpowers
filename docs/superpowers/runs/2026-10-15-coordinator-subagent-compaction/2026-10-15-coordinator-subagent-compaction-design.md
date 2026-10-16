@@ -78,8 +78,9 @@ read-heavy reviewers, qualitative sizing, a warn-only pre-flight). This spec add
   optimisation, never a gate.
 - `get <session_id>` prints the marker and exits 0 only when it is live, otherwise exit 1. Live
   means: under super-auto, `run_md` exists and its `phase:` is not `done`. For standalone
-  super-code, the ledger exists, the marker is under 14 days old, and the ledger has no `Finish:
-  done` line. super-code's Finish writes that one new ledger line, which `ledger-digest` drops.
+  super-code, the ledger exists and the marker is under 14 days old. The calling session clears
+  the marker at Finish, so only a crashed run leaves a stale one, which expires. Neither
+  coordinator writes a new ledger line for this.
 - `register` is idempotent: it rewrites the file and refreshes paths. It also prunes markers older
   than 14 days that are no longer live. `clear` removes only the caller's session marker.
 - The marker format is private to the script. The hook and `run-digest` read markers only through
@@ -89,8 +90,9 @@ read-heavy reviewers, qualitative sizing, a warn-only pre-flight). This spec add
     phase 3 creates the ledger (to add its path);
   - super-code, at launch, only when `get` finds no live marker for this session (a standalone
     run).
-- Who clears: super-auto at `phase: done`; super-code at Finish, only when the marker's `skill` is
-  `super-code`.
+- Who clears: super-auto at `phase: done`; super-code's calling session at Finish (after the
+  coordinator Workflow returns, or at the ordinary loop's Finish), only when the marker's `skill`
+  is `super-code`.
 - Considered: a JSON marker (would make the hook depend on jq or node); a marker inside the run
   directory (the hook only knows the session id, so it would have to search every repo).
   Discarded.
@@ -382,7 +384,7 @@ The visions' failure sections hold. In addition:
 ## Key abstractions
 
 **run-marker** — new bash module (script with subcommands `register | clear | get | prune`), the single store of "which session is coordinating which run".
-- Owns: the marker file location, its private `key: value` format, the liveness rule (super-auto: `run_md` phase ≠ `done`; standalone: ledger exists, marker < 14 days, no `Finish: done`), the 14-day prune, and session-id resolution (`$CLAUDE_CODE_SESSION_ID` → `$CODEX_THREAD_ID` → explicit id argument).
+- Owns: the marker file location, its private `key: value` format, the liveness rule (super-auto: `run_md` phase ≠ `done`; standalone: ledger exists, marker < 14 days), the 14-day prune, and session-id resolution (`$CLAUDE_CODE_SESSION_ID` → `$CODEX_THREAD_ID` → explicit id argument).
 - Hides: the marker format and how liveness is computed — to the hook, run-digest and the skills, `get`'s exit code is the whole answer.
 - Must not: read `run.md` fields or the ledger beyond liveness, or print run state (run-digest does that); never fail a caller — no session id means skip, exit 0.
 - Relationships: leaf. super-auto/super-code (register/clear), run-digest and both hook entries (get) depend on it; it depends on nothing in the repo.
