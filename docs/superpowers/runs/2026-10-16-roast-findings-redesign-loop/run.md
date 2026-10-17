@@ -10,3 +10,7 @@ idea: Implement the vision in docs/superpowers/specs/2026-10-16-vision-roast-fin
 branch: super-auto/roast-findings-redesign-loop
 base: main
 spec: 2026-10-16-roast-findings-redesign-loop-design.md
+epic: super-plan-59b
+
+approvals:
+- top-split · auto · super-plan-59b.1 LEAF, super-plan-59b.2 LEAF, super-plan-59b.3 LEAF, super-plan-59b.4 LEAF, super-plan-59b.5 LEAF, super-plan-59b.6 LEAF (PROMOTE overruled → split, sp:demoted-by-session), super-plan-59b.7 LEAF, super-plan-59b.8 LEAF, super-plan-59b.9 LEAF, super-plan-59b.10 LEAF
