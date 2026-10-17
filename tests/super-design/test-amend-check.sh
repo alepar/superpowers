@@ -101,6 +101,8 @@ assert_eq "$code" 3 "--loop code: key covered only by an amended owner section: 
 assert_has "$out" "reverse: open item not covered by a work: line: [Blocking] src/a.sh:10" "code loop needs a work: line"
 case_run od design owner-section-only.md spec-edit-ok.md
 assert_eq "$out" "ok" "the same record passes under --loop design"
+case_run odd design owner-section-dot-slash.md spec-edit-ok.md
+assert_eq "$out" "ok" "--loop design: owner ./docs/spec.md matches amended: docs/spec.md for the reverse rule"
 
 echo "amend-check: spec diff"
 case_run au code amended-untouched.md spec-edit-ok.md

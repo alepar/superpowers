@@ -33,7 +33,7 @@
 #             and no diff line falls inside it; a Goal present on one side only is a change
 #   unchanged the root spec has an `## Unchanged behavior` section
 # Spec paths are compared normalised: `./docs/x.md` and `docs/x.md` are the same spec, in --specs and
-# in amended: alike. A spec absent from REV and untracked (one the amendment created) is diffed as
+# in owners: and amended: alike. A spec absent from REV and untracked (one the amendment created) is diffed as
 # all-added, so its sections count as changed; its Goal is new, not edited, so the goal rule skips it.
 #
 # Does not: edit or restore specs, file beads, write overrides (Amend Mode does), or re-check the
@@ -181,6 +181,23 @@ awk -v dir="$tmp" '
 ' "$amend"
 for f in owners.txt amended.txt work.txt supersedes.txt rejects.parse; do [ -f "$tmp/$f" ] || : > "$tmp/$f"; done
 
+spec_index() { # a spec as written in the record -> index into specs[], or empty
+  local want=${1#./} j=0 sp
+  for sp in "${specs[@]}"; do
+    j=$((j + 1)); sp=${sp#./}
+    if [ "$sp" = "$want" ] || [ "${sp%/"$want"}" != "$sp" ] || [ "${want%/"$sp"}" != "$want" ]; then echo "$j"; return; fi
+  done
+}
+# spec_key SPEC: the spec column the reverse rule compares, `#<index>` for a --specs entry, else the path without `./`.
+spec_key() { local idx; idx=$(spec_index "$1"); if [ -n "$idx" ]; then echo "#$idx"; else echo "${1#./}"; fi; }
+while IFS= read -r line; do # only owner rows carry a spec; a tab IFS would collapse the others' empty fields
+  IFS=$'\t' read -r k kind sp sec <<< "$line"
+  if [ "$kind" = owner ]; then printf '%s\towner\t%s\t%s\n' "$k" "$(spec_key "$sp")" "$sec"; else printf '%s\n' "$line"; fi
+done < "$tmp/owners.txt" > "$tmp/owners.norm"
+while IFS=$'\t' read -r sp sec; do
+  printf '%s\t%s\n' "$(spec_key "$sp")" "$sec"
+done < "$tmp/amended.txt" > "$tmp/amended.norm"
+
 # --- checks 1-3: owners both ways, work covers, reverse rule ---
 awk -F'\t' -v loop="$loop" -v dir="$tmp" '
   function reject(r) { print "reject: " r >> (dir "/rejects") }
@@ -199,7 +216,7 @@ awk -F'\t' -v loop="$loop" -v dir="$tmp" '
       reject("reverse: open item not covered by a work: line: " k)
     }
   }
-' "$tmp/open.txt" "$tmp/owners.txt" "$tmp/amended.txt" "$tmp/work.txt"
+' "$tmp/open.txt" "$tmp/owners.norm" "$tmp/amended.norm" "$tmp/work.txt"
 
 # --- check 3b: supersedes: lines (code loop supersedes nothing; design titles match a work: line) ---
 awk -F'\t' -v loop="$loop" -v dir="$tmp" '
@@ -258,13 +275,6 @@ touched() {
     }
     END { print found ? 1 : 0 }
   ' "$1"
-}
-spec_index() { # a spec as written in the record -> index into specs[], or empty
-  local want=${1#./} j=0 sp
-  for sp in "${specs[@]}"; do
-    j=$((j + 1)); sp=${sp#./}
-    if [ "$sp" = "$want" ] || [ "${sp%/"$want"}" != "$sp" ] || [ "${want%/"$sp"}" != "$want" ]; then echo "$j"; return; fi
-  done
 }
 
 # --- check 4: every amended section has a changed line inside it ---
