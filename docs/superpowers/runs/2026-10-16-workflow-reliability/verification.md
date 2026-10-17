@@ -44,11 +44,35 @@ Each failure was independently reproduced in a detached throwaway checkout of ex
 
 An intermediate new seam assertion expected the `unknown:` classifier prefix in `processSweep.unknown`. The established consumer removes that prefix and preserves the fact text. The new assertion was corrected to compare the exact fact after documented prefix removal; original assertions were untouched. That intermediate 2276-pass/1-fail result remains in the pre-rebase log. Final post-refresh results follow below.
 
+### Post-refresh results
+
+The task was committed and rebased onto integration `566f0a639c4cad8960bdeff7d62db219f9c1e8f5`, including the separately reviewed profiler fix. The measured task commit is `68a1e7425ec3fe238fa51a7c02b5050b40b09095`, tree `e308a5638d3a8cd1d096707d31162c5c0b47db66`, with `skills/` subtree `200b0bc1eb2af88c3604aefcbe86a173075952fc`. [The exact refresh delta](../../../../evidence/super-plan-ufz.14/source-delta-for-refresh.json) contains only `run-profile.mjs` and its test. [Final source hashes](../../../../evidence/super-plan-ufz.14/source-manifest-final.json) identify all 331 skill/test files. No task-owned product source or behavior-shaping prose changed.
+
+Final command:
+
+```sh
+node evidence/super-plan-ufz.14/run-required-suites.mjs \
+  tests/super-code/replay-harness.mjs \
+  tests/super-code/test-run-profile.sh \
+  tests/super-code/test-dispatch-text.sh \
+  tests/super-code/test-run-profile-in-flight.sh \
+  tests/super-code/test-report-verdict.sh \
+  tests/super-code/test-run-digest.sh
+```
+
+All **6/6 suites passed**, with **6/6 empty hygiene checks**; [final-required-results.json](../../../../evidence/super-plan-ufz.14/final-required-results.json) retains exact individual commands, exits, durations and full log pointers. Replay measured **2277 passed, 0 failed**, including the actual denied-helper-output → Finish seam, and retained dryRun counts **48/19/23**. Profiler measured **325 pass / 0 fail**, in-flight **14/0**, and report-verdict **153/0**. Dispatch and digest printed their all-tests-passed summaries. The new auto collection/evidence/root/disposition/metrics integration fixture passed both its focused run and the first required run; its source is unchanged after refresh.
+
+Packaging passed the unchanged `bash tests/codex/test-package-codex-plugin.sh` against the **same exact measured commit/tree** in the owned standalone clone `/tmp/sp-bce79baa/super-plan-ufz.14/package-source`. [standalone-package.log](../../../../evidence/super-plan-ufz.14/standalone-package.log) ends `All Codex package archive tests passed`, exit 0; its post-test hygiene check is empty. [The provenance record](../../../../evidence/super-plan-ufz.14/standalone-package-result.json) includes the exact Git identities and byte-equality check against the run-baseline package source. The owned clone was removed after its empty hygiene check. The linked-worktree failure is retained rather than waived or rewritten as a worktree pass. Product package guards and assertions were not changed.
+
+Thus all 23 named suites have passing measurements: 16 unaffected initial-suite results, six refreshed affected suites, and packaging in its supported standalone layout. This is combined source-bound coverage, **not a claim that a fresh single 23-suite run passed in a linked worktree at the final commit**. The parent still owns its final phase-6 sweep and acceptance. The slow audit was not repeated for a change only to a Node profiler module and its focused test.
+
+The selected behavioral source/excerpt hashes were checked again after refresh: **17/17 match**, including the operative review, caller and attribution text. [eval-source-recheck.json](../../../../evidence/super-plan-ufz.14/eval-source-recheck.json) retains the per-entry results. The exact profiler-module hash changed as recorded above; no blanket source-equivalence or behavioral improvement claim is inferred from that narrow mechanical fix.
+
 ## Fixture failure teardown
 
 The actual two replay fixture bodies are exercised by [fixture-failure-probe.mjs](../../../../evidence/super-plan-ufz.14/fixture-failure-probe.mjs), injecting a helper exception or unavailable `ps` stdout. Against the unchanged baseline, all four cases failed: the worktree cases leaked one owned sleeper each and process cases leaked six owned processes each. The probe's independent oracle stopped every recorded fixture PID. This is the reproduced test-hygiene defect, not an unverified product-cleanup claim.
 
-The fix registers children and orphan PIDs immediately, signals only those owned PIDs in `finally`, waits for owned child exits, and removes fixture state after teardown. An unavailable `ps` response throws an explicit inspection-unavailable error. All existing successful-path ownership, stop/no-stop and resource-retention assertions remain. The corrected probe reports **4 passed, 0 failed**, zero live fixture PIDs, no retained fixture directories, and an unregistered live sentinel preserved in every case. The oracle then stops its own sentinel. No process-name matching or unrelated process kill is used.
+The fix registers positive owned child/orphan PIDs immediately, signals only those PIDs in `finally` (skipping children already observed exited), waits for owned child exits, and removes fixture state after teardown. An unavailable `ps` response throws an explicit inspection-unavailable error. All existing successful-path ownership, stop/no-stop and resource-retention assertions remain. The [final corrected probe](../../../../evidence/super-plan-ufz.14/fixture-final-green.log) reports **4 passed, 0 failed**, zero live fixture PIDs, no retained fixture directories, and an unregistered live sentinel preserved in every case. The oracle then stops its own sentinel. No process-name matching or unrelated process kill is used.
 
 ## Coordinator-owned behavioral evidence and limits
 
