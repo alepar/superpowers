@@ -72,7 +72,7 @@ if [ "${1:-}" = --acceptance ]; then
   command -v node >/dev/null 2>&1 || { echo 'NODE_UNAVAILABLE: caller root acceptance unverified' >&2; exit 4; }
   script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
   node - "$script_dir" "$@" <<'ACCEPTANCE'
-const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process');
+const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process'),crypto=require('node:crypto');
 const [scripts,,run,...args]=process.argv.slice(2);
 if(!run || (args.length && (args.length!==2 || args[0]!=='--tree'))){console.error('usage: report-status --acceptance RUN_MD [--tree FULL_GIT_TREE]');process.exit(2)}
 const tree=args[1],pending=[],gaps=[],requirements=new Map(),snapshots=[],nonblockingFindings=[];
@@ -101,6 +101,21 @@ for(const line of input.split(/\r?\n/)){
  }catch(e){gap('root acceptance record: '+e.message)}
 }
 const current=snapshots.at(-1);
+// Review source is immutable provenance carried by Recovery's deferred transport,
+// not a deferred measurement. Validate history as well as the current snapshot.
+const reviewSources=new Map();
+const isReviewSource=r=>object(r)&&(typeof r.id==='string'&&r.id.startsWith('review-source:')||object(r.data)&&Object.hasOwn(r.data,'reviewSource'));
+for(const snapshot of snapshots)for(const r of snapshot.recovery.obligations.filter(isReviewSource)){
+ const source=r.data?.reviewSource;
+ if(r.version!==1||r.kind!=='deferred'||r.operation!=='record'||!text(r.reason)||!Array.isArray(r.evidence)||!r.evidence.length||!r.evidence.every(text)||
+    !object(r.data)||Object.keys(r.data).length!==1||!object(source)||!text(source.invocationId)||!/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(source.invocationId)||
+    r.id!=='review-source:'+source.invocationId||!hash(source.base)||!hash(source.head)){
+  gap('invalid review-source provenance: '+(r.id||'unknown'));continue;
+ }
+ const old=reviewSources.get(source.invocationId);
+ if(old&&(old.base!==source.base||old.head!==source.head))gap('conflicting review-source provenance: '+source.invocationId);
+ else reviewSources.set(source.invocationId,source);
+}
 if(!current)gap('caller acceptance requirements unavailable');
 else{
  if(tree!==undefined&&!hash(tree)){console.error('not a full Git tree identity');process.exit(2)}
@@ -134,12 +149,13 @@ else{
  for(const f of current.runFailures){
   if(!object(f)||!text(f.id)||!['run-introduced','pre-run','gap'].includes(f.classification)||!['open','verified'].includes(f.state)){gap('invalid run failure classification');continue}
   failures.set(f.id,f);
-  if(f.classification==='pre-run')continue; // diagnostic unless acceptance separately requires repair
   for(const g of f.gaps||[])gap(f.id+': '+(typeof g==='string'?g:JSON.stringify(g)));
+  if(f.classification==='pre-run')continue; // diagnostic repair status cannot erase attribution gaps
   if(f.classification==='gap'||f.state!=='verified')wait(f.id+': '+f.classification+' '+f.state+'; owner: '+(f.owner||'caller'));
  }
  for(const r of current.recovery.obligations){
   if(!object(r)||r.version!==1||!text(r.id)||!['hold','pending-closure','deferred'].includes(r.kind)||r.operation!=='record'||!text(r.reason)||!Array.isArray(r.evidence)||!r.evidence.length||!r.evidence.every(text)||!object(r.data)){gap('invalid recovery obligation');continue}
+  if(isReviewSource(r))continue; // validated above, never invent command/configuration work
   if(r.data.runFailure){if(!failures.has(r.id))gap(r.id+': run failure classification unavailable');continue}
   if(r.kind==='deferred'){
    const binding=[...requirements.values()].find(q=>q.kind==='measurement'&&Array.isArray(q.obligations)&&q.obligations.includes(r.id));
@@ -149,6 +165,135 @@ else{
    else measure({...r.data,requiredLive:true},r.id);
   }
   else wait(r.id+': '+r.kind+' '+r.reason+'; owner: '+(r.data.owner||'caller'));
+ }
+}
+// The outer caller collects settled reports. The read-only gate reconciles known
+// producer pointers with complete retained extraction, never ledger display keys.
+const runDir=path.dirname(path.resolve(run)),sources=[],declared=new Map(),ledgers=[],correspondences=[];
+const artifactPath=value=>{const resolved=path.resolve(runDir,value);try{return fs.realpathSync(resolved)}catch{return resolved}};
+let inApprovals=false,fenced=false;
+for(const line of input.split(/\r?\n/)){
+ if(/^\s*(```|~~~)/.test(line)){fenced=!fenced;continue}if(fenced)continue;
+ if(/^[A-Za-z][A-Za-z0-9-]*:/.test(line))inApprovals=line==='approvals:';
+ if(inApprovals&&line.startsWith('- finding-source · ')){
+  try{const s=JSON.parse(line.slice('- finding-source · '.length));if(object(s)&&text(s.source)&&text(s.artifact))sources.push(s)}catch{}
+ }
+ if(line.startsWith('- source-correspondence')){
+  try{
+   if(!inApprovals||!line.startsWith('- source-correspondence · '))throw Error();
+   correspondences.push(JSON.parse(line.slice('- source-correspondence · '.length)));
+  }catch{gap('source coverage: malformed source-correspondence record')}
+ }
+ const report=line.match(/^(roast-design|roast-code):\s*(.*)$/);
+ if(report)for(const artifact of report[2].split(',').map(s=>s.trim())){
+  if(!artifact)gap('source coverage: empty '+report[1]+' report pointer');
+  else declared.set(artifactPath(artifact),'roast');
+ }
+ const ledger=line.match(/^(findingsLedgerDesign|findingsLedger):\s*(.*)$/);
+ if(ledger)ledgers.push({artifact:ledger[2].trim(),loop:ledger[1]==='findingsLedgerDesign'?'design':'code'});
+}
+const repo=cp.spawnSync('git',['-C',runDir,'rev-parse','--show-toplevel'],{encoding:'utf8'});
+const repoDir=repo.status===0?repo.stdout.trim():null;
+const ledgerKeys=new Map();
+for(const {artifact,loop} of ledgers){
+ try{
+  if(!artifact)throw Error('empty ledger pointer');
+  const lines=fs.readFileSync(path.resolve(runDir,artifact),'utf8').trimEnd().split(/\r?\n/);
+  if(!new RegExp('^# findings ledger — '+loop+' — through r[0-9]+$').test(lines[0])||!/^triggers: .+/.test(lines[1]||'')||
+     !/^blocking: .+/.test(lines[2]||'')||!/^ignored-overrides: [0-9]+$/.test(lines[3]||''))throw Error('malformed ledger header');
+  for(const [index,line] of lines.slice(4).entries()){
+   if(!line.trim())continue;
+   const row=line.match(/^- (\[[^\]]+\] .+) · raised r[0-9]+@(?:[a-f0-9]+|-) · .+ · source (roast|final-review) · text (.+)$/);
+   if(!row){gap('source coverage: malformed ledger row '+artifact+':'+(index+5));continue}
+   // The producer preserves its input path. Accept a run-relative or repo-relative
+   // path only when it selects one unambiguous original file, never by basename/key.
+   const candidates=[...new Set([artifactPath(row[3]),...(repoDir?[artifactPath(path.resolve(repoDir,row[3]))]:[])])].filter(p=>fs.existsSync(p));
+   if(candidates.length!==1){gap('source coverage: unavailable or ambiguous ledger report '+artifact+':'+(index+5)+' '+row[3]);continue}
+   const kind=row[2]==='final-review'?'keys':'roast';
+   const cacheKey=JSON.stringify([candidates[0],kind]);
+   if(!ledgerKeys.has(cacheKey)){
+    if(kind==='keys')ledgerKeys.set(cacheKey,fs.readFileSync(candidates[0],'utf8').split(/\r?\n/).map(k=>k.trim().replace(/^r[0-9]+\s+/,'')));
+    else{
+     const keys=cp.spawnSync('bash',[path.resolve(scripts,'../../super-code/scripts/report-verdict'),'--keys',candidates[0]],{encoding:'utf8'});
+     ledgerKeys.set(cacheKey,keys.status===0?keys.stdout.split(/\r?\n/):[]);
+    }
+   }
+   // Key membership checks the ledger producer's pointer transport only. It never
+   // identifies, links or resolves occurrences; complete source/ref checks follow.
+   if(!ledgerKeys.get(cacheKey).includes(row[1]))gap('source coverage: inconsistent ledger key/report pointer '+artifact+':'+(index+5));
+   if(declared.has(candidates[0])&&declared.get(candidates[0])!==kind)gap('source coverage: conflicting report kind '+candidates[0]);
+   else declared.set(candidates[0],kind);
+  }
+ }catch(e){gap('source coverage: declared ledger '+artifact+': '+e.message)}
+}
+const extractor=path.resolve(scripts,'../../super-code/scripts/report-verdict');
+const content=r=>JSON.stringify([r.version,r.source,r.kind,r.verdict,r.occurrences]);
+const extract=(artifact,source)=>cp.spawnSync('bash',[extractor,'--complete','--source',source,artifact],{encoding:'utf8'});
+const sha=artifact=>crypto.createHash('sha256').update(fs.readFileSync(artifact)).digest('hex');
+const refId=r=>JSON.stringify([r?.source,r?.section,r?.position]);
+const associated=new Map();
+for(const association of correspondences){
+ try{
+  const a=association;
+  if(!object(a)||a.version!==1||!text(a.artifact)||!text(a.source)||!text(a.retainedArtifact)||!(/^[a-f0-9]{64}$/).test(a.sha256)||!(/^[a-f0-9]{64}$/).test(a.retainedSha256)||
+     a.judgment!=='supported'||!text(a.basis)||!Array.isArray(a.evidence)||!a.evidence.length||!a.evidence.every(text))throw Error('unsupported or malformed association');
+  const original=artifactPath(a.artifact),retained=artifactPath(a.retainedArtifact),kind=declared.get(original);
+  if(!kind)throw Error('association does not name a declared original input');
+  if(sha(original)!==a.sha256||sha(retained)!==a.retainedSha256)throw Error('original or retained hash mismatch');
+  const matches=sources.filter(s=>s.source===a.source&&artifactPath(s.artifact)===retained);
+  const result=extract(retained,a.source);
+  if(!matches.length||result.status!==0)throw Error('retained source extraction unavailable');
+  const actual=JSON.parse(result.stdout);
+  if(matches.some(s=>content(s)!==content(actual)))throw Error('retained source differs from complete extraction');
+  if(kind==='keys'){
+   if(actual.kind!=='final-review'||!Array.isArray(a.lines))throw Error('keys input needs final-review source and complete line correspondence');
+   const lines=fs.readFileSync(original,'utf8').split(/\r?\n/),keyLines=[];
+   for(const [i,line] of lines.entries()){
+    if(i===0&&/^review: (ready|not ready|none)$/.test(line))continue;
+    if(!line.trim())continue;
+    if(!/^(?:r[0-9]+ )?\[Must-fix\] .+/.test(line))throw Error('malformed keys input');
+    keyLines.push(i+1);
+   }
+   if(!keyLines.length)throw Error('ledger row points at empty keys input');
+   const known=new Set(actual.occurrences.map(o=>refId({source:a.source,...o}))),seen=new Set();
+   for(const mapping of a.lines){
+    if(!object(mapping)||!Number.isSafeInteger(mapping.line)||!keyLines.includes(mapping.line)||seen.has(mapping.line)||
+       !Array.isArray(mapping.refs)||!mapping.refs.length||mapping.refs.some(r=>!object(r)||r.source!==a.source||!known.has(refId(r))))throw Error('invalid keys line occurrence correspondence');
+    seen.add(mapping.line);
+   }
+   if(seen.size!==keyLines.length)throw Error('incomplete keys line correspondence');
+  }else{
+   if(actual.kind!==kind)throw Error('retained report kind differs from declaration');
+   const raw=extract(original,a.source);
+   if(a.sha256===a.retainedSha256){if(raw.status!==0||content(JSON.parse(raw.stdout))!==content(actual))throw Error('original report extraction mismatch')}
+   else{
+    // Adapters are reviewed interpretations of malformed historical reports. Never
+    // convert an ordinary valid source or restamp the original historical verdict.
+    const interpretation=a.interpretation;
+    if(raw.status===0||!object(interpretation)||interpretation.kind!=='legacy-adapter'||!text(interpretation.originalVerdict)||
+       !Array.isArray(interpretation.limitations)||!interpretation.limitations.length||!interpretation.limitations.every(text))throw Error('legacy adapter requires retained interpretation limitations and original extraction failure');
+    const compact=cp.spawnSync('bash',[extractor,original],{encoding:'utf8'});
+    const verdict=compact.stdout?.split('\n').find(l=>l.startsWith('verdict: '))?.slice(9),originalKind=compact.stdout?.split('\n').find(l=>l.startsWith('kind: '))?.slice(6);
+    if(compact.status!==0||originalKind!==actual.kind||verdict!==actual.verdict||interpretation.originalVerdict!==verdict)throw Error('adapter changes or lacks original historical kind/verdict');
+   }
+  }
+  const binding=JSON.stringify([a.sha256,a.source,a.retainedSha256,a.lines||null]);
+  if(associated.has(original)&&associated.get(original)!==binding)throw Error('conflicting immutable source correspondence');
+  associated.set(original,binding);
+ }catch(e){gap('source coverage: source-correspondence '+(association?.artifact||'unknown')+': '+e.message)}
+}
+for(const [artifact,kind] of declared){
+ if(associated.has(artifact))continue;
+ if(kind==='keys'){gap('source coverage: keys-only ledger input needs supported original-source correspondence: '+artifact);continue}
+ const matches=sources.filter(s=>artifactPath(s.artifact)===artifact);
+ if(!matches.length){gap('source coverage: declared report has no retained source extraction: '+artifact);continue}
+ for(const s of matches){
+  const extracted=extract(artifact,s.source);
+  try{
+   if(extracted.status!==0)throw Error('original report unavailable or malformed');
+   const actual=JSON.parse(extracted.stdout);
+   if(actual.kind!==kind||content(actual)!==content(s))throw Error('retained extraction differs from complete original report');
+  }catch(e){gap('source coverage: '+artifact+' ('+s.source+'): '+e.message)}
  }
 }
 // Use the same validated projection as Remaining and resume. Valid empty is distinct
