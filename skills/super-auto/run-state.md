@@ -438,6 +438,30 @@ codeBuckets:
   processSweep: stopped 0 · survived 0 · unknown 0 · kept 0
 ```
 
+## Phase-7 cleanup facts
+
+The existing `codeBuckets.worktreesKept` and `codeBuckets.processSweep` also carry phase-7 cleanup
+results. Before finishing can remove the outer worktree, refresh these facts from actual helper
+results and the retained-resource inventory (SKILL.md §Phase 7 — cleanup preconditions).
+Retain each task cleanup exit 3 or 4 with its exact worktree/temp paths and reason, and include
+containing parent paths that cannot be removed. Refused roots, pending final parent inspection,
+unavailable invocations and missing results are unknown/unchecked, not verified empty.
+
+Keep stopped (verified terminated), survived (observed alive), unknown (inspection/termination
+unverified) and kept (deliberately preserved) facts distinct, with their resource dependencies.
+A verified no-match helper invocation can establish zero processes; an unconfirmed exit-zero
+empty wrapper output cannot. A successful leaf sweep establishes only its own resources' safety;
+final parent verification must happen after no retained descendants remain and before deletion.
+Clear a retained fact only after its named resource has been freshly verified safe, not because
+another invocation returned zero. Existing phase-3 bucket replacement must preserve unresolved
+phase-7 cleanup facts if implementation is re-entered.
+
+Write these facts and update report.md Remaining before teardown; preserve required unarchived
+evidence. `phase: done` can record completed delivery and the human's branch choice while cleanup
+remains pending. On resume, inspect these retained paths before attempting cleanup again; do not
+re-merge or delete a preserved parent merely because the delivery phase is done. No new field,
+cleanup engine or change to root acceptance is introduced.
+
 ## The resume rule
 
 Resume from the recorded `phase`; never re-ask the flags and never reset a counter (SKILL.md §Resume).

@@ -193,8 +193,9 @@ git branch -D <feature-branch>
 **Runs for every option, and for confirmed discards.** The worktree is
 disposable scaffolding: by this point the commits are always preserved —
 merged locally, pushed via PR, or sitting on a branch in the shared repo —
-or intentionally discarded. The superpowers-created worktree goes away in
-all cases.
+or intentionally discarded. Remove the superpowers-created worktree only
+after the removal preconditions below are satisfied; delivery may finish
+with cleanup pending.
 
 Worktree removal must run from outside the worktree. Option 1 and the
 discard path have already changed directory to the main repo root; Options
@@ -208,6 +209,34 @@ cd "$MAIN_ROOT"
 Use the `GIT_DIR`/`GIT_COMMON`/`WORKTREE_PATH` values captured in Step 2,
 from before any directory change.
 
+### Removal preconditions
+
+Before any worktree/temp deletion or workspace-exit operation that removes resources, reconcile
+`git worktree list --porcelain` with the caller's retained resources and actual nested directories.
+Clean Git status does not protect dirty ignored nested `.worktrees/` children. Never delete a
+parent containing retained descendants or retained temporary resources, or required unarchived evidence.
+Task cleanup exit 3 or 4 keeps those resources and their containing parents; unavailable or
+missing cleanup results leave them unchecked. A later zero exit clears no retained path without
+fresh verification. Explicit discard confirmation covers only the named work, not other retained
+nested resources.
+
+Verify owned processes before deleting resources they may need. For `super-auto`, use its
+§Phase 7 — cleanup preconditions: allow the caller's verified leaf sweep first, then require
+successful final parent/root verification before this step removes the parent. The existing
+`stop-run-processes` helper refuses parents still containing nested worktrees; a refusal is
+unknown inspection, not a reason to bypass guards, widen process matching or remove the parent.
+Use the existing helper from outside its roots with the explicit worktree/temp paths. Preserve
+resources when processes survived, are deliberately kept, or inspection/termination is unknown
+(including unavailable tooling, pending parent verification, missing results or unconfirmed
+exit-zero empty wrapper output). Only confirmed helper success for the final roots plus no
+retained descendants permits removal. Never kill by name or traverse process families.
+
+If these preconditions cannot be established, leave the worktree and dependent temporary roots
+in place. Report the exact retained paths, reasons, exit statuses and pending safe check. Honor
+the human's merge/PR/keep choice independently: completion of that choice does not claim cleanup.
+When a caller owns durable run/report state, give it these facts before deleting any source it
+still needs, so it can record cleanup pending and archive required evidence.
+
 **Before deleting the branch:** if the feature branch is still checked out in a worktree, `git
 branch -d` fails. Leave that worktree first — via your platform's workspace-exit tool if it has one,
 otherwise from the main repo root — then delete. This bites specifically on the path
@@ -217,7 +246,7 @@ where the rule below declines to clean it up, and the branch stays checked out.
 **If `GIT_DIR == GIT_COMMON`:** Normal repo, no worktree to clean up. Done.
 
 **If `WORKTREE_PATH` is under `.worktrees/` or `worktrees/`:** Superpowers
-created this worktree — we own cleanup:
+created this worktree — after the preconditions pass, remove it:
 
 ```bash
 git worktree remove "$WORKTREE_PATH"
@@ -245,7 +274,7 @@ Worktree removal refused — these files were never committed:
 Which?
 ```
 
-Carry out the choice, then remove the worktree.
+Carry out the choice, then re-check the removal preconditions before removing the worktree.
 
 **Otherwise:** The host environment owns this workspace — leave it in
 place. If your platform provides a workspace-exit tool, use it.
@@ -267,7 +296,7 @@ place. If your platform provides a workspace-exit tool, use it.
 | "They obviously want it merged" | Integration is your human partner's decision. Present the menu and wait. |
 | "They seem done with this feature — I'll offer to discard it" | The menu is complete as written. Discard happens only when your human partner asks for it in so many words. |
 | "'Yeah, get rid of it' counts as confirmation" | Only the typed word `discard` authorizes deletion. |
-| "PR feedback might come back — I'll keep the worktree around" | The commits are on the remote and on a branch. The worktree is disposable scaffolding: remove it, and re-establish a workspace if feedback needs work. |
+| "PR feedback might come back — I'll keep the worktree around" | The commits are on the remote and on a branch. Remove the worktree after the removal preconditions pass; retain it when nested resources or process verification require that. Re-establish a workspace if later feedback needs work. |
 | "This other worktree looks stale — I'll clean it too" | Clean up only worktrees under `.worktrees/` or `worktrees/`. Everything else belongs to the host. |
 | "Removal refused — `--force` is just finishing the cleanup" | The refusal means files exist only in that worktree. `--force` destroys them permanently. Show your human partner and ask. |
 | "The merged-result failure is probably flaky" | A failing merged result stops everything. Branch and worktree stay put while you investigate. |

@@ -1,0 +1,11 @@
+PASS baseline: ordinary parent removal exits 0 and destroys ignored dirty child
+PASS task cleanup exit 3 retains parent, dirty child and temporary resources
+PASS task cleanup exit 4 retains parent, dirty child and temporary resources
+PASS parent-root inspection refusal preserves every dependent resource
+PASS resource-retained preserves parent, descendant and temporary resources
+PASS process-survived preserves parent, descendant and temporary resources
+PASS process-unknown preserves parent, descendant and temporary resources
+PASS process-kept preserves parent, descendant and temporary resources
+PASS process-unconfirmed preserves parent, descendant and temporary resources
+PASS verified-clear: real safe leaf sweep and final parent verification permit ordinary cleanup
+All outer cleanup r1 fixture checks passed (instruction behavior evaluation remains caller-owned)

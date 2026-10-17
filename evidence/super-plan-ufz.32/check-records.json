@@ -1,0 +1,157 @@
+{
+  "evidence": [
+    {
+      "sourceTree": "e0ff9d1f9c2f33b4067a358b3b12f39fb6f2ca85",
+      "command": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh",
+      "configuration": "macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures",
+      "outcome": "fail",
+      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-red-resume.log",
+      "kind": "live"
+    },
+    {
+      "sourceTree": "7450ea19db55d3a62688fef3847b3bb69fcec2d2",
+      "command": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh",
+      "configuration": "macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures",
+      "outcome": "fail",
+      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-green.log",
+      "kind": "live"
+    },
+    {
+      "sourceTree": "7450ea19db55d3a62688fef3847b3bb69fcec2d2",
+      "command": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash -x tests/super-auto/outer-cleanup-r1.sh",
+      "configuration": "macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures",
+      "outcome": "fail",
+      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-debug.log",
+      "kind": "live"
+    },
+    {
+      "sourceTree": "7d188a10f723fda698c01cfe674ef16b8b43dc6f",
+      "command": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh",
+      "configuration": "macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures",
+      "outcome": "pass",
+      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-green-v2.log",
+      "kind": "live"
+    },
+    {
+      "sourceTree": "7d188a10f723fda698c01cfe674ef16b8b43dc6f",
+      "command": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/test-scripts.sh",
+      "configuration": "macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures",
+      "outcome": "pass",
+      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/auto-suite.log",
+      "kind": "live"
+    },
+    {
+      "sourceTree": "ac97310f154d51d5b25565f4fb40c8e9bdda0498",
+      "command": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash /tmp/sp-bce79baa/super-plan-ufz.32/baseline/tests/super-auto/outer-cleanup-r1.sh",
+      "configuration": "macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures",
+      "outcome": "fail",
+      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-final-red.log",
+      "kind": "live"
+    },
+    {
+      "sourceTree": "d11ce83faff4120212b1affc7eef3712205f5f05",
+      "command": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh",
+      "configuration": "macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures",
+      "outcome": "pass",
+      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-final-green.log",
+      "kind": "live"
+    },
+    {
+      "sourceTree": "599620b464c51575f159cf4d3bbf938328f76c4a",
+      "command": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh",
+      "configuration": "macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures",
+      "outcome": "pass",
+      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-final-green-clean.log",
+      "kind": "live"
+    },
+    {
+      "sourceTree": "599620b464c51575f159cf4d3bbf938328f76c4a",
+      "command": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/test-scripts.sh",
+      "configuration": "macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures",
+      "outcome": "pass",
+      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/auto-suite-final.log",
+      "kind": "live"
+    },
+    {
+      "sourceTree": "599620b464c51575f159cf4d3bbf938328f76c4a",
+      "command": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh",
+      "configuration": "documented caller-decision replay: retained resources, surviving, unknown, deliberately kept and unconfirmed outcomes; no fresh-agent compliance measurement",
+      "outcome": "pass",
+      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-final-green-clean.log",
+      "kind": "simulated"
+    },
+    {
+      "sourceTree": "599620b464c51575f159cf4d3bbf938328f76c4a",
+      "command": "bash /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32 /tmp/sp-bce79baa/super-plan-ufz.32",
+      "configuration": "macOS; invoked outside checked roots; exact task worktree and task temp root only",
+      "outcome": "pass",
+      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/final-hygiene.log",
+      "kind": "live"
+    },
+    {
+      "sourceTree": "6e108a5656d46e363f458dfb85edc8f23913189b",
+      "command": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh",
+      "configuration": "macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures",
+      "outcome": "pass",
+      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-verified.log",
+      "kind": "live"
+    },
+    {
+      "sourceTree": "6e108a5656d46e363f458dfb85edc8f23913189b",
+      "command": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/test-scripts.sh",
+      "configuration": "macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures",
+      "outcome": "pass",
+      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/auto-suite-verified.log",
+      "kind": "live"
+    },
+    {
+      "sourceTree": "6e108a5656d46e363f458dfb85edc8f23913189b",
+      "command": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh",
+      "configuration": "documented caller-decision replay: retained resources, surviving, unknown, deliberately kept and unconfirmed outcomes; no fresh-agent compliance measurement",
+      "outcome": "pass",
+      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-verified.log",
+      "kind": "simulated"
+    },
+    {
+      "sourceTree": "6e108a5656d46e363f458dfb85edc8f23913189b",
+      "command": "bash /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32 /tmp/sp-bce79baa/super-plan-ufz.32",
+      "configuration": "macOS; invoked outside checked roots; exact task worktree and task temp root only",
+      "outcome": "pass",
+      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/final-hygiene-verified.log",
+      "kind": "live"
+    },
+    {
+      "sourceTree": "0072b6b7c817a2e7fc64943ffe061a729f88deaa",
+      "command": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh",
+      "configuration": "macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures",
+      "outcome": "pass",
+      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-rebased.log",
+      "kind": "live"
+    },
+    {
+      "sourceTree": "0072b6b7c817a2e7fc64943ffe061a729f88deaa",
+      "command": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/test-scripts.sh",
+      "configuration": "macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures",
+      "outcome": "pass",
+      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/auto-suite-rebased.log",
+      "kind": "live"
+    },
+    {
+      "sourceTree": "0072b6b7c817a2e7fc64943ffe061a729f88deaa",
+      "command": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh",
+      "configuration": "documented caller-decision replay: retained resources, surviving, unknown, deliberately kept and unconfirmed outcomes; no fresh-agent compliance measurement",
+      "outcome": "pass",
+      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-rebased.log",
+      "kind": "simulated"
+    },
+    {
+      "sourceTree": "0072b6b7c817a2e7fc64943ffe061a729f88deaa",
+      "command": "bash /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32 /tmp/sp-bce79baa/super-plan-ufz.32",
+      "configuration": "macOS; invoked outside checked roots; exact task worktree and task temp root only",
+      "outcome": "pass",
+      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/hygiene-rebased.log",
+      "kind": "live"
+    }
+  ],
+  "requiredLiveChecks": []
+}
