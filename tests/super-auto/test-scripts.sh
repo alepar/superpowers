@@ -348,7 +348,8 @@ not ready
 none
 REVIEW
 cp "$CW/final-review-inv-one.md" "$CW/final-review-inv-one.cluster-1.md"
-printf 'diff original\n' > "$CW/final-review-inv-one.diff"
+# finalReviewPrompt passes `${reviewPath}.diff` to review-package.
+printf 'diff original\n' > "$CW/final-review-inv-one.md.diff"
 printf '{"clusters":[{"name":"auth","slices":["slices/auth.diff"]}]}\n' > "$CW/assembled/final-review-inv-one-final/clusters.json"
 printf 'slice original\n' > "$CW/assembled/final-review-inv-one-final/slices/auth.diff"
 # The copy exists, but no completion or source record survived the interruption.
@@ -363,7 +364,19 @@ ROUTE
   run bash "$RS" --collect "$CR"
   assert_eq "$code" 0 "resume replays complete collections"
   cmp -s "$CR" "$T/collect/before.md" && pass "second resume changes no records" || fail "second resume changes no records"
-  cmp -s "$CW/final-review-inv-one.diff" "$T/collect/run/reviews/inv-one/final-review-inv-one.diff" && pass "bundle diff archived byte for byte" || fail "bundle diff archived byte for byte"
+  cmp -s "$CW/final-review-inv-one.md.diff" "$T/collect/run/reviews/inv-one/final-review-inv-one.md.diff" && pass "producer direct package archived byte for byte after replay" || fail "producer direct package archived byte for byte after replay"
+  if node - "$CR" <<'DIRECT'
+const fs=require('fs');const r=fs.readFileSync(process.argv[2],'utf8').split('\n').filter(l=>l.startsWith('- review-collection · ')).map(l=>JSON.parse(l.slice('- review-collection · '.length))).filter(r=>r.invocationId==='inv-one').at(-1);if(!r.complete||!r.files.some(f=>f.path==='final-review-inv-one.md.diff'))process.exit(1);
+DIRECT
+  then pass "completed collection inventories the producer direct package"; else fail "completed collection inventories the producer direct package"; fi
+  printf 'conflicting direct package\n' > "$T/collect/run/reviews/inv-one/final-review-inv-one.md.diff"
+  run bash "$RS" --collect "$CR"
+  assert_eq "$code" 3 "conflicting direct package blocks collection completion"
+  assert_eq "$(cat "$T/collect/run/reviews/inv-one/final-review-inv-one.md.diff")" 'conflicting direct package' "conflicting direct package is never overwritten"
+  assert_eq "$(cat "$CW/final-review-inv-one.md.diff")" 'diff original' "direct package source is preserved through archive conflict"
+  cp "$CW/final-review-inv-one.md.diff" "$T/collect/run/reviews/inv-one/final-review-inv-one.md.diff"
+  run bash "$RS" --collect "$CR"
+  assert_eq "$code" 0 "repaired direct package restores verified completion"
   cmp -s "$CW/assembled/final-review-inv-one-final/slices/auth.diff" "$T/collect/run/reviews/inv-one/assembled/final-review-inv-one-final/slices/auth.diff" && pass "split assembled input archived" || fail "split assembled input archived"
   printf '## Verdict\nready\n## Must-fix\nnone\n## Deferred OK\nnone\n## Untested scope\nnone\n' > "$CW/final-review-inv-two.md"
   run bash "$RS" --collect "$CR" --invocation inv-two --workspace "$CW" --review "$CW/final-review-inv-two.md" --verdict ready
@@ -383,6 +396,19 @@ const fs=require('fs'),p=process.argv[2],w=process.argv[3];fs.appendFileSync(p,'
 INTENT
   run bash "$RS" --collect "$CR" --invocation inv-empty --workspace "$CW" --review none --verdict 'no work landed'
   assert_eq "$code" 0 "null review with no work landed preserves null semantics"
+  cp "$RF/clean.md" "$T/collect/null-direct.md"
+  printf 'recoverable direct package\n' > "$CW/final-review-inv-direct.md.diff"
+  run bash "$RS" --collect "$T/collect/null-direct.md" --invocation inv-direct --workspace "$CW" --review none --verdict 'no work landed'
+  assert_eq "$code" 3 "null no-work with only the producer direct package remains a gap"
+  cmp -s "$CW/final-review-inv-direct.md.diff" "$T/collect/reviews/inv-direct/final-review-inv-direct.md.diff" && pass "null result still archives the recoverable direct package" || fail "null result still archives the recoverable direct package"
+  if node - "$T/collect/null-direct.md" <<'NULL_DIRECT'
+const fs=require('fs');const r=fs.readFileSync(process.argv[2],'utf8').split('\n').filter(l=>l.startsWith('- review-collection · ')).map(l=>JSON.parse(l.slice('- review-collection · '.length))).at(-1);if(r.complete||!r.gaps.includes('null review has recoverable bundle artifacts; reconcile returned result')||!r.gaps.includes('bundle unavailable: final-review-inv-direct.md'))process.exit(1);
+NULL_DIRECT
+  then pass "direct-only null bundle records reconciliation and missing review gaps"; else fail "direct-only null bundle records reconciliation and missing review gaps"; fi
+  cp "$T/collect/null-direct.md" "$T/collect/null-direct-before.md"
+  run bash "$RS" --collect "$T/collect/null-direct.md"
+  assert_eq "$code" 3 "direct-only null gap persists on replay"
+  cmp -s "$T/collect/null-direct.md" "$T/collect/null-direct-before.md" && pass "direct-only null replay changes no records" || fail "direct-only null replay changes no records"
   cp "$RF/clean.md" "$T/collect/null-partial.md"
   cp "$CW/final-review-inv-one.md" "$CW/final-review-inv-ghost.md"
   run bash "$RS" --collect "$T/collect/null-partial.md" --invocation inv-ghost --workspace "$CW" --review none --verdict 'no work landed'

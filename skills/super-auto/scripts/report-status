@@ -90,7 +90,7 @@ let malformed=false;
 for(const line of text.split('\n')){if(/^[A-Za-z][A-Za-z0-9-]*:/.test(line))approvals=line==='approvals:';if(!line.startsWith('- review-collection'))continue;try{if(!approvals||!line.startsWith('- review-collection · '))throw Error();const r=JSON.parse(line.slice('- review-collection · '.length));if(!validCollection(r))throw Error();latest.set(r.invocationId,r)}catch{malformed=true}}
 if(args.length){if(Object.keys(o).length!==4||!/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(o['--invocation']))usage();const r={invocationId:o['--invocation'],workspace:path.resolve(o['--workspace']),reviewPath:o['--review']==='none'?null:path.resolve(o['--review']),review:o['--verdict'],required,settled:true};const old=latest.get(r.invocationId);if(old&&(old.workspace!==r.workspace||(old.reviewPath!==r.reviewPath&&(old.settled||r.reviewPath!==null))||JSON.stringify(old.required)!==JSON.stringify(r.required))){append('review-collection',{...old,complete:false,gaps:['invocation identity or required bundle changed; retain both sources']});console.error('COLLECTION_GAP: invocation identity or required bundle changed; retain both sources');process.exit(3)}if(!old||!old.settled){append('review-collection',r);latest.set(r.invocationId,r)}}
 const hash=f=>crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex');
-const hasBundle=(r,id)=>{const p='final-review-'+id;try{return fs.readdirSync(r.workspace).some(n=>n===p+'.md'||n===p+'.diff'||n.startsWith(p+'.cluster-'))||fs.existsSync(path.join(r.workspace,'assembled',p+'-final'))}catch{return false}};
+const hasBundle=(r,id)=>{const p='final-review-'+id;try{return fs.readdirSync(r.workspace).some(n=>n===p+'.md'||n===p+'.md.diff'||n.startsWith(p+'.cluster-'))||fs.existsSync(path.join(r.workspace,'assembled',p+'-final'))}catch{return false}};
 let gaps=malformed?1:0;if(malformed)console.error('COLLECTION_GAP: malformed collection record; retain sources');
 for(const previous of latest.values()){
  const r={...previous},id=r.invocationId,prefix='final-review-'+id,archive=path.join(dir,'reviews',id), problems=[];
@@ -104,7 +104,7 @@ for(const previous of latest.values()){
   const files=new Set(r.required);
   function walk(relative){const full=path.join(r.workspace,relative);try{const st=fs.lstatSync(full);if(st.isSymbolicLink())throw Error('symlink');if(st.isDirectory())for(const name of fs.readdirSync(full).sort())walk(path.join(relative,name));else if(st.isFile())files.add(relative);else throw Error('not a regular file')}catch(e){gap('bundle unavailable: '+relative)}}
   files.add(prefix+'.md');
-  try{for(const name of fs.readdirSync(r.workspace).sort())if(name===prefix+'.diff'||(name.startsWith(prefix+'.cluster-')&&/^\d+\.md$/.test(name.slice((prefix+'.cluster-').length))))files.add(name)}catch{if(!previous.complete)gap('workspace unavailable: '+r.workspace)}
+  try{for(const name of fs.readdirSync(r.workspace).sort())if(name===prefix+'.md.diff'||(name.startsWith(prefix+'.cluster-')&&/^\d+\.md$/.test(name.slice((prefix+'.cluster-').length))))files.add(name)}catch{if(!previous.complete)gap('workspace unavailable: '+r.workspace)}
   const assembled=path.join('assembled',prefix+'-final');
   if(fs.existsSync(path.join(r.workspace,assembled)))walk(assembled);
   const clusters=[...files].filter(f=>f.startsWith(prefix+'.cluster-'));
