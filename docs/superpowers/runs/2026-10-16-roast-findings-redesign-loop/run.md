@@ -1,7 +1,7 @@
 # super-auto run — 2026-10-16-roast-findings-redesign-loop
 
 flags: planOneShot=true skipPlanRoast=false skipCodeRoast=false autonomous=true
-phase: fix-loop
+phase: report
 codeMechanism: Workflow
 runTag: roast-findings-redesign-loop-20261017T054231
 context: Context: claude · planner=200K/167K · implementer=200K/167K · reviewer=200K/167K · finalReview=200K/167K · assembler=200K/167K · warn: planner, finalReview on a 200K model → set ANTHROPIC_DEFAULT_OPUS_MODEL=<model>[1m] or config.models.<role> to a 1M model · warn: implementer, reviewer, assembler on a 200K model → set ANTHROPIC_DEFAULT_SONNET_MODEL=<model>[1m] or config.models.<role> to a 1M model
@@ -24,14 +24,14 @@ stepBackDesign-round-1: patch — round 1 has no recurrence history; 25 findings
 design-roast exit: converged at round 2 (Should-fix (13 confirmed) [converged]; 0 Blocking; 22 resolved, 4 regressed sub-Blocking); punch list of 13 applied as spec+bead fixes in cbf82090, no re-roast; escalations none; no qualifier
 graph-pass: depth 2→2 · width 5.5→5.5 · applied 0 · parked 0
 codeBuckets:
-  completed: super-plan-59b.1, super-plan-59b.2, super-plan-59b.3, super-plan-59b.4, super-plan-59b.5, super-plan-59b.6, super-plan-59b.7, super-plan-59b.8, super-plan-59b.9, super-plan-59b.10, super-plan-59b.11, super-plan-59b.19, super-plan-59b.20, super-plan-59b.21, super-plan-59b.22, super-plan-59b.23, super-plan-59b.24, super-plan-59b.25, super-plan-59b.26, super-plan-59b.27
+  completed: super-plan-59b.1, super-plan-59b.2, super-plan-59b.3, super-plan-59b.4, super-plan-59b.5, super-plan-59b.6, super-plan-59b.7, super-plan-59b.8, super-plan-59b.9, super-plan-59b.10, super-plan-59b.11, super-plan-59b.19, super-plan-59b.20, super-plan-59b.21, super-plan-59b.22, super-plan-59b.23, super-plan-59b.24, super-plan-59b.25, super-plan-59b.26, super-plan-59b.27, super-plan-59b.31, super-plan-59b.32, super-plan-59b.33, super-plan-59b.34, super-plan-59b.35, super-plan-59b.36, super-plan-59b.37
   escalated:
   pendingRetry:
   parked:
   stalled: false
-  review: not ready (resume can replay an interrupted redesign through the legacy in-place patch in both loops; Amend Mode and super-auto disagree on when `applied` is written; punch list stops being cumulative after a redesign round; design-loop amend beads miss the Integration sweep edge; cluster 2 unreviewed over the window)
+  review: not ready (cluster must-fixes in 6, 7, 8, 9, 13 and 15 remain open; the amend-checked resume abort and the unparked resumed abort affect both loops; the code loop's amend roast has no field owner or pointer)
   sweep: SWEEP DEFERRED (caller-owned)
-  slowness: round 1: graph-bound — depth 3, achievable width 3 vs cap 8 (edge audit: no changes); round 1: merge queue peaked at 4
+  slowness: round 1: graph-bound — depth 3, achievable width 3 vs cap 8 (edge audit: no changes); round 1: merge queue peaked at 4; exit re-entry: skills/super-design/SKILL.md held back two tasks (hot-file cap raised to 4); merge queue peaked at 4
   worktreesKept:
   processSweep: stopped 0 · survived 0
 stepBackCode-round-1: patch — round-1 findings are rule-level slips in sound decisions; 8 clusters (dissolve effect, redesign filing lifecycle, resume replay, trigger parse, ledger input presence, chain test order, contract pinning, amend-check guards)
