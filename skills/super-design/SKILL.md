@@ -927,7 +927,7 @@ caller's bead context.
    [ "$PARENT" = "$ROOT" ] || bd update "$PARENT" --status open
    field() { awk -v want="$1" '/^[A-Za-z][A-Za-z_-]*:/ { f = $0; sub(/:.*/, "", f); next }
      f == want && /^[ \t]*- / { sub(/^[ \t]*- /, ""); sub(/[ \t\r]+$/, ""); print }' "$AMEND"; }
-   # bd's JSON escapes < > & as < > &, and " \ as \" \\: decode before comparing.
+   # bd's JSON escapes < > & as \u003c \u003e \u0026, and " \ as \" \\: decode before comparing.
    id_of() { bd list --label "$LABEL" --all --json --limit 0 | T=$1 awk '
      function dec(s,   o, c, i, k, n) {
        for (i = 1; i <= length(s); i++) {
