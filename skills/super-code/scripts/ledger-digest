@@ -3,6 +3,9 @@
 # The coordinator reads the ledger through a mechanical agent that echoes it; a large ledger (mostly
 # `minor (deferred)` reviewer prose) is slow to echo and gets refused by model safeguards. This
 # prints only:
+#   - compact `Recovery:` records, verbatim; a line over 4096 characters becomes
+#     `Recovery gap: <source line number> <ledger path>` (the complete record stays on disk).
+#     Malformed/unknown-version compact records reach the reader for explicit gap reporting;
 #   - `Merge:` and `Human action:` lines, verbatim (Resume dedupes human actions on their text);
 #   - `Edge add:` lines, reduced to `Edge add: <dependent> <- <blocker> (<source>)`;
 #   - `Task <n> (<id>): <state>` lines whose state the coordinator acts on, reduced to their state
@@ -14,7 +17,7 @@
 # Every other line (header, untagged minors, `Detector:`, `Launch:`, `Metrics:`, …) is dropped.
 # The first line printed is always `# ledger-digest: <kept> of <total> lines`, so a reader can tell
 # an empty ledger from a lost or truncated echo.
-# Line order is kept: the last line per id wins on resume.
+# Line order is kept: latest Task state wins; Recovery fix history remains append-only.
 #
 # Usage: bash ledger-digest LEDGER_PATH
 # A missing or empty ledger prints nothing and exits 0 (a fresh epic). Exits 2 on a bad argument.
@@ -34,6 +37,10 @@ function cause(r) { return match(r, /\[cause: [^]]*\]/) ? " " substr(r, RSTART, 
 {
   total++
   line = trim($0)
+  if (line ~ /^Recovery:/) {
+    out[++kept] = length(line) > 4096 ? "Recovery gap: " FNR " " FILENAME : line
+    next
+  }
   if (line ~ /^(Merge|Human action):[ \t]/) { out[++kept] = line; next }
   if (line ~ /^Edge add:[ \t]/) { e = line; sub(/\)[ \t].*$/, ")", e); out[++kept] = e; next }
   if (line !~ /^Task[ \t]+[^ \t]+[ \t]+\([^)]+\):/) next
