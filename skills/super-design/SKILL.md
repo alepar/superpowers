@@ -119,10 +119,10 @@ is done-vs-not: check for the artifact a step would produce before producing it.
 
 - A round with a `redesign-design-<K>` record (not `aborted — …`) resumes only through that record: the fix list's items 1–2 are not re-run for it, and its findings are not re-filed as per-finding tasks. A `stepBackDesign-round-<N>: redesign — applied: …` line with no record replays in place (the recorded redesign is applied from that line if its spec change is not yet committed) only when the run-state file (standalone, the round summaries) holds no `redesign-design-<K>` record anywhere, meaning the run predates the records. Otherwise the line is not replayed as a patch: re-run the round's Step 1 from item 5 on its saved step-back file (re-check, never re-dispatch).
 - `started`: with an amend file and a spec diff present, re-run `amend-check` on them; exit 0 continues from §Amend Mode's commit step; exit 3 restores the spec files to HEAD (`git checkout HEAD -- <spec paths>`) and re-runs §Amend Mode from its first step; exit 2 is a bad invocation or a git failure: fix it and re-run `amend-check`, never restoring. With no amend file, restore and re-run from the first step.
-- `amend-checked`: re-run `amend-check` before committing anything; exit 0 → commit, exit 3 → restore the specs, remove this round's `dissolved@r<N>` lines from `findings-overrides-design.md` and rebuild the ledger, then rewrite the state to `aborted — amend rejected on resume`; exit 2 → fix and re-run, no restore.
+- `amend-checked`: first check whether §Amend Mode step 3's commit already landed: `git diff --quiet <lastGood> HEAD -- <spec paths>` exits 1 when the specs at HEAD differ from the record's `lastGood` (the pre-amendment HEAD). Landed: do not re-run `amend-check` (against HEAD it sees an empty diff and rejects, and nothing aborts after the commit); finish step 3 from after its commit (the Key Abstractions sync when a `## Key abstractions` section changed), rewrite the state to `specs-committed` and continue at that bullet. Not landed: re-run `amend-check` before committing anything; exit 0 → commit, exit 3 → restore the specs and rewrite the state to `aborted — amend rejected on resume`, then finish the abort as the `aborted — …` bullet does: remove this round's `dissolved@r<N>` lines from `findings-overrides-design.md`, rebuild the ledger and park the `degraded-verdict` `redesign aborted — amend rejected on resume`; exit 2 → fix and re-run, no restore.
 - `specs-committed`: file the amend record's `work:` items missing from the beads labelled `sp:redesign-design-<K>`.
 - `beads-filed`: write any missing dispute lines, run the coverage-amend round unless its approvals line exists, rewrite the state to `applied`, then run the post-amendment design roast (§Adversarial Review Loop, Redesign cycle).
-- `aborted — …`: the round runs `local`; before it does, any `dissolved@r<N>` line for this round's record still in `findings-overrides-design.md` (left by a crash, or by a run from before this ordering) is removed and the ledger rebuilt. The removal is idempotent: with no such line, nothing is written.
+- `aborted — …`: the round runs `local`; before it does, finish the abort (the live abort writes this state first and then runs these same steps, so a crash anywhere in them replays here): park the `degraded-verdict` `redesign aborted — <reason>` unless the run-state file's `parked:` list (standalone, the round summaries) already holds it, and remove any `dissolved@r<N>` line for this round's record still in `findings-overrides-design.md` and rebuild the ledger. Both writes are idempotent: with the park present and no such line, nothing is written.
 - `applied`, `thrash — …`: nothing to replay; the loop continues from its other records.
 
 **A partially-written artifact is not an adoptable one.** Adopt a spec only if it is committed, and
@@ -768,10 +768,11 @@ context (§Decomposition's flag triple and the `Integration sweep:` wiring). Aft
 steps, rewrite the `redesign-design-<K>` record's `state` in place (`amend-checked`,
 `specs-committed`, `beads-filed`); this loop writes `applied` as soon as Amend Mode returns it, since
 it has no remaining step before its next round. Fill its `amended` field from the amend record.
-- `aborted — <reason>`: first remove the `dissolved@r<N>` lines Step 1 wrote for this round's
-  record from the overrides file and rebuild the ledger (item 2); then rewrite the state (a crash
-  after the removal resumes into a state whose replay repeats it), park a `degraded-verdict`
-  `redesign aborted — <reason>`, and run the round `local`. The spent cycle is not refunded.
+- `aborted — <reason>`: rewrite the state first, so a crash in what follows resumes into
+  §Re-entry's `aborted — …` bullet, which repeats these same idempotent steps. Then remove the
+  `dissolved@r<N>` lines Step 1 wrote for this round's record from the overrides file and rebuild
+  the ledger (item 2), park a `degraded-verdict` `redesign aborted — <reason>`, and run the round
+  `local`. The spent cycle is not refunded.
 - `applied`: the loop's own next numbered round is the design roast after the amendment, always
   when `amended:` is non-empty (re-invoke `superpowers:super-roast`, fix item 3, with its prior
   report the latest report), with the ledger path in its stated intent as reference-only input:

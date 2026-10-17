@@ -306,8 +306,9 @@ check_step1() { # SKILLS_ROOT
     | sed 's|^|(step1) super-auto/run-state.md: effective cap is not spelled 3 + redesignCycles-<loop>: |' || true
 }
 
-# (abort) Every abort route removes the round's dissolved override lines before the state reads
-# `aborted`, so a crash resumes into a state whose replay repeats the removal.
+# (abort) Every abort route writes `aborted` before it removes the round's dissolved override lines
+# and parks `redesign aborted`, and the `aborted` replay repeats both, so a crash anywhere in the
+# abort resumes into a replay that finishes it.
 bullet_text() { # FILE START_REGEX -> the bullet from its first line to the next bullet or blank line
   awk -v a="$2" 's == 0 && $0 ~ a { s = 1; print; next } s && (/^- / || /^$/) { exit } s { print }' "$1" | collapse
 }
@@ -327,20 +328,22 @@ check_abort() { # SKILLS_ROOT
   local sa="$1/super-auto/SKILL.md" sd="$1/super-design/SKILL.md" rs="$1/super-auto/resume.md" f txt
   f="$T/ab-auto"; section "$sa" '^#### Redesign cycle$' '^#### ' > "$f"
   txt=$(item_text "$f" 2)
-  abort_has "super-auto Redesign cycle item 2" "$txt" 'dissolved@r<N>' 'rebuild'
-  abort_before "super-auto Redesign cycle item 2" "$txt" 'dissolved@r<N>' '`aborted — <reason>`'
+  abort_has "super-auto Redesign cycle item 2" "$txt" 'dissolved@r<N>' 'rebuild' 'redesign aborted'
+  abort_before "super-auto Redesign cycle item 2" "$txt" '`aborted — <reason>`' 'dissolved@r<N>'
   txt=$(bullet_text "$sd" '^- `aborted — <reason>`')
-  abort_has "super-design Redesign cycle aborted bullet" "$txt" 'dissolved@r<N>' 'rebuild'
-  abort_before "super-design Redesign cycle aborted bullet" "$txt" 'dissolved@r<N>' 'rewrite the state'
+  abort_has "super-design Redesign cycle aborted bullet" "$txt" 'dissolved@r<N>' 'rebuild' 'redesign aborted'
+  abort_before "super-design Redesign cycle aborted bullet" "$txt" 'rewrite the state' 'dissolved@r<N>'
   f="$T/ab-resume"; section "$rs" '^## Redesign cycle replay$' '^## ' > "$f"
   txt=$(bullet_text "$f" '^- `amend-checked`')
-  abort_has "resume.md amend-checked bullet" "$txt" 'dissolved@r<N>'
-  abort_before "resume.md amend-checked bullet" "$txt" 'dissolved@r<N>' 'aborted — amend rejected on resume'
+  abort_has "resume.md amend-checked bullet" "$txt" 'dissolved@r<N>' 'redesign aborted' 'lastGood'
+  abort_before "resume.md amend-checked bullet" "$txt" 'aborted — amend rejected on resume' 'dissolved@r<N>'
   txt=$(bullet_text "$f" '^- `aborted — <reason>`')
-  abort_has "resume.md aborted bullet" "$txt" 'dissolved@r<N>' 'rebuild'
+  abort_has "resume.md aborted bullet" "$txt" 'dissolved@r<N>' 'rebuild' 'redesign aborted' 'unless'
   f="$T/ab-reentry"; section "$sd" '^\*\*Resuming a redesign cycle\*\*' '^\*\*A partially-written' > "$f"
-  abort_has "super-design Re-entry amend-checked bullet" "$(bullet_text "$f" '^- `amend-checked`')" 'dissolved@r<N>'
-  abort_has "super-design Re-entry aborted bullet" "$(bullet_text "$f" '^- `aborted — …`')" 'dissolved@r<N>'
+  txt=$(bullet_text "$f" '^- `amend-checked`')
+  abort_has "super-design Re-entry amend-checked bullet" "$txt" 'dissolved@r<N>' 'redesign aborted' 'lastGood'
+  abort_before "super-design Re-entry amend-checked bullet" "$txt" 'aborted — amend rejected on resume' 'dissolved@r<N>'
+  abort_has "super-design Re-entry aborted bullet" "$(bullet_text "$f" '^- `aborted — …`')" 'dissolved@r<N>' 'redesign aborted' 'unless'
   f="$T/ab-phase"; section "$rs" '^## Resuming at a phase$' '^## ' > "$f"
   txt=$(grep -F 'dissolved' "$f" | collapse)
   case "$txt" in *aborted*) ;; *) echo "(abort) resume.md: the dissolved-skip rule does not name a non-aborted record" ;; esac
@@ -437,6 +440,13 @@ expect_caught "a resume amend-checked bullet without the removal fails" "resume.
 copy; rm "$T/skills/super-design"; cp -R "$REPO_ROOT/skills/super-design" "$T/skills/super-design"
 awk '/^- `aborted — <reason>`/ { on = 1 } on && /^$/ { on = 0 } on { gsub(/dissolved@r<N>/, "dropped") } { print }' "$REPO_ROOT/skills/super-design/SKILL.md" > "$T/skills/super-design/SKILL.md"
 expect_caught "a super-design aborted bullet without the removal fails" "super-design Redesign cycle aborted bullet: lacks 'dissolved@r<N>'"
+
+copy; sed '/^- `aborted — <reason>`: the round runs/s/redesign aborted/redesign dropped/' "$REPO_ROOT/skills/super-auto/resume.md" > "$SA/resume.md"
+expect_caught "a resume aborted bullet without the park fails" "resume.md aborted bullet: lacks 'redesign aborted'"
+copy; sed '/^- `amend-checked`/s/lastGood/pre-amendment base/g' "$REPO_ROOT/skills/super-auto/resume.md" > "$SA/resume.md"
+expect_caught "a resume amend-checked bullet that re-checks against HEAD fails" "resume.md amend-checked bullet: lacks 'lastGood'"
+copy; awk '/^2\. On `aborted`/ { sub(/rewrite the state to `aborted — <reason>` first, so a crash in what follows resumes into resume.md §Redesign cycle replay.s `aborted — <reason>` bullet, which repeats these same idempotent steps. /, ""); sub(/; park a/, "; rewrite the state to `aborted — <reason>`; park a") } { print }' "$REPO_ROOT/skills/super-auto/SKILL.md" > "$SA/SKILL.md"
+expect_caught "a super-auto abort that removes before it rewrites the state fails" "super-auto Redesign cycle item 2: '\`aborted — <reason>\`' does not come before 'dissolved@r<N>'"
 
 echo
 if [ "$FAILURES" -eq 0 ]; then

@@ -237,10 +237,11 @@ Each redesign cycle has **one state field**, the `redesign-<loop>-<K>` record, w
 - **Contract lint:** `tests/super-auto/test-contract-lint.sh`'s deliberate-additions list gains the new fields.
 - **resume.md** dispatches an interrupted cycle only from its record's `state`:
   - `started`: if an amend file and spec diff exist, re-run amend-check on them; ok → continue from step 3, otherwise restore the specs to HEAD and re-run Amend Mode from step 1. With no amend file, restore and re-run from step 1.
-  - `amend-checked`: re-run amend-check (idempotent) before committing anything; ok → commit; reject → restore the specs, state `aborted — amend rejected on resume`.
+  - `amend-checked`: first detect whether step 3's commit landed (`git diff --quiet <lastGood> HEAD -- <spec paths>`; both loops record `lastGood` as the pre-amendment HEAD). Landed → amend-check is not re-run (against HEAD it would reject on the empty diff, and nothing aborts after the commit): finish step 3 after its commit, state `specs-committed`, continue there. Not landed → re-run amend-check (idempotent) before committing anything; ok → commit; reject → restore the specs, state `aborted — amend rejected on resume`, then the `aborted` replay below.
   - `specs-committed`: file the `work:` items missing from the beads labelled `sp:redesign-<loop>-<K>`.
   - `beads-filed`: write missing dispute lines, run the coverage-amend round unless its approvals line exists, then the caller's remaining steps. Code loop, by `designRoast`: `-` → run §3 step 3; `r<M>` with no round-M report → run roast round M without incrementing again; `r<M>` with its report → finish the fix step (tasks deduped by title, commit) and write `r<M> fixed`; `r<M> fixed`, `skipped` or `none` → go on. Then state `applied`, super-code re-entry, next round.
-  - `applied`, `aborted`, `thrash`: nothing to replay; the loop continues from its other records.
+  - `aborted — <reason>`: the live abort writes this state first, then removes the round's `dissolved@r<N>` override lines, rebuilds the ledger and parks the `degraded-verdict` `redesign aborted — <reason>`; the replay repeats those steps idempotently (park only when `parked:` lacks it, remove only lines still present), so an abort at resume time or after a crash reaches report.md's Remaining. Then the round runs `local`.
+  - `applied`, `thrash`: nothing to replay; the loop continues from its other records.
   - Counters are never reset. The same rules apply to `redesign-design-<K>` (design loop, via super-design §Re-entry).
 - **report-prompt.md:**
   - Gotchas & surprises lists each `redesign-*` record with its triggers, state and `designRoast`.
