@@ -1,1 +1,2 @@
 # friction log — 2026-10-16-roast-findings-redesign-loop
+- [coordination] 2026-10-17T07:18:04Z peer relay (herdr 1:1, from another run): workflow-reliability run super-plan-ufz (branch super-auto/workflow-reliability) owns immutable super-code review artifacts and preservation/disposition of outstanding findings in run records + archive/resume/report consumers; this run keeps roast ledger/triggers/amend. Expect overlap in skills/super-auto/resume.md and report-prompt.md at base-drift absorb; coordinate format with that owner if needed.
