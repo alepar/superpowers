@@ -95,10 +95,11 @@ bucketing — see "The coordinator loop" step 3 and SKILL.md §Parallelism).
 
 `topUpQueryCap` is **optional** — additive, defaulting to 40: the per-round budget of `bd ready`
 top-up re-queries ("The coordinator loop" step 4). Mid-round readiness is normally computed in JS
-from the planner's `deps` rows at no agent cost; the top-up query runs only where JS cannot see
-readiness — a mapping with no `deps` rows, or a waiting row marked `opaque` — and there it still
-costs one mechanical agent per landing, which this caps. Exhaustion degrades to the ordinary
-round-boundary refill (no work lost), and the detector line reports usage.
+from the planner's `deps` rows at no agent cost; the top-up query runs where JS cannot see
+readiness — mappings without `deps`, external dependency statuses, or waiting `opaque` rows.
+Landings, post-capacity refreshes and the in-flight cadence share this serialized query budget.
+Exhaustion leaves work needing fresh observations held for the next round; the detector reports
+usage. `readinessRefreshMs` is optional, default 30000 ms, and sets that bounded in-flight cadence.
 
 `earlyUnblock` is **optional**, default `true`: a task with open in-tree dependents is **split**
 when its implementer reports a commit. A mechanical dispatch (`scripts/review-bead split`) creates a
@@ -491,10 +492,14 @@ Round-based with refill (each `bd ready` batch is, by definition, mutually indep
 3. **Dispatch the batch under a sliding window** — every planned id dispatches as soon as a slot
    frees, bounded by the concurrency cap (`min(config.concurrency, runtimeSlots - 2)`, so every
    admitted chain is a running agent and two runtime slots stay free for merges and top-ups), with
-   one file-based scheduling constraint:
-   at most `config.hotFileCap` (default 3) in-flight tasks may declare the same file
-   (`filesTouched`, from the planner's mapping — a churn bound for shared barrel/index/registry
-   files, not a dispatch gate). No batch or wave barriers anywhere: a straggler never delays the
+   one file-based scheduling constraint: at most `config.hotFileCap` (default 3) in-flight tasks
+   may declare the same file (`filesTouched`, from the planner's mapping — a churn bound for shared
+   barrel/index/registry files, not a dispatch gate).
+   A waiting slot is a reservation. After acquiring it, recheck the merge-lane hold, cancellation,
+   quarantine/retry state and effective dependencies before creating an attempt. A rejected
+   reservation releases its slot with an admission reason and no implementation/fix/merge outcome.
+   This predicate covers round-head, graph/tracker top-up, retry and review re-entry dispatches.
+   No batch or wave barriers anywhere: a straggler never delays the
    next task's dispatch, and the per-task chain has **no barrier between stages** either (a fast
    task isn't held up by a slow sibling at any point, including its merge — see step 4).
    Disjoint-file bucketing used to gate dispatch here; it was removed on live measurement — see
@@ -515,15 +520,18 @@ Round-based with refill (each `bd ready` batch is, by definition, mutually indep
    already-merged re-entry are handled where the chain ends, beside the merges and inside a
    concurrency slot like any chain (none touches the integration branch, and `bd` writes are safe
    beside a merge); a merge that fails releases the queue before its triage runs. Ledger lines never hold it either (see "Workspace and ledger").
-   **Mid-round readiness is computed, not queried.** The planner's mapping rows carry each open
-   bead's in-tree leaf blockers (`deps`, from `scripts/tree-deps`) and whether anything else gates
-   it (`opaque`: an epic-level or out-of-tree blocker, a hand claim). Every landing — and, with
-   `earlyUnblock`, every split task's implementation — runs `readyFromGraph()` in JS: a row whose
-   blockers have all landed, at least one of them this round, dispatches into this round's
-   scheduler with no agent spent. The `bd ready` top-up (epic closure, then a ready re-query) runs
-   after a landing only where JS cannot see readiness: a mapping with no `deps` rows at all, or a
-   waiting `opaque` row (see the top-up block in `./coordinator.js` for the bounds: dedup set,
-   re-entrancy coalescing, mapping-row gate, quiescence before the drain).
+   **Mid-round readiness.** Local implementation dependencies use `completed` or `implDone` under
+   early unblock. Review, blocker, human-gate and other out-of-tree dependencies use authoritative
+   tracker closure, even when their IDs never enter those local sets. The existing mechanical
+   top-up returns compact `observations: [{id,status,kind}]` for the mapping's external blocks
+   relationships (`kind`: review, blocker, gate, epic or task); a failed/malformed lookup replaces
+   only that dependency's observation with an error and holds its consumers with a reason.
+   `opaque` rows still require `bd ready`; local graph readiness remains free of tracker calls.
+   Refresh external/opaque facts after a capacity wait. Landings and one in-flight timer share
+   the serialized top-up and its `topUpQueryCap` budget; `readinessRefreshMs` defaults to 30000 ms.
+   This finite cadence can release a consumer while unrelated work remains in flight. Budget
+   exhaustion leaves work needing a fresh observation held until the next round. Cancel the timer
+   at quiescence; refresh never waits on a task chain or the merge lane.
    **Early unblock** (`config.earlyUnblock`, default on). A task with open in-tree dependents is
    split when its implementer reports a commit: `scripts/review-bead split` creates its
    `review: <id>` bead, then closes its task bead — beside the review, never before the dependents

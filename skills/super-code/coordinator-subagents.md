@@ -50,6 +50,19 @@ Keep the window full. The Workflow coordinator does these, and so do you:
 - **Do not idle.** Wait for whichever agent finishes first. Refill after every landing and
   every split. If a file holds back two tasks while a slot is free, raise its cap by one. Write a
   `Detector:` line at each refill, not only at Finish.
+- **Admit after capacity.** Keep queued work as reservations. Once a slot is available, recheck
+  integration holds, cancellation, quarantine/retries and effective dependencies before spawning
+  its attempt, on every dispatch path including retries and review re-entry. Rejection releases
+  the slot with an admission reason and no implementation/fix/merge outcome. Local implementation
+  dependencies may use implementation-done; review, blocker, human-gate and out-of-tree dependencies
+  require tracker closure. Observe each external dependency independently with `bd show <id> --json`:
+  retain its ID, status and kind (review, blocker, gate, epic or task) for the mapping's blocks
+  relationship. Failed/malformed reads hold only that dependency's consumers with the error.
+  Refresh external/opaque readiness after capacity waits and at bounded waits while agents remain
+  in flight (default 30 seconds, sharing the round's `topUpQueryCap`, default 40, with refill
+  queries). A closed external review can release its consumer before another agent finishes.
+  Serialize refreshes, stop them at quiescence and leave consumers needing a fresh observation held
+  on budget exhaustion.
 
 **One fresh agent per round.**
 
