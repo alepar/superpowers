@@ -1,27 +1,142 @@
 [
   {
-    "id": "super-plan-ufz.8.1",
-    "title": "Preserve distinct invocation review artifacts",
-    "description": "Persist per-invocation identity separately from runTag; use it for single/cluster/seam/stub review artifacts and preserve reviewPath/null semantics in both execution paths.\nSpec: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-finding-continuity-design.md\nFiles: skills/super-code/SKILL.md, skills/super-code/coordinator.js, skills/super-code/coordinator-workflow.md, skills/super-code/coordinator-subagents.md, skills/super-code/scripts/dispatch-text.mjs, tests/super-code/test-dispatch-text.sh, tests/super-code/replay-harness.mjs\nowns: Invocation identity and immutable review artifact bundle.\nconsumes: Existing runTag and launch records.\nAcceptance:\n- [ ] Two invocations sharing runTag retain distinct artifact bundles including split reviews.\n- [ ] Invocation identity is persisted before review creation and replayed on resume.\n- [ ] reviewPath and null retain existing meanings; both execution paths pass focused fixtures.",
-    "owns": "Invocation identity and immutable review artifact bundle.",
-    "deps": []
-  },
-  {
-    "id": "super-plan-ufz.8.2",
-    "title": "Project outstanding findings from evidence and dispositions",
-    "description": "Extend complete extraction and existing run records to retain source occurrences, explicit reference links, deferral and supported dispositions. Project outstanding/deferred findings mechanically; retain unknown inputs. No competing roast ledger or six-state chain.\nSpec: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-finding-continuity-design.md\nFiles: skills/super-code/scripts/report-verdict, skills/super-auto/run-state.md, skills/super-auto/scripts/scope-dispositions, tests/super-code/test-report-verdict.sh, tests/super-auto/test-scripts.sh\nowns: Complete occurrence extraction and validated outstanding-finding projection.\nconsumes: Stable invocation/artifact identity from predecessor.\nAcceptance:\n- [ ] Complete additive extraction includes deferred sections without changing existing --keys behavior.\n- [ ] Explicit references link occurrences; ambiguous matches stay separate.\n- [ ] Resolution/rejection needs explicit supported disposition; assignment/success/silence do not resolve.\n- [ ] Unsupported or incomplete external projections leave evidence open.\n- [ ] Key-only punch-list output reflects outstanding deferred findings, including verified fixes elsewhere.\nblocked-by super-plan-ufz.8.1: consumes Invocation identity and immutable review artifact bundle.",
-    "owns": "Complete occurrence extraction and validated outstanding-finding projection.",
-    "deps": [
-      "super-plan-ufz.8.1"
-    ]
+    "id": "super-plan-ufz.8.4",
+    "title": "Project outstanding findings and supported dispositions",
+    "description": "Extend existing super-auto run records and scope-dispositions to retain source occurrences, explicit reference links, deferral and supported disposition. Project outstanding/deferred findings mechanically, retaining unsupported inputs. Helpers validate references/evidence fields; agent judges semantic support. No competing roast ledger or six-state lifecycle.\nSpec: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-finding-continuity-design.md\nFiles: skills/super-auto/run-state.md, skills/super-auto/scripts/scope-dispositions, tests/super-auto/test-scripts.sh\nowns: Validated outstanding-finding projection and durable disposition records.\nconsumes: Immutable invocation/artifact identities and complete source occurrence extraction.\nAcceptance:\n- [ ] Explicit references link occurrences; ambiguous matches stay separate.\n- [ ] Supported resolution/rejection explicitly references findings and basis; assignment/success/silence do not resolve.\n- [ ] Missing or unsupported external input leaves known evidence open.\n- [ ] Key-only punch-list output contains outstanding deferred findings, including verified fixes supplied elsewhere.\n- [ ] Projection/record validation fixtures pass; source identity and extraction consumed from predecessors (needs: super-plan-ufz.8.1, super-plan-ufz.8.2).\nblocked-by super-plan-ufz.8.1: consumes immutable invocation/artifact identities\nblocked-by super-plan-ufz.8.2: consumes complete source occurrence extraction\n",
+    "status": "open",
+    "priority": 2,
+    "issue_type": "task",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-17T05:59:06Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-17T05:59:06Z",
+    "labels": [
+      "sp:super-plan-ufz"
+    ],
+    "dependencies": [
+      {
+        "issue_id": "super-plan-ufz.8.4",
+        "depends_on_id": "super-plan-ufz.8",
+        "type": "parent-child",
+        "created_at": "2026-10-17T05:59:06Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "super-plan-ufz.8.4",
+        "depends_on_id": "super-plan-ufz.8.1",
+        "type": "blocks",
+        "created_at": "2026-10-17T05:59:07Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "super-plan-ufz.8.4",
+        "depends_on_id": "super-plan-ufz.8.2",
+        "type": "blocks",
+        "created_at": "2026-10-17T05:59:08Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      }
+    ],
+    "dependency_count": 2,
+    "dependent_count": 2,
+    "comment_count": 0,
+    "parent": "super-plan-ufz.8"
   },
   {
     "id": "super-plan-ufz.8.3",
     "title": "Carry findings through collection resume and reports",
-    "description": "Collect settled immutable review bundles into the committed run directory and recover interrupted collection. Route final-review items and punch lists through the validated outstanding projection. Latest review remains distinct from historical obligations.\nSpec: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-finding-continuity-design.md\nFiles: skills/super-auto/SKILL.md, skills/super-auto/resume.md, skills/super-auto/report-prompt.md, skills/super-auto/scripts/report-status, skills/super-auto/run-state.md, tests/super-auto/test-scripts.sh\nowns: Artifact collection/recovery and consistent outstanding findings in resume, Remaining and status.\nconsumes: Validated outstanding projection from predecessor.\nAcceptance:\n- [ ] Blocked review followed by ready/silent retry preserves prior actionable findings.\n- [ ] Collection resumes idempotently before later invocation or cleanup; missing bundle is an evidence gap.\n- [ ] Resume, Remaining and status use the same outstanding projection.\n- [ ] Latest ready review cannot conceal earlier unresolved findings.\n- [ ] Coordinator runs representative fresh-agent behavior evaluation; producer/consumer fixtures pass.\nblocked-by super-plan-ufz.8.2: consumes Complete occurrence extraction and validated outstanding-finding projection.",
-    "owns": "Artifact collection/recovery and consistent outstanding findings in resume, Remaining and status.",
-    "deps": [
-      "super-plan-ufz.8.2"
-    ]
+    "description": "Collect settled immutable review bundles into the committed run directory and recover interrupted collection. Route final-review items and punch lists through the validated outstanding projection. Latest review remains distinct from historical obligations.\nSpec: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-finding-continuity-design.md\nFiles: skills/super-auto/SKILL.md, skills/super-auto/resume.md, skills/super-auto/report-prompt.md, skills/super-auto/scripts/report-status, skills/super-auto/run-state.md, tests/super-auto/test-scripts.sh\nowns: Artifact collection/recovery and consistent outstanding findings in resume, Remaining and status.\nconsumes: Validated outstanding projection from predecessor.\nAcceptance:\n- [ ] Blocked review followed by ready/silent retry preserves prior actionable findings.\n- [ ] Collection resumes idempotently before later invocation or cleanup; missing bundle is an evidence gap.\n- [ ] Resume, Remaining and status use the same outstanding projection.\n- [ ] Latest ready review cannot conceal earlier unresolved findings.\n- [ ] Coordinator runs representative fresh-agent behavior evaluation; producer/consumer fixtures pass.\nblocked-by super-plan-ufz.8.4: consumes Complete occurrence extraction and validated outstanding-finding projection.",
+    "status": "open",
+    "priority": 2,
+    "issue_type": "task",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-17T05:58:09Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-17T05:59:10Z",
+    "labels": [
+      "sp:super-plan-ufz"
+    ],
+    "dependencies": [
+      {
+        "issue_id": "super-plan-ufz.8.3",
+        "depends_on_id": "super-plan-ufz.8",
+        "type": "parent-child",
+        "created_at": "2026-10-17T05:58:09Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "super-plan-ufz.8.3",
+        "depends_on_id": "super-plan-ufz.8.4",
+        "type": "blocks",
+        "created_at": "2026-10-17T05:59:09Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      }
+    ],
+    "dependency_count": 1,
+    "dependent_count": 1,
+    "comment_count": 0,
+    "parent": "super-plan-ufz.8"
+  },
+  {
+    "id": "super-plan-ufz.8.2",
+    "title": "Extract complete source finding occurrences",
+    "description": "Add a complete extraction mode to existing report-verdict, preserving source/section/occurrence identity and original text, including deferred items. Preserve default and --keys behavior. Caller supplies immutable source identity; this helper owns extraction, not storage or semantic disposition.\nSpec: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-finding-continuity-design.md\nFiles: skills/super-code/scripts/report-verdict, tests/super-code/test-report-verdict.sh\nowns: Complete source occurrence extraction contract.\nconsumes: Existing final-review/report formats and caller-supplied immutable source reference.\nAcceptance:\n- [ ] Complete additive extraction includes all relevant finding sections including deferred items and preserves occurrence/source references and original text.\n- [ ] Existing default and --keys outputs retain their semantics.\n- [ ] Repeated parsing of the same source retains stable occurrences; malformed/missing source is explicit, not an empty clean review.\n- [ ] Focused extraction fixtures pass.\n",
+    "status": "open",
+    "priority": 2,
+    "issue_type": "task",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-17T05:58:08Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-17T05:59:06Z",
+    "labels": [
+      "sp:super-plan-ufz"
+    ],
+    "dependencies": [
+      {
+        "issue_id": "super-plan-ufz.8.2",
+        "depends_on_id": "super-plan-ufz.8",
+        "type": "parent-child",
+        "created_at": "2026-10-17T05:58:08Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      }
+    ],
+    "dependency_count": 0,
+    "dependent_count": 1,
+    "comment_count": 0,
+    "parent": "super-plan-ufz.8"
+  },
+  {
+    "id": "super-plan-ufz.8.1",
+    "title": "Preserve distinct invocation review artifacts",
+    "description": "Persist per-invocation identity separately from runTag; use it for single/cluster/seam/stub review artifacts and preserve reviewPath/null semantics in both execution paths.\nSpec: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-finding-continuity-design.md\nFiles: skills/super-code/SKILL.md, skills/super-code/coordinator.js, skills/super-code/coordinator-workflow.md, skills/super-code/coordinator-subagents.md, skills/super-code/scripts/dispatch-text.mjs, tests/super-code/test-dispatch-text.sh, tests/super-code/replay-harness.mjs\nowns: Invocation identity and immutable review artifact bundle.\nconsumes: Existing runTag and launch records.\nAcceptance:\n- [ ] Two invocations sharing runTag retain distinct artifact bundles including split reviews.\n- [ ] Invocation identity is persisted before review creation and replayed on resume.\n- [ ] reviewPath and null retain existing meanings; both execution paths pass focused fixtures.",
+    "status": "open",
+    "priority": 2,
+    "issue_type": "task",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-17T05:58:07Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-17T05:58:07Z",
+    "labels": [
+      "sp:super-plan-ufz"
+    ],
+    "dependencies": [
+      {
+        "issue_id": "super-plan-ufz.8.1",
+        "depends_on_id": "super-plan-ufz.8",
+        "type": "parent-child",
+        "created_at": "2026-10-17T05:58:07Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      }
+    ],
+    "dependency_count": 0,
+    "dependent_count": 1,
+    "comment_count": 0,
+    "parent": "super-plan-ufz.8"
   }
 ]
