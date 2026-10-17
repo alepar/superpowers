@@ -1,0 +1,13 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/roast-context.md b/docs/superpowers/runs/2026-10-16-workflow-reliability/roast-context.md
+new file mode 100644
+index 00000000..d6440df5
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/roast-context.md
+@@ -0,0 +1,7 @@
++Review the approved reliability vision and its settled concrete task tree as internal developer tooling. Root spec: ../../specs/2026-10-16-workflow-reliability-design.md. Nested spec: 2026-10-16-finding-continuity-design.md. Tree: settled-tree.json. Parent and nested specs plus all task descriptions/acceptance constitute the design artifact.
++
++User explicitly approved invariant/minimal-mechanism/acceptance-example structure and simplification. Do not require a replacement engine, mandatory six-state finding lifecycle, or gratuitous schemas. Compatible low-level implementation choices do not alone constitute a design gap. Findings must cite actual contradictory constraints, lost intended effects, or unanswered load-bearing decisions.
++
++Concurrent roast-redesign run owns its roast ledger/triggers/amend. This design independently owns local invocation-review continuity and uses external ledger evidence only if supported; absent/unsupported external input leaves findings open. This is a deliberate ownership boundary, not a missing external API requirement. Silence alone cannot resolve findings.
++
++Top split approved by human. Fresh promotion reviews completed (splits applied); root coverage15/15 mapped, zero mechanical edge/citation failures. Root integration sweep .14 added after coverage, depends on every leaf. Verify actual claims against named artifact; do not infer stronger requirements. Report-only: no spec/source/task edits.

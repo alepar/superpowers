@@ -1,0 +1,143 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/trials.json b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/trials.json
+new file mode 100644
+index 00000000..4c560e2e
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/trials.json
+@@ -0,0 +1,137 @@
++[
++  {
++    "case": "A",
++    "rep": 1,
++    "agent": "/root/after_behavior_evals/a_after_1",
++    "prompt": "A-after-1-prompt.txt",
++    "response": "A-after-1-response.txt",
++    "status": "completed",
++    "counted": true
++  },
++  {
++    "case": "B",
++    "rep": 1,
++    "agent": "/root/after_behavior_evals/b_after_1",
++    "prompt": "B-after-1-prompt.txt",
++    "response": "B-after-1-response.txt",
++    "status": "completed",
++    "counted": true
++  },
++  {
++    "case": "C",
++    "rep": 1,
++    "agent": "/root/after_behavior_evals/c_after_1",
++    "prompt": "C-after-1-prompt.txt",
++    "response": "C-after-1-response.txt",
++    "status": "completed",
++    "counted": true
++  },
++  {
++    "case": "A",
++    "rep": 2,
++    "agent": "/root/after_behavior_evals/a_after_2",
++    "prompt": "A-after-2-prompt.txt",
++    "response": "A-after-2-response.txt",
++    "status": "completed",
++    "counted": true
++  },
++  {
++    "case": "B",
++    "rep": 2,
++    "agent": "/root/after_behavior_evals/b_after_2",
++    "prompt": "B-after-2-prompt.txt",
++    "response": "B-after-2-response.txt",
++    "status": "completed",
++    "counted": true
++  },
++  {
++    "case": "C",
++    "rep": 2,
++    "agent": "/root/after_behavior_evals/c_after_2",
++    "prompt": "C-after-2-prompt.txt",
++    "response": "C-after-2-response.txt",
++    "status": "completed",
++    "counted": true
++  },
++  {
++    "case": "A",
++    "rep": 3,
++    "agent": "/root/after_behavior_evals/a_after_3",
++    "prompt": "A-after-3-prompt.txt",
++    "response": "A-after-3-response.txt",
++    "status": "completed",
++    "counted": true
++  },
++  {
++    "case": "B",
++    "rep": 3,
++    "agent": "/root/after_behavior_evals/b_after_3",
++    "prompt": "B-after-3-prompt.txt",
++    "response": "B-after-3-response.txt",
++    "status": "completed",
++    "counted": true
++  },
++  {
++    "case": "C",
++    "rep": 3,
++    "agent": "/root/after_behavior_evals/c_after_3",
++    "prompt": "C-after-3-prompt.txt",
++    "response": "C-after-3-response.txt",
++    "status": "completed",
++    "counted": true
++  },
++  {
++    "case": "A",
++    "rep": 4,
++    "agent": "/root/after_behavior_evals/a_after_4",
++    "prompt": "A-after-4-prompt.txt",
++    "response": "A-after-4-response.txt",
++    "status": "completed",
++    "counted": true
++  },
++  {
++    "case": "B",
++    "rep": 4,
++    "agent": "/root/after_behavior_evals/b_after_4",
++    "prompt": "B-after-4-prompt.txt",
++    "response": "B-after-4-response.txt",
++    "status": "completed",
++    "counted": true
++  },
++  {
++    "case": "C",
++    "rep": 4,
++    "agent": "/root/after_behavior_evals/c_after_4",
++    "prompt": "C-after-4-prompt.txt",
++    "response": "C-after-4-response.txt",
++    "status": "completed",
++    "counted": true
++  },
++  {
++    "case": "A",
++    "rep": 5,
++    "agent": "/root/after_behavior_evals/a_after_5",
++    "prompt": "A-after-5-prompt.txt",
++    "response": "A-after-5-response.txt",
++    "status": "completed",
++    "counted": true
++  },
++  {
++    "case": "B",
++    "rep": 5,
++    "agent": "/root/after_behavior_evals/b_after_5",
++    "prompt": "B-after-5-prompt.txt",
++    "response": "B-after-5-response.txt",
++    "status": "completed",
++    "counted": true
++  },
++  {
++    "case": "C",
++    "rep": 5,
++    "agent": "/root/after_behavior_evals/c_after_5",
++    "prompt": "C-after-5-prompt.txt",
++    "response": "C-after-5-response.txt",
++    "status": "completed",
++    "counted": true
++  }
++]

@@ -1,0 +1,15 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/baseline-reference/B-baseline-1-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/baseline-reference/B-baseline-1-response.txt
+new file mode 100644
+index 00000000..83d41928
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/baseline-reference/B-baseline-1-response.txt
+@@ -0,0 +1,9 @@
++Keep the root open and the release handoff **not ready**. Targeted tests and compile passed at `e444`, but the required live full-suite result is absent. Record this as **pending verification**, not a demonstrated code failure. Preserve the accepted implementation evidence; withhold overall branch acceptance.
++
++Assign the sweep to the **super-auto coordinator**, which owns it after `deferSweep=true`. Run the ledger’s `Launch:` command against the exact SHA that will land, with no roast or coordinator Workflow in flight on the host. Record the command, output, exit status, measured SHA, and stamped `codeBuckets.sweep`. A confirmed failure then enters the prescribed sweep-fix pass.
++
++Keep **F17 still-open, Should-fix**, at `src/retry.js:42`. The `c222` review confirmed retry loss; the fix was blocked, no fix commit landed, and the intervening change was documentation-only. Packet silence and an unsupported implementer claim do not establish resolution. Correct r2’s reconciliation and its clean verdict. Route F17 back to a fix task with the fixture dependency recorded. If explicitly deferred, record its canonical key as punch-listed and retain **punch-listed (open)** status.
++
++**V9 cannot complete through the current ordinary task-review gate.** The helper’s exit 3 at `base=head` requires `INVALID`; it cannot become CLEAN because the independent verification passed. Do not add a comment-only commit to manufacture a reviewable range. Preserve the substantive acceptance evidence and record that the remaining obstacle is the review mechanism’s empty-range rule. A verification-only completion route requires an explicitly established workflow exception.
++
++Retain the sweep obligation and eventual measurement, r1’s F17 finding, the corrected r2 reconciliation, F17’s blocked fix/dependency record, and V9’s `e444` SHA, exact targeted-test command, 12/12 output, `/tmp/acme-retry/evidence/V9.txt`, and helper invocation/output documenting INVALID.

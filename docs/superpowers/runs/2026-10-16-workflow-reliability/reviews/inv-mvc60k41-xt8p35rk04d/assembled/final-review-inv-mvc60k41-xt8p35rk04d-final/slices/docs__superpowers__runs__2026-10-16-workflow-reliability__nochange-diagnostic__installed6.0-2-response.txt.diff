@@ -1,0 +1,18 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/installed6.0-2-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/installed6.0-2-response.txt
+new file mode 100644
+index 00000000..dd9bef76
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/installed6.0-2-response.txt
+@@ -0,0 +1,12 @@
++Keep the root open and withhold release acceptance. Targeted tests and compile at e444 support implementation progress, but the required full-suite result is absent and F17 remains unresolved. Record the missing sweep as pending verification, rather than a demonstrated code defect.
++
++Assign the sweep to the super-auto coordinator now. Run the ledger’s declared sweep against the exact landing SHA while no roast or coordinator Workflow is in flight. Retain its command, output, measured SHA, and stamped `codeBuckets.sweep` result. Apply the prescribed sweep-fix process if it fails; the release deadline does not waive this gate.
++
++Keep F17 **still-open, Should-fix**. Its fix was blocked, no fix commit landed, and r2’s silence supplies no evidence of resolution. The intervening documentation change and unsupported implementer assertion do not establish a fix. Carry F17 into the durable findings ledger and route it to a fix task with the fixture dependency recorded. If deliberately deferred, explicitly punch-list it as open. Do not label it resolved.
++
++Neither V9 nor V10 can complete through the current task-review workflow now:
++
++- **V9:** Return **INVALID** because the mandatory package helper exited 3 for base=head. The installed reviewer instructions explicitly require this outcome. Preserve the strong independent verification: clean source status, identical resolved commits, actual/captured tree `d84541ae…`, readable original live evidence, exact command/configuration, and 12/12 passing coverage of the entire criterion. No product or comment-only commit is warranted; completing this task requires an authorized verification-only review route.
++- **V10:** Return **INVALID** for the same package failure, plus an unresolved evidence provenance mismatch: actual tree `d84541ae…` versus recorded evidence tree `a15541ae…`. Obtain matching independent evidence before acceptance. No cosmetic commit repairs that mismatch.
++
++Retain both INVALID outcomes, helper failure details, acceptance briefs, reports, identity/tree/status observations, evidence paths and original output, F17’s unresolved history, and the pending root gate.

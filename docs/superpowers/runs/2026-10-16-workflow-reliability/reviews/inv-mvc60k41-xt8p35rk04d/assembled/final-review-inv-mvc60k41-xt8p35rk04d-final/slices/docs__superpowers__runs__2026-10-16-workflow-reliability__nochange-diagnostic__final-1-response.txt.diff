@@ -1,0 +1,22 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/final-1-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/final-1-response.txt
+new file mode 100644
+index 00000000..ff5bede3
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/final-1-response.txt
+@@ -0,0 +1,16 @@
++Keep the root open and release acceptance pending. The implementation leaves may retain their accepted status, subject to outstanding findings; targeted tests and compile at e444 do not satisfy the release’s required live sweep. Record this as missing verification, not an evidenced code failure.
++
++Assign the full-suite sweep to the super-auto orchestrator now, against the exact release SHA, while no roast or coordinator Workflow is running. Retain its command, configuration, SHA, output location and live outcome; stamp `codeBuckets.sweep`. Do not close the root before the required result and remaining dispositions are recorded.
++
++F17 remains open. r1 confirmed the shutdown retry loss at `src/retry.js:42`; its repair was blocked, and no fix commit or verification exists. r2’s silence and “clean” verdict cannot resolve it, and the intervening documentation change supplies no fix evidence. Preserve r1’s original occurrence ref, severity and source location; reuse the blocked repair assignment and record its fixture dependency. If deferred at handoff, explicitly punch-list it with a nonempty reason and owner. Do not infer that the caller previously punch-listed it.
++
++V9 can complete now with **CLEAN**, `completionKind: "verification-only"`, `files: []`, and no commit. Retain:
++
++- Equal full base/head: `e444e444e444e444e444e444e444e444e444e444`.
++- Matching actual/captured tree: `d84541aed84541aed84541aed84541aed84541ae`; clean source status.
++- The unchanged live/pass evidence record at `/tmp/acme-retry/evidence/V9.txt`, including exact command/configuration and 12/12 output covering the entire criterion.
++- `requiredLiveChecks: []` and the reviewer’s coverage judgment.
++
++V10 cannot complete: **NEEDS_FIX** for incomplete source-bound evidence. Its readable pass record measures tree `a15541aea15541aea15541aea15541aea15541ae`, not the captured/current `d84541aed84541aed84541aed84541aed84541ae`. Preserve the original record and mismatch; obtain matching evidence or a supported reconciliation.
++
++Neither leaf needs a comment-only commit. The verification-only path bypasses diff-package construction; the helper’s empty-range exit supplies no reason to manufacture changes.

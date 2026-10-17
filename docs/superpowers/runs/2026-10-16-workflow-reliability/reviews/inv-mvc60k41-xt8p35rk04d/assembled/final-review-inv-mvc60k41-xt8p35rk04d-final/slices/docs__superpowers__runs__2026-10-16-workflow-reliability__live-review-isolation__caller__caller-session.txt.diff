@@ -1,0 +1,7 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/caller/caller-session.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/caller/caller-session.txt
+new file mode 100644
+index 00000000..5baac95d
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/caller/caller-session.txt
+@@ -0,0 +1 @@
++caller pending local edit: must survive both reviews

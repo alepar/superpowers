@@ -1,0 +1,12 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/bin/bd b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/bin/bd
+new file mode 100755
+index 00000000..d40a9a96
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/bin/bd
+@@ -0,0 +1,6 @@
++#!/bin/sh
++if [ "$1" = show ] && [ "$2" = ufz-live-review ] && [ "$3" = --json ]; then
++  cat /private/tmp/ufz-live-isolation/spec.json
++else
++  echo "read-only fixture bd: unsupported operation" >&2; exit 2
++fi

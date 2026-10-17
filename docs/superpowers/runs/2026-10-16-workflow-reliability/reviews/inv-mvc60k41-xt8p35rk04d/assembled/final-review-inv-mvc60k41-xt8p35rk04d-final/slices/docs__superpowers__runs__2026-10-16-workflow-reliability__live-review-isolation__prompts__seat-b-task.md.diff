@@ -1,0 +1,15 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/prompts/seat-b-task.md b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/prompts/seat-b-task.md
+new file mode 100644
+index 00000000..3a205783
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/prompts/seat-b-task.md
+@@ -0,0 +1,9 @@
++You are one independent LIVE review seat. Read and follow /private/tmp/ufz-live-isolation/prompts/seat-b-operative.md. Model for this authorized eval is gpt-6.1-sol medium (overrides any template model label). No Herdr writes or product-repository mutations. No additional agents.
++
++Context: owned disposable caller repository /private/tmp/ufz-live-isolation/caller; captured base 96ba44f6f5ced6166997c74aee1ba374b6c3fe0f; captured head 7ddd110053fb302c4f6a0bd645ddbf28c512c563. Your scratch area is /private/tmp/ufz-live-isolation/seat-b. The other concurrently reviewing seat has its own scratch and artifacts. Independently inspect the captured source and spec and produce the final-review artifact from your operative prompt. The assembler is unavailable (controlled exit 3 recorded); use the operative direct-input fallback. Your scratch directory already contains existing-output.txt from an earlier operation.
++
++Instrumentation: run ALL substantive shell/review commands through `python3 /private/tmp/ufz-live-isolation/record-command.py seat-b --cwd <working-directory> -- <command> <args...>`; it captures raw commands, stdout/stderr/exits and Git trace. For a shell command use `-- /bin/bash -c '<script>'`. This is observation instrumentation, not a review policy. Save detailed review/evidence to /private/tmp/ufz-live-isolation/seat-b/response.md as well as any artifact your operative prompt declares. Save chronological decisions and any unsupported observations there. Leave review-owned worktrees for the evaluator to inventory and clean after evidence capture.
++
++Timing protocol (checkpoint commands also go through recorder): first inspect initial caller commit/status and prepare your review resources, then create /private/tmp/ufz-live-isolation/control/seat-b.ready. Wait for /private/tmp/ufz-live-isolation/control/stage1 using polling up to 30 seconds per tool call. After stage1 exists, do substantive initial captured diff/source inspection (and Seat A reproduction); write a brief phase-1 evidence record then create /private/tmp/ufz-live-isolation/control/seat-b.phase1. Wait for /private/tmp/ufz-live-isolation/control/stage2 using short polling. After stage2 exists, recheck captured source/diff plus observed caller commit/status, finish the independent review and report. No need to wait more than 10 minutes total.
++
++The fixture `bd` command is at /private/tmp/ufz-live-isolation/bin/bd; recorder puts that bin directory first on PATH. Acceptance/spec input is in /private/tmp/ufz-live-isolation/spec.json and caller README.md. Use only available evidence and report limitations.

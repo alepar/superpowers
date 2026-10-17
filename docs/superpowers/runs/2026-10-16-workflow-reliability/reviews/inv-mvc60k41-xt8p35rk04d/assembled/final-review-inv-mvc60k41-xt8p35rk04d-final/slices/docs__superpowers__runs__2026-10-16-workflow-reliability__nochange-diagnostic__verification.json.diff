@@ -1,0 +1,50 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/verification.json b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/verification.json
+new file mode 100644
+index 00000000..fcbd203c
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/verification.json
+@@ -0,0 +1,44 @@
++{
++  "completed_at_utc": "2026-10-17T08:24:24.008305+00:00",
++  "source_HEAD": "db63576075b9b1279b05e2fdf0eed2b00a19065c",
++  "source_recheck": [
++    {
++      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/skills/super-code/task-reviewer-prompt.md",
++      "expected": "e56081ee222894a286605007a0131aeec4692942eed684c5cc7b7f52be62d1e8",
++      "actual": "e56081ee222894a286605007a0131aeec4692942eed684c5cc7b7f52be62d1e8",
++      "matches": true
++    },
++    {
++      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/skills/super-roast/reporter-prompt.md",
++      "expected": "9c53e99f7173fd14daf0451a211588659176c4728f39f0e940ff13fa60e095c1",
++      "actual": "9c53e99f7173fd14daf0451a211588659176c4728f39f0e940ff13fa60e095c1",
++      "matches": true
++    },
++    {
++      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/skills/super-auto/SKILL.md",
++      "expected": "6571134c1aebdf5574182a7ab1db0f90d41e86b9d534ffb37a1ec8914e7c5434",
++      "actual": "6571134c1aebdf5574182a7ab1db0f90d41e86b9d534ffb37a1ec8914e7c5434",
++      "matches": true
++    }
++  ],
++  "frozen_artifact_count": 34,
++  "frozen_mismatches": [],
++  "original_integrity": [
++    {
++      "root": "/private/tmp/ufz-after-behavior",
++      "recorded_artifacts": 131,
++      "mismatches": []
++    },
++    {
++      "root": "/private/tmp/ufz-after-behavior/baseline-reference",
++      "recorded_artifacts": 78,
++      "mismatches": []
++    }
++  ],
++  "expected_trials": 15,
++  "complete_responses": 15,
++  "prompt_count": 15,
++  "score_count": 15,
++  "manual_quote_checks": "all selected exact excerpts confirmed present",
++  "original_strict_scores_edited": false
++}

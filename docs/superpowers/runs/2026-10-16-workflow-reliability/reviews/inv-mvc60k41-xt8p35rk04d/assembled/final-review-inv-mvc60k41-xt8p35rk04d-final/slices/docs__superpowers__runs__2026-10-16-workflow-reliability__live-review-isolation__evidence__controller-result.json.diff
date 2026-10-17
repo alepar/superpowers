@@ -1,0 +1,7 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/evidence/controller-result.json b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/evidence/controller-result.json
+new file mode 100644
+index 00000000..a5f5d2cc
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/evidence/controller-result.json
+@@ -0,0 +1 @@
++{"status": "done", "started": 1792224970.896555, "finished": 1792225037.422399, "pid": 41210}

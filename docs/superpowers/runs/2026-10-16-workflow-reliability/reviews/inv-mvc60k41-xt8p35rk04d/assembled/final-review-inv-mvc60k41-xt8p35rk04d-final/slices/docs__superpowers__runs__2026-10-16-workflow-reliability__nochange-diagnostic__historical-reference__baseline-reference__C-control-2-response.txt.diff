@@ -1,0 +1,17 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/baseline-reference/C-control-2-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/baseline-reference/C-control-2-response.txt
+new file mode 100644
+index 00000000..3a339bb2
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/baseline-reference/C-control-2-response.txt
+@@ -0,0 +1,11 @@
++**Disposition: block completion and a clean-run claim.** The production data-loss defect remains unrepaired. It predates B’s task base (4b44), so B’s `preExisting=true` packet is valid for task attribution; B changes only docs. However, run baseline 0a00 passes and A’s landing 3a33 introduces the failure. Attribute the regression to A and require repair and verification before clearing the run. C’s latest attempt is clean after repairing two confirmed findings; retain those as historical findings, with zero currently unresolved findings for C.
++
++**Evidence/process summary to issue now:**
++
++“The tracker records four closed implementation leaves: A, B, C and D. Git corroborates four task-landing merges; the other two merges absorb updated main and are not additional tasks. The ledger is truncated after C and contains no valid metrics line. Counts therefore use tracker and Git evidence; ledger-derived metrics are unavailable. Closed task status does not establish a clean run.
++
++“Planning took 60 minutes, code 50 minutes and review 20 minutes: 130 minutes overall. D was created at 10:40 and first dispatched at 10:45, giving a five-minute creation-to-dispatch interval. Its ready timestamp is missing, so readiness-to-dispatch latency cannot be measured; scheduler startup at 10:00 is not D’s queue-entry time. A snapshot shows eight active agents, including three occupying implementation task slots; it does not establish sustained implementation concurrency.
++
++“The scaling model predicts code could fall from 50 to 25 minutes, conditional on no new bottleneck. Holding planning and review fixed gives 105 minutes overall: 25 minutes saved, approximately 19% less elapsed time or 1.24× speedup. It does not support ‘doubling workers halves delivery time.’
++
++“Group A’s cleanup-permission-denied and C’s process-inspection-refused records under sandbox-denied owned-process liveness inspection, preserving both incidents and original labels. Different PIDs and fixtures do not establish duplicate incidents or identical product defects. Keep B’s wrong expected retry assertion separate as a test-expectation issue.”

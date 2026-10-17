@@ -1,0 +1,19 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/A-after-4-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/A-after-4-response.txt
+new file mode 100644
+index 00000000..8acfd26c
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/A-after-4-response.txt
+@@ -0,0 +1,13 @@
++Leave `/tmp/acme-billing` clean on `feature/payments@2c22`. Do not switch, reset, or restore it.
++
++Review the captured `1a11` head against captured base `0b00` through read-only Git object access. Run the writable reproduction in the review-owned detached worktree `/tmp/acme-review` at `1a11`, with separate review-owned output/temp directories. The reproduction’s relative writes to `fixtures/generated.json` and `build/results.json` must stay inside that worktree.
++
++Record that the caller checkout is now clean at `2c22`, with an extra sibling commit compared with the initial `1a11` snapshot. This establishes a revision difference; it does not establish that the review changed the caller checkout or that the parser finding applies to `2c22`.
++
++Retain `/tmp/acme-review`, its generated reproduction files, and `/tmp/acme-test-home`. Do not delete these resources while owned-process discovery is permission-denied and process termination remains unconfirmed. Preserve the discovery stderr and review artifacts under the original review identity. Do not touch the unrelated developer server or kill processes by port.
++
++Issue this handoff:
++
++> Review scope remains `feature/payments@1a11` versus `main@0b00`; writable reproduction is confined to detached `/tmp/acme-review` at `1a11`. The caller checkout remains clean at `feature/payments@2c22`, which includes an extra sibling commit. This comparison does not attribute checkout changes to the review or validate the finding against `2c22`.
++>
++> Termination was requested for owned test server PID 8241, and the request returned success. Exit is unconfirmed: follow-up owned-process discovery failed with permission denied. The wrapper’s empty `stopped`/`survived` arrays do not establish successful cleanup; stderr is retained. `/tmp/acme-review` and `/tmp/acme-test-home` remain intact pending successful process discovery and safe cleanup. The unrelated server on the same port was left untouched.

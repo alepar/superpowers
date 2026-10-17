@@ -1,0 +1,15 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/control-1-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/control-1-response.txt
+new file mode 100644
+index 00000000..9ae0dbb0
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/control-1-response.txt
+@@ -0,0 +1,9 @@
++Keep the root open and withhold release acceptance. The required full-suite sweep has no live result: `deferSweep=true` returned **SWEEP DEFERRED (caller-owned)**. Assign that sweep to super-auto now and retain its exact SHA, command, configuration, output, outcome, and evidence location. This is an outstanding orchestration obligation, not evidence of a code failure.
++
++Do not grant blanket implementation acceptance. Targeted tests and compile passed at e444, but F17 remains unresolved. Retain those successful results without treating them as full-suite coverage.
++
++Carry F17 forward as a confirmed **Should-fix** finding from r1 at c222: `src/retry.js:42` drops a queued retry during shutdown. Reopen its remediation task, assign fixture recovery and the fix, and record its blocked status until actionable. Add F17 to the durable punch-listed keys file used by subsequent review invocations. r2’s silence and “clean” result do not establish resolution; neither the intervening documentation change nor the implementer’s unsupported assertion supplies a fix commit or verification.
++
++**V9 can complete now without a commit.** Its dispatch, requirements, and report establish verification-only scope with no delivered change. Base and head resolve to the same full e444 commit; actual and captured trees both equal `d84541aed84541aed84541aed84541aed84541ae`; source status is clean. The independent reviewer read the original live evidence, confirmed 12/12 passing tests and complete criterion coverage, and identified no additional required live checks. Retain these observations, the evidence record and original output, reviewer acceptance, and the documented no-change completion decision. The diff helper’s exit 3 does not invalidate this evidence.
++
++**V10 cannot complete now.** Its retained evidence names tree `a15541aea15541aea15541aea15541aea15541ae`, which differs from the verified source tree. Assign a fresh test run against the verified tree and independent review; retain the mismatch and replacement evidence. Neither leaf needs a comment-only commit. Such a commit would resolve neither missing provenance nor acceptance evidence.

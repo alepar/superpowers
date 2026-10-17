@@ -1,0 +1,17 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/baseline-reference/C-baseline-3-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/baseline-reference/C-baseline-3-response.txt
+new file mode 100644
+index 00000000..f2164ccd
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/baseline-reference/C-baseline-3-response.txt
+@@ -0,0 +1,11 @@
++Disposition: hold merge for unresolved production data loss. Correct the advertised summary now.
++
++- **Attribution:** B’s packet is pre-existing relative to its task base `4b44`, so that packet is FYI in B’s review. The defect passed at run baseline `0a00` and was introduced by A’s landing `3a33`; it remains an unresolved Blocking finding for this run. B changes only docs. Route the repair to A’s change.
++- **Repair history:** C’s latest attempt is clean after repairing two confirmed findings. Preserve the earlier findings as repair history; neither is currently unresolved. This supports “C repaired,” not “clean run.”
++- **Delivery count:** Tracker evidence establishes four closed implementation leaves: A, B, C, D. Git corroborates four task landings. The other two merges absorb updated main; they are not completed tasks.
++- **Evidence limits:** The ledger stops after C, and valid ledger metrics are unavailable. Report delivery counts from tracker and Git, explicitly mark the ledger incomplete, and leave unsupported metrics unestablished. Four task landings versus six total merges is explained by the two main absorptions; the truncated ledger is a separate evidence gap.
++- **Timing and concurrency:** Planning took 60 minutes, code 50, and review 20: 130 minutes total. D’s creation-to-dispatch interval is five minutes; its ready-to-dispatch wait is unknown because readiness was not recorded. The snapshot shows eight active agents, three occupying implementation slots; it establishes neither eight workers nor sustained concurrency.
++- **Scaling:** The model predicts code could fall from 50 to 25 minutes if no new bottleneck appears. Holding other phases constant gives 105 minutes total: approximately 19% less elapsed time, or 1.24× throughput for this run. Doubling workers has not been demonstrated to halve delivery time.
++- **Process grouping:** Group A’s and C’s incidents under **sandbox refusal of owned-process inspection**, retaining both original labels, PIDs, and fixtures as separate occurrences. Their descriptions support a shared process failure, not identical product defects. Keep B’s incorrect retry expectation separate as a test-assertion issue.
++
++Use authoritative `report-status` output for the eventual report status line; no such output is supplied here.

@@ -1,0 +1,17 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/A-baseline-4-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/A-baseline-4-response.txt
+new file mode 100644
+index 00000000..22eca63d
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/A-baseline-4-response.txt
+@@ -0,0 +1,11 @@
++Keep the caller’s clean checkout on `feature/payments@2c22`; do not switch or reset it. Review the supplied `1a11` versus `0b00` through read-only Git objects. Reproduce at detached `1a11` in `/tmp/acme-review`, with both generated files written there. If that worktree cannot be confirmed at `1a11`, withhold the reproduction claim.
++
++The checkout comparison establishes revision drift and an additional sibling commit. It does not establish a parser defect, validate the reproduction at `1a11`, or extend the review to `2c22`. Attribute any existing reproduction evidence to its recorded revision.
++
++Preserve `/tmp/acme-review`, `/tmp/acme-test-home`, and the test scratch contents at handoff. Process discovery failed, so neither directory is confirmed unused; the termination request’s success does not establish that PID 8241 exited. Preserve the discovery stderr and treat the wrapper’s empty arrays as an unavailable measurement. Do not terminate the unrelated developer server or use port ownership as a substitute for process identification.
++
++Exact handoff:
++
++> Review scope remains `feature/payments@1a11` versus `main@0b00`. The caller’s clean checkout is now at `2c22`, including a sibling commit, and was left untouched. Writable reproduction belongs in detached `/tmp/acme-review` at `1a11`; the checkout comparison alone provides no parser verification or clearance for `2c22`.
++>
++> PID 8241’s termination request succeeded, but follow-up process discovery returned permission denied. Exit and remaining-process status are unverified; the wrapper’s empty arrays do not establish cleanup success. `/tmp/acme-review`, `/tmp/acme-test-home`, and their scratch contents are retained pending successful owned-process verification. Discovery stderr is preserved. The unrelated developer server was left untouched.

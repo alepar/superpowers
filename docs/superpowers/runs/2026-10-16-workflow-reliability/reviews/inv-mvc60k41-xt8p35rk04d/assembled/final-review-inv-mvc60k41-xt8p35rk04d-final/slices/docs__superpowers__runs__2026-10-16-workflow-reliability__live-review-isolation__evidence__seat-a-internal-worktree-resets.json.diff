@@ -1,0 +1,18 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/evidence/seat-a-internal-worktree-resets.json b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/evidence/seat-a-internal-worktree-resets.json
+new file mode 100644
+index 00000000..049ae5a7
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/evidence/seat-a-internal-worktree-resets.json
+@@ -0,0 +1,12 @@
++[
++  {
++    "argv": [
++      "/opt/homebrew/opt/git/libexec/git-core/git",
++      "reset",
++      "--hard",
++      "--no-recurse-submodules"
++    ],
++    "worktree": "/private/tmp/ufz-live-isolation/seat-a/review-worktree",
++    "sid": "20261017T081626.643639Z-H0c8f6953-P000161f2/20261017T081626.654073Z-H0c8f6953-P00016215"
++  }
++]

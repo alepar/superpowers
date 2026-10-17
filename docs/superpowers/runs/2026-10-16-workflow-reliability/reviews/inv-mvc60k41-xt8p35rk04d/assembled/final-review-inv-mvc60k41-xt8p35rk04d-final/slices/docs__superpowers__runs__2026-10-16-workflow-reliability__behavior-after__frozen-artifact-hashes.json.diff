@@ -1,0 +1,47 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/frozen-artifact-hashes.json b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/frozen-artifact-hashes.json
+new file mode 100644
+index 00000000..3e87167c
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/frozen-artifact-hashes.json
+@@ -0,0 +1,41 @@
++{
++  "freeze-metadata.json": "86e8daf757fd13599e5e69bc423b992acbe080d8eeb894d141f47174614d89d3",
++  "scenario-B.txt": "1af776277bcdfc85d77e7cfd623028a38e889f467397abcf8a860261fd0f0e8a",
++  "guidance-B.txt": "4b848b51b1e1335324a52af6b8df64a6b44f8c64d83e08cc7b42455cfd45cfb1",
++  "source-manifest.json": "9679ac9bad123c54d776423b0d03a5b638279444578ccb92d655573fcd965eda",
++  "guidance-C.txt": "083328f6ac268e9aabddee389e119d647379946e59bbbaf128658c6ab1165d54",
++  "scenario-C.txt": "f6d138d7994fd7ee8a8e702f096c70770e2ade61c0c71e381e572e3ba4e54a04",
++  "C-after-3-prompt.txt": "ec964d5e1727932b4271b21e9b1c057a4861646a66bd51e18b50d536caeaa35d",
++  "scenario-A.txt": "8181089cc66655cb0093c1430b2d41d404171bec01883f427dcb01fd1f091b62",
++  "guidance-A.txt": "1693a4671027a18adcbf22ff257142caa3ae04af616d7f2cd46bf3ca32e6343d",
++  "A-after-5-prompt.txt": "6eb362bc0deb6228656b8978a72ee5532fc2381cbafeacdc25489a458b73095a",
++  "B-after-5-prompt.txt": "2f6b699ed541d28b9922f5661cba2412f01c98a94ef2c14706332b85316b7998",
++  "C-after-1-prompt.txt": "ec964d5e1727932b4271b21e9b1c057a4861646a66bd51e18b50d536caeaa35d",
++  "B-after-2-prompt.txt": "2f6b699ed541d28b9922f5661cba2412f01c98a94ef2c14706332b85316b7998",
++  "A-after-2-prompt.txt": "6eb362bc0deb6228656b8978a72ee5532fc2381cbafeacdc25489a458b73095a",
++  "C-after-4-prompt.txt": "ec964d5e1727932b4271b21e9b1c057a4861646a66bd51e18b50d536caeaa35d",
++  "B-after-4-prompt.txt": "2f6b699ed541d28b9922f5661cba2412f01c98a94ef2c14706332b85316b7998",
++  "A-after-1-prompt.txt": "6eb362bc0deb6228656b8978a72ee5532fc2381cbafeacdc25489a458b73095a",
++  "B-after-1-prompt.txt": "2f6b699ed541d28b9922f5661cba2412f01c98a94ef2c14706332b85316b7998",
++  "C-after-2-prompt.txt": "ec964d5e1727932b4271b21e9b1c057a4861646a66bd51e18b50d536caeaa35d",
++  "freeze.py": "4544f45edefe8340320e905cc9471a48c114f2d00e7e1f4b8c1a62cdbbf9e953",
++  "A-after-4-prompt.txt": "6eb362bc0deb6228656b8978a72ee5532fc2381cbafeacdc25489a458b73095a",
++  "A-after-3-prompt.txt": "6eb362bc0deb6228656b8978a72ee5532fc2381cbafeacdc25489a458b73095a",
++  "C-after-5-prompt.txt": "ec964d5e1727932b4271b21e9b1c057a4861646a66bd51e18b50d536caeaa35d",
++  "B-after-3-prompt.txt": "2f6b699ed541d28b9922f5661cba2412f01c98a94ef2c14706332b85316b7998",
++  "baseline-reference/source-manifest.json": "06ad9a8db97e7062268a79b501a812a0b35b695c4f082e60c549517dfcbb9a01",
++  "baseline-reference/scores.json": "b7aa332a71d38aa795208df3ed413d55a6a7d50d441015537d0f896373600dfa",
++  "baseline-reference/report.md": "41d0cec478db1cc157b945457a2579d66410ac0e74706f3fa2d535fdcd69ecc6",
++  "baseline-reference/after-pack.json": "49399d0391ad144150660c650a5a6c25cc794533158addf993bd8564e7b2c70a",
++  "baseline-reference/metadata.json": "9e5caca8d89f90ef843a8188c4f52ad3e42f19949f3c39e8b3c152c2accb7348",
++  "baseline-reference/claim-summary.json": "b6bfae17cd437ac09e7e358147fc0e6c6c5cf6465ad6779b809b6660a9f6169b",
++  "baseline-reference/rubric-private.json": "c693a3f31641244ab3964da58d125459058d253ab8aef92200964507b0ecd88d",
++  "baseline-reference/pilot-note.txt": "6b37859dce56c5d7a2c326c779155fd6f8979949c8bc16c6f4058c4c87227b3d",
++  "source-snapshot/super-code/SKILL.md": "b1cddafcf9bcaae2503baa461ae40a91baa04239816914c94da1261c7ce2c1b6",
++  "source-snapshot/super-code/task-reviewer-prompt.md": "e56081ee222894a286605007a0131aeec4692942eed684c5cc7b7f52be62d1e8",
++  "source-snapshot/super-auto/report-prompt.md": "d6aeca28475787b7facb65b63260db804f62c5603020bff6138c8a569d699e91",
++  "source-snapshot/super-auto/SKILL.md": "6571134c1aebdf5574182a7ab1db0f90d41e86b9d534ffb37a1ec8914e7c5434",
++  "source-snapshot/upstream-feedback/SKILL.md": "2daad7d73e54462e8fe24f1152be47ffbbd8fe135a638bb851b97286b989ff30",
++  "source-snapshot/super-roast/reporter-prompt.md": "9c53e99f7173fd14daf0451a211588659176c4728f39f0e940ff13fa60e095c1",
++  "source-snapshot/super-roast/SKILL.md": "2ccbcbfb760eaebc64fa2519a02e71a057a78ac6b024ff18c7c2a9b22d30dd60"
++}

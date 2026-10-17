@@ -1,0 +1,69 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-inputs-round-1.md b/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-inputs-round-1.md
+new file mode 100644
+index 00000000..1506a41e
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-inputs-round-1.md
+@@ -0,0 +1,63 @@
++## Goals
++
++### super-plan-ufz (root)
++Runs preserve work and evidence across interruptions, denied operations, and retries, and accurately report what remains before acceptance. Repairs address the confirmed failure mechanisms without adding a new workflow engine or expanding routine agent ceremony.
++
++### super-plan-ufz.8 — Preserve invocation findings until supported disposition
++Preserve actionable invocation-review findings and deferred findings across retries and interruptions until an explicit, supported disposition accounts for them. Keep the latest review verdict separate from outstanding findings.
++summary: Give super-code invocation review artifacts unique identities and retain unresolved findings across blocked/retried invocations.
++
++## Task tree
++
++- super-plan-ufz · Workflow reliability across interruptions and retries (epic) · Implement the approved workflow reliability design through bounded changes to existing components. · deps: none
++  - super-plan-ufz.1 · Pin review inputs and isolate mutable reproductions · Bind review source and diff inputs to captured commit identities. · deps: none
++      owns: Stable review source identities and review-owned mutable reproduction resources.
++      consumes: Existing Git revision and worktree ownership conventions; existing review dispatch inputs.
++  - super-plan-ufz.2 · Propagate cleanup uncertainty and retain needed resources · Carry verified stopped, surviving, unknown and deliberately kept outcomes through existing process/worktree helpers, coordinator Finish, ordinary-subagent instr · deps: none
++      owns: Cleanup outcome meaning, resource retention and truthful propagation to finish/report consumers.
++      consumes: Existing run/task ownership boundaries and process-root matching.
++  - super-plan-ufz.3 · Recheck admission and refresh external dependency readiness · Within the existing scheduler, recheck hold/cancellation/dependency admission after acquiring capacity and before dispatch. · deps: none
++      owns: Post-capacity admission, external dependency satisfaction and bounded in-flight readiness refresh.
++      consumes: Existing scheduler slots, tracker observations and task/review associations.
++  - super-plan-ufz.4 · Persist recovery obligations and fix history records · Extend existing ledger/run artifacts only for missing holds, pending closures, deferred obligations and relevant fix history. · deps: none
++      owns: Durable recovery/fix records and compatible digest transport.
++      consumes: Existing ledger identity, task branch landing evidence, tracker closure observations and run artifacts.
++  - super-plan-ufz.5 · Record source-bound evidence and check outcomes · Extend existing evidence records only for missing source tree, command/configuration, result, location and kind. · deps: none
++      owns: Source-bound evidence identity, kind and check outcomes.
++      consumes: Existing task acceptance criteria, implementation/review dispatch and source-tree identities.
++  - super-plan-ufz.6 · Keep super-auto root acceptance caller-owned · Keep deferred sweeps as caller-owned measurement obligations while code findings remain actionable. · deps: super-plan-ufz.4, super-plan-ufz.5, super-plan-ufz.8.3
++      owns: Caller-owned deferred measurement and super-auto root acceptance gates.
++      consumes: Recovery obligations from super-plan-ufz.4; evidence outcomes from super-plan-ufz.5; outstanding invocation findings from super-plan-ufz.8.3; existing super-auto final sweep and human gates.
++  - super-plan-ufz.7 · Retain run-regression ownership after task exoneration · Separate task-base attribution from run-baseline attribution in existing task review and caller evidence handling. · deps: super-plan-ufz.4, super-plan-ufz.5
++      owns: Run-level failure attribution and owner retention independently of individual-task base exoneration.
++      consumes: Persisted source/fix history from super-plan-ufz.4 and source-bound evidence outcomes from super-plan-ufz.5; existing task base and run-start/sweep baseline evidence.
++  - super-plan-ufz.8 · Preserve invocation findings until supported disposition (epic) · Give super-code invocation review artifacts unique identities and retain unresolved findings across blocked/retried invocations. · deps: none
++      owns: Immutable super-code invocation reviews, outstanding invocation-finding consumption and evidence-backed punch-list disposition.
++      consumes: Existing finding/task records and review extraction; the roast-redesign team's externally owned ledger interface when available.
++    - super-plan-ufz.8.1 · Preserve distinct invocation review artifacts · Persist per-invocation identity separately from runTag; use it for single/cluster/seam/stub review artifacts and preserve reviewPath/null semantics in both exec · deps: none
++        owns: Invocation identity and immutable review artifact bundle.
++        consumes: Existing runTag and launch records.
++    - super-plan-ufz.8.2 · Extract complete source finding occurrences · Add a complete extraction mode to existing report-verdict, preserving source/section/occurrence identity and original text, including deferred items. · deps: none
++        owns: Complete source occurrence extraction contract.
++        consumes: Existing final-review/report formats and caller-supplied immutable source reference.
++    - super-plan-ufz.8.3 · Carry findings through collection resume and reports · Collect settled immutable review bundles into the committed run directory and recover interrupted collection. · deps: super-plan-ufz.8.4
++        owns: Artifact collection/recovery and consistent outstanding findings in resume, Remaining and status.
++        consumes: Validated outstanding projection from predecessor.
++    - super-plan-ufz.8.4 · Project outstanding findings and supported dispositions · Extend existing super-auto run records and scope-dispositions to retain source occurrences, explicit reference links, deferral and supported disposition. · deps: super-plan-ufz.8.1, super-plan-ufz.8.2
++        owns: Validated outstanding-finding projection and durable disposition records.
++        consumes: Immutable invocation/artifact identities and complete source occurrence extraction.
++  - super-plan-ufz.9 · Report deterministic reconciled metrics with evidence gaps · Validate ledger transport and calculate existing run counts mechanically before interpretation. · deps: super-plan-ufz.4, super-plan-ufz.8.4
++      owns: Ledger transport status, post-reconciliation deterministic counts, discrepancy reporting and execution-metadata/friction count semantics.
++      consumes: Persisted recovery/fix history from super-plan-ufz.4 and supported finding dispositions from super-plan-ufz.8.4; existing Git task-landing identities and tracker reconciliation.
++  - super-plan-ufz.10 · Correct profiler availability bounds and bottleneck claims · Keep creation, mapping readiness and dependency readiness distinct in the existing profiler. · deps: none
++      owns: Profiler availability/timing semantics, planning-aware diagnosis, graph/concurrency labels and profile-generation handoff.
++      consumes: Existing journal/transcript/ordinary-subagent tracker evidence and settled invocation output paths.
++  - super-plan-ufz.11 · Normalize recurring process classes without merging defects · Use a small common process-class/alias vocabulary within existing recurrence recording and reconstruction, preserving each original text. · deps: none
++      owns: Narrow process-class aliases, recurrence provenance and compatible class reconstruction.
++      consumes: Existing recurrence counters, class tags and ledger reconstruction; original finding text remains authoritative evidence.
++  - super-plan-ufz.12 · Reconcile persisted recovery facts before resumed admission · Reconcile durable recovery facts with Git and tracker before admitting affected work. · deps: super-plan-ufz.4
++      owns: Resume reconciliation and affected-work admission from persisted recovery evidence.
++      consumes: Durable recovery/fix records and digest transport from super-plan-ufz.4.
++  - super-plan-ufz.13 · Complete reviewed verification-only tasks without artificial commits · Use source-bound evidence outcomes to complete verification-only tasks with unchanged HEAD after review against acceptance criteria. · deps: super-plan-ufz.5
++      owns: Reviewed no-change task completion in existing execution paths.
++      consumes: Source-bound evidence identity/kind/check outcomes from super-plan-ufz.5.

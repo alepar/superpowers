@@ -1,0 +1,13 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/B-control-3-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/B-control-3-response.txt
+new file mode 100644
+index 00000000..1e952fe1
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/B-control-3-response.txt
+@@ -0,0 +1,7 @@
++Keep the root open and withhold release acceptance. `deferSweep=true` returned **SWEEP DEFERRED (caller-owned)**; the required full-suite result is missing. Assign the sweep to super-auto’s caller now, against e444, recording the exact command, SHA, output, and exit status. This is outstanding verification, not evidence of a code failure. If it cannot finish before handoff, record the release as blocked.
++
++Do not grant blanket implementation acceptance. Targeted tests and compile passed at e444, but F17 remains unresolved: r1 confirmed the shutdown retry loss at c222; its fix was blocked by an unavailable fixture, and no fix commit or verification exists. r2’s silence does not establish resolution, especially with only a documentation change between reviews. Retain F17 as an open Should-fix finding, link its blocked fix task, and assign an owner to restore or replace the fixture and implement and verify the fix. Require a concrete commit and regression evidence before marking it resolved. If explicitly deferred through an authorized disposition, record that decision and carry its key in the durable punch-list supplied to subsequent reviews.
++
++Accept V9 as completed verification-only work. Independent review inspected e444 and ran the named targeted test: 12/12 passed, with the SHA, command, output, and `/tmp/acme-retry/evidence/V9.txt` recorded. No commit is needed. Do not add a comment-only commit. Record the package helper’s exit 3 as a tooling limitation for `base=head`, and retain the independent acceptance evidence as the basis for closure.
++
++Persist the root’s pending acceptance status, sweep assignment and result, F17’s original finding and unresolved disposition, linked fix task and fixture blocker, and V9’s acceptance record and evidence path. Any subsequent fix changes the release candidate; record that SHA and obtain the required verification for it before closing the root.

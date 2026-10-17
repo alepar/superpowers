@@ -1,0 +1,11 @@
+diff --git a/evidence/super-plan-ufz.14/final-source-stability.json b/evidence/super-plan-ufz.14/final-source-stability.json
+new file mode 100644
+index 00000000..d20efccb
+--- /dev/null
++++ b/evidence/super-plan-ufz.14/final-source-stability.json
+@@ -0,0 +1,5 @@
++{
++  "testedHead": "68a1e7425ec3fe238fa51a7c02b5050b40b09095",
++  "checked": 331,
++  "mismatches": []
++}

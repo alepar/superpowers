@@ -1,0 +1,13 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/B-after-5-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/B-after-5-response.txt
+new file mode 100644
+index 00000000..dbfc2e20
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/B-after-5-response.txt
+@@ -0,0 +1,7 @@
++Keep the root open and the release handoff **not ready: required live sweep outstanding**. Accept the delivered implementation work supported by targeted tests and compile at e444, with F17 explicitly outstanding. The missing sweep is a verification obligation, not evidence of a code defect.
++
++Assign the sweep to the **super-auto orchestrator**, which owns it under `deferSweep=true`. Run the declared full-suite command against the exact release tip while no roast or coordinator Workflow is running. Retain its exact command, configuration, source identity, output location and live outcome; stamp `codeBuckets.sweep` with the measured SHA. Until then, preserve `SWEEP DEFERRED (caller-owned)` and the unmet release requirement. Do not close the root based on task tests.
++
++F17 remains **still-open**. r1 confirmed the shutdown retry loss at c222; the repair was blocked, no fix landed, and r2’s silence plus a documentation-only change supplies no resolution. Preserve r2’s clean verdict as invocation-local evidence. Reuse the existing repair assignment, retaining its blocked fixture dependency and owner. Record the original F17 occurrence ref, r1 report/location and durable finding route. Require linked fix evidence before resolving it. If repair limits are exhausted, report it in Remaining with an explicit deferred reason; do not invent another round or mark it resolved.
++
++V9 **can complete without a commit** through the verification-only review path. The ordinary package helper’s exit 3 does not require manufacturing a diff. Retain the existing 12/12 evidence at `/tmp/acme-retry/evidence/V9.txt`; do not rerun it. Confirm equal base/head, captured Git tree identity and clean source status, then record acceptance coverage, `completionKind: "verification-only"`, `files: []`, original evidence and any required live-check identities. Missing identity records must be completed before CLEAN. No comment-only commit is needed.

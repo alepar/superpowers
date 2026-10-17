@@ -1,0 +1,47 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/code-config.json b/docs/superpowers/runs/2026-10-16-workflow-reliability/code-config.json
+new file mode 100644
+index 00000000..4df18df3
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/code-config.json
+@@ -0,0 +1,41 @@
++{
++  "epicId": "super-plan-ufz",
++  "integrationBranch": "super-auto/workflow-reliability",
++  "integrationWorktree": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers",
++  "skillsRoot": "/Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills",
++  "runTag": "workflow-reliability-20261017T054545",
++  "deferSweep": true,
++  "processRoots": [
++    "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability"
++  ],
++  "config": {
++    "concurrency": 3,
++    "runtimeSlots": 10,
++    "hotFileCap": 3,
++    "earlyUnblock": true,
++    "mergeCheck": "none",
++    "contextWindows": {
++      "planner": 475000,
++      "implementer": 475000,
++      "reviewer": 475000,
++      "finalReview": 475000,
++      "assembler": 475000
++    },
++    "models": {
++      "planner": "gpt-6.1-sol",
++      "implementer": "gpt-6.1-sol",
++      "reviewer": "gpt-6.1-sol",
++      "mechanical": "gpt-6-luna",
++      "triage": "gpt-6.1-sol",
++      "finalReview": "gpt-6.1-sol"
++    },
++    "efforts": {
++      "planner": "high",
++      "implementer": "high",
++      "reviewer": "medium",
++      "mechanical": "low",
++      "triage": "high",
++      "finalReview": "high"
++    }
++  }
++}

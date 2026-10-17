@@ -1,0 +1,36 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/baseline-reference/after-pack.json b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/baseline-reference/after-pack.json
+new file mode 100644
+index 00000000..89b2526a
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/baseline-reference/after-pack.json
+@@ -0,0 +1,30 @@
++{
++  "phase": "after implementation; prepared, not executed",
++  "model": "gpt-6.1-sol",
++  "reasoning_effort": "medium",
++  "fork_turns": "none",
++  "repetitions_per_scenario": 5,
++  "max_active_test_children": 1,
++  "scenario_files": {
++    "A": "/tmp/workflow-reliability-baseline/scenario-A.txt",
++    "B": "/tmp/workflow-reliability-baseline/scenario-B.txt",
++    "C": "/tmp/workflow-reliability-baseline/scenario-C.txt"
++  },
++  "wrapper_template": "/tmp/workflow-reliability-baseline/A-baseline-1-prompt.txt",
++  "wrapper_substitutions": [
++    "scenario-A.txt -> scenario-<case>.txt",
++    "guidance-A.txt -> <frozen-after-directory>/guidance-<case>.txt"
++  ],
++  "source_selection": "Use the same logical operative sections from updated target source as source-manifest.json; include any added adjacent operative contract needed by those sections. Preserve whole clauses/sections. Freeze exact bytes, path, revision, line ranges, full-file and excerpt SHA256 before spawning. Do not use speculative proposed wording.",
++  "rubric_private": "/tmp/workflow-reliability-baseline/rubric-private.json",
++  "baseline_scores": "/tmp/workflow-reliability-baseline/scores.json",
++  "rules": [
++    "Do not show rubric, prior decisions or score counts to agents.",
++    "Reuse unchanged scenarios, wrapper role and model/effort.",
++    "Fresh agent for every scenario/replicate; do not resume one.",
++    "Preserve exact prompts, source snapshot, final response, and agent ID.",
++    "Score each claim independently with explicit evidence; classify omissions/ambiguities separately.",
++    "No extra judgment guidance is supported for claims all no-guidance controls already satisfy.",
++    "Mechanical schemas/helpers require independent deterministic tests and cannot be validated by these answers."
++  ]
++}

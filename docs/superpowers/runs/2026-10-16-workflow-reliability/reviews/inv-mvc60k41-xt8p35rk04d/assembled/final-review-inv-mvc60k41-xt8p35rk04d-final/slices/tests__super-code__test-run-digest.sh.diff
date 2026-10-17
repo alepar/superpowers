@@ -1,0 +1,26 @@
+diff --git a/tests/super-code/test-run-digest.sh b/tests/super-code/test-run-digest.sh
+index d0042a21..60796d99 100644
+--- a/tests/super-code/test-run-digest.sh
++++ b/tests/super-code/test-run-digest.sh
+@@ -167,6 +167,21 @@ slow_case "two slow sources" "ledger profile"
+ slow_case "three slow sources" "ledger bd profile"
+ cp "$SC/scripts/ledger-digest" "$S/ledger-digest"
+ 
++echo "run-digest: explicit ledger source availability"
++printf '#!/usr/bin/env bash\ncat "$BD_FIXTURE"\n' >"$T/bin/bd"
++set_profile 'echo "in-flight: impl:E.2 · 25m"'
++for status in missing unreadable; do
++  printf '#!/usr/bin/env bash\necho "# ledger-status: %s"\n' "$status" >"$S/ledger-digest"
++  run_digest state 9000 < <(marker progress.md)
++  assert_has "$out" "ledger: unknown — $status" "$status is retained independently from other sources"
++  assert_lacks "$out" "ledger: landed 0" "$status never supplies zero totals"
++  assert_has "$out" "open beads: 3 — E.2, E.3, E.5" "$status preserves available tracker facts"
++done
++printf '#!/usr/bin/env bash\necho "# ledger-digest: 3 of 4 lines"\necho "Task 1 (E.1): complete"\n' >"$S/ledger-digest"
++run_digest state 9000 < <(marker progress.md)
++assert_has "$out" "ledger: unknown — invalid transport" "truncated transport never supplies partial authoritative totals"
++cp "$SC/scripts/ledger-digest" "$S/ledger-digest"
++
+ echo "run-digest: bad arguments"
+ set +e; bash "$S/run-digest" --part nope --budget 9000 </dev/null >/dev/null 2>&1; c1=$?
+ bash "$S/run-digest" --part state </dev/null >/dev/null 2>&1; c2=$?

@@ -1,0 +1,19 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/C-control-4-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/C-control-4-response.txt
+new file mode 100644
+index 00000000..33ab95f7
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/C-control-4-response.txt
+@@ -0,0 +1,13 @@
++**Disposition: block completion and release.** The production data-loss defect remains unrepaired. It reproduces at B’s base `4b44`, but run baseline `0a00` passes and A’s landing `3a33` introduced it. Attribute the regression to A. B’s docs-only change did not cause it; its `preExisting=true` packet establishes task-relative provenance, not permission to accept a regression introduced during this run. Route repair to A, then rerun the reproduction and review the fix before clearing the block.
++
++C’s latest attempt is clean after repairing two confirmed findings. Retain those findings and repair artifacts as history; report them as resolved, not as outstanding defects or evidence that C was clean throughout.
++
++Report **four closed implementation tasks: A, B, C, D**. Tracker export and Git corroborate four task landings. The other two first-parent merges absorbed updated main and do not represent implementation tasks. The ledger is truncated after C and supplies no valid metrics line; identify tracker and Git as fallback evidence and mark ledger-derived metrics unavailable. Closed tracker status does not establish run acceptance.
++
++D’s ready-to-dispatch latency is unknown because its ready timestamp is absent. Creation-to-first-dispatch was five minutes, 10:40–10:45; label that interval explicitly. The scheduler’s 10:00 start does not establish D’s waiting time. The snapshot shows eight active agents, including three occupying implementation task slots; it does not establish sustained concurrency.
++
++Observed elapsed time was 130 minutes: planning 60, code 50, review 20. The scaling model conditionally reduces code to 25 minutes, yielding 105 minutes overall: about 19% less elapsed time, or 1.24× speedup. It does not support “doubling workers halves delivery time.”
++
++Group A’s cleanup-permission denial and C’s process-inspection refusal under sandbox-denied owned-process liveness inspection, preserving both incidents, labels, PIDs, and fixtures. This process grouping does not establish duplicate product defects. Keep B’s wrong expected retry assertion separate as a test-expectation issue.
++
++Issue this corrected account now; withdraw the advertised “six tasks, clean run” summary.

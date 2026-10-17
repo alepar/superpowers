@@ -1,0 +1,17 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/promotion-review.md b/docs/superpowers/runs/2026-10-16-workflow-reliability/promotion-review.md
+new file mode 100644
+index 00000000..0a4d23d8
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/promotion-review.md
+@@ -0,0 +1,11 @@
++# Promotion review disposition
++
++Fresh same-family reviewer reliability_promotion recommended SPLIT for .4 and .5, PROMOTE for .8, LEAF for the remaining tasks.
++
++Applied .4 split: .4 owns durable recovery/fix records; .12 owns resume reconciliation, depending on .4. Existing .6/.7/.9 consumers keep their edges to .4 because they consume records, not resume behavior.
++
++Applied .5 split: .5 owns evidence records; .13 owns no-change completion, depending on .5. Existing .6/.7 consumers keep their edges to .5 because they consume evidence, not no-change completion.
++
++Applied .8 promotion: finding continuity requires nested contract design, including external roast-ledger ownership and supported disposition. It is an epic with sp:needs-design, sp_depth=1, sp_order=1. No nested work starts before the interactive top-split gate.
++
++The remaining leaves retain their reviewed scopes; no decomposition override. Root integration sweep is created after coverage as required by super-design.

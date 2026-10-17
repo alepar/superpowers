@@ -1,0 +1,44 @@
+diff --git a/skills/super-code/scripts/close-in-tree-epics b/skills/super-code/scripts/close-in-tree-epics
+index 0478e32f..d9952fc5 100755
+--- a/skills/super-code/scripts/close-in-tree-epics
++++ b/skills/super-code/scripts/close-in-tree-epics
+@@ -7,21 +7,27 @@
+ # because an out-of-tree epic that is permanently eligible reappears in every preview. The
+ # unfiltered mutating form is never called: it would close other trees' epics.
+ #
+-# Usage: bash close-in-tree-epics EPIC_ID
++# Usage: bash close-in-tree-epics EPIC_ID [--exclude-root]
+ # Prints one JSON object {"rootClosed":true|false,"closedThisRun":[...]} on stdout; a failed
+ # `bd close` is noted on stderr and not counted. Exit 0 ok, 2 bad input or unknown EPIC_ID,
+ # 4 jq unavailable (prints a JQ_UNAVAILABLE: line on stdout).
+ set -euo pipefail
+ 
+-if [ $# -ne 1 ] || [ "${1#-}" != "$1" ]; then
+-  echo "usage: close-in-tree-epics EPIC_ID" >&2
++if [ $# -lt 1 ] || [ $# -gt 2 ] || [ "${1#-}" != "$1" ] || { [ $# -eq 2 ] && [ "$2" != --exclude-root ]; }; then
++  echo "usage: close-in-tree-epics EPIC_ID [--exclude-root]" >&2
+   exit 2
+ fi
+ epic=$1
++exclude_root=false
++[ "${2:-}" != --exclude-root ] || exclude_root=true
++membership="the id is ${epic}, or its parent chain reaches ${epic}"
++if "$exclude_root"; then
++  membership="the id is NOT ${epic}, and its parent chain reaches ${epic} (NEVER close root ${epic}; an open root stays \"rootClosed\":false)"
++fi
+ here=$(cd "$(dirname "$0")" && pwd)
+ 
+ command -v jq >/dev/null 2>&1 || {
+-  echo "JQ_UNAVAILABLE: jq is not installed, so run the loop by hand. Repeat: (1) run \`bd epic close-eligible --dry-run --json\`; each element's \`epic.id\` is a candidate. (2) Keep only candidates IN-TREE for ${epic}: the id is ${epic}, or its parent chain reaches ${epic}, where a bead's parent is the \`depends_on_id\` of its \`dependencies\` entry with \`type\` \"parent-child\" in \`bd list --all --json --limit 0\`; never judge by the id's prefix. (3) Run \`bd close <id>\` once per kept id — never the unfiltered \`bd epic close-eligible\` without --dry-run. (4) If this pass closed zero ids, stop (an out-of-tree candidate that keeps reappearing is expected); otherwise repeat from (1). Then run \`bd show ${epic} --json\` and output one JSON object {\"rootClosed\":<true iff its status is closed>,\"closedThisRun\":[<every id you closed, in order>]}."
++  echo "JQ_UNAVAILABLE: jq is not installed, so run the loop by hand. Repeat: (1) run \`bd epic close-eligible --dry-run --json\`; each element's \`epic.id\` is a candidate. (2) Keep only candidates IN-TREE for ${epic}: ${membership}, where a bead's parent is the \`depends_on_id\` of its \`dependencies\` entry with \`type\` \"parent-child\" in \`bd list --all --json --limit 0\`; never judge by the id's prefix. (3) Run \`bd close <id>\` once per kept id — never the unfiltered \`bd epic close-eligible\` without --dry-run. (4) If this pass closed zero ids, stop (an out-of-tree candidate that keeps reappearing is expected); otherwise repeat from (1). Then run \`bd show ${epic} --json\` and output one JSON object {\"rootClosed\":<true iff its status is closed>,\"closedThisRun\":[<every id you closed, in order>]}."
+   exit 4
+ }
+ 
+@@ -39,6 +45,7 @@ while [ "$pass" -lt 50 ]; do
+   fi
+   closedThisPass=0
+   for id in $inTree; do
++    if "$exclude_root" && [ "$id" = "$epic" ]; then continue; fi
+     if bd close "$id" >/dev/null; then
+       closed+=("$id"); closedThisPass=$((closedThisPass + 1))
+     else

@@ -1,0 +1,17 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/control-4-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/control-4-response.txt
+new file mode 100644
+index 00000000..2abbb50d
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/control-4-response.txt
+@@ -0,0 +1,11 @@
++Keep the root open and release acceptance pending. The implementation leaves may retain their completed task status, but targeted tests and compile at e444 do not satisfy the required full-suite sweep. Record the missing sweep as outstanding validation, not a demonstrated code failure.
++
++Assign the sweep to super-auto, which owns the caller-deferred work. Run it now against the release candidate and retain the exact commit, command, configuration, live output and result. Do not defer it until after release or close the root before its required result is available.
++
++Keep F17 unresolved at its original Should-fix severity. r1 confirmed the shutdown retry loss; its fix was blocked, no fix commit landed, and the intervening documentation change provides no resolution evidence. r2’s silence and “clean” label do not discharge it. Add F17 to the durable punch-list keys file and route a concrete follow-up to restore the fixture, fix the loss and verify shutdown behavior. Require a traceable fix commit and verification before marking F17 resolved.
++
++Complete V9 now as verification-only, with no commit. Its requirements permit no delivered changes; base and head resolve to the same full e444 commit, the worktree is clean, and the actual tree matches both captured sourceTree and the original live evidence tree, d84541aed84541aed84541aed84541aed84541ae. Independent review confirms that the recorded parser test passed 12/12 and covers the entire criterion. There are no additional required live checks. Record the ordinary helper’s exit 3 as an empty-diff packaging limitation.
++
++Keep V10 pending verification, with no commit. Its evidence belongs to tree a15541aea15541aea15541aea15541aed84541ae rather than the actual d845… tree; no reconciliation supports acceptance. Obtain fresh evidence on the actual tree and independently review it before completion.
++
++Retain per-leaf acceptance decisions, requirements, resolved identities, tree/status observations, original evidence references, reviewer conclusions and helper outcomes; also retain the sweep ownership/result and F17’s review history, severity, blocker and follow-up linkage. Reject both comment-only commits.

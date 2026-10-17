@@ -1,0 +1,18 @@
+diff --git a/evidence/super-plan-ufz.14/base-package.log b/evidence/super-plan-ufz.14/base-package.log
+new file mode 100644
+index 00000000..f7a917f5
+--- /dev/null
++++ b/evidence/super-plan-ufz.14/base-package.log
+@@ -0,0 +1,12 @@
++Codex package archive tests
++  [PASS] source Codex manifest names the Codex-only hook file
++  [FAIL] package script exits successfully
++      ERROR: repo root is not a git checkout: /tmp/sp-bce79baa/super-plan-ufz.14/base
++  [FAIL] package script writes archive
++  [FAIL] reports archive path
++    expected to find: Archive:
++  [FAIL] reports default zip format
++    expected to find: Format:  zip
++  [FAIL] reports archive checksum
++    expected to find: SHA-256:
++unzip:  cannot find or open /var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/tmp.BTYZJExCee/superpowers, /var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/tmp.BTYZJExCee/superpowers.zip or /var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/tmp.BTYZJExCee/superpowers.ZIP.

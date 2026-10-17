@@ -1,0 +1,79 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-design-1-coverage.json b/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-design-1-coverage.json
+new file mode 100644
+index 00000000..e4a1d8e1
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-design-1-coverage.json
+@@ -0,0 +1,73 @@
++{
++  "triageDead": false,
++  "scoutsDispatched": 8,
++  "scoutsDead": 0,
++  "unknownLanes": [],
++  "domainsDropped": [],
++  "rawFindings": 6,
++  "dedupedFindings": 4,
++  "dedupeOrphans": 0,
++  "beyondCap": 0,
++  "beyondPanelCap": 0,
++  "dedupeDead": false,
++  "panelCount": 4,
++  "spotCount": 0,
++  "promotedCount": 0,
++  "judgeLost": 0,
++  "spotLost": 0,
++  "laneYield": {
++    "premortem": {
++      "found": 2,
++      "confirmed": 1,
++      "unique": 0,
++      "refuted": 1
++    },
++    "completeness": {
++      "found": 0,
++      "confirmed": 0,
++      "unique": 0,
++      "refuted": 0
++    },
++    "yagni": {
++      "found": 0,
++      "confirmed": 0,
++      "unique": 0,
++      "refuted": 0
++    },
++    "failure-mode": {
++      "found": 2,
++      "confirmed": 1,
++      "unique": 0,
++      "refuted": 1
++    },
++    "feasibility": {
++      "found": 0,
++      "confirmed": 0,
++      "unique": 0,
++      "refuted": 0
++    },
++    "domain:workflow-orchestration": {
++      "found": 1,
++      "confirmed": 0,
++      "unique": 0,
++      "refuted": 1
++    },
++    "domain:distributed-systems": {
++      "found": 1,
++      "confirmed": 1,
++      "unique": 0,
++      "refuted": 0
++    },
++    "domain:data-pipeline": {
++      "found": 0,
++      "confirmed": 0,
++      "unique": 0,
++      "refuted": 0
++    }
++  },
++  "judgeCompletionPct": 100,
++  "lowCoverage": false,
++  "panelCappedTag": "",
++  "emptyLateRound": false,
++  "convergenceEligible": false
++}

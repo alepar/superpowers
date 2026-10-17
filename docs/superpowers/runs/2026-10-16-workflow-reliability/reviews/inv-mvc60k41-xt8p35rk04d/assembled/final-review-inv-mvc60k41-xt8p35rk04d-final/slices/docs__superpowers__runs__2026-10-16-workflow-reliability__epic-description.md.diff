@@ -1,0 +1,13 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/epic-description.md b/docs/superpowers/runs/2026-10-16-workflow-reliability/epic-description.md
+new file mode 100644
+index 00000000..26eaf2a7
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/epic-description.md
+@@ -0,0 +1,7 @@
++Implement the approved workflow reliability design through bounded changes to existing components. Spec: docs/superpowers/specs/2026-10-16-workflow-reliability-design.md. Preserve workspace/process safety, fresh admission/recovery, independent evidence and acceptance, finding continuity and truthful metrics. No replacement engine or mandatory six-state finding lifecycle. Root completes only when its acceptance obligations are met; super-auto owns finish.
++
++## Global Constraints
++- Extend existing components; preserve Workflow and ordinary-subagent paths and compact coordinator inputs.
++- Concurrent roast-redesign run owns redesign triggers/amend and its ledger; reconcile the finding-continuity seam before implementation.
++<!-- key-abstractions digest: begin -->
++<!-- key-abstractions digest: end -->

@@ -1,0 +1,86 @@
+diff --git a/evidence/super-plan-ufz.14/final-required-results.json b/evidence/super-plan-ufz.14/final-required-results.json
+new file mode 100644
+index 00000000..58dbc79b
+--- /dev/null
++++ b/evidence/super-plan-ufz.14/final-required-results.json
+@@ -0,0 +1,80 @@
++[
++  {
++    "command": "node tests/super-code/replay-harness.mjs",
++    "code": 0,
++    "signal": null,
++    "seconds": 26.401,
++    "log": "evidence/super-plan-ufz.14/final-super-code--replay-harness.mjs.log",
++    "hygiene": {
++      "code": 0,
++      "signal": null,
++      "seconds": 2.241,
++      "log": "evidence/super-plan-ufz.14/final-super-code--replay-harness.mjs.hygiene.log"
++    }
++  },
++  {
++    "command": "bash tests/super-code/test-run-profile.sh",
++    "code": 0,
++    "signal": null,
++    "seconds": 17.339,
++    "log": "evidence/super-plan-ufz.14/final-super-code--test-run-profile.sh.log",
++    "hygiene": {
++      "code": 0,
++      "signal": null,
++      "seconds": 2.173,
++      "log": "evidence/super-plan-ufz.14/final-super-code--test-run-profile.sh.hygiene.log"
++    }
++  },
++  {
++    "command": "bash tests/super-code/test-dispatch-text.sh",
++    "code": 0,
++    "signal": null,
++    "seconds": 10.17,
++    "log": "evidence/super-plan-ufz.14/final-super-code--test-dispatch-text.sh.log",
++    "hygiene": {
++      "code": 0,
++      "signal": null,
++      "seconds": 2.205,
++      "log": "evidence/super-plan-ufz.14/final-super-code--test-dispatch-text.sh.hygiene.log"
++    }
++  },
++  {
++    "command": "bash tests/super-code/test-run-profile-in-flight.sh",
++    "code": 0,
++    "signal": null,
++    "seconds": 5.237,
++    "log": "evidence/super-plan-ufz.14/final-super-code--test-run-profile-in-flight.sh.log",
++    "hygiene": {
++      "code": 0,
++      "signal": null,
++      "seconds": 2.133,
++      "log": "evidence/super-plan-ufz.14/final-super-code--test-run-profile-in-flight.sh.hygiene.log"
++    }
++  },
++  {
++    "command": "bash tests/super-code/test-report-verdict.sh",
++    "code": 0,
++    "signal": null,
++    "seconds": 2.697,
++    "log": "evidence/super-plan-ufz.14/final-super-code--test-report-verdict.sh.log",
++    "hygiene": {
++      "code": 0,
++      "signal": null,
++      "seconds": 2.277,
++      "log": "evidence/super-plan-ufz.14/final-super-code--test-report-verdict.sh.hygiene.log"
++    }
++  },
++  {
++    "command": "bash tests/super-code/test-run-digest.sh",
++    "code": 0,
++    "signal": null,
++    "seconds": 14.416,
++    "log": "evidence/super-plan-ufz.14/final-super-code--test-run-digest.sh.log",
++    "hygiene": {
++      "code": 0,
++      "signal": null,
++      "seconds": 2.158,
++      "log": "evidence/super-plan-ufz.14/final-super-code--test-run-digest.sh.hygiene.log"
++    }
++  }
++]

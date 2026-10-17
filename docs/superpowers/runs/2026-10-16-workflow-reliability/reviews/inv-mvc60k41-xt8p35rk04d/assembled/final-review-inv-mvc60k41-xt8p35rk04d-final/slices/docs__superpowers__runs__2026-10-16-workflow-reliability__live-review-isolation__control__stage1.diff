@@ -1,0 +1,7 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/control/stage1 b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/control/stage1
+new file mode 100644
+index 00000000..3431e697
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/control/stage1
+@@ -0,0 +1 @@
++25a3ee0d2089c3edacfa7633c6456f5f5f0e5afa

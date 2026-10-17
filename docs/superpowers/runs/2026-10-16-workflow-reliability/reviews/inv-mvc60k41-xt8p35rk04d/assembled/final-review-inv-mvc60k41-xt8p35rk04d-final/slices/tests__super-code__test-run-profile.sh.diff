@@ -1,0 +1,120 @@
+diff --git a/tests/super-code/test-run-profile.sh b/tests/super-code/test-run-profile.sh
+index 19c4919f..7c46b1c8 100644
+--- a/tests/super-code/test-run-profile.sh
++++ b/tests/super-code/test-run-profile.sh
+@@ -336,6 +336,38 @@ missing=""
+ for k in $kinds; do grep -qF "case '$k'" "$REPO_ROOT/skills/super-code/scripts/run-profile.mjs" || missing="$missing $k"; done
+ assert_eq "${missing:-none}" "none" "coordinator label kinds are all classified (missing:${missing:- none})"
+ 
++echo "run-profile: resume observations are run-level readiness work"
++node - "$FX" "$T" <<'JS'
++const fs = require('node:fs'), [FX, T] = process.argv.slice(2)
++const workflow = JSON.parse(fs.readFileSync(`${FX}/chain.json`, 'utf8'))
++const observation = workflow.agents.find(a => a.label === 'bd-ready')
++observation.label = 'resume-check:ep.1'
++observation.phase = 'Resume'
++observation.result = { landed: true, sourceVerified: false, closed: ['ep.1'], open: [] }
++fs.writeFileSync(`${T}/resume-label-workflow.json`, JSON.stringify(workflow))
++const ordinary = JSON.parse(fs.readFileSync(`${FX}/ordinary.json`, 'utf8'))
++ordinary.agents.push({ codex: 'resume_check_cx_1', label: 'resume-check:cx.1', start: 0, end: 10 })
++fs.writeFileSync(`${T}/resume-label-ordinary.json`, JSON.stringify(ordinary))
++JS
++node "$BUILD" "$T/resume-label-workflow.json" "$T/resume-label-workflow"
++run bash "$P" --workflow "$T/resume-label-workflow" --out "$T/resume-label-w"
++assert_eq "$code" 0 "resume observation Workflow profile exits 0"
++assert_eq "$(q "$T/resume-label-w.json" "JSON.stringify(d.criticalPath.segments.filter(s => s.label === 'resume-check:ep.1').map(s => [s.kind,s.bead,s.ms]))")" '[["ready",null,10000]]' "resume observation is run-level ready time"
++assert_eq "$(q "$T/resume-label-w.json" "JSON.stringify(d.beads)")" "$(q "$T/chain-p.json" "JSON.stringify(d.beads)")" "resume observation creates no task attempt or task timing"
++assert_eq "$(q "$T/resume-label-w.json" "JSON.stringify(d.taskSlots)")" "$(q "$T/chain-p.json" "JSON.stringify(d.taskSlots)")" "resume observation uses no task slot"
++RC=$(node "$ORD" "$T/resume-label-ordinary.json" codex "$T/resume-label-codex")
++run bash "$P" --codex "$RC" --codex-home "$T/resume-label-codex/codex" --ledger "$T/resume-label-codex/progress.md" --beads "$T/resume-label-codex/beads.json" --out "$T/resume-label-x"
++assert_eq "$code" 0 "resume observation Codex profile exits 0"
++RS=$(node "$ORD" "$T/resume-label-ordinary.json" claude "$T/resume-label-claude")
++run bash "$P" --subagents "$RS" --ledger "$T/resume-label-claude/progress.md" --beads "$T/resume-label-claude/beads.json" --out "$T/resume-label-c"
++assert_eq "$code" 0 "resume observation Claude profile exits 0"
++for pair in 'x ox' 'c oc'; do
++  read -r variant baseline <<< "$pair"
++  assert_eq "$(q "$T/resume-label-$variant.json" "JSON.stringify(d.concurrency.kinds.filter(k => k.kind === 'resume-check').map(k => [k.mapped,k.n,k.ms]))")" '[[true,1,10000]]' "ordinary resume observation is mapped ($variant)"
++  assert_eq "$(q "$T/resume-label-$variant.json" "JSON.stringify(d.beads)")" "$(q "$T/$baseline.json" "JSON.stringify(d.beads)")" "ordinary resume observation preserves bead population and attempts ($variant)"
++  assert_eq "$(q "$T/resume-label-$variant.json" "JSON.stringify(d.taskSlots)")" "$(q "$T/$baseline.json" "JSON.stringify(d.taskSlots)")" "ordinary resume observation preserves task slots ($variant)"
++done
++
+ echo "run-profile: context-pass module (synthetic rows)"
+ # context-pass-unit.mjs prints `ok <name>` / `not ok <name>` per check over synthetic transcript rows.
+ seen=0
+@@ -515,5 +547,76 @@ assert_eq "$code" 0 "multi-rollout full profile: exits 0"
+ assert_has "$out" "$CRSUM" "multi-rollout full profile: the same coordinator figures"
+ assert_eq "$(q "$T/crp.json" "[d.context.summary.compactions, d.context.summary.coordinator.peak, d.context.summary.coordinator.compactions].join(' ')")" "2 245000 2" "multi-rollout full profile --out JSON: the context key"
+ 
++echo "run-profile: availability evidence and planning diagnosis"
++node - "$T" <<'JS'
++const fs = require('node:fs'), T = process.argv[2]
++const base = { t0: '2026-10-01T00:00:00Z', launch: { epicId: 'av', config: { concurrency: 2, runtimeSlots: 8 } },
++  beads: [{ id: 'av', issue_type: 'epic' }, { id: 'av.1', parent: 'av', created_at: 600 }], agents: [
++    { label: 'ledger-append:launch', start: 0, end: 1 },
++    { label: 'plan', start: 1, end: 60, result: { mapping: [{ id: 'av.1', n: 1, deps: [] }] } },
++    { label: 'impl:av.1', start: 660, end: 690, result: { status: 'IMPLEMENTED' } },
++    { label: 'merge:av.1', start: 690, end: 700, result: { merged: true } }] }
++fs.writeFileSync(`${T}/availability.json`, JSON.stringify(base))
++const planning = structuredClone(base)
++planning.beads[1].created_at = 0
++planning.agents[1].end = 600
++fs.writeFileSync(`${T}/planning.json`, JSON.stringify(planning))
++const unknown = structuredClone(base)
++delete unknown.beads[1].created_at
++unknown.agents[1].result.mapping[0].deps = ['av.2']
++fs.writeFileSync(`${T}/unknown.json`, JSON.stringify(unknown))
++const ord = { t0: base.t0, epic: 'av', cwd: '/w', end: 710,
++  beads: [{ id: 'av', issue_type: 'epic' }, { id: 'av.1', parent: 'av', created_at: 600 }],
++  ledger: ['Launch: mechanism ordinary-subagents · epic av', 'Task 1 (av.1): complete'],
++  agents: [{ codex: 'impl_av_1', label: 'impl:av.1', start: 660, end: 690 }] }
++fs.writeFileSync(`${T}/residual.json`, JSON.stringify(ord))
++const lateOrd = structuredClone(ord)
++lateOrd.agents.unshift({ codex: 'plan', label: 'plan', start: 0, end: 60 })
++fs.writeFileSync(`${T}/late-ordinary.json`, JSON.stringify(lateOrd))
++const extOrd = structuredClone(lateOrd)
++extOrd.beads[1].created_at = 0
++extOrd.beads[1].dependencies = [{ type: 'blocks', depends_on_id: 'outside.1' }]
++fs.writeFileSync(`${T}/external-ordinary.json`, JSON.stringify(extOrd))
++JS
++node "$BUILD" "$T/availability.json" "$T/availability"
++run bash "$P" --workflow "$T/availability" --beads "$T/availability/beads.json" --out "$T/av"
++assert_eq "$code" 0 "late-created Workflow profile exits 0"
++assert_eq "$(q "$T/av.json" "(b => [b.createdAt,b.mappingReadyAt,b.dependencyReadyAt,b.readyAt,b.waitMs,b.carriedMs].join(' '))(d.beads[0])")" "2026-10-01T00:10:00.000Z 2026-10-01T00:01:00.000Z 2026-10-01T00:01:00.000Z 2026-10-01T00:10:00.000Z 60000 0" "creation bounds wait while mapping and dependency evidence retain their times"
++assert_eq "$(q "$T/av.json" "d.simulation.asRunMs")" "640000" "model cannot release the late task before creation"
++assert_eq "$(q "$T/av.json" "[d.criticalPath.byCategory['pre-availability'],d.criticalPath.byCategory.wait].join(' ')")" "540000 60000" "critical path cannot call pre-creation time a task wait"
++node "$BUILD" "$T/unknown.json" "$T/unknown"
++run bash "$P" --workflow "$T/unknown" --beads "$T/unknown/beads.json" --out "$T/un"
++assert_eq "$(q "$T/un.json" "(b => JSON.stringify([b.createdAt,b.mappingReadyAt,b.dependencyReadyAt,b.readyAt,b.waitMs,b.carriedMs,b.waitCause]))(d.beads[0])")" '[null,"2026-10-01T00:01:00.000Z",null,null,null,null,"unknown"]' "unknown external dependency timing cannot become measured readiness"
++assert_has "$out" "availability/readiness timing unknown" "unmeasured timing is explained"
++assert_eq "$(q "$T/un.json" "d.criticalPath.byCategory['unmeasured-gap']")" "600000" "unknown readiness gap remains unmeasured on the critical path"
++run bash "$P" --summarize "$T/un.json"
++assert_has "$out" "unknown readiness for 1 landed bead(s); wait not measured" "baseline keeps unknown waits unmeasured"
++node "$BUILD" "$T/planning.json" "$T/planning"
++run bash "$P" --workflow "$T/planning" --beads "$T/planning/beads.json" --out "$T/pl"
++assert_eq "$(q "$T/pl.json" "[d.diagnosis.dominant,d.diagnosis.planningMs,d.simulation.estimate,d.simulation.window].join(' ')")" "planning 599000 true first dispatch to last landing" "planning-dominated diagnosis and model window"
++assert_has "$out" "planning dominates" "whole-run diagnosis retains planning"
++assert_has "$out" "Profile: what-if estimate" "counterfactual stdout labels estimates"
++assert_has "$(cat "$T/pl.md")" "planning dominates" "Markdown preserves the planning diagnosis"
++assert_has "$out" "observed invocation/residual graph" "graph scope is explicit"
++assert_has "$out" "all-agent concurrency" "overall agents are labeled separately"
++assert_has "$out" "task-slot concurrency" "task-slot occupancy has its own label"
++OC=$(node "$ORD" "$T/residual.json" codex "$T/residual")
++run bash "$P" --codex "$OC" --codex-home "$T/residual/codex" --ledger "$T/residual/progress.md" --beads "$T/residual/beads.json" --out "$T/rs"
++assert_eq "$(q "$T/rs.json" "(b => JSON.stringify([b.createdAt,b.mappingReadyAt,b.dependencyReadyAt,b.readyAt,b.waitMs,b.carriedMs]))(d.beads[0])")" '["2026-10-01T00:10:00.000Z",null,null,null,null,null]' "ordinary residual snapshot without a planner does not invent historical readiness"
++assert_eq "$(q "$T/rs.json" "d.graphScope")" "observed invocation/residual graph" "JSON graph scope"
++assert_eq "$(q "$T/pl.json" "[d.runtime.scope,d.taskSlots.scope].join(' / ')")" "all-agent concurrency / task-slot concurrency" "separate JSON concurrency scopes"
++assert_eq "$(q "$T/chain-p.json" "[d.runtime.peak,d.taskSlots.peak].join(' ')")" "3 2" "all-agent and task-slot peaks are measured independently"
++LC=$(node "$ORD" "$T/late-ordinary.json" codex "$T/late-ordinary")
++run bash "$P" --codex "$LC" --codex-home "$T/late-ordinary/codex" --ledger "$T/late-ordinary/progress.md" --beads "$T/late-ordinary/beads.json" --out "$T/lo"
++assert_eq "$(q "$T/lo.json" "(b => JSON.stringify([b.mappingReadyAt,b.readyAt,b.waitMs]))(d.beads[0])")" '[null,null,null]' "ordinary initial planner cannot establish mapping for a task created later"
++EC=$(node "$ORD" "$T/external-ordinary.json" codex "$T/external-ordinary")
++run bash "$P" --codex "$EC" --codex-home "$T/external-ordinary/codex" --ledger "$T/external-ordinary/progress.md" --beads "$T/external-ordinary/beads.json" --out "$T/eo"
++assert_eq "$(q "$T/eo.json" "(b => JSON.stringify([b.dependencyReadyAt,b.readyAt,b.waitMs]))(d.beads[0])")" '[null,null,null]' "ordinary external dependency timing stays unknown"
++run bash "$P" --discover --epic unavailable --projects "$T/empty" --out "$T/unavailable"
++assert_eq "$code" 3 "unavailable profile retains exit 3"
++if [ -f "$T/unavailable.json" ] && [ -f "$T/unavailable.md" ]; then
++  assert_eq "$(q "$T/unavailable.json" "d.partial && !!d.unavailable && d.window === undefined")" "true" "unavailable artifacts are qualified without invented timings"
++else fail "unavailable stdout also has copyable md/json artifacts"; fi
++
+ echo
+ if [ "$FAILURES" -eq 0 ]; then echo "run-profile: all tests passed"; else echo "run-profile: $FAILURES failure(s)"; exit 1; fi

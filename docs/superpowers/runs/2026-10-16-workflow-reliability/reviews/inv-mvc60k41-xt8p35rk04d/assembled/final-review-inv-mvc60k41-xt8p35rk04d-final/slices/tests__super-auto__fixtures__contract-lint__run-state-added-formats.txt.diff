@@ -1,0 +1,12 @@
+diff --git a/tests/super-auto/fixtures/contract-lint/run-state-added-formats.txt b/tests/super-auto/fixtures/contract-lint/run-state-added-formats.txt
+new file mode 100644
+index 00000000..cbd848c9
+--- /dev/null
++++ b/tests/super-auto/fixtures/contract-lint/run-state-added-formats.txt
+@@ -0,0 +1,6 @@
++- finding-source · <complete extraction JSON>
++- finding-link · <JSON refs and basis>
++- finding-route · <JSON ref and owner/fix/deferred>
++- finding-disposition · <JSON ref and supported disposition/basis>
++- review-collection · <JSON invocation/workspace/review/required/settlement/archive facts>
++- root-acceptance · <JSON requirements/evidence/recovery/checkEvidence/runFailures/decisions>

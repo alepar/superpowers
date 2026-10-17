@@ -1,0 +1,14 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/C-baseline-4-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/C-baseline-4-response.txt
+new file mode 100644
+index 00000000..7ee3776f
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/C-baseline-4-response.txt
+@@ -0,0 +1,8 @@
++Disposition: hold merge for the unresolved production data-loss defect; retract “six tasks, clean run, doubling workers halves delivery time.”
++
++- **Attribution:** B’s packet remains FYI because the defect predates B’s task base `4b44`. Run-level attribution belongs to A: baseline `0a00` passed, A’s landing `3a33` introduced the failure, and B changes only docs. Record the unresolved defect against A as Blocking; the data-loss severity floor applies. No repair has landed. Sources: supplied reproduction and landing evidence.
++- **Repair history:** C’s latest attempt is clean after repairing two confirmed findings. Retain those findings as repaired history and cite their repair artifacts; do not count them as unresolved or describe the run as having encountered no findings. Sources: C’s latest review and earlier repair artifacts.
++- **Counts and evidence gaps:** The tracker establishes four closed implementation leaves: A–D. Git establishes four task-landing merges plus two merges absorbing main; six merges do not establish six tasks. The ledger ends after C and has no valid metrics line. Report ledger incompleteness and unavailable ledger metrics explicitly; use tracker and Git for the supported counts. Sources: tracker export, first-parent history, truncated ledger.
++- **Timing and concurrency:** Planning took 60 minutes, code 50, review 20: 130 minutes total. D’s creation-to-dispatch interval was five minutes; its ready-to-dispatch wait is unknown because readiness was not recorded. The snapshot shows eight active agents, three occupying implementation slots; it establishes neither sustained concurrency nor eight workers. Sources: timeline, D timestamps, process snapshot.
++- **Scaling:** The model estimates 25-minute code time, assuming no new bottleneck. With other phases unchanged, total time becomes 105 minutes—about 19% shorter, not half. This is an estimate, not measured scaling.
++- **Process grouping:** Group A and C under `[sandbox-process-inspection-refused]`, preserving both original labels and incident details. They share an observed process barrier, not an established product defect. Keep B’s incorrect retry expectation separate. Sources: friction records.

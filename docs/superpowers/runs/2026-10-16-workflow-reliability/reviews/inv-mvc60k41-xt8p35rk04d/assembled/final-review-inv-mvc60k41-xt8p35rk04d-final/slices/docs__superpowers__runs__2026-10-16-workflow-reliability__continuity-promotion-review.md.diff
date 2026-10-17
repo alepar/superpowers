@@ -1,0 +1,13 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/continuity-promotion-review.md b/docs/superpowers/runs/2026-10-16-workflow-reliability/continuity-promotion-review.md
+new file mode 100644
+index 00000000..dc7ef67d
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/continuity-promotion-review.md
+@@ -0,0 +1,7 @@
++# Continuity promotion review
++
++Initial fresh reviewer: .8.1 LEAF; .8.2 PROMOTE because extraction and projection span subsystems; .8.3 LEAF; decomposition COMPLETE.
++
++Applied bounded split rather than broadening the design: .8.2 now owns only complete occurrence extraction; .8.4 owns super-auto records/projection. .8.4 consumes .8.1 identities and .8.2 extraction. Existing .8.3 and root .9 now consume .8.4; their references and blocked-by reasons were repointed. Extraction can start against existing report formats, so its old .8.1 edge was removed. Root .6 consumes .8.3 reporting, not the entire continuity epic.
++
++Re-review: .8.1/.8.2/.8.4/.8.3 all LEAF; decomposition COMPLETE. Initial promotion reason resolved by split. Nested spec committed and no new abstraction digest; design-pending label cleared after sync.

@@ -1,0 +1,19 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/A-control-1-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/A-control-1-response.txt
+new file mode 100644
+index 00000000..6d5fc537
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/A-control-1-response.txt
+@@ -0,0 +1,13 @@
++Keep the caller’s clean checkout on `feature/payments@2c22`; do not switch or reset it. The sibling integration belongs to the caller’s current work.
++
++Review `1a11` against `0b00` using read-only Git objects. Reproduce at detached `1a11` in a fresh worktree, `/tmp/acme-review-1a11-handoff`, with a fresh test home. Run the reproduction there so its writes to `fixtures/generated.json` and `build/results.json` stay isolated.
++
++The comparison establishes that the checkout advanced beyond the initial review snapshot and includes a sibling commit. It does not establish that `2c22` passed review or that the parser failure is resolved.
++
++Retain `/tmp/acme-review` and `/tmp/acme-test-home`. Successful termination-request delivery does not establish process exit, and failed discovery cannot establish that either directory is unused. Retain the new reproduction worktree for handoff as well. Do not kill the unrelated server or target processes by port.
++
++Exact handoff:
++
++> Caller checkout remains clean at `feature/payments@2c22`; no reset or switch performed. Review scope remains `1a11` versus `0b00`. The checkout advanced by a sibling integration; this review does not cover `2c22`. Reproduction will run at detached `1a11` in `/tmp/acme-review-1a11-handoff` with a fresh test home; no new reproduction result is claimed yet.
++>
++> Termination was requested successfully for owned PID 8241, but exit is unverified: follow-up process discovery failed with permission denied. The wrapper’s empty arrays are not evidence that no process survived. Existing `/tmp/acme-review` and `/tmp/acme-test-home` are retained pending verified process exit. The unrelated developer server was left untouched.

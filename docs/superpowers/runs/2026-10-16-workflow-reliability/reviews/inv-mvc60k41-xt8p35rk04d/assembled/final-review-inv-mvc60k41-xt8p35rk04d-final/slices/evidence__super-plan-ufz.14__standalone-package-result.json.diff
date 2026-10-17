@@ -1,0 +1,35 @@
+diff --git a/evidence/super-plan-ufz.14/standalone-package-result.json b/evidence/super-plan-ufz.14/standalone-package-result.json
+new file mode 100644
+index 00000000..ed667088
+--- /dev/null
++++ b/evidence/super-plan-ufz.14/standalone-package-result.json
+@@ -0,0 +1,29 @@
++{
++  "sourceHead": "68a1e7425ec3fe238fa51a7c02b5050b40b09095",
++  "sourceTree": "e308a5638d3a8cd1d096707d31162c5c0b47db66",
++  "skillsTree": "200b0bc1eb2af88c3604aefcbe86a173075952fc",
++  "cwd": "/tmp/sp-bce79baa/super-plan-ufz.14/package-source",
++  "gitDirectory": true,
++  "command": "bash tests/codex/test-package-codex-plugin.sh",
++  "outcome": "pass",
++  "exit": 0,
++  "log": "standalone-package.log",
++  "hygiene": {
++    "exit": 0,
++    "log": "standalone-package.hygiene.log"
++  },
++  "baseline": [
++    {
++      "file": "scripts/package-codex-plugin.sh",
++      "runBaseline": "d84541ae",
++      "unchanged": true,
++      "sha256": "25557b6e214e77859b62a00fbdac87b1cf0995953a4181692039f80554d5e44b"
++    },
++    {
++      "file": "tests/codex/test-package-codex-plugin.sh",
++      "runBaseline": "d84541ae",
++      "unchanged": true,
++      "sha256": "01b0ea28197a38e2142125b199e67637bfb5ec123f03af0918a2a86a316cbab9"
++    }
++  ]
++}

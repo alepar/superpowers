@@ -1,0 +1,18 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-integrity-check.json b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-integrity-check.json
+new file mode 100644
+index 00000000..38739b4f
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-integrity-check.json
+@@ -0,0 +1,12 @@
++[
++  {
++    "root": "/private/tmp/ufz-after-behavior",
++    "recorded_artifacts": 131,
++    "mismatches": []
++  },
++  {
++    "root": "/private/tmp/ufz-after-behavior/baseline-reference",
++    "recorded_artifacts": 78,
++    "mismatches": []
++  }
++]

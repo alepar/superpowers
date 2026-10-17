@@ -1,0 +1,15 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/final-5-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/final-5-response.txt
+new file mode 100644
+index 00000000..3fae2141
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/final-5-response.txt
+@@ -0,0 +1,9 @@
++Keep the root open and the release handoff pending. Accept the completed implementation leaves as implementation work, but mark overall acceptance **awaiting required verification**. Targeted tests and compile at e444 do not satisfy the release’s required live full-suite result. The missing measurement is a verification obligation, not evidence of a code defect.
++
++Assign the full sweep to the **super-auto orchestrator**, which received `SWEEP DEFERRED (caller-owned)`. Run the ledger’s declared sweep with no roast or coordinator Workflow in flight, against the exact release SHA. Retain command, configuration, output, outcome and SHA in `codeBuckets.sweep`; report failures separately from unavailable or invalid measurements. Do not close the root before this obligation is satisfied.
++
++Keep **F17 open, Should-fix**. r2’s silence and “clean” verdict do not resolve r1’s confirmed shutdown retry loss. A documentation-only change and an unsupported assertion establish no fix. Reuse its existing repair assignment, retain the fixture blocker and require source-linked fix verification. Preserve r1’s original occurrence/ref, `src/retry.js:42`, owner, report and repair history in the finding projection and `finding-route`. If deferred, record an explicit reason and carry it into Remaining/punch-list reporting; do not mark it resolved.
++
++**V9 can complete now: CLEAN, verification-only.** Base and head both resolve to `e444e444e444e444e444e444e444e444e444e444`; actual and captured tree are `d84541aed84541aed84541aed84541aed84541ae`, with clean source status. Its readable live/pass evidence at `/tmp/acme-retry/evidence/V9.txt` records the named command/configuration and 12/12 passing, covering the documented duplicate-ID error. Retain those identities, the original evidence record unchanged, acceptance coverage, `files: []` and `requiredLiveChecks: []`. No commit or diff package is needed.
++
++**V10 cannot complete: NEEDS_FIX.** Its evidence measures tree `a15541aea15541aea15541aea15541aea15541ae`, not the verified current tree. Retain the original evidence and mismatch; obtain matching evidence or a supported reconciliation. Neither leaf needs a comment-only commit.

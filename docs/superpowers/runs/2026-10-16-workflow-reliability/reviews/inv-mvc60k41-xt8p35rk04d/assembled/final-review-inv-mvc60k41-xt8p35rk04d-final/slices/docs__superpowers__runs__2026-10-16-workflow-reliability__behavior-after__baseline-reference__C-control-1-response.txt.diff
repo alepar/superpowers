@@ -1,0 +1,19 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/baseline-reference/C-control-1-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/baseline-reference/C-control-1-response.txt
+new file mode 100644
+index 00000000..d4edf189
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/baseline-reference/C-control-1-response.txt
+@@ -0,0 +1,13 @@
++**Disposition: block completion and release pending repair and verification of the production data-loss defect.** Correct the advertised summary now.
++
++“Four implementation tasks—A, B, C, D—are closed in the tracker. Git corroborates four task landings; the other two merges absorbed updated main and do not count as implementation tasks. The ledger is truncated after C and contains no valid metrics line. These counts come from tracker and Git evidence; ledger-derived metrics are unavailable.
++
++“The run is not clean. B’s review exposed a production data-loss defect that reproduces at B’s base, 4b44. Baseline 0a00 passes, and A’s landing, 3a33, introduced the failure. B changes only documentation: its reviewer’s preExisting=true packet correctly describes B-relative attribution, but does not establish that the defect predates the run or remove the repair obligation. Reopen A or create a linked blocking repair task; require a landed fix, regression coverage, and verification on the integrated result before approval.
++
++“C’s latest attempt is clean after repairing two confirmed findings. Retain the earlier findings and repair artifacts as resolved history; distinguish those repairs from current outstanding defects.
++
++“Observed elapsed time was 130 minutes: planning 60, code 50, review 20. Eight agents were active in the snapshot, with three occupying implementation slots; this is neither eight implementation workers nor a run-wide concurrency average. D’s ready timestamp is missing. Its creation-to-first-dispatch interval was five minutes, 10:40–10:45; actual ready-to-dispatch wait is unknown.
++
++“The scaling model conditionally predicts code falling to 25 minutes, assuming no new bottleneck. Holding planning and review constant gives 105 minutes total—a 19.2% reduction, not halved delivery time. This is a prediction, not measured scaling evidence.
++
++“Group A’s cleanup-permission-denied and C’s process-inspection-refused under sandbox-denied owned-process liveness inspection, while retaining both distinct incidents and original labels. Different PIDs and fixtures do not establish identical product defects. Keep B’s incorrect retry expectation as a separate test-assertion issue.”

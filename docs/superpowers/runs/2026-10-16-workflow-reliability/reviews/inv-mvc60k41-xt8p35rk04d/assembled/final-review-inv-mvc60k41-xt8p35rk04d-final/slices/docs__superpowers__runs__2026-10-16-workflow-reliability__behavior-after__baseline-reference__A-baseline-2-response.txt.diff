@@ -1,0 +1,17 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/baseline-reference/A-baseline-2-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/baseline-reference/A-baseline-2-response.txt
+new file mode 100644
+index 00000000..5763ccd4
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/baseline-reference/A-baseline-2-response.txt
+@@ -0,0 +1,11 @@
++Leave the caller’s clean checkout at `feature/payments@2c22`; do not switch or reset it. Create the available detached worktree at `/tmp/acme-review` pinned to `1a11` and reproduce there, so writes to `fixtures/generated.json` and `build/results.json` stay outside the caller’s checkout. Review `1a11` against `0b00` using read-only git object access.
++
++The checkout comparison establishes that the caller’s branch advanced and now includes a sibling commit. It does not establish that the supplied review target changed, that the sibling caused the parser failure, or that review of `1a11` clears `2c22`.
++
++Retain `/tmp/acme-review` and `/tmp/acme-test-home`, including test scratch artifacts, because process discovery failed and their use by surviving processes cannot be ruled out. Do not delete caller-owned scratch or touch the unrelated developer server. Do not target processes by port.
++
++Issue this handoff:
++
++> Review scope remains `feature/payments@1a11` vs `main@0b00`. Reproduce the parser failure in detached `/tmp/acme-review` at `1a11`; generated fixture and build files belong there. The caller’s clean checkout remains untouched at `2c22`. Its additional sibling commit establishes revision drift; `2c22` has not been cleared by this review.
++>
++> Cleanup is unconfirmed: the termination request for owned PID 8241 returned success, but follow-up process discovery failed with permission denied. The wrapper’s empty `stopped` and `survived` arrays do not establish that the process exited or that no processes survive. `/tmp/acme-review` and `/tmp/acme-test-home` are retained pending successful ownership-scoped process verification and cleanup. The unrelated developer server was left untouched.

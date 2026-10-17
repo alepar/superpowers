@@ -1,0 +1,11 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-summary.md b/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-summary.md
+new file mode 100644
+index 00000000..fd175691
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-summary.md
+@@ -0,0 +1,5 @@
++# Coverage round 1
++
++requirements: 15 · mapped: 15 · unmapped: 0
++
++Two valid fresh same-family reviews completed. Reviewer1 used normalized ID aliases in compact input; reviewer2 received verbatim scripted Goals/tree. Both map all R1–R15. Two detail-omission candidates rejected to ledger; no task changes applied. No second round required. Root sweep super-plan-ufz.14 added after coverage, depending on 16 leaves.

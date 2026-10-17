@@ -1,0 +1,188 @@
+diff --git a/evidence/super-plan-ufz.14/super-code--test-report-verdict.sh.log b/evidence/super-plan-ufz.14/super-code--test-report-verdict.sh.log
+new file mode 100644
+index 00000000..5f2046e7
+--- /dev/null
++++ b/evidence/super-plan-ufz.14/super-code--test-report-verdict.sh.log
+@@ -0,0 +1,182 @@
++report-verdict: task report, clean
++  [PASS] exits 0
++  [PASS] DONE: verdict, kind, no items, path
++report-verdict: task report, concerns
++  [PASS] exits 0
++  [PASS] concern bullets are the items
++report-verdict: roast
++  [PASS] exits 0
++  [PASS] Blocking entries of Confirmed findings only
++  [PASS] Should-fix entry not listed
++  [PASS] Rejected-section Blocking line not counted
++report-verdict: roast, many blocking
++  [PASS] exits 0
++  [PASS] 15 items shown
++  [PASS] overflow counted
++  [PASS] 15th item present
++  [PASS] 16th item cut
++report-verdict: final review
++  [PASS] exits 0
++  [PASS] Verdict section text, Must fix bullets and untested line
++report-verdict: final review quoting a task Status line
++  [PASS] exits 0
++  [PASS] the exact Verdict heading wins over a quoted Status line
++report-verdict: cluster verdict
++  [PASS] exits 0
++  [PASS] inline verdict, '- none' yields no items
++report-verdict: final review, the real phase-3 sample
++  [PASS] exits 0
++  [PASS] verdict is the heading's value, not the bold label
++  [PASS] verdict has no bold markers
++  [PASS] verdict does not carry the label's trailing paragraph
++  [PASS] kind
++  [PASS] exactly three numbered must-fix items
++  [PASS] item starts '- The failing test'
++  [PASS] item starts '- Stop the run block'
++  [PASS] item starts '- Pass the sweep result'
++  [PASS] nested sub-bullet is not an item
++  [PASS] untested line carries the first untested item
++  [PASS] path is last
++report-verdict: final review in the format the prompts fix
++  [PASS] exact output
++report-verdict: untested lines are capped at 10
++  [PASS] ten items plus the overflow line
++  [PASS] overflow counted
++  [PASS] verdict, kind, 11 untested, path
++report-verdict: producer/parser contract
++  [FAIL] dispatch-text builds the single-mode final-review prompt
++    expected: 0
++    got:      2
++  [FAIL] prompt fixes "## Verdict"
++  [FAIL] prompt fixes "## Must fix before landing"
++  [FAIL] prompt fixes "## Untested scope"
++  [FAIL] prompt fixes no numbered lists
++report-verdict: step-back
++  [PASS] exits 0
++  [PASS] patch: summary only
++  [PASS] redesign: summary, changes, scope
++report-verdict: assembled digest
++  [PASS] exits 0
++  [PASS] fits line; only non-fitting clusters are items
++  [PASS] fitting cluster not listed
++report-verdict: unknown format
++  [PASS] exits 0
++  [PASS] verdict, path and exactly 10 lines
++  [PASS] verdict then path
++  [PASS] first 10 lines verbatim
++  [PASS] line 11 not shown
++report-verdict: output cap
++  [PASS] assembled-digest.md: 4 lines
++  [PASS] cluster-verdict.md: 4 lines
++  [PASS] final-review-format.md: 6 lines
++  [PASS] final-review-quoted-status.md: 5 lines
++  [PASS] final-review-real.md: 11 lines
++  [PASS] final-review.md: 6 lines
++  [PASS] roast-many.md: 19 lines
++  [PASS] roast-report.md: 5 lines
++  [PASS] step-back-redesign.md: 6 lines
++  [PASS] step-back.md: 4 lines
++  [PASS] task-report-concerns.md: 5 lines
++  [PASS] task-report.md: 3 lines
++  [PASS] unknown.md: 12 lines
++report-verdict: long item truncated
++  [PASS] truncated item ends with an ellipsis
++  [PASS] kept text is '- ' plus 160 characters
++report-verdict --keys: the real roast-pr-1 report
++  [PASS] exits 0
++  [PASS] every key, uncapped
++  [PASS] equals the hand-written scope keys
++  [PASS] first key, longer than 160 characters, uncut
++  [PASS] last key
++  [PASS] no claim text
++  [PASS] no overflow line
++report-verdict --keys: the real final-review-exception review
++  [PASS] exits 0
++  [PASS] four must-fix and eight untested keys
++  [PASS] eight untested keys
++  [PASS] four must-fix keys
++  [PASS] every line starts [Must-fix] 
++  [PASS] line 1 is the I8 item
++  [PASS] line 1 is not cut
++  [PASS] untested key
++report-verdict --keys: fixtures
++  [PASS] roast-report exits 0
++  [PASS] every severity of Confirmed findings; Rejected section absent
++  [PASS] roast-many: all 20 keys
++  [PASS] roast-many: no overflow line
++  [PASS] quoted-status final review
++  [PASS] none Must-fix gives no key
++  [PASS] final review: 20 must-fix and 12 untested, uncapped
++  [PASS] item 20 present
++  [PASS] area 12 present
++  [PASS] no overflow line
++report-verdict --keys: other kinds refused
++  [PASS] task-report exits 3
++  [PASS] task-report prints nothing on stdout
++  [PASS] task-report message on stderr
++  [PASS] step-back exits 3
++  [PASS] step-back prints nothing on stdout
++  [PASS] step-back message on stderr
++  [PASS] assembled-digest exits 3
++  [PASS] assembled-digest prints nothing on stdout
++  [PASS] assembled-digest message on stderr
++  [PASS] unknown exits 3
++  [PASS] unknown prints nothing on stdout
++  [PASS] unknown message on stderr
++  [PASS] --keys alone exits 2
++  [PASS] --keys with two files exits 2
++report-verdict: bad input
++  [PASS] missing file exits 2
++  [PASS] missing file message on stderr
++  [PASS] no argument exits 2
++  [PASS] two arguments exit 2
++report-verdict --complete: complete final-review occurrences and stable archive identity
++  [PASS] complete mode accepts a caller-supplied immutable source
++  [PASS] all relevant sections, repeated occurrences and original text survive JSON encoding
++  [PASS] repeat parsing is deterministic
++  [PASS] archiving changes artifact path but preserves source and occurrence identities
++report-verdict --complete: every roast finding section and severity
++  [PASS] roast complete mode exits 0
++  [PASS] all roast routes, severities, reason text and section-local positions are retained
++report-verdict --complete: uncapped extraction
++  [PASS] large final review accepted
++  [PASS] complete extraction has no default item caps
++  [PASS] long roast accepted
++  [PASS] complete extraction does not truncate keys or text
++report-verdict --complete: task concerns, bold labels and valid explicit empty reviews
++  [PASS] task report with successful status can retain concerns
++  [PASS] successful task status does not erase concern/deferred occurrences
++  [PASS] recognized explicitly empty review succeeds
++  [PASS] explicit none markers are not findings
++report-verdict --complete: invalid or incomplete input cannot look clean
++  [PASS] nope.md: explicit failure
++  [PASS] nope.md: no success JSON
++  [PASS] nope.md: diagnostic on stderr
++  [PASS] tmp.GYyiAa91zr: explicit failure
++  [PASS] tmp.GYyiAa91zr: no success JSON
++  [PASS] tmp.GYyiAa91zr: diagnostic on stderr
++  [PASS] unknown.md: explicit failure
++  [PASS] unknown.md: no success JSON
++  [PASS] unknown.md: diagnostic on stderr
++  [PASS] no-verdict.md: explicit failure
++  [PASS] no-verdict.md: no success JSON
++  [PASS] no-verdict.md: diagnostic on stderr
++  [PASS] no-sections.md: explicit failure
++  [PASS] no-sections.md: no success JSON
++  [PASS] no-sections.md: diagnostic on stderr
++  [PASS] malformed-section.md: explicit failure
++  [PASS] malformed-section.md: no success JSON
++  [PASS] malformed-section.md: diagnostic on stderr
++  [PASS] empty-roast-verdict.md: explicit failure
++  [PASS] empty-roast-verdict.md: no success JSON
++  [PASS] empty-roast-verdict.md: diagnostic on stderr
++  [PASS] truncated-section.md: explicit failure
++  [PASS] truncated-section.md: no success JSON
++  [PASS] truncated-section.md: diagnostic on stderr
++  [PASS] empty source identity exits 2
++  [PASS] empty source identity has no success output
++  [PASS] empty source identity exits 2
++  [PASS] empty source identity has no success output
++  [PASS] missing --source exits 2
++  [PASS] missing artifact exits 2
++report-verdict: 5 failure(s)

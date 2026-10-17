@@ -1,0 +1,8 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/baseline-reference/pilot-note.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/baseline-reference/pilot-note.txt
+new file mode 100644
+index 00000000..13882711
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/baseline-reference/pilot-note.txt
+@@ -0,0 +1,2 @@
++C-baseline-1 initial pilot is excluded: the original excerpt selected lines132-142, accidentally omitting the preExisting rule and cutting a sentence. Corrected source-only excerpt to complete Step2 lines120-144, frozen before five counted C baseline runs. Pilot was all-pass; no rubric or source wording change. Control C1 remains counted because its prompt inputs were unaffected.
++Pilot prompt is the exact original spawn payload and therefore names guidance-C.txt. At pilot execution that path held the preserved guidance-C-pilot.txt bytes; the counted retry names the same path after correction. Pilot agent: /root/baseline_evals/c_baseline_1; model gpt-6.1-sol, effort medium, fork none, all main claims pass, excluded.

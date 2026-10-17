@@ -1,0 +1,12 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/exclusions.json b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/exclusions.json
+new file mode 100644
+index 00000000..4e524b50
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/exclusions.json
+@@ -0,0 +1,6 @@
++{
++  "attempted": 15,
++  "counted": 15,
++  "retries": 0,
++  "exclusions": []
++}

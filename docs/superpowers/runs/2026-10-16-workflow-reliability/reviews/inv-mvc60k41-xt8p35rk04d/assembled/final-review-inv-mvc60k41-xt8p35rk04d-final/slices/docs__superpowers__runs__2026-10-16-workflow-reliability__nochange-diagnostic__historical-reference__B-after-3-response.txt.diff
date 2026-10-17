@@ -1,0 +1,15 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/B-after-3-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/B-after-3-response.txt
+new file mode 100644
+index 00000000..5ff8af98
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/B-after-3-response.txt
+@@ -0,0 +1,9 @@
++Keep the root **open / not ready for release**. Accept the delivered implementation at e444 only with qualifications: targeted tests and compilation passed, but required live full-suite coverage remains outstanding and F17 remains open. The missing sweep is an unmeasured release obligation, not evidence of a failing code check.
++
++Assign the **super-auto orchestrator** the required full-suite sweep now, using the ledger’s declared command against the exact SHA that will land, with no roast or coordinator running on the host. Retain its command, configuration, live outcome, output location and measured SHA; replace `SWEEP DEFERRED (caller-owned)` in `codeBuckets.sweep`. Root closure waits for the required result and its disposition.
++
++Keep **F17 open** under its original r1 occurrence reference and `Should-fix` severity. Evidence is r1 at c222, `src/retry.js:42`, the blocked fix assignment and absence of any fix commit or linked verification. The documentation change, r2’s silence and the implementer’s unsupported assertion establish no resolution. Retain the existing repair assignment, with its fixture blocker; do not create a duplicate. Record an explicit `finding-route` preserving that owner and blocker. If reporting the run now, include F17 in Remaining. Correct r2’s continuity accounting to **still-open**, not resolved or previously punch-listed.
++
++**V9 needs no product or comment-only commit.** Its acceptance permits verification-only completion; the ordinary package helper’s exit 3 does not invalidate that path. Use the verification-only review: retain equal base/head identities at e444, the captured Git tree and clean source status, the acceptance brief and original `/tmp/acme-retry/evidence/V9.txt` records, including the exact command and 12/12 result. Return `completionKind: "verification-only"`, `files: []` and the original evidence. The stated test evidence supports acceptance; final CLEAN still requires the prescribed tree/status identity checks, which the supplied observations do not establish.
++
++Preserve both invocation review bundles, extraction records, routes and collection status so the latest clean verdict cannot erase F17.

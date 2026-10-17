@@ -1,0 +1,15 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/baseline-reference/B-control-4-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/baseline-reference/B-control-4-response.txt
+new file mode 100644
+index 00000000..dc436f4f
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/baseline-reference/B-control-4-response.txt
+@@ -0,0 +1,9 @@
++Keep the root open and withhold overall implementation acceptance. Green targeted tests and compile at e444 do not satisfy the release contract’s required live full-suite result. Record the missing sweep as an outstanding verification obligation, not evidence of a code failure.
++
++Assign the full-suite sweep to super-auto’s caller-owned verification work now. Retain the coordinator’s `deferSweep=true` / `SWEEP DEFERRED` result and capture the sweep’s exact SHA, command, exit status, output, and artifact path. A failing result must be investigated; an unrun sweep cannot be represented as green or deferred past root closure.
++
++Carry F17 forward as an unresolved confirmed Should-fix finding. Invocation r1 at c222 identified the dropped queued retry at `src/retry.js:42`; its fix was blocked by the unavailable fixture, and no fix commit landed. Invocation r2’s silence and “clean” label do not establish resolution, particularly after only a documentation change. Reopen or retain the fix task, assign fixture restoration and the fix, then require an identified commit and focused verification. Record the unsupported implementer claim. Do not silently treat F17 as punch-listed: no punch-listed keys file exists. Any authorized deferral must be explicit and durable before acceptance is reconsidered.
++
++Complete V9 as a verification-only leaf using the independent review evidence at e444: implementation inspection, the exact targeted command, 12/12 passing output, and `/tmp/acme-retry/evidence/V9.txt`. No commit is needed. The package helper’s exit 3 reflects `base=head`, not failed acceptance. Record the evidence-based review through the verification-only completion path and retain the helper limitation; do not manufacture a comment-only commit.
++
++Persist these decisions in the root status, sweep assignment, F17 finding/task history, and V9 acceptance record, with invocation IDs and artifact links. Reconsider root closure after the required sweep succeeds and F17 receives an evidenced resolution or authorized recorded disposition.

@@ -1,0 +1,29 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/protocol.json b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/protocol.json
+new file mode 100644
+index 00000000..a5176ee5
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/protocol.json
+@@ -0,0 +1,23 @@
++{
++  "frozen_at_utc": "2026-10-17T08:21:08.787771+00:00",
++  "type": "NEW paired protocol-complete no-change diagnostic supplement",
++  "arms": [
++    "installed6.0",
++    "final",
++    "control"
++  ],
++  "repetitions_each": 5,
++  "max_concurrency": 3,
++  "model": "gpt-6.1-sol",
++  "reasoning_effort": "medium",
++  "fork_turns": "none",
++  "launch_order": "replicate1..5, each installed6.0/final/control together",
++  "mutations": "none to product/source; evaluation artifacts only",
++  "source_HEAD_at_freeze": "db63576075b9b1279b05e2fdf0eed2b00a19065c",
++  "frozen_guidance_commit": "0bb280edcf5fc6a60499fdfdb090d1819a432963",
++  "source_matches": true,
++  "exclusions": [],
++  "controls": "shared harness/system/developer/skill catalog present; control omits tested references only",
++  "original_outcome": "B4 AFTER0pass2fail3ambiguous retained verbatim; supplement cannot replace it",
++  "scope": "bounded text decisions; no live helper, persistence, schema, process or actual git checks"
++}

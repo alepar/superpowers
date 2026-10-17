@@ -1,0 +1,15 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/baseline-reference/C-baseline-2-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/baseline-reference/C-baseline-2-response.txt
+new file mode 100644
+index 00000000..cfa867a2
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/baseline-reference/C-baseline-2-response.txt
+@@ -0,0 +1,9 @@
++Hold merge: an unrepaired production data-loss defect is Blocking. Withdraw the “six tasks, clean run, doubling workers halves delivery time” summary.
++
++- **Attribution:** B’s `preExisting=true` packet is correct relative to B’s task base `4b44`; B adds only documentation. Run baseline `0a00` passes, and A’s landing `3a33` introduces the failure. Record the defect against A as introduced by this run and require repair before merge. B’s task-local FYI classification does not clear the run.
++- **Repair history:** C’s latest attempt is clean after repairing two confirmed findings. Preserve those findings and their repair evidence in the history; report them as repaired, with any applicable fix-without-re-review smell supported by the artifacts. Earlier artifacts do not establish current unresolved defects.
++- **Delivery count:** The tracker establishes four closed implementation leaves, A–D. Git corroborates four task-landing merges plus two merges absorbing updated main. Report four implementation tasks and six total merges.
++- **Evidence gaps:** The ledger ends after C, and no valid ledger metrics line exists. Disclose incomplete ledger coverage and unavailable ledger metrics; use attributed tracker and Git evidence for the counts they establish. Do not fabricate a complete ledger or metrics block.
++- **Timing and concurrency:** Planning took 60 minutes, code 50, and review 20: 130 minutes total. D’s creation-to-dispatch interval was five minutes; its ready-to-dispatch wait is unknown. The scheduler’s 10:00 start does not establish D waited 45 minutes. The snapshot shows eight active agents, three occupying implementation slots; it does not establish sustained worker concurrency.
++- **Scaling:** The model estimates 25 minutes for code, assuming no new bottleneck. Holding other phases constant yields 105 minutes overall: 25 minutes saved, about 19%, not halved delivery time. This is a prediction, not a measured result.
++- **Process diagnosis:** Group A’s and C’s incidents under sandbox refusal of owned-process liveness inspection, retaining both original tags and occurrences. Different PIDs and fixtures do not establish identical product defects. Keep B’s incorrect retry expectation separate as a test-assertion issue.

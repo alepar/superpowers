@@ -1,0 +1,7 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/caller/integration.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/caller/integration.txt
+new file mode 100644
+index 00000000..7ff83d95
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/caller/integration.txt
+@@ -0,0 +1 @@
++integration 2: legitimate follow-up

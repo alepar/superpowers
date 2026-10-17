@@ -1,0 +1,30 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-design-1-stages/dispatch-manifest.json b/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-design-1-stages/dispatch-manifest.json
+new file mode 100644
+index 00000000..abc2b122
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-design-1-stages/dispatch-manifest.json
+@@ -0,0 +1,23 @@
++{
++  "mode": "design",
++  "iteration": 1,
++  "snapshot": "e0109aa8",
++  "rung": "manual fan-out",
++  "independence": "same-family (OpenAI GPT) \u2014 seat-differentiated panel",
++  "models": {
++    "triage": "gpt-6.1-sol medium",
++    "scout": "gpt-6.1-sol high",
++    "dedupe": "gpt-6.1-sol medium",
++    "judge": "gpt-6.1-sol medium",
++    "reporter": "gpt-6.1-sol medium"
++  },
++  "concurrencyLimit": 6,
++  "panelCap": null,
++  "remainderCap": 50,
++  "artifact": [
++    "docs/superpowers/specs/2026-10-16-workflow-reliability-design.md",
++    "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-finding-continuity-design.md",
++    "docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json"
++  ],
++  "promptScopeClarification": "Root/nested specs and all settled task acceptance form one named artifact. No engine/state-machine/external API redesign required."
++}
+\ No newline at end of file

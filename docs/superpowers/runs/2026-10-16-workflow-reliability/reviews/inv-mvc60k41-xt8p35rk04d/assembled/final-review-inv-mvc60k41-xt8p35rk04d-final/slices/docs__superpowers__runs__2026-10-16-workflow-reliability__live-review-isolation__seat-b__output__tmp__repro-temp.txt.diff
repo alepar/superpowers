@@ -1,0 +1,7 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/seat-b/output/tmp/repro-temp.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/seat-b/output/tmp/repro-temp.txt
+new file mode 100644
+index 00000000..1c6a3644
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/seat-b/output/tmp/repro-temp.txt
+@@ -0,0 +1 @@
++owned reproduction temp

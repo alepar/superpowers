@@ -1,0 +1,19 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/A-after-1-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/A-after-1-response.txt
+new file mode 100644
+index 00000000..3fde4e9b
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/A-after-1-response.txt
+@@ -0,0 +1,13 @@
++Leave `/tmp/acme-billing` clean on `feature/payments@2c22`; do not switch, reset, or restore it.
++
++Reproduce the supplied review target, `1a11` against `0b00`, using a review-owned detached worktree at `/tmp/acme-review`, with separate review-owned output/temp directories. Keep the reproduction’s `fixtures/generated.json` and `build/results.json` writes inside that worktree. Do not substitute `2c22` for the captured review head.
++
++The comparison establishes that the caller’s current checkout differs from the captured review input and includes an additional sibling commit. That difference alone does not establish who moved it or whether the parser failure changed.
++
++Retain `/tmp/acme-review`, `/tmp/acme-test-home`, and their scratch contents through handoff. Process discovery failed, so cleanup cannot establish that these resources are unused. Preserve the discovery stderr. Do not terminate the unrelated developer server or kill by port.
++
++Issue this handoff:
++
++> Review target remains `feature/payments@1a11` vs `main@0b00`. Caller checkout is clean at `2c22`, includes a sibling commit, and was left untouched. Reproduction will use the detached `/tmp/acme-review` worktree at `1a11`; no new reproduction result is claimed here.
++>
++> PID 8241’s termination request returned success, but follow-up process discovery was permission-denied. Termination is **unconfirmed**; the wrapper’s empty `stopped`/`survived` arrays do not establish that no processes remain. Discovery stderr is preserved. `/tmp/acme-review`, `/tmp/acme-test-home`, and scratch contents were retained pending successful process verification and ordinary clean/unmerged-work checks. The unrelated server on the same port was left untouched.

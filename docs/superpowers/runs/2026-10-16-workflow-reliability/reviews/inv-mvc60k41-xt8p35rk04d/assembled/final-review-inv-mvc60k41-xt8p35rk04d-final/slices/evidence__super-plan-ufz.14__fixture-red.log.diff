@@ -1,0 +1,11 @@
+diff --git a/evidence/super-plan-ufz.14/fixture-red.log b/evidence/super-plan-ufz.14/fixture-red.log
+new file mode 100644
+index 00000000..044570c4
+--- /dev/null
++++ b/evidence/super-plan-ufz.14/fixture-red.log
+@@ -0,0 +1,5 @@
++FAIL worktree/helper-throws: leaked=[85000] sentinel-preserved=true error=injected helper failure assertions-before-error=0
++FAIL worktree/ps-unavailable: leaked=[88455] sentinel-preserved=true error=Cannot read properties of null (reading 'trim') assertions-before-error=0
++FAIL processes/helper-throws: leaked=[90346,90375,90379,90380,90384,90390] sentinel-preserved=true error=injected helper failure assertions-before-error=0
++FAIL processes/ps-unavailable: leaked=[94278,94309,94319,94323,94325,94326] sentinel-preserved=true error=Cannot read properties of null (reading 'trim') assertions-before-error=1
++fixture failure probe: 0 passed, 4 failed

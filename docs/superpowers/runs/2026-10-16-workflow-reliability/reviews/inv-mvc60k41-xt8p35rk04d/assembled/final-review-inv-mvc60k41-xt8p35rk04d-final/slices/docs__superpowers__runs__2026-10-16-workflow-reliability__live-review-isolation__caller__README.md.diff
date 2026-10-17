@@ -1,0 +1,7 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/caller/README.md b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/caller/README.md
+new file mode 100644
+index 00000000..cacb43bb
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/caller/README.md
+@@ -0,0 +1 @@
++Format integer cents as dollars with two decimal places; retain negative signs including amounts between -99 and -1 cents. reproduce.mjs generates source and build output in its working tree. OUT_DIR chooses build output; TMPDIR chooses temporary output.

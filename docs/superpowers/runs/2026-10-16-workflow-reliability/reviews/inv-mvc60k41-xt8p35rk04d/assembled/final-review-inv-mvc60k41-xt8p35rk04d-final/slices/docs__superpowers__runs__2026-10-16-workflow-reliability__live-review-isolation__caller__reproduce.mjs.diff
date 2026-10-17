@@ -1,0 +1,15 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/caller/reproduce.mjs b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/caller/reproduce.mjs
+new file mode 100644
+index 00000000..709fc882
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/caller/reproduce.mjs
+@@ -0,0 +1,9 @@
++import fs from 'node:fs';
++import path from 'node:path';
++import { formatAmount } from './lib/format.mjs';
++fs.writeFileSync('lib/generated.mjs', 'export const generated = true;\n');
++const out = path.resolve(process.env.OUT_DIR || 'build'); fs.mkdirSync(out,{recursive:true});
++const values = [-150,-50,0,50,150].map(cents => ({cents,actual:formatAmount(cents)}));
++fs.writeFileSync(path.join(out,'amounts.json'), JSON.stringify(values,null,2)+'\n');
++fs.writeFileSync(path.join(process.env.TMPDIR || out,'repro-temp.txt'),'owned reproduction temp\n');
++console.log(JSON.stringify({cwd:process.cwd(),out,values}));

@@ -1,0 +1,80 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/original-installed-source-manifest.json b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/original-installed-source-manifest.json
+new file mode 100644
+index 00000000..34d84dc5
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/original-installed-source-manifest.json
+@@ -0,0 +1,74 @@
++[
++  {
++    "case": "A",
++    "path": "/Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-roast/SKILL.md",
++    "start": 1,
++    "end": 315,
++    "sha256_full": "795650c73dfe6f9d59099f188507e3ae91878b1d4fd8b30ff04412d72b0f185d",
++    "sha256_excerpt": "795650c73dfe6f9d59099f188507e3ae91878b1d4fd8b30ff04412d72b0f185d"
++  },
++  {
++    "case": "A",
++    "path": "/Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/SKILL.md",
++    "start": 143,
++    "end": 186,
++    "sha256_full": "053dfab7002139ef81dc4d42a99a613f26ff16ebc6e40eacfdfdce1d7a5aa7e5",
++    "sha256_excerpt": "7878cbdb918a434056b0738da36637ef28538618f5dee4197af9c2cd3c5578f4"
++  },
++  {
++    "case": "B",
++    "path": "/Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/task-reviewer-prompt.md",
++    "start": 1,
++    "end": 117,
++    "sha256_full": "9092e73bf788188d8490773595ac5a4e7f4cd67746f76787f6cdc24aa3cc911e",
++    "sha256_excerpt": "9092e73bf788188d8490773595ac5a4e7f4cd67746f76787f6cdc24aa3cc911e"
++  },
++  {
++    "case": "B",
++    "path": "/Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-roast/reporter-prompt.md",
++    "start": 146,
++    "end": 186,
++    "sha256_full": "9c53e99f7173fd14daf0451a211588659176c4728f39f0e940ff13fa60e095c1",
++    "sha256_excerpt": "d2eb07a3be3d02e2484a054addb11f031416b24d9dacefe622a2422e62429adb"
++  },
++  {
++    "case": "B",
++    "path": "/Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-auto/SKILL.md",
++    "start": 310,
++    "end": 320,
++    "sha256_full": "39d68f8ec80ca60639403b9a13a3684cdfaf3ddeb33165ae02967a24faa65d29",
++    "sha256_excerpt": "56d17b2494e43dddb78674505b4c9d1e1e6815b693a8e77f79c741d80ab0b66c"
++  },
++  {
++    "case": "C",
++    "path": "/Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-roast/reporter-prompt.md",
++    "start": 120,
++    "end": 144,
++    "sha256_full": "9c53e99f7173fd14daf0451a211588659176c4728f39f0e940ff13fa60e095c1",
++    "sha256_excerpt": "ae7cbca04cd67cb3fab19c0729e9bbadaeb257412428e1225351ad9271b11f87"
++  },
++  {
++    "case": "C",
++    "path": "/Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-auto/report-prompt.md",
++    "start": 1,
++    "end": 66,
++    "sha256_full": "432d34128d4f0a75624d55037df6509fb3b7e84be0867e2bfa99cda97ec5b4d7",
++    "sha256_excerpt": "432d34128d4f0a75624d55037df6509fb3b7e84be0867e2bfa99cda97ec5b4d7"
++  },
++  {
++    "case": "C",
++    "path": "/Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/upstream-feedback/SKILL.md",
++    "start": 16,
++    "end": 84,
++    "sha256_full": "01f7d2a3b733203407e6a1cf64b6b2008da08781f27b59b81e1a6687d56acd32",
++    "sha256_excerpt": "f63e4172aca50652b4c8ef209d2a6f21323ed6ed2193ea3d01f7f15ff635f8cd"
++  },
++  {
++    "case": "C",
++    "path": "/Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/task-reviewer-prompt.md",
++    "start": 107,
++    "end": 117,
++    "sha256_full": "9092e73bf788188d8490773595ac5a4e7f4cd67746f76787f6cdc24aa3cc911e",
++    "sha256_excerpt": "d68e5b1ba8b40b0741a91c4e50fd14a8b48ee80450874a7eff078b8e29a5ac54"
++  }
++]

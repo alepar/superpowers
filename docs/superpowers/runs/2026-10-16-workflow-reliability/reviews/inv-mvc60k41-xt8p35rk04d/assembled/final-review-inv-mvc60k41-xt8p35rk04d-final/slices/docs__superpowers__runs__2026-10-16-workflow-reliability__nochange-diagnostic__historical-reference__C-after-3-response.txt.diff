@@ -1,0 +1,16 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/C-after-3-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/C-after-3-response.txt
+new file mode 100644
+index 00000000..42f5bc45
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/C-after-3-response.txt
+@@ -0,0 +1,10 @@
++Decision: hold merge for A’s unrepaired production data-loss regression; correct the advertised summary now.
++
++- **Attribution:** B is exonerated locally: the defect reproduces at its task base `4b44`, and B changes only documentation. Its `preExisting=true` packet is FYI for B’s review. Run baseline `0a00` passed the same check; A’s landing `3a33` introduced the failure. A remains the run’s repair owner. The unresolved run regression is Blocking because it risks real production data loss.
++- **Repair history:** C’s latest attempt is clean after repairing two previously confirmed findings. Retain those findings and repair artifacts as historical evidence; a clean latest verdict does not erase repair work or discharge A’s obligation.
++- **Task counts:** Tracker records four closed implementation leaves: A, B, C, D. Git independently shows four task landings. The two merges absorbing updated main add zero task landings. “Six tasks” is unsupported. Ledger transport is truncated after C, and no valid metrics line exists: ledger-derived run totals and complete reconciliation remain unavailable; readable tracker and Git observations remain usable.
++- **Timing and concurrency:** Planning took 60 minutes, code 50, and review 20: 130 minutes overall. The snapshot shows eight active agents, including three implementation task slots; it does not establish concurrency throughout the run. D’s creation-to-dispatch interval is five minutes. Its ready timestamp is missing, so ready-queue wait is unknown; the scheduler’s 10:00 start does not establish D waited 45 minutes.
++- **Scaling:** The conditional model halves code time to 25 minutes, assuming no new bottleneck. Holding planning and review constant gives 105 minutes overall—a 25-minute reduction, about 19%, or 1.24× speedup. “Doubling workers halves delivery time” is unsupported.
++- **Process grouping:** Group A’s and C’s liveness-inspection refusals under `[cleanup-inspection]`, preserving both original tags, identities, references, and unresolved inspection obligations. They are two occurrences sharing a process cause, not one product defect. Keep B’s wrong retry expectation under `[test-assertion-failure]` separately.
++
++The authoritative `report-status` line is unavailable in the supplied evidence; do not invent it or publish “clean run.”

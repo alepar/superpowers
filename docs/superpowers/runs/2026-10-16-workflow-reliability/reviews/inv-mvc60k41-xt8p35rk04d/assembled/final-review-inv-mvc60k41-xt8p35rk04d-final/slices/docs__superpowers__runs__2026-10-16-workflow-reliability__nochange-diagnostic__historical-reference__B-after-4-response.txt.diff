@@ -1,0 +1,15 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/B-after-4-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/B-after-4-response.txt
+new file mode 100644
+index 00000000..0aa21b85
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/B-after-4-response.txt
+@@ -0,0 +1,9 @@
++Keep the root **open and release acceptance pending**. Accept the delivered implementation only to the extent supported by targeted tests and compile at `e444`; full acceptance remains unverified. The absent sweep is a caller-owned verification obligation, not an observed code failure. The lead’s deadline does not satisfy the release contract.
++
++Assign the **super-auto orchestrator** the required live full-suite sweep now, against the exact SHA intended to land, while no roast or coordinator Workflow is running. Retain the declared command, configuration, source identity, original output, and outcome; stamp `codeBuckets.sweep` with the measured SHA. Preserve `SWEEP DEFERRED (caller-owned)` in invocation history. Do not record green or close the root before the required live result exists.
++
++Keep **F17 open**. Its evidence is r1’s confirmed finding at `c222`, `src/retry.js:42`, plus the blocked repair and absence of a fix commit. The documentation-only change and r2’s silence establish no resolution; the implementer’s unsupported claim establishes none either. Retain the original finding ref, existing repair owner, fixture blocker, and missing fix/verification evidence in the finding projection. Reuse the existing repair assignment if the fix loop remains active; after loop exit, carry F17 to the punch list with an explicit deferred reason. It is not retroactively punch-listed merely because r2 omitted it.
++
++**V9 can complete without a product commit**, using the verification-only review path. Its acceptance explicitly permits unchanged code; the implementation inspection and named test’s 12/12 result at `e444`, retained in `/tmp/acme-retry/evidence/V9.txt`, support semantic coverage. Do not add a comment-only commit or use the ordinary package helper’s exit 3 as its verdict.
++
++Before recording V9 CLEAN, retain resolved equal base/head identities, captured Git tree identity matched to the original evidence, and clean source status. Missing identity records require completion of that evidence review, not fabricated values. Record `completionKind: "verification-only"`, `files: []`, original evidence records, acceptance coverage, and applicable `requiredLiveChecks`; do not rerun tests.

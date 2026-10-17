@@ -1,0 +1,364 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/proposed-children.json b/docs/superpowers/runs/2026-10-16-workflow-reliability/proposed-children.json
+new file mode 100644
+index 00000000..57b0638f
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/proposed-children.json
+@@ -0,0 +1,358 @@
++[
++  {
++    "title": "Pin review inputs and isolate mutable reproductions",
++    "description": "Bind review source and diff inputs to captured commit identities. Prefer read-only Git retrieval; when filesystem access is needed use a review-owned detached worktree, with isolated mutable build/reproduction outputs. Do not switch or restore the caller checkout. Cover task/final and adversarial reviews using their existing dispatch components. The coordinator owns fresh-agent pressure evaluation; the implementer prepares deterministic fixtures and the behavioral acceptance scenario.",
++    "files": [
++      "skills/super-roast/SKILL.md",
++      "skills/super-roast/scout-prompts-pr.md",
++      "skills/super-roast/judge-seat-prompts.md",
++      "skills/super-roast/scripts/assemble-args.mjs",
++      "skills/super-code/coordinator.js",
++      "skills/super-code/task-reviewer-prompt.md",
++      "skills/super-code/scripts/dispatch-text.mjs",
++      "tests/super-roast/test-assemble-args.sh",
++      "tests/super-code/test-dispatch-text.sh"
++    ],
++    "owns": "Stable review source identities and review-owned mutable reproduction resources.",
++    "consumes": "Existing Git revision and worktree ownership conventions; existing review dispatch inputs.",
++    "acceptance": [
++      "A review remains pinned to its captured SHAs while the caller integration branch advances.",
++      "A reproduction that writes files leaves the caller checkout and another review's mutable outputs untouched.",
++      "A changed caller checkout is reported with evidence without attributing damage solely from before/after differences or restoring the old snapshot.",
++      "The coordinator records representative fresh-agent evaluation of changed review instructions; deterministic input/dispatch fixtures pass."
++    ],
++    "deps": [],
++    "id": "super-plan-ufz.1",
++    "fullDescription": "Bind review source and diff inputs to captured commit identities. Prefer read-only Git retrieval; when filesystem access is needed use a review-owned detached worktree, with isolated mutable build/reproduction outputs. Do not switch or restore the caller checkout. Cover task/final and adversarial reviews using their existing dispatch components. The coordinator owns fresh-agent pressure evaluation; the implementer prepares deterministic fixtures and the behavioral acceptance scenario.\n\nSpec: docs/superpowers/specs/2026-10-16-workflow-reliability-design.md\nFiles: skills/super-roast/SKILL.md, skills/super-roast/scout-prompts-pr.md, skills/super-roast/judge-seat-prompts.md, skills/super-roast/scripts/assemble-args.mjs, skills/super-code/coordinator.js, skills/super-code/task-reviewer-prompt.md, skills/super-code/scripts/dispatch-text.mjs, tests/super-roast/test-assemble-args.sh, tests/super-code/test-dispatch-text.sh\nowns: Stable review source identities and review-owned mutable reproduction resources.\nconsumes: Existing Git revision and worktree ownership conventions; existing review dispatch inputs.\n\nAcceptance:\n- [ ] A review remains pinned to its captured SHAs while the caller integration branch advances.\n- [ ] A reproduction that writes files leaves the caller checkout and another review's mutable outputs untouched.\n- [ ] A changed caller checkout is reported with evidence without attributing damage solely from before/after differences or restoring the old snapshot.\n- [ ] The coordinator records representative fresh-agent evaluation of changed review instructions; deterministic input/dispatch fixtures pass.",
++    "verdict": "LEAF"
++  },
++  {
++    "title": "Propagate cleanup uncertainty and retain needed resources",
++    "description": "Carry verified stopped, surviving, unknown and deliberately kept outcomes through existing process/worktree helpers, coordinator Finish, ordinary-subagent instructions and super-auto reporting. Preserve needed worktree/temp resources when owned processes survive or cannot be verified. Do not widen process matching. Keep the helper and its callers together because current worktree cleanup discards stop failure before deleting resources. The coordinator owns any fresh-agent evaluation of changed caller instructions.",
++    "files": [
++      "skills/super-code/scripts/stop-run-processes",
++      "skills/super-code/scripts/remove-task-worktree",
++      "skills/super-code/coordinator.js",
++      "skills/super-code/coordinator-workflow.md",
++      "skills/super-code/coordinator-subagents.md",
++      "skills/super-auto/run-state.md",
++      "skills/super-auto/report-prompt.md",
++      "tests/super-code/replay-harness.mjs"
++    ],
++    "owns": "Cleanup outcome meaning, resource retention and truthful propagation to finish/report consumers.",
++    "consumes": "Existing run/task ownership boundaries and process-root matching.",
++    "acceptance": [
++      "Denied discovery or status inspection cannot produce stopped or a verified nothing-running result.",
++      "A surviving or unverified owned process retains the worktree/temp resources it may still need and those resources are identified in the result.",
++      "Verified termination permits normal cleanup; deliberately preserved resources remain distinguishable.",
++      "Unrelated processes remain outside cleanup targets, and code delivery can be reported alongside incomplete cleanup.",
++      "Signal-safe deterministic denial/survivor fixtures and result-propagation checks pass; the coordinator owns fresh-agent behavior evaluation where instructions changed."
++    ],
++    "deps": [],
++    "id": "super-plan-ufz.2",
++    "fullDescription": "Carry verified stopped, surviving, unknown and deliberately kept outcomes through existing process/worktree helpers, coordinator Finish, ordinary-subagent instructions and super-auto reporting. Preserve needed worktree/temp resources when owned processes survive or cannot be verified. Do not widen process matching. Keep the helper and its callers together because current worktree cleanup discards stop failure before deleting resources. The coordinator owns any fresh-agent evaluation of changed caller instructions.\n\nSpec: docs/superpowers/specs/2026-10-16-workflow-reliability-design.md\nFiles: skills/super-code/scripts/stop-run-processes, skills/super-code/scripts/remove-task-worktree, skills/super-code/coordinator.js, skills/super-code/coordinator-workflow.md, skills/super-code/coordinator-subagents.md, skills/super-auto/run-state.md, skills/super-auto/report-prompt.md, tests/super-code/replay-harness.mjs\nowns: Cleanup outcome meaning, resource retention and truthful propagation to finish/report consumers.\nconsumes: Existing run/task ownership boundaries and process-root matching.\n\nAcceptance:\n- [ ] Denied discovery or status inspection cannot produce stopped or a verified nothing-running result.\n- [ ] A surviving or unverified owned process retains the worktree/temp resources it may still need and those resources are identified in the result.\n- [ ] Verified termination permits normal cleanup; deliberately preserved resources remain distinguishable.\n- [ ] Unrelated processes remain outside cleanup targets, and code delivery can be reported alongside incomplete cleanup.\n- [ ] Signal-safe deterministic denial/survivor fixtures and result-propagation checks pass; the coordinator owns fresh-agent behavior evaluation where instructions changed.",
++    "verdict": "LEAF"
++  },
++  {
++    "title": "Recheck admission and refresh external dependency readiness",
++    "description": "Within the existing scheduler, recheck hold/cancellation/dependency admission after acquiring capacity and before dispatch. Distinguish local implementation readiness from tracker review/blocker/human-gate closure. Refresh external readiness at bounded opportunities while work is in flight. A failed lookup holds only affected work. Exercise both Workflow mechanics and ordinary-subagent contract; the coordinator owns live ordinary-subagent evaluation.",
++    "files": [
++      "skills/super-code/coordinator.js",
++      "skills/super-code/coordinator-workflow.md",
++      "skills/super-code/coordinator-subagents.md",
++      "tests/super-code/replay-harness.mjs"
++    ],
++    "owns": "Post-capacity admission, external dependency satisfaction and bounded in-flight readiness refresh.",
++    "consumes": "Existing scheduler slots, tracker observations and task/review associations.",
++    "acceptance": [
++      "A hold established during a slot wait prevents dispatch; the slot is released and no implementation attempt is falsely reported.",
++      "A closed external review dependency releases its consumer even when its ID is absent from implementation completion sets.",
++      "An external release becomes visible while a long-running task remains in flight.",
++      "A failed dependency lookup keeps affected work held with a reason while unrelated eligible work continues.",
++      "Deterministic Workflow replay covers both execution-path contracts; coordinator-owned live evaluation checks changed ordinary-subagent instructions."
++    ],
++    "deps": [],
++    "id": "super-plan-ufz.3",
++    "fullDescription": "Within the existing scheduler, recheck hold/cancellation/dependency admission after acquiring capacity and before dispatch. Distinguish local implementation readiness from tracker review/blocker/human-gate closure. Refresh external readiness at bounded opportunities while work is in flight. A failed lookup holds only affected work. Exercise both Workflow mechanics and ordinary-subagent contract; the coordinator owns live ordinary-subagent evaluation.\n\nSpec: docs/superpowers/specs/2026-10-16-workflow-reliability-design.md\nFiles: skills/super-code/coordinator.js, skills/super-code/coordinator-workflow.md, skills/super-code/coordinator-subagents.md, tests/super-code/replay-harness.mjs\nowns: Post-capacity admission, external dependency satisfaction and bounded in-flight readiness refresh.\nconsumes: Existing scheduler slots, tracker observations and task/review associations.\n\nAcceptance:\n- [ ] A hold established during a slot wait prevents dispatch; the slot is released and no implementation attempt is falsely reported.\n- [ ] A closed external review dependency releases its consumer even when its ID is absent from implementation completion sets.\n- [ ] An external release becomes visible while a long-running task remains in flight.\n- [ ] A failed dependency lookup keeps affected work held with a reason while unrelated eligible work continues.\n- [ ] Deterministic Workflow replay covers both execution-path contracts; coordinator-owned live evaluation checks changed ordinary-subagent instructions.",
++    "verdict": "LEAF"
++  },
++  {
++    "title": "Persist recovery obligations and fix history records",
++    "description": "Extend existing ledger/run artifacts only for missing holds, pending closures, deferred obligations and relevant fix history. Own the durable record/digest contract consumed by recovery, acceptance, attribution and metrics. Resume behavior is a separate dependent task.",
++    "files": [
++      "skills/super-code/coordinator.js",
++      "skills/super-code/scripts/ledger-digest",
++      "skills/super-code/coordinator-workflow.md",
++      "skills/super-code/coordinator-subagents.md",
++      "tests/super-code/replay-harness.mjs"
++    ],
++    "owns": "Durable recovery/fix records and compatible digest transport.",
++    "consumes": "Existing ledger identity, task branch landing evidence, tracker closure observations and run artifacts.",
++    "acceptance": [
++      "Holds, pending closures, deferred obligations and fix history round-trip through existing durable artifacts/digest with explicit evidence references.",
++      "Earlier FIXED history remains available after a later clean retry.",
++      "Record/digest fixtures preserve compatible existing ledger consumers."
++    ],
++    "deps": [],
++    "id": "super-plan-ufz.4",
++    "fullDescription": "Extend existing ledger/run artifacts only for missing holds, pending closures, deferred obligations and relevant fix history. Own the durable record/digest contract consumed by recovery, acceptance, attribution and metrics. Resume behavior is a separate dependent task.\n\nSpec: docs/superpowers/specs/2026-10-16-workflow-reliability-design.md\nFiles: skills/super-code/coordinator.js, skills/super-code/scripts/ledger-digest, skills/super-code/coordinator-workflow.md, skills/super-code/coordinator-subagents.md, tests/super-code/replay-harness.mjs\nowns: Durable recovery/fix records and compatible digest transport.\nconsumes: Existing ledger identity, task branch landing evidence, tracker closure observations and run artifacts.\n\nAcceptance:\n- [ ] Holds, pending closures, deferred obligations and fix history round-trip through existing durable artifacts/digest with explicit evidence references.\n- [ ] Earlier FIXED history remains available after a later clean retry.\n- [ ] Record/digest fixtures preserve compatible existing ledger consumers.",
++    "verdict": "LEAF"
++  },
++  {
++    "title": "Record source-bound evidence and check outcomes",
++    "description": "Extend existing evidence records only for missing source tree, command/configuration, result, location and kind. Distinguish live, simulated and fallback evidence and failed/unavailable required checks. Do not add compulsory phases. Task-completion behavior is a separate dependent task.",
++    "files": [
++      "skills/super-code/coordinator.js",
++      "skills/super-code/implementer-prompt.md",
++      "skills/super-code/task-reviewer-prompt.md",
++      "skills/super-code/scripts/dispatch-text.mjs",
++      "skills/super-code/coordinator-workflow.md",
++      "skills/super-code/coordinator-subagents.md",
++      "tests/super-code/replay-harness.mjs",
++      "tests/super-code/test-dispatch-text.sh"
++    ],
++    "owns": "Source-bound evidence identity, kind and check outcomes.",
++    "consumes": "Existing task acceptance criteria, implementation/review dispatch and source-tree identities.",
++    "acceptance": [
++      "Evidence retains tested source tree, command/configuration, outcome and location.",
++      "Fallback/simulated evidence cannot satisfy an explicitly required live check.",
++      "Failed and unavailable checks remain distinct.",
++      "Record/dispatch fixtures pass; coordinator owns representative fresh-agent evidence classification evaluation."
++    ],
++    "deps": [],
++    "id": "super-plan-ufz.5",
++    "fullDescription": "Extend existing evidence records only for missing source tree, command/configuration, result, location and kind. Distinguish live, simulated and fallback evidence and failed/unavailable required checks. Do not add compulsory phases. Task-completion behavior is a separate dependent task.\n\nSpec: docs/superpowers/specs/2026-10-16-workflow-reliability-design.md\nFiles: skills/super-code/coordinator.js, skills/super-code/implementer-prompt.md, skills/super-code/task-reviewer-prompt.md, skills/super-code/scripts/dispatch-text.mjs, skills/super-code/coordinator-workflow.md, skills/super-code/coordinator-subagents.md, tests/super-code/replay-harness.mjs, tests/super-code/test-dispatch-text.sh\nowns: Source-bound evidence identity, kind and check outcomes.\nconsumes: Existing task acceptance criteria, implementation/review dispatch and source-tree identities.\n\nAcceptance:\n- [ ] Evidence retains tested source tree, command/configuration, outcome and location.\n- [ ] Fallback/simulated evidence cannot satisfy an explicitly required live check.\n- [ ] Failed and unavailable checks remain distinct.\n- [ ] Record/dispatch fixtures pass; coordinator owns representative fresh-agent evidence classification evaluation.",
++    "verdict": "LEAF"
++  },
++  {
++    "title": "Keep super-auto root acceptance caller-owned",
++    "description": "Keep deferred sweeps as caller-owned measurement obligations while code findings remain actionable. Under super-auto, prevent root closure before required reviews, measurements and human gates; preserve standalone acceptance ownership. Verification consumes recovery obligations, task evidence and outstanding invocation findings from the named prerequisites. The coordinator owns fresh-agent acceptance scenarios; the implementer owns deterministic gate and status fixtures.",
++    "files": [
++      "skills/super-auto/SKILL.md",
++      "skills/super-auto/run-state.md",
++      "skills/super-auto/resume.md",
++      "skills/super-auto/scripts/report-status",
++      "skills/super-code/scripts/close-in-tree-epics",
++      "skills/super-code/coordinator.js",
++      "skills/super-code/coordinator-workflow.md",
++      "skills/super-code/coordinator-subagents.md",
++      "tests/super-code/replay-harness.mjs",
++      "tests/super-auto/test-scripts.sh",
++      "tests/super-auto/test-contract-lint.sh"
++    ],
++    "owns": "Caller-owned deferred measurement and super-auto root acceptance gates.",
++    "consumes": "Recovery obligations from task 4; evidence outcomes from task 5; outstanding invocation findings from task 8; existing super-auto final sweep and human gates.",
++    "acceptance": [
++      "A deferred sweep remains an explicit pending measurement with an owner and does not hide actual code findings (needs: task 4, task 5).",
++      "All implementation leaves can finish while the super-auto root remains open for required review, measurement or human acceptance (needs: task 4, task 5, task 8).",
++      "Standalone callers retain their existing acceptance ownership.",
++      "Deterministic gate/status fixtures pass; the coordinator owns fresh-agent deferred-sweep and final-acceptance scenarios."
++    ],
++    "deps": [
++      4,
++      5,
++      8
++    ],
++    "id": "super-plan-ufz.6",
++    "fullDescription": "Keep deferred sweeps as caller-owned measurement obligations while code findings remain actionable. Under super-auto, prevent root closure before required reviews, measurements and human gates; preserve standalone acceptance ownership. Verification consumes recovery obligations, task evidence and outstanding invocation findings from the named prerequisites. The coordinator owns fresh-agent acceptance scenarios; the implementer owns deterministic gate and status fixtures.\n\nSpec: docs/superpowers/specs/2026-10-16-workflow-reliability-design.md\nFiles: skills/super-auto/SKILL.md, skills/super-auto/run-state.md, skills/super-auto/resume.md, skills/super-auto/scripts/report-status, skills/super-code/scripts/close-in-tree-epics, skills/super-code/coordinator.js, skills/super-code/coordinator-workflow.md, skills/super-code/coordinator-subagents.md, tests/super-code/replay-harness.mjs, tests/super-auto/test-scripts.sh, tests/super-auto/test-contract-lint.sh\nowns: Caller-owned deferred measurement and super-auto root acceptance gates.\nconsumes: Recovery obligations from super-plan-ufz.4; evidence outcomes from super-plan-ufz.5; outstanding invocation findings from super-plan-ufz.8; existing super-auto final sweep and human gates.\n\nAcceptance:\n- [ ] A deferred sweep remains an explicit pending measurement with an owner and does not hide actual code findings (needs: super-plan-ufz.4, super-plan-ufz.5).\n- [ ] All implementation leaves can finish while the super-auto root remains open for required review, measurement or human acceptance (needs: super-plan-ufz.4, super-plan-ufz.5, super-plan-ufz.8).\n- [ ] Standalone callers retain their existing acceptance ownership.\n- [ ] Deterministic gate/status fixtures pass; the coordinator owns fresh-agent deferred-sweep and final-acceptance scenarios.\nblocked-by super-plan-ufz.4: consumes Durable recovery/fix records and compatible digest transport.\nblocked-by super-plan-ufz.5: consumes Source-bound evidence identity, kind and check outcomes.\nblocked-by super-plan-ufz.8: consumes Immutable super-code invocation reviews, outstanding invocation-finding consumption and evidence-backed punch-list disposition.",
++    "verdict": "LEAF"
++  },
++  {
++    "title": "Retain run-regression ownership after task exoneration",
++    "description": "Separate task-base attribution from run-baseline attribution in existing task review and caller evidence handling. A failure already present at task B base can exonerate B, while a failure introduced earlier in this run remains assigned for resolution. Use recorded source/test evidence; do not invent baseline success or force unrelated historical failures into scope. The coordinator owns fresh-agent attribution evaluation; the implementer owns deterministic fixtures and changed contract examples.",
++    "files": [
++      "skills/super-code/coordinator.js",
++      "skills/super-code/task-reviewer-prompt.md",
++      "skills/super-code/coordinator-workflow.md",
++      "skills/super-code/coordinator-subagents.md",
++      "skills/super-auto/SKILL.md",
++      "skills/super-auto/run-state.md",
++      "skills/super-auto/report-prompt.md",
++      "tests/super-code/replay-harness.mjs",
++      "tests/super-auto/test-scripts.sh"
++    ],
++    "owns": "Run-level failure attribution and owner retention independently of individual-task base exoneration.",
++    "consumes": "Persisted source/fix history from task 4 and source-bound evidence outcomes from task 5; existing task base and run-start/sweep baseline evidence.",
++    "acceptance": [
++      "Task B can prove a failure predates its own base without erasing task A ownership for the failure introduced earlier in this run (needs: task 4, task 5).",
++      "A failure known to predate the run remains distinguishable from a run-introduced failure.",
++      "Absent baseline evidence is reported as an attribution gap instead of invented success or exoneration.",
++      "Deterministic attribution fixtures pass; the coordinator owns representative fresh-agent task-base versus run-baseline evaluation."
++    ],
++    "deps": [
++      4,
++      5
++    ],
++    "id": "super-plan-ufz.7",
++    "fullDescription": "Separate task-base attribution from run-baseline attribution in existing task review and caller evidence handling. A failure already present at task B base can exonerate B, while a failure introduced earlier in this run remains assigned for resolution. Use recorded source/test evidence; do not invent baseline success or force unrelated historical failures into scope. The coordinator owns fresh-agent attribution evaluation; the implementer owns deterministic fixtures and changed contract examples.\n\nSpec: docs/superpowers/specs/2026-10-16-workflow-reliability-design.md\nFiles: skills/super-code/coordinator.js, skills/super-code/task-reviewer-prompt.md, skills/super-code/coordinator-workflow.md, skills/super-code/coordinator-subagents.md, skills/super-auto/SKILL.md, skills/super-auto/run-state.md, skills/super-auto/report-prompt.md, tests/super-code/replay-harness.mjs, tests/super-auto/test-scripts.sh\nowns: Run-level failure attribution and owner retention independently of individual-task base exoneration.\nconsumes: Persisted source/fix history from super-plan-ufz.4 and source-bound evidence outcomes from super-plan-ufz.5; existing task base and run-start/sweep baseline evidence.\n\nAcceptance:\n- [ ] Task B can prove a failure predates its own base without erasing task A ownership for the failure introduced earlier in this run (needs: super-plan-ufz.4, super-plan-ufz.5).\n- [ ] A failure known to predate the run remains distinguishable from a run-introduced failure.\n- [ ] Absent baseline evidence is reported as an attribution gap instead of invented success or exoneration.\n- [ ] Deterministic attribution fixtures pass; the coordinator owns representative fresh-agent task-base versus run-baseline evaluation.\nblocked-by super-plan-ufz.4: consumes Durable recovery/fix records and compatible digest transport.\nblocked-by super-plan-ufz.5: consumes Source-bound evidence identity, kind and check outcomes.",
++    "verdict": "LEAF"
++  },
++  {
++    "title": "Preserve invocation findings until supported disposition",
++    "description": "Give super-code invocation review artifacts unique identities and retain unresolved findings across blocked/retried invocations. Make the punch list an outstanding-deferred view whose resolution requires evidence, including fixes supplied elsewhere. Preserve uncertain matches separately. Consume the parallel roast-redesign team's ledger contract; do not build a replacement roast ledger, redesign triggers or amend workflow. Explicit overlap to settle: that team's vision currently dissolves a finding on later silence, contrary to this approved invariant. The coordinator owns cross-run/agent behavior evaluation.",
++    "files": [
++      "skills/super-code/coordinator.js",
++      "skills/super-code/scripts/dispatch-text.mjs",
++      "skills/super-code/scripts/report-verdict",
++      "skills/super-auto/SKILL.md",
++      "skills/super-auto/run-state.md",
++      "skills/super-auto/resume.md",
++      "skills/super-auto/scripts/scope-dispositions",
++      "skills/super-auto/report-prompt.md",
++      "tests/super-code/test-report-verdict.sh",
++      "tests/super-code/test-dispatch-text.sh",
++      "tests/super-auto/test-scripts.sh"
++    ],
++    "owns": "Immutable super-code invocation reviews, outstanding invocation-finding consumption and evidence-backed punch-list disposition.",
++    "consumes": "Existing finding/task records and review extraction; the roast-redesign team's externally owned ledger interface when available.",
++    "acceptance": [
++      "A blocked review followed by a silent retry preserves the earlier unresolved finding and its source artifact.",
++      "A deferred item fixed by another task leaves the punch list only after supported verification.",
++      "A fix task's success claim or a later review's silence alone cannot resolve a prior actionable finding.",
++      "Explicit references link repeated appearances; uncertain matches remain separate pending judgment, and rejected findings retain reasoning/evidence.",
++      "No competing roast ledger, trigger policy or amend workflow is introduced; the external ledger consumer seam is checked against the continuity invariant.",
++      "Deterministic artifact/disposition fixtures pass; the coordinator owns fresh-agent interrupted-invocation evaluation."
++    ],
++    "deps": [],
++    "id": "super-plan-ufz.8",
++    "fullDescription": "Give super-code invocation review artifacts unique identities and retain unresolved findings across blocked/retried invocations. Make the punch list an outstanding-deferred view whose resolution requires evidence, including fixes supplied elsewhere. Preserve uncertain matches separately. Consume the parallel roast-redesign team's ledger contract; do not build a replacement roast ledger, redesign triggers or amend workflow. Explicit overlap to settle: that team's vision currently dissolves a finding on later silence, contrary to this approved invariant. The coordinator owns cross-run/agent behavior evaluation.\n\nSpec: docs/superpowers/specs/2026-10-16-workflow-reliability-design.md\nFiles: skills/super-code/coordinator.js, skills/super-code/scripts/dispatch-text.mjs, skills/super-code/scripts/report-verdict, skills/super-auto/SKILL.md, skills/super-auto/run-state.md, skills/super-auto/resume.md, skills/super-auto/scripts/scope-dispositions, skills/super-auto/report-prompt.md, tests/super-code/test-report-verdict.sh, tests/super-code/test-dispatch-text.sh, tests/super-auto/test-scripts.sh\nowns: Immutable super-code invocation reviews, outstanding invocation-finding consumption and evidence-backed punch-list disposition.\nconsumes: Existing finding/task records and review extraction; the roast-redesign team's externally owned ledger interface when available.\n\nAcceptance:\n- [ ] A blocked review followed by a silent retry preserves the earlier unresolved finding and its source artifact.\n- [ ] A deferred item fixed by another task leaves the punch list only after supported verification.\n- [ ] A fix task's success claim or a later review's silence alone cannot resolve a prior actionable finding.\n- [ ] Explicit references link repeated appearances; uncertain matches remain separate pending judgment, and rejected findings retain reasoning/evidence.\n- [ ] No competing roast ledger, trigger policy or amend workflow is introduced; the external ledger consumer seam is checked against the continuity invariant.\n- [ ] Deterministic artifact/disposition fixtures pass; the coordinator owns fresh-agent interrupted-invocation evaluation.",
++    "verdict": "PROMOTE"
++  },
++  {
++    "title": "Report deterministic reconciled metrics with evidence gaps",
++    "description": "Validate ledger transport and calculate existing run counts mechanically before interpretation. Distinguish missing/unreadable/truncated/valid-empty; reconcile available Git/tracker evidence before authoritative totals, retaining supported partial results on gaps. Separate latest attempt from history, repaired from deferred/rejected and task landings from base absorption. Report actual ID discrepancies before causal guesses. Keep ordinary execution metadata out of friction-event counts. The coordinator owns fresh-agent interpretation checks; deterministic producers/consumers are tested here.",
++    "files": [
++      "skills/super-code/coordinator.js",
++      "skills/super-code/scripts/ledger-digest",
++      "skills/super-code/coordinator-workflow.md",
++      "skills/super-code/coordinator-subagents.md",
++      "skills/super-auto/SKILL.md",
++      "skills/super-auto/run-state.md",
++      "skills/super-auto/report-prompt.md",
++      "skills/upstream-feedback/SKILL.md",
++      "tests/super-code/replay-harness.mjs",
++      "tests/super-auto/test-scripts.sh"
++    ],
++    "owns": "Ledger transport status, post-reconciliation deterministic counts, discrepancy reporting and execution-metadata/friction count semantics.",
++    "consumes": "Persisted recovery/fix history from task 4 and supported finding dispositions from task 8; existing Git task-landing identities and tracker reconciliation.",
++    "acceptance": [
++      "An unexplained empty transport after known ledger appends is unavailable evidence, distinct from a valid-empty or fresh-missing ledger.",
++      "Missing/unreadable/truncated inputs yield qualified supported partial results instead of invented final totals.",
++      "Finish reconciliation is reflected in reported totals and actual discrepant task IDs are shown before causes are proposed (needs: task 4).",
++      "A clean latest attempt retains earlier repaired history; deferred/rejected items are not counted as repaired (needs: task 4, task 8).",
++      "Base-absorption merges do not inflate task-landings, and ordinary Workflow selection metadata does not inflate friction events.",
++      "Deterministic producer/consumer fixtures pass; the coordinator owns representative fresh-agent report interpretation evaluation."
++    ],
++    "deps": [
++      4,
++      8
++    ],
++    "id": "super-plan-ufz.9",
++    "fullDescription": "Validate ledger transport and calculate existing run counts mechanically before interpretation. Distinguish missing/unreadable/truncated/valid-empty; reconcile available Git/tracker evidence before authoritative totals, retaining supported partial results on gaps. Separate latest attempt from history, repaired from deferred/rejected and task landings from base absorption. Report actual ID discrepancies before causal guesses. Keep ordinary execution metadata out of friction-event counts. The coordinator owns fresh-agent interpretation checks; deterministic producers/consumers are tested here.\n\nSpec: docs/superpowers/specs/2026-10-16-workflow-reliability-design.md\nFiles: skills/super-code/coordinator.js, skills/super-code/scripts/ledger-digest, skills/super-code/coordinator-workflow.md, skills/super-code/coordinator-subagents.md, skills/super-auto/SKILL.md, skills/super-auto/run-state.md, skills/super-auto/report-prompt.md, skills/upstream-feedback/SKILL.md, tests/super-code/replay-harness.mjs, tests/super-auto/test-scripts.sh\nowns: Ledger transport status, post-reconciliation deterministic counts, discrepancy reporting and execution-metadata/friction count semantics.\nconsumes: Persisted recovery/fix history from super-plan-ufz.4 and supported finding dispositions from super-plan-ufz.8; existing Git task-landing identities and tracker reconciliation.\n\nAcceptance:\n- [ ] An unexplained empty transport after known ledger appends is unavailable evidence, distinct from a valid-empty or fresh-missing ledger.\n- [ ] Missing/unreadable/truncated inputs yield qualified supported partial results instead of invented final totals.\n- [ ] Finish reconciliation is reflected in reported totals and actual discrepant task IDs are shown before causes are proposed (needs: super-plan-ufz.4).\n- [ ] A clean latest attempt retains earlier repaired history; deferred/rejected items are not counted as repaired (needs: super-plan-ufz.4, super-plan-ufz.8).\n- [ ] Base-absorption merges do not inflate task-landings, and ordinary Workflow selection metadata does not inflate friction events.\n- [ ] Deterministic producer/consumer fixtures pass; the coordinator owns representative fresh-agent report interpretation evaluation.\nblocked-by super-plan-ufz.4: consumes Durable recovery/fix records and compatible digest transport.\nblocked-by super-plan-ufz.8: consumes Immutable super-code invocation reviews, outstanding invocation-finding consumption and evidence-backed punch-list disposition.",
++    "verdict": "LEAF"
++  },
++  {
++    "title": "Correct profiler availability bounds and bottleneck claims",
++    "description": "Keep creation, mapping readiness and dependency readiness distinct in the existing profiler. Bound waits by evidenced availability, keep unknown timestamps unknown and label invocation/residual graph scope. Include planning time in bottleneck diagnosis, label modeled improvements as estimates and separate all-agent from task-slot concurrency. Settle existing profile generation ownership after each settled invocation and append/copy output once. The coordinator owns any fresh-agent interpretation evaluation.",
++    "files": [
++      "skills/super-code/scripts/run-profile.mjs",
++      "skills/super-code/coordinator-workflow.md",
++      "skills/super-code/coordinator-subagents.md",
++      "skills/super-auto/SKILL.md",
++      "skills/super-auto/report-prompt.md",
++      "tests/super-code/run-profile-fixture.mjs",
++      "tests/super-code/run-profile-ordinary-fixture.mjs",
++      "tests/super-code/test-run-profile.sh",
++      "tests/super-code/test-run-profile-in-flight.sh"
++    ],
++    "owns": "Profiler availability/timing semantics, planning-aware diagnosis, graph/concurrency labels and profile-generation handoff.",
++    "consumes": "Existing journal/transcript/ordinary-subagent tracker evidence and settled invocation output paths.",
++    "acceptance": [
++      "A late-created task is never assigned wait time before its creation; unavailable timestamps remain unknown.",
++      "Creation, mapping-ready and dependency-ready evidence retain their actual meanings throughout waits and schedule estimates.",
++      "A planning-dominated timeline does not claim task parallelism alone removes the bottleneck; counterfactuals are labeled estimates.",
++      "Graph labels describe observed invocation/residual scope without inventing historical topology, and all-agent/task-slot concurrency have separate labels.",
++      "Profiles are generated after settled invocations by a named owner, then appended and copied without contradictory Finish/caller ownership.",
++      "Workflow and ordinary-subagent deterministic profiler fixtures pass; the coordinator owns fresh-agent diagnosis checks if instruction behavior changes."
++    ],
++    "deps": [],
++    "id": "super-plan-ufz.10",
++    "fullDescription": "Keep creation, mapping readiness and dependency readiness distinct in the existing profiler. Bound waits by evidenced availability, keep unknown timestamps unknown and label invocation/residual graph scope. Include planning time in bottleneck diagnosis, label modeled improvements as estimates and separate all-agent from task-slot concurrency. Settle existing profile generation ownership after each settled invocation and append/copy output once. The coordinator owns any fresh-agent interpretation evaluation.\n\nSpec: docs/superpowers/specs/2026-10-16-workflow-reliability-design.md\nFiles: skills/super-code/scripts/run-profile.mjs, skills/super-code/coordinator-workflow.md, skills/super-code/coordinator-subagents.md, skills/super-auto/SKILL.md, skills/super-auto/report-prompt.md, tests/super-code/run-profile-fixture.mjs, tests/super-code/run-profile-ordinary-fixture.mjs, tests/super-code/test-run-profile.sh, tests/super-code/test-run-profile-in-flight.sh\nowns: Profiler availability/timing semantics, planning-aware diagnosis, graph/concurrency labels and profile-generation handoff.\nconsumes: Existing journal/transcript/ordinary-subagent tracker evidence and settled invocation output paths.\n\nAcceptance:\n- [ ] A late-created task is never assigned wait time before its creation; unavailable timestamps remain unknown.\n- [ ] Creation, mapping-ready and dependency-ready evidence retain their actual meanings throughout waits and schedule estimates.\n- [ ] A planning-dominated timeline does not claim task parallelism alone removes the bottleneck; counterfactuals are labeled estimates.\n- [ ] Graph labels describe observed invocation/residual scope without inventing historical topology, and all-agent/task-slot concurrency have separate labels.\n- [ ] Profiles are generated after settled invocations by a named owner, then appended and copied without contradictory Finish/caller ownership.\n- [ ] Workflow and ordinary-subagent deterministic profiler fixtures pass; the coordinator owns fresh-agent diagnosis checks if instruction behavior changes.",
++    "verdict": "LEAF"
++  },
++  {
++    "title": "Normalize recurring process classes without merging defects",
++    "description": "Use a small common process-class/alias vocabulary within existing recurrence recording and reconstruction, preserving each original text. Keep grouping separate from defect identity, severity and scope. Do not pool unrelated product defects or every failing test. The coordinator owns fresh-agent tagging/semantic evaluations; deterministic alias/provenance/negative cases are prepared here.",
++    "files": [
++      "skills/super-code/coordinator.js",
++      "skills/super-code/scripts/ledger-digest",
++      "skills/super-code/coordinator-workflow.md",
++      "skills/super-code/coordinator-subagents.md",
++      "skills/super-code/task-reviewer-prompt.md",
++      "tests/super-code/replay-harness.mjs"
++    ],
++    "owns": "Narrow process-class aliases, recurrence provenance and compatible class reconstruction.",
++    "consumes": "Existing recurrence counters, class tags and ledger reconstruction; original finding text remains authoritative evidence.",
++    "acceptance": [
++      "Equivalent process tags group under a common class while original text/provenance remains available.",
++      "Unrelated defects and unrelated test failures remain distinct rather than forming one catch-all recurrence class.",
++      "Recurrence supports reassessment but does not itself merge findings, escalate severity or enlarge scope.",
++      "Alias/provenance/negative-case fixtures pass; the coordinator owns representative fresh-agent semantic tagging evaluation."
++    ],
++    "deps": [],
++    "id": "super-plan-ufz.11",
++    "fullDescription": "Use a small common process-class/alias vocabulary within existing recurrence recording and reconstruction, preserving each original text. Keep grouping separate from defect identity, severity and scope. Do not pool unrelated product defects or every failing test. The coordinator owns fresh-agent tagging/semantic evaluations; deterministic alias/provenance/negative cases are prepared here.\n\nSpec: docs/superpowers/specs/2026-10-16-workflow-reliability-design.md\nFiles: skills/super-code/coordinator.js, skills/super-code/scripts/ledger-digest, skills/super-code/coordinator-workflow.md, skills/super-code/coordinator-subagents.md, skills/super-code/task-reviewer-prompt.md, tests/super-code/replay-harness.mjs\nowns: Narrow process-class aliases, recurrence provenance and compatible class reconstruction.\nconsumes: Existing recurrence counters, class tags and ledger reconstruction; original finding text remains authoritative evidence.\n\nAcceptance:\n- [ ] Equivalent process tags group under a common class while original text/provenance remains available.\n- [ ] Unrelated defects and unrelated test failures remain distinct rather than forming one catch-all recurrence class.\n- [ ] Recurrence supports reassessment but does not itself merge findings, escalate severity or enlarge scope.\n- [ ] Alias/provenance/negative-case fixtures pass; the coordinator owns representative fresh-agent semantic tagging evaluation.",
++    "verdict": "LEAF"
++  },
++  {
++    "title": "Reconcile persisted recovery facts before resumed admission",
++    "description": "Reconcile durable recovery facts with Git and tracker before admitting affected work. Reuse valid landed implementation, finish pending tracker closure and preserve unexplained discrepancies. Scope is resume behavior; prerequisite owns the record and digest format.",
++    "files": [
++      "skills/super-code/coordinator.js",
++      "skills/super-code/scripts/ledger-digest",
++      "skills/super-code/coordinator-workflow.md",
++      "skills/super-code/coordinator-subagents.md",
++      "tests/super-code/replay-harness.mjs"
++    ],
++    "owns": "Resume reconciliation and affected-work admission from persisted recovery evidence.",
++    "consumes": "Durable recovery/fix records and digest transport from task 4.",
++    "acceptance": [
++      "Restart after valid landing but before tracker closure reconciles without repeating implementation (needs: task 4).",
++      "Persisted holds and deferred obligations constrain resumed affected work; Git/tracker disagreement remains explicit (needs: task 4).",
++      "Deterministic partial-close, hold and mismatch fixtures pass; coordinator owns fresh-agent resume evaluation."
++    ],
++    "deps": [
++      4
++    ],
++    "id": "super-plan-ufz.12",
++    "verdict": "LEAF",
++    "fullDescription": "Reconcile durable recovery facts with Git and tracker before admitting affected work. Reuse valid landed implementation, finish pending tracker closure and preserve unexplained discrepancies. Scope is resume behavior; prerequisite owns the record and digest format.\n\nSpec: docs/superpowers/specs/2026-10-16-workflow-reliability-design.md\nFiles: skills/super-code/coordinator.js, skills/super-code/scripts/ledger-digest, skills/super-code/coordinator-workflow.md, skills/super-code/coordinator-subagents.md, tests/super-code/replay-harness.mjs\nowns: Resume reconciliation and affected-work admission from persisted recovery evidence.\nconsumes: Durable recovery/fix records and digest transport from super-plan-ufz.4.\n\nAcceptance:\n- [ ] Restart after valid landing but before tracker closure reconciles without repeating implementation (needs: super-plan-ufz.4).\n- [ ] Persisted holds and deferred obligations constrain resumed affected work; Git/tracker disagreement remains explicit (needs: super-plan-ufz.4).\n- [ ] Deterministic partial-close, hold and mismatch fixtures pass; coordinator owns fresh-agent resume evaluation.\nblocked-by super-plan-ufz.4: consumes Durable recovery/fix records and compatible digest transport."
++  },
++  {
++    "title": "Complete reviewed verification-only tasks without artificial commits",
++    "description": "Use source-bound evidence outcomes to complete verification-only tasks with unchanged HEAD after review against acceptance criteria. Preserve implementation delivery requirements. Scope is task completion behavior, not a new evidence schema.",
++    "files": [
++      "skills/super-code/coordinator.js",
++      "skills/super-code/implementer-prompt.md",
++      "skills/super-code/task-reviewer-prompt.md",
++      "skills/super-code/scripts/dispatch-text.mjs",
++      "skills/super-code/coordinator-workflow.md",
++      "skills/super-code/coordinator-subagents.md",
++      "tests/super-code/replay-harness.mjs",
++      "tests/super-code/test-dispatch-text.sh"
++    ],
++    "owns": "Reviewed no-change task completion in existing execution paths.",
++    "consumes": "Source-bound evidence identity/kind/check outcomes from task 5.",
++    "acceptance": [
++      "Verification-only unchanged-HEAD task completes on reviewed acceptance evidence, without an artificial commit (needs: task 5).",
++      "An implementation task still requires delivered-change evidence.",
++      "Outcome fixtures pass; coordinator owns representative fresh-agent no-change evaluation."
++    ],
++    "deps": [
++      5
++    ],
++    "id": "super-plan-ufz.13",
++    "verdict": "LEAF",
++    "fullDescription": "Use source-bound evidence outcomes to complete verification-only tasks with unchanged HEAD after review against acceptance criteria. Preserve implementation delivery requirements. Scope is task completion behavior, not a new evidence schema.\n\nSpec: docs/superpowers/specs/2026-10-16-workflow-reliability-design.md\nFiles: skills/super-code/coordinator.js, skills/super-code/implementer-prompt.md, skills/super-code/task-reviewer-prompt.md, skills/super-code/scripts/dispatch-text.mjs, skills/super-code/coordinator-workflow.md, skills/super-code/coordinator-subagents.md, tests/super-code/replay-harness.mjs, tests/super-code/test-dispatch-text.sh\nowns: Reviewed no-change task completion in existing execution paths.\nconsumes: Source-bound evidence identity/kind/check outcomes from super-plan-ufz.5.\n\nAcceptance:\n- [ ] Verification-only unchanged-HEAD task completes on reviewed acceptance evidence, without an artificial commit (needs: super-plan-ufz.5).\n- [ ] An implementation task still requires delivered-change evidence.\n- [ ] Outcome fixtures pass; coordinator owns representative fresh-agent no-change evaluation.\nblocked-by super-plan-ufz.5: consumes Source-bound evidence identity, kind and check outcomes."
++  }
++]

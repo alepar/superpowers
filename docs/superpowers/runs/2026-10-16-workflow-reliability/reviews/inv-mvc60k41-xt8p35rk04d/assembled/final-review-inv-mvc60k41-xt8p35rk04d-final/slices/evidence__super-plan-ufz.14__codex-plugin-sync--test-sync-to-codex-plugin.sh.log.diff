@@ -1,0 +1,77 @@
+diff --git a/evidence/super-plan-ufz.14/codex-plugin-sync--test-sync-to-codex-plugin.sh.log b/evidence/super-plan-ufz.14/codex-plugin-sync--test-sync-to-codex-plugin.sh.log
+new file mode 100644
+index 00000000..110d63e7
+--- /dev/null
++++ b/evidence/super-plan-ufz.14/codex-plugin-sync--test-sync-to-codex-plugin.sh.log
+@@ -0,0 +1,71 @@
++=== Test: sync-to-codex-plugin dry-run regression ===
++
++Preview assertions...
++  [PASS] Preview exits successfully
++  [PASS] Preview uses manifest version
++  [PASS] Preview does not use package.json version
++  [PASS] Preview includes manifest path
++  [PASS] Preview excludes Kimi manifest from Codex sync
++  [PASS] Preview includes SVG asset
++  [PASS] Preview includes PNG asset
++  [PASS] Preview includes Codex hook manifest
++  [PASS] Preview includes session-start hook
++  [PASS] Preview includes Codex session-start hook
++  [PASS] Preview includes hook command wrapper
++  [PASS] Preview includes tracked ignored file
++  [PASS] Preview excludes ignored untracked file
++  [PASS] Preview excludes pure ignored directories
++  [PASS] Preview excludes eval harness
++  [PASS] Preview excludes repo submodule metadata
++  [PASS] Preview excludes repo pre-commit config
++  [PASS] Preview omits overlay regeneration note
++  [PASS] Preview omits assets seeding note
++  [PASS] Preview reflects dirty tracked destination file
++  [PASS] Preview preserves destination-owned OpenAI agent metadata
++  [PASS] Preview leaves destination checkout on its original branch
++  [PASS] Preview does not create sync branch in destination checkout
++
++Mixed-directory assertions...
++  [PASS] Mixed ignored directory preview exits successfully under /bin/bash
++  [PASS] Mixed ignored directory preview still includes tracked ignored file
++  [PASS] Mixed ignored directory preview has no pure ignored directory fixture
++
++Convergence assertions...
++  [PASS] Stale ignored destination preview exits successfully
++  [PASS] Preview deletes stale Kimi manifest from Codex plugin
++  [PASS] Preview deletes stale ignored destination file
++
++Bootstrap assertions...
++  [PASS] Bootstrap preview exits successfully
++  [PASS] Bootstrap preview describes directory creation
++  [PASS] Bootstrap preview omits external assets path
++  [PASS] Bootstrap preview remains dry-run only
++  [PASS] Bootstrap preview does not create destination plugin directory
++  [PASS] Bootstrap preview leaves destination checkout on its original branch
++  [PASS] Bootstrap preview does not create bootstrap branch in destination checkout
++
++Apply assertions...
++  [PASS] Dirty local apply exits with failure
++  [PASS] Dirty local apply reports protected destination path
++  [PASS] Dirty local apply leaves destination checkout on its original branch
++  [PASS] Dirty local apply does not create sync branch in destination checkout
++  [PASS] Dirty local apply preserves tracked working-tree file content
++  [PASS] Clean no-op local apply exits successfully
++  [PASS] Clean no-op local apply reports no changes
++  [PASS] Clean no-op local apply leaves destination checkout on its original branch
++  [PASS] Clean no-op local apply does not create sync branch in destination checkout
++  [PASS] Clean no-op local apply preserves OpenAI agent metadata
++
++Missing manifest assertions...
++  [PASS] Missing manifest exits with failure
++  [PASS] Missing manifest reports committed manifest path
++
++Help assertions...
++  [PASS] Help omits --assets-src
++
++Source assertions...
++  [PASS] Source drops regenerated inline phrasing
++  [PASS] Source drops Brand Assets directory phrasing
++  [PASS] Source drops --assets-src
++
++PASS

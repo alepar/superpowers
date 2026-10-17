@@ -1,0 +1,342 @@
+diff --git a/tests/super-code/test-dispatch-text.sh b/tests/super-code/test-dispatch-text.sh
+index d721edcd..a26f97ab 100644
+--- a/tests/super-code/test-dispatch-text.sh
++++ b/tests/super-code/test-dispatch-text.sh
+@@ -7,7 +7,7 @@ set -euo pipefail
+ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+ REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+ D="$REPO_ROOT/skills/super-code/scripts/dispatch-text"
+-T=$(mktemp -d)
++T=$(mktemp -d "${TMPDIR:-/tmp}/dispatch-text.XXXXXX")
+ trap 'rm -rf "$T"' EXIT
+ FAILURES=0
+ 
+@@ -18,13 +18,65 @@ assert_has() { if printf '%s\n' "$1" | grep -qF -- "$2"; then pass "$3"; else fa
+ assert_lacks() { if printf '%s\n' "$1" | grep -qF -- "$2"; then fail "$3"; echo "    unexpected: $2"; else pass "$3"; fi; }
+ run() { set +e; out=$("$@" 2>"$T/err"); code=$?; set -e; }
+ 
++PIN_BASE=1111111111111111111111111111111111111111
++PIN_HEAD=2222222222222222222222222222222222222222
+ W=/r/wt
+ mkdir -p "$T/ws"
+ L="$T/ws/progress.md"
+ printf '%s\n' '# SDD ledger — plan: ep-plan.md' \
+-  "Launch: mechanism ordinary-subagents · epic ep · branch feat/x · integrationWorktree $W · concurrency 4 · earlyUnblock on · sweep deferred · mergeCheck cargo check --all-targets" > "$L"
++  "Launch: mechanism ordinary-subagents · epic ep · invocationId ep · branch feat/x · integrationWorktree $W · concurrency 4 · earlyUnblock on · sweep deferred · reviewBase $PIN_BASE · reviewHead $PIN_HEAD · mergeCheck cargo check --all-targets" > "$L"
+ TW="$W/.worktrees/feat-x--task-ep.2"
+ 
++echo "dispatch-text: evidence classification shares the Workflow record contract"
++node - "$T/results.json" <<'NODE'
++const fs = require('fs')
++const identity = { sourceTree:'d'.repeat(40), command:'node smoke.mjs', configuration:'target=staging' }
++fs.writeFileSync(process.argv[2], JSON.stringify([
++  { dispatch:'impl:ep.2', result:{ id:'ep.2', evidence:['live','simulated','fallback'].map(kind => ({...identity, kind, outcome:'pass', location:`evidence/${kind}.log`})) } },
++  { dispatch:'review:ep.2', result:{ id:'ep.2', requiredLiveChecks:[identity, {...identity, configuration:'target=production'}] } },
++  { dispatch:'impl:ep.3', result:{ id:'ep.3', evidence:[{...identity, kind:'live', outcome:'fail', location:'failed.log'}, {...identity, kind:'live', outcome:'unavailable', location:'unavailable.log'}] } },
++  { dispatch:'review:ep.3', result:{ id:'ep.3', status:'CLEAN'} },
++]))
++NODE
++run bash "$D" --ledger "$L" --stdout check-evidence --results-file "$T/results.json"
++assert_eq "$code" 0 "ordinary record classification exits 0"
++printf '%s\n' "$out" > "$T/classified.json"
++run node - "$T/classified.json" <<'NODE'
++const r = JSON.parse(require('fs').readFileSync(process.argv[2]))
++if (r.records.length !== 5 || r.records[0].sourceTree !== 'd'.repeat(40) || r.records[0].dispatch !== 'impl:ep.2' || r.records[0].location !== 'evidence/live.log' || r.records[3].outcome !== 'fail' || r.records[4].outcome !== 'unavailable' || r.requiredLiveChecks[0].outcome !== 'pass' || r.requiredLiveChecks[1].outcome !== 'unavailable' || r.gaps.length) process.exit(1)
++NODE
++assert_eq "$code" 0 "ordinary results preserve provenance, failed/unavailable and required-live gaps"
++
++echo "dispatch-text: verification-only evidence review"
++node - "$T/verification.json" <<'NODE'
++const fs = require('fs')
++const identity = { sourceTree:'d'.repeat(40), command:'node smoke.mjs', configuration:'target=staging' }
++fs.writeFileSync(process.argv[2], JSON.stringify({ completionKind:'verification-only', sourceTree:identity.sourceTree, evidence:[{...identity, kind:'live', outcome:'pass', location:'evidence/live.log'}], requiredLiveChecks:[identity] }))
++NODE
++run bash "$D" --ledger "$L" --stdout review --id ep.2 --n 2 --base "$PIN_BASE" --head "$PIN_BASE" --result-file "$T/verification.json"
++assert_eq "$code" 0 "verification review dispatch exits 0"
++assert_has "$out" "[COMPLETION_KIND] = verification-only" "ordinary review transports explicit verification intent"
++assert_has "$out" '"sourceTree":"dddddddddddddddddddddddddddddddddddddddd"' "ordinary review transports the fixed tree"
++assert_has "$out" "evidence/live.log" "ordinary review transports retained measurement references"
++assert_has "$out" "[REPORT_FILE] = $T/ws/task-2-report.md" "evidence review reads the existing report"
++assert_has "$out" "EVIDENCE REVIEW" "evidence review branches before nonempty-diff packaging"
++run bash "$D" --ledger "$L" --stdout review --id ep.2 --n 2 --base "$PIN_BASE" --head "$PIN_HEAD"
++assert_has "$out" "[COMPLETION_KIND] = implementation" "legacy review keeps implementation intent"
++
++node - "$T/verification.json" "$T/accepted.json" <<'NODE'
++const fs = require('fs')
++const r = JSON.parse(fs.readFileSync(process.argv[2]))
++fs.writeFileSync(process.argv[3], JSON.stringify({...r, status:'CLEAN', reviewStatus:'CLEAN', files:[], base:'1'.repeat(40), head:'1'.repeat(40), reportPath:'task-report.md', reviewPath:'task-review.md'}))
++NODE
++run bash "$D" --ledger "$L" --stdout verification-close --id ep.2 --result-file "$T/accepted.json"
++assert_eq "$code" 0 "reviewed verification produces ordinary closure dispatch"
++assert_has "$out" "STATUS CHECK FIRST" "closure observes tracker status first"
++assert_has "$out" "task-review.md" "closure carries independent review identity"
++assert_lacks "$out" "scripts/already-merged" "verification closure claims no Git landing"
++assert_has "$out" "Cleanup exits are data" "verification closure retains cleanup outcomes"
++run bash "$D" --ledger "$L" --stdout verification-close --id ep.2 --result-file "$T/verification.json"
++assert_eq "$code" 2 "unreviewed verification cannot dispatch closure"
++
+ echo "dispatch-text: implement"
+ run bash "$D" --ledger "$L" implement --id ep.2 --n 2
+ assert_eq "$code" 0 "exits 0"
+@@ -36,6 +88,8 @@ assert_has "$txt" "[BRIEF_FILE] = $T/ws/task-2-brief.md" "artifacts in the ledge
+ assert_has "$txt" "git worktree add $TW -b task-ep.2 feat/x" "workspace setup cuts from the integration branch"
+ assert_has "$txt" "PROCESSES AND TEMP STATE" "process hygiene the implementer template points at"
+ assert_has "$txt" "CURRENT REQUIREMENTS" "current requirements"
++assert_has "$txt" "evidence" "implementer RESULT carries optional evidence"
++assert_has "$txt" "sourceTree, command, configuration, outcome, location, kind" "implementer dispatch names the complete provenance contract"
+ assert_lacks "$txt" "stack: ep.1" "no stacking without --parents"
+ run bash "$D" --ledger "$L" --stdout implement --id ep.2 --n 2 --parents ep.1
+ assert_has "$out" 'git merge --no-ff -m "stack: ep.1" task-ep.1' "--parents stacks on the parent's branch"
+@@ -44,8 +98,25 @@ run bash "$D" --ledger "$L" --stdout implement --id ep.2 --n 2 --reentry
+ assert_has "$out" "This is a review re-entry" "--reentry: the review re-entry setup"
+ 
+ echo "dispatch-text: review, fix, seam review, check-fix review"
+-run bash "$D" --ledger "$L" --stdout review --id ep.2 --n 2 --base abc1234
++run bash "$D" --ledger "$L" --stdout review --id ep.2 --n 2 --base "$PIN_BASE" --head "$PIN_HEAD"
++assert_has "$out" "[HEAD] = $PIN_HEAD" "task review receives captured implementation head"
++assert_has "$out" "--is-ancestor $PIN_BASE $PIN_HEAD" "base check uses captured head"
++for mode in single cluster seam; do
++  extra=(--dir /review/inputs)
++  case "$mode" in cluster) extra=(--dir /review/inputs --cluster 1 --name source);; seam) extra=(--dir /review/inputs --reviewed none);; esac
++  run bash "$D" --ledger "$L" --stdout final-review --mode "$mode" --base "$PIN_BASE" --head "$PIN_HEAD" "${extra[@]}"
++  assert_eq "$code" 0 "pinned final $mode exits 0"
++  assert_has "$out" "diff $PIN_BASE..$PIN_HEAD" "final $mode diff is captured"
++  assert_has "$out" "show $PIN_HEAD:<path>" "final $mode source is captured"
++done
++run bash "$D" --ledger "$L" --stdout review --id ep.2 --n 2 --base "$PIN_BASE" --head moving-branch
++assert_eq "$code" 2 "task review rejects a moving source ref"
++run bash "$D" --ledger "$L" --stdout final-review --mode single --base "$PIN_BASE" --head moving-branch
++assert_eq "$code" 2 "final review rejects a moving source ref"
++run bash "$D" --ledger "$L" --stdout review --id ep.2 --n 2 --base abc1234 --head "$PIN_HEAD"
+ assert_has "$out" "BASE CHECK" "review carries the base check"
++assert_has "$out" "requiredLiveChecks" "review dispatch carries explicit live-check identities"
++assert_has "$out" "sourceTree, command, configuration, outcome, location, kind" "review dispatch carries the shared evidence contract"
+ assert_has "$out" "[BASE] = abc1234" "and the reported base"
+ printf 'error[E0061]: this function takes 2 arguments\n' > "$T/err.txt"
+ run bash "$D" --ledger "$L" --stdout fix --id ep.2 --n 2 --base abc1234 --kind check --finding-file "$T/err.txt"
+@@ -64,7 +135,7 @@ assert_has "$out" "task-2-review.md" "fix --kind review: the review file path"
+ run bash "$D" --ledger "$L" --stdout seam-review --id ep.2 --n 2 --base abc1234 --merge-base def5678 --head 9999999 --overlap src/a.rs,"consumes ep.1"
+ assert_has "$out" "READ-ONLY post-rebase seam review for task ep.2" "seam review"
+ assert_has "$out" "A \`consumes <id>\` entry" "a consumes entry gets the composed-review text"
+-run bash "$D" --ledger "$L" --stdout check-fix-review --id ep.2 --n 2 --pre-fix-head abc1234 --errors-file "$T/err.txt"
++run bash "$D" --ledger "$L" --stdout check-fix-review --id ep.2 --n 2 --head "$PIN_HEAD" --pre-fix-head abc1234 --errors-file "$T/err.txt"
+ assert_has "$out" "READ-ONLY review of a merge-check fix" "check-fix review"
+ 
+ echo "dispatch-text: merge"
+@@ -101,13 +172,13 @@ ends_with_rule() {  # $1 = label, rest = dispatch-text args; the last non-empty
+ ends_with_rule implement implement --id ep.2 --n 2
+ ends_with_rule "implement (stacked)" implement --id ep.2 --n 2 --parents ep.1
+ ends_with_rule "implement (reentry)" implement --id ep.2 --n 2 --reentry
+-ends_with_rule review review --id ep.2 --n 2 --base abc1234
++ends_with_rule review review --id ep.2 --n 2 --base abc1234 --head "$PIN_HEAD"
+ ends_with_rule "fix (check)" fix --id ep.2 --n 2 --base abc1234 --kind check --finding-file "$T/err.txt"
+ printf 'a finding\n' > "$T/finding.txt"
+ ends_with_rule "fix (review)" fix --id ep.2 --n 2 --base abc1234 --kind review --finding-file "$T/finding.txt"
+ ends_with_rule "fix (seam)" fix --id ep.2 --n 2 --base abc1234 --kind seam --finding-file "$T/finding.txt"
+ ends_with_rule seam-review seam-review --id ep.2 --n 2 --base abc1234 --merge-base def5678 --head 9999999 --overlap src/a.rs
+-ends_with_rule check-fix-review check-fix-review --id ep.2 --n 2 --pre-fix-head abc1234 --errors-file "$T/err.txt"
++ends_with_rule check-fix-review check-fix-review --id ep.2 --n 2 --head "$PIN_HEAD" --pre-fix-head abc1234 --errors-file "$T/err.txt"
+ ends_with_rule merge merge --id ep.2 --n 2 --base abc1234
+ ends_with_rule "merge (stacked)" merge --id ep.2 --n 2 --base abc1234 --stacked --review-bead ep.9
+ ends_with_rule "plan (ready)" plan --ids ep.1,ep.2 --mode ready
+@@ -135,15 +206,15 @@ assert_has "$row" "report.draft.md" "SKILL.md's report drafter row names report.
+ 
+ echo "dispatch-text: assemble"
+ printf '%s\n' '# SDD ledger — plan: ep-plan.md' \
+-  "Launch: mechanism ordinary-subagents · epic ep · branch feat/x · integrationWorktree $W · runTag rt-1 · mergeCheck none" > "$T/ws/rt.md"
+-printf '%s\n' 'Launch: args {"epicId":"ep","integrationBranch":"feat/y","integrationWorktree":"/r/wy","skillsRoot":"/s","runTag":"rt-2","config":{"mergeCheck":"none"}}' > "$T/ws/rtargs.md"
++  "Launch: mechanism ordinary-subagents · epic ep · branch feat/x · integrationWorktree $W · runTag rt-1 · invocationId rt-1 · reviewBase $PIN_BASE · reviewHead $PIN_HEAD · mergeCheck none" > "$T/ws/rt.md"
++printf '%s\n' 'Launch: args {"epicId":"ep","integrationBranch":"feat/y","integrationWorktree":"/r/wy","skillsRoot":"/s","runTag":"rt-2","invocationId":"rt-2","reviewBase":"1111111111111111111111111111111111111111","reviewHead":"2222222222222222222222222222222222222222","config":{"mergeCheck":"none"}}' > "$T/ws/rtargs.md"
+ AW="$W/.superpowers/sdd/ep-plan/assembled"
+ asm() {  # $1 = consumer, $2 = instance
+   run bash "$D" --ledger "$T/ws/rt.md" --stdout assemble --consumer "$1" --instance "$2"
+ }
+ asm final-review final
+ assert_eq "$code" 0 "assemble final-review exits 0"
+-assert_has "$out" "[OUT_DIR] = $AW/final-review-rt-1-final" "OUT_DIR is <workspace>/assembled/<consumer>-<runTag>-<instance>"
++assert_has "$out" "[OUT_DIR] = $AW/final-review-rt-1-final" "final-review OUT_DIR includes persisted invocation identity"
+ assert_has "$out" "assembler-prompt.md" "points at the assembler template"
+ assert_has "$out" "[CONSUMER] = final-review" "names the consumer"
+ assert_has "$out" "[CLUSTERS] = yes" "final-review asks for clusters"
+@@ -188,7 +259,7 @@ assert_has "$out" "[OUT_DIR] = $AW/assess-x-audit" "--run-tag overrides the Laun
+ run bash "$D" --ledger "$T/ws/rtargs.md" --stdout assemble --consumer assess --instance audit
+ assert_has "$out" "[OUT_DIR] = /r/wy/.superpowers/sdd/ep-plan/assembled/assess-rt-2-audit" "the Launch: args form carries runTag"
+ run bash "$D" --ledger "$L" --stdout assemble --consumer final-review --instance final
+-assert_has "$out" "assembled/final-review-ep-final" "a Launch line without runTag falls back to the epic"
++assert_has "$out" "assembled/final-review-ep-final" "final-review assembly uses the persisted identity without runTag"
+ ASMT="$REPO_ROOT/skills/super-code/assembler-prompt.md"
+ has_f "assembler-prompt.md states it judges nothing" "judges nothing" "$ASMT"
+ has_f "assembler-prompt.md empties the instance dir first" 'rm -rf [OUT_DIR] && mkdir -p [OUT_DIR]/slices' "$ASMT"
+@@ -206,7 +277,7 @@ FD="$AW/final-review-rt-1-final"
+ fr --mode single
+ assert_eq "$code" 0 "final-review --mode single exits 0"
+ assert_has "$out" "review-package" "single without --dir reviews direct inputs through the review package"
+-assert_has "$out" "$W/.superpowers/sdd/ep-plan/final-review-rt-1.md" "single writes the handoff file final-review-<runTag>.md"
++assert_has "$out" "$W/.superpowers/sdd/ep-plan/final-review-rt-1.md" "single writes the invocation handoff file"
+ assert_lacks "$out" "no usable clusters" "an uncapped single review is not told its inputs overflow"
+ if last_is_schema; then pass "single ends with the final-answer line"; else fail "single ends with the final-answer line"; fi
+ fr --mode single --dir "$FD"
+@@ -215,15 +286,15 @@ assert_lacks "$out" "review-package" "single --dir does not rebuild the review p
+ fr --mode single --capped
+ assert_has "$out" "no usable clusters" "--capped tells the reviewer its inputs exceed the window"
+ fr --mode cluster --dir "$FD" --cluster 2 --name hooks
+-assert_has "$out" "final-review-rt-1-cluster-2.md" "cluster writes final-review-<runTag>-cluster-<n>.md"
++assert_has "$out" "final-review-rt-1.cluster-2.md" "cluster writes the invocation cluster file"
+ assert_has "$out" "cluster named hooks" "cluster names the cluster it reviews"
+ if last_is_schema; then pass "cluster ends with the final-answer line"; else fail "cluster ends with the final-answer line"; fi
+ printf 'cluster 2 (hooks): over the window\n' > "$T/unrev.txt"
+ fr --mode seam --dir "$FD" --reviewed 1,3 --unreviewed "$T/unrev.txt"
+ assert_eq "$code" 0 "seam --reviewed exits 0"
+-assert_has "$out" "final-review-rt-1-cluster-1.md" "seam is given reviewed cluster file 1"
+-assert_has "$out" "final-review-rt-1-cluster-3.md" "seam is given reviewed cluster file 3"
+-assert_lacks "$out" "final-review-rt-1-cluster-2.md" "seam is not given the unreviewed cluster's file"
++assert_has "$out" "final-review-rt-1.cluster-1.md" "seam is given reviewed cluster file 1"
++assert_has "$out" "final-review-rt-1.cluster-3.md" "seam is given reviewed cluster file 3"
++assert_lacks "$out" "final-review-rt-1.cluster-2.md" "seam is not given the unreviewed cluster's file"
+ assert_has "$out" "cluster 2 (hooks): over the window" "seam names the unreviewed entry verbatim"
+ assert_has "$out" "$W/.superpowers/sdd/ep-plan/final-review-rt-1.md" "seam writes the handoff file"
+ if last_is_schema; then pass "seam ends with the final-answer line"; else fail "seam ends with the final-answer line"; fi
+@@ -233,10 +304,10 @@ fr --mode stub --reviewed 1 --unreviewed <(printf 'seam\n')
+ assert_eq "$code" 0 "stub exits 0"
+ assert_has "$out" "$W/.superpowers/sdd/ep-plan/final-review-rt-1.md" "stub writes the handoff file"
+ assert_has "$out" "unreviewed: seam" "stub names the unreviewed entries"
+-assert_has "$out" "final-review-rt-1-cluster-1.md" "stub lists the reviewed cluster file"
++assert_has "$out" "final-review-rt-1.cluster-1.md" "stub lists the reviewed cluster file"
+ if last_is_schema; then pass "stub ends with the final-answer line"; else fail "stub ends with the final-answer line"; fi
+ run bash "$D" --ledger "$T/ws/rt.md" final-review --mode stub --reviewed none --unreviewed "$T/unrev.txt"
+-assert_eq "$out" "$T/ws/dispatch/final-review-stub.md" "stub's default label is final-review-stub"
++assert_eq "$out" "$T/ws/dispatch/final-review-rt-1-stub.md" "stub dispatch name includes its invocation identity"
+ fr --mode bogus
+ assert_eq "$code" 2 "final-review --mode bogus: exit 2"
+ fr --mode cluster --dir "$FD" --cluster 2
+@@ -252,7 +323,7 @@ assert_eq "$code" 2 "seam without --reviewed: exit 2"
+ assert_has "$(cat "$T/err")" "needs --reviewed" "and says what is missing"
+ 
+ # Single: sweep and Metrics come from the ledger, as Finish passes them.
+-printf '%s\n' "Launch: mechanism ordinary-subagents · epic ep · branch feat/x · integrationWorktree $W · runTag rt-1 · mergeCheck none" \
++printf '%s\n' "Launch: mechanism ordinary-subagents · epic ep · branch feat/x · integrationWorktree $W · runTag rt-1 · invocationId rt-1 · reviewBase $PIN_BASE · reviewHead $PIN_HEAD · mergeCheck none" \
+   'Sweep: abc1234 — 120 passed, 0 failed; failing: none; command: npm test' \
+   'Metrics: m1' 'Metrics: m2' 'Metrics: m3' 'Metrics: m4' > "$T/ws/sw.md"
+ frl() { run bash "$D" --ledger "$T/ws/sw.md" --stdout final-review "$@"; }
+@@ -269,10 +340,10 @@ assert_has "$out" "sweep from file" "--sweep F overrides the ledger"
+ assert_lacks "$out" "120 passed" "and the ledger's sweep is not used"
+ assert_has "$out" "Metrics: f1 | Metrics: f2" "--metrics F overrides the ledger"
+ assert_lacks "$out" "Metrics: m1" "and the ledger's metrics are not used"
+-printf '%s\n' "Launch: mechanism ordinary-subagents · epic ep · branch feat/x · integrationWorktree $W · runTag rt-1 · sweep deferred · mergeCheck none" > "$T/ws/df.md"
++printf '%s\n' "Launch: mechanism ordinary-subagents · epic ep · branch feat/x · integrationWorktree $W · runTag rt-1 · invocationId rt-1 · sweep deferred · reviewBase $PIN_BASE · reviewHead $PIN_HEAD · mergeCheck none" > "$T/ws/df.md"
+ run bash "$D" --ledger "$T/ws/df.md" --stdout final-review --mode single
+ assert_has "$out" "deferred to the caller" "a Launch line with sweep deferred and no Sweep: line defers the sweep"
+-printf '%s\n' 'Launch: args {"epicId":"ep","integrationBranch":"feat/x","integrationWorktree":"/r/wt","runTag":"rt-1","deferSweep":true}' > "$T/ws/dfa.md"
++printf '%s\n' 'Launch: args {"epicId":"ep","invocationId":"ep","integrationBranch":"feat/x","integrationWorktree":"/r/wt","runTag":"rt-1","deferSweep":true,"reviewBase":"1111111111111111111111111111111111111111","reviewHead":"2222222222222222222222222222222222222222"}' > "$T/ws/dfa.md"
+ run bash "$D" --ledger "$T/ws/dfa.md" --stdout final-review --mode single
+ assert_has "$out" "deferred to the caller" "the Workflow Launch form's deferSweep defers the sweep"
+ fr --mode single
+@@ -321,8 +392,107 @@ while IFS= read -r line; do
+ done <<< "$parity"
+ [ -n "$parity" ] || fail "argument parity block printed nothing"
+ 
++echo "dispatch-text: advancing caller fixture"
++node --input-type=module - "$D" "$T" <<'NODE'
++import assert from 'node:assert/strict'
++import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
++import { execFileSync } from 'node:child_process'
++const [dispatch, dir] = process.argv.slice(2)
++const repo = `${dir}/advancing-caller`
++mkdirSync(repo)
++const git = (...args) => execFileSync('git', ['-C', repo, ...args], { encoding: 'utf8' }).trim()
++git('init', '-q'); git('config', 'user.name', 'Test'); git('config', 'user.email', 'test@example.com')
++writeFileSync(`${repo}/source.txt`, 'base\n'); git('add', '.'); git('commit', '-qm', 'base')
++const base = git('rev-parse', 'HEAD')
++writeFileSync(`${repo}/source.txt`, 'captured source\n'); git('commit', '-qam', 'reviewed')
++const head = git('rev-parse', 'HEAD')
++git('branch', '-m', 'integration')
++const ledger = `${dir}/advancing-progress.md`
++writeFileSync(ledger, `Launch: epic ep · invocationId pinned-invocation · branch integration · integrationWorktree ${repo}\n`)
++for (const callerText of ['advanced once\n', 'advanced twice\n']) {
++  writeFileSync(`${repo}/source.txt`, callerText); git('commit', '-qam', 'advance caller')
++  for (const args of [
++    ['review', '--id', 'ep.2', '--n', '2'],
++    ['assemble', '--consumer', 'final-review', '--instance', 'final'],
++    ['final-review', '--mode', 'single'],
++    ['final-review', '--mode', 'cluster', '--dir', '/review/input', '--cluster', '1', '--name', 'source'],
++    ['final-review', '--mode', 'seam', '--dir', '/review/input', '--reviewed', 'none'],
++  ]) {
++    const prompt = execFileSync('bash', [dispatch, '--ledger', ledger, '--stdout', ...args, '--base', base, '--head', head], { encoding: 'utf8' })
++    assert.ok(prompt.includes(base) && prompt.includes(head), 'every dispatch retains captured pair')
++    assert.ok(!prompt.includes(git('rev-parse', 'HEAD')), 'caller advance does not enter review inputs')
++    if (args[0] === 'final-review') {
++      const diff = prompt.match(/`git diff ([a-f0-9]+)\.\.([a-f0-9]+)`/)
++      assert.ok(diff, 'rendered pinned diff command')
++      const patch = git('diff', `${diff[1]}..${diff[2]}`)
++      assert.ok(patch.includes('+captured source') && !patch.includes('advanced'))
++      const source = prompt.match(/`git show ([a-f0-9]+):<path>`/)
++      assert.ok(source, 'rendered pinned source command')
++      assert.equal(git('show', `${source[1]}:source.txt`), 'captured source')
++    }
++  }
++  assert.equal(readFileSync(`${repo}/source.txt`, 'utf8'), callerText)
++  assert.equal(git('status', '--porcelain=v1'), '')
++}
++console.log('  [PASS] regenerated task/assembly/single/cluster/seam prompts preserve captured source across two caller advances')
++NODE
++
++echo "dispatch-text: invocation bundle identity and resume"
++for identity in inv-a inv-b; do
++  printf '%s\n' "Launch: mechanism ordinary-subagents · epic ep · branch feat/x · integrationWorktree $W · runTag shared-run · invocationId $identity · reviewBase $PIN_BASE · reviewHead $PIN_HEAD · mergeCheck none" > "$T/ws/inv-$identity.md"
++  for mode in single cluster seam stub; do
++    extra=(--base "$PIN_BASE" --head "$PIN_HEAD")
++    case "$mode" in cluster) extra=(--dir /inputs --cluster 1 --name source);; seam) extra=(--dir /inputs --reviewed 1);; stub) extra=(--reviewed 1 --unreviewed "$T/unrev.txt");; esac
++    run bash "$D" --ledger "$T/ws/inv-$identity.md" --stdout final-review --mode "$mode" "${extra[@]}"
++    assert_eq "$code" 0 "$identity/$mode builds from persisted identity"
++    assert_has "$out" "final-review-$identity" "$identity/$mode bundle includes invocation identity"
++    assert_lacks "$out" 'final-review-shared-run' "$identity/$mode never uses the enclosing runTag for review files"
++    printf '%s\n' "$out" > "$T/ws/$identity-$mode.txt"
++  done
++  run bash "$D" --ledger "$T/ws/inv-$identity.md" --stdout assemble --consumer final-review --instance final
++  assert_has "$out" "assembled/final-review-$identity-final" "$identity assembly is invocation scoped"
++done
++run bash "$D" --ledger "$T/ws/inv-inv-a.md" --stdout final-review --mode single
++assert_eq "$out" "$(cat "$T/ws/inv-a-single.txt")" "resume replay uses the identical persisted source and artifact path"
++printf '%s\n' "Launch: args {\"epicId\":\"ep\",\"integrationBranch\":\"feat/x\",\"integrationWorktree\":\"$W\",\"runTag\":\"shared-run\",\"invocationId\":\"inv-json\",\"reviewBase\":\"$PIN_BASE\",\"reviewHead\":\"$PIN_HEAD\"}" > "$T/ws/inv-json.md"
++run bash "$D" --ledger "$T/ws/inv-json.md" --stdout final-review --mode single
++assert_has "$out" 'final-review-inv-json.md' 'Workflow Launch args also replay invocation identity'
++for bad in '../escape' 'a/b' 'a b' ''; do
++  printf '%s\n' "Launch: mechanism ordinary-subagents · epic ep · branch feat/x · integrationWorktree $W · invocationId $bad · reviewBase $PIN_BASE · reviewHead $PIN_HEAD" > "$T/ws/bad-inv.md"
++  run bash "$D" --ledger "$T/ws/bad-inv.md" --stdout final-review --mode single
++  assert_eq "$code" 2 "unsafe or missing invocation identity [$bad] refuses review output"
++done
++run bash "$D" --ledger "$T/ws/inv-inv-a.md" --invocation-id inv-b --stdout final-review --mode single
++assert_eq "$code" 2 'an unpersisted identity override cannot replace the launch identity'
++
++echo "dispatch-text: emitted bundle paths retain prior contents, including suffix-like identities"
++node --input-type=module - "$D" "$T" "$PIN_BASE" "$PIN_HEAD" <<'NODE'
++import assert from 'node:assert/strict'
++import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
++import { dirname } from 'node:path'
++import { execFileSync } from 'node:child_process'
++const [dispatch, dir, base, head] = process.argv.slice(2)
++const ledger = `${dir}/bundle-progress.md`
++const worktree = `${dir}/bundle-worktree`
++const saved = new Map()
++for (const identity of ['inv-a', 'inv-b', 'inv-a-cluster-1']) {
++  writeFileSync(ledger, `Launch: epic ep · branch feat/x · integrationWorktree ${worktree} · runTag shared · invocationId ${identity} · reviewBase ${base} · reviewHead ${head}\n`)
++  const build = (...args) => execFileSync('bash', [dispatch, '--ledger', ledger, '--stdout', ...args], { encoding: 'utf8' })
++  const final = build('final-review', '--mode', 'single').match(/declared review artifact is (\S+?\.md)/)?.[1]
++  const cluster = build('final-review', '--mode', 'cluster', '--dir', '/inputs', '--cluster', '1', '--name', 'source').match(/declared review artifact is (\S+?\.md)/)?.[1]
++  const assembly = build('assemble', '--consumer', 'final-review', '--instance', 'final').match(/\[OUT_DIR\] = ([^;]+);/)?.[1]
++  assert.ok(final && cluster && assembly, 'real builders declare all bundle paths')
++  for (const file of [final, cluster, `${assembly}/digest.md`]) {
++    mkdirSync(dirname(file), { recursive: true }); writeFileSync(file, identity)
++  }
++  for (const [file, contents] of saved) assert.equal(readFileSync(file, 'utf8'), contents, 'a later invocation preserves every earlier artifact')
++  for (const file of [final, cluster, `${assembly}/digest.md`]) saved.set(file, identity)
++}
++console.log('  [PASS] distinct ordinary invocation bundles preserve prior artifact contents, including suffix-like IDs')
++NODE
++
+ echo "dispatch-text: run facts and bad input"
+-printf '%s\n' 'Launch: args {"epicId":"ep","integrationBranch":"feat/y","integrationWorktree":"/r/wy","config":{"mergeCheck":"none"}}' > "$T/ws/wf.md"
++printf '%s\n' 'Launch: args {"epicId":"ep","invocationId":"ep","integrationBranch":"feat/y","integrationWorktree":"/r/wy","config":{"mergeCheck":"none"}}' > "$T/ws/wf.md"
+ run bash "$D" --ledger "$T/ws/wf.md" --stdout merge --id ep.2 --n 2 --base abc1234
+ assert_has "$out" "the integration branch feat/y is checked out in /r/wy" "a Workflow Launch: args line is read too"
+ assert_has "$out" "No merge check is declared" "mergeCheck none: no check step"

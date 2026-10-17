@@ -1,0 +1,8 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-findings-round-1.md b/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-findings-round-1.md
+new file mode 100644
+index 00000000..00637473
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-findings-round-1.md
+@@ -0,0 +1,2 @@
++GAP · R10 · Reviewer 1 requested explicit repetition of detailed disposition rules in compact ownership.
++GAP · R14 · Reviewer 1 requested explicit repetition of estimate/unknown qualification in compact ownership.

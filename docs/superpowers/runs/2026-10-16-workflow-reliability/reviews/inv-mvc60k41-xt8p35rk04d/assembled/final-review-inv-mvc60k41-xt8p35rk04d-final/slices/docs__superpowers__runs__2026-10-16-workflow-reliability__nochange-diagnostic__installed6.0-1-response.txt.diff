@@ -1,0 +1,17 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/installed6.0-1-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/installed6.0-1-response.txt
+new file mode 100644
+index 00000000..70c54da4
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/installed6.0-1-response.txt
+@@ -0,0 +1,11 @@
++Keep the root **open and not release-ready**. Retain the implementation leaves’ recorded completion and green targeted tests at e444; overall acceptance remains pending. The missing sweep is a **verification gap**, not evidence of a code defect.
++
++Assign the required full-suite sweep to the **super-auto coordinator now**, before closure. Run the ledger’s declared sweep command while no roast or coordinator Workflow is in flight, against the exact SHA that will land. Retain its command, output, live result and SHA stamp in `codeBuckets.sweep`. Targeted tests and compilation do not substitute for this release requirement. A genuine sweep failure follows the prescribed sweep-fix path; invalid measurement is reported as such.
++
++**F17 remains still-open, Should-fix.** r1 confirmed `src/retry.js:42` drops a queued retry during shutdown. Its fix was blocked, no fix commit landed, and the intervening documentation change supplies no resolution evidence. r2’s silence cannot establish resolution. Correct the durable finding ledger and review history, retain r1’s evidence and fixture blocker, and route the fix to its owner for fixture unblocking and verified repair. If deliberately deferred, explicitly record its key as punch-listed (open); never mark it resolved.
++
++**V9 cannot complete through the installed review procedure now.** Its evidence convincingly verifies the entire criterion at e444: matching resolved commit identities and source tree, clean source status, readable live evidence, and 12/12 passing tests. Nevertheless, the applicable task-review instructions explicitly require **INVALID** when the package helper exits 3. Retain that result and the full evidence record; obtain an authorized verification-only acceptance procedure before recording completion.
++
++**V10 also cannot complete.** Its package is INVALID, and its only evidence names tree `a155…`, whereas the actual/captured tree is `d845…`. Obtain evidence for the actual tree or substantiate the discrepancy before acceptance.
++
++**Neither leaf needs a product or comment-only commit.** Artificial changes would not repair the acceptance procedure or V10’s evidence provenance. Retain the verification-only briefs, reports, identity/tree/status observations, original evidence files, and helper failures.

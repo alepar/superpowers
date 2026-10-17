@@ -1,0 +1,19 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/C-control-5-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/C-control-5-response.txt
+new file mode 100644
+index 00000000..4a4d95c4
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/C-control-5-response.txt
+@@ -0,0 +1,13 @@
++**Disposition: block completion and release.** A production data-loss defect remains unrepaired. It reproduces at B’s base `4b44`, but run baseline `0a00` passes and A’s landing `3a33` introduced it. Attribute the regression to A. B’s `preExisting=true` packet is valid relative to B’s task base; it does not establish that the defect predates the run or justify accepting it. Route repair to A’s owner, then require reproduction-based verification and review before clearing the block.
++
++C’s latest attempt is clean after repairing two confirmed findings. Retain the earlier findings and repair artifacts as history; report zero outstanding findings for C, without describing C as having had no findings.
++
++**Issue this evidence/process summary now:**
++
++“The run contains four closed implementation leaf tasks: A, B, C and D. Git corroborates four task landings; its two additional merges absorb updated main and are not implementation tasks. These counts come from tracker and Git fallback evidence: the ledger is truncated after C and has no valid metrics line. Tracker closure does not establish run acceptance.
++
++Observed phases were planning 60 minutes, code 50 minutes and review 20 minutes: 130 minutes total. D was created at 10:40 and first dispatched at 10:45, a five-minute creation-to-dispatch interval. Its ready timestamp is missing, so ready-to-dispatch delay is unknown; do not count from scheduler startup at 10:00. One snapshot shows eight active agents, including three implementation slots; it establishes neither peak concurrency nor average utilization.
++
++The scaling model predicts code could fall from 50 to 25 minutes, conditional on no new bottleneck. Holding planning and review fixed, total delivery would fall from 130 to 105 minutes—about 19%, not half. This is a projection, not demonstrated scaling.
++
++Group A’s cleanup-permission and C’s process-inspection records under sandbox-denied owned-process liveness inspection, preserving their original tags and distinct incidents. Different PIDs and fixtures provide no basis for merging product defects. Keep B’s wrong expected retry assertion separate as a test-expectation issue. The run remains blocked by A’s unrepaired data-loss regression.”

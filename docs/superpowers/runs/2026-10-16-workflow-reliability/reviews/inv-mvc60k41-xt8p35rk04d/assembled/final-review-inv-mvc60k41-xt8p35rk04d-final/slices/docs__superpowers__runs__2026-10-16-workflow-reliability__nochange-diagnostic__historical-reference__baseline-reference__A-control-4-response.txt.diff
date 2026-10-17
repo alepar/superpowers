@@ -1,0 +1,17 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/baseline-reference/A-control-4-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/baseline-reference/A-control-4-response.txt
+new file mode 100644
+index 00000000..4d6eda0e
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/baseline-reference/A-control-4-response.txt
+@@ -0,0 +1,11 @@
++Keep the caller’s clean checkout at `feature/payments@2c22`. Do not switch, reset, or remove its sibling commit.
++
++Reproduce the supplied review target `1a11` against base `0b00` in a detached worktree at `/tmp/acme-review`, with test home `/tmp/acme-test-home`. Run the reproduction there so its writes to `fixtures/generated.json` and `build/results.json` cannot affect the caller’s checkout.
++
++The checkout comparison establishes that the caller advanced beyond the original review snapshot and includes a sibling commit. It does not establish a defect in `1a11`, invalidate the earlier reproduction, or authorize reverting `2c22`. Keep review conclusions explicitly scoped to `1a11`; do not silently substitute the current branch tip.
++
++Retain both `/tmp/acme-review` and `/tmp/acme-test-home`. The owned server may still use them: termination was requested successfully, but follow-up discovery failed with permission denied. The wrapper’s empty arrays do not establish that no processes survived. Do not terminate the unrelated server or use its port occupancy as evidence about PID 8241.
++
++Exact handoff:
++
++> Review remains scoped to `feature/payments@1a11` versus `main@0b00`. Caller checkout is clean at `2c22`, including a sibling commit, and was left unchanged. Reproduction should run in detached `/tmp/acme-review` at `1a11`, with `/tmp/acme-test-home`; generated files must stay there. Termination request for owned PID 8241 succeeded, but shutdown is unverified because follow-up process discovery returned permission denied. The wrapper’s empty results are inconclusive. Both resources are retained pending successful owned-process verification. The unrelated developer server was left untouched.

@@ -1,0 +1,17 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/baseline-reference/A-baseline-3-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/baseline-reference/A-baseline-3-response.txt
+new file mode 100644
+index 00000000..95563076
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/baseline-reference/A-baseline-3-response.txt
+@@ -0,0 +1,11 @@
++Keep the caller’s clean checkout on `feature/payments@2c22`; do not switch or reset it. The comparison establishes that the branch advanced and includes a sibling commit. It does not establish a parser regression or invalidate findings grounded in `1a11`.
++
++Reproduce the supplied review target, `1a11` versus `0b00`, in the detached `/tmp/acme-review` worktree pinned to `1a11`. Keep generated fixture and build writes there. Do not run the reproduction in `/tmp/acme-billing`. If the existing review worktree cannot be reused safely because the server’s termination remains unverified, record reproduction as incomplete instead of racing that process. Any conclusion about `2c22` requires separate verification.
++
++Retain `/tmp/acme-review`, its generated files, and `/tmp/acme-test-home` through handoff. The failed discovery leaves process ownership/liveness unresolved, so cleanup cannot be declared safe. Do not terminate the unrelated server based on its port.
++
++Exact handoff:
++
++> Reviewed target remains `feature/payments@1a11` versus `main@0b00`. The caller’s clean checkout has advanced to `2c22` with a sibling commit; I left it unchanged. Findings against `1a11` do not clear `2c22`. Reproduction writes belong only in the detached `/tmp/acme-review` checkout pinned to `1a11`, subject to safe reuse.
++>
++> PID 8241 received a successful termination request, but follow-up process discovery failed with permission denied. Termination is **unverified**; the wrapper’s empty `stopped`/`survived` arrays do not prove cleanup. Discovery stderr is preserved. I retained `/tmp/acme-review` and `/tmp/acme-test-home` pending successful process verification. The unrelated developer server was left untouched.

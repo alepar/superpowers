@@ -1,0 +1,15 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/baseline-reference/C-baseline-1-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/baseline-reference/C-baseline-1-response.txt
+new file mode 100644
+index 00000000..16a20ff6
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/baseline-reference/C-baseline-1-response.txt
+@@ -0,0 +1,9 @@
++Decision: block merge pending repair of the production data-loss defect and verification of the repaired run tip. Correct the advertised summary now.
++
++- **Attribution:** B’s packet is correctly FYI relative to B’s task base `4b44`; B changes only documentation. Across the run, baseline `0a00` passes and A’s landing `3a33` introduces the failure. Attribute the unresolved defect to A and classify it **Blocking** under the real-data-loss floor. B’s local `preExisting=true` does not establish that it predates the run.
++- **Repair history:** C’s latest attempt is clean after repairing two confirmed findings. Retain earlier artifacts as repair history; those two findings are resolved, not current blockers. Their history still belongs in the report.
++- **Work completed:** The tracker establishes four closed implementation leaves: A, B, C, D. Git corroborates four task-landing merges. The other two merges absorbed updated main; they are not additional tasks. “Six tasks” is unsupported.
++- **Evidence gaps:** The ledger truncates after C and contains no valid metrics line. Report the incomplete ledger as a process finding and name unavailable metrics explicitly. Use tracker and Git evidence for their supported counts; do not present reconstructed counts as ledger metrics.
++- **Timing and concurrency:** Planning took 60 minutes, code 50, review 20: 130 minutes total. D’s creation-to-dispatch interval was five minutes; its ready timestamp is missing, so ready-queue wait is unknown. The scheduler’s 10:00 start does not establish D waited 45 minutes. The snapshot shows eight active agents, three occupying implementation slots; it establishes neither average nor peak implementation concurrency.
++- **Scaling:** The model estimates code could fall to 25 minutes, assuming no new bottleneck. With other phases unchanged, delivery becomes 105 minutes—about 19% shorter, not halved. Label this a model estimate.
++- **Process grouping:** Group A’s and C’s incidents under sandbox-refused owned-process inspection, retaining both original tags and occurrences. Different PIDs and fixtures do not prevent shared-process-cause grouping or establish identical product defects. Keep B’s wrong retry expectation separate as a test-assertion issue.

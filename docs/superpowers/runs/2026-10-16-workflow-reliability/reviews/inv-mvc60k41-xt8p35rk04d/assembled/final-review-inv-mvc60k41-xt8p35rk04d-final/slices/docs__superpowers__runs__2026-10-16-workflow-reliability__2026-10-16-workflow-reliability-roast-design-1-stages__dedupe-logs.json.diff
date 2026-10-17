@@ -1,0 +1,10 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-design-1-stages/dedupe-logs.json b/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-design-1-stages/dedupe-logs.json
+new file mode 100644
+index 00000000..08840ddc
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-design-1-stages/dedupe-logs.json
+@@ -0,0 +1,3 @@
++[
++  "scouts: 8/8 returned · raw findings 6"
++]
+\ No newline at end of file

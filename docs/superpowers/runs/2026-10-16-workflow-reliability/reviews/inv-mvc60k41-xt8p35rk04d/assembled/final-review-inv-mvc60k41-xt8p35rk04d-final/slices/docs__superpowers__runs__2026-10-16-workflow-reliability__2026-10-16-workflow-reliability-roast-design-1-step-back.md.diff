@@ -1,0 +1,10 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-design-1-step-back.md b/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-design-1-step-back.md
+new file mode 100644
+index 00000000..7b226993
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-design-1-step-back.md
+@@ -0,0 +1,4 @@
++decision: patch
++summary: Correct .8.4’s punch-list criterion and acceptance fixture; the governing contracts already agree, so no higher-level redesign is warranted.
++pattern: none — first round; isolated task-wording contradiction.
++clusters: none

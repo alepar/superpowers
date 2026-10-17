@@ -1,0 +1,21 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/final-4-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/final-4-response.txt
+new file mode 100644
+index 00000000..ce80d539
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/final-4-response.txt
+@@ -0,0 +1,15 @@
++Keep the root **open** and release acceptance **pending**. The implementation leaves may retain their accepted status, but targeted passes and compilation at e444 do not satisfy the release contract. The missing sweep is an outstanding measurement, not an established code failure.
++
++Assign the **super-auto orchestrator** the required live full-suite sweep now, with the host quiet and against the exact SHA that will land. Retain its command, configuration, output location, outcome and measured SHA in `codeBuckets.sweep`. Do not defer it until after release.
++
++Keep **F17 open**. r2’s silence and “clean” verdict supply no resolution; documentation changes and an unsupported claim of another fix do not establish one. Retain r1’s original occurrence ref, c222, `src/retry.js:42`, severity, blocked repair and unavailable-fixture evidence. Append a `finding-route` preserving that ref. With the loop exited, put it on the punch list tagged `final review`, with a nonempty deferred reason and repair ownership retained. It is not resolved or a qualifying Critical/Important exception for another fix round.
++
++**V9 can complete now: CLEAN, verification-only.** Both commits resolve to `e444e444e444e444e444e444e444e444e444e444`; actual/captured tree is `d84541aed84541aed84541aed84541aed84541ae`; source status is clean. Retain these identities, `files: []`, `requiredLiveChecks: []`, and the unchanged original evidence record:
++
++`{"sourceTree":"d84541aed84541aed84541aed84541aed84541ae","command":"node --test test/parser-duplicate-ids.test.mjs","configuration":"runtime=node-22; fixture=duplicate-request-ids","outcome":"pass","location":"/tmp/acme-retry/evidence/V9.txt","kind":"live"}`
++
++Its 12/12 output covers the entire criterion. Record that coverage in the review.
++
++**V10 cannot complete: NEEDS_FIX.** Its readable passing evidence measures `a15541aea15541aea15541aea15541aea15541ae`, not the accepted source tree. Preserve its original record and identify the source-coverage gap; obtain retained evidence for the correct tree or a supported reconciliation.
++
++Neither leaf needs a comment-only commit. The ordinary helper’s exit 3 does not invalidate the dedicated verification-only path; neither review should construct a diff package.

@@ -1,0 +1,9 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/B-control-4-prompt.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/B-control-4-prompt.txt
+new file mode 100644
+index 00000000..e12118c5
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/B-control-4-prompt.txt
+@@ -0,0 +1,3 @@
++You have one bounded decision job. Parent delegated this task; do not spawn agents, use herdr-threads, contact others, or change any files. Read only the files named below using a read-only tool; then return your decision in your final answer. No repository exploration or other workflow/skill reads are needed for this text-only decision.
++No workflow reference is supplied for this job. Use the case facts and ordinary operational judgment.
++Read /tmp/workflow-reliability-baseline/scenario-B.txt and answer it. You are the acting coordinator/reviewer in that case; choose concrete actions now. The paths and facts in the case are supplied operational observations; do not try to run or verify the fictional commands. Do not mention an evaluation or grading rubric.

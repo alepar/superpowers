@@ -1,0 +1,26 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-review-1.md b/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-review-1.md
+new file mode 100644
+index 00000000..5455878b
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-review-1.md
+@@ -0,0 +1,20 @@
++requirements:
++R1 → super-plan-ufz.1
++R2 → super-plan-ufz.2
++R3 → super-plan-ufz.3
++R4 → super-plan-ufz.4, super-plan-ufz.12
++R5 → super-plan-ufz.5
++R6 → super-plan-ufz.13
++R7 → super-plan-ufz.6
++R8 → super-plan-ufz.7
++R9 → super-plan-ufz.8, super-plan-ufz.8.1, super-plan-ufz.8.3, super-plan-ufz.8.4
++R10 → super-plan-ufz.8.4
++R11 → super-plan-ufz.11
++R12 → super-plan-ufz.9
++R13 → super-plan-ufz.4, super-plan-ufz.7, super-plan-ufz.8.3, super-plan-ufz.8.4, super-plan-ufz.9
++R14 → super-plan-ufz.10
++R15 → (root coordinator and implementing leaves)
++
++GAP · R10 — compact ownership did not explicitly repeat uncertain-match separation and rejection-basis retention; propose extending .8.4 outcomes.
++GAP · R14 — compact ownership did not explicitly repeat counterfactual estimate labeling/unknowns; propose assigning to .10.
++No NEEDS-SPEC. Relative ID aliases normalized to canonical IDs for tally.

@@ -1,0 +1,8 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/caller/.gitignore b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/caller/.gitignore
+new file mode 100644
+index 00000000..5e979f28
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/caller/.gitignore
+@@ -0,0 +1,2 @@
++build/
++.superpowers/

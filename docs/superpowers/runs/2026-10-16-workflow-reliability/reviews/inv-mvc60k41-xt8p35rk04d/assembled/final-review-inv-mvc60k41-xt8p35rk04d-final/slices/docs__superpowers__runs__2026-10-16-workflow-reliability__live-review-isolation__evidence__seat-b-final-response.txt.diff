@@ -1,0 +1,10 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/evidence/seat-b-final-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/evidence/seat-b-final-response.txt
+new file mode 100644
+index 00000000..c176b01c
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/evidence/seat-b-final-response.txt
+@@ -0,0 +1,4 @@
++{
++  "verdict": "not ready (negative sub-dollar amounts lose their required sign)",
++  "path": "/private/tmp/ufz-live-isolation/caller/.superpowers/sdd/ufz-live-review-plan/final-review-seat-b-live.md"
++}

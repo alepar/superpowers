@@ -1,0 +1,33 @@
+diff --git a/evidence/super-plan-ufz.3/replay-post-rebase.txt b/evidence/super-plan-ufz.3/replay-post-rebase.txt
+new file mode 100644
+index 00000000..bbc736cd
+--- /dev/null
++++ b/evidence/super-plan-ufz.3/replay-post-rebase.txt
+@@ -0,0 +1,27 @@
++Source: 214a28e8c1dba33b026db6441fd97ef27af55d59
++Integration base: b635541015f4bc0e037ef8621f8d01135ca2b22b
++Command: TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.3/state node tests/super-code/replay-harness.mjs
++
++## admission: a merge hold established during a capacity wait rejects queued work
++  [PASS] run completes without throwing
++  [PASS] queued consumer is not implemented after the hold
++  [PASS] rejected reservation creates no attempt outcome
++  [PASS] rejection records its admission reason
++
++## admission: fresh external hold rejects a queued consumer and releases capacity to unrelated work
++  [PASS] run completes without throwing
++  [PASS] post-wait tracker hold prevents implementation and the next reservation acquires its released slot
++  [PASS] fresh external hold identifies the affected dependency
++  [PASS] a rejected external admission leaves no implementation attempt ledger entry
++
++## external readiness: closed reviews release consumers during an unrelated long implementation
++  [PASS] run completes without throwing
++  [PASS] external review closure releases its consumer before the long task finishes
++  [PASS] open human gate, open blocker and failed lookup keep only their consumers held
++  [PASS] lookup failure retains an explicit per-task reason
++  [PASS] in-flight refresh is bounded and its timer is cancelled at quiescence
++  [PASS] mechanical refresh asks for authoritative dependency status and meaning
++  [PASS] external closure is independent of the local implementation-completion set
++
++
++1900 passed, 0 failed

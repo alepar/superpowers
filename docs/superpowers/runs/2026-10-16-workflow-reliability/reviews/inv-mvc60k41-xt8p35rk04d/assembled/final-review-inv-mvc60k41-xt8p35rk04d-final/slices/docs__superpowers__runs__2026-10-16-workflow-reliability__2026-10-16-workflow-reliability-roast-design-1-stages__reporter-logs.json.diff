@@ -1,0 +1,11 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-design-1-stages/reporter-logs.json b/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-design-1-stages/reporter-logs.json
+new file mode 100644
+index 00000000..3e7f5b37
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-design-1-stages/reporter-logs.json
+@@ -0,0 +1,4 @@
++[
++  "scouts: 8/8 returned · raw findings 6",
++  "dedupe: raw 6 → deduped 4 · panels 4 · spot checks 0"
++]
+\ No newline at end of file

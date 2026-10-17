@@ -1,0 +1,63 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/metadata.json b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/metadata.json
+new file mode 100644
+index 00000000..cadd1cc4
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/metadata.json
+@@ -0,0 +1,57 @@
++{
++  "phase": "before implementation",
++  "guidance": "exact installed6.4.2-alepar6.0 excerpts, line ranges and full hashes in source-manifest.json",
++  "model": "gpt-6.1-sol",
++  "reasoning_effort": "medium",
++  "fork_turns": "none",
++  "variants": [
++    "installed6.0",
++    "no-guidance"
++  ],
++  "replicates_per_scenario_variant": 5,
++  "scenarios": [
++    "A",
++    "B",
++    "C"
++  ],
++  "execution": "one fresh child active at a time; text decisions only; no mechanical helper behavior inferred",
++  "common_harness": "Existing shared system/developer/tool/skill catalog remains present; no-guidance means no tested workflow text, not a blank-system model.",
++  "status": "baseline and controls complete",
++  "counted_trials": 30,
++  "excluded_trials": 1,
++  "scorer": "single manual evaluator, aware of variant; claim rubric not provided to agents",
++  "mechanics": "not executed; text decisions only",
++  "seed": "not controlled; harness default sampling",
++  "trial_order": [
++    "A-control-1",
++    "A-baseline-1",
++    "B-control-1",
++    "B-baseline-1",
++    "C-control-1",
++    "C-baseline-1",
++    "A-baseline-2",
++    "A-control-2",
++    "B-baseline-2",
++    "B-control-2",
++    "C-baseline-2",
++    "C-control-2",
++    "A-control-3",
++    "A-baseline-3",
++    "B-control-3",
++    "B-baseline-3",
++    "C-control-3",
++    "C-baseline-3",
++    "A-baseline-4",
++    "A-control-4",
++    "B-baseline-4",
++    "B-control-4",
++    "C-baseline-4",
++    "C-control-4",
++    "A-control-5",
++    "A-baseline-5",
++    "B-control-5",
++    "B-baseline-5",
++    "C-control-5",
++    "C-baseline-5"
++  ]
++}

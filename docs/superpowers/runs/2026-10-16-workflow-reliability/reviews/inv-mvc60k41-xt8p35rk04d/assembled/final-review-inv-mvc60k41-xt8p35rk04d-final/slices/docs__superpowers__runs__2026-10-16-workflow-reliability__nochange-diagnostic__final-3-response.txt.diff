@@ -1,0 +1,15 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/final-3-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/final-3-response.txt
+new file mode 100644
+index 00000000..4fe1c955
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/final-3-response.txt
+@@ -0,0 +1,9 @@
++Keep the root open: implementation leaves may remain accepted, but release acceptance is incomplete. Targeted tests and compile at e444 do not replace the contract’s required live full-suite sweep. Record this as outstanding caller-owned verification, rather than a demonstrated code failure.
++
++Assign the sweep to the super-auto orchestrator now, using the ledger’s declared sweep command against the exact release tip, with no roast or coordinator Workflow in flight. Retain the command, configuration, live outcome, output location and measured SHA in `codeBuckets.sweep`. A deferred sweep cannot support closing the root.
++
++F17 remains **still-open**. r1 confirmed the shutdown retry loss; no fix landed, and r2’s silence, intervening documentation change and unsupported implementer claim provide no resolution. Preserve r1’s original occurrence ref, location, severity and report. Append a `finding-route` retaining the existing blocked repair assignment and fixture dependency; obtain linked fix evidence before resolving it. If loop limits require deferral, record an explicit deferred reason and punch-list disposition. Do not infer one from the absent keys file.
++
++**V9 can complete now, CLEAN, without a commit.** Its verification-only acceptance permits unchanged source. Base and head both resolve to `e444e444e444e444e444e444e444e444e444e444`; actual and captured tree both equal `d84541aed84541aed84541aed84541aed84541ae`, and source status is clean. The retained live parser check covers the entire criterion, including the documented error, with 12/12 passing. Retain the review with `completionKind: "verification-only"`, those identities, `files: []`, `requiredLiveChecks: []`, and the original evidence record unchanged, pointing to `/tmp/acme-retry/evidence/V9.txt`. The package helper’s exit 3 does not govern this path.
++
++**V10 cannot complete now: NEEDS_FIX for incomplete evidence coverage.** Its only measurement belongs to tree `a15541aea15541aea15541aea15541aea15541ae`, not the verified source tree. Preserve that original record and mismatch explicitly; obtain source-matched evidence. Neither leaf needs a comment-only commit. Archive invocation reviews and evidence through review collection before cleanup or re-entry.

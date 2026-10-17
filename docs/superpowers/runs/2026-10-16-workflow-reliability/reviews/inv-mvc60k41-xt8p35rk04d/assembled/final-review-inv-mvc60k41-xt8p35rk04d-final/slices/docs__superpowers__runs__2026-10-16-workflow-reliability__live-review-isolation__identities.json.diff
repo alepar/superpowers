@@ -1,0 +1,13 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/identities.json b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/identities.json
+new file mode 100644
+index 00000000..4506bb70
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/identities.json
+@@ -0,0 +1,7 @@
++{
++  "base": "96ba44f6f5ced6166997c74aee1ba374b6c3fe0f",
++  "head": "7ddd110053fb302c4f6a0bd645ddbf28c512c563",
++  "headTree": "ab110314039e030a728c5d17e9ba7572ae89dac3",
++  "caller": "/private/tmp/ufz-live-isolation/caller",
++  "started": 1792224945.005435
++}

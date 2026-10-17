@@ -1,0 +1,13 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/B-baseline-4-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/B-baseline-4-response.txt
+new file mode 100644
+index 00000000..8cb6703d
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/B-baseline-4-response.txt
+@@ -0,0 +1,7 @@
++- **Keep the root open.** Release acceptance is blocked by missing verification: `deferSweep=true` returned `SWEEP DEFERRED (caller-owned)`, and targeted tests plus compile at `e444` do not satisfy the required live full-suite result. Record this as an unmeasured verification gate, not a demonstrated code failure.
++
++- **Assign the sweep to the super-auto coordinator now.** Run the ledger’s `Launch:` sweep command with no roast or coordinator Workflow in flight. Retain command, output, exit status, and measured SHA; stamp `codeBuckets.sweep` with the result and ` @ <sha>`. If the landing tree changes, measure that exact tree. Do not close the root before this gate is satisfied.
++
++- **Implementation acceptance: NEEDS_FIX.** F17 remains unresolved: `r1` confirmed the dropped shutdown retry at `src/retry.js:42`; its fix was blocked, no fix commit landed, and the intervening task changed documentation only. Neither r2’s silence nor the implementer’s unsupported claim demonstrates resolution. Carry F17 as **still-open**, correct the review reconciliation, and route it back to its fix task with the unavailable fixture recorded as the blocker. Retain r1, r2, the task history, and the unsupported claim. F17 was never punch-listed.
++
++- **V9’s acceptance behavior is evidenced, but its ordinary review gate is INVALID.** Preserve `/tmp/acme-retry/evidence/V9.txt`, the exact `e444` SHA, command, output, and 12/12 result. Also retain the package-helper command and exit-3 output showing `base=head`. The supplied reviewer rules explicitly prohibit treating an empty package as CLEAN; therefore V9 cannot be marked fully complete through that review path. Record its verification criterion as satisfied and its review gate as INVALID pending a legitimate verification-only acceptance mechanism. **Create no comment-only commit**: it adds no substantive review evidence and does not establish the parser’s behavior.

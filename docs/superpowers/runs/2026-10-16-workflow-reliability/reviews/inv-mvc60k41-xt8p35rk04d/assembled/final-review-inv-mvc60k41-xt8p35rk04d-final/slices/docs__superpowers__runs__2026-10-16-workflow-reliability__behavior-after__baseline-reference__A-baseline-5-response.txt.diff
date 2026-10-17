@@ -1,0 +1,19 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/baseline-reference/A-baseline-5-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/baseline-reference/A-baseline-5-response.txt
+new file mode 100644
+index 00000000..4a7e1a65
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/baseline-reference/A-baseline-5-response.txt
+@@ -0,0 +1,13 @@
++Keep the caller’s clean checkout at `feature/payments@2c22`. Do not switch or reset it: the sibling integration commit is legitimate work.
++
++Reproduce the supplied review target, `1a11` against `0b00`, in the detached worktree at `/tmp/acme-review`, using read-only git object access to inspect the pinned diff. Run the reproduction from that worktree so its writes to `fixtures/generated.json` and `build/results.json` stay outside the caller’s checkout. Record the measured SHA with the results.
++
++The comparison establishes that the caller’s checkout advanced beyond the initial review snapshot. It does not establish that the parser failure persists, disappeared, or was caused by the sibling commit. Review findings remain scoped to `1a11`; do not present them as clearance for `2c22`.
++
++Retain `/tmp/acme-review`, its generated files/build scratch, and `/tmp/acme-test-home` through handoff. Process discovery failed, so their being unused is unverified. Preserve the discovery stderr and reproduction evidence. Do not kill the unrelated server or use its shared port as a process-ownership signal.
++
++Exact handoff:
++
++> Review target remains `feature/payments@1a11` vs `main@0b00`; reproduce in detached `/tmp/acme-review`, with generated writes confined there. Caller checkout remains clean at `2c22`, including its sibling integration commit. The SHA comparison establishes drift only; this review does not clear `2c22`.
++>
++> Owned test server PID 8241 received a successful termination request, but exit and descendant cleanup are unverified: follow-up discovery returned permission denied. The wrapper’s empty `stopped`/`survived` arrays are inconclusive; stderr is preserved. Retained `/tmp/acme-review`, generated/build scratch, and `/tmp/acme-test-home` pending successful ownership discovery and cleanup verification. Left the unrelated developer server untouched.

@@ -1,0 +1,26 @@
+# Cluster 13 review — skills-super-code
+
+Reviewed captured base `d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5` through head `612ea0a7e4d64480bdd01e0ac842b539115342ee`. Both commit identities were verified before reading. Scope was the twelve files in the `skills-super-code` cluster, its assembled digest/slices, the epic description and approved workflow reliability spec. Additional coordinator documentation was consulted only to check the named invocation-resume risk.
+
+The caller checkout was clean at `68c8a0623ba78a75cb5b8b8e40c17236cf81f92e` before and after review. This is observed checkout evidence, without attributing its difference from the captured head. Reproductions and verification ran in the separate detached review worktree `/private/tmp/ufz-cluster13-review-612ea0a7-20261017` at the captured head.
+
+Two defects remain.
+
+1. `skills/super-code/coordinator.js:2256` captures a new Finish source on every launch, while lines 2257–2264 reuse output paths derived only from `invocationId`. The persisted Launch at line 736 stores the identity but no captured review base/head. If a split review is interrupted after a cluster produced findings, the documented explicit unsettled resume reuses that identity. Integration may have advanced meanwhile; the resume then rebuilds the same assembly directory and dispatches writers to the same cluster paths against the new source. There is no check or retained source binding that protects the earlier partial review. This can erase its actionable findings before a caller can collect the finished bundle, contrary to finding continuity across interruptions and the requirement that silence not erase earlier findings. The assembler already empties its output directory before rebuilding.
+
+A focused replay using the existing real prompt builders reproduced this: two Finish executions with identity `resume-same`, base `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa` and heads `bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb` then `cccccccccccccccccccccccccccccccccccccccc` both dispatched `final-review-resume-same.cluster-1.md` and the same assembly directory, while the captured-source instructions changed. Neither persisted Launch contains those source identities. The review-owned reproduction is `tests/super-code/.cluster13-resume-probe.mjs` in the detached worktree. Persist and reconcile a source binding before producing the first artifact, and reuse the existing bundle on interruption; if a new source requires another review, preserve the earlier bundle and use a fresh identity. Add a test that interrupts after a finding-bearing cluster, advances integration and resumes, then verifies the earlier artifact bytes and finding occurrence remain available.
+
+2. `tests/super-code/test-dispatch-text.sh:10` changes temporary-directory creation to `mktemp -d "${TMPDIR:-/tmp}/dispatch-text.XXXXXX"`. On the default macOS environment here, `TMPDIR` already ends with `/`, so the returned path contains `/T//dispatch-text...`. The dispatcher normalizes it with `path.resolve`, while assertions interpolate the unnormalized value. The required suite now exits 1 with four failures, including the verification report path, emitted dispatch path and brief path. Running the same suite with `TMPDIR=/private/tmp` passes. Normalize the TMPDIR boundary before constructing the template, or normalize the resulting directory before comparing it. This changed line introduces a required-check regression on a supported environment.
+
+Verification: the replay harness completed outside the sandbox with `2277 passed, 0 failed`; the sandboxed attempt stopped at denied fixture process inspection and did not supply a complete result. `test-run-profile.sh`, `test-report-verdict.sh`, `test-run-digest.sh`, `test-run-profile-in-flight.sh`, and `tests/super-auto/test-scripts.sh` all passed. `test-dispatch-text.sh` failed under inherited macOS TMPDIR and passed after the explicitly recorded TMPDIR normalization. The three documented dryRun scenarios are included in the replay harness. These are deterministic/replay checks, not fresh live agent behavior evaluation.
+
+## Verdict
+not ready (interrupted review resumes can overwrite evidence, and the dispatch suite regresses with default macOS TMPDIR)
+## Must fix before landing
+- [P1] skills/super-code/coordinator.js:2256 — Bind a persisted invocation identity to its captured source before writing any review artifact and preserve existing partial bundle contents on unsettled resume; advancing integration currently redispatches the same cluster/assembly paths against a different source, allowing earlier findings to disappear.
+- [P2] tests/super-code/test-dispatch-text.sh:10 — Normalize the trailing TMPDIR slash; inherited macOS TMPDIR produces double-slash fixture paths and four required-suite failures, while TMPDIR=/private/tmp passes.
+## Untested scope
+- Fresh live Workflow execution of the timer/admission and interruption-resume instructions was not performed in this cluster review; replay coverage uses injected runtime hooks and canned agent replies.
+- Native Linux process inspection was not exercised in this macOS review.
+## Deferred OK
+- Existing explicit caller-owned behavior-evaluation and measurement obligations remain separate acceptance work; this review does not promote replay evidence to live evidence.

@@ -1,0 +1,7 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/caller/lib/format.mjs b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/caller/lib/format.mjs
+new file mode 100644
+index 00000000..1277f271
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/caller/lib/format.mjs
+@@ -0,0 +1 @@
++export function formatAmount(cents) { return '$' + (cents < 0 ? '-' : '') + Math.trunc(Math.abs(cents) / 100) + '.' + String(Math.abs(cents % 100)).padStart(2, '0'); }

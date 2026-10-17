@@ -1,0 +1,14 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/installed6.0-3-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/installed6.0-3-response.txt
+new file mode 100644
+index 00000000..ad947680
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/installed6.0-3-response.txt
+@@ -0,0 +1,8 @@
++Keep the root open. Targeted tests and compile at e444 support the implementation, but final acceptance is pending: the required live sweep is missing, and F17 remains unresolved. The missing sweep is a verification gap, not evidence of a code defect.
++
++- **Sweep:** Assign it to the owning super-auto coordinator now. Run the ledger’s declared full-suite command with no roast or coordinator Workflow in flight. Retain command, output, result, and measured full SHA in `codeBuckets.sweep`. If it fails, follow the prescribed sweep-fix process; do not defer the release contract until after lunch.
++- **F17:** Carry `src/retry.js:42` as **still-open, Should-fix**. r1 confirmed retry loss; no fix commit or verification exists, and documentation changes plus r2’s silence do not establish resolution. Correct r2’s clean disposition, retain the finding and fixture blocker, and route it back to its fix task. It is not punch-listed: no caller decision or key file records that disposition.
++- **V9:** The substantive verification is persuasive: base and head resolve to the same full e444 commit; actual, captured, and evidence trees all equal `d84541aed84541aed84541aed84541aed84541ae`; the source worktree is clean; readable live evidence records the exact command/configuration and 12/12 passing, covering the entire criterion. Nevertheless, the current task-review instructions require **INVALID** when the package helper exits 3. V9 cannot complete through that review gate now. Retain its verification-only brief/report, identity and tree observations, original evidence, and INVALID record with working directory, exact helper command, and output.
++- **V10:** Also **INVALID**, and its evidence additionally fails to establish the current tree’s behavior: its evidence tree starts `a155`, while the actual tree starts `d845`. Retain both identities and the mismatch; obtain matching verification evidence before acceptance.
++
++Neither leaf needs a comment-only commit. It would manufacture a diff without satisfying a verification requirement or repairing the review procedure.

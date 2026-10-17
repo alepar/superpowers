@@ -1,0 +1,51 @@
+diff --git a/tests/super-roast/test-assemble-args.sh b/tests/super-roast/test-assemble-args.sh
+index 49037125..57f7affc 100644
+--- a/tests/super-roast/test-assemble-args.sh
++++ b/tests/super-roast/test-assemble-args.sh
+@@ -111,6 +111,46 @@ rc=$?
+ set -e
+ [ "$rc" -eq 0 ] || FAILURES=$((FAILURES + 1))
+ 
++echo "assemble-args: pinned PR sources and isolated reproductions"
++node --input-type=module - "$A" "$T" <<'NODE'
++import assert from 'node:assert/strict'
++import { mkdirSync, writeFileSync, readFileSync } from 'node:fs'
++import { execFileSync, spawnSync } from 'node:child_process'
++const [assembler, dir] = process.argv.slice(2)
++const repo = `${dir}/caller`
++mkdirSync(repo)
++const git = (...args) => execFileSync('git', ['-C', repo, ...args], { encoding: 'utf8' }).trim()
++git('init', '-q'); git('config', 'user.email', 'test@example.com'); git('config', 'user.name', 'Test')
++writeFileSync(`${repo}/source.txt`, 'base\n'); git('add', '.'); git('commit', '-qm', 'base')
++const base = git('rev-parse', 'HEAD')
++writeFileSync(`${repo}/source.txt`, 'reviewed\n'); git('commit', '-qam', 'reviewed')
++const head = git('rev-parse', 'HEAD')
++git('branch', 'reviewed')
++writeFileSync(`${repo}/source.txt`, 'advanced caller\n'); git('commit', '-qam', 'advance caller')
++const result = spawnSync('bash', [assembler, '--mode', 'pr', '--inputs', 'reviewed vs base', '--repo', repo, '--base', base, '--head', 'reviewed'], { encoding: 'utf8' })
++assert.equal(result.status, 0, result.stderr)
++const args = JSON.parse(result.stdout)
++assert.deepEqual(args.source, { repo, base, head })
++for (const prompt of [...Object.values(args.prompts.scouts), ...Object.values(args.prompts.seats)]) {
++  assert.ok(prompt.includes(`diff ${base}...${head}`), 'diff uses captured commits')
++  assert.ok(prompt.includes(`show ${head}:<path>`), 'source uses captured head')
++  assert.match(prompt, /detached\s+worktree/, 'filesystem access is review-owned')
++}
++assert.ok(args.prompts.triage.includes(`Diff ${base}...${head}`))
++const status = git('status', '--porcelain=v1'), caller = readFileSync(`${repo}/source.txt`, 'utf8')
++for (const name of ['review-one', 'review-two']) git('worktree', 'add', '--detach', `${dir}/${name}`, head)
++writeFileSync(`${dir}/review-two/output.txt`, 'other review\n')
++writeFileSync(`${dir}/review-one/source.txt`, 'mutation\n')
++writeFileSync(`${dir}/review-one/output.txt`, 'reproduction\n')
++assert.equal(readFileSync(`${repo}/source.txt`, 'utf8'), caller)
++assert.equal(git('status', '--porcelain=v1'), status)
++assert.equal(readFileSync(`${dir}/review-two/source.txt`, 'utf8'), 'reviewed\n')
++assert.equal(readFileSync(`${dir}/review-two/output.txt`, 'utf8'), 'other review\n')
++const bad = spawnSync('bash', [assembler, '--mode', 'pr', '--inputs', 'x', '--repo', repo, '--base', base, '--head', 'missing-ref', '--diff-stat', 'M source.txt'], { encoding: 'utf8' })
++assert.equal(bad.status, 2, 'unresolved source is rejected even with a supplied stat')
++console.log('  [PASS] captured PR inputs survive caller advancement; independent mutable reproductions preserve caller and sibling')
++NODE
++
+ echo "assemble-args: validation"
+ run bash "$A" --mode pr --inputs x --iteration 2 --diff-stat x
+ assert_eq "$code" 2 "round 2 without a prior report exits 2"

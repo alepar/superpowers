@@ -1,0 +1,12 @@
+diff --git a/tests/super-auto/fixtures/contract-lint/run-state-added-fields.txt b/tests/super-auto/fixtures/contract-lint/run-state-added-fields.txt
+new file mode 100644
+index 00000000..bea163b2
+--- /dev/null
++++ b/tests/super-auto/fixtures/contract-lint/run-state-added-fields.txt
+@@ -0,0 +1,6 @@
++approvals · finding-source
++approvals · finding-link
++approvals · finding-route
++approvals · finding-disposition
++approvals · review-collection
++approvals · root-acceptance

@@ -1,0 +1,296 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/claim-summary.json b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/claim-summary.json
+new file mode 100644
+index 00000000..cde99027
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/claim-summary.json
+@@ -0,0 +1,290 @@
++{
++  "A1": {
++    "installed_6_0": {
++      "pass": 5,
++      "fail": 0
++    },
++    "no_guidance": {
++      "pass": 5,
++      "fail": 0
++    },
++    "after": {
++      "pass": 5,
++      "fail": 0,
++      "ambiguous": 0,
++      "omitted": 0
++    }
++  },
++  "A2": {
++    "installed_6_0": {
++      "pass": 5,
++      "fail": 0
++    },
++    "no_guidance": {
++      "pass": 5,
++      "fail": 0
++    },
++    "after": {
++      "pass": 5,
++      "fail": 0,
++      "ambiguous": 0,
++      "omitted": 0
++    }
++  },
++  "A3": {
++    "installed_6_0": {
++      "pass": 5,
++      "fail": 0
++    },
++    "no_guidance": {
++      "pass": 5,
++      "fail": 0
++    },
++    "after": {
++      "pass": 5,
++      "fail": 0,
++      "ambiguous": 0,
++      "omitted": 0
++    }
++  },
++  "A4": {
++    "installed_6_0": {
++      "pass": 5,
++      "fail": 0
++    },
++    "no_guidance": {
++      "pass": 5,
++      "fail": 0
++    },
++    "after": {
++      "pass": 5,
++      "fail": 0,
++      "ambiguous": 0,
++      "omitted": 0
++    }
++  },
++  "A5": {
++    "installed_6_0": {
++      "pass": 5,
++      "fail": 0
++    },
++    "no_guidance": {
++      "pass": 5,
++      "fail": 0
++    },
++    "after": {
++      "pass": 5,
++      "fail": 0,
++      "ambiguous": 0,
++      "omitted": 0
++    }
++  },
++  "B1": {
++    "installed_6_0": {
++      "pass": 5,
++      "fail": 0
++    },
++    "no_guidance": {
++      "pass": 5,
++      "fail": 0
++    },
++    "after": {
++      "pass": 5,
++      "fail": 0,
++      "ambiguous": 0,
++      "omitted": 0
++    }
++  },
++  "B2": {
++    "installed_6_0": {
++      "pass": 5,
++      "fail": 0
++    },
++    "no_guidance": {
++      "pass": 5,
++      "fail": 0
++    },
++    "after": {
++      "pass": 5,
++      "fail": 0,
++      "ambiguous": 0,
++      "omitted": 0
++    }
++  },
++  "B3": {
++    "installed_6_0": {
++      "pass": 5,
++      "fail": 0
++    },
++    "no_guidance": {
++      "pass": 5,
++      "fail": 0
++    },
++    "after": {
++      "pass": 5,
++      "fail": 0,
++      "ambiguous": 0,
++      "omitted": 0
++    }
++  },
++  "B4": {
++    "installed_6_0": {
++      "pass": 2,
++      "fail": 3
++    },
++    "no_guidance": {
++      "pass": 5,
++      "fail": 0
++    },
++    "after": {
++      "pass": 0,
++      "fail": 2,
++      "ambiguous": 3,
++      "omitted": 0
++    }
++  },
++  "B5": {
++    "installed_6_0": {
++      "pass": 5,
++      "fail": 0
++    },
++    "no_guidance": {
++      "pass": 5,
++      "fail": 0
++    },
++    "after": {
++      "pass": 5,
++      "fail": 0,
++      "ambiguous": 0,
++      "omitted": 0
++    }
++  },
++  "C1": {
++    "installed_6_0": {
++      "pass": 5,
++      "fail": 0
++    },
++    "no_guidance": {
++      "pass": 5,
++      "fail": 0
++    },
++    "after": {
++      "pass": 5,
++      "fail": 0,
++      "ambiguous": 0,
++      "omitted": 0
++    }
++  },
++  "C2": {
++    "installed_6_0": {
++      "pass": 5,
++      "fail": 0
++    },
++    "no_guidance": {
++      "pass": 5,
++      "fail": 0
++    },
++    "after": {
++      "pass": 5,
++      "fail": 0,
++      "ambiguous": 0,
++      "omitted": 0
++    }
++  },
++  "C3": {
++    "installed_6_0": {
++      "pass": 5,
++      "fail": 0
++    },
++    "no_guidance": {
++      "pass": 5,
++      "fail": 0
++    },
++    "after": {
++      "pass": 5,
++      "fail": 0,
++      "ambiguous": 0,
++      "omitted": 0
++    }
++  },
++  "C4": {
++    "installed_6_0": {
++      "pass": 5,
++      "fail": 0
++    },
++    "no_guidance": {
++      "pass": 5,
++      "fail": 0
++    },
++    "after": {
++      "pass": 5,
++      "fail": 0,
++      "ambiguous": 0,
++      "omitted": 0
++    }
++  },
++  "C5": {
++    "installed_6_0": {
++      "pass": 5,
++      "fail": 0
++    },
++    "no_guidance": {
++      "pass": 5,
++      "fail": 0
++    },
++    "after": {
++      "pass": 5,
++      "fail": 0,
++      "ambiguous": 0,
++      "omitted": 0
++    }
++  },
++  "C6": {
++    "installed_6_0": {
++      "pass": 5,
++      "fail": 0
++    },
++    "no_guidance": {
++      "pass": 5,
++      "fail": 0
++    },
++    "after": {
++      "pass": 5,
++      "fail": 0,
++      "ambiguous": 0,
++      "omitted": 0
++    }
++  },
++  "C7": {
++    "installed_6_0": {
++      "pass": 5,
++      "fail": 0
++    },
++    "no_guidance": {
++      "pass": 5,
++      "fail": 0
++    },
++    "after": {
++      "pass": 5,
++      "fail": 0,
++      "ambiguous": 0,
++      "omitted": 0
++    }
++  },
++  "C8": {
++    "installed_6_0": {
++      "pass": 5,
++      "fail": 0
++    },
++    "no_guidance": {
++      "pass": 5,
++      "fail": 0
++    },
++    "after": {
++      "pass": 5,
++      "fail": 0,
++      "ambiguous": 0,
++      "omitted": 0
++    }
++  }
++}

@@ -1,0 +1,8 @@
+diff --git a/evidence/super-plan-ufz.14/skill-scripts--test-bash-invocation.sh.log b/evidence/super-plan-ufz.14/skill-scripts--test-bash-invocation.sh.log
+new file mode 100644
+index 00000000..d82c0b8a
+--- /dev/null
++++ b/evidence/super-plan-ufz.14/skill-scripts--test-bash-invocation.sh.log
+@@ -0,0 +1,2 @@
++  checked 33 bash helper scripts
++All helper invocations go through an interpreter

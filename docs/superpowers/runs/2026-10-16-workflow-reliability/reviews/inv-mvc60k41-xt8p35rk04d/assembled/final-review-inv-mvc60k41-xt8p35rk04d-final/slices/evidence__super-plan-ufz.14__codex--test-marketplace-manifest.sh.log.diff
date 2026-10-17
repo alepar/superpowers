@@ -1,0 +1,7 @@
+diff --git a/evidence/super-plan-ufz.14/codex--test-marketplace-manifest.sh.log b/evidence/super-plan-ufz.14/codex--test-marketplace-manifest.sh.log
+new file mode 100644
+index 00000000..fef38912
+--- /dev/null
++++ b/evidence/super-plan-ufz.14/codex--test-marketplace-manifest.sh.log
+@@ -0,0 +1 @@
++Codex marketplace manifest looks good

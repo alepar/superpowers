@@ -1,0 +1,188 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/claim-summary.json b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/claim-summary.json
+new file mode 100644
+index 00000000..e05c05c9
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/claim-summary.json
+@@ -0,0 +1,182 @@
++{
++  "A1": {
++    "baseline": {
++      "pass": 5,
++      "fail": 0
++    },
++    "control": {
++      "pass": 5,
++      "fail": 0
++    }
++  },
++  "A2": {
++    "baseline": {
++      "pass": 5,
++      "fail": 0
++    },
++    "control": {
++      "pass": 5,
++      "fail": 0
++    }
++  },
++  "A3": {
++    "baseline": {
++      "pass": 5,
++      "fail": 0
++    },
++    "control": {
++      "pass": 5,
++      "fail": 0
++    }
++  },
++  "A4": {
++    "baseline": {
++      "pass": 5,
++      "fail": 0
++    },
++    "control": {
++      "pass": 5,
++      "fail": 0
++    }
++  },
++  "A5": {
++    "baseline": {
++      "pass": 5,
++      "fail": 0
++    },
++    "control": {
++      "pass": 5,
++      "fail": 0
++    }
++  },
++  "B1": {
++    "baseline": {
++      "pass": 5,
++      "fail": 0
++    },
++    "control": {
++      "pass": 5,
++      "fail": 0
++    }
++  },
++  "B2": {
++    "baseline": {
++      "pass": 5,
++      "fail": 0
++    },
++    "control": {
++      "pass": 5,
++      "fail": 0
++    }
++  },
++  "B3": {
++    "baseline": {
++      "pass": 5,
++      "fail": 0
++    },
++    "control": {
++      "pass": 5,
++      "fail": 0
++    }
++  },
++  "B4": {
++    "baseline": {
++      "pass": 2,
++      "fail": 3
++    },
++    "control": {
++      "pass": 5,
++      "fail": 0
++    }
++  },
++  "B5": {
++    "baseline": {
++      "pass": 5,
++      "fail": 0
++    },
++    "control": {
++      "pass": 5,
++      "fail": 0
++    }
++  },
++  "C1": {
++    "baseline": {
++      "pass": 5,
++      "fail": 0
++    },
++    "control": {
++      "pass": 5,
++      "fail": 0
++    }
++  },
++  "C2": {
++    "baseline": {
++      "pass": 5,
++      "fail": 0
++    },
++    "control": {
++      "pass": 5,
++      "fail": 0
++    }
++  },
++  "C3": {
++    "baseline": {
++      "pass": 5,
++      "fail": 0
++    },
++    "control": {
++      "pass": 5,
++      "fail": 0
++    }
++  },
++  "C4": {
++    "baseline": {
++      "pass": 5,
++      "fail": 0
++    },
++    "control": {
++      "pass": 5,
++      "fail": 0
++    }
++  },
++  "C5": {
++    "baseline": {
++      "pass": 5,
++      "fail": 0
++    },
++    "control": {
++      "pass": 5,
++      "fail": 0
++    }
++  },
++  "C6": {
++    "baseline": {
++      "pass": 5,
++      "fail": 0
++    },
++    "control": {
++      "pass": 5,
++      "fail": 0
++    }
++  },
++  "C7": {
++    "baseline": {
++      "pass": 5,
++      "fail": 0
++    },
++    "control": {
++      "pass": 5,
++      "fail": 0
++    }
++  },
++  "C8": {
++    "baseline": {
++      "pass": 5,
++      "fail": 0
++    },
++    "control": {
++      "pass": 5,
++      "fail": 0
++    }
++  }
++}

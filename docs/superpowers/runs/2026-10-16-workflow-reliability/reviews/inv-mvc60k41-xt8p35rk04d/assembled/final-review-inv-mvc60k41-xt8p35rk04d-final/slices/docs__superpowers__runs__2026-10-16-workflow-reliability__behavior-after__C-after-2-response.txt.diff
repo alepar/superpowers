@@ -1,0 +1,14 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/C-after-2-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/C-after-2-response.txt
+new file mode 100644
+index 00000000..44da6dea
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/C-after-2-response.txt
+@@ -0,0 +1,8 @@
++Decision: hold merge; the run has an unresolved Blocking data-loss defect and incomplete reporting evidence. Correct the advertised “six tasks, clean run, doubling workers halves delivery time” summary now.
++
++- Attribution: the defect passes at run baseline `0a00`, first fails at A’s landing `3a33`, and remains present at B’s base `4b44`. B’s docs-only change is exonerated; its task-relative `preExisting=true` packet is FYI in B’s review. A remains the run’s repair owner. Preserve the unresolved data-loss defect as Blocking at run scope; no linked repair verification exists.
++- Repair history: C’s latest attempt is clean after repairing two previously confirmed findings. Retain those findings and their repair artifacts as historical repair evidence. C’s clean result does not discharge A’s defect.
++- Task accounting: tracker and first-parent Git history support four completed implementation tasks, `A,B,C,D`, and four task landings. The two merges absorbing updated main add zero task landings. The ledger is truncated after C and has no valid metrics block; ledger totals and full ledger/Git/completed reconciliation remain unavailable. These gaps do not invalidate the four source-supported completions.
++- Timing and concurrency: planning took 60 minutes, code 50, review 20: 130 minutes overall. D’s creation-to-dispatch interval was five minutes (`10:40–10:45`); its ready timestamp is missing, so scheduler wait is unknown. The snapshot shows eight active agents, including three implementation task slots; it establishes neither sustained utilization nor doubled worker capacity.
++- Scaling: the model conditionally reduces code from 50 to 25 minutes, assuming no new bottleneck. Holding planning and review constant yields 105 minutes overall, a 25-minute saving, approximately 19%. It does not establish halved delivery time.
++- Process grouping: group A’s `[cleanup-permission-denied]` and C’s `[process-inspection-refused]` under `[cleanup-inspection]` because both describe sandbox-denied liveness inspection. Preserve both original tags, PID/fixture references, and separate incident identities; grouping establishes no shared product defect. Keep B’s wrong retry expectation under `[test-assertion-failure]` separately.

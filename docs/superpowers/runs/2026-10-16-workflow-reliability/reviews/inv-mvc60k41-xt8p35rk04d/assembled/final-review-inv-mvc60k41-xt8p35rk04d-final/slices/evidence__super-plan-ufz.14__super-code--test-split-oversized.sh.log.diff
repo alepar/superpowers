@@ -1,0 +1,57 @@
+diff --git a/evidence/super-plan-ufz.14/super-code--test-split-oversized.sh.log b/evidence/super-plan-ufz.14/super-code--test-split-oversized.sh.log
+new file mode 100644
+index 00000000..c0cde787
+--- /dev/null
++++ b/evidence/super-plan-ufz.14/super-code--test-split-oversized.sh.log
+@@ -0,0 +1,51 @@
++split-oversized: no jq
++  [PASS] exits 4 without jq
++  [PASS] prints the JQ_UNAVAILABLE: line
++split-oversized: bad input
++  [PASS] one child exits 2
++  [PASS] missing proposal file exits 2
++split-oversized: refusals
++  [PASS] file outside the original's files: exits 3
++  [PASS] names the child and the file
++  [PASS] no beads were filed
++  [PASS] missing checklist item: exits 3
++  [PASS] names the missing item (checked item matched without its box)
++  [PASS] no beads were filed
++split-oversized: mid-filing failure
++  [PASS] failure before supersede exits 5
++  [PASS] names the failed step and bd's reason
++  [PASS] lists the one child filed
++  [PASS] the original is still open (not superseded)
++  [PASS] exactly the listed child exists
++split-oversized: success
++  [PASS] exits 0
++  [PASS] prints the split line
++  [PASS] two children
++  [PASS] t-mns.6: parent is the original's parent
++  [PASS] t-mns.6: labels exactly sp:E
++  [PASS] t-mns.6: depends on the original's upstream
++  [PASS] t-mns.6: copied blocked-by line with the original's reason
++  [PASS] t-mns.6: description says what it split from
++  [PASS] t-mns.7: parent is the original's parent
++  [PASS] t-mns.7: labels exactly sp:E
++  [PASS] t-mns.7: depends on the original's upstream
++  [PASS] t-mns.7: copied blocked-by line with the original's reason
++  [PASS] t-mns.7: description says what it split from
++  [PASS] child A carries its acceptance
++  [PASS] t-mns.3 depends on t-mns.6
++  [PASS] t-mns.3: blocked-by line for t-mns.6
++  [PASS] t-mns.3 depends on t-mns.7
++  [PASS] t-mns.3: blocked-by line for t-mns.7
++  [PASS] t-mns.4 depends on t-mns.6
++  [PASS] t-mns.4: blocked-by line for t-mns.6
++  [PASS] t-mns.4 depends on t-mns.7
++  [PASS] t-mns.4: blocked-by line for t-mns.7
++  [PASS] D1 keeps its old description text
++  [PASS] D2 keeps its old description text
++  [PASS] the original is superseded (closed)
++  [PASS] D1 is not ready
++  [PASS] D2 is not ready
++  [PASS] a child is blocked while the upstream is open
++  [PASS] a child is ready once the upstream closes
++  [PASS] D1 stays not ready while the children are open
++split-oversized: all tests passed

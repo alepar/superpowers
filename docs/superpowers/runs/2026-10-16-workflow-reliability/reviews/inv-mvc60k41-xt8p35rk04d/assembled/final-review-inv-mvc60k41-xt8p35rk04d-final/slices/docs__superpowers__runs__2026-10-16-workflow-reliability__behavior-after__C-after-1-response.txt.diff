@@ -1,0 +1,16 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/C-after-1-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/C-after-1-response.txt
+new file mode 100644
+index 00000000..bbe39f59
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/C-after-1-response.txt
+@@ -0,0 +1,10 @@
++Decision: hold merge; the run has an unresolved Blocking data-loss regression owned by A. Correct the advertised summary now.
++
++- Attribution: B’s `preExisting=true` finding is FYI for B’s docs-only change because the defect reproduces at B’s base `4b44`. The run baseline `0a00` passes the same check, and A’s landing `3a33` introduces the failure. B is exonerated; A’s repair obligation remains open. No repair has landed.
++- Repair history: C’s latest attempt is clean after repairing two confirmed findings. Retain those findings and repair artifacts as history; the latest clean verdict does not erase earlier findings or resolve A’s regression.
++- Task counts: tracker and Git support four completed implementation tasks—A, B, C, D—and four task landings. The two merges absorbing updated main add zero task landings. “Six tasks” is unsupported.
++- Evidence limits: the ledger is truncated after C and has no valid metrics line. Ledger totals and complete ledger/Git/tracker reconciliation remain unavailable. Preserve readable tracker/Git evidence; do not infer ledger-only or completed-only discrepancies from truncation.
++- Timing: planning took 60 minutes, code 50, and review 20: 130 minutes overall. D was created at 10:40 and dispatched at 10:45. Its readiness is unknown; the five-minute interval does not establish five minutes of ready-queue waiting, and scheduler start at 10:00 establishes no earlier eligibility.
++- Concurrency: the snapshot shows eight active agents, including three implementation task slots. It establishes neither sustained concurrency nor eight implementation workers.
++- Scaling: the model predicts code could fall from 50 to 25 minutes, assuming no new bottleneck. Holding planning and review constant gives 105 minutes overall—about 19% shorter, or 1.24× speedup. “Doubling workers halves delivery time” is unsupported.
++- Process grouping: group A’s `[cleanup-permission-denied]` and C’s `[process-inspection-refused]` under `[cleanup-inspection]`, preserving original tags, refs, PIDs, and fixtures. Count two incidents sharing a process class, without claiming identical product defects. Keep B’s wrong retry expectation as a separate `[test-assertion-failure]` record. Three recorded friction events remain visible.

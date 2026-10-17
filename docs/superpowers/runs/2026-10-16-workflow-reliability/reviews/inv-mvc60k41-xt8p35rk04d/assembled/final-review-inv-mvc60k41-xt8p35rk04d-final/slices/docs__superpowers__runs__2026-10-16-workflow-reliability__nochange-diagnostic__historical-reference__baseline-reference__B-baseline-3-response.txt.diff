@@ -1,0 +1,15 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/baseline-reference/B-baseline-3-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/baseline-reference/B-baseline-3-response.txt
+new file mode 100644
+index 00000000..ede21c3f
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/baseline-reference/B-baseline-3-response.txt
+@@ -0,0 +1,9 @@
++Keep the root open. Overall implementation acceptance is **NEEDS_FIX** because F17 remains unresolved. The missing sweep is a separate verification gate, not evidence of a code defect: targeted tests and compilation passed at e444, but neither satisfies the required live full-suite result.
++
++- **Sweep:** Assign it to the super-auto coordinator now. Run the ledger’s `Launch:` command while no roast or coordinator Workflow is in flight. Measure the exact SHA that will land, including any combined prerequisite tree after reviewing merges. Record command, output, SHA, and `codeBuckets.sweep: <result> @ <sha>`. Do not close the root before this gate completes. If measurement is invalid, record that explicitly; if it fails validly, follow the prescribed sweep-fix process.
++
++- **F17:** Carry it as **still-open, Should-fix**, at `src/retry.js:42`. r1 confirmed queued-retry loss during shutdown; its fix was blocked, no fix commit landed, and the intervening change was documentation only. r2’s silence and the implementer’s unsupported claim establish no resolution. Correct the durable review record: `carried: 1`, `resolved: 0` for F17. Keep its fix task open with the fixture blocker and links to r1/r2. A later deliberate deferral must record its canonical key as **punch-listed (open)**, never resolved.
++
++- **V9:** Preserve the independent verification at e444: implementation inspection, exact targeted command, 12/12 output, and `/tmp/acme-retry/evidence/V9.txt`. No product or comment-only commit is justified. However, the supplied ordinary reviewer rules explicitly require **INVALID** when the package helper exits 3; this invocation cannot complete V9 as CLEAN. Retain the exact helper command, working directory, exit/output, and verification evidence. Route V9 for an explicitly authorized verification-only acceptance path rather than manufacturing a diff.
++
++Retain these decisions in the run state, task/review records, and final report, with the root remaining open.

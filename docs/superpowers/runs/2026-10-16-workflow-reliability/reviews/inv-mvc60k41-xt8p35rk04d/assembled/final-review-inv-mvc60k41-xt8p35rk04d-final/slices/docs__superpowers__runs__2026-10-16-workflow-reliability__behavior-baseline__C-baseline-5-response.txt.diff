@@ -1,0 +1,15 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/C-baseline-5-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/C-baseline-5-response.txt
+new file mode 100644
+index 00000000..aecb68be
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/C-baseline-5-response.txt
+@@ -0,0 +1,9 @@
++Disposition: hold merge; the run has an unresolved Blocking data-loss defect. Correct the advertised “six tasks, clean run, halves delivery time” summary now.
++
++- **Attribution:** B’s packet is FYI relative to B’s task base `4b44`; B changes only docs. The run baseline `0a00` passed, and A’s landing `3a33` introduced the failure. Record the unresolved defect against A as Blocking under the data-loss severity floor. B’s task-local classification does not clear the run.
++- **Repair history:** C’s latest attempt is clean. Its two previously confirmed findings were repaired; retain their earlier artifacts as repair history, not outstanding findings.
++- **Task counts:** The tracker establishes four closed implementation leaves: A, B, C, D. Git shows four task-landing merges and two main-absorption merges. Those absorption merges are not implementation tasks.
++- **Evidence gaps:** The ledger ends after C, and no valid ledger metrics line exists. Report ledger incompleteness and unavailable metrics explicitly; use tracker and Git evidence for the counts above. Do not reconstruct purported ledger metrics or invent an authoritative report-status line.
++- **Timing and concurrency:** Planning took 60 minutes, code 50, and review 20: 130 minutes total. The snapshot shows eight active agents, three occupying implementation slots; it does not establish sustained worker concurrency. D was created at 10:40 and first dispatched at 10:45. Its ready timestamp is missing, so ready-to-dispatch delay is unknown; the observed creation-to-dispatch interval is five minutes.
++- **Scaling:** The model estimates code could fall to 25 minutes, assuming no new bottleneck. Holding other phases fixed gives 105 minutes total, approximately 19% less elapsed time—not half. This is a prediction, not measured scaling.
++- **Process diagnosis:** Group A’s `[cleanup-permission-denied]` and C’s `[process-inspection-refused]` under sandbox refusal of owned-process liveness inspection, retaining both original tags and both incidents. Different PIDs and fixtures do not prevent grouping the shared process failure; they provide no basis to merge product defects. Keep B’s wrong expected retry value separate as `[test-assertion-failure]`.

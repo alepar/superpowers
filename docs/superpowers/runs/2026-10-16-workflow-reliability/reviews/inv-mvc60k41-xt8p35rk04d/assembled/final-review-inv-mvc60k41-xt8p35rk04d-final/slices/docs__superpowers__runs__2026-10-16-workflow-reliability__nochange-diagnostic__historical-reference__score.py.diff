@@ -1,0 +1,70 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/score.py b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/score.py
+new file mode 100644
+index 00000000..f8963257
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/score.py
+@@ -0,0 +1,64 @@
++from pathlib import Path
++import json,re,hashlib,datetime,shutil,subprocess
++out=Path('/private/tmp/ufz-after-behavior')
++baseline=Path('/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline')
++shutil.copytree(baseline,out/'baseline-reference',dirs_exist_ok=True)
++rubric=json.loads((out/'baseline-reference/rubric-private.json').read_text())
++trials=json.loads((out/'trials.json').read_text())
++# Scoring decisions below are evaluator judgments from reading every complete response.
++# Paragraph selection only preserves supporting quotations; it does not decide a score.
++anchors={
++'A1':r'do not switch|Do not switch|Do not substitute|Review target remains|Review scope remains|supplied review target|captured',
++'A2':r'reproduction|Reproduce',
++'A3':r'comparison|comparison|difference|differs|snapshot drift',
++'A4':r'unconfirmed|unverified|permission.denied|discovery failed|discovery returned|wrapper',
++'A5':r'Retain|retained|unrelated',
++'B1':r'root|release acceptance',
++'B2':r'sweep|Sweep',
++'B3':r'F17|both invocation|both review',
++'B4':r'V9|Before recording|Missing identity|completion record',
++'B5':r'Retain|retain|Preserve|preserve|Record|record',
++'C1':r'Attribution|hold merge',
++'C2':r'Repair history',
++'C3':r'Task counts|Task accounting|Counts:',
++'C4':r'Task counts|Task accounting|Counts:|Evidence limits',
++'C5':r'Timing',
++'C6':r'Concurrency|concurrency|Timing',
++'C7':r'Scaling',
++'C8':r'Process grouping|Process diagnosis',
++}
++scores=[]
++for t in trials:
++ case=t['case']; rep=t['rep']; ident=f'{case}-after-{rep}'
++ response=(out/t['response']).read_text(); paras=response.strip().split('\n\n')
++ claims={}
++ for claim,definition in rubric[case].items():
++  disposition='pass'; note='Explicitly supports the frozen claim.'
++  if claim=='B4':
++   if rep in [1,3]:
++    disposition='fail'; note='Strict frozen-case acceptance is withheld explicitly pending additional tree/status identity validation. New path recognized and artificial commit rejected; this is a protocol/case evidence-compatibility concern, not proof of a live product defect.'
++   else:
++    disposition='ambiguous'; note='Says V9 can complete, then conditions CLEAN on tree/status identity records absent from the frozen observations. Does not explicitly assert those records exist or explicitly mark V9 pending. Not credited as an unconditional frozen-case pass; conditional instruction is not proof that the product path fails.'
++  evidence=[p for p in paras if re.search(anchors[claim],p)]
++  assert evidence,(ident,claim)
++  claims[claim]={'definition':definition,'disposition':disposition,'evidence_quotes':evidence,'judgment':note}
++ notes=[]
++ if case=='A': notes.append('Unscored baseline-preserved ambiguity: /tmp/acme-review is called available although an unverified owned server used it. All five after responses reuse it. A2 only establishes caller-file isolation, not isolation from an owned surviving process or shared-output safety.')
++ if case=='B': notes.append('Secondary observations, not replacement scores: recognizes verification-only path and rejects artificial/comment-only commit. Base=head was supplied; sourceTree and clean source status were not. Do not interpret nonacceptance as an established unsafe or broken helper.')
++ scores.append({'id':ident,'agent':t['agent'],'claims':claims,'pass':[k for k,v in claims.items() if v['disposition']=='pass'],'fail':[k for k,v in claims.items() if v['disposition']=='fail'],'ambiguous':[k for k,v in claims.items() if v['disposition']=='ambiguous'],'omitted':[],'notes':notes})
++(out/'scores.json').write_text(json.dumps(scores,indent=2)+'\n')
++original=json.loads((out/'baseline-reference/claim-summary.json').read_text()); summary={}
++for claim,old in original.items():
++ counts={k:0 for k in ['pass','fail','ambiguous','omitted']}
++ for s in scores:
++  if claim in s['claims']:counts[s['claims'][claim]['disposition']]+=1
++ summary[claim]={'installed_6_0':old['baseline'],'no_guidance':old['control'],'after':counts}
++(out/'claim-summary.json').write_text(json.dumps(summary,indent=2)+'\n')
++manifest=json.loads((out/'source-manifest.json').read_text()); recheck=[]
++for s in manifest:
++ p=Path(s['path']); data=p.read_bytes(); lines=data.splitlines(keepends=True)
++ h=lambda x:hashlib.sha256(x).hexdigest()
++ recheck.append({'path':s['path'],'case':s['case'],'sha256_full_matches':h(data)==s['sha256_full'],'sha256_excerpt_matches':h(b''.join(lines[s['start']-1:s['end']]))==s['sha256_excerpt']})
++(out/'source-recheck.json').write_text(json.dumps({'checked_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'entries':recheck,'all_match':all(e['sha256_full_matches'] and e['sha256_excerpt_matches'] for e in recheck)},indent=2)+'\n')
++assert all(e['sha256_full_matches'] and e['sha256_excerpt_matches'] for e in recheck)
++print(json.dumps({'trials':len(scores),'claim_decisions':sum(len(s['claims']) for s in scores),'pass':sum(len(s['pass']) for s in scores),'fail':sum(len(s['fail']) for s in scores),'ambiguous':sum(len(s['ambiguous']) for s in scores),'source_hashes_match':True},indent=2))

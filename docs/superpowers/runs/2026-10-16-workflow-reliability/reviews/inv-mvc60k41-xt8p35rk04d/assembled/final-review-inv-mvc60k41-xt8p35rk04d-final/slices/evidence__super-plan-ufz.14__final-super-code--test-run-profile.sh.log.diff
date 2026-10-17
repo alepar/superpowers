@@ -1,0 +1,351 @@
+diff --git a/evidence/super-plan-ufz.14/final-super-code--test-run-profile.sh.log b/evidence/super-plan-ufz.14/final-super-code--test-run-profile.sh.log
+new file mode 100644
+index 00000000..8497bebd
+--- /dev/null
++++ b/evidence/super-plan-ufz.14/final-super-code--test-run-profile.sh.log
+@@ -0,0 +1,345 @@
++run-profile: chain (A → B, A → C, B+C → D; E alone; cap 2, early unblock)
++  [PASS] exits 0
++  [PASS] header line
++  [PASS] task graph: first dispatch to last landing
++  [PASS] critical path segments sum to the task graph's wall time
++  [PASS] critical path by category
++  [PASS] realized chain runs A → B → D
++  [PASS] bottleneck: D, its dispatch gap, implement, review and merge
++  [PASS] implement time by tool category (cd-prefixed test, sleep-loop poll, build, git, Read, Edit)
++  [PASS] tool time is the union of tool spans; StructuredOutput excluded
++  [PASS] C waited 62s for a slot (both slots busy when A's freed)
++  [PASS] no other bead waited past dispatch latency
++  [PASS] B, C and D were cut on unmerged implementations
++  [PASS] schedule model reproduces the run; graph-bound
++  [PASS] the chain behind the graph's bound
++  [PASS] bound line
++  [PASS] what-ifs: halve D's implement, cut D's or B's blocker edge
++  [PASS] what-ifs ranked by saving
++  [PASS] merge lane: busy 280s, no seam work, no queue
++  [PASS] early unblock line
++  [PASS] nothing unmeasured
++  [PASS] markdown has: ## Per bead
++  [PASS] markdown has: ## Critical path, step by step
++  [PASS] markdown has: ## Schedule model
++  [PASS] markdown has: ```mermaid
++  [PASS] markdown has:   section ep.4
++  [PASS] markdown has:   impl :crit, 
++run-profile: stack conflict and seam work holding the merge lane (cap 3)
++  [PASS] exits 0
++  [PASS] K waited 552s after a stack conflict; both parent edges ran late
++  [PASS] critical path by category: seam work dominates
++  [PASS] lane contention: Q's whole lane turn and P1's, which the next merges queued behind
++  [PASS] bottleneck: Q, whose seam work held the lane
++  [PASS] merge lane: busy, seam share, merges, first-try failures, queue wait, peak
++  [PASS] conflict files from the stack-conflict finding and the seam overlap
++  [PASS] early unblock line counts the bounce
++  [PASS] model 1310s (late edges honoured) vs bound 890s
++  [PASS] verdict: merge-lane-bound
++  [PASS] what-ifs: seam off the lane, parallel lanes, no stack conflicts
++  [PASS] rework names the bounced attempt
++  [PASS] redo: K's bounce cost the path up to 550s (402 → 952)
++run-profile: discovery, relaunches, dryRun and foreign runs
++  [PASS] discover exits 0
++  [PASS] discover finds dz's three coordinator runs (not oz's, not the non-coordinator)
++  [PASS] the dryRun launch is skipped and named
++  [PASS] --latest keeps the newest run and the relaunch that led into it
++  [PASS] the relaunch gap is a critical-path segment
++  [PASS] a non-coordinator workflow is refused
++  [PASS] and says why
++  [PASS] runs of two epics are refused
++  [PASS] no run found: exit 3
++  [PASS] and an unavailable line
++run-profile: missing harness files
++  [PASS] journal but no transcripts: exit 3
++  [PASS] no timing is reported as unavailable, not as zero
++  [PASS] transcripts without a journal still profile
++  [PASS] and say what is missing
++  [PASS] no graph without planner results
++  [PASS] no Launch: line: the epic comes from the plan path
++  [PASS] and the missing line is named
++run-profile: --summarize, a baseline over earlier profiles
++  [PASS] summarize exits 0
++  [PASS] baseline header
++  [PASS] verdicts counted per invocation
++  [PASS] waits summed by cause
++  [PASS] redo on the critical path summed
++  [PASS] early unblock summed
++  [PASS] lane load and seam share
++  [PASS] a JSON that is not a version-1 profile is refused
++run-profile: predecessor selection and edge cases (regressions from review)
++  [PASS] relaunch: 5s of startup; relaunch is the 100s between invocations plus the second one's 6s ledger read
++  [PASS] relaunch: both invocations' work is on the path
++  [PASS] relaunch: no in-run wait blamed for time before the second invocation
++  [PASS] failed merge: the retried bead holds 95% of the path
++  [PASS] failed merge: no time lost to startup
++  [PASS] failed merge: the retry cost the path up to 762s (60 → 822)
++  [PASS] blocker head: relaunch is only the gap between invocations (100s + a 6s ledger read); u.2 is the bottleneck
++  [PASS] cycle: terminates
++  [PASS] cycle: the model reports failure, not a verdict
++  [PASS] cycle: named on the unmeasured line
++  [PASS] no landing: critical path equals the task graph
++  [PASS] no landing: the bead that held it is named
++  [PASS] overlap: implement → review → fix → merge, no split on the path
++  [PASS] close-check: 20s observation is timed as closure work
++  [PASS] close-check: observation alone is no landing
++  [PASS] close-check without journal: never fabricates landing
++  [PASS] close-check without journal: observation time retained
++  [PASS] close-check: graph ends at real merge, not later observation
++  [PASS] close-check: real merge remains landed
++  [PASS] close-only without CLOSED: not landed
++  [PASS] finish time is on the critical-path line
++  [PASS] categories sum to the path
++  [PASS] hot file under its cap: attributed to the ready query
++  [PASS] late cut: the model keeps the edge in force at dispatch
++  [PASS] graph from journal results without the planner's transcript
++  [PASS] tool categories per sub-command (tests run as target/*/deps binaries, tail -f as polling, a pipe to tail stays shell)
++run-profile: bookkeeping re-entries, older coordinators, test time
++  [PASS] re-entry close: the landing is the merge at 240s, not the close at 330s
++  [PASS] re-entry close: the task graph ends at the last real merge
++  [PASS] re-entry close: counted on the rework line
++  [PASS] re-entry close: not a retry on the critical path
++  [PASS] brief step: one attempt, implement 10s + 170s
++  [PASS] tests line: summed test and poll time over every implementer
++  [PASS] slow tests line: summed per normalized command, slowest first
++  [PASS] slow tests JSON: every test command, with summed time and runs
++  [PASS] slow tests line: the cd prefix is dropped
++  [PASS] no slow tests line without test calls
++  [PASS] summarize: slow tests merged across profiles
++run-profile: ordinary-subagent coordinator on Codex (one chain at a time; outcomes from the ledger, graph from bd)
++  [PASS] exits 0
++  [PASS] header: 14 task spans of direct children; cx.4 (BLOCKED in the ledger) did not land; bd's 4 in-tree leaves
++  [PASS] graph from bd: in-tree leaves only (no epic, blocker or out-of-tree bead), cx.2 blocked by cx.1
++  [PASS] task graph ends at cx.3's merge (1745s), and the path spans it
++  [PASS] critical path: three chains back to back; merges 82+60+40s; cx.3 waited 5s for cx.2's chain to end
++  [PASS] coordinator merges: first git rebase/merge naming task-<id> to the last command naming the bead (bd show cx.10 does not count)
++  [PASS] bottleneck: cx.2 (600s implement, review, fix, merge and the gaps before them)
++  [PASS] Codex tool calls: exec_command test, apply_patch edit, write_stdin poll
++  [PASS] a forked child's replayed call at its spawn instant is not its own
++  [PASS] slow tests from Codex exec_command calls, the cd prefix dropped
++  [PASS] cx.3, ready at planning, waited 1280s for the one chain slot (held through cx.2's merge)
++  [PASS] cx.2 started 3s after cx.1 merged: no early unblock in this mode
++  [PASS] model: cap 1, merges before dependents; 1600s vs a 1322s bound
++  [PASS] verdict: slot-bound (one chain at a time)
++  [PASS] a Launch: line's concurrency sets the slot cap
++  [PASS] a Launch: line's earlyUnblock on turns early unblock on in the model; absent, it stays off
++  [PASS] what-ifs: parallel chains, a faster cx.2
++  [PASS] cx.4: two attempts (impl_cx_4, impl_cx_4__2), the last BLOCKED per the ledger
++  [PASS] rework names the blocked bead
++  [PASS] concurrency over 1960s: 220s idle, 1720s one dispatch, 20s two (scratch_probe's two tasks)
++  [PASS] concurrency line
++  [PASS] time per kind; unnamed dispatches apart; the coordinator's own merges
++  [PASS] unnamed dispatches are named on the unmeasured line
++  [PASS] the coordinator's rollout file works as input too
++  [PASS] an unknown thread: exit 2
++  [PASS] no epic and no ledger: exit 2
++  [PASS] no ledger: every coordinator merge counts as landed
++  [PASS] and says so
++  [PASS] an unreadable --beads: exit 2
++  [PASS] bead ids from the ledger alone still map the names
++  [PASS] and the missing graph is named
++run-profile: ordinary-subagent coordinator on Claude Code (the same run, Agent descriptions as labels)
++  [PASS] exits 0
++  [PASS] the same profile as the Codex run
++  [PASS] discover finds both coordinators by the ledger path their commands name
++  [PASS] the ledger path the coordinator named is not on disk: no ledger
++run-profile: dispatch names that follow no rule (an older Codex run)
++  [PASS] exits 0 with the run-level lines
++  [PASS] concurrency
++  [PASS] time per name's first word
++  [PASS] and why there is no more
++  [PASS] a partial --out profile
++  [PASS] a partial profile cannot join a baseline
++run-profile: arguments
++  [PASS] --help exits 0
++  [PASS] no input: exit 2
++  [PASS] --discover without --epic: exit 2
++  [PASS] missing directory: exit 2
++run-profile: every coordinator dispatch label is one it knows
++  [PASS] coordinator label kinds are all classified (missing: none)
++run-profile: resume observations are run-level readiness work
++  [PASS] resume observation Workflow profile exits 0
++  [PASS] resume observation is run-level ready time
++  [PASS] resume observation creates no task attempt or task timing
++  [PASS] resume observation uses no task slot
++  [PASS] resume observation Codex profile exits 0
++  [PASS] resume observation Claude profile exits 0
++  [PASS] ordinary resume observation is mapped (x)
++  [PASS] ordinary resume observation preserves bead population and attempts (x)
++  [PASS] ordinary resume observation preserves task slots (x)
++  [PASS] ordinary resume observation is mapped (c)
++  [PASS] ordinary resume observation preserves bead population and attempts (c)
++  [PASS] ordinary resume observation preserves task slots (c)
++run-profile: context-pass module (synthetic rows)
++  [PASS] context-pass: claude: duplicate rows for one response count one request
++  [PASS] context-pass: claude: a <synthetic> row is not a request
++  [PASS] context-pass: claude: cap, idle (50-minute gap), manual and sub-cap non-idle boundaries
++  [PASS] context-pass: claude: peak takes preTokens; post falls back to the next usage row
++  [PASS] context-pass: claude: the gap is measured from the last assistant usage row
++  [PASS] context-pass: claude: idle boundary preceded by system/housekeeping rows
++  [PASS] context-pass: claude window: Opus 4.6 is 200K
++  [PASS] context-pass: claude window: Opus 4.7 is 1M
++  [PASS] context-pass: claude window: dated Opus 4 id is 200K
++  [PASS] context-pass: claude window: Opus 5.5, Sonnet 5, Haiku 5.5, Fable are 1M
++  [PASS] context-pass: claude window: Haiku 4.5 is 200K
++  [PASS] context-pass: claude window: [1m] suffix is 1M
++  [PASS] context-pass: claude window: unknown model takes the 200K default
++  [PASS] context-pass: claude window: --context-window override
++  [PASS] context-pass: claude: override reaches the record and its compactions
++  [PASS] context-pass: claude: a peak over the table window is inferred against the next window
++  [PASS] context-pass: claude: a readable transcript with no usage rows is unmeasured
++  [PASS] context-pass: claude: an unreadable transcript is unmeasured
++  [PASS] context-pass: claude: only rows in [fromRow, toRow) are read
++  [PASS] context-pass: codex: the compaction request exceeds every token_count
++  [PASS] context-pass: codex: pre from the compacted row, post from the next nonzero token_count
++  [PASS] context-pass: codex: a mid-session window change: record window is the peak row's
++  [PASS] context-pass: codex: an earlier compaction is classified against its own window
++  [PASS] context-pass: codex: before any window row, the first window after applies
++  [PASS] context-pass: codex: a forked child does not count replayed rows or their compaction
++  [PASS] context-pass: codex: only the first session_meta supplies the ordinal (replayed one differs)
++  [PASS] context-pass: codex: only the first session_meta supplies the ordinal (replayed one has none)
++  [PASS] context-pass: codex: fromRow below the ordinal still starts at the ordinal
++  [PASS] context-pass: codex: no window recorded: measured, pct null, cause unknown
++  [PASS] context-pass: codex: no window: reason on the unmeasured line only
++  [PASS] context-pass: codex: no window renders as window unknown
++  [PASS] context-pass: claude matcher: every marker form
++  [PASS] context-pass: claude matcher: tool_result, isMeta, plain mention and other skills are not invocations
++  [PASS] context-pass: codex matcher: $-mentions and the injected skill block
++  [PASS] context-pass: run rows: latest super-auto at or before T0; phase-3 super-code does not move it; ends at the next super-auto
++  [PASS] context-pass: run rows: T0 before the second super-auto starts at the first
++  [PASS] context-pass: run rows: no T0 is the session end
++  [PASS] context-pass: run rows: no super-auto: the latest super-code at or before T0
++  [PASS] context-pass: run rows: none found starts at row 0 with a reason
++  [PASS] context-pass: run rows: codex
++  [PASS] context-pass: summary line: zero-count causes left out
++  [PASS] context-pass: agent lines: compacted or ≥50%, ordered by compactions then peak%
++  [PASS] context-pass: summary: reasons name the table windows once
++  [PASS] context-pass: agent lines: at most 10, then a more line
++  [PASS] context-pass: summary line: no compactions prints no cause list
++  [PASS] context-pass: summary: an unmeasured coordinator
++  [PASS] context-pass: summary: unmeasured agents are a reason
++  [PASS] context-pass: summary: no coordinator record leaves the segment out
++  [PASS] context-pass: summary: caller reasons are appended
++  [PASS] context-pass: unmeasured transcript: counted as unmeasured on the summary line
++  [PASS] context-pass: unmeasured transcript: a Markdown row with its reason
++  [PASS] context-pass: unmeasured transcript: the JSON record keeps peak null and the reason
++  [PASS] context-pass: nothing measured: an unavailable line
++  [PASS] context-pass: two coordinator records: largest peak, summed compactions
++  [PASS] context-pass: json: { agents, summary }
++  [PASS] context-pass: baseline: aggregates compactions by cause over profiles with a context key
++  [PASS] context-pass: baseline: none with a context key
++  [PASS] context-pass: baseline: a coordinator file and compaction shared by two profiles count once
++  [PASS] context-pass: baseline: a compaction only the wider record saw still counts
++  [PASS] context-pass: baseline: records with no file are never merged
++  [PASS] context-pass: claude spans: a compaction before the first in-span usage row takes the model and gap from earlier rows
++  [PASS] context-pass: claude spans: rows between two spans are not counted
++  [PASS] context-pass: claude spans: a post is never taken across a span end
++  [PASS] context-pass: claude spans: the idle gap is measured from the latest request before the boundary, in or out of a span
++  [PASS] context-pass: codex spans: model and window carry in from before the span
++  [PASS] context-pass: codex spans: two spans; a post is never taken across a span end
++  [PASS] context-pass: claude tasks: split prompt rows are one task; a continuation after an assistant turn is a second; tool results, meta and compact summaries are none
++  [PASS] context-pass: codex tasks: task_started turns from the history start (replayed ones not counted)
++  [PASS] context-pass: tasks: the summary counts agents (not coordinators) given more than one task
++  [PASS] context-pass: tasks: an agent line carries its count only when above one
++  [PASS] context-pass: tasks: no tasks>1 token when every agent got one task
++run-profile: context pass end to end (Workflow, ordinary subagents, Codex, context-only)
++  [PASS] Workflow run with its session: exits 0
++  [PASS] summary: one coordinator record (the union of both runs' windows) and 14 Workflow agents
++  [PASS] coordinator: cut at the profiled super-auto row, ending at the next run's; the earlier manual and the later 196K compactions left out
++  [PASS] a Workflow agent's cap compaction
++  [PASS] an agent at 50% or more gets a line without compacting
++  [PASS] context lines print before Profile: unmeasured
++  [PASS] agents with no usage rows are named on the unmeasured line
++  [PASS] and the table window
++  [PASS] --out JSON: the context key
++  [PASS] --out Markdown: the ## Context table
++  [PASS] --summarize: a Baseline: context line
++  [PASS] --context-only --workflow: exits 0
++  [PASS] context-only --workflow: T0 is the earliest agent start, so wf_ca's window alone
++  [PASS] context-only prints no timing
++  [PASS] --context-only --session: exits 0
++  [PASS] --session: the whole session, subagents/agent-*.jsonl and subagents/workflows/*/agent-*.jsonl
++  [PASS] a session subagent, labelled by its .meta.json
++  [PASS] --session has no window and no caveat
++  [PASS] --context-window: every Claude agent's window, and its compaction point classifies the compactions
++  [PASS] --context-window: no table window to name
++  [PASS] context-only --out: the JSON holds the context key only
++  [PASS] a missing agent transcript does not abort
++  [PASS] it becomes an unmeasured record
++  [PASS] context-only --out writes the ## Context section
++  [PASS] --context-only with no usage row anywhere: exit 3
++  [PASS] and the unavailable line
++  [PASS] no timed bead dispatch: exit 3 as before
++  [PASS] exit 3 still prints the context summary
++  [PASS] and its agent lines
++  [PASS] no invocation: counted from the first row, and said so
++  [PASS] context lines print before Profile: unavailable
++  [PASS] ordinary Claude subagents: exits 0
++  [PASS] summary: only the profiled run's coordinator rows and agents
++  [PASS] an ordinary subagent's cap compaction
++  [PASS] the coordinator's sub-cap compaction 500s after a request is early
++  [PASS] a manual compaction
++  [PASS] a subagent with no usage rows is unmeasured, not 0
++  [PASS] context-only --subagents: T0 is the session's end, so the last super-auto run's rows and agents
++  [PASS] Codex: exits 0
++  [PASS] Codex summary: coordinator, children and a grandchild
++  [PASS] a compaction request holding the peak; each compaction against its own window
++  [PASS] a spawn_agent child
++  [PASS] a forked child: the replayed compaction is not its own
++  [PASS] Codex agents labelled by agent_path
++  [PASS] no epic and no ledger: exit 2 as before
++  [PASS] the missing-epic exit still prints the context lines
++  [PASS] --context-only --codex: no epic, ledger or bd
++  [PASS] and the same coordinator figures
++  [PASS] two non-adjacent windows: exits 0
++  [PASS] two non-adjacent windows: only the two runs' rows; the second window's compaction is early
++  [PASS] two non-adjacent windows: the gap crosses the excluded rows; no post across a window end
++  [PASS] --session without --context-only: exit 2
++  [PASS] --context-only with no input: exit 2
++  [PASS] a missing --session file: exit 2
++  [PASS] --context-window 0: exit 2
++  [PASS] --context-only refuses --discover
++run-profile: context pass integration sweep
++  [PASS] stdout, --out Markdown and JSON agree for every agent (cwp)
++  [PASS] stdout, --out Markdown and JSON agree for every agent (cop)
++  [PASS] stdout, --out Markdown and JSON agree for every agent (cqp)
++  [PASS] at most 10 agent lines
++  [PASS] then a more line for the other two at 50% or more
++  [PASS] an agent at 49% gets no line
++  [PASS] every agent is in the --out table
++  [PASS] --context-window sets every measured Claude record's window and every compaction's
++run-profile: multi-rollout Codex coordinator (a resumed thread)
++  [PASS] multi-rollout --context-only: exits 0
++  [PASS] multi-rollout --context-only: largest peak, summed compactions
++  [PASS] one coordinator record per rollout, each compaction once
++  [PASS] children of both rollouts
++  [PASS] the thread and its second rollout given both: nothing counted twice
++  [PASS] multi-rollout full profile: exits 0
++  [PASS] multi-rollout full profile: the same coordinator figures
++  [PASS] multi-rollout full profile --out JSON: the context key
++run-profile: availability evidence and planning diagnosis
++  [PASS] late-created Workflow profile exits 0
++  [PASS] creation bounds wait while mapping and dependency evidence retain their times
++  [PASS] model cannot release the late task before creation
++  [PASS] critical path cannot call pre-creation time a task wait
++  [PASS] unknown external dependency timing cannot become measured readiness
++  [PASS] unmeasured timing is explained
++  [PASS] unknown readiness gap remains unmeasured on the critical path
++  [PASS] baseline keeps unknown waits unmeasured
++  [PASS] planning-dominated diagnosis and model window
++  [PASS] whole-run diagnosis retains planning
++  [PASS] counterfactual stdout labels estimates
++  [PASS] Markdown preserves the planning diagnosis
++  [PASS] graph scope is explicit
++  [PASS] overall agents are labeled separately
++  [PASS] task-slot occupancy has its own label
++  [PASS] ordinary residual snapshot without a planner does not invent historical readiness
++  [PASS] JSON graph scope
++  [PASS] separate JSON concurrency scopes
++  [PASS] all-agent and task-slot peaks are measured independently
++  [PASS] ordinary initial planner cannot establish mapping for a task created later
++  [PASS] ordinary external dependency timing stays unknown
++  [PASS] unavailable profile retains exit 3
++  [PASS] unavailable artifacts are qualified without invented timings
++
++run-profile: all tests passed

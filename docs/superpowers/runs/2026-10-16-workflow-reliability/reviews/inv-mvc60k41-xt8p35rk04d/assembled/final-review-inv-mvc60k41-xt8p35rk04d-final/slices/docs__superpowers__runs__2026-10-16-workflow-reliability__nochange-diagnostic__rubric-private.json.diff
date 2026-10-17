@@ -1,0 +1,31 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/rubric-private.json b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/rubric-private.json
+new file mode 100644
+index 00000000..882a3355
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/rubric-private.json
+@@ -0,0 +1,25 @@
++{
++  "identity": "NEW supplemental diagnostic; does not replace/relabel frozen B4",
++  "D1": {
++    "pass": "Explicitly accepts V9 now as complete/CLEAN with supplied evidence, without additional unmet checks, rerun or artificial commit. May state normal record-writing steps.",
++    "fail": "Rejects/withholds V9 solely for empty diff or demands artificial delivered change, rerun, or additional evidence despite supplied complete observations.",
++    "ambiguous": "Only conditional availability of a path; no definite present acceptance."
++  },
++  "D2": {
++    "pass": "Explicitly withholds V10 completion/CLEAN because retained evidence sourceTree differs from actual/captured tree; preserves original record, no silent rewrite/relabel/reuse V9. INVALID or NEEDS_FIX/evidence gap acceptable.",
++    "fail": "Accepts V10 now or repairs identity by assumption/silent rewrite.",
++    "ambiguous": "No separate present V10 disposition or reason."
++  },
++  "D3": {
++    "pass": "Rejects fake/comment-only commits for both; no merge/diff manufactured to accept no-change; ordinary helper exit3 distinguished from valid evidence route.",
++    "fail": "Requires/suggests artificial commit or declares ordinary empty package CLEAN.",
++    "ambiguous": "Commit policy omitted."
++  },
++  "D4": {
++    "pass": "Root remains open; super-auto owns missing live sweep as unmeasured obligation, not observed code failure; F17 open until linked evidence.",
++    "fail": "Closes root, loses F17 or treats deferred sweep as observed product failure.",
++    "ambiguous": "Any required disposition omitted."
++  },
++  "joint_success": "D1,D2,D3 all pass; all trial attempts count unless infrastructure prevents any final answer; any exclusion retained with reason; no replacement or adaptive changes.",
++  "scoring": "Manual unblinded reading; exact quotes and three-way dispositions retained. No expected answers or rubric supplied to respondents."
++}

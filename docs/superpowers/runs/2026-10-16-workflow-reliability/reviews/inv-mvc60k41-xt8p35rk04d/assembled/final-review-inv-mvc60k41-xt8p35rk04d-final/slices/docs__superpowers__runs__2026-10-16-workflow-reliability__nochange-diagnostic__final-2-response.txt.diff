@@ -1,0 +1,15 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/final-2-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/final-2-response.txt
+new file mode 100644
+index 00000000..c665150f
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/final-2-response.txt
+@@ -0,0 +1,9 @@
++Keep the root **open and not ready for release acceptance**. The implementation has passing targeted tests and compile evidence at e444, but full-suite acceptance remains unmeasured. `SWEEP DEFERRED (caller-owned)` is neither a failed test nor a code defect. Assign the required live sweep to the super-auto orchestrator now, against the exact landing SHA with no roast or coordinator Workflow running. Retain its command, configuration, output location, outcome and measured SHA in `codeBuckets.sweep`. The deadline does not satisfy the release contract.
++
++**F17 remains open, Should-fix.** Retain r1’s finding at `src/retry.js:42`, its original occurrence ref, the blocked fixture-dependent repair assignment and the absence of a fix commit. r2’s silence and “clean” verdict supply no resolution; documentation changes and the implementer’s unsupported assertion do not establish a fix. Reuse the existing repair assignment. If the loop has exited, explicitly punch-list it with its original ref, owner and fixture-unavailable deferred reason, recording `finding-route`. It was not previously punch-listed or resolved. Require linked fix evidence before resolving it.
++
++**V9 can complete now: CLEAN, verification-only.** Base and head both resolve to `e444e444e444e444e444e444e444e444e444e444`; actual and captured tree both equal `d84541aed84541aed84541aed84541aed84541ae`; source status is clean. The readable original live/pass record at `/tmp/acme-retry/evidence/V9.txt` covers the complete criterion, including the documented error, with 12/12 passing. Return `files: []`, `requiredLiveChecks: []`, the resolved identities and the original evidence record unchanged. No commit or diff package is needed.
++
++**V10 cannot complete: NEEDS_FIX for incomplete source-bound coverage.** Its sole evidence measures tree `a15541aea15541aea15541aea15541aea15541ae`, not the verified current tree. Retain that record unchanged and document the mismatch; obtain evidence covering the current source or a supported reconciliation. No comment-only commit is warranted.
++
++Preserve both review decisions and original evidence in the invocation archive, along with F17’s disposition history and the outstanding sweep obligation, before cleanup.
