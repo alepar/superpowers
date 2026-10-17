@@ -316,6 +316,52 @@ const SWEEP_WORKTREES = { type: 'object', properties: { lines: { type: 'array', 
 // `Task <ordinal-or-?> (<bead id>): <rest>`.
 const LEDGER_LINE_RE = /^Task\s+(\S+)\s+\(([^)]+)\):\s*(.*)$/
 
+// Additive durable facts, independent of settle()'s latest terminal status. The ledger remains
+// the source: obligations are keyed by kind/id, while every fix attempt stays in history.
+const recoveryObligations = new Map()
+const fixHistory = []
+const recoveryGaps = []
+function readRecovery(line, digestLine = null) {
+  const gap = reason => recoveryGap(line, reason, digestLine)
+  let r
+  try { r = JSON.parse(line.slice('Recovery:'.length).trim()) } catch { return gap('invalid JSON') }
+  const text = v => typeof v === 'string' && v.trim().length > 0
+  if (!r || r.version !== 1) return gap('unsupported recovery version')
+  if (!text(r.id) || !['hold', 'pending-closure', 'deferred', 'fix'].includes(r.kind)
+      || !['record', 'clear'].includes(r.operation) || !text(r.reason)
+      || !Array.isArray(r.evidence) || !r.evidence.length || !r.evidence.every(text)
+      || !r.data || typeof r.data !== 'object' || Array.isArray(r.data)) return gap('invalid recovery fields or missing evidence')
+  if (r.kind === 'fix') {
+    if (r.operation !== 'record') return gap('fix history is append-only')
+    fixHistory.push(r)
+  } else if (r.operation === 'clear') recoveryObligations.delete(r.kind + ':' + r.id)
+  else recoveryObligations.set(r.kind + ':' + r.id, r)
+  return r
+}
+function recoveryGap(raw, reason, digestLine = null) {
+  recoveryGaps.push({ source: ledgerPath, ...(digestLine ? { digestLine } : {}), reason, preview: raw.slice(0, 200) })
+  log('recovery record gap: ' + reason + ' — retained for reconciliation')
+  return null
+}
+function noteRecovery(id, kind, operation, reason, evidence, data = {}, taskId = id, phase = 'Integrate') {
+  const line = 'Recovery: ' + JSON.stringify({ version: 1, id, kind, operation, reason, evidence, data })
+  if (!readRecovery(line)) throw new Error('invalid recovery record produced: ' + line)
+  // Identical elided fallback: source pointers and commit facts must never be removed on retry.
+  if (taskId) noteLedger(taskId, line, line)
+  else queueLedger(line, 'ledger-append:recovery:' + kind + ':' + id, phase, line)
+}
+function clearPendingClosure(id, evidence, taskId = id) {
+  if (recoveryObligations.has('pending-closure:' + id)) noteRecovery(id, 'pending-closure', 'clear', 'tracker closure confirmed', evidence, {}, taskId, 'Finish')
+}
+function noteFixHistory(r, result, kind, art, outcome = result.status, base = r.head) {
+  const reviewPath = kind === 'check' ? null : kind === 'seam' ? art.diff('seam') : art.review
+  const data = { outcome, phase: kind, ...(reviewPath ? { reviewPath } : {}), reportPath: art.report,
+    ...(base ? { base } : {}), ...(result.head ? { head: result.head } : {}),
+    ...(result.blockerBead ? { blockerBead: result.blockerBead } : {}),
+    ...(result.declined ? { declined: true } : {}), ...(result.evidenceOnly ? { evidenceOnly: true } : {}) }
+  noteRecovery(r.id, 'fix', 'record', kind + ' fix result', [reviewPath || 'merge:' + r.id, art.report, 'fix:' + r.id + (kind === 'review' ? '' : ':' + kind)], data)
+}
+
 // Terminal-outcome buckets: Sets, written only through `settle()`, so a resumed id that reaches a
 // different outcome this run never sits in two buckets.
 const escalated = new Set()
@@ -503,8 +549,15 @@ if (config.sweepBaseline === true && !deferSweep) {
 }
 // Pure parse. A bead id can have several lines over a run's history; the last one wins.
 const resumed = new Map()  // id -> kind: 'complete' | 'parked' | 'pendingRetry' | 'blockedHistorically'
-for (const raw of (ledger?.text || '').split('\n')) {
+for (const [digestIndex, raw] of (ledger?.text || '').split('\n').entries()) {
   const line = raw.trim()
+  const recoveryPointer = /^Recovery gap: ([0-9]+) (.+)$/.exec(line)
+  if (recoveryPointer) {
+    recoveryGaps.push({ source: recoveryPointer[2], line: Number(recoveryPointer[1]), reason: 'Recovery record exceeds compact transport limit' })
+    log('recovery record gap: oversized record retained at ' + recoveryPointer[2] + ':' + recoveryPointer[1])
+    continue
+  }
+  if (line.startsWith('Recovery:')) { readRecovery(line, digestIndex + 1); continue }
   // Earlier launches' added edges and human actions: honored and never written again.
   const edge = /^Edge add: (\S+) <- (\S+) \(/.exec(line)
   if (edge) {
@@ -885,6 +938,7 @@ while (true) {
         const fixRes = await dispatch(() => fixPrompt(r, seamFinding, artifacts(r.id), 'seam'), `fix:${r.id}:seam`,
           { label: `fix:${r.id}:seam`, phase: 'Integrate', ...tier('implementer'), schema: RESULT })
         if (!fixRes) { log(`seam fix for ${r.id} unavailable (null dispatch) — leaving ${r.id} unsettled this round`); return }
+        noteFixHistory(r, fixRes, 'seam', artifacts(r.id))
         if (fixRes.status === 'BLOCKED_AUTH') return () => handleAuthRefusal(r, fixRes.finding)
         if (fixRes.status === 'BLOCKED') return () => handleBlocker({ id: r.id, n: r.n, blockerBead: fixRes.blockerBead, finding: `seam fix could not reconcile the post-rebase incompatibility: ${seamFinding}` }, planned.planPath, onResolve)
         seamOutcome = 'fixed'
@@ -912,6 +966,9 @@ while (true) {
         : Array.isArray(mm.dirty) && mm.dirty.length ? `integration worktree ${integrationWorktree} dirty: ${mm.dirty.join('; ')}` : null
       if (!held) return false
       integrationBlocked = held
+      noteRecovery('merge-lane', 'hold', 'record', 'integration worktree unavailable for merge',
+        ['merge:' + r.id, artifacts(r.id).report], { taskId: r.id, integrationBranch, integrationWorktree,
+          ...(mm.dirty?.length ? { dirty: mm.dirty.slice(0, 5), dirtyCount: mm.dirty.length } : {}), ...(mm.detachedHead ? { detachedHead: mm.detachedHead } : {}) }, r.id)
       log(`INTEGRATION BLOCKED at merge:${r.id} — ${held}. No merge was attempted and no bead closed; the merge lane is held for the rest of this run (no per-task blocker beads), no new task starts, and the run stops at the round boundary with stopReason 'integration-blocked'`)
       noteSlowness(`integration blocked: ${held} → merge lane held; clear it and relaunch`)
       noteLedger(r.id, `Merge: ${r.id} — rebase ${mm.rebaseConflictFiles ? 'conflict: ' + mm.rebaseConflictFiles + ' files' : 'clean'} · seam-review ${seamOutcome} · check none → held: ${held}`)
@@ -963,6 +1020,7 @@ while (true) {
         const fixRes = await dispatch(() => fixPrompt(r, errors, artifacts(r.id), 'check'), `fix:${r.id}:check`,
           { label: `fix:${r.id}:check`, phase: 'Integrate', ...tier('implementer'), schema: RESULT })
         if (!fixRes) { log(`merge-check fix for ${r.id} unavailable (null dispatch) — leaving ${r.id} unsettled this round`); return }
+        noteFixHistory(r, fixRes, 'check', artifacts(r.id), fixRes.status, preFixHead)
         if (fixRes.status === 'BLOCKED_AUTH') return () => handleAuthRefusal(r, fixRes.finding)
         if (fixRes.status !== 'FIXED') {
           blockerFinding = `${failFinding} — the merge-check fix reported ${fixRes.status}`
@@ -1060,7 +1118,10 @@ while (true) {
     for (let observation = 0; observation < 2; observation++) {
       const check = await dispatch(() => reconcileBucketsPrompt(required, []), `close-check:${r.id}`,
         { label: `close-check:${r.id}`, phase: 'Integrate', ...tier('mechanical'), schema: RECONCILE })
-      if (check && required.every(id => check.closed?.includes(id))) { closuresConfirmed++; return true }
+      if (check && required.every(id => check.closed?.includes(id))) {
+        clearPendingClosure(r.id, required.map(id => 'bead:' + id))
+        closuresConfirmed++; return true
+      }
       if (observation === 0 && check && !closeFirst && !await repair()) return false
     }
     log(`closure for ${r.id} unconfirmed after two observations — landed work stays on closure-only routing`)
@@ -1069,6 +1130,12 @@ while (true) {
   const recordPendingClosure = r => {
     const parts = [landedRanges.get(r.id), reviewBeadOf.has(r.id) ? 'review ' + reviewBeadOf.get(r.id) : null, blockerBeadOf.has(r.id) ? 'blocker ' + blockerBeadOf.get(r.id) : null, landedParked.has(r.id) ? 'parked' : null, 'tracker closure unconfirmed'].filter(Boolean)
     noteLedger(r.id, ledgerLine(r.n, r.id, 'landed (' + parts.join(', ') + ')'))
+    const head = landed.get(r.id), range = landedRanges.get(r.id)?.replace(/^commits /, '')
+    const reviewBead = reviewBeadOf.get(r.id), blockerBead = blockerBeadOf.get(r.id)
+    noteRecovery(r.id, 'pending-closure', 'record', 'tracker closure unconfirmed',
+      [artifacts(r.id).report, 'bead:' + r.id, ...(head ? ['git:' + head] : []),
+        ...[reviewBead, blockerBead].filter(Boolean).map(id => 'bead:' + id)],
+      { ...(head ? { head } : {}), ...(range ? { range } : {}), ...(reviewBead ? { reviewBead } : {}), ...(blockerBead ? { blockerBead } : {}) })
   }
   const closeAlreadyMerged = async r => {
     if (!landed.has(r.id)) landed.set(r.id, null)
@@ -1594,7 +1661,12 @@ log(`Completed: ${completed.size}. Escalated: ${escalated.size}. Pending retry: 
 // The sweep: the full suite, once, against the tip the final review reads — whenever work landed.
 // Its summary goes to the `Sweep:` line, the final review and the return value.
 let sweepSummary = deferSweep ? SWEEP_DEFERRED : null
-if (deferSweep) log(`sweep: ${SWEEP_DEFERRED} — the caller runs the full suite after this invocation`)
+if (deferSweep) {
+  log(`sweep: ${SWEEP_DEFERRED} — the caller runs the full suite after this invocation`)
+  noteRecovery(epicId + ':sweep:' + runTag, 'deferred', 'record', 'full-suite measurement deferred to caller',
+    [ledgerPath + '#Launch:' + runTag], { owner: 'caller', runTag, integrationBranch, ...(sweepCommand ? { command: sweepCommand } : {}) }, null, 'Finish')
+  await drainLedger()
+}
 else if (completed.size || confirmedLandings.size) {
   const sw = await dispatch(() => sweepPrompt(sweepCommand, integrationWorktree, integrationBranch), 'sweep',
     { label: 'sweep', phase: 'Finish', ...tier('mechanical'), schema: SWEEP_SUMMARY })
@@ -1770,6 +1842,7 @@ if (unsettledIds.length) {
     log(`reconciled ${id}: tracker reports closed — moved from ${landedOpen.includes(id) ? 'unconfirmed closure' : escalated.has(id) ? 'escalated' : 'pendingRetry'} to completed`)
     settle(id, completed)
     if (!landedOpen.includes(id)) continue
+    clearPendingClosure(id, ['bead:' + id, ...[reviewBeadOf.get(id), blockerBeadOf.get(id)].filter(Boolean).map(bead => 'bead:' + bead)], null)
     if (landedParked.has(id)) parked.add(id)
     blockerBeadOf.delete(id)
     // The completion line a resume reads, so the next launch does not re-check this closure.
@@ -1802,7 +1875,7 @@ if (!wsweep || !Array.isArray(wsweep.processLines)) {
   processSweep.unknown.push('PROCESS SWEEP UNAVAILABLE — ' + (!wsweep ? 'the sweep dispatch returned null or scriptError' : 'processLines was missing') + '; run processes under ' + taskWorktreeRoot + ', ' + runTmpRoot + ', ' + shortTmpRoot + (processRoots.length ? ', ' + processRoots.join(', ') : '') + ' were not checked')
 }
 log(`process sweep: ${processSweep.stopped.length} stopped, ${processSweep.survived.length} survived, ${processSweep.unknown.length} unknown, ${processSweep.kept.length} kept${[...processSweep.survived, ...processSweep.unknown, ...processSweep.kept].length ? ' — ' + [...processSweep.survived, ...processSweep.unknown, ...processSweep.kept].join('; ') : ''}`)
-return { closureUnconfirmed, completed: [...completed], escalated: [...escalated], pendingRetry: [...pendingRetry],
+return { recovery: { obligations: [...recoveryObligations.values()], fixHistory, gaps: recoveryGaps }, closureUnconfirmed, completed: [...completed], escalated: [...escalated], pendingRetry: [...pendingRetry],
          parked: [...parked], stalled, stopReason, review, authRefused: [...authRefused], sweep: sweepSummary, reviewPath: landedWork && reviewWritten ? reviewPath : null,
          metrics, ledgerAppendFailed: [...ledgerAppendFailed], slowness: [...slowness], humanActions: [...humanActions], worktreesKept, processSweep }
 
@@ -2419,7 +2492,7 @@ async function reviewAndFix(im, planPath, art, isCancelled = () => false) {
   // A fixer refused by the permission layer (twice) reports BLOCKED_AUTH — straight to
   // the chain's auth-refusal outcome (log + quarantine, no bead).
   if (fixRes.humanAction) noteHumanAction(im.id, fixRes.humanAction)
-  if (fixRes.status === 'BLOCKED_AUTH') return { ...stamp(fixRes), status: 'BLOCKED_AUTH', minors }
+  if (fixRes.status === 'BLOCKED_AUTH') { noteFixHistory(im, fixRes, 'review', art); return { ...stamp(fixRes), status: 'BLOCKED_AUTH', minors } }
   const oneLine = v => typeof v === 'string' && v.trim() ? v.replace(/\s+/g, ' ').trim() : undefined
   const declined = oneLine(fixRes.declined)
   const evidenceOnly = oneLine(fixRes.evidenceOnly)
@@ -2434,6 +2507,7 @@ async function reviewAndFix(im, planPath, art, isCancelled = () => false) {
   } else if (outcome === 'BLOCKED' && fixRes.status !== 'BLOCKED') {
     cause = `the fix pass returned status ${fixRes.status}, which is not FIXED; the review findings were not addressed: ${finding}`
   }
+  noteFixHistory(im, fixRes, 'review', art, outcome)
   const range = fixRes.head && im.head && fixRes.head !== im.head ? `; commits ${short(im.head)}..${short(fixRes.head)}` : ''
   const evidence = outcome === 'FIXED' && evidenceOnly ? `; report evidence only: ${evidenceOnly}` : ''
   noteLedger(im.id, ledgerLine(im.n, im.id, `fix pass ${outcome} (${finding}${evidence}${range})`),

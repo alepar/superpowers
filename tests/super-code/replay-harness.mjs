@@ -104,7 +104,7 @@ async function run({ args, canned = {}, nullLabels = new Set(), nullAll = false,
         // overrides its key explicitly.
         if (label.startsWith('close-check:')) return { closed: (prompt.match(/read its status: ([^.]+)\./)?.[1] ?? '').split(', ') }
         if (label === 'read-ledger:finish') return { text: '', reviewBase: SHA('a'), reviewHead: SHA('b') }
-        if (label === 'ledger-append:metrics') return { appended: true }
+        if (label === 'ledger-append:metrics' || label.startsWith('ledger-append:recovery:')) return { appended: true }
         if (label === 'reconcile-buckets') return { closed: [] }
         if (label === 'assemble:final') return { dir: FR_DIR, exit: 0, fits: 'fits: yes (12000 of 80000)', clusterFits: [], clusters: 0 }   // the final review's assembler pre-step: fits
         if (label === 'sweep') return 'abc1234 — 1 passed, 0 failed, 0 errors, 0 skipped; failing: none; command: <project test command>'
@@ -247,9 +247,9 @@ function extractLedgerLine(promptText) {
 // A task's ledger lines are batched: everything the task noted (fix pass, Merge:, completion,
 // minors, blocker outcome) is written by one `ledger:<id>` flush when its chain ends — or its
 // `:retry` when that flush returned null. These collect every line written for one id, in order.
-function taskLedgerLines(trace, id, { retry = false } = {}) {
+function taskLedgerLines(trace, id, { retry = false, recovery = false } = {}) {
   const label = retry ? `ledger:${id}:retry` : `ledger:${id}`
-  return trace.filter(t => t.label === label).flatMap(t => extractLedgerLines(t.prompt))
+  return trace.filter(t => t.label === label).flatMap(t => extractLedgerLines(t.prompt)).filter(l => recovery || !l.startsWith('Recovery:'))
 }
 function taskLedgerLine(trace, id, re, opts) {
   return taskLedgerLines(trace, id, opts).find(l => re.test(l)) ?? null
@@ -1327,6 +1327,97 @@ async function main() {
     check(r && r.completed.length === 0 && r.escalated.length === 0 && r.pendingRetry.length === 0 && r.parked.length === 0, 'all buckets empty', JSON.stringify(r))
     check(r?.stopReason === 'ready-unavailable' && r?.review === 'no work landed' && r?.stalled === false, 'stops as ready-unavailable; no review; not a stall', JSON.stringify(r))
     assertBucketsDisjoint(r)
+  }
+
+  scenario('recovery contract: durable obligations and fix history survive digest and clean retry')
+  {
+    // Breaks caught: dropping a Recovery line, evidence truncation, clearing unrelated obligations,
+    // replacing fix history with latest task status, and silently ignoring an unreadable record.
+    const records = [
+      { version: 1, id: 'merge-lane', kind: 'hold', operation: 'record', reason: 'dirty integration', evidence: ['merge:bd-101', 'task-1-report.md'], data: { dirty: ['caller.txt'] } },
+      { version: 1, id: 'bd-101', kind: 'pending-closure', operation: 'record', reason: 'tracker closure unconfirmed', evidence: ['task-1-report.md', 'bead:bd-112', 'bead:bd-109'], data: { head: SHA('b'), reviewBead: 'bd-112', blockerBead: 'bd-109' } },
+      { version: 1, id: 'run-1:sweep', kind: 'deferred', operation: 'record', reason: 'caller owns full suite', evidence: ['progress.md#Launch:run-1'], data: { owner: 'caller', command: 'npm test' } },
+      { version: 1, id: 'bd-101', kind: 'fix', operation: 'record', reason: 'review finding', evidence: ['task-1-review.md', 'task-1-report.md'], data: { outcome: 'FIXED', reviewPath: 'task-1-review.md', head: SHA('f') } },
+      { version: 1, id: 'merge-lane', kind: 'hold', operation: 'clear', reason: 'caller committed stray file', evidence: ['git:' + SHA('e')], data: {} },
+    ]
+    const gaps = [
+      'Recovery: {broken',
+      'Recovery: ' + JSON.stringify({ ...records[0], version: 2 }),
+      'Recovery: ' + JSON.stringify({ ...records[0], evidence: [] }),
+      'Recovery: ' + JSON.stringify({ ...records[3], operation: 'clear' }),
+    ]
+    const dir = mkdtempSync(path.join(os.tmpdir(), 'recovery-roundtrip-'))
+    try {
+      const f = path.join(dir, 'progress.md')
+      const lines = [
+        '# SDD ledger — plan: recovery-plan.md',
+        ...records.map(r => 'Recovery: ' + JSON.stringify(r)), ...gaps,
+        'Task 1 (bd-101): pending retry',
+      ]
+      writeFileSync(f, lines.join('\n') + '\n')
+      const text = execFileSync('bash', [path.join(skillDir, 'scripts/ledger-digest'), f], { encoding: 'utf8' })
+      check(text.startsWith('# ledger-digest: 10 of 11 lines\n'), 'digest counts recovery records and gaps along with legacy Task tokens', text)
+      check(records.every(r => text.includes('Recovery: ' + JSON.stringify(r))) && gaps.every(g => text.includes(g)), 'digest transports complete evidence and uninterpretable recovery lines verbatim', text)
+      const out = await run({ args: liveArgs(), canned: oneTaskCanned({ 'read-ledger': { text } }) })
+      assertNoThrow(out)
+      check(out.result?.completed.includes('bd-101') && !out.result?.pendingRetry.includes('bd-101'), 'a later clean retry supersedes terminal status independently')
+      check(JSON.stringify(out.result?.recovery?.fixHistory) === JSON.stringify([records[3]]), 'earlier FIXED record survives the clean retry intact', JSON.stringify(out.result?.recovery))
+      check(JSON.stringify(out.result?.recovery?.obligations) === JSON.stringify([records[2]]), 'clears only matching hold and confirmed pending closure; deferred obligation stays owned by caller', JSON.stringify(out.result?.recovery))
+      check(out.result?.recovery?.gaps?.length === 4 && gaps.every(raw => out.result.recovery.gaps.some(g => g.source?.endsWith('/progress.md') && Number.isInteger(g.digestLine) && g.preview === raw.slice(0, 200) && g.reason && !('raw' in g))), 'malformed, unknown-version, evidenceless and fix-clear records remain explicit gaps', JSON.stringify(out.result?.recovery))
+      const clear = taskLedgerLines(out.trace, 'bd-101', { recovery: true }).filter(l => l.startsWith('Recovery: ')).map(l => JSON.parse(l.slice(10)))
+      check(clear.some(r => r.kind === 'pending-closure' && r.operation === 'clear' && r.id === 'bd-101' && r.evidence.includes('bead:bd-101')), 'confirmed tracker closure emits a durable matching clear', JSON.stringify(clear))
+    } finally { rmSync(dir, { recursive: true, force: true }) }
+  }
+
+  scenario('recovery digest: oversized records expose source gaps without echoing evidence bodies')
+  {
+    const dir = mkdtempSync(path.join(os.tmpdir(), 'recovery-size-'))
+    try {
+      const f = path.join(dir, 'progress.md')
+      const body = 'PRIVATE-EVIDENCE-BODY'.repeat(1000)
+      const lines = [
+        'Recovery: {broken ' + body,
+        'Recovery: ' + JSON.stringify({ version: 9, data: body }),
+        'Recovery: ' + JSON.stringify({ version: 1, id: 'bd-101', kind: 'hold', operation: 'record', reason: 'needs review', evidence: ['source.md'], data: { body } }),
+        'Task 1 (bd-101): complete, review clean',
+      ]
+      writeFileSync(f, lines.join('\n') + '\n')
+      const text = execFileSync('bash', [path.join(skillDir, 'scripts/ledger-digest'), f], { encoding: 'utf8' })
+      check(text.startsWith('# ledger-digest: 4 of 4 lines\n') && text.includes('Task 1 (bd-101): complete, review clean'), 'oversized-record gaps participate in existing header count and Task transport', text.slice(0, 400))
+      check(text.length < 1500 && !text.includes('PRIVATE-EVIDENCE-BODY') && readFileSync(f, 'utf8').includes(body), 'evidence remains on disk while digest transports bounded gap references', text.slice(0, 400))
+      const out = await run({ args: liveArgs(), canned: oneTaskCanned({ 'read-ledger': { text }, 'bd-ready': { ids: [] } }) })
+      assertNoThrow(out)
+      const gaps = out.result?.recovery?.gaps
+      check(gaps?.length === 3 && [1, 2, 3].every(line => gaps.some(g => g.source === f && g.line === line && g.reason && !('raw' in g) && JSON.stringify(g).length < 500)), 'malformed, unknown and oversized structured records expose original source line references without full raw content', JSON.stringify(gaps))
+    } finally { rmSync(dir, { recursive: true, force: true }) }
+  }
+
+  scenario('recovery producers: holds, closures, fix outcomes and deferred sweep carry durable evidence')
+  {
+    const recoveryLines = trace => trace.flatMap(t => extractLedgerLines(t.prompt)).filter(l => l.startsWith('Recovery: ')).map(l => JSON.parse(l.slice(10)))
+    const held = await run({ args: liveArgs(), canned: oneTaskCanned({ 'merge:bd-101': { id: 'bd-101', merged: false, dirty: ['caller.txt'] } }) })
+    const hold = recoveryLines(held.trace).find(r => r.kind === 'hold')
+    check(hold?.operation === 'record' && hold.data.dirty.includes('caller.txt') && hold.evidence.includes('merge:bd-101'), 'dirty merge lane records its observed hold with source evidence', JSON.stringify(hold))
+    const pending = await run({ args: liveArgs(), canned: oneTaskCanned({
+      'read-ledger': { text: 'Task 1 (bd-101): pending retry' },
+      'impl:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', base: SHA('a'), head: SHA('c'), files: ['src/a.js'] },
+      'review:bd-101': { id: 'bd-101', status: 'NEEDS_FIX', finding: 'missing null guard' },
+      'close-check:bd-101': { closed: [] }, 'close-only:bd-101': null,
+      'ledger:bd-101': null, 'ledger:bd-101:retry': { appended: true },
+    }) })
+    const emitted = recoveryLines(pending.trace)
+    const closure = emitted.find(r => r.kind === 'pending-closure')
+    const fix = emitted.find(r => r.kind === 'fix')
+    check(closure?.data.head === SHA('b') && closure.data.range === SHA('a') + '..' + SHA('b') && closure.evidence.includes('git:' + SHA('b')), 'pending closure preserves exact landing head and range', JSON.stringify(closure))
+    check(fix?.data.outcome === 'FIXED' && fix.data.head === SHA('f') && fix.data.base === SHA('c') && fix.data.reviewPath.endsWith('task-1-review.md') && fix.evidence.includes(fix.data.reviewPath), 'review fix retains outcome, commit range and source artifacts', JSON.stringify(fix))
+    const first = taskLedgerLines(pending.trace, 'bd-101', { recovery: true }).filter(l => l.startsWith('Recovery: '))
+    const retry = taskLedgerLines(pending.trace, 'bd-101', { retry: true, recovery: true }).filter(l => l.startsWith('Recovery: '))
+    check(first.length > 0 && JSON.stringify(first) === JSON.stringify(retry), 'elided append retry preserves every recovery record and evidence byte', JSON.stringify([first, retry]))
+    const deferred = await run({ args: liveArgs({ deferSweep: true, runTag: 'run-1' }), canned: oneTaskCanned() })
+    const obligation = recoveryLines(deferred.trace).find(r => r.kind === 'deferred')
+    check(obligation?.operation === 'record' && obligation.data.owner === 'caller' && obligation.data.runTag === 'run-1' && obligation.evidence.some(e => e.includes('Launch:run-1')), 'caller-owned sweep obligation is durable with invocation evidence', JSON.stringify(obligation))
+    check(deferred.result?.recovery?.obligations.some(r => r.id === obligation?.id), 'returned obligations reflect the emitted deferred measurement', JSON.stringify(deferred.result?.recovery))
+    for (const out of [held, pending, deferred]) assertNoThrow(out)
   }
 
   scenario('current requirements reach initial, retry, fixer, reviewer and triage consumers')
@@ -2544,6 +2635,7 @@ async function main() {
     }) })
     assertNoThrow(seamed)
     check(promptOf(seamed.trace, 'merge:bd-101:seam-cleared')?.includes(CHECK), 'the seam-cleared merge re-runs the check after the seam fix')
+    check(seamed.result?.recovery?.fixHistory.some(r => r.data.phase === 'seam' && r.data.outcome === 'FIXED' && r.data.reviewPath.endsWith('review-seam.diff') && !('head' in r.data)), 'seam fix retains its source without inventing an unreported head')
 
     // A failing check routes to one merge-check fix + one scoped review, then the check re-runs.
     const ERR = "error[E0061]: this function takes 2 arguments but 1 argument was supplied\n  --> crates/other/tests/provider.rs:41:9"
@@ -2569,6 +2661,7 @@ async function main() {
     check(!!crev && /READ-ONLY/.test(crev) && crev.includes(`${SHA('c')}..${SHA('e')}`) && crev.includes('<build-errors>'), 'one scoped read-only review of the fix diff')
     check(promptOf(fixed.trace, 'merge:bd-101:check-fixed')?.includes(CHECK), 'the check re-runs on the re-dispatched merge')
     check(taskLedgerLine(fixed.trace, 'bd-101', /^Merge: /) === 'Merge: bd-101 — rebase clean · seam-review none · check fail→fixed', 'Merge: line records check fail→fixed')
+    check(fixed.result?.recovery?.fixHistory.some(r => r.data.phase === 'check' && r.data.outcome === 'FIXED' && r.data.head === SHA('e') && r.data.base === SHA('c') && !('reviewPath' in r.data) && r.evidence.includes('merge:bd-101')), 'merge-check fix retains its error source and range without inventing a review artifact')
     check(JSON.stringify(fixed.result?.completed) === '["bd-101"]' && !fixed.trace.some(t => t.label.startsWith('triage:')), 'merged without the blocker path', JSON.stringify(fixed.result))
     check(!/file a blocker bead \(as below\) whose body also carries the command/.test(promptOf(fixed.trace, 'merge:bd-101') ?? '') && /do not file a blocker bead/.test(promptOf(fixed.trace, 'merge:bd-101') ?? ''), 'the merge agent reports the failure instead of filing a bead')
 

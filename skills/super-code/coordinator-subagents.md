@@ -78,7 +78,14 @@ Three things keep the run measurable and resumable:
   Resume reads them back, through `scripts/ledger-digest`, together with beads and git
   (`scripts/already-merged --landed <integration branch>` lists the task merges git holds, for
   landings whose ledger lines were lost). Do not write a `Human action:` or `Edge add:` line the
-  ledger already has.
+  ledger already has. Append the same compact `Recovery: <JSON>` records defined in
+  §Workspace and ledger: lane holds; pending closure with known landing head and related bead
+  IDs; caller-owned sweep deferral; and every review/seam/check fix result. Each record carries
+  source/artifact references in nonempty `evidence`; leave report bodies in their files. Clear
+  only the matching `(kind,id)` obligation with observed evidence, and keep fix history
+  append-only across clean retries. Preserve these records verbatim on elided append retries,
+  drain the existing writer before reporting settled results, and read `obligations`,
+  `fixHistory`, and malformed/unknown-version `gaps` separately from latest Task status.
 - **Dispatch names.** Name every dispatch `<kind>:<bead id>[:<suffix>]` with the Workflow kinds:
   `impl`, `review`, `fix`, `fix:<id>:seam` or `fix:<id>:check`, `seam-review` (`seam-review:<id>:check`
   for a merge-check fix's review), `merge`, `triage`, and `plan`, `plan-rest`, `final-review`, `final-review:cluster:<n>`, `final-review:seam` or

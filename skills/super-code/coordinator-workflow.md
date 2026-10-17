@@ -603,6 +603,44 @@ recurrence counts. The Resume read also echoes `scripts/already-merged --landed`
 `task-<id>` merges git holds on the integration branch, so a landing whose ledger lines were lost
 (an outage during its append) is still known (see "Resume behavior").
 
+The ledger also carries additive `Recovery: <JSON>` lines. These compact records contain
+`{version:1,id,kind,operation,reason,evidence,data}`: `kind` is `hold`, `pending-closure`,
+`deferred`, or `fix`; `operation` is `record` or `clear`. An obligation is identified by
+`(kind,id)`; a clear names that same pair. Fix records are append-only, including a FIXED
+attempt before a later clean retry. `reason` is a short routing description, `evidence` is a
+nonempty array of source/artifact references, and `data` holds known facts only. Keep report
+bodies and finding prose in their source artifacts. Unknown versions or malformed records
+remain actionable as explicit record gaps. Recovery lines up to 4096 characters pass through
+verbatim; larger lines become `Recovery gap: <original line number> <ledger path>`, preserving
+the complete source on disk. Decoded malformed/unknown compact records return the source path,
+digestLine and a preview of at most 200 characters; oversized gaps return source/line/reason.
+Neither path echoes a full evidence body into coordinator input.
+
+For example (the replay fixtures use these source names and SHA):
+
+```text
+Recovery: {"version":1,"id":"bd-101","kind":"pending-closure","operation":"record","reason":"tracker closure unconfirmed","evidence":["task-1-report.md","bead:bd-112","bead:bd-109"],"data":{"head":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb","reviewBead":"bd-112","blockerBead":"bd-109"}}
+Recovery: {"version":1,"id":"bd-101","kind":"fix","operation":"record","reason":"review finding","evidence":["task-1-review.md","task-1-report.md"],"data":{"outcome":"FIXED","reviewPath":"task-1-review.md","head":"ffffffffffffffffffffffffffffffffffffffff"}}
+```
+
+Workflow emits these at existing merge-lane holds, unconfirmed/confirmed closures, caller-owned
+sweep deferral, and review/seam/check fix results. A pending closure includes the exact known
+landing `head`/`range` and related `reviewBead`/`blockerBead`; its clear cites observed tracker
+closure. Hold ID `merge-lane` identifies the integration lane; data includes the affected task,
+branch/worktree, and at most five dirty paths plus their total count. A deferred sweep uses ID
+`<epicId>:sweep:<runTag>` and data `owner:"caller"`, `runTag`, branch and the declared command
+when known. The caller owns clearing it with measurement evidence. Fix data carries outcome,
+phase (`review|seam|check`), known base/head and report/source references. A check fix cites the
+merge dispatch's errors and report; it has no invented review-file pointer. Omitted commit
+fields mean unreported, never an inferred SHA.
+
+Both paths append through the existing ledger writer and drain before reporting settled results.
+Elided append retries keep Recovery lines intact. Legacy `Task`, `Merge` and `Human action`
+lines retain their formats and reducers. The return field `recovery` separates current
+`obligations`, append-only `fixHistory`, and `gaps` (source/line reference, reason, bounded preview) from latest terminal task
+buckets. Recovery/acceptance/attribution/metrics consumers read that history independently;
+retaining these facts alone does not reconcile Git/tracker state or complete the root.
+
 - **Workspace, one per epic:** I7 fix — every epic's plan file used to be named literally
   `plan.md`, so `scripts/sdd-workspace`'s basename-derived directory
   (`.superpowers/sdd/plan/`) was the *same path for every epic in the repo*: every epic's ledger
