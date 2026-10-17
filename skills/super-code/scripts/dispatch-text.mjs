@@ -103,14 +103,17 @@ const lastMetrics = t => t.split('\n').filter(l => l.startsWith('Metrics: ')).sl
 function loadBuilders(cfg) {
   let src
   try { src = readFileSync(join(codeSkill, 'coordinator.js'), 'utf8') } catch (e) { console.error(`dispatch-text: cannot read coordinator.js: ${e.message}`); process.exit(3) }
-  const cut = src.search(/^while \(true\) \{$/m)
-  if (cut < 0) { console.error('dispatch-text: coordinator.js has no top-level `while (true) {` round loop to cut at'); process.exit(3) }
+  // Rendering uses initialized declarations, then returns before operational Resume/Launch.
+  // Keep the whole source for hoisted real builders; no public startup bypass or fake identity.
+  const cut = src.search(/^\/\/ Resume from the ledger, read once before the round loop:/m)
+  if (cut < 0) { console.error('dispatch-text: coordinator.js has no operational Resume boundary'); process.exit(3) }
   const ret = `return { SWEEP_DEFERRED, planPrompt, implementPrompt, taskReviewPrompt, fixPrompt, seamReviewPrompt, checkFixReviewPrompt, finalReviewPrompt, finalClusterReviewPrompt, finalSeamReviewPrompt, finalReviewStubPrompt, mergePrompt, triagePrompt, assemblePrompt, reviewBeadOf, mergeCheckCommand, recordCheckEvidence, classifyCheckEvidence, verificationClosePrompt, verificationProblem }\n`
   const body = (src.slice(0, cut) + ret + src.slice(cut)).replace(/^export const meta/m, 'const meta')
   const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor
   const fn = new AsyncFunction('args', 'agent', 'log', 'phase', 'pipeline', 'parallel', 'budget', 'workflow', body)
   const noop = () => {}
-  return fn(cfg, async () => null, noop, noop, async () => [], async () => [], undefined, undefined)
+  const operational = () => { throw new Error('dispatch-text: builder rendering attempted an operational dispatch') }
+  return fn(cfg, operational, noop, operational, operational, operational, undefined, undefined)
 }
 
 const o = parse(process.argv.slice(2))
@@ -183,7 +186,7 @@ if (reviewOutput) {
 const planPath = o.plan || join(ws, `${epic}-plan.md`)
 
 const B = await loadBuilders({
-  epicId: epic, integrationBranch: branch, integrationWorktree: worktree, skillsRoot, runTag, ...(reviewOutput ? { invocationId } : {}), dryRun: false,
+  epicId: epic, integrationBranch: branch, integrationWorktree: worktree, skillsRoot, runTag, ...(typeof invocationId === 'string' && /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(invocationId) ? { invocationId } : {}), dryRun: false,
   config: { mergeCheck: mergeCheck && !/^none\b/.test(mergeCheck) ? mergeCheck : 'none', ...(testPaths ? { testPaths } : {}) },
 })
 

@@ -151,8 +151,14 @@ Three things keep the run measurable and resumable:
 
 - **Launch line.** Before the Launch line, run the same identity steps as `coordinator-workflow.md`
   §Pre-flight (step 2's run-identity bullets): the `Context:` line, the runTag, and the marker guard.
-  Mint `invocationId` as `inv-$(uuidgen)` for each new invocation; retain it across an explicit
-  unsettled resume only. A settled return (including blocked) followed by another invocation
+  In this ordinary-subagent path, the caller runs `uuidgen` outside Workflow and sets
+  `invocationId` to `inv-<trimmed uuidgen stdout>` for each new invocation before constructing
+  Launch or dispatching review work. Validate the token below; a missing/unsafe result stops
+  before Launch or review output. In the Workflow path, pass that caller-minted token in args,
+  or omit it so the existing Resume `read-ledger` mechanical dispatch mints externally and
+  returns structured `invocationId`; the script validates and persists it. Retain the token
+  across an explicit unsettled resume only (pass it in Workflow args); neither path mints on
+  that resume. A settled return (including blocked) followed by another invocation
   gets a fresh token even with the same runTag. Use 1–128 ASCII letters, digits, `_` or `-`,
   starting with a letter or digit. Do not copy the latest Launch identity just because runTag matches.
   Register only when `run-marker get … --cwd` finds no live marker; under super-auto neither register

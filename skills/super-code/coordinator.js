@@ -20,10 +20,11 @@ const A = typeof args === 'string' ? JSON.parse(args) : args
 const { epicId, integrationBranch, config, dryRun = false, prompts } = A || {}
 // runTag groups the enclosing run; invocationId owns one immutable review bundle.
 // Callers reuse a persisted invocationId only when resuming that unsettled invocation.
-// A fresh launch without an explicit identity mints one before its Launch line is persisted.
+// The existing Resume mechanical dispatch mints an omitted identity outside this Workflow VM.
 const runTag = (A && typeof A.runTag === 'string' && A.runTag.trim()) || epicId
-const invocationId = A?.invocationId === undefined ? 'inv-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 14) : A.invocationId
-if (typeof invocationId !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(invocationId)) throw new Error('coordinator invocationId must be a filesystem-safe token (1-128 letters, digits, underscores or hyphens)')
+const safeInvocationId = value => typeof value === 'string' && /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(value)
+let invocationId = A?.invocationId
+if (invocationId !== undefined && !safeInvocationId(invocationId)) throw new Error('coordinator invocationId must be a filesystem-safe token (1-128 letters, digits, underscores or hyphens)')
 // skillsRoot: absolute path of the skills/ directory. Agents run inside project worktrees, so every
 // template and script path is built from it.
 const skillsRoot = A && typeof A.skillsRoot === 'string' ? A.skillsRoot.replace(/\/+$/, '') : ''
@@ -192,7 +193,15 @@ async function dispatch(buildReal, stubKey, opts) {
 // `withLanded` also lists Git task landings, independently from the ledger transport.
 async function readLedger(stubKey, phaseName, withLanded = false) {
   const opts = { label: stubKey, phase: phaseName, schema: LEDGER_TEXT, ...tier('mechanical') }
-  const read = async (key, label) => checkDigest(await dispatch(() => readLedgerPrompt(integrationWorktree, ledgerPath, withLanded, phaseName === 'Finish'), key, { ...opts, label }), label)
+  const acquireIdentity = phaseName === 'Resume' && invocationId === undefined
+  let selectedIdentity
+  const read = async (key, label) => {
+    const out = checkDigest(await dispatch(() => readLedgerPrompt(integrationWorktree, ledgerPath, withLanded, phaseName === 'Finish', acquireIdentity && selectedIdentity === undefined), key, { ...opts, label }), label)
+    // Ledger transport can need a retry after minting succeeded. Keep that token as a unit;
+    // the retry repairs transport without allocating another identity for this invocation.
+    if (acquireIdentity && selectedIdentity === undefined && safeInvocationId(out?.invocationId)) selectedIdentity = out.invocationId
+    return out
+  }
   const first = await read(stubKey, stubKey)
   if (first && ['valid', 'valid-empty', 'missing'].includes(first.ledgerTransport.status)) return first
   const retry = await read(stubKey, stubKey + ':retry')
@@ -215,6 +224,7 @@ async function readLedger(stubKey, phaseName, withLanded = false) {
   const transport = retry || first
   return {
     text:transport.text, ledgerTransport:transport.ledgerTransport, sourceGaps,
+    ...(acquireIdentity ? {invocationId:selectedIdentity ?? transport.invocationId} : {}),
     ...(git ? {landed:git.landed} : {landedError:retry?.landedError || first?.landedError}),
     ...(review ? {reviewBase:review.reviewBase, reviewHead:review.reviewHead} : {reviewError:retry?.reviewError || first?.reviewError}),
   }
@@ -377,7 +387,7 @@ const EDGE_CUTS = { type: 'object', properties: { applied:{ type:'array', items:
 const CLOSE   = { type: 'object', properties: { rootClosed: {type:'boolean'}, closedThisRun: { type: 'array', items: { type: 'string' } }, scriptError: {type:'string'} }, required: ['rootClosed','closedThisRun'] }
 // Ledger reads carry digest text and independent source outcomes; parsing stays here.
 // `landed`: <branch> <tip> <merge> lines, or landedError when Git lookup failed.
-const LEDGER_TEXT = { type: 'object', properties: { text: { type: 'string' }, landed: { type: 'array', items: { type: 'string' } }, reviewBase: {type:'string'}, reviewHead: {type:'string'}, reviewError: {type:'string'}, landedError: {type:'string'} }, required: ['text'] }
+const LEDGER_TEXT = { type: 'object', properties: { text: { type: 'string' }, invocationId: { type: 'string' }, landed: { type: 'array', items: { type: 'string' } }, reviewBase: {type:'string'}, reviewHead: {type:'string'}, reviewError: {type:'string'}, landedError: {type:'string'} }, required: ['text'] }
 const SWEEP_SUMMARY = { type: 'object', properties: { summary: { type: 'string' } }, required: ['summary'] }
 const RESUME_CHECK = { type: 'object', properties: { landed: { type: 'boolean' }, sourceVerified: { type: 'boolean' }, closed: { type: 'array', items: { type: 'string' } }, open: { type: 'array', items: { type: 'string' } }, error: { type: 'string' } }, required: ['landed', 'closed', 'open'] }
 // Early-unblock bookkeeping (scripts/review-bead): the split's review bead and whether the task bead
@@ -724,6 +734,10 @@ function addEdge(dependent, blocker, reason, source) {
   return true
 }
 
+// The mapping is cumulative, so it is retained across rounds and a round whose ready ids are all
+// mapped skips the planner. In memory only: a restarted run plans on its first round.
+let lastPlanned = null
+
 // Resume from the ledger, read once before the round loop: after that, this process's own buckets
 // reflect every append. Runs in the integration worktree, which owns the ledger.
 phase('Resume')
@@ -731,6 +745,11 @@ const ledger = await readLedger('read-ledger', 'Resume', true)
 // Null ledger read: reconstruct nothing, loudly. `bd ready` still guards closed work, but prior
 // pendingRetry bounds are lost.
 if (!ledger) log('resume: ledger read unavailable (null dispatch) — proceeding with an empty reconstruction; bd ready remains the authority on closed work, but prior-run pendingRetry bounds are lost for this run')
+if (invocationId === undefined) {
+  if (ledger?.invocationId === undefined) throw new Error('coordinator invocationId unavailable from Resume mechanical dispatch — no Launch or review artifacts authorized')
+  if (!safeInvocationId(ledger.invocationId)) throw new Error('coordinator invocationId must be a filesystem-safe token (1-128 letters, digits, underscores or hyphens)')
+  invocationId = ledger.invocationId
+}
 // The resolved launch args go to the ledger as a `Launch:` line so a relaunch can copy them back
 // (dryRun stub tables omitted).
 const launchIdentity = await queueLedger(`Launch: args ${JSON.stringify({ epicId, integrationBranch, integrationWorktree, skillsRoot, runTag, invocationId, deferSweep, rootAcceptance, mergeCheck: mergeCheckCommand ?? 'none (no build/typecheck step declared)', config, dryRun: !!dryRun })}`,
@@ -894,9 +913,6 @@ let stopReason = null
 // reports it holds the merge lane for the rest of the run (no blocker bead, no triage), and the run
 // stops at the round boundary with 'integration-blocked' for the caller to clear and relaunch.
 let integrationBlocked = null
-// The mapping is cumulative, so it is retained across rounds and a round whose ready ids are all
-// mapped skips the planner. In memory only: a restarted run plans on its first round.
-let lastPlanned = null
 while (true) {
   nullsThisRound = 0
   workThisRound = 0
@@ -2457,7 +2473,7 @@ function blockerBeadRule() {
 // text is wrapped in tags and marked as data.
 
 // The brief assembler (spec §B2): final-review directories use invocationId; other consumers use runTag.
-// One profile table (declared inside the builder, because dispatch-text loads only the code before the round loop); a new consumer is one entry. The template (assembler-prompt.md) is generic: each
+// One profile table (declared inside the builder, because dispatch-text returns before operational Resume); a new consumer is one entry. The template (assembler-prompt.md) is generic: each
 // [SECTIONS] line below is `name: definition`, so a profile carries only its own sections' wording.
 function assemblePrompt(consumer, instance, { threshold = 80000, base = null, head = integrationBranch, specPaths = [] } = {}) {
   const ASSEMBLER_SECTIONS = {
@@ -2852,13 +2868,14 @@ function notifyPrompt(id, detail) {
   return `Send a notification (PushNotification or the configured messaging tool, if available) that task ${id} is ESCALATED: ${detail}. Report sent true/false. ${finalAnswerRule(false)}`
 }
 
-function readLedgerPrompt(integrationWorktree, ledgerPath, withLanded = false, captureReview = false) {
+function readLedgerPrompt(integrationWorktree, ledgerPath, withLanded = false, captureReview = false, acquireIdentity = false) {
   // MECHANICAL echo of scripts/ledger-digest: the lines this script parses, free text cut, so the
   // echo stays small however long the ledger grows. Parsing happens here as plain JS. `withLanded`
   // adds the task merges git holds; that script's failure never voids the ledger read.
+  const identityStep = acquireIdentity ? " Mint this fresh invocation's identity here, outside the Workflow script: run `uuidgen` once and return `inv-<uuidgen stdout, trimmed>` as structured `invocationId`. Use a filesystem-safe token (1-128 ASCII letters, digits, underscores or hyphens, starting with a letter or digit). Never copy a prior Launch identity or derive it from runTag. If minting fails, omit invocationId and report the failure; preserve the ledger text independently." : ''
   const landedStep = withLanded ? ` Then run \`bash ${codeSkill}/scripts/already-merged --landed ${integrationBranch}\` and report every line it prints, verbatim and in order, as \`landed\` (an empty list when it exits 0 and prints nothing; if it exits non-zero, omit landed and report landedError with the exact command and error — it never changes \`text\` or \`scriptError\`).` : ''
   const sourceStep = captureReview ? ` Capture review inputs once in this same dispatch: run \`git rev-parse --verify ${integrationBranch}^{commit}\` and keep its full output as reviewHead; resolve the repository's default branch commit and run \`git merge-base <default-branch-commit> <reviewHead>\`, then \`git rev-parse --verify <merge-base>^{commit}\` as reviewBase. Return reviewBase and reviewHead verbatim. If any capture command fails, omit both fields and return reviewError with the exact command and error; preserve the ledger text independently. Do not change the checkout.` : ''
-  return `Working directory: ${integrationWorktree} (the integration worktree, which owns the ledger). Run \`bash ${codeSkill}/scripts/ledger-digest ${ledgerPath}\` and report everything it prints, verbatim and in order, as \`text\` (including its counting header or explicit missing/unreadable status; empty stdout is unavailable transport). Do not read the ledger file yourself, do not create it, do not summarize. ${scriptOutcomeRule()}${landedStep}${sourceStep} ${finalAnswerRule(true)}`
+  return `Working directory: ${integrationWorktree} (the integration worktree, which owns the ledger). Run \`bash ${codeSkill}/scripts/ledger-digest ${ledgerPath}\` and report everything it prints, verbatim and in order, as \`text\` (including its counting header or explicit missing/unreadable status; empty stdout is unavailable transport). Do not read the ledger file yourself, do not create it, do not summarize. ${scriptOutcomeRule()}${identityStep}${landedStep}${sourceStep} ${finalAnswerRule(true)}`
 }
 
 function ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName, lines, structured = false) {
