@@ -14,6 +14,7 @@ epic: super-plan-ufz
 skillSource: /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills @ d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5 (6.4.2-alepar6.0)
 
 approvals:
+- review-collection · {"invocationId":"inv-mvc60k41-xt8p35rk04d","workspace":"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan","reviewPath":"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.md","review":"pending","required":[],"settled":false}
 - coverage-round-1 · canonical R-list: coverage-round-1-requirements.md · requirements: 15 · mapped: 15 · unmapped: 0 · auto rejected C1/C2 (compact omissions, existing ownership covers); no applied tree changes; no round 2.
 - top-split · human · super-plan-ufz.1 LEAF, super-plan-ufz.2 LEAF, super-plan-ufz.3 LEAF, super-plan-ufz.4 LEAF, super-plan-ufz.5 LEAF, super-plan-ufz.6 LEAF, super-plan-ufz.7 LEAF, super-plan-ufz.8 PROMOTE, super-plan-ufz.9 LEAF, super-plan-ufz.10 LEAF, super-plan-ufz.11 LEAF, super-plan-ufz.12 LEAF, super-plan-ufz.13 LEAF
 - key-abstractions · human · no new abstractions; extend existing components.
