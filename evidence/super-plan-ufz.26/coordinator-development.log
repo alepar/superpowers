@@ -1,0 +1,4 @@
+PASS dryRun 0: 48 agent dispatches, 0 errors
+PASS dryRun 1: 19 agent dispatches, 0 errors
+PASS dryRun 2: 23 agent dispatches, 0 errors
+PASS live-sim selection refusal: no final-review fallback dispatch; explicit hash gap retained

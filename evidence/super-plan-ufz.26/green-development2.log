@@ -1,0 +1,6 @@
+{"invocation":"inv-1","files":5,"bytes":1015,"maxBasename":11}
+{"invocation":"inv-2","files":7,"bytes":4241,"maxBasename":11}
+{"invocation":"inv-3","files":8,"bytes":7538,"maxBasename":11}
+{"invocation":"inv-4","files":9,"bytes":10977,"maxBasename":11}
+{"invocation":"inv-5","files":11,"bytes":14741,"maxBasename":11}
+PASS: four unchanged-product collection/re-entry cycles, new product, immutable archives, captured source, exact claims, unusual paths and explicit provenance gaps
