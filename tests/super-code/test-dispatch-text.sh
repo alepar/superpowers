@@ -8,6 +8,8 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 D="$REPO_ROOT/skills/super-code/scripts/dispatch-text"
 T=$(mktemp -d "${TMPDIR:-/tmp}/dispatch-text.XXXXXX")
+# Match the dispatcher's path.resolve spelling before deriving artifact expectations.
+T=$(node -p 'require("node:path").resolve(process.argv[1])' "$T")
 trap 'rm -rf "$T"' EXIT
 FAILURES=0
 
