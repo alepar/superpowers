@@ -221,8 +221,11 @@ for(const line of text.split('\n')){
  try{
   if(!approvals||!line.startsWith('- review-collection · '))throw Error();
   const r=JSON.parse(line.slice('- review-collection · '.length));if(!validCollection(r))throw Error();
-  if(r.recovery!==undefined){
-   const recovery=r.recovery,base=history.get(recovery?.recordSha256),old=latest.get(r.invocationId);
+  const old=latest.get(r.invocationId);
+  // Provenance is mandatory for the transition and every later recovery snapshot,
+  // including when a corrupted record omits the marker instead of changing it.
+  if(r.recovery!==undefined||old?.recovery!==undefined||(old?.settled&&old.reviewPath===null&&r.reviewPath!==null)){
+   const recovery=r.recovery,base=history.get(recovery?.recordSha256);
    if(!recovery||recovery.kind!=='settled-null'||!base||!base.settled||base.reviewPath!==null||base.review!==recovery.review||
       base.invocationId!==r.invocationId||!sameBundle(base,r)||!r.settled||r.reviewPath!==path.join(r.workspace,'final-review-'+r.invocationId+'.md')||
       !(recordHash(old)===recovery.recordSha256||(old?.reviewPath===r.reviewPath&&old.review===r.review&&sameRecovery(old.recovery,recovery))))throw Error();

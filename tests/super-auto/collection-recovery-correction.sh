@@ -35,12 +35,17 @@ check('repeated explicit recovery and plain replay are byte-idempotent',()=>{con
   ['unretained predecessor',r=>{r.recovery.recordSha256='0'.repeat(64)}],
   ['different unavailable verdict',r=>{r.recovery.review='another result'}],
   ['unsupported recovery kind',r=>{r.recovery.kind='replacement'}],
-  ['changed recovered bundle',r=>{r.required=[]}]
+  ['changed recovered bundle',r=>{r.required=[]}],
+  ['all omitted recovery markers',r=>{delete r.recovery}]
  ]){
   const changed=stable.split('\n').map(line=>{if(!line.startsWith('- review-collection · '))return line;const r=JSON.parse(line.slice('- review-collection · '.length));if(r.recovery)mutate(r);return '- review-collection · '+JSON.stringify(r)}).join('\n');
   fs.writeFileSync(f.run,changed);const result=collect(f,{replay:true});
   check('replay rejects '+name,()=>assert.equal(result.status,3,result.stdout+result.stderr));
  }
+ const lines=stable.split('\n'),lastSnapshot=lines.map((line,index)=>line.startsWith('- review-collection · ')?index:-1).filter(index=>index>=0).at(-1);
+ const snapshot=JSON.parse(lines[lastSnapshot].slice('- review-collection · '.length));delete snapshot.recovery;
+ lines[lastSnapshot]='- review-collection · '+JSON.stringify(snapshot);fs.writeFileSync(f.run,lines.join('\n'));
+ check('replay rejects omitted final snapshot recovery marker',()=>{const result=collect(f,{replay:true});assert.equal(result.status,3,result.stdout+result.stderr)});
  fs.writeFileSync(f.run,stable);
 }
 check('recovered archive remains useful after intentional source removal',()=>{fs.rmSync(f.workspace,{recursive:true});assert.equal(collect(f,{replay:true}).status,0);assert.equal(last(f).complete,true);assert.equal(fs.readFileSync(path.join(f.root,'reviews/probe/final-review-probe.md'),'utf8'),report)});
@@ -61,6 +66,7 @@ for(const mode of ['missing','symlink','malformed']){
  const f=fixture('settled-non-null');fs.writeFileSync(f.review,report);
  // Build a normal non-null settled fixture through the production CLI.
  fs.writeFileSync(f.run,'flags: skipPlanRoast=false skipCodeRoast=false\nphase: code\napprovals:\n');assert.equal(collect(f).status,0);
+ check('ordinary non-null collection replay needs no recovery marker',()=>{const stable=fs.readFileSync(f.run,'utf8');assert.ok(records(f).every(r=>r.recovery===undefined));assert.equal(collect(f,{replay:true}).status,0);assert.equal(fs.readFileSync(f.run,'utf8'),stable)});
  const before=fs.readFileSync(f.run,'utf8');const result=collect(f,{recover:true});
  check('recovery cannot relabel already settled non-null source',()=>{assert.equal(result.status,3,result.stdout+result.stderr);assert.equal(fs.readFileSync(f.run,'utf8'),before)});
  fs.writeFileSync(f.review,report.replace('ready','not ready'));
