@@ -74,6 +74,23 @@ After the status block come these sections, each item ending with the source it 
 | Entrypoints | Where to start reading, in order | the task tree's dependency order and the diff against `base`: root-most module first, then its public interface, then the primary caller |
 | Smells | Code the run is uneasy about, each with a one-line "the smell" | parked findings; parked `degraded-verdict` records; `DONE_WITH_CONCERNS` implementer reports; tasks whose one review needed a fix pass, which merged without re-review; the fixes of a `regressionPass-round-<N>` record, which merged with no re-roast; the fixes of a `sweepFix:` pass, its regression-only bead if any, and its re-run result |
 
+## Phase-7 cleanup updates
+
+The orchestrator refreshes Remaining after phase-7 cleanup decisions and before teardown, using
+`run.md`'s existing `codeBuckets.worktreesKept` and `processSweep` facts. Preserve task cleanup
+exit 3 or 4, each retained nested worktree/temp path and its containing parent, and the reason
+that prevents deletion. Report stopped, survived, unknown and deliberately kept processes as
+distinct outcomes, with the resources they still need; a refused parent root, pending final
+parent verification, missing invocation/result or unconfirmed exit-zero empty wrapper output
+is unknown inspection. A successful leaf sweep does not verify the parent. Only final verified
+process termination/discovery with no retained descendants permits ordinary parent cleanup.
+
+Delivery and the human's branch choice may finish while cleanup remains pending. Keep those
+cleanup obligations in Remaining even with `phase: done`, naming exact paths, helper exit/reason
+and the next safe verification. Do not turn retained resources into a clean status or replace
+the authoritative status line with a hand-written cleanup verdict. Archive required source
+artifacts and persist this update before the finisher can remove their containing worktree.
+
 ## Smells
 
 Smells are derived, not guessed. `super-code` already records every signal that means "this was hard": a parked finding is one a task's fix pass declined with a reason before the task merged, and a task whose review needed a fix pass merged that fix without a second review. Read those signals back rather than re-judging the code. This is the one section that surfaces work that passed review: a parked finding cleared the gate, and the reader should still know a judge argued against it.

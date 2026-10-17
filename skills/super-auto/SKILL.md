@@ -171,9 +171,70 @@ own, or the flags strand and the sequence is lost. Each row's parenthetical is t
 | 4 | Code roast (`roast-code`) | `super-roast` (PR) | Against the live integration branch, diffed against `run.md`'s `base`. Pass the run directory as the report-location override, the run's spec paths as `super-roast`'s stated intent (every `*-design.md` in the run directory, the root spec named by `run.md`'s `spec:` first, then the nested ones in name order; paths only, never their text), the iteration number from `roastCodeRound` (without it round 2's report overwrites round 1's file), `autonomous` when the run is (without it super-roast pauses for a human at its loop exits), and on rounds ≥2 the prior report — without which the round re-litigates what the last one already cleared — and the prior round's punch-list file (§Step 2 — scope filter), which super-roast passes to its `scripts/assemble-args` as `--punch-listed` so the round reports those keys as open, not new. Before each round, capture the integration head once with `git rev-parse --verify <branch>^{commit}`; pass that captured SHA with the recorded base to the assembler: `bash <skills-root>/super-code/scripts/dispatch-text --ledger <ledger> --run-tag <run.md runTag> assemble --consumer roast-code --instance r<roastCodeRound> --base <base sha> --head <captured head sha> --spec <the spec paths>` (`--instance audit` for the post-cap audit), spawn one mechanical-tier agent with "Read <path> and follow it exactly", and read its returned `dir`, `exit` and `fits`. Then pass super-roast `--repo <integration worktree> --base <base sha> --head <captured head sha>` and `--diff-stat @<dir>/diffstat.txt` and `--artifact "<branch>@<sha> vs <base>@<sha> — stated intent: <spec paths> — assembled inputs: <dir>/digest.md, slices under <dir>/slices/"`; never `--context` (assemble-args reads it only in design mode). When the agent returns nothing or a non-zero `exit`, run the round directly with the same captured base/head and append `assembler: unavailable — <cause>` to the friction log; `fits: no` does not change the roast inputs. Once super-roast returns `reportMarkdown`, write it to the round's report file and from then on read that report only through `bash <skills-root>/super-code/scripts/report-verdict <file>`. |
 | 5 | Fix loop (`fix-loop`) | — | Per round: step-back, scope filter, fix beads, re-enter `super-code`, loop to phase 4; see §Phase 5 — the code fix loop. |
 | 6 | Report (`report`) | — | Sweep, sweep-fix pass, report, upstream-feedback; see §Phase 6 — report. |
-| 7 | Finish (`finish`→`done`) | `finishing-a-development-branch` | Merge + clean up, once, gated by §Invariants I2 (phase-7 gate). Invoke it from this run's worktree, supplying `run.md`'s `branch` as the feature branch to merge and `base` as its destination, so neither is asked nor inferred from the cwd. Open the hand-back with `report.md`'s status line verbatim and its path, then the menu, with any parked upstream-feedback draft at the same menu (report-prompt.md §Output shape). The menu itself is always the human's, autonomous or not (§Invariants I5 (human-owned merge)). If the suite fails there, rewrite `report.md`'s status line with `report-status --stalled finish` (report-prompt.md §The status block) before stopping, since the report on disk says otherwise. Before removing this run's worktree, remove the task worktrees nested under it: `bash <skills-root>/super-code/scripts/remove-task-worktree --sweep <run worktree>/.worktrees <branch>` from the run worktree, which stops their processes and keeps anything uncommitted or unmerged (list what it kept to the human). Once `done` is written, `bash <skills-root>/super-code/scripts/run-marker clear --worktree <run worktree>`. Then stop the run's remaining processes, including any watcher you started on the ledger or run directory: `bash <skills-root>/super-code/scripts/stop-run-processes <run worktree> <run dir>`, run from outside the run worktree, and list any `survived:` line to the human. |
+| 7 | Finish (`finish`→`done`) | `finishing-a-development-branch` | Merge + clean up, once, gated by §Invariants I2 (phase-7 gate). Invoke it from this run's worktree, supplying `run.md`'s `branch` as the feature branch to merge and `base` as its destination, so neither is asked nor inferred from the cwd. Open the hand-back with `report.md`'s status line verbatim and its path, then the menu, with any parked upstream-feedback draft at the same menu (report-prompt.md §Output shape). The menu itself is always the human's, autonomous or not (§Invariants I5 (human-owned merge)). If the suite fails there, rewrite `report.md`'s status line with `report-status --stalled finish` (report-prompt.md §The status block) before stopping. Supply §Phase 7 — cleanup preconditions to the finisher: its Step 6 must wait for these checks, and any retained/unknown resource prevents removal of its containing parent. Delivery and the human's branch choice can finish while cleanup stays pending; record the retained facts before writing `done` and clearing the marker with `bash <skills-root>/super-code/scripts/run-marker clear --worktree <run worktree>`. No process sweep or required state write may be deferred until after its resources are removed. |
 
 Phase 7 is entered only through §Invariants I2 (phase-7 gate).
+
+### Phase 7 — cleanup preconditions
+
+A clean parent Git status does not protect dirty ignored `.worktrees/` descendants. The
+finisher's branch choice never authorizes deleting retained work or process-dependent resources.
+Inventory registered nested worktrees, retained temporary roots and existing
+`codeBuckets.worktreesKept`/`processSweep` facts before any cleanup. Keep their exact paths,
+reasons and helper exit statuses; missing results remain unconfirmed.
+
+1. Verify run-owned processes **before deleting each dependent resource**. Use the existing
+   `stop-run-processes` ownership matching, from outside the roots being checked. While nested
+   worktrees exist, use valid leaf task roots and their own temporary roots (and the separate run
+   directory when safe); do not pass their outer integration parent. A refused parent root is
+   unknown inspection, never permission to broaden roots or kills. Parent verification remains
+   pending until step 3; this permits only independently verified leaf cleanup, not deletion of
+   the parent or shared temporary resources. `survived:` means observed alive; `unknown:` or
+   unavailable inspection means unverified; `kept:` means deliberately preserved. Each retains
+   all resources dependent on that outcome. A real invocation of the fail-closed helper with a
+   captured exit 0 verifies discovery/termination for its supplied roots; legitimately empty
+   stdout is allowed only with that confirmed execution. An exit-zero empty output from a
+   wrapper, missing dispatch result or unavailable helper supplies no such proof.
+2. Sweep task worktrees with
+   `bash <skills-root>/super-code/scripts/remove-task-worktree --sweep <run worktree>/.worktrees <branch>`.
+   The helper verifies leaf processes before deleting their resources. If task-specific roots
+   themselves contain registered children, work from the innermost leaves rather than retrying
+   a refused broad root. Honor exit 3 or 4 and every `kept:`/`unknown:`/`survived:` resource: retain
+   its worktree/temp roots **and every containing parent**, even when Git says the parent is clean.
+   Exit 2, an unavailable invocation or missing output is also unverified, not successful cleanup.
+   Preserve explicit temporary resources with their retained task; do not delete a common temp
+   root while any dependent worktree or process is retained. Inspect `git worktree list --porcelain`
+   afterward and reconcile all retained/unchecked paths, including ignored unregistered nested
+   work and evidence. A zero sweep status alone cannot clear earlier retention without verifying
+   the named resource is now safe. If anything remains retained, defer parent removal.
+3. Only after no retained descendants or retained dependent temporary resources remain, verify the
+   parent/run roots with
+   `bash <skills-root>/super-code/scripts/stop-run-processes <run worktree> <run dir>`
+   plus any separately recorded run temporary roots, from outside all supplied roots. If a root
+   overlaps the caller/ancestor cwd or is otherwise refused, retain it as unknown; never bypass
+   the helper's root guards. Capture the actual exit and inspection facts before the finisher's
+   Step 6 or any temp deletion. Only verified termination/discovery, no surviving/unknown/kept
+   processes, and a reconciled inventory with no retained descendants permit ordinary parent
+   removal. Leave process ownership matching unchanged.
+
+Apply every applicable refusal below before the positive row; these are cleanup facts, not
+mutually exclusive run states. `retain` includes containing parents and dependent temp roots.
+
+| Fact | Evidence / precondition | Parent action |
+|---|---|---|
+| `task-retained` | Task cleanup exit 3 or 4, or retained/unchecked task resources | `retain` |
+| `resource-retained` | Any retained descendant worktree, ignored work, temp root or required unarchived evidence | `retain` |
+| `process-survived` | Owned process observed alive after attempted termination | `retain` |
+| `process-unknown` | Inspection/termination unavailable or root refused | `retain` |
+| `process-kept` | Deliberately preserved owned process | `retain` |
+| `process-unconfirmed` | Final parent verification pending or invocation/result missing | `retain` |
+| `verified-clear` | Confirmed successful final process verification and no retained descendants/resources | `remove` |
+
+Persist phase-7 cleanup facts through run-state.md and update report.md's Remaining section
+before teardown. Keep stopped, survived, unknown and deliberately kept outcomes distinct.
+If cleanup remains pending, report each preserved parent/worktree/temp path, reason and next
+safe check to the human. `phase: done` records completed delivery/choice, not verified cleanup;
+never remove a retained parent to make that status look tidy.
 
 For report/feedback metrics, use the reconciled ledger `Metrics:` source facts and
 `scope-dispositions --project <run.md>` JSON metrics/gaps. Exit 3 retains partial results;

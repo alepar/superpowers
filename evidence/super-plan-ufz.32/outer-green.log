@@ -1,0 +1,1 @@
+PASS baseline: ordinary parent removal exits 0 and destroys ignored dirty child

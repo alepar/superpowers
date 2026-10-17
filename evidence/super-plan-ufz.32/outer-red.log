@@ -1,0 +1,25 @@
+PASS baseline: ordinary parent removal exits 0 and destroys ignored dirty child
+node:internal/assert/utils:146
+  throw error;
+  ^
+
+AssertionError [ERR_ASSERTION]: phase 7 cleanup preconditions missing
+    at [stdin]:4:1
+    at runScriptInThisContext (node:internal/vm:219:10)
+    at node:internal/process/execution:485:12
+    at [stdin]-wrapper:6:24
+    at runScriptInContext (node:internal/process/execution:483:60)
+    at evalFunction (node:internal/process/execution:317:30)
+    at evalTypeScript (node:internal/process/execution:329:3)
+    at node:internal/main/eval_stdin:51:5
+    at ReadStream.<anonymous> (node:internal/process/execution:239:5)
+    at ReadStream.emit (node:events:514:20) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: undefined,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.9.0
