@@ -77,6 +77,17 @@ Keep the window full. The Workflow coordinator does these, and so do you:
   the digest it writes. When the assembler returns nothing or a non-zero exit, give the pass its
   direct inputs and append `assembler: unavailable — <cause>` to the ledger.
 
+Collect optional `evidence` and `requiredLiveChecks` arrays from RESULT replies in the existing
+task report/review. Use the complete source/check/kind/outcome records in
+`coordinator-workflow.md` §Source-bound check records, preserving the tested tree and output
+location. For deterministic classification, retain replies as a JSON array of `{dispatch, result}`
+and run `dispatch-text --ledger <ledger> check-evidence --results-file <replies.json>`; retain its
+JSON output with those artifacts. Its `records`, `gaps` and `requiredLiveChecks` equal Workflow's
+`checkEvidence`, including exact tree/command/configuration matching and distinct failed versus
+unavailable outcomes. Only matching live/pass evidence supplies an explicitly required live
+check. The reviewer judges semantic coverage; delivery buckets and caller acceptance stay
+separate. Old producers may omit the arrays; required checks without evidence stay outstanding.
+
 Three things keep the run measurable and resumable:
 
 - **Launch line.** Before the Launch line, run the same identity steps as `coordinator-workflow.md`

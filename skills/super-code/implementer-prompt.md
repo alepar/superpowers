@@ -146,6 +146,19 @@ workspace, which is where the reviewer reads it; don't write a copy anywhere els
 - What you implemented (or attempted, if blocked)
 - Tests: the exact command of your final run and its output (the relevant excerpt, including the
   summary line). The reviewer does not re-run tests, so this is the task's only test evidence.
+- `evidence`: retain source-bound check records in the report and return the same array in the
+  structured reply. Each record carries `sourceTree` (the full tested Git tree hash), `command`,
+  `configuration` (a concrete string; `default` when no options apply), `outcome`
+  (`pass|fail|unavailable`), `location` (the retained output path), and `kind`
+  (`live|simulated|fallback`). Example with an illustrative hash:
+  `{"sourceTree":"d84541aed84541aed84541aed84541aed84541ae","command":"node smoke.mjs","configuration":"target=staging","outcome":"pass","location":"evidence/smoke.log","kind":"live"}`.
+  `git rev-parse HEAD^{tree}` identifies clean committed source. For dirty source, use a temporary
+  Git index under your authorized temp root to snapshot the tested inputs with `git write-tree`;
+  retain the capture commands and include relevant untracked inputs. Preserve the real index.
+  Keep failed and unavailable required checks as those outcomes. For explicitly required live
+  checks, return `requiredLiveChecks` entries with `sourceTree`, `command`, `configuration`; the
+  reviewer judges their coverage. These optional fields add no tests or phases. Their absence is
+  an evidence gap when the task requires them.
 - TDD evidence, when the brief required TDD: the RED command, its failing output and why that
   failure was expected; the GREEN command and its passing output
 - Files changed
@@ -156,7 +169,8 @@ workspace, which is where the reviewer reads it; don't write a copy anywhere els
 
 Then return: `id`, `status` (IMPLEMENTED or BLOCKED, or BLOCKED_AUTH per your dispatch's
 permission rule), `files` touched, `base` (from step 0, or after the rebase in "Commit"), `head`, `stacked` / `reopened` when step 0
-reported them, and `blockerBead` when BLOCKED.
+reported them, `blockerBead` when BLOCKED, and the report's optional `evidence` and
+`requiredLiveChecks` arrays.
 
 ## Fix pass
 
@@ -189,4 +203,5 @@ too.
 
 Return: `id`, `status` FIXED (or BLOCKED / BLOCKED_AUTH), `head`, `declined`: one line per
 declined finding with its reason (omit it when you declined nothing), and `evidenceOnly`: one line
-per finding resolved in the report alone (omit it when there is none).
+per finding resolved in the report alone (omit it when there is none), plus the fix report's
+optional `evidence` and `requiredLiveChecks` arrays.

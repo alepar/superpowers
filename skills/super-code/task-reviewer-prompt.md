@@ -62,6 +62,16 @@ Check that the report carries the command and output of a test run that plausibl
 covers this task's changes: the right files or tests, a pass summary, and no failure the report
 glosses over. Missing or implausible evidence (no command, a run that failed to start, output for
 unrelated tests) is Important. Warnings in the output are Minor.
+The report's optional `evidence` array records `sourceTree` (full tested Git tree hash), `command`,
+`configuration` (string), `outcome` (`pass|fail|unavailable`), `location` and `kind`
+(`live|simulated|fallback`). Example with an illustrative hash:
+`{"sourceTree":"d84541aed84541aed84541aed84541aed84541ae","command":"node smoke.mjs","configuration":"target=staging","outcome":"pass","location":"evidence/smoke.log","kind":"live"}`.
+Check its source identity and whether the command/configuration covers the task acceptance.
+For explicitly required live checks, return `requiredLiveChecks` entries containing the expected
+`sourceTree`, `command`, `configuration`. Matching live/pass evidence supplies that check;
+simulated/fallback success leaves it outstanding. Failed and unavailable remain separate outcomes.
+Missing fields are evidence gaps when required. Judge coverage from the task's requirements;
+the coordinator's exact identity/kind/outcome classification does not establish semantic coverage.
 A failure the report calls pre-existing, unrelated, identical at base, environment-dependent or flaky
 is glossed over unless the report also shows that test's result at [BASE] (or, for flaky, repeated
 runs): without it, Important.
@@ -110,6 +120,10 @@ Write your full review to [REVIEW_FILE]:
   to fix it if that isn't obvious
 - **Test evidence:** the command you found in the report and your judgment of it; the Test changes
   commands and result
+- **Check records:** preserve the source-bound `evidence` and `requiredLiveChecks` arrays you used,
+  with your coverage judgment. Return these arrays in the structured reply too; reference the
+  original measurement locations and retain their kinds/outcomes without relabeling them as
+  tests you ran. Review verdict and measurement outcome remain separate facts.
 - **Strengths:** optional, brief
 
 Then return:
