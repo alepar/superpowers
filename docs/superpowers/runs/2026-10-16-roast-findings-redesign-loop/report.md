@@ -1,4 +1,4 @@
-status: clean [degraded: final review: not ready (cluster must-fixes in 6, 7, 8, 9, 13 and 15 remain open; the amend-checked resume abort and the unparked resumed abort affect both loops; the code loop's amend roast has no field owner or pointer), sweep: 3311a446 — 27 passed, 1 failed, 0 errors, 0 skipped; failing: tests/codex/test-package-codex-plugin.sh (environmental: scripts/package refuses a worktree checkout; passes on the primary main checkout; branch touches no packaging files); command: CLAUDE.md release test list (28 commands) @ 3311a446]
+status: clean [degraded: sweep: a2da6b6f — 27 passed, 1 failed, 0 errors, 0 skipped; failing: tests/codex/test-package-codex-plugin.sh (environmental: scripts/package refuses a worktree checkout; passes on the primary main checkout; branch touches no packaging files)]
 metrics: parked draft docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/upstream-feedback-draft.md (3 defects, 1 design question; not filed)
 
 # super-auto report — roast findings redesign loop (epic super-plan-59b)
@@ -42,18 +42,9 @@ Regression pass round 2 and final-review exception (one re-entry before phase 6)
 
 ## Remaining
 
+Resolved after hand-back (2026-10-17, at the main tab's challenge; the user chose to fix before release): all 10 Must-fix items of `final-review-last.md` and the post-cap audit's Should-fix (empty `work:` sweep wiring), FYI (`id_of` raw-title lookup, also the punch-listed SKILL.md:918 item) and Nit (abort ordering) were fixed in four parallel branches (merges b8ac2ce0, a8f04427, 41e6fcd6, 47c27c48) plus a2da6b6f. Disputed Blocking rows now count as unresolved in `report-status`, per vision §4 (no vision deviation). A fresh verification review (`final-review-mustfix-verify.md`) found all 13 resolved, verdict ready; its two new nits (`lastGood` `-` wording, a garbled comment) are fixed in a2da6b6f; its hardening note (a repo-relative ledger pointer reads as missing) is open, unreachable under the run-state convention.
+
 Final review (`final-review-last.md`, verdict `not ready`; `report-verdict --keys` exits 3 on this seam-review format, so items are read from its `## Must fix before landing` and `## Untested scope` sections):
-- [final review] not ready (cluster must-fixes in 6, 7, 8, 9, 13 and 15 remain open; the amend-checked resume abort and the unparked resumed abort affect both loops; the code loop's amend roast has no field owner or pointer) — degraded qualifier (report-status; codeBuckets.review)
-- [final review][Must-fix] both loops: the `amend-checked` resume replay re-runs amend-check against HEAD, which after a landed step-3 commit rejects on the empty diff and aborts a committed amendment with beads unfiled; use `--base <lastGood>` or detect the landed commit (final-review-last.md, clusters 8/13)
-- [final review][Must-fix] both loops: the `amend-checked` exit-3 route and the `aborted — <reason>` replay must park `degraded-verdict` `redesign aborted — <reason>` idempotently so a resume-time abort reaches Remaining (final-review-last.md, clusters 8/13)
-- [final review][Must-fix] run-state.md Field table and item 5 must name super-auto's phase-5 amend roast as a writer of `roastDesignRound`, `findingsLedgerDesign` and `roast-design:`; reword super-auto SKILL.md:224; give step 3 its `findingsLedgerDesign` rebuild invocation (final-review-last.md, clusters 9/6)
-- [final review][Must-fix] run-state.md worked example: pointer lists disagree with `roastCodeRound: 3` / `roastDesignRound: 3`; cite the round-3 design report for the `amend roast finding not fixed` park; fix the lead-in (final-review-last.md, cluster 9)
-- [final review][Must-fix] super-auto §Redesign cycle step 3 must write amend-roast build tasks to a durable `work:` file, pass it as `$AMEND` to Amend Mode step 4, and point resume's `r<M>` replay at it (final-review-last.md, clusters 6/8/13)
-- [final review][Must-fix] disputed-Blocking rule is inconsistent: report-status does not count `disputed` Blocking rows as unresolved while vision §4 and Amend Mode step 5 say it should; pick one rule (a vision deviation needs your human partner's approval) and align fixtures (final-review-last.md, clusters 7/13/15/19/21)
-- [final review][Must-fix] report-prompt.md must surface the `lastGood <sha>` of a `thrash — lastGood breach` redesign record (final-review-last.md, cluster 7)
-- [final review][Must-fix] super-design §Amend Mode step 4 `id_of` must match JSON-decoded titles (or use `bd create --silent` ids) so supersede and sweep wiring never run with an empty id (final-review-last.md, cluster 13; same defect as the punch-listed SKILL.md:918 item and the audit FYI below)
-- [final review][Must-fix] test-redesign-cycle-filing.sh stub `bd list` must emit escaped titles, with a `->`/`&` work-title case filed once, superseded, sweep-wired and deduped on replay (final-review-last.md, cluster 13)
-- [final review][Must-fix] amend-check:198 must normalise `owners:`/`amended:` spec paths through `spec_index` before the design-loop reverse-rule lookup, plus a `--loop design` test with `./docs/spec.md` vs `docs/spec.md` (final-review-last.md, cluster 15)
 - [final review][untested] no end-to-end redesign cycle test in either loop; every script stage is tested alone or in the chain test, which runs no orchestrator, bd or super-code (final-review-last.md)
 - [final review][untested] both loops' resume state dispatch and crash windows are prose only; contract-lint pins wording, not behaviour (final-review-last.md)
 - [final review][untested] cap and budget arithmetic is pinned only as spelling (final-review-last.md)
@@ -71,11 +62,6 @@ Final review (`final-review-last.md`, verdict `not ready`; `report-verdict --key
 - [final review][untested] test-redesign-chain.sh stale-path guard never scans AGENTS.md text (final-review-last.md)
 - [final review][untested] docs/superpowers/specs/INDEX.md has no automated check (final-review-last.md)
 
-Post-cap audit sub-Blocking findings (none fixed; `2026-10-17-roast-findings-redesign-loop-roast-pr-post-cap-audit.md`, verdict Should-fix (3 confirmed) [converged]):
-- [Should-fix] skills/super-design/SKILL.md:950 — design-loop Integration-sweep wiring iterates one empty `work:` line when the amend record has none, runs `bd dep add "$sweep" ""` and exits 1 before `beads-filed`; the replay fails the same way and parks `redesign incomplete` (introduced by fix a8e484b0, super-plan-59b.37) (post-cap audit)
-- [FYI, two seats rated Should-fix] skills/super-design/SKILL.md:953 — a8e484b0 added an unconditional consumer of the punch-listed `id_of` raw-title lookup, so any `work:` title with `<`, `>`, `&` or `"` now fails filing deterministically plus duplicates on replay [fix-regression] (post-cap audit)
-- [Nit] skills/super-auto/SKILL.md:300 (and super-design SKILL.md ~778) — the remove-then-rewrite abort order claims a crash replays the abort, but the `started` replay re-dispatches the designer instead; revert to rewrite-then-remove or detect the partial abort (introduced by a6ecccb5, super-plan-59b.31) (post-cap audit)
-
 Punch-listed, never filed as beads:
 - [out of scope (filtered)] [Nit] skills/super-design/scripts/amend-check:244 — Goal-section protection is a hardening the goal does not name (run.md scopeFilter-round-1)
 - [out of scope (filtered)] [Nit] skills/super-auto/resume.md:43 — transient git exit 2 on resume is outside the goal; costs at most one re-dispatch (run.md scopeFilter-round-1)
@@ -85,7 +71,6 @@ Punch-listed, never filed as beads:
 - [cluster dropped] c3-resume-redesign-replay — rule: resume handles a redesign round only through its `redesign-<loop>-<K>` record state, legacy lines replay as before, exit 2 retries without restore, only exit 3 restores, in both resume.md and super-design §Re-entry; in-scope members filed as super-plan-59b.21, punch-listed members resume.md:29/:43 left unfixed (run.md cluster dropped; roast-pr-1 step-back file)
 - [cluster dropped] c7-contract-pinning — rule: every new record format, token or knob is pinned at its consumer's contract with an asserting fixture; in-scope members filed as super-plan-59b.25, SKILL.md:171 left unfixed (run.md cluster dropped)
 - [cluster dropped] c8-amend-check-content-guards — rule: amend-check validates normalised, fence-aware content (Goal body, spec paths, duplicate `owners:`, untracked specs) with a test per input shape; in-scope members filed as super-plan-59b.26, amend-check:244 left unfixed (run.md cluster dropped)
-- [punch list] [Should-fix] skills/super-design/SKILL.md:918; :897 — `id_of` title escaping, roast r2, not fix-regression; since re-surfaced worse by the audit FYI above (run.md punchList-exit; roast-pr-2-punch-list.txt)
 - [punch list] final-review-fixloop-r1 cluster-2 unreviewed item (24 run-dir files over the review window) and its Untested scope list (run.md punchList-exit; final-review-fixloop-r1.md)
 - [punch list] automated security review on amend-check: fail-open git lookup (failed `git cat-file` treated as a new spec, skipping the Goal diff) and non-CommonMark fence parsing letting a Goal edit hide in a fake fence; not roast-confirmed (run.md punchList-exit; friction.md)
 

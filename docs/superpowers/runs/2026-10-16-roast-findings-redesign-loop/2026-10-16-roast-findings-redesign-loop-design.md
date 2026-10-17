@@ -387,7 +387,8 @@ Digest:
 - The calling loop, not Amend Mode, writes the cycle's `applied` state; the code loop's post-amend design roast is an ordinary numbered round owned by the caller.
 - The final-review keys file says whether a review ran, so a clean review resolves keys and a no-review round does not; the punch list merges the latest existing file across redesign rounds.
 - The redesign step-back line is written only after the branch is chosen; resume replays a redesign only through its `redesign-<loop>-<K>` record.
-- Known open at merge (report.md Remaining): the `id_of` raw-title lookup (JSON-escaped titles), an empty-`work:` loop in the design-loop sweep wiring, `amend-check` fail-closed git handling and CommonMark fence parsing, and the final review's untested-scope list.
+- After hand-back, a must-fix pass resolved every final-review Must-fix and the post-cap audit items: the `amend-checked` resume detects a landed spec commit against `lastGood`; aborts write their state first and park `redesign aborted` idempotently; the code loop's amend roast writes a durable `amend-code-<K>-roast.md` work list and owns its `roastDesignRound`/`findingsLedgerDesign`/`roast-design:` appends; `report-status` counts disputed Blocking as unresolved; `id_of` decodes bd's escaped titles; empty `work:` lists are guarded; `amend-check` normalises `owners:` paths.
+- Known open at merge (report.md Remaining): `amend-check` fail-closed git handling and CommonMark fence parsing, and the final review's untested-scope list.
 
 
 > *As this design is implemented and iterated on — bug fixes, adjustments, anything that diverged from the assumptions above — append a dated note here, whether or not a formal debugging skill was used.*
