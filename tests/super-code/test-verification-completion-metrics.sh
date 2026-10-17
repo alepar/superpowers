@@ -73,6 +73,7 @@ class WorkflowMetrics(unittest.TestCase):
             if kind!='pending':
                 agents += [dict(label='close-check:verify.1',start=43,end=44,result=dict(closed=['verify.1'])),
                            dict(label='ledger:verify.1:verification-settlement',start=45,end=46,result=dict(appended=True))]
+            if kind=='brief': agents.insert(2,dict(label='brief:verify.1',start=18,end=19))
             sc=dict(t0='2026-10-01T00:00:00Z',launch=dict(epicId='verify',config=dict(concurrency=1)),agents=agents)
             scenario=d/'scenario.json'; scenario.write_text(json.dumps(sc))
             subprocess.run(['node',str(ROOT/'tests/super-code/run-profile-fixture.mjs'),str(scenario),str(d/'workflow')],check=True,capture_output=True)
@@ -80,6 +81,7 @@ class WorkflowMetrics(unittest.TestCase):
             data=json.loads((d/'profile.json').read_text()); bead=data['beads'][0]
             self.assertEqual(bead['landed'],prior,'verification close-only is tracker completion, not a Git landing')
             self.assertEqual(bead['verificationOnlyCompleted'],kind!='pending')
+            if kind=='brief': self.assertEqual(bead['attempts'],['VERIFIED'],'legacy brief remains attached to its implementation')
             self.assertEqual(data['lane']['merges'],int(prior))
             self.assertEqual(bead['landedAt'],'2026-10-01T00:00:10.000Z' if prior else None)
             if kind!='pending': self.assertIn('verification-only 1',p.stdout)
@@ -87,9 +89,61 @@ class WorkflowMetrics(unittest.TestCase):
             if not prior: self.assertIsNone(data['simulation'])
             print('Workflow '+kind+': landing='+str(bead['landed'])+', verified='+str(bead['verificationOnlyCompleted']))
 
+    def test_workflow_verification_with_legacy_brief(self): self.check_case('brief')
     def test_workflow_verified_close(self): self.check_case('verified')
     def test_workflow_pending_close_is_not_completed(self): self.check_case('pending')
     def test_workflow_prior_merge_survives_verification(self): self.check_case('prior-merge')
+
+
+class WorkflowHistory(unittest.TestCase):
+    # Exact event shapes from the independent R3 readiness/prior-close probe pairs.
+    # Adding verification bookkeeping must not change already-evidenced delivery facts.
+    def check_history(self, family, completion):
+        mapping=[dict(id='ep.1',n=1,deps=[])]
+        if family=='readiness': mapping.append(dict(id='ep.2',n=2,deps=['ep.1']))
+        agents=[dict(label='ledger-append:launch',start=0,end=1),
+                dict(label='plan',start=1,end=2,result=dict(mapping=mapping)),
+                dict(label='impl:ep.1',start=10,end=20,result=dict(status='IMPLEMENTED' if family=='readiness' else 'ALREADY_MERGED'))]
+        if family=='readiness':
+            agents += [dict(label='impl:ep.2',start=25,end=30,result=dict(status='IMPLEMENTED')),
+                       dict(label='merge:ep.1',start=35,end=40,result=dict(merged=True)),
+                       dict(label='merge:ep.2',start=45,end=50,result=dict(merged=True))]
+        else:
+            agents += [dict(label='close-only:ep.1:landed',start=21,end=22,result=dict(status='CLOSED'))]
+        if completion not in ['baseline','settlement-only']:
+            agents += [dict(label='close-only:ep.1:verification',start=60,end=61,result=dict(status='CLOSED'))]
+        if completion in ['settled','failed-settlement','settlement-only']:
+            agents += [dict(label='ledger:ep.1:verification-settlement',start=62,end=63,result=dict(appended=completion!='failed-settlement'))]
+        sc=dict(t0='2026-10-01T00:00:00Z',launch=dict(epicId='ep',config=dict(concurrency=2,earlyUnblock=True) if family=='readiness' else dict(concurrency=1)),agents=agents)
+        with tempfile.TemporaryDirectory() as tmp:
+            d=pathlib.Path(tmp); scenario=d/'scenario.json'; scenario.write_text(json.dumps(sc))
+            subprocess.run(['node',str(ROOT/'tests/super-code/run-profile-fixture.mjs'),str(scenario),str(d/'workflow')],check=True,capture_output=True)
+            subprocess.run(['node',str(ROOT/'skills/super-code/scripts/run-profile.mjs'),'--workflow',str(d/'workflow'),'--out',str(d/'profile')],check=True,capture_output=True)
+            data=json.loads((d/'profile.json').read_text()); beads={b['id']:b for b in data['beads']}; parent=beads['ep.1']
+            self.assertTrue(parent['landed'],'later verification cannot erase an evidenced landing')
+            self.assertEqual(parent['landedAt'],'2026-10-01T00:00:'+('40' if family=='readiness' else '22')+'.000Z')
+            self.assertEqual(parent['verificationOnlyCompleted'],completion in ['settled','settlement-only'])
+            if family=='readiness':
+                child=beads['ep.2']
+                self.assertEqual(child['dependencyReadyAt'],'2026-10-01T00:00:20.000Z','historical implementation still releases its child before merge')
+                self.assertEqual(child['readyAt'],'2026-10-01T00:00:20.000Z')
+                self.assertEqual(child['waitMs'],5000)
+                self.assertEqual(data['lane']['merges'],2)
+            original='IMPLEMENTED' if family=='readiness' else 'ALREADY_MERGED'
+            expected=[original]+([] if completion=='baseline' else ['VERIFIED' if completion in ['settled','settlement-only'] else 'VERIFICATION_PENDING'])
+            self.assertEqual(parent['attempts'],expected,'delivery and later verification retain distinct identities')
+            print('Workflow history '+family+'/'+completion+': '+str(parent['attempts'])+', landing='+parent['landedAt'])
+
+    def test_readiness_control(self): self.check_history('readiness','baseline')
+    def test_readiness_after_verification(self): self.check_history('readiness','settled')
+    def test_prior_landed_closure_control(self): self.check_history('prior-close','baseline')
+    def test_prior_landed_closure_after_verification(self): self.check_history('prior-close','settled')
+    def test_readiness_after_pending_verification(self): self.check_history('readiness','pending')
+    def test_prior_landed_closure_after_pending_verification(self): self.check_history('prior-close','pending')
+    def test_readiness_after_failed_settlement(self): self.check_history('readiness','failed-settlement')
+    def test_prior_landed_closure_after_failed_settlement(self): self.check_history('prior-close','failed-settlement')
+    def test_readiness_after_settlement_only_resume(self): self.check_history('readiness','settlement-only')
+    def test_prior_landed_closure_after_settlement_only_resume(self): self.check_history('prior-close','settlement-only')
 
 unittest.main(verbosity=2)
 TEST

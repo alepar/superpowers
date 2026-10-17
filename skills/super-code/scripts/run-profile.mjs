@@ -1142,19 +1142,25 @@ const depsAt = (id, t) => [...(rows.get(id)?.deps ?? [])].filter(d => rows.has(d
 const dependentsOf = new Map()
 for (const r of rows.values()) for (const d of r.deps) { if (!dependentsOf.has(d)) dependentsOf.set(d, new Set()); dependentsOf.get(d).add(r.id) }
 
-// ---- per-bead attempts; every attempt starts with an `impl` dispatch (a review re-entry re-runs setup),
-// or with the `brief:` that preceded it in older coordinators ----
+// ---- per-bead attempts: impl/brief starts delivery; a later typed verification
+// starts a separate attempt even when recovery skips implementation and review. ----
 const beads = new Map()
 for (const a of timed) if (a.bead) {
   if (!beads.has(a.bead)) beads.set(a.bead, { id: a.bead, n: rows.get(a.bead)?.n, agents: [], attempts: [] })
   beads.get(a.bead).agents.push(a)
 }
 const hasJournal = run => runs.find(r => r.runId === run)?.journal
+const isVerification = a => a.result?.completionKind === 'verification-only'
+  || (a.kind === 'close-only' && a.suffix === 'verification')
+  || (a.kind === 'ledger' && /^verification-settlement(?::retry)?$/.test(a.suffix))
 for (const b of beads.values()) {
   let cur = null
   for (const a of b.agents) {
     const afterBrief = cur && cur.agents.at(-1)?.kind === 'brief'
-    if (!cur || a.kind === 'brief' || (a.kind === 'impl' && !afterBrief)) { cur = { bead: b.id, agents: [] }; b.attempts.push(cur) }
+    // A closure/settlement-only resume must not reclassify the preceding delivery:
+    // its implementation release and evidenced landing remain independent facts.
+    const verificationReentry = cur && a.kind !== 'impl' && isVerification(a) && !cur.agents.some(isVerification)
+    if (!cur || a.kind === 'brief' || (a.kind === 'impl' && !afterBrief) || verificationReentry) { cur = { bead: b.id, agents: [] }; b.attempts.push(cur) }
     cur.agents.push(a)
     a.attempt = cur
   }
@@ -1169,9 +1175,7 @@ for (const b of beads.values()) {
     // Coordinator-owned labels retain verification identity on closure-only resume.
     // CLOSED is repair output; only the acknowledged, post-check settlement append
     // confirms completion. Legacy untyped closure cannot establish a Git landing.
-    at.verificationOnly = at.agents.some(a => a.result?.completionKind === 'verification-only'
-      || (a.kind === 'close-only' && a.suffix === 'verification')
-      || (a.kind === 'ledger' && /^verification-settlement(?::retry)?$/.test(a.suffix)))
+    at.verificationOnly = at.agents.some(isVerification)
     at.verificationCompleted = at.status === 'VERIFIED' || at.agents.some(a => a.kind === 'ledger'
       && /^verification-settlement(?::retry)?$/.test(a.suffix) && a.result?.appended === true)
     if (at.verificationOnly) at.status = at.verificationCompleted ? 'VERIFIED' : 'VERIFICATION_PENDING'
