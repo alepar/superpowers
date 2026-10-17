@@ -35,6 +35,9 @@ kinds and options:
                     [--resolved-bead ID] [--consumes ID1,ID2]
   plan              --ids ID1,ID2 [--mode ready|rest|refill] [--reentry-ids ID1,ID2]
   triage            --id ID --blocker BEAD
+  check-evidence    --results-file F
+                    (JSON array of {dispatch, result} replies; outputs the shared Workflow
+                    classification, retaining source/check provenance and evidence gaps)
   assemble          --consumer final-review|roast-code|history|assess --instance I
                     [--threshold N] [--base SHA] [--head SHA] [--spec P1,P2]
   final-review      --mode single|cluster|seam|stub --base SHA --head SHA [--dir D] [--capped] [--sweep F|deferred]
@@ -97,7 +100,7 @@ function loadBuilders(cfg) {
   try { src = readFileSync(join(codeSkill, 'coordinator.js'), 'utf8') } catch (e) { console.error(`dispatch-text: cannot read coordinator.js: ${e.message}`); process.exit(3) }
   const cut = src.search(/^while \(true\) \{$/m)
   if (cut < 0) { console.error('dispatch-text: coordinator.js has no top-level `while (true) {` round loop to cut at'); process.exit(3) }
-  const ret = `return { SWEEP_DEFERRED, planPrompt, implementPrompt, taskReviewPrompt, fixPrompt, seamReviewPrompt, checkFixReviewPrompt, finalReviewPrompt, finalClusterReviewPrompt, finalSeamReviewPrompt, finalReviewStubPrompt, mergePrompt, triagePrompt, assemblePrompt, reviewBeadOf, mergeCheckCommand }\n`
+  const ret = `return { SWEEP_DEFERRED, planPrompt, implementPrompt, taskReviewPrompt, fixPrompt, seamReviewPrompt, checkFixReviewPrompt, finalReviewPrompt, finalClusterReviewPrompt, finalSeamReviewPrompt, finalReviewStubPrompt, mergePrompt, triagePrompt, assemblePrompt, reviewBeadOf, mergeCheckCommand, recordCheckEvidence, classifyCheckEvidence }\n`
   const body = (src.slice(0, cut) + ret + src.slice(cut)).replace(/^export const meta/m, 'const meta')
   const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor
   const fn = new AsyncFunction('args', 'agent', 'log', 'phase', 'pipeline', 'parallel', 'budget', 'workflow', body)
@@ -147,6 +150,16 @@ const readArg = k => { try { return readFileSync(o[k], 'utf8').trim() } catch (e
 
 let text, label
 switch (kind) {
+  case 'check-evidence': {
+    need('results-file')
+    let replies
+    try { replies = JSON.parse(readArg('results-file')) } catch (e) { fail(`invalid --results-file JSON: ${e.message}`) }
+    if (!Array.isArray(replies) || !replies.every(r => r && typeof r.dispatch === 'string' && /^[^:]+:[^:]+/.test(r.dispatch) && r.result && typeof r.result === 'object' && !Array.isArray(r.result))) fail('--results-file must be an array of {dispatch, result} replies')
+    for (const r of replies) B.recordCheckEvidence(r.result, r.dispatch)
+    text = JSON.stringify(B.classifyCheckEvidence(), null, 2)
+    label = 'check-evidence'
+    break
+  }
   case 'implement':
     need('id', 'n')
     text = B.implementPrompt(planPath, o.id, Number(o.n), branch, art(o.n), { parents: list(o.parents), reentry: !!o.reentry, recut: !!o.recut })
@@ -256,7 +269,7 @@ switch (kind) {
 }
 
 if (o.stdout) { process.stdout.write(text + '\n'); process.exit(0) }
-const out = o.out || join(ws, 'dispatch', `${label}.md`)
+const out = o.out || join(ws, 'dispatch', `${label}.${kind === 'check-evidence' ? 'json' : 'md'}`)
 mkdirSync(dirname(out), { recursive: true })
 writeFileSync(out, text + '\n')
 console.log(out)

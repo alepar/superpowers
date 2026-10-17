@@ -373,6 +373,51 @@ function scanTemplateSpans(src) {
 // ---------- scenarios ----------
 
 async function main() {
+  scenario('source-bound check evidence is independent of implementation and review status')
+  {
+    const identity = { sourceTree: SHA('d'), command: 'node smoke.mjs', configuration: 'target=staging' }
+    const record = (kind, outcome, location) => ({ ...identity, kind, outcome, location })
+    const evidence = [record('live', 'pass', 'evidence/live.log'), record('simulated', 'pass', 'evidence/sim.log'), record('fallback', 'pass', 'evidence/fallback.log'), record('live', 'fail', 'evidence/fail.log'), record('live', 'unavailable', 'evidence/unavailable.log')]
+    const out = await run({ args: liveArgs(), canned: oneTaskCanned({
+      'impl:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', base: SHA('a'), head: SHA('c'), files: ['src/a.js'], evidence },
+      'review:bd-101': { id: 'bd-101', status: 'CLEAN', evidence: [record('simulated', 'pass', 'review/sim.log')], requiredLiveChecks: [identity] },
+    }) })
+    assertNoThrow(out)
+    const measured = out.result?.checkEvidence
+    const fields = ['sourceTree', 'command', 'configuration', 'kind', 'outcome', 'location']
+    check(JSON.stringify(measured?.records?.map(r => fields.map(k => r[k]))) === JSON.stringify([...evidence, record('simulated', 'pass', 'review/sim.log')].map(r => fields.map(k => r[k]))), 'complete evidence survives both RESULT producers without changing provenance', JSON.stringify(measured))
+    check(measured?.records?.[0]?.dispatch === 'impl:bd-101' && measured?.records?.[5]?.dispatch === 'review:bd-101', 'measurement retains its producer separately from task outcome')
+    check(measured?.requiredLiveChecks?.[0]?.outcome === 'pass', 'matching live/pass discharges the explicitly required check')
+    check(out.result?.completed?.includes('bd-101'), 'additive records preserve existing completion routing')
+    const schema = out.trace.find(t => t.label === 'impl:bd-101')?.opts.schema
+    check(schema?.properties?.evidence?.items?.properties?.outcome?.enum?.join('|') === 'pass|fail|unavailable' && schema?.properties?.evidence?.items?.properties?.kind?.enum?.join('|') === 'live|simulated|fallback', 'RESULT validates the separate kind and outcome vocabularies')
+    for (const kind of ['simulated', 'fallback']) {
+      const gap = await run({ args: liveArgs(), canned: oneTaskCanned({
+        'impl:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', base: SHA('a'), head: SHA('c'), files: [], evidence: [record(kind, 'pass', `evidence/${kind}.log`)] },
+        'review:bd-101': { id: 'bd-101', status: 'CLEAN', requiredLiveChecks: [identity] },
+      }) })
+      assertNoThrow(gap)
+      check(gap.result?.checkEvidence?.requiredLiveChecks?.[0]?.outcome === 'unavailable', `${kind}/pass leaves the required live check outstanding`)
+    }
+    for (const outcome of ['fail', 'unavailable']) {
+      const out = await run({ args: liveArgs(), canned: oneTaskCanned({
+        'impl:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', base: SHA('a'), head: SHA('c'), files: [], evidence: [record('live', outcome, `evidence/${outcome}.log`)] },
+        'review:bd-101': { id: 'bd-101', status: 'CLEAN', requiredLiveChecks: [identity] },
+      }) })
+      assertNoThrow(out)
+      check(out.result?.checkEvidence?.requiredLiveChecks?.[0]?.outcome === outcome, `required live ${outcome} remains ${outcome}`)
+    }
+    const mismatch = await run({ args: liveArgs(), canned: oneTaskCanned({
+      'impl:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', base: SHA('a'), head: SHA('c'), files: [], evidence: [{ ...record('live', 'pass', 'evidence/other-tree.log'), sourceTree: SHA('e') }, { ...record('live', 'pass', 'evidence/other-config.log'), configuration: 'target=local' }, { ...record('live', 'pass', 'evidence/other-command.log'), command: 'node unit.mjs' }, { ...record('live', 'pass', 'evidence/bad.log'), kind: 'pretend' }] },
+      'review:bd-101': { id: 'bd-101', status: 'CLEAN', requiredLiveChecks: [identity] },
+    }) })
+    assertNoThrow(mismatch)
+    check(mismatch.result?.checkEvidence?.requiredLiveChecks?.[0]?.outcome === 'unavailable', 'another source tree, command or configuration cannot satisfy the check')
+    check(mismatch.result?.checkEvidence?.gaps?.length === 1, 'malformed evidence produces an explicit gap')
+    const legacy = await run({ args: liveArgs(), canned: oneTaskCanned() })
+    assertNoThrow(legacy)
+    check(legacy.result?.completed?.includes('bd-101') && legacy.result?.checkEvidence?.records?.length === 0, 'old producers remain compatible without invented evidence')
+  }
 
   scenario('review source identities: task and final builders share captured heads')
   {

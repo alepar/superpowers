@@ -610,6 +610,43 @@ bounded infrastructure-outage stop (`ready-unavailable`/`plan-unavailable`/`disp
 see "Null dispatch policy") — **not** by token budget: there is no budget-based pause. Which one happened is returned
 as `stopReason`, so a caller never has to infer it from the buckets.
 
+## Source-bound check records
+
+RESULT replies optionally carry `evidence` and `requiredLiveChecks`. Keep these arrays in the
+existing implementer/fixer report and review artifact as well as the reply; the reports retain
+them durably. An evidence record is:
+
+```text
+{"sourceTree":"d84541aed84541aed84541aed84541aed84541ae","command":"node smoke.mjs","configuration":"target=staging","outcome":"pass","location":"evidence/smoke.log","kind":"live"}
+```
+
+The hash above is illustrative. `sourceTree` is the full tested Git tree hash (40 or 64 lowercase
+hex characters), captured with `HEAD^{tree}` for clean committed source or `git write-tree` using
+a temporary index containing the tested changes/inputs. `configuration` is a concrete string
+(`default` when none); `location` points to retained check output. `kind` is
+`live|simulated|fallback`; `outcome` is independently `pass|fail|unavailable`. Failed execution
+and an unavailable check retain different outcomes. Legacy replies can omit the arrays; an
+explicitly required check without evidence stays outstanding.
+
+The reviewer selects required live-check identities against acceptance and returns them as
+`requiredLiveChecks: [{sourceTree, command, configuration}]`. The coordinator returns additive
+`checkEvidence: {records, gaps, requiredLiveChecks}` alongside its existing delivery buckets.
+Each record retains task `id` and producer `dispatch`. Each required check retains those fields,
+an `outcome`, and `matches` (indices into `records`). Matching requires the same task, exact tree,
+command and configuration, and kind `live`. Its outcome is `pass` if matching live/pass evidence
+exists, otherwise `fail` if matching live/fail exists, otherwise `unavailable`. Every matched
+record remains visible, including conflicting outcomes; this classification establishes evidence
+availability, while semantic coverage and acceptance remain the reviewer's/caller's decisions.
+Malformed arrays/records produce `gaps` with producer and field references. Omitted optional
+arrays produce no invented facts. Check records do not change task routing, add compulsory
+phases, or replace implementation, review or run acceptance.
+
+The ordinary coordinator uses the same validator/classifier through
+`dispatch-text --ledger <ledger> check-evidence --results-file <replies.json>`, where the JSON
+array contains `{dispatch, result}` replies. It writes `dispatch/check-evidence.json` by default
+(`--out` or `--stdout` also work). Keep that classification with the task/report evidence; its
+result shape equals Workflow's `checkEvidence`.
+
 ## Workspace and ledger
 
 This skill's `scripts/sdd-workspace` and the durable ledger it anchors exist to provide one

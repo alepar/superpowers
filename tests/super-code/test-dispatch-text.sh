@@ -27,6 +27,26 @@ printf '%s\n' '# SDD ledger — plan: ep-plan.md' \
   "Launch: mechanism ordinary-subagents · epic ep · invocationId ep · branch feat/x · integrationWorktree $W · concurrency 4 · earlyUnblock on · sweep deferred · reviewBase $PIN_BASE · reviewHead $PIN_HEAD · mergeCheck cargo check --all-targets" > "$L"
 TW="$W/.worktrees/feat-x--task-ep.2"
 
+echo "dispatch-text: evidence classification shares the Workflow record contract"
+node - "$T/results.json" <<'NODE'
+const fs = require('fs')
+const identity = { sourceTree:'d'.repeat(40), command:'node smoke.mjs', configuration:'target=staging' }
+fs.writeFileSync(process.argv[2], JSON.stringify([
+  { dispatch:'impl:ep.2', result:{ id:'ep.2', evidence:['live','simulated','fallback'].map(kind => ({...identity, kind, outcome:'pass', location:`evidence/${kind}.log`})) } },
+  { dispatch:'review:ep.2', result:{ id:'ep.2', requiredLiveChecks:[identity, {...identity, configuration:'target=production'}] } },
+  { dispatch:'impl:ep.3', result:{ id:'ep.3', evidence:[{...identity, kind:'live', outcome:'fail', location:'failed.log'}, {...identity, kind:'live', outcome:'unavailable', location:'unavailable.log'}] } },
+  { dispatch:'review:ep.3', result:{ id:'ep.3', status:'CLEAN'} },
+]))
+NODE
+run bash "$D" --ledger "$L" --stdout check-evidence --results-file "$T/results.json"
+assert_eq "$code" 0 "ordinary record classification exits 0"
+printf '%s\n' "$out" > "$T/classified.json"
+run node - "$T/classified.json" <<'NODE'
+const r = JSON.parse(require('fs').readFileSync(process.argv[2]))
+if (r.records.length !== 5 || r.records[0].sourceTree !== 'd'.repeat(40) || r.records[0].dispatch !== 'impl:ep.2' || r.records[0].location !== 'evidence/live.log' || r.records[3].outcome !== 'fail' || r.records[4].outcome !== 'unavailable' || r.requiredLiveChecks[0].outcome !== 'pass' || r.requiredLiveChecks[1].outcome !== 'unavailable' || r.gaps.length) process.exit(1)
+NODE
+assert_eq "$code" 0 "ordinary results preserve provenance, failed/unavailable and required-live gaps"
+
 echo "dispatch-text: implement"
 run bash "$D" --ledger "$L" implement --id ep.2 --n 2
 assert_eq "$code" 0 "exits 0"
@@ -38,6 +58,8 @@ assert_has "$txt" "[BRIEF_FILE] = $T/ws/task-2-brief.md" "artifacts in the ledge
 assert_has "$txt" "git worktree add $TW -b task-ep.2 feat/x" "workspace setup cuts from the integration branch"
 assert_has "$txt" "PROCESSES AND TEMP STATE" "process hygiene the implementer template points at"
 assert_has "$txt" "CURRENT REQUIREMENTS" "current requirements"
+assert_has "$txt" "evidence" "implementer RESULT carries optional evidence"
+assert_has "$txt" "sourceTree, command, configuration, outcome, location, kind" "implementer dispatch names the complete provenance contract"
 assert_lacks "$txt" "stack: ep.1" "no stacking without --parents"
 run bash "$D" --ledger "$L" --stdout implement --id ep.2 --n 2 --parents ep.1
 assert_has "$out" 'git merge --no-ff -m "stack: ep.1" task-ep.1' "--parents stacks on the parent's branch"
@@ -63,6 +85,8 @@ run bash "$D" --ledger "$L" --stdout final-review --mode single --base "$PIN_BAS
 assert_eq "$code" 2 "final review rejects a moving source ref"
 run bash "$D" --ledger "$L" --stdout review --id ep.2 --n 2 --base abc1234 --head "$PIN_HEAD"
 assert_has "$out" "BASE CHECK" "review carries the base check"
+assert_has "$out" "requiredLiveChecks" "review dispatch carries explicit live-check identities"
+assert_has "$out" "sourceTree, command, configuration, outcome, location, kind" "review dispatch carries the shared evidence contract"
 assert_has "$out" "[BASE] = abc1234" "and the reported base"
 printf 'error[E0061]: this function takes 2 arguments\n' > "$T/err.txt"
 run bash "$D" --ledger "$L" --stdout fix --id ep.2 --n 2 --base abc1234 --kind check --finding-file "$T/err.txt"
