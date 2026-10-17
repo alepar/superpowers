@@ -1,0 +1,14 @@
+import os,sys,json,time,subprocess,pathlib,uuid
+R=pathlib.Path('/private/tmp/ufz-live-isolation'); a=sys.argv[1:];seat=a.pop(0)
+assert seat in ['seat-a','seat-b','controller','verifier']
+assert a.pop(0)=='--cwd'; cwd=a.pop(0);assert a.pop(0)=='--'
+env=os.environ.copy(); env['PATH']=str(R/'bin')+os.pathsep+env['PATH'];env['GIT_TRACE2_EVENT']=str(R/'evidence'/f'{seat}-git-trace.jsonl')
+id=uuid.uuid4().hex; start=time.time(); log=R/'evidence'/f'{seat}-commands.jsonl'
+with log.open('a') as f: f.write(json.dumps({'event':'start','id':id,'time':start,'cwd':cwd,'argv':a})+'\n')
+child=subprocess.Popen(a,cwd=cwd,env=env,text=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+with log.open('a') as f:f.write(json.dumps({'event':'process','id':id,'pid':child.pid,'parentPid':os.getpid(),'time':time.time()})+'\n')
+stdout,stderr=child.communicate()
+p=subprocess.CompletedProcess(a,child.returncode,stdout,stderr)
+e={'event':'finish','id':id,'start':start,'time':time.time(),'cwd':cwd,'argv':a,'exit':p.returncode,'stdout':p.stdout,'stderr':p.stderr}
+with log.open('a') as f:f.write(json.dumps(e)+'\n')
+sys.stdout.write(p.stdout);sys.stderr.write(p.stderr);sys.exit(p.returncode)

@@ -1,0 +1,38 @@
+import pathlib,json,hashlib,subprocess,time,sys
+R=pathlib.Path('/private/tmp/ufz-live-isolation'); C=R/'caller';I=json.loads((R/'identities.json').read_text());obs=[json.loads(x) for x in (R/'evidence/observations.jsonl').read_text().splitlines()];initial=obs[0]; checks=[]
+def check(name,ok,evidence):checks.append({'name':name,'pass':bool(ok),'evidence':evidence})
+def git(*args,cwd=C):return subprocess.check_output(['git',*args],cwd=cwd,text=True).strip()
+base,head=I['base'],I['head'];adv1=(R/'control/stage1').read_text().strip();adv2=(R/'control/stage2').read_text().strip()
+check('captured commits still resolve',git('rev-parse',base+'^{commit}')==base and git('rev-parse',head+'^{commit}')==head,{'base':base,'head':head})
+check('two legitimate caller advances retained',git('rev-parse','HEAD')==adv2 and git('rev-parse',adv2+'^')==adv1 and git('rev-parse',adv1+'^')==head,{'advance1':adv1,'advance2':adv2,'log':git('log','-4','--format=%H %s')})
+check('caller remains on integration branch',git('symbolic-ref','HEAD')=='refs/heads/integration',git('symbolic-ref','HEAD'))
+for rel in ['caller/caller-sentinel.txt','caller/build/caller-output.txt','caller/lib/generated.mjs','seat-b/existing-output.txt']:
+ p=str(R/rel); hashes={x['files'][p] for x in obs};check('preserved throughout observation: '+rel,hashes=={initial['files'][p]},sorted(hashes))
+check('caller pending edit preserved',(C/'caller-session.txt').read_text()=='caller pending local edit: must survive both reviews\n',git('status','--porcelain','--untracked-files=all'))
+check('only expected caller tracked dirt',git('status','--porcelain','--untracked-files=all')=='M caller-session.txt',git('status','--porcelain','--untracked-files=all'))
+A=R/'seat-a/review-worktree';B=R/'seat-b/review-worktree'
+for seat,path in [('seat-a',A),('seat-b',B)]:
+ check(seat+' owns detached captured worktree',git('rev-parse','HEAD',cwd=path)==head and subprocess.run(['git','symbolic-ref','-q','HEAD'],cwd=path,capture_output=True).returncode==1,{'head':git('rev-parse','HEAD',cwd=path),'path':str(path)})
+check('A source generation isolated',(A/'lib/generated.mjs').read_text()=='export const generated = true;\n' and (C/'lib/generated.mjs').read_text()=='export const generated = false;\n',{'A':git('status','--porcelain',cwd=A),'B':git('status','--porcelain',cwd=B)})
+outputs=list((R/'seat-a').rglob('amounts.json'));check('A live reproduction wrote owned build output',len(outputs)>0,[str(p) for p in outputs])
+if outputs:
+ values=json.loads(outputs[0].read_text());check('A reproduction exercised captured negative-sign defect',any(x['cents']==-50 and x['actual']=='$0.50' for x in values),values)
+for seat in ['seat-a','seat-b']:
+ events=[json.loads(x) for x in (R/'evidence'/f'{seat}-commands.jsonl').read_text().splitlines()];fin=[x for x in events if x['event']=='finish'];trace=[json.loads(x) for x in (R/'evidence'/f'{seat}-git-trace.jsonl').read_text().splitlines()];starts=[x for x in trace if x.get('event')=='start'];argvs=[x['argv'] for x in starts]
+ repos={x['sid']:x.get('worktree') for x in trace if x.get('event')=='def_repo'}
+ forbidden=[x for x in starts if any(t in ['reset','restore','checkout','switch','update-ref','commit','merge','stash'] for t in x['argv'][1:]) and (repos.get(x['sid'])==str(C) or '/' not in x['sid'])]
+ owned_internal_resets=[{'argv':x['argv'],'worktree':repos.get(x['sid']),'sid':x['sid']} for x in starts if 'reset' in x['argv'][1:] and x not in forbidden]
+ (R/'evidence'/f'{seat}-internal-worktree-resets.json').write_text(json.dumps(owned_internal_resets,indent=2)+'\n')
+ check(seat+' Git trace has no checkout repair or caller mutation',not forbidden,forbidden)
+ check(seat+' re-read captured source after second caller advance',any(x['start']>next(o['time'] for o in obs if o['label']=='after-advance2') and head in json.dumps(x['argv']) and ('show' in json.dumps(x['argv']) or 'diff' in json.dumps(x['argv'])) for x in fin),{'commands':len(fin),'nonzero_exits':[{'argv':x['argv'],'exit':x['exit'],'stderr':x['stderr']} for x in fin if x['exit']]})
+ check(seat+' raw detailed response exists',(R/seat/'response.md').exists(),str(R/seat/'response.md'))
+pkg=C/'.superpowers/sdd/ufz-live-review-plan/final-review-seat-b-live.md.diff';check('B direct-input package pins captured pair',pkg.exists() and f'{base}..{head}' in pkg.read_text() and adv2 not in pkg.read_text(),str(pkg))
+check('independent mutable outputs remain in each seat', (R/'seat-a/repro-output/amounts.json').exists() and (R/'seat-b/output/build/amounts.json').exists(), {'A':str(R/'seat-a/repro-output'),'B':str(R/'seat-b/output')})
+check('B direct-input final artifact exists',(C/'.superpowers/sdd/ufz-live-review-plan/final-review-seat-b-live.md').exists(),'final-review-seat-b-live.md')
+m=json.loads((R/'source-manifest.json').read_text());changed=[]
+for file,v in m['files'].items():
+ if file.startswith('coordinator.js:'):continue
+ if hashlib.sha256((pathlib.Path(m['product'])/file).read_bytes()).hexdigest()!=v['sha256']:changed.append(file)
+check('evaluated product sources unchanged since capture',not changed,changed)
+result={'time':time.time(),'checks':checks,'pass':all(x['pass'] for x in checks),'observations':len(obs),'base':base,'head':head,'advance1':adv1,'advance2':adv2}
+(R/'evidence/verification.json').write_text(json.dumps(result,indent=2)+'\n'); print(json.dumps(result,indent=2));sys.exit(0 if result['pass'] else 1)

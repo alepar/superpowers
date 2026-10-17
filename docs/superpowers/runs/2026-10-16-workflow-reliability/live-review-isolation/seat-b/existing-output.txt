@@ -1,0 +1,1 @@
+seat B prior output: preserve exactly

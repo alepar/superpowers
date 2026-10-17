@@ -1,0 +1,6 @@
+#!/bin/sh
+if [ "$1" = show ] && [ "$2" = ufz-live-review ] && [ "$3" = --json ]; then
+  cat /private/tmp/ufz-live-isolation/spec.json
+else
+  echo "read-only fixture bd: unsupported operation" >&2; exit 2
+fi

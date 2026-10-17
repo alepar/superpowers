@@ -1,0 +1,7 @@
+diff --git a/lib/generated.mjs b/lib/generated.mjs
+index 392803b..627efc7 100644
+--- a/lib/generated.mjs
++++ b/lib/generated.mjs
+@@ -1 +1 @@
+-export const generated = false;
++export const generated = true;

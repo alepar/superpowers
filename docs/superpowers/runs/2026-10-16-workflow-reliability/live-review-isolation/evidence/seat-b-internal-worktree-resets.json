@@ -1,0 +1,12 @@
+[
+  {
+    "argv": [
+      "/opt/homebrew/opt/git/libexec/git-core/git",
+      "reset",
+      "--hard",
+      "--no-recurse-submodules"
+    ],
+    "worktree": "/private/tmp/ufz-live-isolation/seat-b/review-worktree",
+    "sid": "20261017T081626.934234Z-H0c8f6953-P0001657e/20261017T081626.944353Z-H0c8f6953-P0001659a"
+  }
+]

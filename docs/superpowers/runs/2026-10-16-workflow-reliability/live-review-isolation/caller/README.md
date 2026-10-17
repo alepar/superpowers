@@ -1,0 +1,1 @@
+Format integer cents as dollars with two decimal places; retain negative signs including amounts between -99 and -1 cents. reproduce.mjs generates source and build output in its working tree. OUT_DIR chooses build output; TMPDIR chooses temporary output.

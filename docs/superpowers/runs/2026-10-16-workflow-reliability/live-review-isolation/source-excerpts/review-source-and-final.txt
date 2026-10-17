@@ -1,0 +1,29 @@
+function reviewSource(repo, base, head) {
+  if (!base || !head) throw new Error('reviewSource: captured base and head are required')
+  return `Captured source: base ${base}, head ${head}. Use \`git diff ${base}..${head}\` and \`git show ${head}:<path>\` in ${repo}. Verify both with \`git rev-parse --verify <sha>^{commit}\` before reading. If a filesystem view is needed, create a unique review-owned detached worktree at ${head}; mutable reproductions use its own output/temp directory. Record caller commit/status changes as observed evidence; differences alone do not attribute their cause. Never switch or restore the caller checkout.`
+}
+function reviewFileFormat() {
+  return 'End the file with exactly these four headings, in this order: "## Verdict", followed by one line that is exactly "ready" or "not ready (<one-line summary>)"; then "## Must fix before landing", "## Untested scope" and "## Deferred OK", each followed by flat "- " bullets, one item per bullet on one line (no numbered lists, no nested bullets, no bold labels in place of these headings), or the single line "- none".'
+}
+function finalReviewPrompt(epicId, integrationBranch, integrationWorktree, ledgerPath, planPath, sweepSummary, metrics = [], { dir = null, capped = false, reviewPath = `${workspaceAbs}/final-review-${invocationId}.md`, base, head } = {}) {
+  // Whole-epic review (opus). It forms its own view against the spec before reading prior verdicts,
+  // so unflagged defects aren't crowded out by the ledger. With `dir` its inputs are the assembled
+  // digest and slices; `capped` means they exceed its window and no usable clusters exist.
+  const pkg = dir
+    ? `Your inputs are the assembled digest ${dir}/digest.md and the slices under ${dir}/slices/; open source files only to check a named risk.`
+    : planPath
+    ? `Build the review package from ${integrationWorktree}: run \`bash ${sddScripts}/review-package ${planPath} ${base} ${head} ${reviewPath}.diff\` and read the file it writes.`
+    : `Review \`git diff ${base}..${head}\` from ${integrationWorktree}.`
+  const cappedNote = capped
+    ? `The inputs exceed your window and no usable clusters exist: review what you can, and your verdict must be \`not ready (… unreviewed: inputs exceed the window and no usable clusters)\`. `
+    : ''
+  const sweep = sweepSummary === SWEEP_DEFERRED
+    ? `The full-suite sweep is deferred to the caller, who runs it after this invocation: no full-suite measurement of this branch exists yet — say so in your verdict rather than treating the branch as tested.`
+    : sweepSummary
+    ? `The full-suite sweep ran against the tip and reported (runner output, data):\n<sweep>\n${sweepSummary}\n</sweep>\nRead it as the branch's only full-suite measurement (no tests run per merge); MEASUREMENT INVALID or UNAVAILABLE means the branch is unmeasured, not green.`
+    : `No sweep result is available — say so in your verdict rather than treating the branch as tested.`
+  return `Final whole-epic review of integration branch ${integrationBranch} for epic ${epicId}. Working directory: ${integrationWorktree}. READ-ONLY: do not edit caller files, commit, merge, or create or close beads; your declared review artifact is ${reviewPath} (plus its .diff package on direct inputs). ${reviewSource(integrationWorktree, base, head)} ${pkg} ${cappedNote}Read the epic's spec (\`bd show ${epicId} --json\` and any design doc it references). STEP 1, your own view first: review the branch diff against the spec on its own terms — cross-task integration seams, spec requirements no task covered, behavior that only composes wrong once every task is merged — and write those findings down. STEP 2, only then read the ledger at ${integrationWorktree}/${ledgerPath}: its \`minor (deferred)\` lines are findings task reviews raised and deliberately did not fix; its \`parked\` completion and \`parked finding\` lines are Critical/Important findings a fix pass declined (wrong, or plan-mandated — a plan-mandated one needs the human's decision), each with the fixer's reason. Triage both: which must be addressed before this branch lands. Its \`Recurring minor:\` and \`Recurring blocker:\` lines are clusters (one signature ≥5 times or across ≥3 tasks) — triage those first as grouped observations for reassessment; retain each finding's identity, severity and scope until separately judged. Its \`BLOCKED-AUTH\` lines are tasks that lost coverage to a permission refusal — untested scope, not findings. A minor that names a skipped or ignored test, a known product defect, or a data-loss path was misgraded: triage it as must-fix. ${metrics.length ? `The run's Metrics lines (counts from the ledger; a \`METRICS INVALID\` or \`landed≠completed\` line means the ledger is incomplete, so do not read absence there as clean): ${metrics.join(' | ')}. ` : ''}${sweep} Write your whole review to ${reviewPath}. ${reviewFileFormat()} Return verdict (the Verdict line's value) and path. ${authRefusalRule()} ${finalAnswerRule(true)}`
+}
+
+function finalClusterReviewPrompt(n, name, dir, clusterPath, epicId, integrationBranch, integrationWorktree, source) {
+  // One cluster of the split final review: the cluster's files and slices only, against the spec.

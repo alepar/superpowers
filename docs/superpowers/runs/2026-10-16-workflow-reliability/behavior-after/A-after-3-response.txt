@@ -1,0 +1,13 @@
+Leave `/tmp/acme-billing` clean on `feature/payments@2c22`; do not switch, reset, or restore it.
+
+Reproduce the supplied review target, `1a11` against `0b00`, using read-only Git objects and an owned detached worktree at `/tmp/acme-review` pinned to `1a11`. Run the writing reproduction there so `fixtures/generated.json` and `build/results.json` stay outside the caller’s checkout.
+
+Record that the caller’s current HEAD differs from the captured review head and includes a sibling commit. That establishes snapshot drift; it does not establish who caused it or invalidate findings against `1a11`. Findings do not automatically cover `2c22`.
+
+Retain `/tmp/acme-review`, its generated scratch files, and `/tmp/acme-test-home`. Process discovery failed, so cleanup cannot establish that the owned server has released those resources. Do not kill the unrelated developer server or use the shared port to identify cleanup targets.
+
+Issue this handoff:
+
+> Review target remains `feature/payments@1a11` vs `main@0b00`; reproduction will run in the detached `/tmp/acme-review` worktree at `1a11`. The caller’s checkout is clean at `2c22`, includes an additional sibling commit, and was left unchanged. This review does not cover that additional commit.
+>
+> Termination of owned test server PID 8241 was requested successfully, but shutdown is unconfirmed: follow-up process discovery returned permission denied. The wrapper’s empty `stopped`/`survived` arrays do not establish that no processes remain. Discovery stderr is preserved. `/tmp/acme-review` and `/tmp/acme-test-home` are retained pending successful process verification; cleanup remains incomplete. The unrelated server was left untouched.

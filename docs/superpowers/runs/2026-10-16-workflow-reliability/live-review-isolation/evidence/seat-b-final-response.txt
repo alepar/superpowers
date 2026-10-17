@@ -1,0 +1,4 @@
+{
+  "verdict": "not ready (negative sub-dollar amounts lose their required sign)",
+  "path": "/private/tmp/ufz-live-isolation/caller/.superpowers/sdd/ufz-live-review-plan/final-review-seat-b-live.md"
+}

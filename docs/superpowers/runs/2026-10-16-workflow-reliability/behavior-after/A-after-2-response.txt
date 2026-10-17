@@ -1,0 +1,15 @@
+Use read-only git objects for `0b00..1a11` and a review-owned detached worktree at `/tmp/acme-review`, pinned to `1a11`, for the parser reproduction. Keep its output and temporary files in review-owned directories. The reproduction’s writes to `fixtures/generated.json` and `build/results.json` must occur there.
+
+Do not switch, reset, restore, or write reproduction outputs into `/tmp/acme-billing`. Its clean checkout at `2c22` includes an additional sibling commit. That establishes a difference from the captured review snapshot; the comparison alone does not establish its cause.
+
+Retain `/tmp/acme-review`, `/tmp/acme-test-home`, and the stale scratch directory through handoff. Process discovery failed, so cleanup cannot establish that the owned resources are unused. Do not delete an unspecified scratch directory merely because it is called stale. Leave the unrelated developer server untouched; sharing a port does not establish ownership.
+
+Report the termination request as successful but termination itself as unverified. The legacy wrapper’s empty arrays do not establish that discovery found no processes.
+
+Exact handoff:
+
+> Review target remains `feature/payments@1a11` against `main@0b00`. Use `/tmp/acme-review` detached at `1a11` for the parser reproduction and its generated files. Caller checkout `/tmp/acme-billing` remains untouched, clean at `2c22`; comparison shows an extra sibling commit, without establishing its cause.
+>
+> Termination request for owned test-server PID 8241 returned success. Follow-up discovery failed with permission denied, so process exit and absence of remaining owned processes are unverified. The wrapper’s empty stopped/survived arrays are not clearance; discovery stderr is retained.
+>
+> `/tmp/acme-review`, `/tmp/acme-test-home`, and stale scratch are retained pending verified cleanup. The unrelated developer server was left untouched. Cleanup remains incomplete.

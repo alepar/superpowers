@@ -1,0 +1,13 @@
+Leave `/tmp/acme-billing` clean on `feature/payments@2c22`; do not switch, reset, or restore it. Review the captured `1a11` against `0b00` using read-only Git objects. Run the writing reproduction only in the review-owned detached worktree `/tmp/acme-review` pinned to `1a11`, with separate review-owned temporary/output directories.
+
+The comparison establishes that the caller now has a different commit and an additional sibling commit. It does not establish that the review changed the checkout or that the parser failure occurs at `2c22`.
+
+Retain `/tmp/acme-review`, `/tmp/acme-test-home`, and associated scratch resources: process discovery failed, so cleanup safety is unconfirmed. Do not clear caller scratch based solely on its “stale” label. Do not stop the unrelated developer server or kill by port.
+
+Issue this handoff:
+
+> Review scope remains `feature/payments@1a11` versus `main@0b00`. The caller checkout is clean at `2c22`, with an additional sibling commit; I left it untouched. That difference alone establishes no cause. Any parser reproduction runs against `1a11` in the detached review worktree `/tmp/acme-review`, keeping generated writes out of the caller checkout; it does not validate `2c22`.
+>
+> Termination of owned test-server PID 8241 was requested successfully, but shutdown is **unverified**: follow-up process discovery returned permission denied. The wrapper’s empty `stopped`/`survived` arrays are not evidence that no processes remain; discovery stderr is preserved. Process counts are unavailable.
+>
+> I retained `/tmp/acme-review`, `/tmp/acme-test-home`, and associated scratch pending successful ownership-scoped process discovery and worktree checks. The unrelated developer server was untouched. Cleanup remains incomplete.
