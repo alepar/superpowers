@@ -15,6 +15,27 @@ merge into the integration branch at a time. Write each agent's dispatch with
 kinds). It writes the text `coordinator.js` would send to a file and prints the path, so spawn the
 agent with "Read <path> and follow it exactly." The merge text leaves the ledger lines to you.
 
+For an `IMPLEMENTED` reply with `completionKind: "verification-only"`, equal captured base/head,
+`files: []` and source-bound records, select the evidence-review path described in
+`coordinator-workflow.md` before building a diff package. Keep its JSON reply in the existing
+workspace and dispatch `review --id <id> --n <n> --base <sha> --head <same sha>
+--result-file <implementer-result.json>`. The reviewer must independently confirm current task
+acceptance permits no-change verification, the fixed tree and required check coverage. Null or
+INVALID is no review; a rejected verdict does not complete or use an unreviewed fix shortcut.
+Implementation replies retain their ordinary commit/diff requirements.
+
+After independent CLEAN, compare both replies' identities and original evidence, including all
+required live checks. Keep the accepted basis with `status: "CLEAN"`, `reviewStatus: "CLEAN"`,
+`completionKind`, `base`, `head`, `files`, `sourceTree`, `evidence`, `requiredLiveChecks`,
+`reportPath` and `reviewPath`. Persist it as existing pending-closure Recovery data `verification`
+before closure; `verification-close --id <id> --result-file <basis.json>` produces the shared
+closure prompt and validates the record shape. Confirm tracker closure of all required beads
+before settling completed. Retain cleanup output and unconfirmed closure faithfully; resume an
+accepted pending basis at closure, without repeating implementation/review. Write the
+verification-only complete line and clear the pending closure record after confirmation.
+There is no merge, commit nudge, early implementation split or new task landing. Count this
+completion separately; root acceptance remains independent.
+
 Keep the window full. The Workflow coordinator does these, and so do you:
 
 - **Start dependents early** (unless `config.earlyUnblock` is false). When an implementer reports a

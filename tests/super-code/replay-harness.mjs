@@ -494,6 +494,114 @@ async function main() {
     check(prompt.includes('failureAttribution') && prompt.includes('bd-A'), 'review dispatch carries attribution contract and existing run owner')
   }
 
+  scenario('live-sim: independently reviewed verification-only completion preserves unchanged HEAD')
+  {
+    const identity = { sourceTree: SHA('d'), command: 'node smoke.mjs', configuration: 'target=staging' }
+    const evidence = [{ ...identity, kind: 'live', outcome: 'pass', location: 'evidence/live.log' }]
+    const impl = { id: 'bd-101', status: 'IMPLEMENTED', completionKind: 'verification-only', base: SHA('a'), head: SHA('a'), sourceTree: SHA('d'), files: [], evidence, requiredLiveChecks: [identity] }
+    const review = { id: 'bd-101', status: 'CLEAN', files: [], base: SHA('a'), head: SHA('a'), completionKind: 'verification-only', sourceTree: SHA('d'), evidence, requiredLiveChecks: [identity] }
+    const canned = extra => oneTaskCanned({ 'missing-blocker:bd-101': null, 'impl:bd-101': impl, 'review:bd-101': review, 'close-only:bd-101': { id: 'bd-101', status: 'CLOSED' }, ...extra })
+    const out = await run({ args: liveArgs(), canned: canned() })
+    assertNoThrow(out)
+    check(out.counts['review:bd-101'] === 1 && out.counts['close-only:bd-101'] === 1 && out.result?.completed?.includes('bd-101'), 'unchanged verification dispatches independent review and confirmed closure')
+    check(!out.counts['commit-nudge:bd-101'] && !out.counts['merge:bd-101'] && !out.counts['fix:bd-101'] && !out.counts['review-bead:bd-101'], 'verification creates no artificial commit, merge, unreviewed fix or early split')
+    const prompt = promptOf(out.trace, 'review:bd-101') ?? ''
+    check(prompt.includes('[COMPLETION_KIND] = verification-only') && prompt.includes(identity.sourceTree) && prompt.includes('evidence/live.log'), 'evidence review receives intent, fixed source and retained measurements')
+    const close = promptOf(out.trace, 'close-only:bd-101') ?? ''
+    check(close.includes('verification-only') && close.includes('bd show') && !close.includes('scripts/already-merged'), 'verification closure uses reviewed basis and tracker status rather than a merge claim')
+    const basis = out.result?.verificationCompletions?.[0]
+    check(basis?.reviewStatus === 'CLEAN' && basis?.head === SHA('a') && basis?.sourceTree === SHA('d') && basis?.evidence?.[0]?.location === 'evidence/live.log', 'durable completion retains source, independent review and evidence basis', JSON.stringify(basis))
+    const lines = out.trace.filter(t => /^ledger/.test(t.label)).flatMap(t => extractLedgerLines(t.prompt))
+    check(lines.some(l => l.startsWith('Recovery:') && l.includes('verification-only') && l.includes('evidence/live.log')) && lines.some(l => /complete \(verification-only/.test(l)), 'ledger records verification basis before completion')
+    const dir = mkdtempSync(path.join(os.tmpdir(), 'verification-digest-'))
+    let digest
+    try {
+      const file = path.join(dir, 'progress.md')
+      writeFileSync(file, lines.join('\n'))
+      digest = execFileSync('bash', [path.join(skillDir, 'scripts/ledger-digest'), file], { encoding: 'utf8' })
+    } finally { rmSync(dir, { recursive: true, force: true }) }
+    const resumed = await run({ args: liveArgs(), canned: canned({ 'read-ledger': { text: digest }, 'bd-ready': { ids: [] }, 'read-ledger:finish': { text: digest, reviewBase: SHA('a'), reviewHead: SHA('a') } }) })
+    assertNoThrow(resumed)
+    check(resumed.result?.completed?.includes('bd-101') && resumed.result?.verificationCompletions?.[0]?.sourceTree === SHA('d') && !resumed.counts['impl:bd-101'], 'resume reuses reviewed verification with unchanged source')
+    check(resumed.result?.metrics?.some(l => /merges 0/.test(l)) && resumed.result?.metrics?.some(l => /ledger-check ok/.test(l)), 'verification completion does not increment task landings or invalidate ledger accounting')
+    for (const [name, extra] of [
+      ['missing evidence', { 'impl:bd-101': { ...impl, evidence: [] }, 'review:bd-101': { ...review, evidence: [] } }],
+      ['stale source', { 'review:bd-101': { ...review, sourceTree: SHA('e') } }],
+      ['fallback required live', { 'impl:bd-101': { ...impl, evidence: [{ ...evidence[0], kind: 'fallback' }] }, 'review:bd-101': { ...review, evidence: [{ ...evidence[0], kind: 'fallback' }] } }],
+      ['unavailable required check', { 'review:bd-101': { ...review, evidence: [{ ...evidence[0], outcome: 'unavailable' }] } }],
+      ['changed verification', { 'impl:bd-101': { ...impl, head: SHA('c') } }],
+      ['changed files', { 'impl:bd-101': { ...impl, files: ['src/a.js'] } }],
+      ['wrong required configuration', { 'review:bd-101': { ...review, requiredLiveChecks: [{ ...identity, configuration: 'target=production' }] } }],
+      ['missing reviewer source', { 'review:bd-101': { ...review, sourceTree: undefined } }],
+      ['failed required check', { 'review:bd-101': { ...review, evidence: [{ ...evidence[0], outcome: 'fail' }] } }],
+      ['unconfirmed intent', { 'review:bd-101': { ...review, completionKind: 'implementation' } }],
+      ['implementation bead', { 'impl:bd-101': { ...impl, completionKind: 'implementation' }, 'commit-nudge:bd-101': { ...impl, completionKind: 'implementation' } }],
+      ['null review', { 'review:bd-101': null }],
+      ['invalid review', { 'review:bd-101': { id: 'bd-101', status: 'INVALID' }, 'review:bd-101:retry': { id: 'bd-101', status: 'INVALID' } }],
+      ['rejected review', { 'review:bd-101': { ...review, status: 'NEEDS_FIX', finding: 'acceptance requires implementation' } }],
+    ]) {
+      const denied = await run({ args: liveArgs(), canned: canned(extra) })
+      assertNoThrow(denied)
+      check(!denied.result?.completed?.includes('bd-101') && !denied.counts['merge:bd-101'] && !denied.counts['close-only:bd-101'], name + ' cannot complete unchanged verification')
+    }
+    const rejectedClosed = await run({ args: liveArgs(), canned: canned({
+      'review:bd-101': { ...review, status: 'NEEDS_FIX', finding: 'task requires delivered changes' },
+      'missing-blocker:bd-101': { id: 'bd-101', status: 'BLOCKED', blockerBead: 'bd-190' },
+      'triage:bd-101': { decision: 'ESCALATE', detail: 'unreviewed task' }, 'notify:bd-101': { sent: true },
+      'reconcile-buckets': { closed: ['bd-101'] },
+    }) })
+    assertNoThrow(rejectedClosed)
+    check(!rejectedClosed.result?.completed?.includes('bd-101'), 'tracker closure alone cannot replace rejected verification acceptance')
+    const unpersisted = await run({ args: liveArgs(), canned: canned({ 'ledger-append:recovery:pending-closure:bd-101': null, 'ledger-append:recovery:pending-closure:bd-101:retry': null }) })
+    assertNoThrow(unpersisted)
+    check(!unpersisted.result?.completed?.length && !unpersisted.counts['close-only:bd-101'], 'unavailable durable verification write prevents tracker closure')
+    const implementation = await run({ args: liveArgs(), canned: oneTaskCanned({ 'review:bd-101': review }) })
+    assertNoThrow(implementation)
+    check(implementation.counts['merge:bd-101'] === 1 && implementation.result?.verificationCompletions?.length === 0, 'a reviewer cannot switch implementation delivery to no-change completion')
+    const cleanup = await run({ args: liveArgs(), canned: canned({ 'close-only:bd-101': { id: 'bd-101', status: 'CLOSED', finding: 'unknown: task process inspection refused; kept: task resource' } }) })
+    assertNoThrow(cleanup)
+    check(cleanup.result?.completed?.includes('bd-101') && cleanup.result?.verificationCompletions?.[0]?.cleanup === 'unknown: task process inspection refused; kept: task resource', 'confirmed closure retains unverified cleanup as its actual outcome')
+    const capDir = mkdtempSync(path.join(os.tmpdir(), 'verification-cap-'))
+    let capped
+    try {
+      const file = path.join(capDir, 'progress.md')
+      const record = lines.find(l => l.startsWith('Recovery:') && l.includes('reviewed verification-only'))
+      const oversized = JSON.parse(record.slice('Recovery:'.length))
+      oversized.data.verification.evidence = Array(30).fill(evidence[0])
+      writeFileSync(file, 'Recovery: ' + JSON.stringify(oversized) + '\nTask 1 (bd-101): complete (verification-only, reviewed acceptance evidence; no Git landing)\n')
+      capped = execFileSync('bash', [path.join(skillDir, 'scripts/ledger-digest'), file], { encoding: 'utf8' })
+      check(capped.includes('Recovery gap: 1 ' + file) && capped.includes('Task 1 (bd-101): complete, verification-only') && !capped.includes('evidence/live.log'), 'oversized basis preserves cap/source pointer and verification completion discriminator', capped)
+    } finally { rmSync(capDir, { recursive: true, force: true }) }
+    const gap = await run({ args: liveArgs(), canned: canned({ 'read-ledger': { text: capped }, 'bd-ready': { ids: [] } }) })
+    assertNoThrow(gap)
+    check(!gap.result?.completed?.length && gap.result?.recovery?.gaps?.some(g => g.reason.includes('verification completion basis unavailable')) && !gap.counts['close-only:bd-101'], 'typed completion with compacted-away basis remains an evidence gap rather than an inferred landing')
+    const reentry = await run({ args: liveArgs(), canned: canned({ 'read-ledger': { text: capped } }) })
+    assertNoThrow(reentry)
+    check(reentry.counts['impl:bd-101'] === 1 && reentry.counts['review:bd-101'] === 1 && reentry.result?.completed?.includes('bd-101') && !reentry.counts['merge:bd-101'], 'ready reentry with missing basis obtains independent verification review before closure')
+    const pending = await run({ args: liveArgs(), canned: canned({ 'close-only:bd-101': null }) })
+    assertNoThrow(pending)
+    check(!pending.result?.completed?.length && pending.result?.closureUnconfirmed?.includes('bd-101') && pending.result?.verificationCompletions?.length === 1, 'unavailable closure preserves verified basis and remains unconfirmed')
+    const pendingLines = pending.trace.filter(t => /^ledger/.test(t.label)).flatMap(t => extractLedgerLines(t.prompt)).join('\n')
+    const recovered = await run({ args: liveArgs(), canned: canned({ 'read-ledger': { text: pendingLines }, 'bd-ready': [{ ids: [] }, { ids: [] }], 'resume-check:bd-101': { landed: false, sourceVerified: true, closed: [], open: ['bd-101'] } }) })
+    assertNoThrow(recovered)
+    check(recovered.result?.completed?.includes('bd-101') && !recovered.counts['review:bd-101'] && !recovered.counts['impl:bd-101'] && recovered.counts['close-only:bd-101'] === 1, 'pending verification resumes closure only without repeating reviewed work')
+    const resumePrompt = promptOf(recovered.trace, 'resume-check:bd-101') ?? ''
+    check(resumePrompt.includes(SHA('a')) && resumePrompt.includes(SHA('d')) && resumePrompt.includes('sourceVerified') && !resumePrompt.includes('already-merged'), 'verification resume checks captured commit/tree without inventing a landing')
+    for (const observation of [null, { landed: true, sourceVerified: false, closed: ['bd-101'], open: [] }, { landed: false, sourceVerified: true, closed: [], open: [], error: 'tracker unavailable' }]) {
+      const held = await run({ args: liveArgs(), canned: canned({ 'read-ledger': { text: pendingLines }, 'resume-check:bd-101': observation, 'reconcile-buckets': { closed: ['bd-101'] } }) })
+      assertNoThrow(held)
+      check(!held.result?.completed?.length && !held.counts['close-only:bd-101'] && held.result?.stopReason === 'recovery-held', 'unverified source or tracker holds verification recovery despite tracker closure claims')
+    }
+    for (const append of [null, { appended: false }]) {
+      const held = await run({ args: liveArgs(), canned: canned({ 'read-ledger': { text: pendingLines }, 'resume-check:bd-101': { landed: false, sourceVerified: true, closed: [], open: ['bd-101'] }, 'ledger:bd-101': append, 'ledger:bd-101:retry': append }) })
+      assertNoThrow(held)
+      check(!held.result?.completed?.length && held.result?.stopReason === 'recovery-held' && held.result?.recovery?.obligations.some(r => r.kind === 'pending-closure' && r.data.verification?.sourceTree === SHA('d')), 'failed verification closure append preserves accepted basis before settlement')
+    }
+    const closedResume = await run({ args: liveArgs(), canned: canned({ 'read-ledger': { text: pendingLines }, 'bd-ready': { ids: [] }, 'resume-check:bd-101': { landed: false, sourceVerified: true, closed: ['bd-101'], open: [] } }) })
+    assertNoThrow(closedResume)
+    check(closedResume.result?.completed?.includes('bd-101') && !closedResume.counts['close-only:bd-101'] && !closedResume.counts['impl:bd-101'] && closedResume.result?.metrics?.some(l => /merges 0/.test(l)), 'already closed verification resume confirms durable typed completion without a landing')
+  }
+
   scenario('review source identities: task and final builders share captured heads')
   {
     const out = await run({ args: liveArgs(), canned: oneTaskCanned({

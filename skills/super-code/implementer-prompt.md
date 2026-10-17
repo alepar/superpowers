@@ -16,7 +16,7 @@ initial implementation ("## Your job") or a fix ("## Fix pass").
 No one can answer questions during this run; the coordinator reads only your final report. When
 the requirements are ambiguous, check the current bead, brief, comments, and existing code, then
 implement the reading they best support and record the assumption under "Assumptions" in your
-report. Keep going until the work is done, tested and committed.
+report. Keep going until the work is done, tested and reported under its Completion kind below.
 
 Report BLOCKED only when the task cannot be completed as specified: something it needs is missing
 (a dependency, an interface an earlier task was meant to provide), the plan contradicts itself or
@@ -68,7 +68,7 @@ Work in [WORKTREE] (branch `[BRANCH]`, cut from `[INTEGRATION_BRANCH]`).
    under the temp-state rule and the leak check your dispatch gives as PROCESSES AND TEMP STATE.
 4. Self-review your diff against the brief (see "Self-review"), fix what you find, and re-run the
    relevant tests if you changed anything.
-5. Commit (see "Commit"), then write the report and return.
+5. Select the completion kind below, then write the report and return.
 
 ## Scope
 
@@ -116,6 +116,20 @@ Re-read your diff against the brief: every requirement implemented, nothing extr
 patterns followed, and tests that cover the acceptance criteria and the task's edge cases by
 exercising real behavior rather than mocks.
 
+## Completion kind
+
+If the current task acceptance explicitly permits verification without delivered changes and
+all required checks pass on unchanged, clean source, return `status: IMPLEMENTED` with
+`completionKind: "verification-only"`, `files: []`, the equal captured `base` and `head`, and
+`sourceTree` from `git rev-parse HEAD^{tree}`. Retain the source-bound `evidence` and
+`requiredLiveChecks` in the report and reply. Explain which acceptance obligations permit this
+completion. Make no artificial commit and do not rebase the tested source after capture. The
+independent reviewer must confirm the task intent, source identity and acceptance coverage
+before the coordinator closes the task.
+
+If acceptance requires delivered changes, use `completionKind: "implementation"` (the default)
+and the Commit steps below. Passing existing checks alone does not supply delivered changes.
+
 ## Commit
 
 COMMIT IS THE LAST STEP. Commit on `[BRANCH]` in [WORKTREE]. Then, unless step 0 reported stacked,
@@ -127,7 +141,7 @@ your final run for the report; fix and commit anything it shows. Your base is no
 `git merge-base [INTEGRATION_BRANCH] HEAD`; report that. A stacked branch is never rebased here: it
 carries its parents' unmerged commits, and its merge replays only its own. Then `git status --short`
 must come back empty (commit anything it lists that belongs to this task). Then
-`git rev-parse HEAD` is the `head` you report. A head equal to the base you report means nothing was committed; the coordinator checks this,
+`git rev-parse HEAD` is the `head` you report. For implementation completion, a head equal to the base you report means nothing was committed; the coordinator checks this,
 and uncommitted work is never reviewed or merged.
 
 ## Blocked
@@ -169,7 +183,7 @@ workspace, which is where the reviewer reads it; don't write a copy anywhere els
 
 Then return: `id`, `status` (IMPLEMENTED or BLOCKED, or BLOCKED_AUTH per your dispatch's
 permission rule), `files` touched, `base` (from step 0, or after the rebase in "Commit"), `head`, `stacked` / `reopened` when step 0
-reported them, `blockerBead` when BLOCKED, and the report's optional `evidence` and
+reported them, `blockerBead` when BLOCKED, the `completionKind` (and `sourceTree` for verification-only), and the report's optional `evidence` and
 `requiredLiveChecks` arrays.
 
 ## Fix pass

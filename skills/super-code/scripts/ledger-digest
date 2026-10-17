@@ -9,7 +9,7 @@
 #   - `Merge:` and `Human action:` lines, verbatim (Resume dedupes human actions on their text);
 #   - `Edge add:` lines, reduced to `Edge add: <dependent> <- <blocker> (<source>)`;
 #   - `Task <n> (<id>): <state>` lines whose state the coordinator acts on, reduced to their state
-#     tokens: `complete[, already merged][, review clean][, fix pass][, parked][, commits base..tip]`,
+#     tokens: `complete[, verification-only][, already merged][, review clean][, fix pass][, parked][, commits base..tip]`,
 #     `landed, commits base..tip[, review id][, blocker id]`, `pending retry`,
 #     `BLOCKED…` (first word), `cancelled (` / `cancelled`, `stacked on <id>`, `fix pass <OUTCOME>`;
 #     a `[cause: …]` tag after `pending retry` / `BLOCKED…` is kept, and a `minor (deferred)` line
@@ -63,6 +63,7 @@ function cause(r) { return match(r, /\[cause: [^]]*\]/) ? " " substr(r, RSTART, 
   n = split(rest, w, /[ \t]+/)
   if (rest ~ /^complete/) {
     s = "complete"
+    if (index(rest, "verification-only")) s = s ", verification-only"
     if (index(rest, "already merged")) s = s ", already merged"
     if (index(rest, "review clean")) s = s ", review clean"
     if (index(rest, "fix pass")) s = s ", fix pass"

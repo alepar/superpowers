@@ -26,7 +26,10 @@ Run, epic, branch, integration worktree and mergeCheck come from the ledger's la
 
 kinds and options:
   implement         --id ID --n N [--parents P1,P2] [--reentry] [--recut]
-  review            --id ID --n N --base SHA --head SHA
+  review            --id ID --n N --base SHA --head SHA [--result-file F]
+                    (verification-only: the implementer JSON RESULT supplies completionKind,
+                    sourceTree, evidence and requiredLiveChecks)
+  verification-close --id ID --result-file F (the accepted verification basis)
   fix               --id ID --n N --base SHA --kind review|seam|check --finding-file F
   seam-review       --id ID --n N --base SHA --merge-base SHA --head SHA --overlap F1,F2
                     (an overlap entry "consumes <id>" names a consumed blocker, not a file)
@@ -100,7 +103,7 @@ function loadBuilders(cfg) {
   try { src = readFileSync(join(codeSkill, 'coordinator.js'), 'utf8') } catch (e) { console.error(`dispatch-text: cannot read coordinator.js: ${e.message}`); process.exit(3) }
   const cut = src.search(/^while \(true\) \{$/m)
   if (cut < 0) { console.error('dispatch-text: coordinator.js has no top-level `while (true) {` round loop to cut at'); process.exit(3) }
-  const ret = `return { SWEEP_DEFERRED, planPrompt, implementPrompt, taskReviewPrompt, fixPrompt, seamReviewPrompt, checkFixReviewPrompt, finalReviewPrompt, finalClusterReviewPrompt, finalSeamReviewPrompt, finalReviewStubPrompt, mergePrompt, triagePrompt, assemblePrompt, reviewBeadOf, mergeCheckCommand, recordCheckEvidence, classifyCheckEvidence }\n`
+  const ret = `return { SWEEP_DEFERRED, planPrompt, implementPrompt, taskReviewPrompt, fixPrompt, seamReviewPrompt, checkFixReviewPrompt, finalReviewPrompt, finalClusterReviewPrompt, finalSeamReviewPrompt, finalReviewStubPrompt, mergePrompt, triagePrompt, assemblePrompt, reviewBeadOf, mergeCheckCommand, recordCheckEvidence, classifyCheckEvidence, verificationClosePrompt, verificationProblem }\n`
   const body = (src.slice(0, cut) + ret + src.slice(cut)).replace(/^export const meta/m, 'const meta')
   const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor
   const fn = new AsyncFunction('args', 'agent', 'log', 'phase', 'pipeline', 'parallel', 'budget', 'workflow', body)
@@ -165,12 +168,28 @@ switch (kind) {
     text = B.implementPrompt(planPath, o.id, Number(o.n), branch, art(o.n), { parents: list(o.parents), reentry: !!o.reentry, recut: !!o.recut })
     label = `impl-${o.id}`
     break
-  case 'review':
+  case 'verification-close': {
+    need('id', 'result-file')
+    let basis
+    try { basis = JSON.parse(readArg('result-file')) } catch (e) { fail('invalid --result-file JSON: ' + e.message) }
+    const problem = B.verificationProblem(basis, basis)
+    if (problem || basis.reviewStatus !== 'CLEAN' || !basis.reportPath?.trim() || !basis.reviewPath?.trim()) fail(problem || 'independent verification report and review paths required')
+    text = B.verificationClosePrompt(o.id, basis)
+    label = 'close-only-' + o.id
+    break
+  }
+  case 'review': {
     need('id', 'n', 'base', 'head')
     commitId(o.base); commitId(o.head)
-    text = B.taskReviewPrompt(task(), planPath, art(o.n))
+    let outcome = {}
+    if (o['result-file']) {
+      try { outcome = JSON.parse(readArg('result-file')) } catch (e) { fail('invalid --result-file JSON: ' + e.message) }
+      if (!outcome || typeof outcome !== 'object' || Array.isArray(outcome)) fail('--result-file must hold a RESULT object')
+    }
+    text = B.taskReviewPrompt({ ...outcome, ...task() }, planPath, art(o.n))
     label = `review-${o.id}`
     break
+  }
   case 'fix': {
     need('id', 'n', 'base', 'kind', 'finding-file')
     if (!['review', 'seam', 'check'].includes(o.kind)) fail('--kind is review, seam or check')

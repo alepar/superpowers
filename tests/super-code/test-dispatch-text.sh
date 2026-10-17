@@ -47,6 +47,36 @@ if (r.records.length !== 5 || r.records[0].sourceTree !== 'd'.repeat(40) || r.re
 NODE
 assert_eq "$code" 0 "ordinary results preserve provenance, failed/unavailable and required-live gaps"
 
+echo "dispatch-text: verification-only evidence review"
+node - "$T/verification.json" <<'NODE'
+const fs = require('fs')
+const identity = { sourceTree:'d'.repeat(40), command:'node smoke.mjs', configuration:'target=staging' }
+fs.writeFileSync(process.argv[2], JSON.stringify({ completionKind:'verification-only', sourceTree:identity.sourceTree, evidence:[{...identity, kind:'live', outcome:'pass', location:'evidence/live.log'}], requiredLiveChecks:[identity] }))
+NODE
+run bash "$D" --ledger "$L" --stdout review --id ep.2 --n 2 --base "$PIN_BASE" --head "$PIN_BASE" --result-file "$T/verification.json"
+assert_eq "$code" 0 "verification review dispatch exits 0"
+assert_has "$out" "[COMPLETION_KIND] = verification-only" "ordinary review transports explicit verification intent"
+assert_has "$out" '"sourceTree":"dddddddddddddddddddddddddddddddddddddddd"' "ordinary review transports the fixed tree"
+assert_has "$out" "evidence/live.log" "ordinary review transports retained measurement references"
+assert_has "$out" "[REPORT_FILE] = $T/ws/task-2-report.md" "evidence review reads the existing report"
+assert_has "$out" "EVIDENCE REVIEW" "evidence review branches before nonempty-diff packaging"
+run bash "$D" --ledger "$L" --stdout review --id ep.2 --n 2 --base "$PIN_BASE" --head "$PIN_HEAD"
+assert_has "$out" "[COMPLETION_KIND] = implementation" "legacy review keeps implementation intent"
+
+node - "$T/verification.json" "$T/accepted.json" <<'NODE'
+const fs = require('fs')
+const r = JSON.parse(fs.readFileSync(process.argv[2]))
+fs.writeFileSync(process.argv[3], JSON.stringify({...r, status:'CLEAN', reviewStatus:'CLEAN', files:[], base:'1'.repeat(40), head:'1'.repeat(40), reportPath:'task-report.md', reviewPath:'task-review.md'}))
+NODE
+run bash "$D" --ledger "$L" --stdout verification-close --id ep.2 --result-file "$T/accepted.json"
+assert_eq "$code" 0 "reviewed verification produces ordinary closure dispatch"
+assert_has "$out" "STATUS CHECK FIRST" "closure observes tracker status first"
+assert_has "$out" "task-review.md" "closure carries independent review identity"
+assert_lacks "$out" "scripts/already-merged" "verification closure claims no Git landing"
+assert_has "$out" "Cleanup exits are data" "verification closure retains cleanup outcomes"
+run bash "$D" --ledger "$L" --stdout verification-close --id ep.2 --result-file "$T/verification.json"
+assert_eq "$code" 2 "unreviewed verification cannot dispatch closure"
+
 echo "dispatch-text: implement"
 run bash "$D" --ledger "$L" implement --id ep.2 --n 2
 assert_eq "$code" 0 "exits 0"

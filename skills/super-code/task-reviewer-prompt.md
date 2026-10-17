@@ -16,6 +16,31 @@ state, and don't spawn subagents. The only files you write are [DIFF_FILE] (via 
 [REVIEW_FILE], both in the git-ignored plan workspace, plus a review-owned filesystem view when
 the Read section requires one.
 
+## Select the review path
+
+Use `[COMPLETION_KIND]` from the dispatch: omitted means `implementation`.
+
+When it is `verification-only`, use this evidence review before package construction:
+
+1. `cd [WORKTREE]`; resolve `[BASE]` and `[HEAD]` as commits. They must be equal.
+   Resolve `git rev-parse [HEAD]^{tree}` and compare it with the captured `sourceTree`.
+   Run `git status --short`; uncommitted source changes make this no-change claim INVALID.
+2. Read the current bead and comments, [BRIEF_FILE], and [REPORT_FILE]. Confirm the task's
+   acceptance is verification-only and permits completion without delivered changes.
+   An implementation requirement returns NEEDS_FIX, even if existing checks pass.
+3. Read retained evidence locations without rerunning tests. Match the source tree, command,
+   configuration and outcome to each acceptance obligation. Select `requiredLiveChecks` from
+   the task requirements. Simulated/fallback output cannot supply an explicitly required live
+   check; failed and unavailable checks remain distinct and unsatisfied.
+4. Write [REVIEW_FILE] with the acceptance coverage and captured identity/check records. Return
+   CLEAN only when coverage is complete, plus `completionKind: "verification-only"`, `base`,
+   `head`, `sourceTree`, `files: []`, `evidence` (the reviewed original records, unchanged), and
+   `requiredLiveChecks`. Unreadable identities or evidence return INVALID; incomplete coverage
+   returns NEEDS_FIX. Do not build [DIFF_FILE] or call review-package for this path.
+
+This path ends at that verdict. The remaining package, test-diff and code-review steps apply
+when `[COMPLETION_KIND]` is `implementation`.
+
 ## Build the review package
 
 `cd [WORKTREE]` first. Verify `[BASE]` and `[HEAD]` with
