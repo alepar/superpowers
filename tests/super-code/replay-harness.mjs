@@ -455,15 +455,31 @@ async function verificationParentSettlement() {
     }
     check(!out.logs.some(line => line.includes('REJECTED')), 'settlement does not hide a rejected task chain')
   }
-  for (const held of [false, true]) {
-    scenario('verification parent settlement: reacquisition ' + (held ? 'observes a new merge hold' : 'respects another active task'))
+  for (const { held = false, external } of [
+    {}, { held: true }, { external: 'open' }, { external: 'unavailable' },
+    { external: 'exhausted' }, { external: 'opaque' }, { external: 'closed' },
+  ]) {
+    scenario('verification parent settlement: reacquisition ' + (external ? 'refreshes tracker ' + external : held ? 'observes a new merge hold' : 'respects another active task'))
     let holderRunning = false
+    let trackerChanged = false
+    const observations = []
     let holderFinished = false
     let closedDuringOtherWork = false
     const canned = oneTaskCanned({
+      ...(external ? {
+        'bd-ready': [{ ids: ['bd-101', 'bd-102'] }, { ids: [] }],
+        'bd-ready-topup': () => {
+          const status = trackerChanged && external !== 'closed' ? 'open' : 'closed'
+          observations.push(status)
+          return trackerChanged && external === 'unavailable' ? null : {
+            ids: trackerChanged && external === 'opaque' ? [] : ['bd-102'],
+            observations: [{ id: 'bd-199', kind: 'gate', status }],
+          }
+        },
+      } : {}),
       'plan': { planPath: PLANPATH, mapping: [
         { n: 1, id: 'bd-101', files: ['parent'], deps: [] },
-        { n: 2, id: 'bd-102', files: ['child'], deps: ['bd-101'] },
+        { n: 2, id: 'bd-102', files: ['child'], deps: external && external !== 'opaque' ? ['bd-101', 'bd-199'] : ['bd-101'], opaque: external === 'opaque' },
         { n: 3, id: 'bd-103', files: ['sibling'], deps: ['bd-101'] },
         { n: 4, id: 'bd-104', files: ['holder'], deps: ['bd-101'] },
       ] },
@@ -484,6 +500,7 @@ async function verificationParentSettlement() {
         : { merged: true, mergeExit: 0, mergeHead: true, head: SHA('b'), mergeBase: SHA('a') },
       'impl:bd-104': async ctx => {
         holderRunning = true
+        trackerChanged = true
         await ctx.waitFor('merge:bd-103')
         // Keep the slot occupied until the merge result (and any lane hold) is consumed.
         await new Promise(resolve => setImmediate(resolve))
@@ -496,15 +513,21 @@ async function verificationParentSettlement() {
         return { status: 'CLOSED' }
       },
     })
-    const out = await run({ args: liveArgs({ config: cfg({ concurrency: 1, runtimeSlots: 4 }) }), canned, timeoutMs: 1000 })
+    const out = await run({ args: liveArgs({ config: cfg({ concurrency: 1, runtimeSlots: 4, ...(external === 'exhausted' ? { topUpQueryCap: 1 } : {}) }) }), canned, timeoutMs: 1000 })
     assertNoThrow(out)
     check(holderFinished && out.counts['review:bd-102'] === 1 && out.counts['merge:bd-103'] === 1, 'other task uses the released slot and settles while verification waits', JSON.stringify(out.counts))
-    if (held) {
+    if (external && external !== 'closed') {
+      check(!out.counts['close-only:bd-102'] && !out.result?.completed?.includes('bd-102') && out.result?.verificationCompletions?.length === 0, 'changed or unavailable tracker facts withhold verification closure', JSON.stringify({ observations, completed: out.result?.completed }))
+      const reason = external === 'exhausted' ? 'fresh tracker observation unavailable' : external === 'opaque' ? 'tracker does not report task ready' : external === 'unavailable' ? 'dependency observation unavailable' : 'bd-199: open'
+      check(out.logs.some(line => line.includes('bd-102: admission held') && line.includes(reason)), 'fresh admission retains the specific tracker hold reason', out.logs.filter(line => line.includes('admission')).join('\n'))
+      check(observations.length === (external === 'exhausted' ? 1 : 2), 'bounded lookup refreshes once or preserves exhausted-budget hold', JSON.stringify(observations))
+    } else if (held) {
       check(out.result?.stopReason === 'integration-blocked' && !out.counts['close-only:bd-102'], 'new merge hold prevents verification closure after reacquisition')
       check(!out.result?.completed?.includes('bd-102') && out.result?.verificationCompletions?.length === 0, 'held verification remains recoverable without a completion claim')
       check(out.logs.some(line => line.includes('bd-102: admission held') && line.includes('merge lane held')), 'fresh admission explains the withheld closure')
     } else {
       check(out.result?.completed?.includes('bd-102') && out.counts['close-only:bd-102'] === 1 && !closedDuringOtherWork, 'verification reacquires capacity before closing without overlapping the active task')
+      if (external) check(JSON.stringify(observations) === '["closed","closed"]', 'fresh closed tracker control still permits completion')
     }
     check(!out.logs.some(line => line.includes('REJECTED')), 'capacity handoff does not hide a rejected chain')
   }

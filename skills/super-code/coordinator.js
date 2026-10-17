@@ -1718,6 +1718,21 @@ while (true) {
     return i === -1
   }
 
+  // Initial dispatch and verification completion both refresh tracker facts after
+  // a capacity wait; cached readiness alone cannot authorize either admission.
+  const admitAfterCapacity = async (id, waited) => {
+    const external = (rowOf(id) ? effDeps(rowOf(id)) : []).some(d => !localDependency(d))
+    if (!integrationBlocked && ((waited && rowOf(id)?.opaque === true) || (external && (waited || (rowOf(id) ? effDeps(rowOf(id)) : []).some(d => !localDependency(d) && !externalStatus.has(d)))))) {
+      const before = observationSeq
+      await runTopUp()
+      if (observationSeq === before) { holdAdmission(id, 'fresh tracker observation unavailable (query budget or start gate)'); return false }
+    }
+    const held = admissionReason(id)
+    if (held) { holdAdmission(id, held); return false }
+    admissionHolds.delete(id)
+    return true
+  }
+
   const runTask = async (id, { reentry = false } = {}) => {
     if (integrationBlocked) { log(`${id}: not started — the merge lane is held (${integrationBlocked})`); return }
     let att = null
@@ -1728,17 +1743,8 @@ while (true) {
       const waited = await sched.acquire(id)
       slotHeld = true
       try {
-        // Waiting is a reservation, not an attempt. Refresh opaque/external facts after capacity
-        // waits; every entry path reaches this predicate before setup or implementation.
-        const external = (rowOf(id) ? effDeps(rowOf(id)) : []).some(d => !localDependency(d))
-        if (!integrationBlocked && ((waited && rowOf(id)?.opaque === true) || (external && (waited || (rowOf(id) ? effDeps(rowOf(id)) : []).some(d => !localDependency(d) && !externalStatus.has(d)))))) {
-          const before = observationSeq
-          await runTopUp()
-          if (observationSeq === before) { holdAdmission(id, 'fresh tracker observation unavailable (query budget or start gate)'); dispatched.delete(id); return }
-        }
-        const held = admissionReason(id)
-        if (held) { holdAdmission(id, held); dispatched.delete(id); return }
-        admissionHolds.delete(id)
+        // Waiting is a reservation, not an attempt; every entry path refreshes admission.
+        if (!await admitAfterCapacity(id, waited)) { dispatched.delete(id); return }
         att = startAttempt(id, reentry)
         if (att.cancelledBy) return await abandon(att, true)
         if (verificationCompletions.has(id)) { await completeVerification({ id, n: ordinalFor(id), att }); return }
@@ -1832,10 +1838,9 @@ while (true) {
             // then reacquire before recording evidence or closing the verification task.
             sched.release(id); slotHeld = false
             if (!(await parentsMerged(att)) || att.cancelledBy) return await abandon(att, false)
-            await sched.acquire(id); slotHeld = true
+            const waited = await sched.acquire(id); slotHeld = true
             if (att.cancelledBy) return await abandon(att, true)
-            const held = admissionReason(id)
-            if (held) { holdAdmission(id, held); return null }
+            if (!await admitAfterCapacity(id, waited)) return null
           }
           const basis = { completionKind: 'verification-only', status: 'CLEAN', files: [], base: r.base, head: r.head, sourceTree: r.sourceTree, evidence: r.evidence, requiredLiveChecks: r.requiredLiveChecks, reportPath: artifacts(id).report, reviewPath: artifacts(id).review, reviewStatus: 'CLEAN', ...(reviewBeadOf.has(id) ? { reviewBead: reviewBeadOf.get(id) } : {}), ...(blockerBeadOf.has(id) ? { blockerBead: blockerBeadOf.get(id) } : {}) }
           for (const mn of r.minors || []) {
