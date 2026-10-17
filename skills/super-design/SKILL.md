@@ -911,7 +911,7 @@ caller's bead context.
    file under spec §4's parent (`$PARENT`: the root epic, or the subepic that owns the amended
    spec) with the caller's bead context (`$CONTEXT`, appended to each description) and the
    §Decomposition flag triple, labelled `$LABEL` = `sp:redesign-<loop>-<K>`, deduped by title
-   against that label; then, design loop, supersede the open beads the amendment obsoletes (the
+   (JSON-decoded, as bd escapes it) against that label; then, design loop, supersede the open beads the amendment obsoletes (the
    record's `supersedes:` lines; a bead already closed is skipped). Every bead filing in a
    redesign round, the calling loop's amend-roast tasks included, uses this sequence. The
    orchestrator fills `$ROOT` (root epic id), `$PARENT`, `$LABEL`, `$LOOP` (`code|design`),
@@ -927,20 +927,39 @@ caller's bead context.
    [ "$PARENT" = "$ROOT" ] || bd update "$PARENT" --status open
    field() { awk -v want="$1" '/^[A-Za-z][A-Za-z_-]*:/ { f = $0; sub(/:.*/, "", f); next }
      f == want && /^[ \t]*- / { sub(/^[ \t]*- /, ""); sub(/[ \t\r]+$/, ""); print }' "$AMEND"; }
-   id_of() { bd list --label "$LABEL" --all --json | awk -v t="$1" '
+   # bd's JSON escapes < > & as < > &, and " \ as \" \\: decode before comparing.
+   id_of() { bd list --label "$LABEL" --all --json --limit 0 | T=$1 awk '
+     function dec(s,   o, c, i, k, n) {
+       for (i = 1; i <= length(s); i++) {
+         c = substr(s, i, 1)
+         if (c == "\\") {
+           c = substr(s, ++i, 1)
+           if (c == "u") { n = 0
+             for (k = 1; k <= 4; k++) n = n * 16 + index("0123456789abcdef", tolower(substr(s, i + k, 1))) - 1
+             i += 4; c = sprintf("%c", n) }
+           else if (c == "t") c = "\t"; else if (c == "n") c = "\n"; else if (c == "r") c = "\r"
+         }
+         o = o c
+       }
+       return o }
      /^    "id":/ { id = $2; gsub(/[",]/, "", id) }
-     !done && ($0 == "    \"title\": \"" t "\"," || $0 == "    \"title\": \"" t "\"") { print id; done = 1 }'; }
+     !done && /^    "title": "/ { t = $0; sub(/^    "title": "/, "", t); sub(/",?[ \t\r]*$/, "", t)
+       if (dec(t) == ENVIRON["T"]) { print id; done = 1 } }'; }
+   need() { [ -n "$1" ] || { echo "NO_BEAD: no $LABEL bead titled: $2" >&2; exit 1; }; }
    field work | while IFS= read -r item; do
+     [ -n "$item" ] || continue
      title=${item%% | *}
      [ -z "$(id_of "$title")" ] || continue
      bd create "$title" --parent "$PARENT" --no-inherit-labels -l "sp:$ROOT,$LABEL" \
        -d "${item#"$title" | }${CONTEXT:+ — $CONTEXT}" --silent
    done
    if [ "$LOOP" = design ]; then
-     field supersedes | sed 's/ -> / → /' | while IFS= read -r item; do
+     field supersedes | sed 's/^\([^ ]*\) -> /\1 → /' | while IFS= read -r item; do
+       [ -n "$item" ] || continue
        old=${item%% → *}; title=${item#* → }
        [ "$(bd show "$old" --json | awk '/^    "status":/ { s = $2; gsub(/[",]/, "", s); print s; exit }')" = closed ] && continue
-       bd supersede "$old" --with "$(id_of "$title")"
+       new=$(id_of "$title"); need "$new" "$title"
+       bd supersede "$old" --with "$new"
      done
      tree=$(bd list --label "sp:$ROOT" --all --json --limit 0)
      sweep=$(printf '%s\n' "$tree" | awk '
@@ -950,16 +969,15 @@ caller's bead context.
      elif ! command -v jq >/dev/null 2>&1; then
        echo "JQ_UNAVAILABLE: add bd dep add <sweep> <id> and the blocked-by <id>: consumes all leaves (integration sweep) line to the sweep's description by hand for each sp:redesign-design-<K> bead" >&2
      else
-       text=$(bd show "$sweep" --json | jq -r '.[0].description // ""'); added=0
+       text=$(bd show "$sweep" --json | jq -r '.[0].description // ""'); added=0; nl=$'\n'
        while IFS= read -r item; do
-         id=$(id_of "${item%% | *}"); line="blocked-by $id: consumes all leaves (integration sweep)"
+         [ -n "$item" ] || continue
+         id=$(id_of "${item%% | *}"); need "$id" "${item%% | *}"
+         line="blocked-by $id: consumes all leaves (integration sweep)"
          case "$text" in *"$line"*) continue ;; esac
          bd dep add "$sweep" "$id"
-         text="${text:+$text
-   }$line"; added=1
-       done <<EOF2
-   $(field work)
-   EOF2
+         text="${text:+$text$nl}$line"; added=1
+       done < <(field work)
        [ "$added" = 0 ] || bd update "$sweep" --description "$text"
      fi
    fi
