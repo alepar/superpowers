@@ -108,6 +108,7 @@ const hotFileCap = Math.max(1, Number(config.hotFileCap) || 3)
 // rows (readyFromGraph); the top-up runs only for mappings without deps or with opaque rows.
 // Exhausting it falls back to the round-boundary refill.
 const topUpQueryCap = Math.max(0, Number(config.topUpQueryCap) || 40)
+const readinessRefreshMs = Math.max(1, Number(config.readinessRefreshMs) || 30000)
 // Early unblock (default on): a task with open in-tree dependents is split when its implementer
 // commits; dependents dispatch on its unmerged branch while its review, fix and merge continue under a
 // `review: <id>` bead. `false` waits for the merge.
@@ -259,7 +260,8 @@ function flushAllLedger(phase) { for (const id of [...ledgerBuf.keys()]) flushLe
 
 // `reviews`: ready review beads (a task split at implementation-done whose merge has not landed),
 // each with the task it reviews — re-entered at the review stage, never planned or implemented.
-const READY   = { type: 'object', properties: { ids: { type: 'array', items: { type: 'string' } }, reviews: { type: 'array', items: { type: 'object', properties: { id: {type:'string'}, task: {type:'string'} }, required: ['id','task'] } }, scriptError: {type:'string'} }, required: ['ids'] }
+const DEP_OBSERVATION = { type: 'object', properties: { id: {type:'string'}, status: {type:'string'}, kind: {type:'string'}, error: {type:'string'} }, required: ['id'] }
+const READY   = { type: 'object', properties: { observations: { type:'array', items: DEP_OBSERVATION }, ids: { type: 'array', items: { type: 'string' } }, reviews: { type: 'array', items: { type: 'object', properties: { id: {type:'string'}, task: {type:'string'} }, required: ['id','task'] } }, scriptError: {type:'string'} }, required: ['ids'] }
 // mapping: ordinal (for task-brief) <-> bead id (for bd) <-> declared files (for the hot-file cap).
 // It is the full cumulative table every round, because `planned` is replaced wholesale.
 // `unplanned`: beads left out for a missing decision; each gets a blocker bead.
@@ -1162,6 +1164,28 @@ while (true) {
   // Graph mode: the planner reported `deps` rows (scripts/tree-deps), so readiness mid-round is
   // computed here. Without them every merge falls back to the `bd ready` top-up.
   const graphMode = planned.mapping.some(m => Array.isArray(m.deps))
+  const externalStatus = new Map()
+  const admissionHolds = new Map()
+  const trackerReady = new Set(ids)
+  const localDependency = id => !!rowOf(id) && ![...reviewBeadOf.values()].includes(id)
+  const dependencyReady = id => localDependency(id)
+    ? completed.has(id) || implDone.has(id)
+    : externalStatus.get(id)?.status === 'closed' && ['review', 'blocker', 'gate', 'epic', 'task'].includes(externalStatus.get(id)?.kind)
+  const admissionReason = id => {
+    if (integrationBlocked) return 'merge lane held: ' + integrationBlocked
+    if (!canStartWork()) return 'coordinator cannot start new work'
+    if (escalated.has(id)) return 'task quarantined'
+    for (const dep of rowOf(id) ? effDeps(rowOf(id)) : []) {
+      if (escalated.has(dep) || (pendingRetry.has(dep) && !implDone.has(dep) && !completed.has(dep))) return dep + ' quarantined or awaiting retry'
+      if (!dependencyReady(dep)) return dep + ': ' + (externalStatus.get(dep)?.error || externalStatus.get(dep)?.status || 'dependency status unavailable')
+    }
+    if (rowOf(id)?.opaque === true && !trackerReady.has(id)) return 'tracker does not report task ready'
+    return null
+  }
+  const holdAdmission = (id, reason) => {
+    if (admissionHolds.get(id) !== reason) log(id + ': admission held — ' + reason)
+    admissionHolds.set(id, reason)
+  }
   // Held back: bd reports the id ready, but a blocker this run has not merged is quarantined or
   // awaiting its retry — a split task whose task-bead reopen was lost looks closed to bd.
   const heldBack = ids.filter(id => (rowOf(id) ? effDeps(rowOf(id)) : []).some(d => escalated.has(d) || pendingRetry.has(d)))
@@ -1230,11 +1254,11 @@ while (true) {
   // this round (or an edge cut changed the row), nothing opaque. `effDeps` honors applied cuts.
   const readyFromGraph = () => !graphMode ? [] : planned.mapping
     .filter(m => Array.isArray(m.deps) && (m.deps.length > 0 || effDeps(m).length > 0) && m.opaque !== true && waiting(m.id)
-      && effDeps(m).every(d => completed.has(d) || implDone.has(d))
-      && (effDeps(m).some(d => satisfiedThisRound.has(d)) || cutRows.has(m.id)))
+      && effDeps(m).every(dependencyReady)
+      && (effDeps(m).some(d => satisfiedThisRound.has(d)) || cutRows.has(m.id) || effDeps(m).some(d => !localDependency(d) && dependencyReady(d))))
     .map(m => m.id)
   const graphTopUp = () => {
-    if (!canStartWork()) return
+    if (integrationBlocked || !canStartWork()) return
     for (const id of readyFromGraph()) {
       dispatched.add(id)
       const parents = (rowOf(id) ? effDeps(rowOf(id)) : []).filter(d => implDone.has(d))
@@ -1244,7 +1268,7 @@ while (true) {
   }
   // The `bd ready` top-up is needed only where JS cannot see readiness: no `deps` rows at all, or a
   // waiting row gated by something opaque (an epic-level or out-of-tree blocker).
-  const needsBdTopUp = () => !graphMode || planned.mapping.some(m => m.opaque === true && waiting(m.id))
+  const needsBdTopUp = () => !graphMode || planned.mapping.some(m => waiting(m.id) && (m.opaque === true || effDeps(m).some(d => !localDependency(d))))
   // An attempt starts with its stack parents (implemented, split, not yet merged). A review
   // re-entry is already split, so its dependents stack on it even with early unblock off.
   const startAttempt = (id, reentry) => {
@@ -1343,14 +1367,26 @@ while (true) {
 
   const runTask = async (id, { reentry = false } = {}) => {
     if (integrationBlocked) { log(`${id}: not started — the merge lane is held (${integrationBlocked})`); return }
-    const att = startAttempt(id, reentry)
+    let att = null
     let r = null
     let integrate = false
     let slotHeld = false
     try {
-      await sched.acquire(id)
+      const waited = await sched.acquire(id)
       slotHeld = true
       try {
+        // Waiting is a reservation, not an attempt. Refresh opaque/external facts after capacity
+        // waits; every entry path reaches this predicate before setup or implementation.
+        const external = (rowOf(id) ? effDeps(rowOf(id)) : []).some(d => !localDependency(d))
+        if (!integrationBlocked && ((waited && rowOf(id)?.opaque === true) || (external && (waited || (rowOf(id) ? effDeps(rowOf(id)) : []).some(d => !localDependency(d) && !externalStatus.has(d)))))) {
+          const before = observationSeq
+          await runTopUp()
+          if (observationSeq === before) { holdAdmission(id, 'fresh tracker observation unavailable (query budget or start gate)'); dispatched.delete(id); return }
+        }
+        const held = admissionReason(id)
+        if (held) { holdAdmission(id, held); dispatched.delete(id); return }
+        admissionHolds.delete(id)
+        att = startAttempt(id, reentry)
         if (att.cancelledBy) return await abandon(att, true)
         if (landed.has(id)) { await closeAlreadyMerged({ id, n: ordinalFor(id), att }); return }
         // One dispatch sets the workspace up and implements: it cuts or reuses the worktree, merges any
@@ -1450,8 +1486,8 @@ while (true) {
     } finally {
       // An attempt that ends with neither a merge nor a settled failure ends unsettled: stacked
       // dependents are cancelled, and a split task keeps its task bead closed.
-      if (!att.ended) await failAttempt(att, { failure: 'unsettled' })
-      if (attemptOf.get(id) === att) attemptOf.delete(id)
+      if (att && !att.ended) await failAttempt(att, { failure: 'unsettled' })
+      if (att && attemptOf.get(id) === att) attemptOf.delete(id)
       flushLedger(id, 'Integrate')  // this chain's ledger lines, in one append, off the critical path
     }
   }
@@ -1514,11 +1550,16 @@ while (true) {
   }
   checkGraphBound()
   let topUpActive = false, topUpQueued = false
-  let topUpQueriesUsed = 0
+  let topUpPending = null
+  let topUpQueriesUsed = 0, observationSeq = 0
   let startGateLogged = false
   const topUps = []
-  const runTopUp = async () => {
-    if (topUpActive) { topUpQueued = true; return }  // coalesce: the in-flight query re-runs once
+  const runTopUp = () => {
+    if (topUpActive) { topUpQueued = true; return topUpPending }
+    topUpPending = performTopUp()
+    return topUpPending
+  }
+  const performTopUp = async () => {  // coalesce: the in-flight query re-runs once
     topUpActive = true
     try {
       do {
@@ -1537,12 +1578,30 @@ while (true) {
         topUpQueriesUsed++
         // Distinct stub key from the round query. The close pass rides along because a landing is when an
         // epic becomes close-eligible, which is what an opaque row waits on.
-        const more = await dispatch(() => topUpPrompt(epicId), 'bd-ready-topup',
+        const externalIds = [...new Set(planned.mapping.filter(m => !completed.has(m.id) && !escalated.has(m.id)).flatMap(m => effDeps(m).filter(d => !localDependency(d))))]
+        const more = await dispatch(() => topUpPrompt(epicId, externalIds), 'bd-ready-topup',
           { label: 'bd-ready-topup', phase: 'Implement', schema: READY, ...tier('mechanical') })
+        observationSeq++
+        trackerReady.clear()
+        // Each lookup failure invalidates only that dependency's previous observation.
+        for (const dep of externalIds) {
+          const observations = (Array.isArray(more?.observations) ? more.observations : []).filter(o => o?.id === dep)
+          const o = observations.length === 1 ? observations[0] : null
+          externalStatus.set(dep, o && typeof o.status === 'string' && ['review', 'blocker', 'gate', 'epic', 'task'].includes(o.kind) && !o.error ? o : { error: o?.error || 'dependency observation unavailable or malformed' })
+        }
         if (!more) { log('top-up ready query returned null — skipping this top-up; the next round query is the authority'); return }
+        for (const id of more.ids ?? []) trackerReady.add(id)
+        for (const m of planned.mapping.filter(m => waiting(m.id))) {
+          const held = admissionReason(m.id)
+          if (held) holdAdmission(m.id, held)
+          else admissionHolds.delete(m.id)
+        }
+        graphTopUp()
         for (const id of (more.ids ?? [])) {
           if (dispatched.has(id) || escalated.has(id) || attemptOf.has(id) || splitInFlight.has(id)) continue
-          if ([...(addedDeps.get(id) ?? [])].some(d => !completed.has(d))) continue   // waits on an added edge bd may not have yet; graph readiness releases it
+          if ([...(addedDeps.get(id) ?? [])].some(d => !dependencyReady(d))) continue   // waits on an added edge bd may not have yet; graph readiness releases it
+          const held = admissionReason(id)
+          if (held) { holdAdmission(id, held); continue }
           if (ordinalFor(id) === undefined) {
             // Briefing an unmapped id would fail the chain, so it waits for the next planner pass (logged).
             log(`top-up: ${id} is ready but has no mapping row — leaving it for the next round's planner pass`)
@@ -1574,12 +1633,31 @@ while (true) {
     chains.push(runTask(id).catch(chainCatch(id)))
   }
 
+  // A single finite-cadence timer shares the existing serialized query budget. It runs beside
+  // chains/merges, never awaits a chain, and is cancelled as soon as this round quiesces.
+  let readinessTimer = null, refreshing = true
+  const armReadinessRefresh = () => {
+    if (!refreshing || topUpQueriesUsed >= topUpQueryCap || !canStartWork()) return
+    readinessTimer = setTimeout(() => {
+      readinessTimer = null
+      if (needsBdTopUp()) {
+        const refresh = runTopUp().catch(e => { topUpFailure = topUpFailure ?? e }).finally(armReadinessRefresh)
+        topUps.push(refresh)
+      } else armReadinessRefresh()
+    }, readinessRefreshMs)
+  }
+  armReadinessRefresh()
   // Quiescence, then drain: await chains and top-ups together until neither grew, since a top-up
   // pushed during the await would otherwise go unawaited. mergeChain is awaited once more as a guard.
-  for (;;) {
-    const chainCount = chains.length, topUpCount = topUps.length
-    await Promise.all([...chains, ...topUps])
-    if (chains.length === chainCount && topUps.length === topUpCount) break
+  try {
+    for (;;) {
+      const chainCount = chains.length, topUpCount = topUps.length
+      await Promise.all([...chains, ...topUps])
+      if (chains.length === chainCount && topUps.length === topUpCount) break
+    }
+  } finally {
+    refreshing = false
+    if (readinessTimer !== null) clearTimeout(readinessTimer)
   }
   edgeCutHook = () => {}   // nothing is draining now; a later cut is picked up by the next round's ready query
   if (topUpFailure) {
@@ -1597,7 +1675,7 @@ while (true) {
   // filled reads as healthy.
   const hotDeferrals = Object.entries(sched.stats.hotFileDeferrals)
   const slotsNote = runtimeSlots ? ` · runtime slots ${runtimeSlots}` : ''
-  const toppedUp = dispatched.size - plannedIds.length - reentryPlanned.length
+  const toppedUp = Math.max(0, dispatched.size - plannedIds.length - reentryPlanned.length)
   const earlyNote = (reentryPlanned.length ? ` · review re-entries ${reentryPlanned.length}` : '') + (stackedDispatched ? ` · stacked ${stackedDispatched}` : '') + (cancelledThisRound ? ` · cancelled ${cancelledThisRound}` : '')
   // Where the time went: the merge lane's backlog, slots left idle, and rows still waiting on deps.
   const idleSlots = Math.max(0, cap - sched.stats.peak)
@@ -1908,12 +1986,12 @@ function closeEpicsPrompt(epicId) {
   return `Run \`bash ${codeSkill}/scripts/close-in-tree-epics ${epicId}\` and report \`rootClosed\` and \`closedThisRun\` from the JSON object it prints, verbatim. Do not run \`bd epic close-eligible\` or \`bd close\` yourself unless the script's fallback instruction tells you to. ${scriptOutcomeRule()} ${finalAnswerRule(true)}`
 }
 
-function topUpPrompt(epicId) {
+function topUpPrompt(epicId, externalIds = []) {
   // The top-up closes newly eligible epics first (an unclosed epic hides its dependents), then
   // queries. The round-head Close pass stays the authority on rootClosed.
   return `Two scripts, in order, one report. ${scriptOutcomeRule()}
 1. Run \`bash ${codeSkill}/scripts/close-in-tree-epics ${epicId}\`. Its closes are the point; its output is not part of your report.
-2. Run \`bash ${codeSkill}/scripts/ready-in-tree ${epicId}\` and report the \`ids\` array from the JSON object it prints, verbatim and in its order. Do not filter, reorder, or re-judge the ids, and do not start any work. ${finalAnswerRule(true)}`
+2. Run \`bash ${codeSkill}/scripts/ready-in-tree ${epicId}\` and report the \`ids\` array from the JSON object it prints, verbatim and in its order. Do not filter, reorder, or re-judge the ids, and do not start any work. ${externalIds.length ? '\n3. For dependency IDs ' + JSON.stringify(externalIds) + ', run bd show <id> --json independently. Return observations [{id,status,kind}] using tracker status verbatim; kind is review (sp:review), blocker (blocker label), gate (gate type or sp:gate/human-gate/human label), epic, or task. These IDs are the mapping blocks relationship; local implementation completion cannot satisfy them. A failed lookup returns {id,error:<command/error>}, preserving other observations and the ready ids; do not set a global scriptError for an individual lookup. Keep tracker bodies out of the result.' : ''} ${finalAnswerRule(true)}`
 }
 
 function authRefusalRule() {
@@ -2452,7 +2530,10 @@ function makeScheduler(cap, hotFileCap, filesFor, onRaise = () => {}) {
   }
   return {
     stats,
-    acquire: id => new Promise(res => { waiting.push({ id, res }); pump() }),
+    acquire: id => new Promise(resolve => {
+      let immediate = true
+      waiting.push({ id, res: () => resolve(!immediate) }); pump(); immediate = false
+    }),
     release: id => { active--; for (const f of filesFor(id)) fileCounts[f]--; pump() },
   }
 }

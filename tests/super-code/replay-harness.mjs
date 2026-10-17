@@ -48,7 +48,7 @@ function extractJsonBlocks() {
 
 const scriptBody = extractScript()
 const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor
-const scriptFn = new AsyncFunction('args', 'agent', 'log', 'phase', 'pipeline', 'parallel', 'budget', 'workflow', scriptBody)
+const scriptFn = new AsyncFunction('args', 'agent', 'log', 'phase', 'pipeline', 'parallel', 'budget', 'workflow', 'setTimeout', 'clearTimeout', scriptBody)
 
 // ---------- runtime stubs ----------
 
@@ -63,7 +63,7 @@ const scriptFn = new AsyncFunction('args', 'agent', 'log', 'phase', 'pipeline', 
 // before the first ':') — `maxOpen.merge === 1` is the single-flight merge invariant.
 // `timeoutMs` converts a deadlock (e.g. a reintroduced dispatch/merge barrier that makes a
 // waitFor unsatisfiable) into a test failure instead of a hang.
-async function run({ args, canned = {}, nullLabels = new Set(), nullAll = false, timeoutMs = 15000 }) {
+async function run({ args, canned = {}, nullLabels = new Set(), nullAll = false, timeoutMs = 15000, readinessTimers = { setTimeout, clearTimeout } }) {
   const trace = []
   const logs = []
   const counts = {}
@@ -150,7 +150,7 @@ async function run({ args, canned = {}, nullLabels = new Set(), nullAll = false,
   let timer = null
   try {
     result = await Promise.race([
-      scriptFn(args, agent, m => logs.push(m), () => {}, pipeline, parallel, budget, workflow),
+      scriptFn(args, agent, m => logs.push(m), () => {}, pipeline, parallel, budget, workflow, readinessTimers.setTimeout, readinessTimers.clearTimeout),
       new Promise((_, rej) => { timer = setTimeout(() => rej(new Error(`HARNESS TIMEOUT after ${timeoutMs}ms — an unsatisfied waitFor usually means a dispatch/merge barrier was reintroduced`)), timeoutMs) }),
     ])
   } catch (e) {
@@ -2471,16 +2471,21 @@ async function main() {
     const dnPrompt = promptOf(dn.trace, 'impl:bd-10') ?? ''
     check(/DEFERRED TO THIS TASK[\s\S]*<minor task="bd-101">\[deferred-gap\]/.test(dnPrompt) && !dnPrompt.includes('rewrites those same lines'), 'a minor naming a later task\'s bead id reaches that task as an obligation, whatever files it touches')
     check(/You are the implementer/.test(promptOf(dn.trace, 'impl:bd-1012') ?? '') && !promptOf(dn.trace, 'impl:bd-1012').includes('DEFERRED'), 'a bead id is matched whole: bd-10 does not match bd-1012')
-    const rows = [{ id: 'bd-101' }, { id: 'bd-102', deps: ['bd-101'] }]
+    // The interface dependency is discovered after both branches were admitted independently.
+    const rows = [{ id: 'bd-101' }, { id: 'bd-102' }]
     const cr = await run({ args: liveArgs({ config: cfg({ earlyUnblock: false }) }), canned: graphCanned(rows, {
       'bd-ready': [{ ids: ['bd-101', 'bd-102'] }, { ids: [] }],
-      'merge:bd-101': async ctx => { await ctx.waitFor('impl:bd-102'); return { id: 'bd-101', merged: true, mergeExit: 0, mergeHead: true, head: SHA('b'), mergeBase: SHA('a') } },
+      'plan-rest': async ctx => { await ctx.waitFor('impl:bd-102'); return { planPath: PLANPATH, mapping: [], missingEdges: [{ dependent: 'bd-102', blocker: 'bd-101', reason: 'consumer interface discovered after branching' }] } },
+      'edge-add:1': { added: true },
+      'merge:bd-101': async ctx => { await ctx.waitFor('edge-add:1'); return { id: 'bd-101', merged: true, mergeExit: 0, mergeHead: true, head: SHA('b'), mergeBase: SHA('a') } },
       'merge:bd-102': [{ id: 'bd-102', merged: false, seamOverlap: ['consumes bd-101'], head: SHA('d'), mergeBase: SHA('b') }],
       'seam-review:bd-102': { id: 'bd-102', status: 'CLEAN' },
       'merge:bd-102:seam-cleared': { id: 'bd-102', merged: true, mergeExit: 0, mergeHead: true, head: SHA('d'), mergeBase: SHA('b') } }) })
     assertNoThrow(cr)
     check(/consumes bd-101, which merged after it branched/.test(promptOf(cr.trace, 'merge:bd-102') ?? ''), 'a consumer whose producer landed after it branched is sent to the seam review', (promptOf(cr.trace, 'merge:bd-102') ?? '').slice(0, 0))
     check(/A .consumes <id>. entry names a task/.test(promptOf(cr.trace, 'seam-review:bd-102') ?? ''), 'the seam review checks the consumer against the producer interface')
+    const lateAt = label => cr.trace.findIndex(t => t.label === label)
+    check(cr.result?.completed.length === 2 && lateAt('impl:bd-102') < lateAt('edge-add:1') && lateAt('edge-add:1') < lateAt('merge:bd-102') && !(promptOf(cr.trace, 'impl:bd-102') ?? '').includes('-m "stack:'), 'late dependency discovery preserves independent admission and composed-interface review')
     const bl = await run({ args: liveArgs({ config: cfg({ sweepBaseline: true }) }), canned: oneTaskCanned({
       'sweep:baseline': { summary: 'aaa1111 — 9 passed, 1 failed, 0 errors, 0 skipped; failing: t::old; command: cargo test' },
       'ledger-append:sweep-baseline': { appended: true },
@@ -2958,6 +2963,67 @@ async function main() {
   }
   const at = (out, label) => out.trace.findIndex(t => t.label === label)
   const lastAt = (out, label) => out.trace.map(t => t.label).lastIndexOf(label)
+
+  scenario('admission: a merge hold established during a capacity wait rejects queued work')
+  {
+    const canned = graphCanned([{ id: 'bd-101' }, { id: 'bd-102' }, { id: 'bd-103' }], {
+      'plan': { planPath: PLANPATH, mapping: [
+        { n: 1, id: 'bd-101', files: ['a'], deps: [] },
+        { n: 2, id: 'bd-102', files: ['hot'], deps: [] },
+        { n: 3, id: 'bd-103', files: ['hot'], deps: [] },
+      ] },
+      'impl:bd-102': async ctx => { await ctx.waitFor('merge:bd-101'); return await tick({ status: 'IMPLEMENTED', base: SHA('a'), head: SHA('c') })() },
+      'merge:bd-101': { merged: false, dirty: ['M caller-file'] },
+    })
+    const out = await run({ args: liveArgs({ config: cfg({ concurrency: 2, hotFileCap: 1 }) }), canned })
+    assertNoThrow(out)
+    check(out.result?.stopReason === 'integration-blocked' && !out.counts['impl:bd-103'], 'queued consumer is not implemented after the hold', JSON.stringify(out.counts))
+    check(!out.counts['review:bd-103'] && !out.counts['fix:bd-103'] && !out.counts['merge:bd-103'] && !taskLedgerLines(out.trace, 'bd-103').length, 'rejected reservation creates no attempt outcome')
+    check(out.logs.some(l => l.includes('bd-103: admission held')), 'rejection records its admission reason')
+  }
+
+  scenario('admission: fresh external hold rejects a queued consumer and releases capacity to unrelated work')
+  {
+    let readyToRelease
+    const released = new Promise(resolve => { readyToRelease = resolve })
+    const canned = graphCanned([{ id: 'bd-101' }, { id: 'bd-102', deps: ['external-review'] }, { id: 'bd-103' }], {
+      'bd-ready': [{ ids: ['bd-101', 'bd-102', 'bd-103'] }, { ids: [] }],
+      'impl:bd-101': async () => { readyToRelease(); return { status: 'IMPLEMENTED', base: SHA('a'), head: SHA('c') } },
+      'bd-ready-topup': async () => { await released; return { ids: ['bd-103'], observations: [{ id: 'external-review', status: 'open', kind: 'review' }] } },
+    })
+    const out = await run({ args: liveArgs({ config: cfg({ concurrency: 1 }) }), canned })
+    assertNoThrow(out)
+    check(!out.counts['impl:bd-102'] && out.counts['impl:bd-103'] === 1 && out.result?.completed.includes('bd-103'), 'post-wait tracker hold prevents implementation and the next reservation acquires its released slot', JSON.stringify(out.counts))
+    check(out.logs.some(l => l.includes('bd-102: admission held') && l.includes('external-review: open')), 'fresh external hold identifies the affected dependency')
+    check(!taskLedgerLines(out.trace, 'bd-102').length, 'a rejected external admission leaves no implementation attempt ledger entry')
+  }
+
+  scenario('external readiness: closed reviews release consumers during an unrelated long implementation')
+  {
+    let ticks = 0
+    const pendingTimers = new Set()
+    const readinessTimers = {
+      setTimeout(fn) { const token = { cancelled: false }; pendingTimers.add(token); setImmediate(() => { pendingTimers.delete(token); if (!token.cancelled) { ticks++; fn() } }); return token },
+      clearTimeout(token) { token.cancelled = true; pendingTimers.delete(token) },
+    }
+    const canned = graphCanned([{ id: 'bd-101' }, { id: 'bd-102', deps: ['review-external'] }, { id: 'bd-103', deps: ['human-gate'] }, { id: 'bd-104', deps: ['blocker-external'] }, { id: 'bd-105', deps: ['missing-review'] }], {
+      'bd-ready': [{ ids: ['bd-101'] }, { ids: [] }],
+      'impl:bd-101': async ctx => { await ctx.waitFor('impl:bd-102'); return { status: 'IMPLEMENTED', base: SHA('a'), head: SHA('c') } },
+      'bd-ready-topup': [
+        { ids: [], observations: [{ id: 'review-external', status: 'open', kind: 'review' }, { id: 'human-gate', status: 'open', kind: 'gate' }, { id: 'blocker-external', status: 'open', kind: 'blocker' }, { id: 'missing-review', error: 'tracker unavailable' }] },
+        { ids: [], observations: [{ id: 'review-external', status: 'closed', kind: 'review' }, { id: 'human-gate', status: 'open', kind: 'gate' }, { id: 'blocker-external', status: 'open', kind: 'blocker' }, { id: 'missing-review', error: 'tracker unavailable' }] },
+      ],
+    })
+    const out = await run({ args: liveArgs({ config: cfg({ concurrency: 2, topUpQueryCap: 4 }) }), canned, readinessTimers, timeoutMs: 1000 })
+    assertNoThrow(out)
+    check(out.counts['impl:bd-102'] === 1 && at(out, 'impl:bd-102') < at(out, 'review:bd-101'), 'external review closure releases its consumer before the long task finishes', JSON.stringify(out.counts))
+    check(!out.counts['impl:bd-103'] && !out.counts['impl:bd-104'] && !out.counts['impl:bd-105'], 'open human gate, open blocker and failed lookup keep only their consumers held')
+    check(out.logs.some(l => l.includes('missing-review') && l.includes('tracker unavailable')), 'lookup failure retains an explicit per-task reason')
+    check(out.counts['bd-ready-topup'] <= 4 && ticks > 0 && pendingTimers.size === 0, 'in-flight refresh is bounded and its timer is cancelled at quiescence')
+    const prompt = promptOf(out.trace, 'bd-ready-topup') ?? ''
+    check(prompt.includes('bd show') && prompt.includes('observations') && prompt.includes('relationship'), 'mechanical refresh asks for authoritative dependency status and meaning')
+    check(!out.result?.completed.includes('review-external'), 'external closure is independent of the local implementation-completion set')
+  }
 
   scenario('early unblock: a dependent dispatches at its parent\'s implementation, cut on the parent\'s branch, and merges after it')
   {
