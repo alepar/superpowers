@@ -592,22 +592,91 @@ async function main() {
     assertNoThrow(cleanup)
     check(cleanup.result?.completed?.includes('bd-101') && cleanup.result?.verificationCompletions?.[0]?.cleanup === 'unknown: task process inspection refused; kept: task resource', 'confirmed closure retains unverified cleanup as its actual outcome')
     const capDir = mkdtempSync(path.join(os.tmpdir(), 'verification-cap-'))
-    let capped
+    let capped, foreignSource, foreignRecovery, oversized
     try {
-      const file = path.join(capDir, 'progress.md')
+      const file = foreignSource = path.join(capDir, 'progress.md')
       const record = lines.find(l => l.startsWith('Recovery:') && l.includes('reviewed verification-only'))
-      const oversized = JSON.parse(record.slice('Recovery:'.length))
+      oversized = JSON.parse(record.slice('Recovery:'.length))
       oversized.data.verification.evidence = Array(30).fill(evidence[0])
+      oversized.futureContext = { retain: ['unknown top-level field'] }
+      oversized.data.futureContext = { retain: ['unknown nested field'] }
       writeFileSync(file, 'Recovery: ' + JSON.stringify(oversized) + '\nTask 1 (bd-101): complete (verification-only, reviewed acceptance evidence; no Git landing)\n')
       capped = execFileSync('bash', [path.join(skillDir, 'scripts/ledger-digest'), file], { encoding: 'utf8' })
+      foreignRecovery = execFileSync('bash', [path.join(skillDir, 'scripts/ledger-digest'), '--recovery-line', '1', file], { encoding: 'utf8' })
       check(capped.includes('Recovery gap: 1 ' + file) && capped.includes('Task 1 (bd-101): complete, verification-only') && !capped.includes('evidence/live.log'), 'oversized basis preserves cap/source pointer and verification completion discriminator', capped)
     } finally { rmSync(capDir, { recursive: true, force: true }) }
-    const gap = await run({ args: liveArgs(), canned: canned({ 'read-ledger': { text: capped }, 'bd-ready': { ids: [] } }) })
+    // An opaque pointer cannot borrow scope from its neighboring typed Task line. Even supplied
+    // complete bytes cannot bypass ownership when they name another integration's ledger.
+    for (const [name, recoveryRecords] of [
+      ['unrecoverable deleted pointer', undefined],
+      ['supplied foreign-source payload', [{ source: foreignSource, line: 1, text: foreignRecovery }]],
+    ]) {
+      const held = await run({ args: liveArgs(), canned: canned({ 'read-ledger': { text: capped, ...(recoveryRecords ? { recoveryRecords } : {}) } }) })
+      assertNoThrow(held)
+      check(!held.counts['impl:bd-101'] && !held.counts['review:bd-101'] && !held.counts['merge:bd-101'] && !held.counts['close-only:bd-101'], name + ' admits no work or closure')
+      check(!held.result?.completed?.includes('bd-101') && held.result?.stopReason === 'recovery-held' && held.result?.recovery?.gaps?.some(g => g.source === foreignSource && g.line === 1), name + ' retains the exact unresolved source/line and conservative hold')
+    }
+    // Missing acceptance basis is separately recoverable through a fresh independent review;
+    // this counted ledger has no unresolved Recovery pointer or retained pending closure.
+    const missingBasis = '# ledger-digest: 1 of 1 lines\nTask 1 (bd-101): complete, verification-only'
+    const gap = await run({ args: liveArgs(), canned: canned({ 'read-ledger': { text: missingBasis }, 'bd-ready': { ids: [] } }) })
     assertNoThrow(gap)
     check(!gap.result?.completed?.length && gap.result?.recovery?.gaps?.some(g => g.reason.includes('verification completion basis unavailable')) && !gap.counts['close-only:bd-101'], 'typed completion with compacted-away basis remains an evidence gap rather than an inferred landing')
-    const reentry = await run({ args: liveArgs(), canned: canned({ 'read-ledger': { text: capped } }) })
+    const reentry = await run({ args: liveArgs(), canned: canned({ 'read-ledger': { text: missingBasis } }) })
     assertNoThrow(reentry)
     check(reentry.counts['impl:bd-101'] === 1 && reentry.counts['review:bd-101'] === 1 && reentry.result?.completed?.includes('bd-101') && !reentry.counts['merge:bd-101'], 'ready reentry with missing basis obtains independent verification review before closure')
+    check(reentry.counts['close-only:bd-101'] === 1 && reentry.counts['close-check:bd-101'] === 1, 'fresh missing-basis reentry confirms tracker closure after close-only')
+    const freshWrite = reentry.trace.findIndex(t => t.label === 'ledger-append:recovery:pending-closure:bd-101' && extractLedgerLines(t.prompt).some(l => l.includes('reviewed verification-only')))
+    check(freshWrite > reentry.trace.findIndex(t => t.label === 'review:bd-101') && freshWrite < reentry.trace.findIndex(t => t.label === 'close-only:bd-101'), 'new independently reviewed basis is durably written before fresh closure')
+    const freshBasis = reentry.result?.verificationCompletions?.[0]
+    check(JSON.stringify(freshBasis?.evidence) === JSON.stringify(evidence) && JSON.stringify(freshBasis?.requiredLiveChecks) === JSON.stringify([identity]) && freshBasis?.sourceTree === SHA('d') && freshBasis?.head === SHA('a'), 'fresh reentry preserves the original live evidence, required checks and source identity')
+    const reentryUnconfirmed = await run({ args: liveArgs(), canned: canned({ 'read-ledger': { text: missingBasis }, 'close-check:bd-101': { closed: [] } }) })
+    assertNoThrow(reentryUnconfirmed)
+    check(!reentryUnconfirmed.result?.completed?.includes('bd-101') && reentryUnconfirmed.result?.closureUnconfirmed?.includes('bd-101'), 'fresh missing-basis completion waits for observed tracker closure')
+
+    const recoveryDir = mkdtempSync(path.join(os.tmpdir(), 'verification-recovery-'))
+    try {
+      const relativeLedger = '.superpowers/sdd/bd-100-plan/progress.md'
+      const file = path.join(recoveryDir, relativeLedger)
+      mkdirSync(path.dirname(file), { recursive: true })
+      const original = 'Recovery: ' + JSON.stringify(oversized)
+      writeFileSync(file, original + '\nTask 1 (bd-101): complete (verification-only, reviewed acceptance evidence; no Git landing)\n')
+      const compact = execFileSync('bash', [path.join(skillDir, 'scripts/ledger-digest'), file], { encoding: 'utf8' })
+      const retained = execFileSync('bash', [path.join(skillDir, 'scripts/ledger-digest'), '--recovery-line', '1', file], { encoding: 'utf8' })
+      const pointer = /^Recovery gap: (1) (.+)$/m.exec(compact)
+      check(pointer?.[2] === file && retained === '# ledger-digest: 1 of 2 lines\n' + original + '\n', 'targeted helper retains the complete original oversized pending-closure bytes')
+      const recoveredInput = { text: compact, recoveryRecords: [{ source: pointer?.[2], line: Number(pointer?.[1]), text: retained }] }
+      const sourceObservation = { sourceVerified: true, landed: false, closed: [], open: ['bd-101'] }
+      const replayRecovered = extra => run({ args: liveArgs({ integrationWorktree: recoveryDir, skillsRoot: path.dirname(skillDir) }), canned: canned({ 'read-ledger': recoveredInput, 'resume-check:bd-101': sourceObservation, 'plan': { planPath: path.join(recoveryDir, '.superpowers/sdd/bd-100-plan/bd-100-plan.md'), mapping: [{ n: 1, id: 'bd-101', files: ['src/a.js'] }] }, ...extra }) })
+      const restored = await replayRecovered({})
+      assertNoThrow(restored)
+      check(!restored.counts['impl:bd-101'] && !restored.counts['review:bd-101'] && !restored.counts['merge:bd-101'] && restored.counts['close-only:bd-101'] === 1, 'recovered oversized basis reuses independent acceptance and routes only to closure')
+      const resumeIndex = restored.trace.findIndex(t => t.label === 'resume-check:bd-101')
+      const closeIndex = restored.trace.findIndex(t => t.label === 'close-only:bd-101')
+      check(resumeIndex >= 0 && closeIndex > resumeIndex && restored.counts['close-check:bd-101'] === 1 && restored.result?.completed?.includes('bd-101'), 'recovered source/tracker reconciliation precedes confirmed closure and completion')
+      const reader = promptOf(restored.trace, 'read-ledger') ?? ''
+      check(reader.includes("--recovery-line N '" + relativeLedger + "'") && reader.includes(file) && !restored.trace.some(t => t.label.startsWith('read-recovery')), 'existing reader requests this exact ledger/source line without another recovery dispatch')
+      const sourcePrompt = promptOf(restored.trace, 'resume-check:bd-101') ?? ''
+      check(sourcePrompt.includes(SHA('a') + '^{commit}') && sourcePrompt.includes(SHA('a') + '^{tree}') && sourcePrompt.includes(SHA('d')) && sourcePrompt.includes('every required bead: bd-101.'), 'recovered closure observes the retained commit/tree and exact required bead set')
+      const restoredBasis = restored.result?.verificationCompletions?.[0]
+      check(restoredBasis?.base === SHA('a') && restoredBasis?.head === SHA('a') && restoredBasis?.sourceTree === SHA('d') && JSON.stringify(restoredBasis?.evidence) === JSON.stringify(oversized.data.verification.evidence) && JSON.stringify(restoredBasis?.requiredLiveChecks) === JSON.stringify([identity]), 'recovered completion preserves all source-bound live evidence and required checks')
+      check(restored.result?.recovery?.gaps?.length === 0 && !restored.result?.recovery?.obligations?.some(r => r.id === 'bd-101' && r.kind === 'pending-closure'), 'successful recovery clears its resolved transport gap and confirmed closure obligation')
+      const retainedOpen = await replayRecovered({ 'close-only:bd-101': null })
+      assertNoThrow(retainedOpen)
+      check(!retainedOpen.result?.completed?.includes('bd-101') && retainedOpen.result?.closureUnconfirmed?.includes('bd-101') && JSON.stringify(retainedOpen.result?.recovery?.obligations?.find(r => r.kind === 'pending-closure' && r.id === 'bd-101')) === JSON.stringify(oversized), 'unconfirmed recovered closure retains the entire oversized record, evidence and additive fields')
+      for (const [name, observation] of [
+        ['unavailable', null],
+        ['source mismatch', { sourceVerified: false, landed: true, closed: ['bd-101'], open: [] }],
+        ['tracker unavailable', { sourceVerified: true, landed: false, closed: [], open: [], error: 'tracker unavailable' }],
+        ['tracker contradictory', { sourceVerified: true, landed: false, closed: ['bd-101'], open: ['bd-101'] }],
+      ]) {
+        const held = await replayRecovered({ 'resume-check:bd-101': observation, 'reconcile-buckets': { closed: ['bd-101'] } })
+        assertNoThrow(held)
+        check(!held.result?.completed?.includes('bd-101') && !held.counts['close-only:bd-101'] && !held.counts['impl:bd-101'] && !held.counts['review:bd-101'] && !held.counts['merge:bd-101'] && held.result?.stopReason === 'recovery-held', 'recovered pending closure with ' + name + ' observations remains held')
+        check(JSON.stringify(held.result?.recovery?.obligations?.find(r => r.kind === 'pending-closure' && r.id === 'bd-101')) === JSON.stringify(oversized), name + ' recovery preserves original pending closure bytes')
+      }
+      check(readFileSync(file, 'utf8') === original + '\nTask 1 (bd-101): complete (verification-only, reviewed acceptance evidence; no Git landing)\n', 'targeted recovery never rewrites the authoritative ledger')
+    } finally { rmSync(recoveryDir, { recursive: true, force: true }) }
     const pending = await run({ args: liveArgs(), canned: canned({ 'close-only:bd-101': null }) })
     assertNoThrow(pending)
     check(!pending.result?.completed?.length && pending.result?.closureUnconfirmed?.includes('bd-101') && pending.result?.verificationCompletions?.length === 1, 'unavailable closure preserves verified basis and remains unconfirmed')
