@@ -78,6 +78,10 @@ These categories can be implemented separately, with boundary checks where outco
 
 Use focused deterministic fixtures for mechanics and representative behavior evaluations for changed agent instructions. The acceptance examples guide that selection; they do not require every agent to run every check on every task. Broaden validation when changes, failures, or unresolved concerns justify it. Retain source evidence for historical claims and do not relabel already-fixed mechanisms as new defects.
 
+## Key abstractions
+
+No new abstractions; extends the existing super-code coordinator, review artifacts and finding records, cleanup helpers, ledger digest, super-auto run-state and acceptance reporting, and run profiler.
+
 ## Post-Implementation Notes
 
 *As this design is implemented and iterated on — bug fixes, adjustments, anything that diverged from the assumptions above — append a dated note here, whether or not a formal debugging skill was used.*
