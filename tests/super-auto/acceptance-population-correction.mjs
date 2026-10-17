@@ -52,8 +52,30 @@ const sha=file=>createHash('sha256').update(fs.readFileSync(file)).digest('hex')
 function correspondence(artifact,source){return {version:1,artifact,sha256:sha(artifact),source:source.source,retainedArtifact:source.artifact,retainedSha256:sha(source.artifact),judgment:'supported',basis:'fixture independent review establishes complete original source correspondence',evidence:[artifact+'#raw-review',source.artifact+'#completeness-review']}}
 
 try{
+ console.log('test source identities: '+JSON.stringify({head:cli('git',['rev-parse','HEAD'],root).trim(),reportStatusSha256:sha(path.join(scripts,'report-status')),testSha256:sha(fileURLToPath(import.meta.url))}));
  test('recognized empty source and independent prerequisites pass',()=>fixture('empty').gate(0));
  for(const loop of ['design','code']){
+  for(const severity of ['Blocking','Should-fix']){
+   test(`${loop}: ${severity} ledger truncation cannot supply ledger-only population`,()=>{
+    const f=fixture(loop+'-'+severity+'-ledger-only'),original=roast(f,'original.md',`- [${severity}] same.js:1 — preserved concern`),file=ledger(f,loop,[original],false);
+    fs.writeFileSync(file,fs.readFileSync(file,'utf8').split('\n').slice(0,4).join('\n')+'\n');
+    f.gate(3,/ledger.*(population|incomplete|contradic)/i);
+   });
+   test(`${loop}: ${severity} ledger truncation remains gap after supported source relevance`,()=>{
+    const f=fixture(loop+'-'+severity+'-declared'),original=roast(f,'original.md',`- [${severity}] same.js:1 — preserved concern`),file=ledger(f,loop,[original],false);
+    const source=extract(original,`roast-${loop}/round-1`);f.sources.push(source);f.declarations.push(`roast-${loop}: original.md`);f.snapshot.findingAcceptance=[relevance(source)];
+    f.gate(0);fs.writeFileSync(file,fs.readFileSync(file,'utf8').split('\n').slice(0,4).join('\n')+'\n');
+    f.gate(3,/ledger.*(population|incomplete|contradic)/i);
+   });
+  }
+  test(`${loop}: genuine empty ledger without caller population stays unknown`,()=>{
+   const f=fixture(loop+'-empty-unknown'),original=roast(f,'original.md','None');ledger(f,loop,[original],false);
+   f.gate(3,/ledger.*population/i);
+  });
+  test(`${loop}: genuine empty ledger with complete declared source passes`,()=>{
+   const f=fixture(loop+'-empty-declared'),original=roast(f,'original.md','None');ledger(f,loop,[original],false);
+   f.declarations.push(`roast-${loop}: original.md`);f.sources.push(extract(original,`roast-${loop}/round-1`));f.gate(0);
+  });
   test(`${loop}: real disputed ledger cannot hide behind unrelated clean review`,()=>{
    const f=fixture(loop+'-disputed'),original=roast(f,'round-1.md'),ledgerFile=ledger(f,loop,[original]);
    assert.match(fs.readFileSync(ledgerFile,'utf8'),/disputed@r1/);
@@ -133,7 +155,7 @@ try{
   fs.mkdirSync(path.join(f.dir,'reports'));const original=roast(f,'reports/round.md');
   cli('bash',[path.join(root,'skills/super-design/scripts/findings-ledger'),'--loop','design','--out','ledger.md','--report','1=reports/round.md'],f.dir);
   const runDir=path.join(f.dir,'run');fs.mkdirSync(runDir);fs.copyFileSync(path.join(f.dir,'ledger.md'),path.join(runDir,'ledger.md'));
-  f.declarations.push('findingsLedgerDesign: ledger.md');const source=extract(original,'roast-design/round-1');f.sources.push(source);f.snapshot.findingAcceptance=[relevance(source)];f.write();
+  f.declarations.push('findingsLedgerDesign: ledger.md','roast-design: ../reports/round.md');const source=extract(original,'roast-design/round-1');f.sources.push(source);f.snapshot.findingAcceptance=[relevance(source)];f.write();
   const run=path.join(runDir,'run.md');fs.copyFileSync(f.run,run);
   const result=JSON.parse(cli('bash',[path.join(scripts,'report-status'),'--acceptance',run,'--tree',tree],tmp));assert.equal(result.eligible,true);
  });
@@ -158,7 +180,7 @@ try{
   f.snapshot.findingAcceptance=refs.map(ref=>({...relevance(source),ref}));
   const keys=path.join(f.dir,'review.keys');fs.writeFileSync(keys,'review: not ready\n'+cli('bash',[path.join(code,'scripts/report-verdict'),'--keys',final]));
   const out=path.join(f.dir,'ledger.md');cli('bash',[path.join(root,'skills/super-design/scripts/findings-ledger'),'--loop','code','--out',out,'--report','1='+original,'--final-review','1='+keys]);
-  f.declarations.push('findingsLedger: ledger.md');f.gate(3,/coverage|correspondence/);
+  f.declarations.push('findingsLedger: ledger.md','roast-code: clean-roast.md');f.sources.push(extract(original,'roast-code/round-1'));f.gate(3,/coverage|correspondence/);
   const association={...correspondence(keys,source),lines:[{line:2,refs:[refs[0]]},{line:3,refs:[refs[1]]}]};
   f.records.push({type:'source-correspondence',data:association});f.gate(0);
   for(const mutate of [a=>a.lines.pop(),a=>a.lines.push(a.lines[0]),a=>a.lines[0].line=1,a=>a.lines[0].refs=[],a=>a.lines[0].refs[0].source='unrelated/final',a=>a.source='unrelated/final',a=>a.sha256='0'.repeat(64)]){

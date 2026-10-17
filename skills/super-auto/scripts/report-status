@@ -170,6 +170,7 @@ else{
 // The outer caller collects settled reports. The read-only gate reconciles known
 // producer pointers with complete retained extraction, never ledger display keys.
 const runDir=path.dirname(path.resolve(run)),sources=[],declared=new Map(),ledgers=[],correspondences=[];
+const roastInputs={design:new Set(),code:new Set()};
 const artifactPath=value=>{const resolved=path.resolve(runDir,value);try{return fs.realpathSync(resolved)}catch{return resolved}};
 let inApprovals=false,fenced=false;
 for(const line of input.split(/\r?\n/)){
@@ -187,7 +188,7 @@ for(const line of input.split(/\r?\n/)){
  const report=line.match(/^(roast-design|roast-code):\s*(.*)$/);
  if(report)for(const artifact of report[2].split(',').map(s=>s.trim())){
   if(!artifact)gap('source coverage: empty '+report[1]+' report pointer');
-  else declared.set(artifactPath(artifact),'roast');
+  else{const original=artifactPath(artifact);declared.set(original,'roast');roastInputs[report[1].slice(6)].add(original)}
  }
  const ledger=line.match(/^(findingsLedgerDesign|findingsLedger):\s*(.*)$/);
  if(ledger)ledgers.push({artifact:ledger[2].trim(),loop:ledger[1]==='findingsLedgerDesign'?'design':'code'});
@@ -201,10 +202,16 @@ for(const {artifact,loop} of ledgers){
   const lines=fs.readFileSync(path.resolve(runDir,artifact),'utf8').trimEnd().split(/\r?\n/);
   if(!new RegExp('^# findings ledger — '+loop+' — through r[0-9]+$').test(lines[0])||!/^triggers: .+/.test(lines[1]||'')||
      !/^blocking: .+/.test(lines[2]||'')||!/^ignored-overrides: [0-9]+$/.test(lines[3]||''))throw Error('malformed ledger header');
+  // Headers contain no total finding count/input manifest: zero rows can mean
+  // truncation even with zero Blocking. Only the caller declares the input set.
+  if(!roastInputs[loop].size)gap('source coverage: ledger input population unavailable: '+artifact+'; declare all roast-'+loop+' producer inputs');
+  if(!lines.slice(4).some(line=>line.trim())&&/\br[0-9]+=[1-9][0-9]*(?:\s|$)/.test(lines[2]))gap('source coverage: ledger header contradicts missing finding rows: '+artifact);
+  const rowKeys=new Set();
   for(const [index,line] of lines.slice(4).entries()){
    if(!line.trim())continue;
    const row=line.match(/^- (\[[^\]]+\] .+) · raised r[0-9]+@(?:[a-f0-9]+|-) · .+ · source (roast|final-review) · text (.+)$/);
    if(!row){gap('source coverage: malformed ledger row '+artifact+':'+(index+5));continue}
+   rowKeys.add(row[1]);
    // The producer preserves its input path. Accept a run-relative or repo-relative
    // path only when it selects one unambiguous original file, never by basename/key.
    const candidates=[...new Set([artifactPath(row[3]),...(repoDir?[artifactPath(path.resolve(repoDir,row[3]))]:[])])].filter(p=>fs.existsSync(p));
@@ -215,14 +222,27 @@ for(const {artifact,loop} of ledgers){
     if(kind==='keys')ledgerKeys.set(cacheKey,fs.readFileSync(candidates[0],'utf8').split(/\r?\n/).map(k=>k.trim().replace(/^r[0-9]+\s+/,'')));
     else{
      const keys=cp.spawnSync('bash',[path.resolve(scripts,'../../super-code/scripts/report-verdict'),'--keys',candidates[0]],{encoding:'utf8'});
-     ledgerKeys.set(cacheKey,keys.status===0?keys.stdout.split(/\r?\n/):[]);
+     ledgerKeys.set(cacheKey,keys.status===0?keys.stdout.split(/\r?\n/):null);
     }
    }
    // Key membership checks the ledger producer's pointer transport only. It never
    // identifies, links or resolves occurrences; complete source/ref checks follow.
-   if(!ledgerKeys.get(cacheKey).includes(row[1]))gap('source coverage: inconsistent ledger key/report pointer '+artifact+':'+(index+5));
+   if(!ledgerKeys.get(cacheKey)?.includes(row[1]))gap('source coverage: inconsistent ledger key/report pointer '+artifact+':'+(index+5));
    if(declared.has(candidates[0])&&declared.get(candidates[0])!==kind)gap('source coverage: conflicting report kind '+candidates[0]);
    else declared.set(candidates[0],kind);
+  }
+  // Reverse transport check catches missing rows of every severity. Equal keys
+  // still do not identify occurrences: all declared original reports are separately
+  // extracted and their immutable refs retain independent relevance/dispositions.
+  for(const original of roastInputs[loop]){
+   const cacheKey=JSON.stringify([original,'roast']);
+   if(!ledgerKeys.has(cacheKey)){
+    const keys=cp.spawnSync('bash',[path.resolve(scripts,'../../super-code/scripts/report-verdict'),'--keys',original],{encoding:'utf8'});
+    ledgerKeys.set(cacheKey,keys.status===0?keys.stdout.split(/\r?\n/):null);
+   }
+   const keys=ledgerKeys.get(cacheKey);
+   if(keys===null)gap('source coverage: ledger declared input population unavailable: '+artifact+'; '+original);
+   else if(keys.some(key=>key.trim()&&!rowKeys.has(key)))gap('source coverage: ledger population incomplete for declared report: '+artifact+'; '+original);
   }
  }catch(e){gap('source coverage: declared ledger '+artifact+': '+e.message)}
 }
