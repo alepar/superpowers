@@ -119,8 +119,8 @@ is done-vs-not: check for the artifact a step would produce before producing it.
 
 - A round with a `redesign-design-<K>` record (not `aborted — …`) resumes only through that record: the fix list's items 1–2 are not re-run for it, and its findings are not re-filed as per-finding tasks. A `stepBackDesign-round-<N>: redesign — applied: …` line with no record replays in place (the recorded redesign is applied from that line if its spec change is not yet committed) only when the run-state file (standalone, the round summaries) holds no `redesign-design-<K>` record anywhere, meaning the run predates the records. Otherwise the line is not replayed as a patch: re-run the round's Step 1 from item 5 on its saved step-back file (re-check, never re-dispatch).
 - `started`: with an amend file and a spec diff present, re-run `amend-check` on them; exit 0 continues from §Amend Mode's commit step; exit 3 restores the spec files to HEAD (`git checkout HEAD -- <spec paths>`) and re-runs §Amend Mode from its first step; exit 2 is a bad invocation or a git failure: fix it and re-run `amend-check`, never restoring. With no amend file, restore and re-run from the first step.
-- `amend-checked`: first check whether §Amend Mode step 3's commit already landed: `git diff --quiet <lastGood> HEAD -- <spec paths>` exits 1 when the specs at HEAD differ from the record's `lastGood` (the pre-amendment HEAD). Landed: do not re-run `amend-check` (against HEAD it sees an empty diff and rejects, and nothing aborts after the commit); finish step 3 from after its commit (the Key Abstractions sync when a `## Key abstractions` section changed), rewrite the state to `specs-committed` and continue at that bullet. Not landed: re-run `amend-check` before committing anything; exit 0 → commit, exit 3 → restore the specs and rewrite the state to `aborted — amend rejected on resume`, then finish the abort as the `aborted — …` bullet does: remove this round's `dissolved@r<N>` lines from `findings-overrides-design.md`, rebuild the ledger and park the `degraded-verdict` `redesign aborted — amend rejected on resume`; exit 2 → fix and re-run, no restore.
-- `specs-committed`: file the amend record's `work:` items missing from the beads labelled `sp:redesign-design-<K>`.
+- `amend-checked`: first check whether §Amend Mode step 3's commit already landed: `git diff --quiet <lastGood> HEAD -- <spec paths>` exits 1 when the specs at HEAD differ from the record's `lastGood` (the pre-amendment HEAD). Landed: do not re-run `amend-check` (against HEAD it sees an empty diff and rejects, and nothing aborts after the commit); rewrite the state to `specs-committed` and continue at that bullet, including step 3's sync. Not landed: re-run `amend-check` before committing anything; exit 0 → commit, exit 3 → restore the specs and rewrite the state to `aborted — amend rejected on resume`, then finish the abort as the `aborted — …` bullet does: remove this round's `dissolved@r<N>` lines from `findings-overrides-design.md`, rebuild the ledger and park the `degraded-verdict` `redesign aborted — amend rejected on resume`; exit 2 → fix and re-run, no restore.
+- `specs-committed`: first replay §Amend Mode step 3's Key Abstractions sync, then file the amend record's `work:` items missing from the beads labelled `sp:redesign-design-<K>`.
 - `beads-filed`: write any missing dispute lines, run the coverage-amend round unless its approvals line exists, rewrite the state to `applied`, then run the post-amendment design roast (§Adversarial Review Loop, Redesign cycle).
 - `aborted — …`: the round runs `local`; before it does, finish the abort (the live abort writes this state first and then runs these same steps, so a crash anywhere in them replays here): park the `degraded-verdict` `redesign aborted — <reason>` unless the run-state file's `parked:` list (standalone, the round summaries) already holds it, and remove any `dissolved@r<N>` line for this round's record still in `findings-overrides-design.md` and rebuild the ledger. Both writes are idempotent: with the park present and no such line, nothing is written.
 - `applied`, `thrash — …`: nothing to replay; the loop continues from its other records.
@@ -904,7 +904,11 @@ caller's bead context.
    reject restores again and returns `aborted — amend rejected`.
 3. **Commit** the specs; state `specs-committed`. An abort is possible only before this commit
    lands, and every abort restores the specs first. Then run the Key Abstractions sync
-   (§Decomposition, "Key abstractions sync") when a `## Key abstractions` section changed.
+   (§Decomposition, "Key abstractions sync") when a `## Key abstractions` section changed
+   from `lastGood` to HEAD. On `specs-committed` replay, re-run this sync from the committed sections
+   even if a previous attempt already completed it: replace the digest block and owner entry text,
+   and adopt existing owners under §Decomposition's rules. If sync fails, retain `specs-committed`
+   and the failure evidence; retry on resume before filing or advancing.
 4. **File the `work:` items** with the filing sequence below. It does for a redesign round what
    super-auto §Step 3 does for a local round: reopen the epic (and the owning subepic) first, since
    a closed parent stays closed when a child is filed and super-code then stops at `root-closed`;
@@ -995,7 +999,7 @@ caller's bead context.
    coverage prompt.
 7. **Return** `applied` with the amend record path, the filed bead ids and `amended:`. Amend Mode does not write state `applied`: the calling loop writes it once its own remaining steps are done (the design loop as soon as Amend Mode returns, §Adversarial Review Loop, Redesign cycle; the code loop at super-auto §Redesign cycle step 4, after the amend design roast and its fixes).
 
-**After the commit nothing aborts.** A step from step 3's sync through step 6 that fails is retried
+**After the commit nothing aborts.** A step from step 4 through step 6 that fails is retried
 once through its state's resume action; a second failure parks a `degraded-verdict`
 `redesign incomplete — <step>: <cause>` and Amend Mode returns `applied` with what it produced, so
 the next roast re-validates the open items.
