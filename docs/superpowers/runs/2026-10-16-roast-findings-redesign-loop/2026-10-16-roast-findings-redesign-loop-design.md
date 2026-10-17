@@ -166,13 +166,13 @@ The redesign budget is implemented as an **effective cap**: `3 + redesignCycles`
 
 ### 6. Moves and references
 
-`skills/super-auto/scripts/step-back-check` moves to `skills/super-design/scripts/step-back-check`. Update every reference: super-auto SKILL.md, resume.md, MAINTENANCE.md mentions, and `tests/super-auto/test-scripts.sh` cases, which move to `tests/super-design/test-scripts.sh`.
+`skills/super-auto/scripts/step-back-check` moves to `skills/super-design/scripts/step-back-check`. Update every reference: super-auto SKILL.md, resume.md, MAINTENANCE.md mentions, and `tests/super-auto/test-scripts.sh` cases, which move to `tests/super-design/test-step-back-check.sh`.
 
 **Considered:** leaving it in super-auto, rejected because super-design would then depend on super-auto's scripts.
 
 ### 7. Testing
 
-- **`tests/super-design/test-scripts.sh`** (existing, already on CLAUDE.md's release list), extended with fixtures under `tests/super-design/fixtures/`:
+- **One test file per new or moved script** (decided at decomposition, so three beads don't serialize on one file): `tests/super-design/test-findings-ledger.sh`, `tests/super-design/test-step-back-check.sh` and `tests/super-design/test-amend-check.sh`, in the existing harness style, with fixtures under `tests/super-design/fixtures/<script>/`. The step-back-check bead registers all three in CLAUDE.md's release test list:
   - **`findings-ledger`:**
     - round 1 only;
     - round 2 with every prior Blocking carried → `no-progress`;
