@@ -1,0 +1,15 @@
+**Disposition: blocked on repair.** The production data-loss defect is an unresolved regression introduced by A at `3a33`: baseline `0a00` passes, while B’s base `4b44` fails. B changes only documentation. Accept B’s `preExisting=true` attribution relative to its task base, but do not treat it as evidence that the run is clean. Route repair to A’s regression, require a regression check, and review the landed fix before clearing the run.
+
+C’s latest attempt is clean after repairing two confirmed findings. Preserve those findings as repaired history; earlier artifacts do not make them currently open.
+
+**Evidence/process summary to issue now:**
+
+“The run contains four closed implementation leaf tasks, A–D, corroborated by four task-landing merges. Two additional merges absorbed updated main; they are not additional tasks. The ledger is truncated after C and has no valid metrics line. These counts come from readable tracker and Git evidence; ledger-derived metrics remain unavailable.
+
+“One production data-loss regression remains unresolved. It originated in A, passes at the run baseline, and reproduces at B’s base. B’s task-relative pre-existing finding correctly excludes B as its origin, but does not exempt the run from repair. C’s latest attempt is clean following two confirmed repairs, which remain part of its repair history.
+
+“Observed phases were planning 60 minutes, code 50 minutes, and review 20 minutes: 130 minutes total. D’s creation-to-first-dispatch interval was five minutes; its ready-to-dispatch wait is unknown because readiness was not recorded. The snapshot shows eight active agents, including three implementation-slot occupants, not eight implementation workers.
+
+“The scaling model projects code falling to 25 minutes under its no-new-bottleneck assumption. With other phases unchanged, delivery becomes 105 minutes—about 19% shorter, not halved. This is a projection, not demonstrated scaling.
+
+“Group A’s and C’s differently tagged incidents under sandbox refusal of owned-process liveness inspection, retaining both records and original tags. Different PIDs and fixtures do not establish identical product defects. Keep B’s incorrect retry expectation as a separate test-assertion issue.”
