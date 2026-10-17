@@ -1,7 +1,7 @@
 # super-auto run — 2026-10-16-roast-findings-redesign-loop
 
 flags: planOneShot=true skipPlanRoast=false skipCodeRoast=false autonomous=true
-phase: design
+phase: roast-design
 codeMechanism: Workflow
 runTag: roast-findings-redesign-loop-20261017T054231
 context: Context: claude · planner=200K/167K · implementer=200K/167K · reviewer=200K/167K · finalReview=200K/167K · assembler=200K/167K · warn: planner, finalReview on a 200K model → set ANTHROPIC_DEFAULT_OPUS_MODEL=<model>[1m] or config.models.<role> to a 1M model · warn: implementer, reviewer, assembler on a 200K model → set ANTHROPIC_DEFAULT_SONNET_MODEL=<model>[1m] or config.models.<role> to a 1M model
@@ -11,6 +11,7 @@ branch: super-auto/roast-findings-redesign-loop
 base: main
 spec: 2026-10-16-roast-findings-redesign-loop-design.md
 epic: super-plan-59b
+roastDesignRound: 1
 
 approvals:
 - top-split · auto · super-plan-59b.1 LEAF, super-plan-59b.2 LEAF, super-plan-59b.3 LEAF, super-plan-59b.4 LEAF, super-plan-59b.5 LEAF, super-plan-59b.6 LEAF (PROMOTE overruled → split, sp:demoted-by-session), super-plan-59b.7 LEAF, super-plan-59b.8 LEAF, super-plan-59b.9 LEAF, super-plan-59b.10 LEAF
