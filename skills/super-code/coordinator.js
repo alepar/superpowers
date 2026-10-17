@@ -1827,7 +1827,16 @@ while (true) {
         else if (r?.status === 'BLOCKED_AUTH') { await failAttempt(att, { failure: 'blocked', reopen: true }); await handleAuthRefusal(r, r.finding) }
         else if (r?.status === 'ALREADY_MERGED') await closeAlreadyMerged(r)
         else if (r?.status === 'CLEAN' && r.completionKind === 'verification-only') {
-          if (!(await parentsMerged(att)) || att.cancelledBy) return await abandon(att, true)
+          if (att.parentAttempts.length) {
+            // Parent failure settlement needs a task slot too. Wait outside the window,
+            // then reacquire before recording evidence or closing the verification task.
+            sched.release(id); slotHeld = false
+            if (!(await parentsMerged(att)) || att.cancelledBy) return await abandon(att, false)
+            await sched.acquire(id); slotHeld = true
+            if (att.cancelledBy) return await abandon(att, true)
+            const held = admissionReason(id)
+            if (held) { holdAdmission(id, held); return null }
+          }
           const basis = { completionKind: 'verification-only', status: 'CLEAN', files: [], base: r.base, head: r.head, sourceTree: r.sourceTree, evidence: r.evidence, requiredLiveChecks: r.requiredLiveChecks, reportPath: artifacts(id).report, reviewPath: artifacts(id).review, reviewStatus: 'CLEAN', ...(reviewBeadOf.has(id) ? { reviewBead: reviewBeadOf.get(id) } : {}), ...(blockerBeadOf.has(id) ? { blockerBead: blockerBeadOf.get(id) } : {}) }
           for (const mn of r.minors || []) {
             noteLedger(id, ledgerLine(r.n, id, 'minor (deferred): ' + mn), ledgerLine(r.n, id, 'minor (deferred): ' + (rawClassTag(mn) ? '[' + rawClassTag(mn) + '] ' : '') + 'text elided — see ' + basis.reviewPath + ' [recurrence-id: ' + recurrenceId(mn) + ']'))
