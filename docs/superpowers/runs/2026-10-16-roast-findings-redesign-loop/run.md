@@ -1,7 +1,7 @@
 # super-auto run — 2026-10-16-roast-findings-redesign-loop
 
 flags: planOneShot=true skipPlanRoast=false skipCodeRoast=false autonomous=true
-phase: roast-design
+phase: code
 codeMechanism: Workflow
 runTag: roast-findings-redesign-loop-20261017T054231
 context: Context: claude · planner=200K/167K · implementer=200K/167K · reviewer=200K/167K · finalReview=200K/167K · assembler=200K/167K · warn: planner, finalReview on a 200K model → set ANTHROPIC_DEFAULT_OPUS_MODEL=<model>[1m] or config.models.<role> to a 1M model · warn: implementer, reviewer, assembler on a 200K model → set ANTHROPIC_DEFAULT_SONNET_MODEL=<model>[1m] or config.models.<role> to a 1M model
@@ -20,3 +20,4 @@ approvals:
 - coverage-round-2 · requirements: 14 · mapped: 13 · unmapped: 1 (R13) · findings: 12 → 14 novel: 11/14 (79%) widening: yes  · auto: L14–L25 applied (sweep super-plan-59b.11 created; bead amendments .1 .2 .4 .5 .6 .7 .8 .10); L26 kept; L27 rejected
 stepBackDesign-round-1: patch — round 1 has no recurrence history; 25 findings are completeness gaps around sound decisions, swept as 7 rule-level clusters
 design-roast exit: converged at round 2 (Should-fix (13 confirmed) [converged]; 0 Blocking; 22 resolved, 4 regressed sub-Blocking); punch list of 13 applied as spec+bead fixes in cbf82090, no re-roast; escalations none; no qualifier
+graph-pass: depth 2→2 · width 5.5→5.5 · applied 0 · parked 0
