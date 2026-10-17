@@ -1,0 +1,4 @@
+- finding-source · <complete extraction JSON>
+- finding-link · <JSON refs and basis>
+- finding-route · <JSON ref and owner/fix/deferred>
+- finding-disposition · <JSON ref and supported disposition/basis>

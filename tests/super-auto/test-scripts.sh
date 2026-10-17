@@ -226,4 +226,106 @@ for contract in "$REPO_ROOT/skills/super-auto/SKILL.md" "$REPO_ROOT/skills/super
 done
 
 echo
+echo "scope-dispositions: outstanding occurrence projection"
+cat > "$T/final-review-inv-a.md" <<'REVIEW'
+## Verdict
+not ready
+## Must fix
+- [Must-fix] active.ts:9 — D
+## Untested scope
+- none
+## Deferred OK
+- [Nit] café,format.ts:1 — A
+  original continuation
+- [Nit] fixed.ts:2 — B
+- [Nit] rejected.ts:3 — C
+REVIEW
+cat > "$T/final-review-inv-b.md" <<'REVIEW'
+## Verdict
+ready
+## Must fix
+- none
+## Untested scope
+- none
+## Deferred OK
+- [Nit] café,format.ts:1 — A
+  original continuation
+REVIEW
+bash "$REPO_ROOT/skills/super-code/scripts/report-verdict" --complete --source 'inv-a/final' "$T/final-review-inv-a.md" > "$T/a.json"
+bash "$REPO_ROOT/skills/super-code/scripts/report-verdict" --complete --source 'inv-b/final' "$T/final-review-inv-b.md" > "$T/b.json"
+node - "$T" <<'NODE'
+const fs=require('node:fs'), p=process.argv[2];
+const a=JSON.parse(fs.readFileSync(p+'/a.json')), b=JSON.parse(fs.readFileSync(p+'/b.json'));
+const ref=(position,source='inv-a/final',section='Deferred OK')=>({source,section,position});
+const line=(type,data)=>`- finding-${type} · ${JSON.stringify(data)}\n`;
+let records='approvals:\n'+line('source',a)+line('source',b)+line('source',{...a,artifact:p+'/archive.md'});
+fs.copyFileSync(a.artifact,p+'/archive.md');
+for(let i=1;i<=3;i++)records+=line('route',{ref:ref(i),deferred:'outside goal',owner:'fix-'+i,fix:'closed-fix-'+i});
+records+=line('disposition',{ref:ref(2),disposition:'resolved',judgment:'supported',basis:'another task supplied the fix',evidence:['verification.log @ abc123'],verification:'focused reproduction passes against repaired code'});
+records+=line('disposition',{ref:ref(3),disposition:'rejected',judgment:'supported',basis:'contract permits this case',evidence:['spec.md#contract']});
+fs.writeFileSync(p+'/projection.md',records);
+fs.writeFileSync(p+'/linked.md',records+line('link',{refs:[ref(1),ref(1,'inv-b/final')],basis:'verified same obligation'}));
+fs.writeFileSync(p+'/unsupported.md',records+line('disposition',{ref:ref(1),disposition:'resolved',basis:'task succeeded',evidence:['success']}));
+fs.writeFileSync(p+'/bad-ref.md',records+line('disposition',{ref:ref(99),disposition:'resolved',judgment:'supported',basis:'claimed',evidence:['v'],verification:'v'}));
+fs.writeFileSync(p+'/no-basis.md',records+line('disposition',{ref:ref(1),disposition:'resolved',judgment:'supported',evidence:[],verification:'v'}));
+fs.writeFileSync(p+'/malformed.md',records+'- finding-route · {broken\n');
+fs.writeFileSync(p+'/silent.md',records+line('source',{version:1,source:'inv-c/final',artifact:b.artifact,kind:'final-review',verdict:'ready',occurrences:[]}));
+fs.writeFileSync(p+'/conflict.md',records+line('source',{...a,occurrences:a.occurrences.map(o=>({...o,text:o.text+' changed'}))}));
+fs.writeFileSync(p+'/empty.md','approvals:\n');
+fs.writeFileSync(p+'/dedupe.md',records+line('route',{ref:ref(1,'inv-b/final'),deferred:'independently deferred'}));
+fs.writeFileSync(p+'/bad-link.md',records+line('link',{refs:[ref(1),ref(99)],basis:'invalid target'}));
+fs.writeFileSync(p+'/external.json',JSON.stringify({version:1,records:[{type:'finding-disposition',ref:ref(1),disposition:'dissolved',basis:'later review silent'}]}));
+fs.writeFileSync(p+'/external-supported.json',JSON.stringify({version:1,records:[{type:'finding-disposition',ref:ref(1),disposition:'resolved',judgment:'supported',basis:'verified external fix',evidence:['external.log'],verification:'reproduction now passes'}]}));
+fs.writeFileSync(p+'/external-malformed.json','{broken');
+NODE
+run bash "$S" --project "$T/projection.md"
+assert_eq "$code" 0 "projection accepts retained complete extraction and supported dispositions"
+if [ "$code" -eq 0 ]; then
+  if node -e 'const p=JSON.parse(process.argv[1]); const a=p.findings.filter(f=>f.outstanding); if(p.findings.length!==5||a.length!==3||a.filter(f=>f.deferred).length!==1)process.exit(1); const first=p.findings.find(f=>f.ref.section==="Deferred OK"&&f.ref.position===1); if(first.occurrences.length!==1||first.occurrences[0].text!=="[Nit] café,format.ts:1 — A\n  original continuation"||first.artifacts.length!==2)process.exit(1)' "$out"; then pass "ambiguous twins remain separate, archive dedupes and original text survives"; else fail "ambiguous twins remain separate, archive dedupes and original text survives"; fi
+fi
+run bash "$S" --project "$T/projection.md" --keys
+assert_eq "$out" '[Nit] café,format.ts:1 — A' "keys contain deferred A only; verified B, rejected C and active D excluded"
+run bash "$S" --project "$T/linked.md"
+assert_eq "$code" 0 "explicit reference link accepted"
+if [ "$code" -eq 0 ]; then
+  if node -e 'const p=JSON.parse(process.argv[1]); if(p.findings.length!==4||!p.findings.some(f=>f.occurrences.length===2&&f.outstanding&&f.deferred))process.exit(1)' "$out"; then pass "only explicit references combine source appearances"; else fail "only explicit references combine source appearances"; fi
+fi
+for bad in unsupported bad-ref no-basis malformed bad-link; do
+  run bash "$S" --project "$T/$bad.md" --keys
+  assert_eq "$code" 3 "$bad produces an explicit evidence gap"
+  assert_eq "$out" '[Nit] café,format.ts:1 — A' "$bad cannot delete known open A"
+done
+for external in missing external-malformed external; do
+  run bash "$S" --project "$T/projection.md" --external "$T/$external.json" --keys
+  assert_eq "$code" 3 "$external external input reports a gap"
+  assert_eq "$out" '[Nit] café,format.ts:1 — A' "$external external input preserves local open evidence"
+done
+run bash "$S" --project "$T/projection.md" --external "$T/external-supported.json" --keys
+assert_eq "$code" 0 "supported external verification may resolve explicitly referenced A"
+assert_eq "$out" '' "verified fix supplied elsewhere leaves punch list"
+run bash "$S" --project "$T/silent.md" --keys
+assert_eq "$code" 0 "silent ready retry is a valid source without dispositions"
+assert_eq "$out" '[Nit] café,format.ts:1 — A' "assignment, closed fix and later silence retain deferred A"
+run bash "$S" --project "$T/dedupe.md" --keys
+assert_eq "$out" '[Nit] café,format.ts:1 — A' "legacy key transport dedupes equal keys across distinct deferred occurrences"
+run bash "$S" --project "$T/conflict.md"
+assert_eq "$code" 3 "changed immutable source reports a gap"
+if [ "$code" -eq 3 ]; then
+  if node -e 'const p=JSON.parse(process.argv[1]);if(p.findings.filter(f=>f.ref.source==="inv-a/final"&&f.outstanding).length!==4||!p.findings.some(f=>f.variants.length))process.exit(1)' "$out"; then pass "conflicting source preserves text variants and blocks resolution"; else fail "conflicting source preserves text variants and blocks resolution"; fi
+fi
+run bash "$S" --project "$T/empty.md"
+assert_eq "$code" 3 "no retained sources is an explicit gap rather than a clean review"
+mkdir "$T/projection-tools"
+ln -s "$(command -v node)" "$T/projection-tools/node"
+run env PATH="$T/projection-tools" /bin/bash "$S" --project "$T/projection.md" --keys
+assert_eq "$code" 0 "projection works without jq"
+assert_eq "$out" '[Nit] café,format.ts:1 — A' "no-jq projection retains identical key output"
+run env PATH="$T/nonexistent-tools" /bin/bash "$S" --project "$T/projection.md" --keys
+assert_eq "$code" 4 "missing Node gives unavailable status, never a clean empty result"
+if grep -q 'NODE_UNAVAILABLE:.*retain all known occurrences' "$T/err"; then pass "manual fallback preserves continuity obligations"; else fail "manual fallback preserves continuity obligations"; fi
+rm "$T/final-review-inv-a.md" "$T/archive.md"
+run bash "$S" --project "$T/projection.md" --keys
+assert_eq "$code" 3 "unavailable source artifacts are an explicit gap"
+assert_eq "$out" '[Nit] café,format.ts:1 — A' "retained occurrences survive unavailable source"
+
 if [ "$FAILURES" -eq 0 ]; then echo "All super-auto script tests passed"; else echo "$FAILURES failure(s)"; exit 1; fi
