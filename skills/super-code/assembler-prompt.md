@@ -25,8 +25,13 @@ Parameters: [CONSUMER], [INSTANCE], [OUT_DIR], [WORKTREE], [BASE], [HEAD], [SECT
    `generated-input-provenance.md`. These are the authoritative selected inputs for steps 3–5.
    On any nonzero exit, preserve those outputs and relay `exit: 2`, `fits: unavailable`,
    `clusterFits: []`, `clusters: 0`, `dir: [OUT_DIR]`, with `cause` prefixed
-   `review input selection:` and the command's explicit evidence gap. Stop here; an invalid
-   provenance refusal remains unavailable through any fallback, never a clean assembly.
+   `review input selection:` and the command's explicit evidence gap. If the sidecar has
+   `status:unavailable`, `sourceAvailable:true`, `wholeRangeReady:false`, zero omissions and
+   the matching full base/head, start the cause exactly `review input selection: provenance
+   unavailable; captured source available` (one line), then append its gaps. This permits a
+   separately written bounded review; the assembly and omission authority remain unavailable.
+   Other selection failures keep the generic prefix and prohibit fallback. Stop here; preserve
+   every failed output. A directory name or copied historical run record grants no authority.
    For other consumers, run `git diff --stat [BASE]..[HEAD] > [OUT_DIR]/diffstat.txt`.
 3. Write `[OUT_DIR]/digest.md` with one `## <name>` heading per [SECTIONS] line, in that order, each
    built only from the source its definition names. Copy; don't paraphrase or rank. A source that has

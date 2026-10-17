@@ -1650,6 +1650,17 @@ async function main() {
       check(promptOf(out.trace, 'final-review:cluster:1')?.includes('"## Untested scope"') && promptOf(out.trace, 'final-review:seam')?.includes('"## Untested scope"'), 'cluster and seam prompts fix the review-file headings')
     }
 
+    scenario('final review: provenance-only refusal permits bounded review but never ready')
+    {
+      const out = await run({ args: liveArgs(), canned: oneTaskCanned({ 'assemble:final': asmOf({ exit: 2, fits: 'unavailable', cause: 'review input selection: provenance unavailable; captured source available' }) }) })
+      assertNoThrow(out)
+      check(out.counts['final-review'] === 1, 'captured source reaches a bounded review despite provenance gaps', JSON.stringify(out.counts))
+      check(out.result?.review?.startsWith('not ready (') && out.result.review.includes('whole-epic'), 'synthetic ready cannot clear mechanically incomplete whole-epic coverage', out.result?.review)
+      check(promptOf(out.trace, 'final-review')?.includes('bounded-review'), 'bounded artifact uses the mechanical incomplete writer')
+      const denied = await run({ args: liveArgs(), canned: oneTaskCanned({ 'assemble:final': asmOf({ exit: 2, fits: 'unavailable', cause: 'review source guard: existing partial output' }) }) })
+      check(!denied.counts['final-review'] && denied.result?.reviewPath === null, 'source/write refusal remains hard unavailable')
+    }
+
     scenario('final review: assembler unavailable → uncapped single on direct inputs')
     {
       const out = await run({ args: liveArgs(), canned: oneTaskCanned({ 'assemble:final': null }) })

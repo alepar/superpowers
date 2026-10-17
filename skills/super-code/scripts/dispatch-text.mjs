@@ -47,6 +47,8 @@ kinds and options:
                     [--threshold N] [--base SHA] [--head SHA] [--spec P1,P2]
   review-inputs     --base SHA --head SHA --out-dir DIR
                     (captured-Git selection, slices and generated-input provenance; exit 3 unavailable)
+  bounded-review   --base SHA --head SHA --selection FILE --draft FILE --coverage FILE --out FILE
+                    (preserve bounded draft and coverage; write a forced incomplete final report)
   bind-review-source --read | --base SHA --head SHA [--artifact PATH]
                     (persist immutable invocation source; refuse existing artifact writes)
   final-review      --mode single|cluster|seam|stub --base SHA --head SHA [--dir D] [--capped] [--sweep F|deferred]
@@ -155,7 +157,7 @@ function reviewInputs(repo, base, head, out) {
       if (posix.basename(run) !== 'run.md') continue
       let text
       try { text = blob(run).toString() } catch (e) { gap(revision + ': ' + e.message); continue }
-      const latest = new Map(), identities = new Map(), savedHashes = new Map()
+      const latest = new Map(), identities = new Map(), savedHashes = new Map(), history = new Map()
       let approvals = false
       for (const [lineNumber, line] of text.split('\n').entries()) {
         if (/^[A-Za-z][A-Za-z0-9-]*:/.test(line)) approvals = line === 'approvals:'
@@ -170,16 +172,31 @@ function reviewInputs(repo, base, head, out) {
               !(r.complete === undefined || typeof r.complete === 'boolean') ||
               !(r.gaps === undefined || (Array.isArray(r.gaps) && r.gaps.every(g => typeof g === 'string' && g))) ||
               !(r.files === undefined || (Array.isArray(r.files) && r.files.every(f => f && safe(f.path) && /^[a-f0-9]{64}$/.test(f.sha256))))) throw Error('invalid collection fields')
+          if (r.complete && (!r.settled || !Array.isArray(r.gaps) || r.gaps.length ||
+              (r.reviewPath === null ? r.review !== 'no work landed' : !r.files?.some(f => f.path === 'final-review-' + r.invocationId + '.md')))) throw Error('invalid complete collection fields')
           const identity = JSON.stringify([r.workspace, r.required])
-          const old = identities.get(r.invocationId)
-          if (old && (old.identity !== identity || (old.settled && old.reviewPath !== r.reviewPath))) gap(revision + ':' + run + ': conflicting collection identity ' + r.invocationId)
+          const old = identities.get(r.invocationId), previous = latest.get(r.invocationId)?.record
+          let recovered = false
+          // Match the collector's preserved settled-null transition, including mandatory
+          // markers on every subsequent snapshot. Hash the exact parsed object, not line metadata.
+          if (r.recovery !== undefined || previous?.recovery !== undefined || (previous?.settled && previous.reviewPath === null && r.reviewPath !== null)) {
+            const recovery = r.recovery, original = history.get(recovery?.recordSha256)
+            recovered = !!(recovery && recovery.kind === 'settled-null' && original?.settled && original.reviewPath === null &&
+              original.review === recovery.review && original.invocationId === r.invocationId &&
+              original.workspace === r.workspace && JSON.stringify(original.required) === JSON.stringify(r.required) &&
+              r.settled && r.reviewPath === posix.join(r.workspace, 'final-review-' + r.invocationId + '.md') &&
+              (hash(JSON.stringify(previous)) === recovery.recordSha256 || (previous?.reviewPath === r.reviewPath && previous.review === r.review && JSON.stringify(previous.recovery) === JSON.stringify(recovery))))
+            if (!recovered) throw Error('invalid settled-null recovery provenance')
+          }
+          if (old && (old.identity !== identity || (old.settled && old.reviewPath !== r.reviewPath && !recovered))) gap(revision + ':' + run + ': conflicting collection identity ' + r.invocationId)
           identities.set(r.invocationId, { identity, settled: r.settled, reviewPath: r.reviewPath })
           for (const f of r.files || []) {
             const key = r.invocationId + '/' + f.path, previous = savedHashes.get(key)
             if (previous && previous !== f.sha256) gap(revision + ':' + run + ': conflicting saved hash ' + key)
             savedHashes.set(key, f.sha256)
           }
-          latest.set(r.invocationId, { ...r, line: lineNumber + 1 })
+          latest.set(r.invocationId, { ...r, line: lineNumber + 1, record: r })
+          history.set(hash(JSON.stringify(r)), r)
         } catch (e) { gap(revision + ':' + run + ':' + (lineNumber + 1) + ': malformed collection record: ' + e.message) }
       }
       for (const r of latest.values()) {
@@ -223,7 +240,7 @@ function reviewInputs(repo, base, head, out) {
     }
     return { tree, blob, archives, claims }
   }
-  let selected = changed, omitted = [], archives = [], slices = []
+  let selected = changed, omitted = [], archives = [], slices = [], sourceAvailable = false
   try {
     const before = snapshot(base), after = snapshot(head)
     archives = after.archives
@@ -236,7 +253,10 @@ function reviewInputs(repo, base, head, out) {
       omitted = changed.filter(p => after.claims.has(p)).map(p => after.claims.get(p))
       selected = changed.filter(p => !after.claims.has(p))
     }
-    writeFileSync(join(out, 'diffstat.txt'), selected.length ? git('diff', '--no-renames', '--stat', base + '..' + head, '--', ...selected) : '')
+    sourceAvailable = true
+    // With zero omissions selected is the full captured range; a redundant long
+    // path argv can exceed ARG_MAX even though the Git source is readable.
+    writeFileSync(join(out, 'diffstat.txt'), selected.length ? git('diff', '--no-renames', '--stat', base + '..' + head, ...(omitted.length ? ['--', ...selected] : [])) : '')
     if (!gaps.length) {
       mkdirSync(join(out, 'slices'), { recursive: true })
       for (const [n, p] of selected.entries()) {
@@ -246,8 +266,8 @@ function reviewInputs(repo, base, head, out) {
         slices.push({ path: p, slice })
       }
     }
-  } catch (e) { gap('captured input extraction unavailable: ' + e.message); selected = changed; omitted = [] }
-  const result = { base, head, status: gaps.length ? 'unavailable' : 'complete', changed: selected, slices, archives, omitted, gaps }
+  } catch (e) { sourceAvailable = false; gap('captured input extraction unavailable: ' + e.message); selected = changed; omitted = [] }
+  const result = { base, head, sourceAvailable, wholeRangeReady: false, status: gaps.length ? 'unavailable' : 'complete', changed: selected, slices, archives, omitted, gaps }
   writeFileSync(join(out, 'review-inputs.json'), JSON.stringify(result, null, 2) + '\n')
   writeFileSync(join(out, 'generated-input-provenance.md'), [
     '## Generated-input provenance',
@@ -258,7 +278,7 @@ function reviewInputs(repo, base, head, out) {
     ...gaps.map(g => '- Selection/evidence gap (unavailable): ' + g),
     'Open each report/archive at its recorded revision. Omission supplies no finding disposition or verdict.',
   ].join('\n') + '\n')
-  console.log(JSON.stringify({ status: result.status, dir: out, selected: selected.length, omitted: omitted.length, gaps }))
+  console.log(JSON.stringify({ status: result.status, sourceAvailable, wholeRangeReady: false, dir: out, selected: selected.length, omitted: omitted.length, gaps }))
   process.exit(gaps.length ? 3 : 0)
 }
 
@@ -276,7 +296,7 @@ const testPaths = o['test-paths'] ? list(o['test-paths']) : L.testPaths
 const ws = dirname(resolve(o.ledger))
 const runTag = o['run-tag'] || L.runTag || epic
 const invocationId = L.invocationId
-const reviewOutput = kind === 'bind-review-source' || kind === 'final-review' || (kind === 'assemble' && o.consumer === 'final-review')
+const reviewOutput = kind === 'bounded-review' || kind === 'bind-review-source' || kind === 'final-review' || (kind === 'assemble' && o.consumer === 'final-review')
 if (reviewOutput && (typeof invocationId !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(invocationId))) fail('review output needs a persisted filesystem-safe Launch invocationId')
 if (o['invocation-id'] !== undefined && o['invocation-id'] !== invocationId) fail('--invocation-id must match the persisted Launch invocationId')
 // Source facts use the existing compact Recovery transport (Launch lines are elided by digest).
@@ -332,6 +352,51 @@ if (reviewOutput) {
 if (kind === 'review-inputs') {
   if (!o.base || !o.head || !o['out-dir']) fail('review-inputs needs --base, --head and --out-dir')
   reviewInputs(worktree, o.base, o.head, resolve(o['out-dir']))
+}
+// A bounded artifact is a new report, never a rewrite of an unavailable invocation.
+// The writer rechecks captured source and inventory; sidecar claims alone grant no authority.
+if (kind === 'bounded-review') {
+  if (!boundSource || !['selection', 'draft', 'coverage', 'out'].every(k => o[k])) fail('bounded-review needs --selection, --draft, --coverage and --out plus persisted source')
+  const { base, head } = boundSource
+  const git = (...args) => execFileSync('git', ['--literal-pathspecs', ...args], { cwd: worktree, maxBuffer: 64 * 1024 * 1024 }).toString()
+  try {
+    for (const sha of [base, head]) if (git('rev-parse', '--verify', sha + '^{commit}').trim() !== sha) throw Error('captured commit unavailable')
+    const bytes = readFileSync(o.selection), selection = JSON.parse(bytes), coverage = JSON.parse(readFileSync(o.coverage, 'utf8'))
+    const changed = git('diff', '--no-renames', '--name-only', '-z', base + '..' + head).split('\0').filter(Boolean)
+    if (selection.base !== base || selection.head !== head || selection.status !== 'unavailable' || selection.sourceAvailable !== true ||
+        selection.wholeRangeReady !== false || !Array.isArray(selection.omitted) || selection.omitted.length ||
+        !Array.isArray(selection.gaps) || !selection.gaps.length || !selection.gaps.every(g => typeof g === 'string' && g.trim()) ||
+        JSON.stringify(selection.changed) !== JSON.stringify(changed)) throw Error('bounded selection/source inventory mismatch')
+    if (!Array.isArray(coverage.inspected) || !coverage.inspected.length) throw Error('actual inspected paths/hunks required')
+    const seen = new Set()
+    for (const item of coverage.inspected) {
+      if (!item || !changed.includes(item.path) || seen.has(item.path) || !Array.isArray(item.hunks) || !item.hunks.length || !item.hunks.every(h => typeof h === 'string' && h.trim())) throw Error('invalid inspected coverage')
+      // Exact captured hunk headers bind coverage to source rather than mutable checkout text.
+      const diff = git('diff', '--no-renames', base + '..' + head, '--', item.path)
+      for (const hunk of item.hunks) if (!diff.split('\n').includes(hunk) || !hunk.startsWith('@@ ')) throw Error('inspected hunk absent from captured source')
+      seen.add(item.path)
+    }
+    const output = resolve(o.out)
+    if (output !== join(ws, 'final-review-' + invocationId + '.md')) throw Error('output must be this invocation expected final report')
+    if ([o.selection, o.draft, o.coverage].some(p => resolve(p) === output)) throw Error('preserve original bounded evidence')
+    for (const p of [output, output + '.diff']) {
+      try { lstatSync(p); throw Error('partial artifact already exists; preserve it: ' + p) } catch (e) { if (e.code !== 'ENOENT') throw e }
+    }
+    const draft = readFileSync(o.draft, 'utf8')
+    const extraction = JSON.parse(execFileSync('bash', [join(here, 'report-verdict'), '--complete', '--source', invocationId + '/bounded-draft', resolve(o.draft)], { encoding: 'utf8' }))
+    if (extraction.kind !== 'final-review' || !/^## Verdict\r?$/m.test(draft) || !/^## Untested scope\r?$/m.test(draft)) throw Error('bounded draft must use strict final-review headings')
+    const verdict = 'not ready (unreviewed: whole-epic coverage and omission provenance remain incomplete)'
+    const hash = b => createHash('sha256').update(b).digest('hex')
+    const evidence = { base, head, selection: resolve(o.selection), selectionSha256: hash(bytes), draft: resolve(o.draft), draftSha256: hash(draft), coverage: resolve(o.coverage), coverageSha256: hash(readFileSync(o.coverage)), inspected: coverage.inspected, changed, unreviewedPaths: changed.filter(p => !seen.has(p)), gaps: selection.gaps, wholeRangeReady: false }
+    // Preserve every draft finding/section verbatim. Only the verdict changes; coverage
+    // becomes an explicit untested occurrence that existing extraction/collection retains.
+    const body = draft.replace(/(^## Verdict\r?\n)([\s\S]*?)(?=^## |$(?![\s\S]))/m, '$1' + verdict + '\n')
+      .replace(/^## Untested scope\r?$/m, '## Untested scope\n- whole-epic review incomplete; bounded inspected hunks only; all remaining hunks and provenance gaps remain unreviewed')
+    const result = '# Bounded captured-source review\n\nCoverage record: ' + JSON.stringify(evidence) + '\n\n' + body
+    writeFileSync(output, result, { flag: 'wx' })
+    console.log(JSON.stringify({ verdict, path: output, wholeRangeReady: false }))
+  } catch (e) { fail('bounded review unavailable: ' + e.message) }
+  process.exit(0)
 }
 const planPath = o.plan || join(ws, `${epic}-plan.md`)
 
@@ -467,7 +532,7 @@ switch (kind) {
       const sweep = o.sweep === 'deferred' ? B.SWEEP_DEFERRED : o.sweep ? readArg('sweep')
         : lastSweep(ledgerText) ?? (L.sweep === 'deferred' ? B.SWEEP_DEFERRED : null)
       const metrics = o.metrics ? readLines('metrics') : lastMetrics(ledgerText)
-      text = B.finalReviewPrompt(epic, branch, worktree, '.superpowers/sdd/' + epic + '-plan/progress.md', planPath, sweep, metrics, { dir: o.dir || null, capped: !!o.capped, reviewPath, base: source.base, head: source.head })
+      text = B.finalReviewPrompt(epic, branch, worktree, '.superpowers/sdd/' + epic + '-plan/progress.md', planPath, sweep, metrics, { dir: o.dir || null, capped: !!o.capped, provenanceGap: null, selectionPath: o.dir ? o.dir + '/review-inputs.json' : null, reviewPath, base: source.base, head: source.head })
       label = `final-review-${invocationId}-single`
     } else if (o.mode === 'cluster') {
       need('dir', 'cluster', 'name')

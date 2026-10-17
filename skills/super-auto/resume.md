@@ -28,6 +28,15 @@ A resume message that changes something is recorded, not dropped. If it sets a f
 
 Before any later super-code invocation, report or cleanup, reconcile every `review-collection` intent in `approvals:` against its persisted Launch and settled ledger/result (run-state.md §Review collection records). If the invocation is still active, resume it with that same invocationId. When settlement is confirmed but unrecorded, run the explicit `report-status --collect RUN_MD --invocation ID --workspace WORKSPACE --review REVIEW_PATH_OR_none --verdict RETURNED_REVIEW` command from SKILL.md §Review collection, retaining any declared `--required` inputs. Then run `report-status --collect RUN_MD` to replay all collections. A copy without completion is replayed; identical archive bytes and exact source records remain unchanged. An archived complete bundle can be checked from its retained hashes after the source worktree is gone.
 
+At the settled design/code handoff, reconcile the complete original producer input sets in
+`roast-design` and `roast-code` with both ledger pointers, including amend/earlier rounds and
+recognized empty reports. If a producer persisted its pointer before outer collection, preserve
+that owned gap and append each original source's complete extraction with its existing identity
+before acceptance. Replay identical records idempotently. Missing declarations, unknown empty
+headers, extraction failures and unsupported correspondence remain gaps. Use run-state.md's
+`source-correspondence` schema only for evidence-backed exact correspondence; display-key
+membership checks transport, never identity, linking or disposition.
+
 Exit 3 preserves a pending collection/gap with the orchestrator as recovery owner; exit 2/4 establishes no collection. Keep source and archive copies, record the recovery reason and defer later invocation/cleanup until preservation succeeds. A required null or missing review stays a `final review` evidence gap; null with `no work landed` introduces no review source. Replay finding routes and supported dispositions from approvals without rewriting them.
 
 Run `scope-dispositions --project RUN_MD` next. Use every outstanding group's original occurrence refs for active work and Remaining; use its `--keys` output only for outstanding deferred punch-list input, checking status/gaps even when empty. The latest `codeBuckets.review` remains the latest invocation's verdict. It cannot clear earlier findings, and a task success or ready retry adds no resolution evidence. Do not reconstruct the view from the latest review or the historical union of `scopeFilter` punch-list keys. Preserve unavailable inline source occurrences and report their gaps.

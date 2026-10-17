@@ -2330,14 +2330,15 @@ if (reviewSourceGap) finalSource = null
 const reviewPath = `${workspaceAbs}/final-review-${invocationId}.md`
 const clusterReviewPath = n => `${workspaceAbs}/final-review-${invocationId}.cluster-${n}.md`
 const CAPPED_CAUSE = 'inputs exceed the window and no usable clusters'
-let frSourceRefusal = null
+let frSourceRefusal = null, frProvenanceGap = null
 let frMode = 'unavailable', frDir = null, frClusters = [], frLine = landedWork && !invocationPersisted ? 'Final review: unavailable (invocation identity persistence unavailable)' : landedWork && !finalSource ? 'Final review: unavailable (captured source commits unavailable)' : null, frAsmClusters = null
 if (landedWork && invocationPersisted && finalSource) {
   const reviewWindow = Number(config.contextWindows?.finalReview) || FINAL_REVIEW_FALLBACK_WINDOW.workflow
   const reviewThreshold = Math.floor(reviewWindow * 0.4)
   const asm = await dispatch(() => assemblePrompt('final-review', 'final', { threshold: reviewThreshold, base: finalSource.base, head: finalSource.head }), 'assemble:final',
     { label: 'assemble:final', phase: 'Finish', ...tier('mechanical'), schema: ASSEMBLED })
-  if (asm?.exit === 2 && /^(review source guard:|review input selection:)/.test(String(asm.cause || ''))) frSourceRefusal = asm.cause
+  if (asm?.exit === 2 && /^review input selection: provenance unavailable; captured source available/.test(String(asm.cause || ''))) frProvenanceGap = asm.cause
+  else if (asm?.exit === 2 && /^(review source guard:|review input selection:)/.test(String(asm.cause || ''))) frSourceRefusal = asm.cause
   const fm = /^fits: (yes|no) \((\d+) of (\d+)\)/.exec(String(asm?.fits ?? '').trim())
   frClusters = (asm?.clusterFits ?? []).map(l => /^cluster-fits: (.+) (yes|no) \(/.exec(String(l).trim())).filter(Boolean)
     .map((m, i) => ({ n: i + 1, name: m[1].trim(), fits: m[2] === 'yes' }))
@@ -2352,6 +2353,7 @@ if (landedWork && invocationPersisted && finalSource) {
   const k = asm?.clusters ?? frClusters.length
   frLine = exit3Fits ? 'Final review: single (inputs fit; clusters.json rejected — direct inputs)'
     : frSourceRefusal ? 'Final review: unavailable (source guard refused; partial bundle preserved)'
+    : frProvenanceGap ? 'Final review: bounded (captured source available; omission provenance unavailable)'
     : frMode === 'unavailable' ? 'Final review: single (assembler unavailable)'
     : frMode === 'capped' ? 'Final review: single (no usable clusters — capped)'
     : `Final review: ${frMode} (inputs ${totalK}K ${frMode === 'single' ? '<=' : '>'} 40% of ${windowK}K) · clusters ${k}`
@@ -2375,11 +2377,11 @@ else if (!finalSource) review = 'FINAL REVIEW UNAVAILABLE — captured source co
 else if (frSourceRefusal) review = 'FINAL REVIEW UNAVAILABLE — partial bundle preserved: ' + frSourceRefusal
 else if (frMode !== 'split') {
   const single = await dispatch(() => finalReviewPrompt(epicId, integrationBranch, integrationWorktree, ledgerPath, lastPlanned?.planPath, sweepSummary, metrics,
-    { dir: frMode === 'single' ? frDir : null, capped: frMode === 'capped', reviewPath, base: finalSource.base, head: finalSource.head }), 'final-review',
+    { dir: frMode === 'single' ? frDir : null, capped: frMode === 'capped', provenanceGap: frProvenanceGap, selectionPath: frDir ? frDir + '/review-inputs.json' : null, reviewPath, base: finalSource.base, head: finalSource.head }), 'final-review',
     { label: 'final-review', phase: 'Finish', ...tier('finalReview'), schema: FINAL_VERDICT })
   const v = String(single?.verdict ?? '').trim()
   reviewWritten = !!v
-  review = !v ? FINAL_REVIEW_UNAVAILABLE : frMode === 'capped' ? notReadyWith(v, [CAPPED_CAUSE]) : v
+  review = !v ? FINAL_REVIEW_UNAVAILABLE : frProvenanceGap ? notReadyWith(v, ['whole-epic coverage and omission provenance remain incomplete']) : frMode === 'capped' ? notReadyWith(v, [CAPPED_CAUSE]) : v
 } else {
   const unreviewed = frClusters.filter(c => !c.fits).map(c => `cluster ${c.n} (${c.name}): over the window`)
   if (Number.isFinite(frAsmClusters) && frAsmClusters > frClusters.length) unreviewed.push((frAsmClusters - frClusters.length) + ' cluster(s) in clusters.json with no parsable cluster-fits line')
@@ -2950,11 +2952,17 @@ function reviewSource(repo, base, head) {
 function reviewFileFormat() {
   return 'End the file with exactly these four headings, in this order: "## Verdict", followed by one line that is exactly "ready" or "not ready (<one-line summary>)"; then "## Must fix before landing", "## Untested scope" and "## Deferred OK", each followed by flat "- " bullets, one item per bullet on one line (no numbered lists, no nested bullets, no bold labels in place of these headings), or the single line "- none".'
 }
-function finalReviewPrompt(epicId, integrationBranch, integrationWorktree, ledgerPath, planPath, sweepSummary, metrics = [], { dir = null, capped = false, reviewPath = `${workspaceAbs}/final-review-${invocationId}.md`, base, head } = {}) {
+function finalReviewPrompt(epicId, integrationBranch, integrationWorktree, ledgerPath, planPath, sweepSummary, metrics = [], { dir = null, capped = false, provenanceGap = null, selectionPath = null, reviewPath = `${workspaceAbs}/final-review-${invocationId}.md`, base, head } = {}) {
   // Whole-epic review (opus). It forms its own view against the spec before reading prior verdicts,
   // so unflagged defects aren't crowded out by the ledger. With `dir` its inputs are the assembled
   // digest and slices; `capped` means they exceed its window and no usable clusters exist.
-  const selectionGap = 'Before reviewing, inspect ' + workspaceAbs + '/assembled/final-review-' + invocationId + '-final/review-inputs.json when present. If unreadable, malformed, unavailable or carrying selection/evidence gaps, preserve that explicit gap and return unavailable without writing a verdict or a direct package. An assembler cause prefixed "review input selection:" also remains unavailable through fallback. '
+  const selection = selectionPath || workspaceAbs + '/assembled/final-review-' + invocationId + '-final/review-inputs.json'
+  const quote = v => "'" + String(v).replace(/'/g, "'\"'\"'") + "'"
+  const boundedDir = selection.slice(0, selection.lastIndexOf('/'))
+  const boundedCommand = ['node', quote(codeSkill + '/scripts/dispatch-text.mjs'), 'bounded-review', '--ledger', quote(workspaceAbs + '/progress.md'), '--base', quote(base), '--head', quote(head), '--selection', quote(selection), '--draft', quote(boundedDir + '/bounded-draft.md'), '--coverage', quote(boundedDir + '/bounded-coverage.json'), '--out', quote(reviewPath)].join(' ')
+  const selectionGap = 'Before reviewing, inspect ' + selection + ' when present. Unreadable/malformed selection, mismatched base/head, or sourceAvailable:false is a hard refusal: preserve all files and return unavailable. A status:unavailable sidecar with sourceAvailable:true, wholeRangeReady:false, no omissions and retained gaps permits only a bounded captured-source review. ' + (provenanceGap ? 'This dispatch is bounded because: ' + provenanceGap + '. Require that sidecar before proceeding. ' : '') +
+    'BOUNDED ROUTE: preserve the failed assembly and original sidecar. Read the full changed-path inventory, then inspect manageable named paths/hunks from captured Git; do not build or load a whole-range package. Write a new draft to ' + boundedDir + '/bounded-draft.md and coverage JSON to ' + boundedDir + '/bounded-coverage.json, each exclusively (refuse existing files). Coverage is {"inspected":[{"path":"<actually inspected changed path>","hunks":["<exact captured @@ hunk header>"]}]}; list only hunks you actually inspected. Record remaining paths/hunks and all provenance gaps as unreviewed, retaining concrete findings. Use the final-review headings below in the draft. Then run `' + boundedCommand + '`; it validates coverage against captured source and writes the final report with a forced not-ready verdict. Return its verdict/path. This bounded branch replaces the package/write steps below; never overwrite an old unavailable report or reuse a settled invocation. A whole-range review remains outstanding even if the draft says ready or the suite passed. NORMAL ROUTE (no selection gaps): '
+
   const pkg = dir
     ? `Your inputs are the assembled digest ${dir}/digest.md and the slices under ${dir}/slices/; open source files only to check a named risk.`
     : planPath

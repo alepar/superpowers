@@ -60,6 +60,7 @@ The schema home for `run.md`: every field's name and line format. The numbered i
 | `approvals · design-review` | `- design-review · pending \| approved` | 7 | super-auto |
 | `approvals · review-collection` | `- review-collection · <JSON invocation/workspace/review/required/settlement/archive facts>` | 7 | super-auto, before launch and after settled collection |
 | `approvals · root-acceptance` | `- root-acceptance · <JSON requirements/evidence/recovery/checkEvidence/runFailures/decisions>` | 7 | super-auto, before code and after settlement or acceptance evidence changes |
+| `approvals · source-correspondence` | `- source-correspondence · <supported hash-bound correspondence JSON>` | 7 | super-auto, at settled handoff/resume when direct artifact matching is insufficient |
 | `approvals · finding-source` | `- finding-source · <complete extraction JSON>` | 7 | super-auto, on source collection |
 | `approvals · finding-link` | `- finding-link · <JSON refs and basis>` | 7 | super-auto, after judging an explicit match |
 | `approvals · finding-route` | `- finding-route · <JSON ref and owner/fix/deferred>` | 7 | super-auto, when routing a finding |
@@ -229,6 +230,26 @@ After confirmed settlement, `report-status --collect RUN_MD --invocation ID --wo
 
 The helper appends complete extraction JSON under `finding-source`, preserving immutable `ID/final` and `ID/cluster-N` identities and every section/position/key/text, with an archive pointer under `reviews/ID/`. It copies final/cluster review files, the direct `.diff` when present, and the complete assembled input directory, checking declared files and split manifest slices. An interrupted copy is replayable before completion. Identical copies do not change; conflicting bytes remain untouched. Completion adds `complete:true`, `files:[{"path":"<bundle-relative path>","sha256":"<hash>"}]` and `gaps:[]`; missing/incomplete/conflicting artifacts add `complete:false` and nonempty `gaps`. Earlier records and supported finding dispositions remain append-only. The last collection record per invocation describes recovery progress; it never disposes a finding.
 
+A caller-confirmed recovered null report uses the same settlement command with `--recover-null`.
+It requires the exact original invocation/workspace/ordered required inputs, the expected
+`final-review-ID.md`, and a regular strict-extractable report with the actual supplied verdict.
+It appends `recovery:{"kind":"settled-null","recordSha256":"<hash>","review":"<old verdict>"}`;
+the hash is SHA-256 of UTF-8 `JSON.stringify` of the immediately preceding valid settled-null
+record in parsed property order. Every later snapshot retains that marker and recovered path/
+verdict. Plain replay/file presence does not promote null; malformed/missing markers and arbitrary
+source changes remain gaps. Preserve every original unavailable event. This recovery reconciles
+preservation only: a new bounded review is a fresh invocation/artifact, not a fabricated original
+whole-range result.
+
+For a bounded captured-source report, write new `bounded-draft.md` and `bounded-coverage.json`
+inside its existing `assembled/final-review-ID-final/` directory so normal bundle collection
+preserves them without changing the launch required-input list. Retain the original failed
+selection sidecar and provenance in place. The final report carries full base/head, hash-bound sidecar/draft/coverage references,
+the complete changed-path inventory, actual inspected hunk headers, remaining paths/hunks and
+all original gaps. `dispatch-text bounded-review` validates source and writes the expected final
+report exclusively with forced `not ready` and whole-epic untested scope. Collection completion
+means those bytes were preserved; whole-range acceptance remains pending.
+
 `report-status --collect RUN_MD` replays all retained collections. It verifies complete archive hashes even after source cleanup. Exit 0 confirms preservation; exit 3 leaves pending/gaps and requires preserving the source workspace plus archive before later invocation or cleanup; exit 2/4 establishes no collection. Unsettled intents require ledger/result confirmation, not inference from artifact presence. A missing source extraction retains known inline occurrences and exposes unavailable coverage. Ordinary `report-status RUN_MD` is read-only: with new records it adds `outstanding findings: N`, `review collections pending: N`, `review collection gaps: N` and/or `finding evidence gaps: N` qualifiers as applicable, derived from this collection history and the shared outstanding projection. Unavailable tooling/projection is qualified explicitly. Without new records legacy status output is unchanged.
 
 ## Caller-owned root acceptance
@@ -320,6 +341,51 @@ run.md directory; when archiving, update only `artifact` to the retained copy, p
 An unavailable artifact reports a gap while its inline extraction still preserves known findings.
 Extraction failure is a gap, never a replacement empty source. An explicit clean recognized
 review may have `occurrences:[]`; a run with no retained sources has unknown coverage.
+
+**Declared producer population.** `roast-design` and `roast-code` retain the complete actual
+settled report/input lists consumed by their respective ledger producers, including earlier,
+amend, keys-only and genuinely empty inputs. At handoff/resume the outer owner collects complete
+original extractions for every declared input. A ledger requires its matching-loop declaration;
+even a genuine zero-row header cannot prove which inputs were consumed. Missing/ambiguous inputs,
+truncated ledgers, unavailable original bytes and incomplete extraction remain coverage gaps.
+The gate checks report-key membership against ledger rows in both directions for transport
+consistency only; this never supplies occurrence identity, links, relevance or resolution.
+
+**Optional source correspondence.** Directly registered original reports need no association.
+When exact archival/keys/legacy correspondence needs an explicit owner judgment, append this
+single JSON object after `- source-correspondence · ` in `approvals:`:
+
+```json
+{"version":1,"artifact":"<original declared report or keys file>","sha256":"<original bytes SHA-256>","source":"<existing immutable source ID>","retainedArtifact":"<registered retained report or adapter>","retainedSha256":"<retained bytes SHA-256>","judgment":"supported","basis":"<why this exact source correspondence is complete>","evidence":["<raw/retained inspection evidence>"],"lines":[{"line":2,"refs":[{"source":"<same named source>","section":"Must fix before landing","position":1}]}]}
+```
+
+Both artifacts resolve from the run directory (absolute paths also work), must remain readable,
+and must match their hashes. `source` is already registered at `retainedArtifact`; the gate
+freshly re-extracts that artifact and compares the complete extraction. Keep every original raw
+artifact and parser failure. This record creates no source, link, relevance or disposition.
+Malformed, unsupported or conflicting associations remain gaps even beside a valid association.
+
+For keys-only input, `lines` maps each actual nonempty key line exactly once, using its original
+1-based physical line number and nonempty exact occurrence refs from this one retained source.
+A first `review: ready|not ready|none` header and blank lines are excluded. Missing, duplicate,
+header, unknown, cross-source or uncovered mappings fail. A single keys file spanning multiple
+source identities remains a gap; matching display keys alone supply no correspondence.
+For same-byte archived reports, omit `lines`; original and retained full extraction must match.
+Repeated exact associations and identical archived copies are allowed, conflicting source,
+content or line mappings are not.
+
+For a malformed historical report requiring a judged retained interpretation, add:
+
+```json
+{"interpretation":{"kind":"legacy-adapter","originalVerdict":"<actual original compact-parser verdict>","limitations":["<original strict-extraction failure and interpretation limits>"]}}
+```
+
+Original strict extraction must fail while the compact parser still recognizes its kind/verdict.
+The adapter kind/verdict and `originalVerdict` must match that historical outcome. Keep failure
+receipts and independent completeness judgment in `evidence`; limitations identify interpretation.
+A valid ordinary report cannot take this rewrite route, and an unrecognized source remains a gap.
+The gate validates bytes, refs and parser outcomes; the owner must support semantic completeness.
+A valid-empty adapter cannot authorize refs into another source or replace an unknown population.
 
 **Reference and link.** An occurrence reference is exactly
 `{"source":"inv-a/final","section":"Deferred OK","position":1}`. Section and source strings

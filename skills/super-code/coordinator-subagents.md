@@ -239,6 +239,13 @@ and every final review mode below, including direct-input fallbacks. Their gener
 before any artifact/package writes and refuses existing outputs even on same-source retry.
 An assembler guard refusal returns exit 2 with cause prefixed `review source guard:`: preserve
 the partial bundle and return `reviewPath: null` instead of bypassing it with a direct review.
+A provenance-only cause `review input selection: provenance unavailable; captured source available`
+permits the generated single-review prompt's bounded route: retain the original sidecar/gaps,
+inspect named captured paths/hunks, and use `dispatch-text bounded-review` to emit a forced
+`not ready` report from its preserved draft and coverage JSON. Whole-epic review remains pending;
+collection completeness and a green sweep cannot clear it. A missing/malformed sidecar or a
+source/write refusal still returns unavailable. Preserve a settled unavailable invocation and
+start a fresh invocation for a new partial review; do not relabel its old result.
 Other assembler failures keep their existing fallback. A failed capture without a persisted
 binding leaves final review unavailable with the command/error evidence. Task `review` takes the
 implementer's captured `--head` alongside `--base`; `check-fix-review` takes the fixer's `--head`.

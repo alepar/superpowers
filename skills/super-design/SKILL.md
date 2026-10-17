@@ -1111,7 +1111,7 @@ Write these, each as it happens:
 |---|---|
 | the root spec's path | `brainstorming` commits it |
 | the root epic id | §Decomposition creates it |
-| each roast report path | `super-roast` returns it |
+| the complete actual settled `roast-design` report/input list, including earlier, amend and genuinely empty rounds | `super-roast` returns each report; preserve all prior inputs when writing the list |
 | the roast round count | incremented **per round**, before the next round starts |
 | a parked escalation, beyond-cap item, verdict qualifier, or graph change | the round or pass that produced it |
 | `findingsLedgerDesign: <path>` (`<artifact-dir>/findings-ledger-design.md`; single-valued, replaced) | Step 1 first builds the ledger |
@@ -1127,6 +1127,12 @@ Write these, each as it happens:
 **A caller that hands in a run-state file hands in its format contract too** — follow that file's
 field names, entry shapes, and relative-path rule exactly; the caller reads these fields back, and
 a co-writer that invents its own shapes produces a state file the caller cannot parse.
+
+At handoff, leave the complete original input list beside `findingsLedgerDesign`, even for
+zero-row ledgers. The outer caller owns complete source extraction and any supported hash-bound
+correspondence under its run-state contract. If interrupted between pointer persistence and
+outer collection, retain the original reports and declare that collection gap for resume;
+ledger keys/statuses alone never establish complete source population or local dispositions.
 
 **Gate decisions are recorded, and replayed rather than re-made.** Before deciding the top split
 (§The Process step 6) or running a coverage round (§Coverage), check the run-state file for what
